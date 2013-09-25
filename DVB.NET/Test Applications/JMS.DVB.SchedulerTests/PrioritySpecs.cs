@@ -163,9 +163,9 @@ namespace JMS.DVB.SchedulerTests
             Assert.AreSame( plan1, schedules[0].Definition, "plan 1" );
             Assert.AreSame( plan2, schedules[1].Definition, "plan 2" );
             Assert.AreSame( plan3, schedules[2].Definition, "plan 3" );
-            Assert.AreSame( res2, schedules[0].Resource, "resource 1" );
-            Assert.AreSame( res1, schedules[1].Resource, "resource 2" );
-            Assert.AreSame( res1, schedules[2].Resource, "resource 3" );
+            Assert.AreSame( res1, schedules[0].Resource, "resource 1" );
+            Assert.AreSame( res2, schedules[1].Resource, "resource 2" );
+            Assert.AreSame( res2, schedules[2].Resource, "resource 3" );
         }
 
         /// <summary>

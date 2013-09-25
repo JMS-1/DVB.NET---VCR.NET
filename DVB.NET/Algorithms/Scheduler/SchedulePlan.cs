@@ -69,8 +69,12 @@ namespace JMS.DVB.Algorithms.Scheduler
             /// <returns>Die logische Differenz der parallelen Aufzeichnungszeit.</returns>
             public int Compare( SchedulePlan firstPlan, SchedulePlan secondPlan )
             {
-                // Forward
-                return 0;
+                // Read out
+                var firstTime = firstPlan.GetSourceUsage();
+                var secondTime = secondPlan.GetSourceUsage();
+
+                // Compare the total time sources are use on multiple devices
+                return firstTime.CompareTo( secondTime );
             }
         }
 
@@ -132,7 +136,7 @@ namespace JMS.DVB.Algorithms.Scheduler
                         return 0;
 
                     // All times where we really started the resource
-                    var startTimes = primary.Allocations.GetResourceStartTimes().ToArray();
+                    var startTimes = primary.Allocations.ResourceStartTimes;
                     if (startTimes.Length < 1)
                         return 0;
 
@@ -471,6 +475,43 @@ namespace JMS.DVB.Algorithms.Scheduler
 
             // Process
             return comparer.Compare( this, other );
+        }
+
+        /// <summary>
+        /// Ermittelt die Benutzung von Quellen.
+        /// </summary>
+        /// <returns>Die Informationen zur Nutzung der Quellen.</returns>
+        public TimeSpan GetSourceUsage()
+        {
+            // We can not hash sources so...
+            var sources = new List<IScheduleSource>();
+
+            // What we will report
+            var summary = new Dictionary<IScheduleSource, AllocationMap.AllocationTimeline>();
+
+            // Process anything
+            foreach (var resource in Resources)
+                foreach (var sourceUsage in resource.Allocations.SourceUsage)
+                {
+                    // Locate the source
+                    var representative = sources.FirstOrDefault( s => s.IsSameAs( sourceUsage.Key ) );
+
+                    // Add it
+                    if (ReferenceEquals( representative, null ))
+                        sources.Add( representative = sourceUsage.Key );
+
+                    // Allocate a timeline
+                    AllocationMap.AllocationTimeline timeline;
+                    if (!summary.TryGetValue( representative, out timeline ))
+                        summary.Add( representative, timeline = new AllocationMap.AllocationTimeline() );
+
+                    // Merge in all
+                    foreach (var range in sourceUsage.Value)
+                        timeline.Add( range );
+                }
+
+            // Sum up the time where a source is busy on multiple resources and sum over all sources
+            return new TimeSpan( summary.SelectMany( p => p.Value ).Sum( r => (r.Data - 1) * (r.End - r.Start).Ticks ) );
         }
     }
 }

@@ -86,7 +86,7 @@ namespace JMS.DVB.Algorithms.Scheduler
         /// <summary>
         /// Beschreibt eine einzelne Zuordnung.
         /// </summary>
-        private class _Allocation : IAllocationInformation
+        private class AllocatedRange : IAllocationInformation
         {
             /// <summary>
             /// Der früheste Zeitpunkt, an dem diese Zuordnung relevant ist.
@@ -101,12 +101,12 @@ namespace JMS.DVB.Algorithms.Scheduler
             /// <summary>
             /// Gesetzt, wenn keine Zuordnung erfolgt ist.
             /// </summary>
-            public bool IsIdle { get { return m_Sources.Count < 1; } }
+            public bool IsIdle { get { return Sources.Count < 1; } }
 
             /// <summary>
             /// Die Anzahl der in Benutzung befindlichen Quellen.
             /// </summary>
-            private List<IScheduleSource> m_Sources;
+            public List<IScheduleSource> Sources { get; private set; }
 
             /// <summary>
             /// Die zugehörige Gesamtverwaltung.
@@ -119,14 +119,14 @@ namespace JMS.DVB.Algorithms.Scheduler
             /// <param name="from">Der Beginn des Zeitraums.</param>
             /// <param name="to">Das Ende des Zeitraums.</param>
             /// <param name="map">Die zugehörige Gesamtverwaltung.</param>
-            public _Allocation( DateTime from, DateTime to, AllocationMap map )
+            public AllocatedRange( DateTime from, DateTime to, AllocationMap map )
             {
                 // Validate
                 if (to <= from)
                     throw new ArgumentOutOfRangeException( "to" );
 
                 // Finish
-                m_Sources = new List<IScheduleSource>();
+                Sources = new List<IScheduleSource>();
 
                 // Remember
                 Start = from;
@@ -140,10 +140,10 @@ namespace JMS.DVB.Algorithms.Scheduler
             /// <param name="from">Der Beginn des Zeitraums.</param>
             /// <param name="to">Das Ende des Zeitraums.</param>
             /// <returns>Die gewünschte Kopie.</returns>
-            public _Allocation Clone( DateTime from, DateTime to )
+            public AllocatedRange Clone( DateTime from, DateTime to )
             {
                 // Forward
-                return new _Allocation( from, to, m_Map ) { m_Sources = new List<IScheduleSource>( m_Sources ) };
+                return new AllocatedRange( from, to, m_Map ) { Sources = new List<IScheduleSource>( Sources ) };
             }
 
             /// <summary>
@@ -158,8 +158,8 @@ namespace JMS.DVB.Algorithms.Scheduler
                     throw new ArgumentNullException( "source" );
 
                 // Remember
-                if (!m_Sources.Any( s => s.IsSameAs( source ) ))
-                    m_Sources.Add( source );
+                if (!Sources.Any( s => s.IsSameAs( source ) ))
+                    Sources.Add( source );
             }
 
             /// <summary>
@@ -170,12 +170,12 @@ namespace JMS.DVB.Algorithms.Scheduler
             public bool CanAllocate( IScheduleSource source )
             {
                 // Test
-                if (m_Sources.Any( s => s.IsSameAs( source ) ))
+                if (Sources.Any( s => s.IsSameAs( source ) ))
                     return true;
-                else if (!m_Map.CanMerge( source, m_Sources ))
+                else if (!m_Map.CanMerge( source, Sources ))
                     return false;
                 else
-                    return (m_Sources.Count < m_Map.TotalNumberOfSources);
+                    return (Sources.Count < m_Map.TotalNumberOfSources);
             }
 
             /// <summary>
@@ -196,14 +196,32 @@ namespace JMS.DVB.Algorithms.Scheduler
             public override string ToString()
             {
                 // Create
-                return string.Format( Properties.SchedulerResources.Debug_DecryptionCounter, m_Map.TotalNumberOfSources - m_Sources.Count, Start, End );
+                return string.Format( Properties.SchedulerResources.Debug_DecryptionCounter, m_Map.TotalNumberOfSources - Sources.Count, Start, End );
+            }
+        }
+
+        /// <summary>
+        /// Beschreibt die Verwendung einer einzelnen Quelle.
+        /// </summary>
+        public class AllocationTimeline : TimelineManager<int>
+        {
+            /// <summary>
+            /// Kombiniert die Nutzung zweier Quellen.
+            /// </summary>
+            /// <param name="existing">Der bisherige Nutzugnszähler.</param>
+            /// <param name="added">Die zusätzliche Nutzung.</param>
+            /// <returns>Die kombinierte Nutzung.</returns>
+            protected override int Merge( int existing, int added )
+            {
+                // Just add up
+                return existing + added;
             }
         }
 
         /// <summary>
         /// Alle Reservierungen für diese Entschlüsselung.
         /// </summary>
-        private readonly List<_Allocation> m_Allocations;
+        private readonly List<AllocatedRange> m_Allocations;
 
         /// <summary>
         /// Die maximale Anzahl von Reservierungen.
@@ -228,7 +246,7 @@ namespace JMS.DVB.Algorithms.Scheduler
         public AllocationMap( int initialValue, Func<IScheduleSource, IEnumerable<IScheduleSource>, bool> mergeTest = null )
         {
             // Remember
-            m_Allocations = new List<_Allocation> { new _Allocation( DateTime.MinValue, DateTime.MaxValue, this ) };
+            m_Allocations = new List<AllocatedRange> { new AllocatedRange( DateTime.MinValue, DateTime.MaxValue, this ) };
             m_Sources = new List<IScheduleSource>();
             TotalNumberOfSources = initialValue;
             m_MergeTest = mergeTest;
@@ -315,6 +333,10 @@ namespace JMS.DVB.Algorithms.Scheduler
         /// <param name="time">Der Zeitraum, in dem eine Entschlüsselung aktiv ist.</param>
         private void Allocate( int allocationIndex, IScheduleSource source, ref PlannedTime time )
         {
+            // Reset all caches - just in case...
+            m_cachedResourceStartTimes = null;
+            m_sourceUsage = null;
+
             // We are now using the source
             if (!m_Sources.Any( s => s.IsSameAs( source ) ))
                 m_Sources.Add( source );
@@ -517,10 +539,31 @@ namespace JMS.DVB.Algorithms.Scheduler
         }
 
         /// <summary>
+        /// Die Zeiten, zu denen das zugehörige Gerät aktiviert wird.
+        /// </summary>
+        private DateTime[] m_cachedResourceStartTimes;
+
+        /// <summary>
+        /// Ermittelt die Zeitpunkte, an denen das zugehörige Geräte tatsächlich aktiviert wird.
+        /// </summary>
+        public DateTime[] ResourceStartTimes
+        {
+            get
+            {
+                // Load once
+                if (m_cachedResourceStartTimes == null)
+                    m_cachedResourceStartTimes = GetResourceStartTimes().ToArray();
+
+                // Report
+                return m_cachedResourceStartTimes;
+            }
+        }
+
+        /// <summary>
         /// Ermittelt die Zeitpunkte, an denen das zugehörige Geräte tatsächlich aktiviert wird.
         /// </summary>
         /// <returns>Die Liste der Zeitpunkte.</returns>
-        public IEnumerable<DateTime> GetResourceStartTimes()
+        private IEnumerable<DateTime> GetResourceStartTimes()
         {
             // All times where we really started the resource
             var wasIdle = true;
@@ -536,6 +579,70 @@ namespace JMS.DVB.Algorithms.Scheduler
                 // Set mode
                 wasIdle = allocation.IsIdle;
             }
+        }
+
+        /// <summary>
+        /// Vermerkt das Aufzeichnungsmuster einzelner Quellen.
+        /// </summary>
+        private Dictionary<IScheduleSource, AllocationTimeline> m_sourceUsage;
+
+        /// <summary>
+        /// Ermittelt, wann einzelne Quellen aufgezeichnet werden.
+        /// </summary>
+        public Dictionary<IScheduleSource, AllocationTimeline> SourceUsage
+        {
+            get
+            {
+                // Create once
+                if (m_sourceUsage == null)
+                    m_sourceUsage = GetSourceUsage();
+
+                // Report
+                return m_sourceUsage;
+            }
+        }
+
+        /// <summary>
+        /// Ermittelt, wann einzelne Quellen aufgezeichnet werden.
+        /// </summary>
+        /// <returns>Für jede Quelle die Liste der Zeitpunkte, an denen sie verwendet wird.</returns>
+        private Dictionary<IScheduleSource, AllocationTimeline> GetSourceUsage()
+        {
+            // Since we have no identity compare for sources we must do some (slow) remappings - will be cached!
+            var sources = new List<IScheduleSource>();
+
+            // Create map
+            var map = new Dictionary<IScheduleSource, AllocationTimeline>( ReferenceComparer<IScheduleSource>.Default );
+
+            // Process all allocations
+            foreach (var allocation in m_Allocations)
+                if (!allocation.IsIdle)
+                {
+                    // Create range for timeline entry
+                    var range = AllocationTimeline.Range.Create( allocation.Start, allocation.End, 1 );
+
+                    // Forward to all sources
+                    foreach (var source in allocation.Sources)
+                    {
+                        // See if we know the source
+                        var representative = sources.FirstOrDefault( s => s.IsSameAs( source ) );
+
+                        // Must add a new one
+                        if (ReferenceEquals( representative, null ))
+                            sources.Add( representative = source );
+
+                        // Now we can check the time line
+                        AllocationTimeline timeline;
+                        if (!map.TryGetValue( representative, out timeline ))
+                            map.Add( representative, timeline = new AllocationTimeline() );
+
+                        // Register
+                        timeline.Add( range );
+                    }
+                }
+
+            // Report
+            return map;
         }
     }
 }
