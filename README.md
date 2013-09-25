@@ -1,4 +1,4 @@
-DVB.NET---VCR.NET
+DVB.NET / VCR.NET
 =================
 
 (experimental)
