@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+
+    <!-- Für Entwickler die Intellisens Hilfedatei der Erweiterungen.  -->
+    <Component Id="Intellisense" Directory="AdminBinaries" Guid="790a23aa-fa20-4792-96b6-39c8e834a1b3">
+      <File Source="$(var.JMS.DVB.Tools.SourceValidation.TargetDir)$(var.JMS.DVB.Tools.SourceValidation.TargetName).xml" />
+      <File Source="$(var.JMS.DVB.Tools.TableDump.TargetDir)$(var.JMS.DVB.Tools.TableDump.TargetName).xml" />
+    </Component>
+
+  </Fragment>
+</Wix>

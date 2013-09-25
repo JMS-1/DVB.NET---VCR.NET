@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+
+    <!-- Für Entwickler die Intellisens Hilfedatei der Erweiterungen.  -->
+
+    <Component Id="IntellisenseAdmin" Directory="AdminBinaries" Guid="3050a49e-f63b-49d3-bbbb-48916e96294f">
+      <File Source="$(var.JMS.DVB.Administration.Profiles.TargetDir)$(var.JMS.DVB.Administration.Profiles.TargetName).xml" />
+      <File Source="$(var.JMS.DVB.Administration.TransponderScan.TargetDir)$(var.JMS.DVB.Administration.TransponderScan.TargetName).xml" />
+    </Component>
+
+  </Fragment>
+</Wix>

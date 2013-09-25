@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <?include ..\..\..\..\SetupHelper\ManufacturerSettings.wxi ?>
+
+  <Product
+    Id="*"
+    Name="DVB.NET Tools 4.1"
+    Language="1031"
+    Version="!(wix.SETUPVERSION)"
+    Manufacturer="$(var.Manufacturer)"
+    UpgradeCode="7e168e83-9357-4d3a-b5dd-07ac1fee801c">
+
+    <Package
+      InstallPrivileges="elevated"
+      Languages="1031"
+      InstallerVersion="200"
+      Compressed="yes"
+      Platform="x86"
+      InstallScope="perMachine" />
+
+    <WixVariable Id="WixUIBannerBmp" Value="..\..\..\..\SetupHelper\PsiMarronBanner.bmp" />
+
+    <!-- Wir verwenden ein einziges CAB Archiv und das wird auch in das MSI integriert -->
+    <MediaTemplate EmbedCab="yes" />
+
+    <!-- Für alle Installationen identische Einstellungen -->
+    <Property Id="ARPURLINFOABOUT" Value="$(var.ManufacturerUrl)" />
+    <Property Id="ARPCONTACT" Value="$(var.Author)" />
+    <Property Id="ARPPRODUCTICON" Value="THEICON" />
+
+    <!-- Alle unseren Bildchen -->
+    <Icon Id="THEICON" SourceFile="$(var.EPGReader.ProjectDir)EPG.ico" />
+
+    <!-- Ohne .NET in der richtigen Version geht gar nichts -->
+    <PropertyRef Id="NETFRAMEWORK40CLIENT"/>
+    <Condition Message="!(loc.DOTNETMISSING)">
+      <![CDATA[NETFRAMEWORK40CLIENT]]>
+    </Condition>
+
+    <!-- DVB.NET muss in der korrekten Version installiert sein -->
+    <Property Id="DVBNETCORE">
+      <RegistrySearch Id="DVBNETCOREREG" Win64="no" Root="HKLM" Key="Software\JMS\DVB.NET\4.1.0.0" Name="Root Directory" Type="raw" />
+    </Property>
+    <Condition Message="!(loc.DVBNETMISSING)">
+      <![CDATA[Installed OR DVBNETCORE]]>
+    </Condition>
+
+    <!-- Die Kerninstallation. -->
+    <Feature Id="ProductFeature" Title="!(loc.FEATUREBINARIES)" Level="1" Absent="disallow" TypicalDefault="install" AllowAdvertise="no">
+
+      <ComponentGroupRef Id="JMS.DVB.Tools.SourceValidation.Binaries" />
+      <ComponentGroupRef Id="JMS.DVB.Tools.TableDump.Binaries" />
+      <ComponentGroupRef Id="EPGReader.Binaries" />
+      <ComponentGroupRef Id="TransportStreamAnalyser.Binaries" />
+      <ComponentGroupRef Id="TSSplitter.Binaries" />
+      <ComponentRef Id="AdminGerman" />
+      <ComponentRef Id="ToolsGerman" />
+      <ComponentRef Id="StartMenu" />
+      
+    </Feature>
+
+    <!-- Die Installation der Quelltexte, die völlig optional ist. -->
+    <Feature Id="SourceFeature" Title="!(loc.FEATURESOURCE)" Level="2" Absent="allow" AllowAdvertise="no">
+
+      <ComponentGroupRef Id="JMS.DVB.Tools.SourceValidation.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.Tools.SourceValidation.Content" />
+      <ComponentGroupRef Id="JMS.DVB.Tools.TableDump.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.Tools.TableDump.Content" />
+      <ComponentGroupRef Id="EPGReader.Sources" />
+      <ComponentGroupRef Id="EPGReader.Content" />
+      <ComponentGroupRef Id="TransportStreamAnalyser.Sources" />
+      <ComponentGroupRef Id="TransportStreamAnalyser.Content" />
+      <ComponentGroupRef Id="TSSplitter.Sources" />
+      <ComponentGroupRef Id="TSSplitter.Content" />
+
+    </Feature>
+
+    <!-- Die Installation der Intellisense Dateien, die völlig optional ist. -->
+    <Feature Id="DocFeature" Title="!(loc.FEATUREINTELLISENSE)" Level="2" Absent="allow" AllowAdvertise="no">
+
+      <ComponentRef Id="Intellisense" />
+
+    </Feature>
+
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <UIRef Id="CommonWizard" />
+
+  </Product>
+
+</Wix>

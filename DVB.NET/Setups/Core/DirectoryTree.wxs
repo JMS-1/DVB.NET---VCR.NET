@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <?include ..\..\..\..\SetupHelper\ManufacturerSettings.wxi ?>
+
+  <Fragment>
+
+    <!-- Verzeichnisstruktur -->
+    <Directory Id="TARGETDIR" Name="SourceDir">
+
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="ManufacturerFolder" Name="$(var.Manufacturer)">
+
+          <Directory Id="INSTALLFOLDER" Name="DVB.NET 4.1">
+            
+            <Directory Id="DVBNETAdmin.Binaries" />
+            <Directory Id="JMS.DVB.Administration.Framework.Binaries" />
+            <Directory Id="JMS.DVB.Administration.Framework.Documents" />
+            <Directory Id="UserProfileManager.Binaries" />
+
+            <Directory Id="RootGerman" Name="de" />
+
+            <Directory Id="Driver" Name="Driver" />
+            <Directory Id="Scan" Name="Scan Locations" />
+
+            <Directory Id="JMS.DVB.Provider.Duoflex.Binaries" Name="Adapter" />
+            <Directory Id="JMS.DVB.Provider.Duoflex.Documents" Name="Adapter" />
+            <Directory Id="JMS.DVB.Provider.FireDTV.Binaries" Name="Adapter" />
+            <Directory Id="JMS.DVB.Provider.FireDTV.Documents" Name="Adapter" />
+            <Directory Id="JMS.DVB.Provider.KNC.Binaries" Name="Adapter" />
+            <Directory Id="JMS.DVB.Provider.KNC.Documents" Name="Adapter" />
+            <Directory Id="JMS.DVB.Provider.NovaS2.Binaries" Name="Adapter" />
+            <Directory Id="JMS.DVB.Provider.NovaS2.Documents" Name="Adapter" />
+            <Directory Id="JMS.DVB.Provider.TTBudget.Binaries" Name="Adapter" />
+            <Directory Id="JMS.DVB.Provider.TTBudget.Documents" Name="Adapter" />
+            <Directory Id="JMS.DVB.Provider.TTPremium.Binaries" Name="Adapter" />
+            <Directory Id="JMS.DVB.Provider.TTPremium.Documents" Name="Adapter" />
+            <Directory Id="JMS.TechnoTrend.MFCWrapper.Binaries" Name="Adapter" />
+            <Directory Id="JMS.TechnoTrend.MFCWrapper.Documents" Name="Adapter" />
+
+            <Directory Id="AdapterBinaries" Name="Adapter">
+              <Directory Id="AdapterGerman" Name="de" />
+            </Directory>
+
+            <Directory Id="JMS.DVB.Administration.Profiles.Binaries" Name="Administration PlugIns" />
+            <Directory Id="JMS.DVB.Administration.TransponderScan.Binaries" Name="Administration PlugIns" />
+
+            <Directory Id="AdminBinaries" Name="Administration PlugIns">
+              <Directory Id="AdminGerman" Name="de" />
+            </Directory>
+
+            <Directory Id="JMS.ChannelManagement.Binaries" Name="RunTime" />
+            <Directory Id="JMS.ChannelManagement.Documents" Name="RunTime" />
+            <Directory Id="JMS.DVB.Binaries" Name="RunTime" />
+            <Directory Id="JMS.DVB.Documents" Name="RunTime" />
+            <Directory Id="JMS.DVB.Algorithms.Binaries" Name="RunTime" />
+            <Directory Id="JMS.DVB.Algorithms.Documents" Name="RunTime" />
+            <Directory Id="JMS.DVB.DeviceAccess.Binaries" Name="RunTime" />
+            <Directory Id="JMS.DVB.DeviceAccess.Documents" Name="RunTime" />
+            <Directory Id="JMS.DVB.DirectShow.Binaries" Name="RunTime" />
+            <Directory Id="JMS.DVB.DirectShow.Documents" Name="RunTime" />
+            <Directory Id="JMS.DVB.EPG.Binaries" Name="RunTime" />
+            <Directory Id="JMS.DVB.EPG.Documents" Name="RunTime" />
+            <Directory Id="JMS.DVB.HardwareAbstraction.Binaries" Name="RunTime" />
+            <Directory Id="JMS.DVB.HardwareAbstraction.Documents" Name="RunTime" />
+            <Directory Id="JMS.DVB.Provider.Legacy.Binaries" Name="RunTime" />
+            <Directory Id="JMS.DVB.Provider.Legacy.Documents" Name="RunTime" />
+            <Directory Id="JMS.DVB.SITables.Binaries" Name="RunTime" />
+            <Directory Id="JMS.DVB.SITables.Documents" Name="RunTime" />
+            <Directory Id="JMS.DVB.SourceManagement.Binaries" Name="RunTime" />
+            <Directory Id="JMS.DVB.SourceManagement.Documents" Name="RunTime" />
+            <Directory Id="JMS.DVB.TS.Binaries" Name="RunTime" />
+            <Directory Id="JMS.DVB.TS.Documents" Name="RunTime" />
+            <Directory Id="JMS.FavoriteManager.Binaries" Name="RunTime" />
+            <Directory Id="JMS.FavoriteManager.Documents" Name="RunTime" />
+
+            <Directory Id="LibraryBinaries" Name="RunTime">
+              <Directory Id="LibraryGerman" Name="de" />
+            </Directory>
+
+            <Directory Id="JMS.DVB.Common.Binaries" Name="GAC" />
+            <Directory Id="JMS.DVB.Common.Documents" Name="GAC" />
+
+            <Directory Id="GAC" Name="VirtualGAC">
+              <Component Id="GACRegister" Guid="da6fa0b2-9445-4525-8897-e446a144ba61" >
+                <File Id="COMMON" Name="JMS.DVB.Common.dll" Assembly=".net" KeyPath="yes" Source="$(var.JMS.DVB.Common.TargetPath)" />
+              </Component>
+            </Directory>
+
+            <Directory Id="RCLearner.Binaries" Name="Tools" />
+
+            <Directory Id="ToolsBinaries" Name="Tools">
+              <Directory Id="ToolsGerman" Name="de" />
+            </Directory>
+
+            <Directory Id="SourceFolder" Name="Sources">
+
+              <Directory Id="JMS.DVB.Algorithms.Sources" Name="Algorithms" />
+              <Directory Id="JMS.DVB.Algorithms.Content" Name="Algorithms" />
+              <Directory Id="JMS.DVB.DirectShow.Sources" Name="BDA" />
+              <Directory Id="JMS.DVB.DirectShow.Content" Name="BDA" />
+              <Directory Id="JMS.DVB.DeviceAccess.Sources" Name="BDA4" />
+              <Directory Id="JMS.DVB.DeviceAccess.Content" Name="BDA4" />
+              <Directory Id="JMS.ChannelManagement.Sources" Name="ChannelManager" />
+              <Directory Id="JMS.ChannelManagement.Content" Name="ChannelManager" />
+              <Directory Id="JMS.DVB.Common.Sources" Name="Common" />
+              <Directory Id="JMS.DVB.Common.Content" Name="Common" />
+              <Directory Id="JMS.DVB.Sources" Name="DVB" />
+              <Directory Id="JMS.DVB.Content" Name="DVB" />
+              <Directory Id="JMS.DVB.EPG.Sources" Name="EPG" />
+              <Directory Id="JMS.DVB.EPG.Content" Name="EPG" />
+              <Directory Id="JMS.FavoriteManager.Sources" Name="FavoriteManager" />
+              <Directory Id="JMS.FavoriteManager.Content" Name="FavoriteManager" />
+              <Directory Id="JMS.DVB.HardwareAbstraction.Sources" Name="HardwareAbstraction" />
+              <Directory Id="JMS.DVB.HardwareAbstraction.Content" Name="HardwareAbstraction" />
+              <Directory Id="JMS.DVB.SITables.Sources" Name="SITables" />
+              <Directory Id="JMS.DVB.SITables.Content" Name="SITables" />
+              <Directory Id="JMS.DVB.SourceManagement.Sources" Name="SourceManagement" />
+              <Directory Id="JMS.DVB.SourceManagement.Content" Name="SourceManagement" />
+              <Directory Id="JMS.DVB.TS.Sources" Name="TS" />
+              <Directory Id="JMS.DVB.TS.Content" Name="TS" />
+
+              <Directory Id="BDASources" Name="BDA">
+                <Directory Id="BDAXaml" Name="RawDevices">
+                </Directory>
+              </Directory>
+
+              <Directory Id="DVBNETAdmin.Sources" Name="Administration" />
+              <Directory Id="DVBNETAdmin.Content" Name="Administration" />
+
+              <Directory Id="AdminSources" Name="Administration">
+                <Directory Id="AdminPlugInSources" Name="PlugIns">
+                  <Directory Id="JMS.DVB.Administration.Framework.Sources" Name="AdminFramework" />
+                  <Directory Id="JMS.DVB.Administration.Framework.Content" Name="AdminFramework" />
+                  <Directory Id="JMS.DVB.Administration.Profiles.Sources" Name="Profile Manager" />
+                  <Directory Id="JMS.DVB.Administration.Profiles.Content" Name="Profile Manager" />
+                  <Directory Id="JMS.DVB.Administration.TransponderScan.Sources" Name="Transponder Scanner" />
+                  <Directory Id="JMS.DVB.Administration.TransponderScan.Content" Name="Transponder Scanner" />
+                </Directory>
+              </Directory>
+
+              <Directory Id="ProviderSources" Name="Provider">
+                <Directory Id="JMS.DVB.Provider.Duoflex.Sources" Name="Duoflex" />
+                <Directory Id="JMS.DVB.Provider.Duoflex.Content" Name="Duoflex" />
+                <Directory Id="JMS.DVB.Provider.Legacy.Sources" Name="DVBNETLegacy" />
+                <Directory Id="JMS.DVB.Provider.Legacy.Content" Name="DVBNETLegacy" />
+                <Directory Id="JMS.DVB.Provider.FireDTV.Sources" Name="FireDTV" />
+                <Directory Id="JMS.DVB.Provider.FireDTV.Content" Name="FireDTV" />
+                <Directory Id="JMS.DVB.Provider.KNC.Sources" Name="KNC" />
+                <Directory Id="JMS.DVB.Provider.KNC.Content" Name="KNC" />
+
+                <Directory Id="HauppaugeSources" Name="Hauppauge">
+                  <Directory Id="JMS.DVB.Provider.NovaS2.Sources" Name="NovaS2" />
+                  <Directory Id="JMS.DVB.Provider.NovaS2.Content" Name="NovaS2" />
+                </Directory>
+
+                <Directory Id="TechnoTrendSources" Name="TechnoTrend">
+                  <Directory Id="JMS.TechnoTrend.MFCWrapper.Sources" Name="TTAPI" />
+                  <Directory Id="JMS.TechnoTrend.MFCWrapper.Content" Name="TTAPI" />
+                  <Directory Id="JMS.DVB.Provider.TTBudget.Sources" Name="TTBudget" />
+                  <Directory Id="JMS.DVB.Provider.TTBudget.Content" Name="TTBudget" />
+                  <Directory Id="JMS.DVB.Provider.TTPremium.Sources" Name="TTPremium" />
+                  <Directory Id="JMS.DVB.Provider.TTPremium.Content" Name="TTPremium" />
+                </Directory>
+              </Directory>
+
+              <Directory Id="ToolSources" Name="Tools">
+                <Directory Id="RCLearner.Sources" Name="RC Learner" />
+                <Directory Id="RCLearner.Content" Name="RC Learner" />
+                <Directory Id="UserProfileManager.Sources" Name="UserProfileManager" />
+                <Directory Id="UserProfileManager.Content" Name="UserProfileManager" />
+
+                <Directory Id="RCXaml" Name="RC Learner">
+                </Directory>
+              </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
+      </Directory>
+
+      <!-- Menüeinträge -->
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ShortCutFolder" Name="DVB.NET 4.1" />
+      </Directory>
+
+    </Directory>
+
+  </Fragment>
+</Wix>

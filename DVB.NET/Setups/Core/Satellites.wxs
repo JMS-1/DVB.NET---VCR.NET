@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+
+    <!-- Die deutschen Sprachdateien der Bibliothek werden gesondert installiert, da die aktuelle WiX Version 3.7 Probleme mit dem Harvesting macht (Heat). -->
+
+    <Component Id="AdapterGerman" Directory="AdapterGerman" Guid="903fda76-e8f6-42fb-8a3b-87428e54609e">
+      <File Source="$(var.JMS.DVB.Provider.Duoflex.TargetDir)de\$(var.JMS.DVB.Provider.Duoflex.TargetName).resources.dll" />
+      <File Source="$(var.JMS.DVB.Provider.TTBudget.TargetDir)de\$(var.JMS.DVB.Provider.TTBudget.TargetName).resources.dll" />
+    </Component>
+
+    <Component Id="AdminGerman" Directory="AdminGerman" Guid="0d70a227-963c-473e-aba2-ec7266665f22">
+      <File Source="$(var.JMS.DVB.Administration.Profiles.TargetDir)de\$(var.JMS.DVB.Administration.Profiles.TargetName).resources.dll" />
+      <File Source="$(var.JMS.DVB.Administration.TransponderScan.TargetDir)de\$(var.JMS.DVB.Administration.TransponderScan.TargetName).resources.dll" />
+    </Component>
+
+    <Component Id="LibraryGerman" Directory="LibraryGerman" Guid="517b9a39-7ed4-4513-98f6-6a94b4322a5a">
+      <File Source="$(var.JMS.ChannelManagement.TargetDir)de\$(var.JMS.ChannelManagement.TargetName).resources.dll" />
+      <File Source="$(var.JMS.DVB.Algorithms.TargetDir)de\$(var.JMS.DVB.Algorithms.TargetName).resources.dll" />
+      <File Source="$(var.JMS.DVB.DeviceAccess.TargetDir)de\$(var.JMS.DVB.DeviceAccess.TargetName).resources.dll" />
+      <File Source="$(var.JMS.DVB.DirectShow.TargetDir)de\$(var.JMS.DVB.DirectShow.TargetName).resources.dll" />
+      <File Source="$(var.JMS.DVB.HardwareAbstraction.TargetDir)de\$(var.JMS.DVB.HardwareAbstraction.TargetName).resources.dll" />
+      <File Source="$(var.JMS.DVB.Provider.Legacy.TargetDir)de\$(var.JMS.DVB.Provider.Legacy.TargetName).resources.dll" />
+      <File Source="$(var.JMS.FavoriteManager.TargetDir)de\$(var.JMS.FavoriteManager.TargetName).resources.dll" />
+    </Component>
+
+    <Component Id="ToolsGerman" Directory="ToolsGerman" Guid="ab48e79c-fd5b-442e-9a43-6e5ef6bf80b0">
+      <File Source="$(var.RCLearner.TargetDir)de\$(var.RCLearner.TargetName).resources.dll" />
+    </Component>
+
+    <Component Id="RootGerman" Directory="RootGerman" Guid="38f369b2-759c-46e8-9a6a-cd6cdcc466a0">
+      <File Source="$(var.DVBNETAdmin.TargetDir)de\$(var.DVBNETAdmin.TargetName).resources.dll" />
+    </Component>
+
+  </Fragment>
+</Wix>

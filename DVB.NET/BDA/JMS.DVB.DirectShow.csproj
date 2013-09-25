@@ -1,0 +1,305 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{18E9D0C8-8AC6-4F86-AD43-DBDCFBFB2F26}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>JMS.DVB.DirectShow</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\dvbnet4.snk</AssemblyOriginatorKeyFile>
+    <OutputType>Library</OutputType>
+    <RootNamespace>JMS.DVB.DirectShow</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <PublishUrl>http://localhost/JMS.DVB.Provider.BDA/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>..\Assemblies\RunTime\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DocumentationFile>..\Assemblies\RunTime\JMS.DVB.DirectShow.XML</DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>..\Assemblies\RunTime\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>..\Assemblies\RunTime\JMS.DVB.DirectShow.XML</DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="JMS.DVB, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JMS.DVB.Common, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\Assemblies\JMS.DVB.Common.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JMS.DVB.DeviceAccess, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\Assemblies\RunTime\JMS.DVB.DeviceAccess.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JMS.DVB.EPG, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JMS.DVB.TS, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Data.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Interfaces\VMRProcAmpControlRange.cs" />
+    <Compile Include="Interfaces\VMRProcAmpControl.cs" />
+    <Compile Include="Interfaces\VMRProcAmpControlFlags.cs" />
+    <Compile Include="Interfaces\VMRAlphaBitmap.cs" />
+    <Compile Include="Interfaces\VMRNormalizedRectangle.cs" />
+    <Compile Include="Interfaces\VMRRectangle.cs" />
+    <Compile Include="Interfaces\VMRAlphaBitmapFlags.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filters\TSFilter_StreamTime.cs" />
+    <Compile Include="Interfaces\IBasicVideo.cs" />
+    <Compile Include="Interfaces\IMpeg2Data.cs" />
+    <Compile Include="DisplayGraph.cs" />
+    <Compile Include="Filters\ESInjector.cs" />
+    <Compile Include="Filters\Injector.cs" />
+    <Compile Include="Filters\TSFilter.cs" />
+    <Compile Include="Filters\LivePin.cs" />
+    <Compile Include="Interfaces\IFilterMapper2.cs" />
+    <Compile Include="Interfaces\IVMRMixerControl.cs" />
+    <Compile Include="Interfaces\IVMRAspectRatioControl9.cs" />
+    <Compile Include="Interfaces\IAMLatency.cs" />
+    <Compile Include="Interfaces\IAMPushSource.cs" />
+    <Compile Include="Interfaces\IVMRMixerBitmap.cs" />
+    <Compile Include="Interfaces\IVideoWindow.cs" />
+    <Compile Include="Interfaces\IQualityControl.cs" />
+    <Compile Include="Interfaces\IAsyncReader.cs" />
+    <Compile Include="NoMarshalComObjects\MemoryAllocator.cs" />
+    <Compile Include="NoMarshalComObjects\ReferenceClock.cs" />
+    <Compile Include="PictureParameters.cs" />
+    <Compile Include="Properties\Resources.de.Designer.cs">
+      <DependentUpon>Resources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Constants.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interfaces\AspectRatioModes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interfaces\IPersistStream.cs" />
+    <Compile Include="Interfaces\IStream.cs" />
+    <Compile Include="Interfaces\IStorage.cs" />
+    <Compile Include="Interfaces\IBasicAudio.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interfaces\IFileSinkFilter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interfaces\IVMRFilterConfig.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interfaces\IVMRImageCompositor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interfaces\IVMRWindowlessControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interfaces\VMRModes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RawDevices\InputMapping.cs" />
+    <Compile Include="RawDevices\KeyMapping.cs" />
+    <Compile Include="RawDevices\KeySettings.cs" />
+    <Compile Include="RawDevices\MappingItem.cs" />
+    <Compile Include="RawDevices\RCMapping.cs" />
+    <Compile Include="RawDevices\RCSetting.cs" />
+    <Compile Include="RawDevices\RCSettings.cs" />
+    <Compile Include="RawDevices\InputKey.cs" />
+    <Compile Include="UI\KeyActionList.cs" />
+    <Compile Include="RawDevices\LearnContext.cs" />
+    <Compile Include="UI\NumberComposer.cs" />
+    <Compile Include="RawDevices\RemoteControlLearningGrid.xaml.cs">
+      <DependentUpon>RemoteControlLearningGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\TransitionConfiguration.cs" />
+    <Compile Include="UI\TransitionConfiguration.LateBinding.cs" />
+    <Compile Include="UI\TransitionConfiguration.Number.cs" />
+    <Compile Include="UI\TransitionConfiguration.Xml.cs" />
+    <Compile Include="UI\TransitionConfigurationExtensions.cs" />
+    <Compile Include="UI\TransitionState.cs" />
+    <Compile Include="VMR.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AccessModules\IVirtualStream.cs" />
+    <Compile Include="AccessModules\FileAccessor.cs" />
+    <Compile Include="AccessModules\MultiFileStream.cs" />
+    <Compile Include="AccessModules\TransportStreamAccessor.cs" />
+    <Compile Include="AccessModules\AudioVideoAccessor.cs" />
+    <Compile Include="AccessModules\TransportStreamReceiver.cs" />
+    <Compile Include="UI\BDAWindow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\BDAWindow.Designer.cs">
+      <DependentUpon>BDAWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AccessModule.cs" />
+    <Compile Include="UI\OSDText.cs" />
+    <Compile Include="UI\OverlayWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\OverlayWindow.designer.cs">
+      <DependentUpon>OverlayWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RawDevices\RawDevice.cs" />
+    <Compile Include="RawDevices\RawDeviceCollection.cs" />
+    <Compile Include="RawDevices\RawDeviceInformation.cs" />
+    <Compile Include="RawDevices\RawInputSink.cs">
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.de.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\BDAWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>BDAWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\OverlayWindow.resx">
+      <DependentUpon>OverlayWindow.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="RawDevices\RemoteControlLearningGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

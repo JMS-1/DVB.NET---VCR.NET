@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="ckRestart.Location" type="System.Drawing.Point, System.Drawing">
+    <value>436, 54</value>
+  </data>
+  <data name="ckRestart.Size" type="System.Drawing.Size, System.Drawing">
+    <value>305, 17</value>
+  </data>
+  <data name="ckRestart.Text" xml:space="preserve">
+    <value>Zugeordnetes Windows Gerät neu starten (falls vorhanden)</value>
+  </data>
+  <data name="ckRestart.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ckInProcess.Size" type="System.Drawing.Size, System.Drawing">
+    <value>396, 17</value>
+  </data>
+  <data name="ckInProcess.Text" xml:space="preserve">
+    <value>Card Server in dieser Anwendung starten (i.e. nicht als eigenständiger Prozess)</value>
+  </data>
+  <data name="ckInProcess.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="selProfiles.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>61, 13</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Geräteprofil</value>
+  </data>
+  <data name="label1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="grpConfig.Text" xml:space="preserve">
+    <value>Konfiguration</value>
+  </data>
+  <data name="grpConfig.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmdStart.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmdStop.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>37, 13</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>&amp;Quelle</value>
+  </data>
+  <data name="label2.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="selStation.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmdTune.Text" xml:space="preserve">
+    <value>Umschalten</value>
+  </data>
+  <data name="cmdTune.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmdReceive.Text" xml:space="preserve">
+    <value>Aktivieren</value>
+  </data>
+  <data name="cmdReceive.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmdUnReceive.Text" xml:space="preserve">
+    <value>Deaktivieren</value>
+  </data>
+  <data name="cmdUnReceive.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmdUnAll.Text" xml:space="preserve">
+    <value>Alle deaktivieren</value>
+  </data>
+  <data name="cmdUnAll.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmdState.Text" xml:space="preserve">
+    <value>Zustand</value>
+  </data>
+  <data name="cmdState.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="selFolder.Description" xml:space="preserve">
+    <value>Bitte wählen Sie das Aufzeichnungsverzeichnis</value>
+  </data>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>61, 13</value>
+  </data>
+  <data name="label3.Text" xml:space="preserve">
+    <value>&amp;Verzeichnis</value>
+  </data>
+  <data name="label3.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="txDir.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmdSelDir.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmdStream.Text" xml:space="preserve">
+    <value>Netzwerkversand</value>
+  </data>
+  <data name="cmdStream.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="txStream.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="columnHeader1.Text" xml:space="preserve">
+    <value>Quelle</value>
+  </data>
+  <data name="columnHeader2.Text" xml:space="preserve">
+    <value>MP2 Ton</value>
+  </data>
+  <data name="columnHeader3.Text" xml:space="preserve">
+    <value>AC3 Ton</value>
+  </data>
+  <data name="columnHeader4.Text" xml:space="preserve">
+    <value>DVB Untertitel</value>
+  </data>
+  <data name="columnHeader6.Text" xml:space="preserve">
+    <value>Programmzeitschrift</value>
+  </data>
+  <data name="columnHeader8.Text" xml:space="preserve">
+    <value>Entschlüsselung</value>
+  </data>
+  <data name="columnHeader9.Text" xml:space="preserve">
+    <value>Netzwerkversand</value>
+  </data>
+  <data name="columnHeader10.Text" xml:space="preserve">
+    <value>Aufzeichnungsdatei</value>
+  </data>
+  <data name="columnHeader11.Text" xml:space="preserve">
+    <value>Verbraucher</value>
+  </data>
+  <data name="columnHeader12.Text" xml:space="preserve">
+    <value>Datei(en)</value>
+  </data>
+  <data name="lstStreams.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmdStartEPG.Text" xml:space="preserve">
+    <value>Start E&amp;PG</value>
+  </data>
+  <data name="cmdStartEPG.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmdEPGEnd.Text" xml:space="preserve">
+    <value>Stop EP&amp;G</value>
+  </data>
+  <data name="cmdEPGEnd.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="selServices.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmdStateRefresh.Text" xml:space="preserve">
+    <value>Aktualisieren</value>
+  </data>
+  <data name="cmdStateRefresh.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="psiProgress.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="epgProgress.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="txPSISources.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 13</value>
+  </data>
+  <data name="label9.Text" xml:space="preserve">
+    <value>Dienste</value>
+  </data>
+  <data name="label9.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 13</value>
+  </data>
+  <data name="label8.Text" xml:space="preserve">
+    <value>Quellen</value>
+  </data>
+  <data name="label8.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="txEPGItems.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>61, 13</value>
+  </data>
+  <data name="label7.Text" xml:space="preserve">
+    <value>EPG Daten</value>
+  </data>
+  <data name="label7.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="txGroup.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>42, 13</value>
+  </data>
+  <data name="label6.Text" xml:space="preserve">
+    <value>Gruppe</value>
+  </data>
+  <data name="label6.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="txLocation.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 13</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>Ursprung</value>
+  </data>
+  <data name="label5.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="txProfile.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>30, 13</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Profil</value>
+  </data>
+  <data name="label4.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmdStartPSI.Text" xml:space="preserve">
+    <value>Start Quellsuche</value>
+  </data>
+  <data name="cmdStartPSI.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cmdStopPSI.Text" xml:space="preserve">
+    <value>Stop Quellsuche</value>
+  </data>
+  <data name="cmdStopPSI.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="dlgEPG.Filter" xml:space="preserve">
+    <value>Programmzeitschriften|*.xml|Alle Dateien|*.*</value>
+  </data>
+  <data name="dlgEPG.Title" xml:space="preserve">
+    <value>Bitte wählen Sie die Datei, in der die Programmzeitschrift abgelegt werden soll</value>
+  </data>
+  <data name="cmdSetZapping.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAICAQAAAAAADoAgAAFgAAACgAAAAgAAAAQAAAAAEABAAAAAAAgAIAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAwMDAAICAgAAAAP8AAP8AAAD//wD/AAAA/wD/AP//
+        AAD///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAIuLi4uLi4uAAAAAAAAAAAB7e3t7e3t7cAAAACIiIiIiKysrKysrKyIAAAAiIiu7u7IrKysrKysi
+        AAAAJERERCIiAAAAAJn5kAAAACd3d3ckSwAAAACfn5IAAAAiIisiKyIiKysiKysiAAAAJEIkREREQiRL
+        IAAgAAAAACdyJ3d3d3IneyIrIAAAAAAiIisiKyIiKysgACd3cAAAJEREREREQiRLIisrIgAAACd3d3d3
+        d3IneyAAIAAAAAAiIisiKyIiIisiIiAAAAAAJEREJEQiIkREREInd3AAACRERCREIiJHu7dLuSIAAAAk
+        REQndyRLR7u3QikgAAAAKURE8iIncke7t08pIgAAACSURCIiIiJERERCIiIAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/////////////////////////+///
+        //v////7//AAG//wABvAAAALwAAAC8AAAAPAAAALwAAAC8AAAAPAAAADwAAAA8AAAAvAAAADwAAAA8AA
+        AAPAAAALwAAAA8AAAAvAAAAL////+/////n//////////////////////////w==
+</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>DVB.NET Card Server Testprogramm</value>
+  </data>
+  <data name="$this.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+</root>

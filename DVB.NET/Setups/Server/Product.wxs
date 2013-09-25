@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <?include ..\..\..\..\SetupHelper\ManufacturerSettings.wxi ?>
+
+  <Product 
+    Id="*" 
+    Name="DVB.NET Server 4.1" 
+    Language="1031" 
+    Version="!(wix.SETUPVERSION)" 
+    Manufacturer="$(var.Manufacturer)" 
+    UpgradeCode="48e1c508-4df6-47a8-bb39-39b00dd3291b">
+
+    <Package
+      InstallPrivileges="elevated"
+      Languages="1031"
+      InstallerVersion="200"
+      Compressed="yes"
+      Platform="x86"
+      InstallScope="perMachine" />
+
+    <WixVariable Id="WixUIBannerBmp" Value="..\..\..\..\SetupHelper\PsiMarronBanner.bmp" />
+
+    <!-- Wir verwenden ein einziges CAB Archiv und das wird auch in das MSI integriert -->
+    <MediaTemplate EmbedCab="yes" />
+
+    <!-- Für alle Installationen identische Einstellungen -->
+    <Property Id="ARPURLINFOABOUT" Value="$(var.ManufacturerUrl)" />
+    <Property Id="ARPCONTACT" Value="$(var.Author)" />
+    <Property Id="ARPPRODUCTICON" Value="THEICON" />
+
+    <!-- Alle unseren Bildchen -->
+    <Icon Id="THEICON" SourceFile="$(var.CardServerTester.ProjectDir)CardServer.ico" />
+
+    <!-- Ohne .NET in der richtigen Version geht gar nichts -->
+    <PropertyRef Id="NETFRAMEWORK40CLIENT"/>
+    <Condition Message="!(loc.DOTNETMISSING)">
+      <![CDATA[NETFRAMEWORK40CLIENT]]>
+    </Condition>
+
+    <!-- Eine vorherige Installation muss entfernt werden -->
+    <Property Id="ISINSTALLED">
+      <RegistrySearch Id="ISINSTALLEDREG" Win64="no" Root="HKLM" Key="Software\JMS\DVB.NET\4.1.0.0" Name="Server Directory" Type="raw" />
+    </Property>
+    <Condition Message="!(loc.ALREADYINSTALLED)">
+      <![CDATA[Installed OR NOT ISINSTALLED]]>
+    </Condition>
+
+    <!-- DVB.NET muss in der korrekten Version installiert sein -->
+    <Property Id="DVBNETCORE">
+      <RegistrySearch Id="DVBNETCOREREG" Win64="no" Root="HKLM" Key="Software\JMS\DVB.NET\4.1.0.0" Name="Root Directory" Type="raw" />
+    </Property>
+    <Condition Message="!(loc.DVBNETMISSING)">
+      <![CDATA[Installed OR DVBNETCORE]]>
+    </Condition>
+
+    <!-- Die Kerninstallation. -->
+    <Feature Id="ProductFeature" Title="!(loc.FEATUREBINARIES)" Level="1" Absent="disallow" TypicalDefault="install" AllowAdvertise="no">
+
+      <ComponentGroupRef Id="JMS.DVB.CardServer.Binaries" />
+      <ComponentGroupRef Id="JMS.DVB.CardServerCore.Binaries" />
+      <ComponentRef Id="LibraryGerman" />
+      <ComponentRef Id="Registry" />
+
+    </Feature>
+
+    <!-- Die Installation des Testwerkzeugs, die völlig optional ist. -->
+    <Feature Id="TestFeature" Title="!(loc.FEATURETEST)" Level="1" Absent="allow" AllowAdvertise="no">
+
+      <ComponentGroupRef Id="CardServerTester.Binaries" />
+      <ComponentRef Id="ToolsGerman" />
+
+    </Feature>
+
+    <!-- Die Installation der Quelltexte, die völlig optional ist. -->
+    <Feature Id="SourceFeature" Title="!(loc.FEATURESOURCE)" Level="2" Absent="allow" AllowAdvertise="no">
+
+      <ComponentGroupRef Id="JMS.DVB.CardServerCore.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.CardServerCore.Content" />
+      <ComponentGroupRef Id="JMS.DVB.CardServer.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.CardServer.Content" />
+      <ComponentGroupRef Id="CardServerTester.Sources" />
+      <ComponentGroupRef Id="CardServerTester.Content" />
+
+    </Feature>
+
+    <!-- Die Installation der Intellisense Dateien, die völlig optional ist. -->
+    <Feature Id="DocFeature" Title="!(loc.FEATUREINTELLISENSE)" Level="2" Absent="allow" AllowAdvertise="no">
+
+      <ComponentGroupRef Id="JMS.DVB.CardServerCore.Documents" />
+
+    </Feature>
+
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <UIRef Id="CommonWizard" />
+
+  </Product>
+
+</Wix>

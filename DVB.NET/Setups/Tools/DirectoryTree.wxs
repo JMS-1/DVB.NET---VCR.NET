@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <?include ..\..\..\..\SetupHelper\ManufacturerSettings.wxi ?>
+
+  <Fragment>
+
+    <!-- Verzeichnisstruktur -->
+    <Directory Id="TARGETDIR" Name="SourceDir">
+
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="ManufacturerFolder" Name="$(var.Manufacturer)">
+          <Directory Id="INSTALLFOLDER" Name="DVB.NET 4.1">
+
+            <Directory Id="AdminBinaries" Name="Administration PlugIns">
+              <Directory Id="AdminGerman" Name="de" />
+            </Directory>
+
+            <Directory Id="JMS.DVB.Tools.SourceValidation.Binaries" Name="Administration PlugIns" />
+            <Directory Id="JMS.DVB.Tools.TableDump.Binaries" Name="Administration PlugIns" />
+
+            <Directory Id="ToolsBinaries" Name="Tools">
+              <Directory Id="ToolsGerman" Name="de" />
+            </Directory>
+
+            <Directory Id="EPGReader.Binaries" Name="Tools" />
+            <Directory Id="TransportStreamAnalyser.Binaries" Name="Tools" />
+            <Directory Id="TSSplitter.Binaries" Name="Tools" />
+
+            <Directory Id="SourceFolder" Name="Sources">
+              <Directory Id="ToolSources" Name="Tools">
+                <Directory Id="JMS.DVB.Tools.SourceValidation.Sources" Name="SignalTools" />
+                <Directory Id="JMS.DVB.Tools.SourceValidation.Content" Name="SignalTools" />
+                <Directory Id="JMS.DVB.Tools.TableDump.Sources" Name="TableTools" />
+                <Directory Id="JMS.DVB.Tools.TableDump.Content" Name="TableTools" />
+                <Directory Id="EPGReader.Sources" Name="EPGReader" />
+                <Directory Id="EPGReader.Content" Name="EPGReader" />
+                <Directory Id="TransportStreamAnalyser.Sources" Name="Transport Stream Analyser" />
+                <Directory Id="TransportStreamAnalyser.Content" Name="Transport Stream Analyser" />
+                <Directory Id="TSSplitter.Sources" Name="TSSplitter" />
+                <Directory Id="TSSplitter.Content" Name="TSSplitter" />
+              </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
+      </Directory>
+
+      <!-- Menüeinträge -->
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ShortCutFolder" Name="DVB.NET 4.1" />
+      </Directory>
+
+    </Directory>
+
+  </Fragment>
+</Wix>

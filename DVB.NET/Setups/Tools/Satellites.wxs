@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+
+    <!-- Die deutschen Sprachdateien der Werkzeuge werden gesondert installiert, da die aktuelle WiX Version 3.7 Probleme mit dem Harvesting macht (Heat). -->
+
+    <Component Id="AdminGerman" Directory="AdminGerman" Guid="5ff90234-d4f3-4942-b697-b878f8e27333">
+      <File Source="$(var.JMS.DVB.Tools.SourceValidation.TargetDir)de\$(var.JMS.DVB.Tools.SourceValidation.TargetName).resources.dll" />
+      <File Source="$(var.JMS.DVB.Tools.TableDump.TargetDir)de\$(var.JMS.DVB.Tools.TableDump.TargetName).resources.dll" />
+    </Component>
+
+    <Component Id="ToolsGerman" Directory="ToolsGerman" Guid="b1b45eb1-9820-4190-9339-7fa02b955a23">
+      <File Source="$(var.EPGReader.TargetDir)de\$(var.EPGReader.TargetName).resources.dll" />
+    </Component>
+    
+  </Fragment>
+</Wix>

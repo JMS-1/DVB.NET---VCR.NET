@@ -1,0 +1,16 @@
+﻿# Der Verlust an Aufzeichnungszeit muss minimiert werden
+TotalCut:Min
+
+# Sicherstellen, dass der Start eines Gerätes nicht die Aufzeichnung eines anderen stört
+StartTime:r1<r2|r2<r3
+
+# Es sollen so wenige Geräte wie möglich verwendet werden
+ResourceCount:Min
+
+# Die einzelnen Geräte werden mit absteigender Aufzeichnungspriorität untersucht
+ByPriority:Descending
+
+    # Je mehr Aufzeichnungen auf einem Gerät, desto besser
+	RecordingCount:Max
+
+ByPriority:End

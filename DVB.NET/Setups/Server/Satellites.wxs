@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+
+    <!-- Die deutschen Sprachdateien des Card Servers werden gesondert installiert, da die aktuelle WiX Version 3.7 Probleme mit dem Harvesting macht (Heat). -->
+
+    <Component Id="LibraryGerman" Directory="LibraryGerman" Guid="eb4e7abb-ce13-46ea-a6ca-aa1f55b65215">
+      <File Source="$(var.JMS.DVB.CardServerCore.TargetDir)de\$(var.JMS.DVB.CardServerCore.TargetName).resources.dll" />
+    </Component>
+
+    <Component Id="ToolsGerman" Directory="ToolsGerman" Guid="703ea8f7-2137-430a-a76d-da4f407e07dd">
+      <File Source="$(var.CardServerTester.TargetDir)de\$(var.CardServerTester.TargetName).resources.dll" />
+    </Component>
+
+  </Fragment>
+</Wix>

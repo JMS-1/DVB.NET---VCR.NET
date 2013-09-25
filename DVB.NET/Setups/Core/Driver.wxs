@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <Fragment>
+    
+    <Component Id="Driver" Directory="Driver" Guid="2297eb4b-c18b-44dd-bef4-b12066e4db3c">
+      <File Source="$(var.DVBNETAdmin.TargetDir)..\Setups\MFC RunTime\mfc71.dll" />
+      <File Source="$(var.DVBNETAdmin.TargetDir)..\Setups\MFC RunTime\mfc71u.dll" />
+      <File Source="$(var.DVBNETAdmin.TargetDir)..\Setups\MFC RunTime\msvcr71.dll" />
+      <File Source="$(var.JMS.DVB.Provider.TTBudget.ProjectDir)bin\ttBdaDrvApi_Dll.dll" />
+      <File Source="$(var.JMS.DVB.Provider.TTBudget.ProjectDir)bin\ttlcdacc.dll" />
+      <File Source="$(var.JMS.TechnoTrend.MFCWrapper.ProjectDir)bin\ttdvbacc.dll" />
+    </Component>
+
+    <Component Id="Provider" Directory="INSTALLFOLDER" Guid="0a0f85db-08fe-4447-92d0-047d6fb2887d">
+      <File Source="$(var.JMS.DVB.ProjectDir)DVBNETProviders.xml" />
+    </Component>
+
+    <Component Id="Scan" Directory="Scan" Guid="dc68f803-1e93-4d4d-91fa-1b3d27d919ad">
+      <File Source="$(var.JMS.DVB.SourceManagement.ProjectDir)ScanLocations\BuiltIn.dss" />
+    </Component>
+
+  </Fragment>
+
+</Wix>

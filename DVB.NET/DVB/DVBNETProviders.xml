@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="Windows-1252" ?>
+<DVBNETProviders SchemaVersion="3.9">
+  <DVBNETProvider id="TechnoTrend Premium">
+    <CardNames>
+      <CardName>TechnoTrend Premium DVB-S</CardName>
+      <CardName>TechnoTrend Premium DVB-C</CardName>
+    </CardNames>
+    <Driver>JMS.DVB.Provider.TTPremium.TTDeviceProvider, JMS.DVB.Provider.TTPremium</Driver>
+    <Trigger>ttdvbacc.dll</Trigger>
+    <FilterLimit>8</FilterLimit>
+    <RecordingFormats>
+      <MPEG-2 />
+      <PVA />
+    </RecordingFormats>
+    <Decryption />
+    <VideoDisplay>
+      <DisplayModes>true</DisplayModes>
+    </VideoDisplay>
+    <Parameters>
+      <Device editor="JMS.DVB.DeviceAccess.Editors.DeviceIndex, JMS.DVB.DeviceAccess">0</Device>
+      <Network editor="JMS.DVB.DeviceAccess.Editors.Flag, JMS.DVB.DeviceAccess">false</Network>
+      <WakeupDevice editor="JMS.DVB.DeviceAccess.Editors.Media, JMS.DVB.DeviceAccess"></WakeupDevice>
+    </Parameters>
+  </DVBNETProvider>
+  <DVBNETProvider id="Hauppauge Nova-SE2">
+    <CardNames>
+      <CardName>Hauppauge Nova-SE2</CardName>
+      <CardName>Hauppauge Nova-S Plus</CardName>
+    </CardNames>
+    <Driver>JMS.DVB.Provider.BDA.NovaSE2Provider, JMS.DVB.Provider.BDA</Driver>
+    <FilterLimit>200</FilterLimit>
+    <VideoDisplay>
+      <AsChild>true</AsChild>
+    </VideoDisplay>
+    <Parameters>
+      <ResetAfterWakeup>false</ResetAfterWakeup>
+      <WakeupDevice></WakeupDevice>
+    </Parameters>
+  </DVBNETProvider>
+  <DVBNETProvider id="TechnoTrend Budget (BDA) DVB-S">
+    <CardNames>
+      <CardName>TechnoTrend Budget PCI DVB-S2</CardName>
+      <CardName>TechnoTrend Budget PCI DVB-S</CardName>
+    </CardNames>
+    <Driver>JMS.DVB.Provider.BDA.ProviderWithStandardDiSEqC, JMS.DVB.Provider.BDA</Driver>
+    <FilterLimit>200</FilterLimit>
+    <VideoDisplay>
+      <AsChild>true</AsChild>
+    </VideoDisplay>
+    <Parameters>
+      <Tuner>TechnoTrend BDA/DVB-S Tuner</Tuner>
+      <Capture>TechnoTrend BDA/DVB Capture</Capture>
+      <PayTVProvider></PayTVProvider>
+      <ResetAfterWakeup>false</ResetAfterWakeup>
+      <WakeupDevice></WakeupDevice>
+      <Tuning.MinimumPATCount>5</Tuning.MinimumPATCount>
+      <Tuning.MinimumPATCountWait>50</Tuning.MinimumPATCountWait>
+    </Parameters>
+  </DVBNETProvider>
+  <DVBNETProvider id="TechnoTrend Budget (BDA) DVB-T">
+    <CardNames>
+      <CardName>TechnoTrend Budget PCI DVB-T</CardName>
+    </CardNames>
+    <Driver>JMS.DVB.Provider.BDA.Provider, JMS.DVB.Provider.BDA</Driver>
+    <FilterLimit>200</FilterLimit>
+    <VideoDisplay>
+      <AsChild>true</AsChild>
+    </VideoDisplay>
+    <Parameters>
+      <Tuner>TechnoTrend BDA/DVB-T Tuner</Tuner>
+      <Capture>TechnoTrend BDA/DVB Capture</Capture>
+      <Type>Terrestrial</Type>
+      <PayTVProvider></PayTVProvider>
+      <ResetAfterWakeup>false</ResetAfterWakeup>
+      <WakeupDevice></WakeupDevice>
+      <Tuning.MinimumPATCount>5</Tuning.MinimumPATCount>
+      <Tuning.MinimumPATCountWait>50</Tuning.MinimumPATCountWait>
+    </Parameters>
+  </DVBNETProvider>
+  <DVBNETProvider id="TechnoTrend Budget (BDA) DVB-C">
+    <CardNames>
+      <CardName>TechnoTrend Budget PCI DVB-C</CardName>
+    </CardNames>
+    <Driver>JMS.DVB.Provider.BDA.Provider, JMS.DVB.Provider.BDA</Driver>
+    <FilterLimit>200</FilterLimit>
+    <VideoDisplay>
+      <AsChild>true</AsChild>
+    </VideoDisplay>
+    <Parameters>
+      <Tuner>TechnoTrend BDA/DVB-C Tuner</Tuner>
+      <Capture>TechnoTrend BDA/DVB Capture</Capture>
+      <Type>Cable</Type>
+      <PayTVProvider></PayTVProvider>
+      <ResetAfterWakeup>false</ResetAfterWakeup>
+      <WakeupDevice></WakeupDevice>
+      <Tuning.MinimumPATCount>5</Tuning.MinimumPATCount>
+      <Tuning.MinimumPATCountWait>50</Tuning.MinimumPATCountWait>
+    </Parameters>
+  </DVBNETProvider>
+  <DVBNETProvider id="Twinhan DTV VP-7049A">
+    <CardNames>
+      <CardName>Twinhan DTV VP-7049A</CardName>
+      <CardName>Digital TV DVB-T USB</CardName>
+    </CardNames>
+    <Driver>JMS.DVB.Provider.BDA.Provider, JMS.DVB.Provider.BDA</Driver>
+    <FilterLimit>200</FilterLimit>
+    <VideoDisplay>
+      <AsChild>true</AsChild>
+    </VideoDisplay>
+    <Parameters>
+      <Tuner>DTV-DVB 7049A Digital Tuner</Tuner>
+      <Capture>DTV-DVB 7049A Digital Capture</Capture>
+      <Type>Terrestrial</Type>
+      <ResetAfterWakeup>false</ResetAfterWakeup>
+      <WakeupDevice></WakeupDevice>
+    </Parameters>
+  </DVBNETProvider>
+  <DVBNETProvider id="TechnoTrend Budget (PCI)">
+    <CardNames>
+      <CardName>TechnoTrend Budget PCI DVB-S2</CardName>
+      <CardName>TechnoTrend Budget PCI DVB-S</CardName>
+      <CardName>TechnoTrend Budget PCI DVB-C</CardName>
+      <CardName>TechnoTrend Budget PCI DVB-T</CardName>
+    </CardNames>
+    <Driver>JMS.DVB.Provider.TTBudget.BudgetProvider, JMS.DVB.Provider.TTBudget</Driver>
+    <Trigger>ttlcdacc.dll</Trigger>
+    <FilterLimit>200</FilterLimit>
+    <VideoDisplay>
+      <AsChild>true</AsChild>
+    </VideoDisplay>
+    <Decryption />
+    <Parameters>
+      <Device editor="JMS.DVB.DeviceAccess.Editors.DeviceIndex, JMS.DVB.DeviceAccess">0</Device>
+      <WakeupDevice editor="JMS.DVB.DeviceAccess.Editors.Media, JMS.DVB.DeviceAccess"></WakeupDevice>
+    </Parameters>
+  </DVBNETProvider>
+  <DVBNETProvider id="Hauppauge DVB-T BDA">
+    <CardNames>
+      <CardName>DVB-T BDA</CardName>
+    </CardNames>
+    <Driver>JMS.DVB.Provider.BDA.Provider, JMS.DVB.Provider.BDA</Driver>
+    <FilterLimit>200</FilterLimit>
+    <VideoDisplay>
+      <AsChild>true</AsChild>
+    </VideoDisplay>
+    <Parameters>
+      <Tuner>Hauppauge WinTV 88x DVB-T Tuner/Demod</Tuner>
+      <Capture>Hauppauge WinTV 88x TS Capture</Capture>
+      <Type>Terrestrial</Type>
+      <ResetAfterWakeup>false</ResetAfterWakeup>
+      <WakeupDevice></WakeupDevice>
+    </Parameters>
+  </DVBNETProvider>
+  <DVBNETProvider id="Generic BDA DVB-S Device with Standard DiSEqC">
+    <CardNames>
+    </CardNames>
+    <Driver>JMS.DVB.Provider.BDA.ProviderWithStandardDiSEqC, JMS.DVB.Provider.BDA</Driver>
+    <FilterLimit>200</FilterLimit>
+    <VideoDisplay>
+      <AsChild>true</AsChild>
+    </VideoDisplay>
+    <Parameters>
+      <Tuner></Tuner>
+      <Capture></Capture>
+      <ResetAfterWakeup>false</ResetAfterWakeup>
+      <WakeupDevice></WakeupDevice>
+      <PayTVProvider></PayTVProvider>
+      <IgnoreMoniker>false</IgnoreMoniker>
+      <Tuning.MinimumPATCount>5</Tuning.MinimumPATCount>
+      <Tuning.MinimumPATCountWait>50</Tuning.MinimumPATCountWait>
+    </Parameters>
+  </DVBNETProvider>
+  <DVBNETProvider id="Generic BDA Device">
+    <CardNames>
+    </CardNames>
+    <Driver>JMS.DVB.Provider.BDA.Provider, JMS.DVB.Provider.BDA</Driver>
+    <FilterLimit>200</FilterLimit>
+    <VideoDisplay>
+      <AsChild>true</AsChild>
+    </VideoDisplay>
+    <Parameters>
+      <Tuner></Tuner>
+      <Capture></Capture>
+      <Type></Type>
+      <ResetAfterWakeup>false</ResetAfterWakeup>
+      <WakeupDevice></WakeupDevice>
+      <DiSEqCProvider></DiSEqCProvider>
+      <PayTVProvider></PayTVProvider>
+      <IgnoreMoniker>false</IgnoreMoniker>
+      <Tuning.MinimumPATCount>5</Tuning.MinimumPATCount>
+      <Tuning.MinimumPATCountWait>50</Tuning.MinimumPATCountWait>
+    </Parameters>
+  </DVBNETProvider>
+</DVBNETProviders>

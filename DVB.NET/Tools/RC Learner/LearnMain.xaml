@@ -1,0 +1,12 @@
+﻿<Window x:Class="RC_Learner.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:app="clr-namespace:RC_Learner"
+        xmlns:dvbnet="clr-namespace:JMS.DVB.DirectShow.RawDevices;assembly=JMS.DVB.DirectShow"
+        Icon="/RCLearner;component/app.ico" 
+        ResizeMode="CanMinimize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
+    <Window.Title>
+        <Binding Source="{x:Static app:Properties.Resources.MainWindow_HeadLine}" />
+    </Window.Title>
+    <dvbnet:RemoteControlLearningGrid Name="learningGrid" DataContext="{x:Static app:App.LearnContext}"/>
+</Window>

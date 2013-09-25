@@ -1,0 +1,342 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>3.7</ProductVersion>
+    <ProjectGuid>0e19f354-14cb-493e-9cf3-3195237accad</ProjectGuid>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputName>DVBNETCore</OutputName>
+    <OutputType>Package</OutputType>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <EnableProjectHarvesting>True</EnableProjectHarvesting>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <OutputPath>..\msi\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <DefineConstants>Debug</DefineConstants>
+    <SuppressPdbOutput>True</SuppressPdbOutput>
+    <WixVariables>SETUPVERSION=4.2.3</WixVariables>
+    <Cultures>de-de</Cultures>
+    <SuppressIces>ICE57</SuppressIces>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>..\msi\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <SuppressPdbOutput>True</SuppressPdbOutput>
+    <WixVariables>SETUPVERSION=4.2.3</WixVariables>
+    <Cultures>de-de</Cultures>
+    <SuppressIces>ICE57</SuppressIces>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\..\SetupHelper\CommonWizard.wxs">
+      <Link>CommonWizard.wxs</Link>
+    </Compile>
+    <Compile Include="DirectoryTree.wxs" />
+    <Compile Include="Developer.wxs" />
+    <Compile Include="Driver.wxs" />
+    <Compile Include="Menus.wxs" />
+    <Compile Include="Registry.wxs" />
+    <Compile Include="Satellites.wxs" />
+    <Compile Include="Product.wxs" />
+    <Compile Include="XAMLFiles.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\..\SetupHelper\ManufacturerSettings.wxi">
+      <Link>ManufacturerSettings.wxi</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\..\..\SetupHelper\CommonWizardGerman.wxl">
+      <Link>CommonWizardGerman.wxl</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Deutsch.wxl" />
+  </ItemGroup>
+  <ItemGroup>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
+      <Name>WixUIExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixNetFxExtension">
+      <HintPath>$(WixExtDir)\WixNetFxExtension.dll</HintPath>
+      <Name>WixNetFxExtension</Name>
+    </WixExtension>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Administration\DVBNETAdmin.csproj">
+      <Name>DVBNETAdmin</Name>
+      <Project>{de8396ee-7264-4e0c-a4f6-f65a5e7c1d9f}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Administration\PlugIns\AdminFramework\JMS.DVB.Administration.Framework.csproj">
+      <Name>JMS.DVB.Administration.Framework</Name>
+      <Project>{a5c02dc8-7fbd-4653-ad40-d540f2b05220}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Administration\PlugIns\Profile Manager\JMS.DVB.Administration.Profiles.csproj">
+      <Name>JMS.DVB.Administration.Profiles</Name>
+      <Project>{e20d7ff6-2358-4b25-8d45-f523e0c6b816}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Administration\PlugIns\Transponder Scanner\JMS.DVB.Administration.TransponderScan.csproj">
+      <Name>JMS.DVB.Administration.TransponderScan</Name>
+      <Project>{9b137745-492b-46df-a525-3ca83d64aa96}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Algorithms\JMS.DVB.Algorithms.csproj">
+      <Name>JMS.DVB.Algorithms</Name>
+      <Project>{e1ed756b-6a4d-4cf3-9e8f-b191e2029c54}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\BDA4\JMS.DVB.DeviceAccess.csproj">
+      <Name>JMS.DVB.DeviceAccess</Name>
+      <Project>{046ba60e-e22f-48aa-ab52-5d8aa7f0a6c4}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\BDA\JMS.DVB.DirectShow.csproj">
+      <Name>JMS.DVB.DirectShow</Name>
+      <Project>{18e9d0c8-8ac6-4f86-ad43-dbdcfbfb2f26}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ChannelManager\JMS.ChannelManagement.csproj">
+      <Name>JMS.ChannelManagement</Name>
+      <Project>{259f46ec-78ea-45e2-ad08-c5349385dfd1}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\JMS.DVB.Common.csproj">
+      <Name>JMS.DVB.Common</Name>
+      <Project>{a224b2d5-7987-4c86-8ff7-cdd09ed76ba0}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DVB\JMS.DVB.csproj">
+      <Name>JMS.DVB</Name>
+      <Project>{5c2b8408-6616-444c-a808-a79c9a356111}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EPG\JMS.DVB.EPG.csproj">
+      <Name>JMS.DVB.EPG</Name>
+      <Project>{90d05fcc-70f9-4423-a79f-b8d31bfbc228}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\FavoriteManager\JMS.FavoriteManager.csproj">
+      <Name>JMS.FavoriteManager</Name>
+      <Project>{2b684def-88cf-45e9-a80a-e3df8127171d}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HardwareAbstraction\JMS.DVB.HardwareAbstraction.csproj">
+      <Name>JMS.DVB.HardwareAbstraction</Name>
+      <Project>{76d4b1a1-14ff-4265-8351-06dfd98f2dc3}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Provider\Duoflex\JMS.DVB.Provider.Duoflex.csproj">
+      <Name>JMS.DVB.Provider.Duoflex</Name>
+      <Project>{7d7fd386-e5c4-4264-853e-3c484befcda6}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Provider\DVBNETLegacy\JMS.DVB.Provider.Legacy.csproj">
+      <Name>JMS.DVB.Provider.Legacy</Name>
+      <Project>{d528b63e-ee1a-4297-be78-90d38f6ce0c2}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Provider\FireDTV\JMS.DVB.Provider.FireDTV.csproj">
+      <Name>JMS.DVB.Provider.FireDTV</Name>
+      <Project>{d02922ad-4064-4b13-8b81-073079788fea}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Provider\Hauppauge\NovaS2\JMS.DVB.Provider.NovaS2.csproj">
+      <Name>JMS.DVB.Provider.NovaS2</Name>
+      <Project>{08d0ad01-4137-49e2-8b28-3b466a142c8a}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Provider\KNC\JMS.DVB.Provider.KNC.csproj">
+      <Name>JMS.DVB.Provider.KNC</Name>
+      <Project>{7294f8a2-5abf-40a5-be22-4e6accee9394}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Provider\TechnoTrend\TTAPI\JMS.TechnoTrend.MFCWrapper.csproj">
+      <Name>JMS.TechnoTrend.MFCWrapper</Name>
+      <Project>{cc42c4d5-3158-4e1c-9fc8-8138dbe52d8f}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Provider\TechnoTrend\TTBudget\JMS.DVB.Provider.TTBudget.csproj">
+      <Name>JMS.DVB.Provider.TTBudget</Name>
+      <Project>{0ff2b905-ebfc-47d8-beda-6961c9438114}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Provider\TechnoTrend\TTPremium\JMS.DVB.Provider.TTPremium.csproj">
+      <Name>JMS.DVB.Provider.TTPremium</Name>
+      <Project>{744054d8-2b4a-42d1-a84b-781561f575eb}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SITables\JMS.DVB.SITables.csproj">
+      <Name>JMS.DVB.SITables</Name>
+      <Project>{620b2a8d-accc-401a-a67b-70f3aae47f55}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SourceManagement\JMS.DVB.SourceManagement.csproj">
+      <Name>JMS.DVB.SourceManagement</Name>
+      <Project>{6662de38-74c1-4432-9512-c7e94c2efdfa}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tools\RC Learner\RCLearner.csproj">
+      <Name>RCLearner</Name>
+      <Project>{822e86fa-1bb4-4860-a97c-413db4773a8b}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tools\UserProfileManager\UserProfileManager.csproj">
+      <Name>UserProfileManager</Name>
+      <Project>{e6a0ded8-7c22-4fb0-bdc9-ad93e24ee76c}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TS\JMS.DVB.TS.csproj">
+      <Name>JMS.DVB.TS</Name>
+      <Project>{b2325f13-c217-4d96-846c-3ff857da6128}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(WixTargetsPath)" />
+  <PropertyGroup>
+    <PostBuildEvent>set "$(WixVariables)"
+
+"%25ProgramFiles%25\Windows Kits\8.0\bin\x86\msiinfo.exe" "$(TargetDir)\de-de\$(TargetFileName)" /T "DVB.NET Library %25SETUPVERSION%25"</PostBuildEvent>
+  </PropertyGroup>
+  <!--
+	To modify your build process, add your task inside one of the targets below and uncomment it.
+	Other similar extension points exist, see Wix.targets.
+	<Target Name="BeforeBuild">
+	</Target>
+	<Target Name="AfterBuild">
+	</Target>
+	-->
+</Project>

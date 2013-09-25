@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>3.7</ProductVersion>
+    <ProjectGuid>{caf56487-8936-4ad7-8cf8-291afeedee0a}</ProjectGuid>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputName>DVBNETServer</OutputName>
+    <OutputType>Package</OutputType>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <EnableProjectHarvesting>True</EnableProjectHarvesting>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <OutputPath>..\msi\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <DefineConstants>Debug</DefineConstants>
+    <WixVariables>SETUPVERSION=4.2.3</WixVariables>
+    <SuppressPdbOutput>True</SuppressPdbOutput>
+    <Cultures>de-de</Cultures>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>..\msi\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <WixVariables>SETUPVERSION=4.2.3</WixVariables>
+    <SuppressPdbOutput>True</SuppressPdbOutput>
+    <Cultures>de-de</Cultures>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\..\SetupHelper\CommonWizard.wxs">
+      <Link>CommonWizard.wxs</Link>
+    </Compile>
+    <Compile Include="DirectoryTree.wxs" />
+    <Compile Include="Product.wxs" />
+    <Compile Include="Registry.wxs" />
+    <Compile Include="Satellites.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\..\SetupHelper\ManufacturerSettings.wxi">
+      <Link>ManufacturerSettings.wxi</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\..\..\SetupHelper\CommonWizardGerman.wxl">
+      <Link>CommonWizardGerman.wxl</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Deutsch.wxl" />
+  </ItemGroup>
+  <ItemGroup>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
+      <Name>WixUIExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixNetFxExtension">
+      <HintPath>$(WixExtDir)\WixNetFxExtension.dll</HintPath>
+      <Name>WixNetFxExtension</Name>
+    </WixExtension>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Card Server\CardServerCore\JMS.DVB.CardServerCore.csproj">
+      <Name>JMS.DVB.CardServerCore</Name>
+      <Project>{ffab1c54-9c74-4bcf-8306-86f796b1deb6}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Card Server\CardServer\JMS.DVB.CardServer.csproj">
+      <Name>JMS.DVB.CardServer</Name>
+      <Project>{1ba89bb6-a869-491a-9c2c-6e51f9145479}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Card Server\Test Application\CardServerTester.csproj">
+      <Name>CardServerTester</Name>
+      <Project>{dc463c7e-4879-402d-b12a-2aa3b22927ef}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(WixTargetsPath)" />
+  <PropertyGroup>
+    <PostBuildEvent>set "$(WixVariables)"
+
+"%25ProgramFiles%25\Windows Kits\8.0\bin\x86\msiinfo.exe" "$(TargetDir)\de-de\$(TargetFileName)" /T "DVB.NET Server %25SETUPVERSION%25"</PostBuildEvent>
+  </PropertyGroup>
+  <!--
+	To modify your build process, add your task inside one of the targets below and uncomment it.
+	Other similar extension points exist, see Wix.targets.
+	<Target Name="BeforeBuild">
+	</Target>
+	<Target Name="AfterBuild">
+	</Target>
+	-->
+</Project>

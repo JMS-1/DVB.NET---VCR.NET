@@ -1,0 +1,315 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Exception_BadNumber" xml:space="preserve">
+    <value>'{1}' ist keine erlaubte Zahl ({0})</value>
+  </data>
+  <data name="Exception_NoMethod" xml:space="preserve">
+    <value>Die Arbeitsumgebung kennt keine Methode '{0}'</value>
+  </data>
+  <data name="Exception_NoProperty" xml:space="preserve">
+    <value>Die Arbeitsumgebung stellt den Wert '{0}' nicht bereit</value>
+  </data>
+  <data name="Exception_NoSite" xml:space="preserve">
+    <value>Es ist keine Arbeitsumgebung bekannt</value>
+  </data>
+  <data name="Exception_NoState" xml:space="preserve">
+    <value>Die Zustandsverarbeitung ist nicht initialisiert</value>
+  </data>
+  <data name="Exception_WrongThread" xml:space="preserve">
+    <value>Der Aufruf dieser Methode erfolgt nicht aus der Oberfläche heraus</value>
+  </data>
+  <data name="InputKey_Digit0" xml:space="preserve">
+    <value>Ziffer 0</value>
+  </data>
+  <data name="InputKey_Digit1" xml:space="preserve">
+    <value>Ziffer 1</value>
+  </data>
+  <data name="InputKey_Digit2" xml:space="preserve">
+    <value>Ziffer 2</value>
+  </data>
+  <data name="InputKey_Digit3" xml:space="preserve">
+    <value>Ziffer 3</value>
+  </data>
+  <data name="InputKey_Digit4" xml:space="preserve">
+    <value>Ziffer 4</value>
+  </data>
+  <data name="InputKey_Digit5" xml:space="preserve">
+    <value>Ziffer 5</value>
+  </data>
+  <data name="InputKey_Digit6" xml:space="preserve">
+    <value>Ziffer 6</value>
+  </data>
+  <data name="InputKey_Digit7" xml:space="preserve">
+    <value>Ziffer 7</value>
+  </data>
+  <data name="InputKey_Digit8" xml:space="preserve">
+    <value>Ziffer 8</value>
+  </data>
+  <data name="InputKey_Digit9" xml:space="preserve">
+    <value>Ziffer 9</value>
+  </data>
+  <data name="InputKey_Enter" xml:space="preserve">
+    <value>Auswählen</value>
+  </data>
+  <data name="InputKey_Guide" xml:space="preserve">
+    <value>Programmzeitschrift</value>
+  </data>
+  <data name="InputKey_Information" xml:space="preserve">
+    <value>Sendungsdetails</value>
+  </data>
+  <data name="InputKey_List" xml:space="preserve">
+    <value>Senderliste</value>
+  </data>
+  <data name="InputKey_ListDown" xml:space="preserve">
+    <value>Nächste Zeile</value>
+  </data>
+  <data name="InputKey_ListUp" xml:space="preserve">
+    <value>Vorherige Zeile</value>
+  </data>
+  <data name="InputKey_Menu" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="InputKey_Mute" xml:space="preserve">
+    <value>Ton aus</value>
+  </data>
+  <data name="InputKey_Off" xml:space="preserve">
+    <value>Schliessen</value>
+  </data>
+  <data name="InputKey_PageDown" xml:space="preserve">
+    <value>Vorwärts blättern</value>
+  </data>
+  <data name="InputKey_PageUp" xml:space="preserve">
+    <value>Rückwärts blättern</value>
+  </data>
+  <data name="InputKey_Pause" xml:space="preserve">
+    <value>Anzeige anhalten</value>
+  </data>
+  <data name="InputKey_SourceDown" xml:space="preserve">
+    <value>Vorheriger Sender</value>
+  </data>
+  <data name="InputKey_SourceUp" xml:space="preserve">
+    <value>Nächster Sender</value>
+  </data>
+  <data name="InputKey_Text" xml:space="preserve">
+    <value>Videotext</value>
+  </data>
+  <data name="InputKey_VolumeDown" xml:space="preserve">
+    <value>Leiser</value>
+  </data>
+  <data name="InputKey_VolumeUp" xml:space="preserve">
+    <value>Lauter</value>
+  </data>
+  <data name="RC_Learn_Add" xml:space="preserve">
+    <value>Hinzufügen</value>
+  </data>
+  <data name="RC_Learn_Cancel" xml:space="preserve">
+    <value>Ohne Speichern beenden</value>
+  </data>
+  <data name="RC_Learn_Clear" xml:space="preserve">
+    <value>Alle Sequenzen entfernen</value>
+  </data>
+  <data name="RC_Learn_Delete1" xml:space="preserve">
+    <value>Entfernen</value>
+  </data>
+  <data name="RC_Learn_DeleteAll" xml:space="preserve">
+    <value>Alle Entfernen</value>
+  </data>
+  <data name="RC_Learn_Dir" xml:space="preserve">
+    <value>Arbeitsverzeichnis: </value>
+  </data>
+  <data name="RC_Learn_File" xml:space="preserve">
+    <value>Konfigurationsdatei: </value>
+  </data>
+  <data name="RC_Learn_KeyList" xml:space="preserve">
+    <value>Befehlscodes</value>
+  </data>
+  <data name="RC_Learn_Mappings" xml:space="preserve">
+    <value>Eingabesequenzen</value>
+  </data>
+  <data name="RC_Learn_Save" xml:space="preserve">
+    <value>Speichern und Beenden</value>
+  </data>
+  <data name="RC_Learn_SaveError" xml:space="preserve">
+    <value>Die Konfiguration kann nicht gespeichert werden</value>
+  </data>
+  <data name="Switch_Invoke_Description" xml:space="preserve">
+    <value>Meldet Aufrufe an die Arbeitsumgebung</value>
+  </data>
+  <data name="Switch_Invoke_Name" xml:space="preserve">
+    <value>LateBinding</value>
+  </data>
+  <data name="Switch_LogInputKeys_Description" xml:space="preserve">
+    <value>Protokolliert alle empfangenen Tasteneingaben</value>
+  </data>
+  <data name="Switch_LogInputKeys_Name" xml:space="preserve">
+    <value>InputKey</value>
+  </data>
+  <data name="Switch_LogNumber_Description" xml:space="preserve">
+    <value>Überwacht die Zusammenstellung von Zahlen</value>
+  </data>
+  <data name="Switch_LogNumber_Name" xml:space="preserve">
+    <value>NumberComposer</value>
+  </data>
+  <data name="Trace_Exception_RemoveFilter" xml:space="preserve">
+    <value>Der Filter '{0}' kann nicht aus dem Graphen entfernt werden: {1}</value>
+  </data>
+  <data name="Trace_Invoke_Action" xml:space="preserve">
+    <value>Ergebnis des Aufrufs ist '{0}'</value>
+  </data>
+  <data name="Trace_Invoke_Method" xml:space="preserve">
+    <value>Die Methode '{0}' wird aufgerufen</value>
+  </data>
+  <data name="Trace_Invoke_Property" xml:space="preserve">
+    <value>Die Eigenschaft '{0}' wird ausgelesen</value>
+  </data>
+  <data name="Trace_LogInput_Aborted" xml:space="preserve">
+    <value>Abarbeitung wurde abgebrochen: {0}</value>
+  </data>
+  <data name="Trace_LogInput_ActionList" xml:space="preserve">
+    <value>Ausführung beginnt: {0}</value>
+  </data>
+  <data name="Trace_LogInput_EnterState" xml:space="preserve">
+    <value>Wechsele zu Zustand '{0}'</value>
+  </data>
+  <data name="Trace_LogInput_Key" xml:space="preserve">
+    <value>Verarbeite '{0}'</value>
+  </data>
+  <data name="Trace_LogInput_LeaveState" xml:space="preserve">
+    <value>Verlasse Zustand '{0}'</value>
+  </data>
+  <data name="Trace_LogInput_NextDigit" xml:space="preserve">
+    <value>'{0}' wird für den Zustand '{1}' ausgewertet, der aktuelle Wert ist {2}</value>
+  </data>
+  <data name="Trace_LogInput_StartNumber" xml:space="preserve">
+    <value>Zustand '{0}' beginnt mit der Zusammenstellung einer Zahl</value>
+  </data>
+  <data name="Trace_LogInput_State" xml:space="preserve">
+    <value>Zustand '{0}' ist verantwortlich für die Ausführung</value>
+  </data>
+  <data name="Trace_Number_Off" xml:space="preserve">
+    <value>Eingabe einer Zahl beendet</value>
+  </data>
+  <data name="Trace_Number_On" xml:space="preserve">
+    <value>Eine Zahl wird eingegeben</value>
+  </data>
+  <data name="Trace_RemoveFilter" xml:space="preserve">
+    <value>Der Filter '{0}' wird nun aus dem Graphen entfernt</value>
+  </data>
+</root>

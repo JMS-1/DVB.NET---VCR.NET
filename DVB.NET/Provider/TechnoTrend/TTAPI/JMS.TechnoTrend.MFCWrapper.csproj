@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CC42C4D5-3158-4E1C-9FC8-8138DBE52D8F}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>JMS.TechnoTrend.MFCWrapper</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\..\..\dvbnet4.snk</AssemblyOriginatorKeyFile>
+    <OutputType>Library</OutputType>
+    <RootNamespace>JMS.TechnoTrend</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <PublishUrl>http://localhost/JMS.TechnoTrend.MFCWrapper/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>..\..\..\Assemblies\Adapter\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>..\..\..\Assemblies\Adapter\JMS.TechnoTrend.MFCWrapper.XML</DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>..\..\..\Assemblies\Adapter\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>..\..\..\Assemblies\Adapter\JMS.TechnoTrend.MFCWrapper.XML</DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="JMS.DVB, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Assemblies\RunTime\JMS.DVB.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JMS.DVB.EPG, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Assemblies\RunTime\JMS.DVB.EPG.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JMS.DVB.TS, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Assemblies\RunTime\JMS.DVB.TS.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClassHolder.cs" />
+    <Compile Include="FilterQueue.cs" />
+    <Compile Include="InterOpTools.cs" />
+    <Compile Include="MFCString.cs" />
+    <Compile Include="MFCWrapper\AVCapabilities.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BoardVersion.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DeviceInput.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DVBError.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DVBException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DVBSignalStatus.cs" />
+    <Compile Include="FilterType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FrontendCapabilities.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MFCWrapper\Channel_C.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MFCWrapper\Channel_S.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MFCWrapper\Channel_T.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MFCWrapper\DVBAVControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MFCWrapper\DVBBoardControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MFCWrapper\DVBCommon.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MFCWrapper\DVBCommonInterface.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MFCWrapper\DVBFrontend.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MFCWrapper\DVBRawFilter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MFCWrapper\LegacySize.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MFCWrapper\Library.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MFCWrapper\LockState.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MFCWrapper\SignalStatus.cs" />
+    <Compile Include="PipeSize.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VideoOutput.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VideoState.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Content Include="bin\ttdvbacc.dll" />
+    <EmbeddedResource Include="Boot\Boot_up.axf" />
+    <EmbeddedResource Include="Boot\Dpram" />
+    <EmbeddedResource Include="Boot\Root" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>mkdir ..\Driver
+xcopy /q /y "$(ProjectDir)bin\TTDVBAcc.dll" ..\Driver</PostBuildEvent>
+  </PropertyGroup>
+</Project>

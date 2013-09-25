@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+
+    <!-- Einträge für das Startmenü. -->
+    <Component Id="StartMenu" Directory="ShortCutFolder" Guid="fb0d1858-f0af-4028-b13d-df1960b90ff3">
+
+      <!-- Ein bißchen Magie, damit auch die Deinstallation die Einträge sauber entfernt. -->
+      <RemoveFolder Id="ShortCutFolder" On="uninstall"/>
+      <RegistryValue Root="HKMU" Key="SOFTWARE\JMS\DVB.NET Library" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+
+      <Shortcut Id="AdminMenu"
+          Target="[INSTALLFOLDER]$(var.DVBNETAdmin.TargetName).exe"
+          Description="!(loc.ADMINMENULOCALDESCR)"
+          WorkingDirectory="INSTALLFOLDER"
+          Name="!(loc.ADMINMENULOCAL)"
+          Icon="ADMINICON" />
+
+      <Shortcut Id="ProfileMenu"
+          Target="[INSTALLFOLDER]$(var.UserProfileManager.TargetName).exe"
+          Description="!(loc.PROFILEMENULOCALDESCR)"
+          WorkingDirectory="INSTALLFOLDER"
+          Name="!(loc.PROFILEMENULOCAL)"
+          Icon="PROFILEICON" />
+
+    </Component>
+
+  </Fragment>
+</Wix>

@@ -1,0 +1,16 @@
+﻿# Der Verlust an Aufzeichnungszeit muss minimiert werden
+TotalCut:Min
+
+# Der Zeitraum, bei dem eine Quelle auf mehreren Geräten aufgezeichnet wird, soll minimiert werden
+ParallelSource:Min
+
+# Es sollen so wenige Geräte wie möglich verwendet werden
+ResourceCount:Min
+
+# Die einzelnen Geräte werden mit absteigender Aufzeichnungspriorität untersucht
+ByPriority:Descending
+
+    # Je mehr Aufzeichnungen auf einem Gerät, desto besser
+	RecordingCount:Max
+
+ByPriority:End

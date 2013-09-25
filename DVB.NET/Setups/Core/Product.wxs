@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <?include ..\..\..\..\SetupHelper\ManufacturerSettings.wxi ?>
+
+  <Product
+    Id="*"
+    Name="DVB.NET Library 4.1"
+    Language="1031"
+    Version="!(wix.SETUPVERSION)"
+    Manufacturer="$(var.Manufacturer)"
+    UpgradeCode="77e71b15-02cb-4b7f-98df-a99824b29335">
+
+    <Package
+      InstallPrivileges="elevated"
+      Languages="1031"
+      InstallerVersion="200"
+      Compressed="yes"
+      Platform="x86"
+      InstallScope="perMachine" />
+
+    <WixVariable Id="WixUIBannerBmp" Value="..\..\..\..\SetupHelper\PsiMarronBanner.bmp" />
+
+    <!-- Wir verwenden ein einziges CAB Archiv und das wird auch in das MSI integriert -->
+    <MediaTemplate EmbedCab="yes" />
+
+    <!-- Für alle Installationen identische Einstellungen -->
+    <Property Id="ARPURLINFOABOUT" Value="$(var.ManufacturerUrl)" />
+    <Property Id="ARPCONTACT" Value="$(var.Author)" />
+    <Property Id="ARPPRODUCTICON" Value="THEICON" />
+
+    <!-- Alle unseren Bildchen -->
+    <Icon Id="THEICON" SourceFile="$(var.DVBNETAdmin.ProjectDir)../Setups/Icons/DVBNETCore.ico" />
+    <Icon Id="ADMINICON" SourceFile="$(var.DVBNETAdmin.ProjectDir)App.ico" />
+    <Icon Id="PROFILEICON" SourceFile="$(var.UserProfileManager.ProjectDir)Chooser.ico" />
+
+    <!-- Ohne .NET in der richtigen Version geht gar nichts -->
+    <PropertyRef Id="NETFRAMEWORK40CLIENT"/>
+    <Condition Message="!(loc.DOTNETMISSING)">
+      <![CDATA[NETFRAMEWORK40CLIENT]]>
+    </Condition>
+
+    <!-- Eine vorherige Installation muss entfernt werden -->
+    <Property Id="ISINSTALLED">
+      <RegistrySearch Id="ISINSTALLEDREG" Win64="no" Root="HKLM" Key="Software\JMS\DVB.NET\4.1.0.0" Name="Root Directory" Type="raw" />
+    </Property>
+    <Condition Message="!(loc.ALREADYINSTALLED)">
+      <![CDATA[Installed OR NOT ISINSTALLED]]>
+    </Condition>
+
+    <!-- Die Kerninstallation. -->
+    <Feature Id="ProductFeature" Title="!(loc.FEATUREBINARIES)" Level="1" Absent="disallow" TypicalDefault="install" AllowAdvertise="no">
+
+      <ComponentGroupRef Id="DVBNETAdmin.Binaries" />
+      <ComponentGroupRef Id="JMS.DVB.Administration.Framework.Binaries" />
+      <ComponentGroupRef Id="UserProfileManager.Binaries" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.Duoflex.Binaries" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.FireDTV.Binaries" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.KNC.Binaries" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.NovaS2.Binaries" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.TTBudget.Binaries" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.TTPremium.Binaries" />
+      <ComponentGroupRef Id="JMS.TechnoTrend.MFCWrapper.Binaries" />
+      <ComponentGroupRef Id="JMS.DVB.Administration.Profiles.Binaries" />
+      <ComponentGroupRef Id="JMS.DVB.Administration.TransponderScan.Binaries" />
+      <ComponentGroupRef Id="JMS.ChannelManagement.Binaries" />
+      <ComponentGroupRef Id="JMS.DVB.Binaries" />
+      <ComponentGroupRef Id="JMS.DVB.Algorithms.Binaries" />
+      <ComponentGroupRef Id="JMS.DVB.DeviceAccess.Binaries" />
+      <ComponentGroupRef Id="JMS.DVB.DirectShow.Binaries" />
+      <ComponentGroupRef Id="JMS.DVB.EPG.Binaries" />
+      <ComponentGroupRef Id="JMS.DVB.HardwareAbstraction.Binaries" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.Legacy.Binaries" />
+      <ComponentGroupRef Id="JMS.DVB.SITables.Binaries" />
+      <ComponentGroupRef Id="JMS.DVB.SourceManagement.Binaries" />
+      <ComponentGroupRef Id="JMS.DVB.TS.Binaries" />
+      <ComponentGroupRef Id="JMS.FavoriteManager.Binaries" />
+      <ComponentGroupRef Id="RCLearner.Binaries" />
+      <ComponentRef Id="AdapterGerman" />
+      <ComponentRef Id="LibraryGerman" />
+      <ComponentRef Id="AdminGerman" />
+      <ComponentRef Id="ToolsGerman" />
+      <ComponentRef Id="RootGerman" />
+      <ComponentRef Id="Provider" />
+      <ComponentRef Id="Driver" />
+      <ComponentRef Id="Scan" />
+
+      <ComponentGroupRef Id="JMS.DVB.Common.Binaries" />
+      <ComponentRef Id="GACRegister" />
+      <ComponentRef Id="StartMenu" />
+      <ComponentRef Id="Registry" />
+
+    </Feature>
+
+    <!-- Die Installation der Quelltexte, die völlig optional ist. -->
+    <Feature Id="SourceFeature" Title="!(loc.FEATURESOURCE)" Level="2" Absent="allow" AllowAdvertise="no">
+
+      <ComponentGroupRef Id="JMS.DVB.Algorithms.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.Algorithms.Content" />
+      <ComponentGroupRef Id="JMS.DVB.DirectShow.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.DirectShow.Content" />
+      <ComponentGroupRef Id="JMS.DVB.DeviceAccess.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.DeviceAccess.Content" />
+      <ComponentGroupRef Id="JMS.ChannelManagement.Sources" />
+      <ComponentGroupRef Id="JMS.ChannelManagement.Content" />
+      <ComponentGroupRef Id="JMS.DVB.Common.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.Common.Content" />
+      <ComponentGroupRef Id="JMS.DVB.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.Content" />
+      <ComponentGroupRef Id="JMS.DVB.EPG.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.EPG.Content" />
+      <ComponentGroupRef Id="JMS.FavoriteManager.Sources" />
+      <ComponentGroupRef Id="JMS.FavoriteManager.Content" />
+      <ComponentGroupRef Id="JMS.DVB.HardwareAbstraction.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.HardwareAbstraction.Content" />
+      <ComponentGroupRef Id="JMS.DVB.SITables.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.SITables.Content" />
+      <ComponentGroupRef Id="JMS.DVB.SourceManagement.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.SourceManagement.Content" />
+      <ComponentGroupRef Id="JMS.DVB.TS.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.TS.Content" />
+      <ComponentGroupRef Id="DVBNETAdmin.Sources" />
+      <ComponentGroupRef Id="DVBNETAdmin.Content" />
+      <ComponentGroupRef Id="JMS.DVB.Administration.Framework.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.Administration.Framework.Content" />
+      <ComponentGroupRef Id="JMS.DVB.Administration.Profiles.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.Administration.Profiles.Content" />
+      <ComponentGroupRef Id="JMS.DVB.Administration.TransponderScan.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.Administration.TransponderScan.Content" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.Duoflex.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.Duoflex.Content" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.Legacy.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.Legacy.Content" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.FireDTV.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.FireDTV.Content" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.KNC.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.KNC.Content" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.NovaS2.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.NovaS2.Content" />
+      <ComponentGroupRef Id="JMS.TechnoTrend.MFCWrapper.Sources" />
+      <ComponentGroupRef Id="JMS.TechnoTrend.MFCWrapper.Content" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.TTBudget.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.TTBudget.Content" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.TTPremium.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.TTPremium.Content" />
+      <ComponentGroupRef Id="RCLearner.Sources" />
+      <ComponentGroupRef Id="RCLearner.Content" />
+      <ComponentGroupRef Id="UserProfileManager.Sources" />
+      <ComponentGroupRef Id="UserProfileManager.Content" />
+      <ComponentRef Id="BDAXaml" />
+      <ComponentRef Id="RCXaml" />
+
+    </Feature>
+
+    <!-- Die Installation der Intellisense Dateien, die völlig optional ist. -->
+    <Feature Id="DocFeature" Title="!(loc.FEATUREINTELLISENSE)" Level="2" Absent="allow" AllowAdvertise="no">
+
+      <ComponentRef Id="IntellisenseAdmin" />
+
+      <ComponentGroupRef Id="JMS.DVB.Administration.Framework.Documents" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.Duoflex.Documents" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.FireDTV.Documents" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.KNC.Documents" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.NovaS2.Documents" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.TTBudget.Documents" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.TTPremium.Documents" />
+      <ComponentGroupRef Id="JMS.TechnoTrend.MFCWrapper.Documents" />
+      <ComponentGroupRef Id="JMS.ChannelManagement.Documents" />
+      <ComponentGroupRef Id="JMS.DVB.Documents" />
+      <ComponentGroupRef Id="JMS.DVB.Algorithms.Documents" />
+      <ComponentGroupRef Id="JMS.DVB.DeviceAccess.Documents" />
+      <ComponentGroupRef Id="JMS.DVB.DirectShow.Documents" />
+      <ComponentGroupRef Id="JMS.DVB.EPG.Documents" />
+      <ComponentGroupRef Id="JMS.DVB.HardwareAbstraction.Documents" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.Legacy.Documents" />
+      <ComponentGroupRef Id="JMS.DVB.SITables.Documents" />
+      <ComponentGroupRef Id="JMS.DVB.SourceManagement.Documents" />
+      <ComponentGroupRef Id="JMS.DVB.TS.Documents" />
+      <ComponentGroupRef Id="JMS.FavoriteManager.Documents" />
+      <ComponentGroupRef Id="JMS.DVB.Common.Documents" />
+
+    </Feature>
+
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <UIRef Id="CommonWizard" />
+
+  </Product>
+</Wix>

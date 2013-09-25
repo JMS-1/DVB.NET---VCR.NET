@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FFAB1C54-9C74-4BCF-8306-86F796B1DEB6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>JMS.DVB.CardServer</RootNamespace>
+    <AssemblyName>JMS.DVB.CardServerCore</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\..\dvbnet4.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Assemblies\RunTime\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>..\..\Assemblies\RunTime\JMS.DVB.CardServerCore.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Assemblies\RunTime\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\Assemblies\RunTime\JMS.DVB.CardServerCore.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="JMS.DVB.Administration.Profiles, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\Assemblies\Administration PlugIns\JMS.DVB.Administration.Profiles.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JMS.DVB.Algorithms, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JMS.DVB.Common, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\Assemblies\JMS.DVB.Common.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JMS.DVB.EPG, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <Aliases>oldVersion</Aliases>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JMS.DVB.HardwareAbstraction, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JMS.DVB.SITables, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JMS.DVB.SourceManagement, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JMS.DVB.TS, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\Assemblies\RunTime\JMS.DVB.TS.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActiveStream.cs" />
+    <Compile Include="CustomAction.cs" />
+    <Compile Include="Faults\CardServerFault.cs" />
+    <Compile Include="Faults\NoSuchActionFault.cs" />
+    <Compile Include="Faults\NoSourceListFault.cs" />
+    <Compile Include="Faults\SourceUpdateNotActiveFault.cs" />
+    <Compile Include="Faults\SourceUpdateActiveFault.cs" />
+    <Compile Include="OutOfProcessRequests\AddSourcesRequest.cs" />
+    <Compile Include="OutOfProcessRequests\CustomActionRequest.cs" />
+    <Compile Include="OutOfProcessRequests\LoadExtensionsRequest.cs" />
+    <Compile Include="OutOfProcessRequests\SetZappingSourceRequest.cs" />
+    <Compile Include="OutOfProcessRequests\EndScanRequest.cs" />
+    <Compile Include="OutOfProcessRequests\StartScanRequest.cs" />
+    <Compile Include="OutOfProcessRequests\EndEPGRequest.cs" />
+    <Compile Include="OutOfProcessRequests\StartEPGRequest.cs" />
+    <Compile Include="OutOfProcessRequests\SetStreamTargetRequest.cs" />
+    <Compile Include="OutOfProcessRequests\RemoveAllSourcesRequest.cs" />
+    <Compile Include="OutOfProcessRequests\RemoveSourceRequest.cs" />
+    <Compile Include="OutOfProcessRequests\SelectRequest.cs" />
+    <Compile Include="OutOfProcessRequests\GetStateRequest.cs" />
+    <Compile Include="OutOfProcessRequests\Request.cs" />
+    <Compile Include="OutOfProcessRequests\Response.cs" />
+    <Compile Include="ReceiveInformation.cs" />
+    <Compile Include="ServerInformation.cs" />
+    <Compile Include="Faults\EPGNotActiveFault.cs" />
+    <Compile Include="Faults\EPGActiveFault.cs" />
+    <Compile Include="Implementation\InMemoryCardServer_PSI.cs" />
+    <Compile Include="Implementation\InMemoryCardServer_EPG.cs" />
+    <Compile Include="Faults\NoSourceFault.cs" />
+    <Compile Include="ProgramGuide.cs" />
+    <Compile Include="Faults\SourceInUseFault.cs" />
+    <Compile Include="Faults\ProfileMismatchFault.cs" />
+    <Compile Include="Faults\ServerBusyFault.cs" />
+    <Compile Include="Faults\NoProfileFault.cs" />
+    <Compile Include="Faults\ProfileAlreadyAttachedFault.cs" />
+    <Compile Include="Properties\Resources.de.Designer.cs">
+      <DependentUpon>Resources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerImplementation.cs" />
+    <Compile Include="OutOfProcessCardServer.cs" />
+    <Compile Include="InMemoryCardServer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="OutOfProcessRequests\SetProfileRequest.cs" />
+    <Compile Include="ServiceInformation.cs" />
+    <Compile Include="SourceIdenfierWithKey.cs" />
+    <Compile Include="StreamInformation.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.de.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

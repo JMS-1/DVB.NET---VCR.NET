@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JMS.TechnoTrend.MFCWrapper", "TTAPI\JMS.TechnoTrend.MFCWrapper.csproj", "{CC42C4D5-3158-4E1C-9FC8-8138DBE52D8F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JMS.DVB.Provider.TTPremium", "TTPremium\JMS.DVB.Provider.TTPremium.csproj", "{744054D8-2B4A-42D1-A84B-781561F575EB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CC42C4D5-3158-4E1C-9FC8-8138DBE52D8F} = {CC42C4D5-3158-4E1C-9FC8-8138DBE52D8F}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JMS.DVB.Provider.TTBudget", "TTBudget\JMS.DVB.Provider.TTBudget.csproj", "{0FF2B905-EBFC-47D8-BEDA-6961C9438114}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CC42C4D5-3158-4E1C-9FC8-8138DBE52D8F} = {CC42C4D5-3158-4E1C-9FC8-8138DBE52D8F}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC42C4D5-3158-4E1C-9FC8-8138DBE52D8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC42C4D5-3158-4E1C-9FC8-8138DBE52D8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC42C4D5-3158-4E1C-9FC8-8138DBE52D8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC42C4D5-3158-4E1C-9FC8-8138DBE52D8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{744054D8-2B4A-42D1-A84B-781561F575EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{744054D8-2B4A-42D1-A84B-781561F575EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{744054D8-2B4A-42D1-A84B-781561F575EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{744054D8-2B4A-42D1-A84B-781561F575EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FF2B905-EBFC-47D8-BEDA-6961C9438114}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FF2B905-EBFC-47D8-BEDA-6961C9438114}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FF2B905-EBFC-47D8-BEDA-6961C9438114}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FF2B905-EBFC-47D8-BEDA-6961C9438114}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

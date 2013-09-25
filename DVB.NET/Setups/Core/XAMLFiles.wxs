@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+
+    <Component Id="BDAXaml" Directory="BDAXaml" Guid="8d5ded33-c5f0-43ea-9aa1-88469ca0837f">
+      <File Source="$(var.JMS.DVB.DirectShow.ProjectDir)RawDevices\RemoteControlLearningGrid.xaml" />
+    </Component>
+
+    <Component Id="RCXaml" Directory="RCXaml" Guid="53886482-92c5-432a-8e32-ccf57d39422a">
+      <File Source="$(var.RCLearner.ProjectDir)app.ico" />
+      <File Source="$(var.RCLearner.ProjectDir)App.xaml" />
+      <File Source="$(var.RCLearner.ProjectDir)LearnMain.xaml" />
+    </Component>
+
+  </Fragment>
+</Wix>

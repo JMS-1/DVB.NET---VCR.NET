@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+
+    <!-- Einträge für das Startmenü. -->
+    <Component Id="StartMenu" Directory="ShortCutFolder" Guid="5ef01911-cf6c-4d2f-87ad-48f243d6fcc4">
+
+      <!-- Ein bißchen Magie, damit auch die Deinstallation die Einträge sauber entfernt. -->
+      <RemoveFolder Id="ShortCutFolder" On="uninstall"/>
+      <RegistryValue Root="HKMU" Key="SOFTWARE\JMS\DVB.NET Tools" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+
+      <Shortcut Id="EPGReaderMenu"
+          Target="[ToolsBinaries]$(var.EPGReader.TargetName).exe"
+          Description="!(loc.MENULOCALDESCR)"
+          WorkingDirectory="ToolsBinaries"
+          Name="!(loc.MENULOCAL)"
+          Icon="THEICON" />
+
+    </Component>
+
+  </Fragment>
+</Wix>
