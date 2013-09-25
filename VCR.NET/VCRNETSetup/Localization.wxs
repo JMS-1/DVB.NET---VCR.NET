@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+
+    <!-- Die deutschen Sprachdateien der Werkzeuge werden gesondert installiert, da die aktuelle WiX Version 3.7 Probleme mit dem Harvesting macht (Heat). -->    
+    <Component Id="GermanTools" Directory="TOOLSDE"  Guid="504f030d-e220-4196-b90b-2b13cdd561dc">
+      <File Source="$(var.ControlCenter.TargetDir)de\$(var.ControlCenter.TargetName).resources.dll" />
+      <File Source="$(var.EasyCut.TargetDir)de\$(var.EasyCut.TargetName).resources.dll" />
+    </Component>
+    
+    <Component Id="GermanPlugIns" Directory="PLUGINSDE"  Guid="3248a797-5cb7-4add-8c9d-2a4610771549">
+      <File Source="$(var.TVBrowserPlugIn.TargetDir)de\$(var.TVBrowserPlugIn.TargetName).resources.dll" />
+    </Component>
+
+  </Fragment>
+</Wix>

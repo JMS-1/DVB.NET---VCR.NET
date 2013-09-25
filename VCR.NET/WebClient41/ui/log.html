@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>[Fragment]</title>
+</head>
+
+<body>
+    <div>
+        <div id="mainContent">
+            Für jede Nutzung eines Gerätes erstellt der VCR.NET Recording Service einen Protokolleintrag<a href="#faq;log"><img class="linkImage" src="ui/images/info.png" /></a>, 
+            der hier eingesehen werden kann.
+            Bei überlappenden Aufzeichnung wird ein einziger Eintrag erstellt, der den gesamten Nutzungszeitraum beschreibt.
+            <div class="inlineHelp">
+                <h3>Erläuterungen zur Bedienung</h3>
+                <div>
+                    <p>
+                        Die Anzeige auf dieser Seite erfolgt immer pro Gerät und Woche, wobei sowohl das Gerät als auch die gewünschte
+                    Woche über die Auswahllisten vorgegeben werden können. Man beachte dabei, dass gemäß der Konfiguration Protokolle
+                    nur für einen bestimmten Zeitraum vorgehalten werden, so dass bei der Anzeige vergangener Wochen die Liste 
+                        evntuell leer bleibt.
+                    </p>
+                    <p>
+                        Nach dem Aufruf der Seite werden erst einmal nur die regulären Aufzeichnungen angezeigt. Die Nutzung des
+                        jeweiligen Gerätes durch Aktualisierungen<a href="#faq;tasks"><img class="linkImage" src="ui/images/info.png" /></a>
+                        und den LIVE Zugriff kann durch die entsprechenden Schaltflächen
+                        neben der Auswahl der Woche eingeblendet werden.
+                    </p>
+                    <p>
+                        Durch Anwahl des jeweiligen Startzeitpunkts eines Protokolleintrags wird die Detailanzeige geöffnet. Handelt
+                        es sich bei der Nutzung des Geräte um eine oder mehrere reguläre Aufzeichnungen, so sind mit dieser eventuell
+                        noch nicht gelöschte Aufzeichnungsdateien verbunden.<a href="#faq;filecontents"><img class="linkImage" src="ui/images/info.png" /></a>
+                        Durch Anwahl des jeweiligen Symbols können diese
+                        zur Anzeige durch den <a href="http://www.psimarron.net/DVBNETViewer/html/vcrfile.html" target="_blank">DVB.NET / VCR.NET Viewer</a> abgerufen werden.
+                    </p>
+                </div>
+            </div>
+            <div class="linkArea logFilter">
+                <table>
+                    <tr>
+                        <td>Protokollbereich:
+                <select id="selProfile"></select>
+                            <select id="selDate"></select></td>
+                        <td class="optionButton">
+                            <input type="checkbox" id="withGuide" /><label for="withGuide">Programmzeitschrift</label>
+                            <input type="checkbox" id="withScan" /><label for="withScan">Sendersuchlauf</label>
+                            <input type="checkbox" id="withLive" /><label for="withLive">Zapping</label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <table class="dataTable">
+                <thead>
+                    <tr>
+                        <td>Beginn</td>
+                        <td>Ende</td>
+                        <td class="logNameColumn">Quelle</td>
+                    </tr>
+                </thead>
+                <tbody id="logRows">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

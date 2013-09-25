@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<WixLocalization Culture="de-de" xmlns="http://schemas.microsoft.com/wix/2006/localization">
+  <String Id="FEATUREBINARIES">VCR.NET Recording Service</String>
+  <String Id="FEATURESOURCE">Quellcode</String>
+  <String Id="DOTNETMISSING">Der VCR.NET Recording Service setzt eine Installation des Microsoft .NET Frameworks in der Version 4.0 voraus.</String>
+  <String Id="ALREADYINSTALLED">Vor der Installation muss die existierende Version des VCR.NET Recording Service deinstalliert werden.</String>
+  <String Id="DVBNETMISSING">Zur Installation des VCR.NET Recording Service muss DVB.NET inklusive des Card Servers bereits installiert sein. Die aktuelle Version kann hier heruntergeladen werden:
+
+http://www.psimarron.net/DVBNET/html/download.html
+
+  </String>
+  <String Id="SERVICEDESCRIPTION">VCR.NET Recording Service</String>
+  <String Id="SERVICENAME">VCR.NET Recording Service</String>
+  <String Id="INSTALLOPTIONSDLGTITLE">{\WixUI_Font_Title}Installationsoptionen</String>
+  <String Id="INSTALLOPTIONSDLGDESCRIPTION">Voreinstellung für die Betriebsparameter festlegen.</String>
+  <String Id="INSTALLATIONOPTIONS">Abhängig von den folgenden Einstellungen werden der VCR.NET Recording Service Windows Dienst konfiguriert sowie dieser und / oder die VCR.NET Überwachung nach Abschluss der Installation gestartet.</String>
+  <String Id="AUTOSTARTSERVICEOPTION">Den VCR.NET Recording Service Dienst bei Neustart des Rechners automatisch starten.</String>
+  <String Id="STARTSERVICEOPTION">Den VCR.NET Recording Service Dienst nach der Installation starten.</String>
+  <String Id="STARTCONTROLCENTEROPTION">Die VCR.NET Überwachung nach der Installation starten.</String>
+  <String Id="VCCNAME">VCR.NET Überwachung</String>
+  <String Id="VCCDESCRIPTION">Startet die VCR.NET Überwachung</String>
+  <String Id="VCCAUTOSTART">Startet die VCR.NET Überwachung</String>
+  <String Id="TVBNAME">VCR.NET Browser PlugIn Konfiguration</String>
+  <String Id="TVBDESCRIPTION">Konfiguriert das TV Browser PlugIn für VCR.NET</String>
+  <String Id="EASYCUTNAME">Untertitel schneiden</String>
+  <String Id="EASYCUTDESCRIPTION">Startet EasyCut zum Schneiden von Untertiteln auf Basis einer Cuttermaran Schnittdatei</String>
+
+  <!-- Überschreiben von vordefinierten Einträgen. -->
+  <String Id="BrowseDlg_Title">[ProductName]</String>
+  <String Id="CancelDlg_Title">[ProductName]</String>
+  <String Id="CustomizeDlg_Title">[ProductName]</String>
+  <String Id="DiskCostDlg_Title">[ProductName]</String>
+  <String Id="ErrorDlg_Title">[ProductName]</String>
+  <String Id="ExitDialog_Title">[ProductName]</String>
+  <String Id="FatalError_Title">[ProductName]</String>
+  <String Id="FeaturesDlg_Title">[ProductName]</String>
+  <String Id="FilesInUse_Title">[ProductName]</String>
+  <String Id="InstallDirDlg_Title">[ProductName]</String>
+  <String Id="InstallScopeDlg_Title">[ProductName]</String>
+  <String Id="InvalidDirDlg_Title">[ProductName]</String>
+  <String Id="LicenseAgreementDlg_Title">[ProductName]</String>
+  <String Id="MaintenanceTypeDlg_Title">[ProductName]</String>
+  <String Id="MaintenanceWelcomeDlg_Title">[ProductName]</String>
+  <String Id="MsiRMFilesInUse_Title">[ProductName]</String>
+  <String Id="OutOfDiskDlg_Title">[ProductName]</String>
+  <String Id="OutOfRbDiskDlg_Title">[ProductName]</String>
+  <String Id="PrepareDlg_Title">[ProductName]</String>
+  <String Id="ProgressDlg_Title">[ProductName]</String>
+  <String Id="ResumeDlg_Title">[ProductName]</String>
+  <String Id="SetupTypeDlg_Title">[ProductName]</String>
+  <String Id="UserExit_Title">[ProductName]</String>
+  <String Id="VerifyReadyDlg_Title">[ProductName]</String>
+  <String Id="WaitForCostingDlg_Title">[ProductName]</String>
+  <String Id="WelcomeDlg_Title">[ProductName]</String>
+  <String Id="WelcomeEulaDlg_Title">[ProductName]</String>
+
+</WixLocalization>

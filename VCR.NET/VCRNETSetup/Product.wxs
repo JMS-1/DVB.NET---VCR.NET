@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <?include ..\..\..\SetupHelper\ManufacturerSettings.wxi ?>
+
+  <Product
+    Id="*"
+    Name="VCR.NET 4.2"
+    Language="1031"
+    Version="!(wix.SETUPVERSION)"
+    Manufacturer="$(var.Manufacturer)"
+    UpgradeCode="7c59e36d-3ff4-4aed-b455-f1f91d82345e">
+
+    <Package
+      InstallPrivileges="elevated"
+      Languages="1031"
+      InstallerVersion="200"
+      Compressed="yes"
+      Platform="x86"
+      InstallScope="perMachine" />
+
+    <WixVariable Id="WixUIBannerBmp" Value="..\..\..\SetupHelper\PsiMarronBanner.bmp" />
+
+    <!-- Wir verwenden ein einziges CAB Archiv und das wird auch in das MSI integriert -->
+    <MediaTemplate EmbedCab="yes" />
+
+    <!-- Für alle Installationen identische Einstellungen -->
+    <Property Id="ARPURLINFOABOUT" Value="$(var.ManufacturerUrl)" />
+    <Property Id="ARPCONTACT" Value="$(var.Author)" />
+
+    <!-- Alle unseren Bildchen -->
+    <Icon Id="VCRNETICON" SourceFile="$(var.ControlCenter.ProjectDir)TrayIcons\Standard.ICO" />
+    <Icon Id="BROWSERICON" SourceFile="$(var.TVBrowserPlugIn.ProjectDir)TVBrowser.ico" />
+    <Icon Id="EASYCUTICON" SourceFile="$(var.EasyCut.ProjectDir)App.ico" />
+
+    <!-- Spezielle Einstellungen für die VCR.NET Installation -->
+    <Property Id="ARPHELPLINK" Value="http://www.watchersnet.de/Default.aspx?tabid=52&amp;g=topics&amp;f=17" />
+    <Property Id="ARPCOMMENTS" Value="VCR.NET for Power Users" />
+    <Property Id="ARPPRODUCTICON" Value="VCRNETICON" />
+
+    <!-- Sonderoptionen für die Installation -->
+    <Property Id="AUTOSTARTSERVICE" Value="1" />
+    <Property Id="STARTSERVICE" Value="1" />
+    <Property Id="STARTVCC" Value="1" />
+
+    <!-- Ohne .NET in der richtigen Version geht gar nichts -->
+    <PropertyRef Id="NETFRAMEWORK40FULL"/>
+    <Condition Message="!(loc.DOTNETMISSING)">
+      <![CDATA[NETFRAMEWORK40FULL]]>
+    </Condition>
+
+    <!-- Eine vorherige Installation muss entfernt werden -->
+    <Property Id="ISINSTALLED">
+      <RegistrySearch Id="ISINSTALLEDREG" Root="HKLM" Key="SYSTEM\CurrentControlSet\Services\VCR.NET Service" Name="ImagePath" Type="raw" />
+    </Property>
+    <Condition Message="!(loc.ALREADYINSTALLED)">
+      <![CDATA[Installed OR NOT ISINSTALLED]]>
+    </Condition>
+
+    <!-- DVB.NET muss inklusive des Card Servers in der korrekten Version installiert sein -->
+    <Property Id="DVBNETCORE">
+      <RegistrySearch Id="DVBNETCOREREG" Win64="no" Root="HKLM" Key="Software\JMS\DVB.NET\4.1.0.0" Name="Root Directory" Type="raw" />
+    </Property>
+    <Property Id="DVBNETSERVER">
+      <RegistrySearch Id="DVBNETSERVERREG" Win64="no" Root="HKLM" Key="Software\JMS\DVB.NET\4.1.0.0" Name="Server Directory" Type="raw" />
+    </Property>
+    <Condition Message="!(loc.DVBNETMISSING)">
+      <![CDATA[Installed OR (DVBNETCORE AND DVBNETSERVER)]]>
+    </Condition>
+
+    <!-- Die Kerninstallation, die alles zum Betrieb des VCR.NET Recording Service enthält. -->
+    <Feature Id="ProductFeature" Title="!(loc.FEATUREBINARIES)" Level="1" Absent="disallow" TypicalDefault="install" AllowAdvertise="no">
+      
+      <ComponentGroupRef Id="FTPWrap.Binaries" />
+      <ComponentGroupRef Id="EasyCut.Binaries" />
+      <ComponentGroupRef Id="ControlCenter.Binaries" />
+      <ComponentGroupRef Id="ServiceCore.Binaries" />
+      <ComponentGroupRef Id="TVBrowserPlugIn.Binaries" />
+      <ComponentGroupRef Id="WebClient41.Binaries" />
+      <ComponentGroupRef Id="WebClient41.Content" />
+      <ComponentGroupRef Id="Extensions" />
+      <ComponentGroupRef Id="Service" />
+
+      <ComponentRef Id="WebApi" />
+      <ComponentRef Id="WebApiTools" />
+      <ComponentRef Id="WebApiPlugIns" />
+      <ComponentRef Id="GermanTools" />
+      <ComponentRef Id="GermanPlugIns" />
+      <ComponentRef Id="PlugInFiles" />
+      <ComponentRef Id="StartMenu"  />
+      <ComponentRef Id="AutoStartControlCenter" />
+
+    </Feature>
+
+    <!-- Die Installation der Quelltexte, die völlig optional ist. -->
+    <Feature Id="SourceFeature" Title="!(loc.FEATURESOURCE)" Level="2" Absent="allow" AllowAdvertise="no">
+      
+      <ComponentGroupRef Id="FTPWrap.Sources" />
+      <ComponentGroupRef Id="FTPWrap.Content" />
+      <ComponentGroupRef Id="EasyCut.Sources" />
+      <ComponentGroupRef Id="EasyCut.Content" />
+      <ComponentGroupRef Id="ControlCenter.Sources" />
+      <ComponentGroupRef Id="ControlCenter.Content" />
+      <ComponentGroupRef Id="ServiceCore.Sources" />
+      <ComponentGroupRef Id="ServiceCore.Content" />
+      <ComponentGroupRef Id="Service.Sources" />
+      <ComponentGroupRef Id="Service.Content" />
+      <ComponentGroupRef Id="TVBrowserPlugIn.Sources" />
+      <ComponentGroupRef Id="TVBrowserPlugIn.Content" />
+      <ComponentGroupRef Id="InstallerActions.Sources" />
+      <ComponentGroupRef Id="InstallerActions.Content" />
+      <ComponentGroupRef Id="Setup.Sources" />
+      <ComponentGroupRef Id="WebClient41.Sources" />
+      <ComponentGroupRef Id="TypeScript.Sources" />
+
+    </Feature>
+
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <UIRef Id="VCRNETWizard" />
+
+    <!-- Aufruf des Installationscodes beschreiben. -->
+    <CustomActionRef Id="ASADMINDATA" />
+    <CustomActionRef Id="STARTVCC" />
+    <CustomActionRef Id="ASADMIN" />
+
+    <!-- Installationscode in die Installationssequenz einordnen. -->
+    <InstallExecuteSequence>
+      <Custom Action="ASADMINDATA" Before="ASADMIN" />
+      <Custom Action="ASADMIN" Before="InstallFinalize">REINSTALL OR NOT Installed</Custom>
+      <Custom Action="STARTVCC" Before="InstallFinalize">STARTVCC AND NOT Installed</Custom>
+    </InstallExecuteSequence>
+
+  </Product>
+
+</Wix>

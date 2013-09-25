@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <?include ..\..\..\SetupHelper\ManufacturerSettings.wxi ?>
+
+  <Fragment>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+
+      <!-- Dateien -->
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="ManufacturerFolder" Name="$(var.Manufacturer)">
+
+          <Directory Id="INSTALLFOLDER" Name="VCR.NET">
+
+            <!-- Der Web Client -->
+            <Directory Id="WebClient41.Content" />
+            <Directory Id="WebClient41.Sources" />
+
+            <Directory Id="WebClient41.Binaries" Name="bin" />
+
+            <!-- Der Dienst selbst -->
+            <Directory Id="ServiceCore.Binaries" Name="bin" />
+            <Directory Id="BIN" Name="bin" />
+
+            <!-- Vorlagen für Erweiterungsregeln -->
+            <Directory Id="SERVEREXTENSIONS" Name="Server Extensions">
+              <Directory Id="Extensions" Name="RecordingStarted" />
+            </Directory>
+
+            <!-- Werkzeuge -->
+            <Directory Id="FTPWrap.Binaries" Name="Tools" />
+            <Directory Id="EasyCut.Binaries" Name="Tools" />
+            <Directory Id="ControlCenter.Binaries" Name="Tools" />
+            <Directory Id="TOOLS" Name="Tools">
+              <Directory Id="TOOLSDE" Name="de"/>
+            </Directory>
+
+            <!-- TV Browser Erweiterungen -->
+            <Directory Id="TVBrowserPlugIn.Binaries" Name="Browser PlugIns" />
+            <Directory Id="PLUGINS" Name="Browser PlugIns">
+              <Directory Id="PLUGINSDE" Name="de"/>
+            </Directory>
+
+            <!-- Quellcode (optional) -->
+            <Directory Id="SOURCES" Name="Source">
+              <Directory Id="FTPWrap.Sources" Name="FTPWrap" />
+              <Directory Id="FTPWrap.Content" Name="FTPWrap" />
+              <Directory Id="EasyCut.Sources" Name="EasyCut" />
+              <Directory Id="EasyCut.Content" Name="EasyCut" />
+              <Directory Id="ControlCenter.Sources" Name="ControlCenter" />
+              <Directory Id="ControlCenter.Content" Name="ControlCenter" />
+              <Directory Id="ServiceCore.Sources" Name="ServiceCore" />
+              <Directory Id="ServiceCore.Content" Name="ServiceCore" />
+              <Directory Id="Service.Sources" Name="Service" />
+              <Directory Id="Service.Content" Name="Service" />
+              <Directory Id="TVBrowserPlugIn.Sources" Name="TVBrowserPlugIn" />
+              <Directory Id="TVBrowserPlugIn.Content" Name="TVBrowserPlugIn" />
+              <Directory Id="InstallerActions.Sources" Name="InstallerActions" />
+              <Directory Id="InstallerActions.Content" Name="InstallerActions" />
+              <Directory Id="Setup.Sources" Name="VCRNETSetup" />
+            </Directory>
+
+            <!-- Quellcode (optional) -->
+            <Directory Id="ScriptFiles" Name="scripts">
+              <Component Id="TypeScriptSource.JMSLib" Guid="*">
+                <File Id="TypeScript.JMSLib" Source="$(var.WebClient41.ProjectDir)scripts/jmslib.ts" />
+              </Component>
+              <Component Id="TypeScriptSource.VCRServer" Guid="*">
+                <File Id="TypeScript.VCRServer" Source="$(var.WebClient41.ProjectDir)scripts/vcrserver.ts" />
+              </Component>
+              <Component Id="TypeScriptSource.VCRNET" Guid="*">
+                <File Id="TypeScript.VCRNET" Source="$(var.WebClient41.ProjectDir)scripts/vcrnet.ts" />
+              </Component>
+            </Directory>
+          </Directory>
+        </Directory>
+      </Directory>
+
+      <!-- Menüeinträge -->
+      <Directory Id="StartupFolder" />
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ShortCutFolder" Name="VCR.NET Recording Service" />
+      </Directory>
+
+    </Directory>
+
+    <ComponentGroup Id="TypeScript.Sources">
+      <ComponentRef Id="TypeScriptSource.JMSLib"/>
+      <ComponentRef Id="TypeScriptSource.VCRServer"/>
+      <ComponentRef Id="TypeScriptSource.VCRNET"/>
+    </ComponentGroup>
+
+  </Fragment>
+</Wix>

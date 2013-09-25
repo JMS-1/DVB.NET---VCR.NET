@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+
+    <link rel="stylesheet" href="Content/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="Content/jmslib.css" />
+    <link rel="stylesheet" href="Content/vcrnet.css" />
+
+    <script src="Scripts/jquery-2.0.3.min.js"></script>
+    <script src="Scripts/jquery-ui-1.10.3.min.js"></script>
+    <script src="Scripts/jmslib.js"></script>
+    <script src="Scripts/vcrserver.js"></script>
+    <script src="Scripts/vcrnet.js"></script>
+
+    <title id="masterTitle">VCR.NET Recording Service</title>
+</head>
+
+<body>
+    <div>
+        <h1 id="headline"></h1>
+        <br />
+        <table>
+            <tr>
+                <td class="linkArea invisible" colspan="3">
+                    <a class="refreshLink invisible" href="javascript:void(0)">
+                        <img class="linkImage" src="ui/images/refresh.png" /></a><a class="refreshLink invisible" href="javascript:void(0)">Aktualisieren</a>
+                    <a class="homeLink" href="#home">
+                        <img class="linkImage" src="ui/images/home.png" /></a><a class="homeLink" href="#home">Startseite</a>
+                    <a class="planLink invisible" href="#plan">
+                        <img class="linkImage" src="ui/images/plan.png" /></a><a class="planLink invisible" href="#plan">Aufzeichnungplan</a>
+                    <a class="guideLink invisible" href="#guide">
+                        <img class="linkImage" src="ui/images/guide.png" /></a><a class="guideLink invisible" href="#guide">Programmzeitschrift</a>
+                    <a class="newLink invisible" href="#edit">
+                        <img class="linkImage" src="ui/images/new.png" /></a><a class="newLink invisible" href="#edit">Neue Aufzeichnung</a>
+                    <a class="currentLink invisible" href="#current">
+                        <img class="linkImage" src="ui/images/devices.png" /></a><a class="currentLink invisible" href="#current">Geräte</a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td colspan="2" class="fullWidth">
+                    <div id="mainArea" class="invisible"></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+
+</html>

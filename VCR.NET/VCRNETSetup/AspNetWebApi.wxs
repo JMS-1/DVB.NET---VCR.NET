@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+
+    <!-- Microsoft ASP.NET Web API Bibliotheken -->
+    <Component Id="WebApi" Directory="BIN" Guid="b33e1836-2301-4a77-b642-5791007b2f3b">
+      <File Source="$(var.Service.TargetDir)System.Web.Http.dll" />
+      <File Source="$(var.Service.TargetDir)System.Web.Http.WebHost.dll" />
+      <File Source="$(var.Service.TargetDir)System.Net.Http.dll" />
+      <File Source="$(var.Service.TargetDir)System.Net.Http.Formatting.dll" />
+      <File Source="$(var.Service.TargetDir)Newtonsoft.Json.dll" />
+      <File Source="$(var.Service.TargetDir)Microsoft.Web.Infrastructure.dll" />
+    </Component>
+
+    <Component Id="WebApiTools" Directory="TOOLS" Guid="26e806e4-79ee-45a5-b7f4-f574dd5d2b45">
+      <File Id="WebApiToolsJSON" Source="$(var.ControlCenter.TargetDir)Newtonsoft.Json.dll" />
+    </Component>
+
+    <Component Id="WebApiPlugIns" Directory="PLUGINS" Guid="658cae0e-de66-4956-8c7b-7675fd17515e">
+      <File Id="WebApiPlugInsJSON" Source="$(var.ControlCenter.TargetDir)Newtonsoft.Json.dll" />
+    </Component>
+
+  </Fragment>
+</Wix>

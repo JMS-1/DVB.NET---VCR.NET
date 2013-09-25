@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 13</value>
+  </data>
+  <data name="label10.Text" xml:space="preserve">
+    <value>Start&amp;verzögerung (Sekunden):</value>
+  </data>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>260, 13</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>S&amp;prache (Überwachung nach Änderung neu Starten):</value>
+  </data>
+  <data name="cmdStreaming.Text" xml:space="preserve">
+    <value>Einstellungen für dem Netzwerkver&amp;sand speichern</value>
+  </data>
+  <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 13</value>
+  </data>
+  <data name="label9.Text" xml:space="preserve">
+    <value>Erster TCP/IP &amp;Port</value>
+  </data>
+  <data name="label8.Text" xml:space="preserve">
+    <value>Multi&amp;cast Adresse</value>
+  </data>
+  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>55, 13</value>
+  </data>
+  <data name="label7.Text" xml:space="preserve">
+    <value>&amp;Parameter</value>
+  </data>
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>101, 13</value>
+  </data>
+  <data name="label6.Text" xml:space="preserve">
+    <value>&amp;Anzeigeanwendung</value>
+  </data>
+  <data name="grpStreaming.Text" xml:space="preserve">
+    <value>Konfiguration Netzwerkversand</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>112, 13</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Überwachte Rechner:</value>
+  </data>
+  <data name="cmdAdd.Text" xml:space="preserve">
+    <value>&amp;Hinzufügen</value>
+  </data>
+  <data name="cmdUpdate.Text" xml:space="preserve">
+    <value>&amp;Ändern</value>
+  </data>
+  <data name="cmdUpdateAll.Text" xml:space="preserve">
+    <value>Einstellungen für den lokalen VCR&amp;.NET Recording Service speichern</value>
+  </data>
+  <data name="selHibernate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>404, 30</value>
+  </data>
+  <data name="ckAutoStart.Size" type="System.Drawing.Size, System.Drawing">
+    <value>344, 17</value>
+  </data>
+  <data name="ckAutoStart.Text" xml:space="preserve">
+    <value>&amp;Lokalen VCR.NET Recording Service mit der Überwachung starten</value>
+  </data>
+  <data name="ckHibernate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>374, 17</value>
+  </data>
+  <data name="ckHibernate.Text" xml:space="preserve">
+    <value>Rechner nach Aufzeichnung in den &amp;Schlafzustand versetzen (in Minuten):</value>
+  </data>
+  <data name="frameLocal.Text" xml:space="preserve">
+    <value>Einstellungen für den VCR.NET Recording Service auf diesem Rechner</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>145, 13</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>A&amp;ktualisierung (in Sekunden):</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 13</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Rechner&amp;name:</value>
+  </data>
+  <data name="cmdDelete.Text" xml:space="preserve">
+    <value>&amp;Entfernen</value>
+  </data>
+  <data name="columnHeader1.Text" xml:space="preserve">
+    <value>Rechnername</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="columnHeader1.Width" type="System.Int32, mscorlib">
+    <value>210</value>
+  </data>
+  <data name="columnHeader3.Text" xml:space="preserve">
+    <value>Aktualisierungsrate</value>
+  </data>
+  <data name="columnHeader3.Width" type="System.Int32, mscorlib">
+    <value>109</value>
+  </data>
+  <data name="columnHeader4.Text" xml:space="preserve">
+    <value>Erweiterungen</value>
+  </data>
+  <data name="ckExtensions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 17</value>
+  </data>
+  <data name="ckExtensions.Text" xml:space="preserve">
+    <value>Er&amp;weiterungen ausführen</value>
+  </data>
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAICAQAAAAAADoAgAAFgAAACgAAAAgAAAAQAAAAAEABAAAAAAAAAIAAAAAAAAAAAAAEAAAABAA
+        AAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAgICAAMDAwAAAAP8AAP8AAAD//wD/AAAA/wD/AP//
+        AAD///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAxEREAAAAAAAAAAAAAAAAAMRERAAAAAAAAAAAAAAAAADE
+        REQAAAAAAAAAAAAAAAAADEREQAAAAAAAAAAAAAAAAAxEREAAAAAAAAAAAAAAAAAMRERAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAA////AAAAAAAAAAAAAAAAAP//AAAAAAAAAAAAAAAAAAD///8AAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAL+/sAAAAAAAAAAAAAAAAAv7+/AAAAAAAAAAAAAAAAC/v7+/AA
+        AAAAAAAAAAAAD78PDw8AAAAAAAAAAAAAAAAAALCwsAAAAAAAAAAAAAB3dwAAAAAHd3AAAAAAAAAA8ACI
+        iIiIgABwAABwAAAAAPCAgAAAAICAcAAHcAAAAADwAADw8PAAAHAHB3AAAAAA+IiAsLCwiIhwBweAAAAA
+        APiIjw8PCIiIcAcHgAAAAAD4iIiIiIiIiHAICIAAAAAAd3d3d3d4iJhwCAiAAAAAAAAAAAAAB4iYcA8P
+        gAAABwd3d3d3dweIiHAACPAAAAgIiIiIiIgH//9wAACAAAAPD///////B4iIAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//////4B///+Af///gH///8A////A
+        P///wD///8A////AP///wD///8A////AP///wH///4B///4AP//8AD///CAB//gAAPf4AADj+AAAA/gA
+        AAP4AAAD+AAAA/gAAAPYAAADyAAAA8AAAAPAAADjwAAB98gAA//f/////////w==
+</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Konfiguration der VCR.NET Überwachung</value>
+  </data>
+  <data name="mnuDefault.Size" type="System.Drawing.Size, System.Drawing">
+    <value>273, 22</value>
+  </data>
+  <data name="mnuDefault.Text" xml:space="preserve">
+    <value>&amp;Web Anwendung starten</value>
+  </data>
+  <data name="toolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>270, 6</value>
+  </data>
+  <data name="mnuOpenJobList.Size" type="System.Drawing.Size, System.Drawing">
+    <value>273, 22</value>
+  </data>
+  <data name="mnuOpenJobList.Text" xml:space="preserve">
+    <value>&amp;Aufzeichnungsplan anzeigen</value>
+  </data>
+  <data name="mnuEPG.Size" type="System.Drawing.Size, System.Drawing">
+    <value>273, 22</value>
+  </data>
+  <data name="mnuEPG.Text" xml:space="preserve">
+    <value>Neue Aufzeichnung (&amp;Programmzeitschrift)</value>
+  </data>
+  <data name="mnuNewJob.Size" type="System.Drawing.Size, System.Drawing">
+    <value>273, 22</value>
+  </data>
+  <data name="mnuNewJob.Text" xml:space="preserve">
+    <value>Neue Aufzeichnung (&amp;Manuell)</value>
+  </data>
+  <data name="mnuCurrent.Size" type="System.Drawing.Size, System.Drawing">
+    <value>273, 22</value>
+  </data>
+  <data name="mnuCurrent.Text" xml:space="preserve">
+    <value>&amp;Laufende Aufzeichnungen anzeigen</value>
+  </data>
+  <data name="mnuLiveConnect.Size" type="System.Drawing.Size, System.Drawing">
+    <value>273, 22</value>
+  </data>
+  <data name="mnuLiveConnect.Text" xml:space="preserve">
+    <value>Verbi&amp;nden</value>
+  </data>
+  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>270, 6</value>
+  </data>
+  <data name="mnuAdmin.Size" type="System.Drawing.Size, System.Drawing">
+    <value>273, 22</value>
+  </data>
+  <data name="mnuAdmin.Text" xml:space="preserve">
+    <value>VCR.NET Recording Service &amp;konfigurieren</value>
+  </data>
+  <data name="mnuHibernateServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>273, 22</value>
+  </data>
+  <data name="mnuHibernateServer.Text" xml:space="preserve">
+    <value>D&amp;ienstrechner in den Schlafzustand</value>
+  </data>
+  <data name="toolStripMenuItem3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>270, 6</value>
+  </data>
+  <data name="mnuHibernateReset.Size" type="System.Drawing.Size, System.Drawing">
+    <value>168, 22</value>
+  </data>
+  <data name="mnuHibernateReset.Text" xml:space="preserve">
+    <value>Wie &amp;voreingestellt</value>
+  </data>
+  <data name="mnuHibernate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>273, 22</value>
+  </data>
+  <data name="mnuHibernate.Text" xml:space="preserve">
+    <value>Auslösen des &amp;Schlafzustands übergehen...</value>
+  </data>
+  <data name="mnuHibernateSep.Size" type="System.Drawing.Size, System.Drawing">
+    <value>270, 6</value>
+  </data>
+  <data name="mnuSettings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>273, 22</value>
+  </data>
+  <data name="mnuSettings.Text" xml:space="preserve">
+    <value>&amp;Überwachung konfigurieren</value>
+  </data>
+  <data name="mnuClose.Size" type="System.Drawing.Size, System.Drawing">
+    <value>273, 22</value>
+  </data>
+  <data name="mnuClose.Text" xml:space="preserve">
+    <value>Überwachung &amp;beenden</value>
+  </data>
+  <data name="trayMenu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>274, 270</value>
+  </data>
+  <data name="fileChooser.Filter" xml:space="preserve">
+    <value>Anwendungen|*.exe|Alle Dateien|*.*</value>
+  </data>
+  <data name="fileChooser.Title" xml:space="preserve">
+    <value>Anzeigeanwendung auswählen</value>
+  </data>
+</root>

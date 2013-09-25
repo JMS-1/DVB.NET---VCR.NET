@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Some parts of this configuration file is for demonstration purposes only. It is
+	strongly recommended to update the settings to fit the local installation. Future
+	versions of the VCR.NET Recording Service will allow to configure all dynamic
+	settings from within the Web Application.
+-->
+<configuration>
+  <appSettings>
+    <!-- Core Operating Parameters -->
+    <add key="Profiles" value="DVB-S2|Nexus" />
+    <add key="LoggingLevel" value="Full" />
+    <add key="TCPPort" value="81" />
+    <!-- Cleanup -->
+    <add key="ArchiveLifeTime" value="2" />
+    <add key="LogLifeTime" value="5" />
+    <!-- Paths -->
+    <add key="FileNamePattern" value="%SortableStart% %Job% (%Schedule%)" />
+    <add key="AdditionalRecorderPaths" value="v:\v1,v:\v2\" />
+    <add key="VideoRecorderDirectory" value="V:\VideoRecorder\" />
+    <!-- Hibernation -->
+    <add key="UseStandByForHibernation" value="True" />
+    <add key="UseExternalCardServer" value="True" />
+    <add key="MayHibernateSystem" value="True" />
+    <add key="HibernationDelay" value="30" />
+    <!-- Security -->
+    <add key="RequiredAdminRole" value="VCR.NET Administratoren" />
+    <add key="RequiredUserRole" value="VCR.NET Benutzer" />
+    <!-- Source Lists-->
+    <add key="MergeScanResult" value="True" />
+    <add key="ScanDuration" value="30" />
+    <add key="ScanInterval" value="7" />
+    <add key="ScanHours" value="6, 18" />
+    <add key="ScanJoinThreshold" value="" />
+    <!-- Program Guides -->
+    <add key="EPGStations" value="3sat [ZDFvision], ANIXE SD [BetaDigital], arte [ARD], Bayerisches FS Süd [ARD], BBC 1 London [BSkyB], BBC 2 England [BSkyB], BBC FOUR [BSkyB], BBC HD [BSkyB], BBC R4 Ex [BSkyB], BBC THREE [BSkyB], BR-alpha* [ARD], CBBC Channel [BSkyB], CBeebies [BSkyB], CBS Action [BSkyB] {52007-2311-2}, Channel 4 [BSkyB] {9211-2041-2}, Channel 5 [BSkyB] {6335-2045-2}, Das Erste [ARD], DAS VIERTE [BetaDigital], DMAX [BetaDigital], E4 [BSkyB] {8305-2042-2}, EinsExtra [ARD], EinsFestival [ARD], Einsfestival HD [ARD], EinsPlus [ARD], Film4 [BSkyB], horror channel [BSkyB], hr-fernsehen [ARD], ITV1 London [BSkyB], ITV2 [BSkyB], ITV3 [BSkyB], ITV4 [BSkyB], kabel eins [ProSiebenSat.1], KiKa [ZDFvision], MDR FIGARO [ARD MDR], MDR Sachsen [ARD], More4 [BSkyB] {8340-2042-2}, movies4men [BSkyB], movies4men 2 [BSkyB], N24 [ProSiebenSat.1], NDR FS HH [ARD], NICK/COMEDY [MTV Networks Europe], Phoenix [ARD], ProSieben [ProSiebenSat.1], rbb Berlin [ARD], RTL Television [RTL World], RTL2 [RTL World], SAT.1 [ProSiebenSat.1], SIXX [ProSiebenSat.1], Super RTL [RTL World], SWR Fernsehen RP [ARD], TELE 5 [BetaDigital], True Movies 1 [BSkyB], True Movies 2 [BSkyB], VIVA Germany [MTV Networks Europe], VOX [RTL World], WDR Köln [ARD], ZDF [ZDFvision], zdf.kultur [ZDFvision], zdf_neo [ZDFvision], ZDFinfo [ZDFvision]" />
+    <add key="EPGIncludeFreeSat" value="True" />
+    <add key="EPGHours" value="6, 18" />
+    <add key="EPGDuration" value="20" />
+    <add key="EPGInterval" value="" />
+    <add key="EPGJoinThreshold" value="" />
+    <!-- Various DVB.NET Settings -->
+    <add key="DisablePCRFromMPEG2Generation" value="False" />
+    <add key="DisablePCRFromH264Generation" value="False" />
+    <add key="TS.VideoDelay" value="-60000" />
+    <add key="TSStatistics" value="True" />
+    <add key="TS.PCRDelay" value="90000" />
+    <add key="CIOpenDelay" value="6000" />
+    <add key="Multicast.TTL" value="1" />
+    <add key="CISwitchDelay" value="0" />
+    <add key="FastTune" value="False" />
+    <!-- File Buffering -->
+    <add key="TSAudioBufferSize" value="0" />
+    <add key="TSSDTVBufferSize" value="0" />
+    <add key="TSHDTVBufferSize" value="0" />
+  </appSettings>
+</configuration>

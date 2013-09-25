@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="Extensions">
+            <Component Id="cmp84E2F9C13D3305E29E57D5E4019A1A4D" Guid="*">
+                <File Id="filBB38DE35F67882B5BEF82D5C87655043" KeyPath="yes" Source="$(var.ExtensionsPath)\ProjectX.bat.template" />
+            </Component>
+            <Directory Id="dir6DB5031F0FC565CC74EFD999F7DED0B4" Name="ProjectX">
+                <Component Id="cmpA4B861A5A69049848A5EFC4D7503C9C7" Guid="*">
+                    <File Id="fil5E4E525F9BB3C210AE51D1F76137EF5F" KeyPath="yes" Source="$(var.ExtensionsPath)\ProjectX\Demux.bat.template" />
+                </Component>
+                <Component Id="cmpB7A0AA42FE78518A89488AE1E28AAC9A" Guid="*">
+                    <File Id="fil093FB342EBC870F8193B497FDF9EE590" KeyPath="yes" Source="$(var.ExtensionsPath)\ProjectX\Starter.vbs" />
+                </Component>
+            </Directory>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="Extensions">
+            <ComponentRef Id="cmp84E2F9C13D3305E29E57D5E4019A1A4D" />
+            <ComponentRef Id="cmpA4B861A5A69049848A5EFC4D7503C9C7" />
+            <ComponentRef Id="cmpB7A0AA42FE78518A89488AE1E28AAC9A" />
+        </ComponentGroup>
+    </Fragment>
+</Wix>

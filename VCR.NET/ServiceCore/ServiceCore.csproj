@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <UsingTask TaskName="SetBuildTime" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup />
+    <Task>
+      <Using Namespace="System" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Text" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        const string path = @"VCRServer\VCRServer.cs";
+        const string prefix = "CURRENTDATE = \"";
+        string date = DateTime.Now.ToString(@"yyyy\/MM\/dd");
+        string content = File.ReadAllText(path);
+        int start = content.IndexOf(prefix) + prefix.Length;
+        int end = content.IndexOf('"', start);
+        File.WriteAllText(path, content.Substring(0, start) + date + content.Substring(end), Encoding.GetEncoding(1252));
+]]></Code>
+    </Task>
+  </UsingTask>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{669082EF-72B4-440A-A5AB-A74A9C273B8C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>JMS.DVBVCR.RecordingService</RootNamespace>
+    <AssemblyName>JMS.DVBVCR.ServiceCore</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\dvbnet4.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NoWarn>
+    </NoWarn>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\JMS.DVBVCR.ServiceCore.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+    <RegisterForComInterop>false</RegisterForComInterop>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NoWarn>
+    </NoWarn>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\JMS.DVBVCR.ServiceCore.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+    <RegisterForComInterop>false</RegisterForComInterop>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="JMS.DVB, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.1\RunTime\JMS.DVB.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Aliases>oldVersion</Aliases>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JMS.DVB.Administration.Profiles, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.1\Administration PlugIns\JMS.DVB.Administration.Profiles.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JMS.DVB.Algorithms, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.1\RunTime\JMS.DVB.Algorithms.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JMS.DVB.CardServerCore, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.1\RunTime\JMS.DVB.CardServerCore.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JMS.DVB.Common, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.1\GAC\JMS.DVB.Common.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="JMS.DVB.HardwareAbstraction, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.1\RunTime\JMS.DVB.HardwareAbstraction.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JMS.DVB.SITables, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.1\RunTime\JMS.DVB.SITables.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JMS.DVB.SourceManagement, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.1\RunTime\JMS.DVB.SourceManagement.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JMS.DVB.TS, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.1\RunTime\JMS.DVB.TS.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft ASP.NET\ASP.NET MVC 4\Packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft ASP.NET\ASP.NET MVC 4\Packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Net.Http">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft ASP.NET\ASP.NET MVC 4\Assemblies\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft ASP.NET\ASP.NET MVC 4\Assemblies\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ExtensionManager.cs" />
+    <Compile Include="Persistence\FileInformation.cs" />
+    <Compile Include="Planning\PlanContext.cs" />
+    <Compile Include="Planning\SourceListTask.cs" />
+    <Compile Include="Planning\ProgramGuideTask.cs" />
+    <Compile Include="Planning\RecordingPlanner.cs" />
+    <Compile Include="Planning\IRecordingPlannerSite.cs" />
+    <Compile Include="ProgramGuide\GuideEntryFilter.cs" />
+    <Compile Include="RestWebApi\ConfigurationController.cs" />
+    <Compile Include="RestWebApi\ConfigurationProfile.cs" />
+    <Compile Include="RestWebApi\EditController.cs" />
+    <Compile Include="RestWebApi\EditJob.cs" />
+    <Compile Include="RestWebApi\FileController.cs" />
+    <Compile Include="RestWebApi\GuideFilter.cs" />
+    <Compile Include="RestWebApi\GuideInfo.cs" />
+    <Compile Include="RestWebApi\HibernateController.cs" />
+    <Compile Include="RestWebApi\InfoJob.cs" />
+    <Compile Include="RestWebApi\InfoSchedule.cs" />
+    <Compile Include="RestWebApi\JobScheduleData.cs" />
+    <Compile Include="RestWebApi\EditSchedule.cs" />
+    <Compile Include="RestWebApi\PlanCurrent.cs" />
+    <Compile Include="RestWebApi\ProfileJobInfo.cs" />
+    <Compile Include="RestWebApi\ProtocolController.cs" />
+    <Compile Include="RestWebApi\ProtocolEntry.cs" />
+    <Compile Include="RestWebApi\SourceInformation.cs" />
+    <Compile Include="RestWebApi\ProfileSource.cs" />
+    <Compile Include="RestWebApi\ExceptionController.cs" />
+    <Compile Include="RestWebApi\GuideController.cs" />
+    <Compile Include="RestWebApi\GuideItem.cs" />
+    <Compile Include="RestWebApi\PlanException.cs" />
+    <Compile Include="RestWebApi\ProfileController.cs" />
+    <Compile Include="RestWebApi\ProfileInfo.cs" />
+    <Compile Include="RestWebApi\UserProfile.cs" />
+    <Compile Include="RestWebApi\UserProfileController.cs" />
+    <Compile Include="RestWebApi\PlanActivity.cs" />
+    <Compile Include="RestWebApi\ZappingSource.cs" />
+    <Compile Include="RestWebApi\ZappingService.cs" />
+    <Compile Include="RestWebApi\ZappingStatus.cs" />
+    <Compile Include="RestWebApi\ZappingController.cs" />
+    <Compile Include="RestWebApi\InfoController.cs" />
+    <Compile Include="RestWebApi\PlanController.cs" />
+    <Compile Include="RestWebApi\InfoService.cs" />
+    <Compile Include="VCRConfiguration.cs" />
+    <Compile Include="ProfileStateCollection.cs" />
+    <Compile Include="ProfileState.cs" />
+    <Compile Include="Requests\ZappingProxy.cs" />
+    <Compile Include="Requests\SourceScanProxy.cs" />
+    <Compile Include="Requests\ProgramGuideProxy.cs" />
+    <Compile Include="Requests\CardServerProxy.cs" />
+    <Compile Include="Exceptions\InvalidJobDataException.cs" />
+    <Compile Include="JobManager.cs" />
+    <Compile Include="ProgramGuide\ProgramGuideEntry.cs" />
+    <Compile Include="ProgramGuide\ProgramGuideEntries.cs" />
+    <Compile Include="ProgramGuide\OrderedEntries.cs" />
+    <Compile Include="ProgramGuide\ProgramGuideManager.cs" />
+    <Compile Include="Requests\RecordingProxy.cs" />
+    <Compile Include="VCRServer\VCRServer_Rest.cs" />
+    <Compile Include="VCRServer\LoggingLevel.cs" />
+    <Compile Include="LegacyUpgrades\Pre39\Job.cs" />
+    <Compile Include="LegacyUpgrades\Pre39\Schedule.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SerializationTools.cs" />
+    <Compile Include="SettingNames.cs" />
+    <Compile Include="WebServer\UserProfileManager.cs" />
+    <Compile Include="WebServer\StarterModule.cs" />
+    <Compile Include="VCRServer\VCRServer_Recording.cs" />
+    <Compile Include="VCRServer\VCRServer_Hibernate.cs" />
+    <Compile Include="VCRServer\VCRServer_Jobs.cs" />
+    <Compile Include="WebServer\UserProfileSettings.cs" />
+    <Compile Include="Win32Tools\TimerException.cs" />
+    <Compile Include="Tools.cs" />
+    <Compile Include="Persistence\VCRDay.cs" />
+    <Compile Include="Status\FullInfo.cs" />
+    <Compile Include="Persistence\VCRJob.cs" />
+    <Compile Include="VCRProfiles.cs" />
+    <Compile Include="Persistence\VCRRecordingInfo.cs" />
+    <Compile Include="Persistence\VCRSchedule.cs" />
+    <Compile Include="Persistence\VCRScheduleException.cs" />
+    <Compile Include="Status\ScheduleInfo.cs" />
+    <Compile Include="VCRServer\VCRServer.cs" />
+    <Compile Include="Status\Settings.cs" />
+    <Compile Include="Status\StreamInfo.cs" />
+    <Compile Include="WebServer\ContextAccessor.cs" />
+    <Compile Include="WebServer\Request.cs" />
+    <Compile Include="WebServer\ServerHost.cs" />
+    <Compile Include="WebServer\ServerRuntime.cs" />
+    <Compile Include="VCRServer\VCRServer_Logging.cs" />
+    <Compile Include="Win32Tools\LogonManager.cs" />
+    <Compile Include="Win32Tools\PowerManager.cs" />
+    <Compile Include="Win32Tools\WaitableTimer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Target Name="BeforeBuild">
+    <SetBuildTime />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

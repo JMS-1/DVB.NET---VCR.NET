@@ -1,0 +1,9 @@
+Rem Enter the Name of the Server INI (no interactive Post Processing et al)
+set ServerINI=X-Server.INI
+
+Rem Enter the Partition and the full Path to the ProjectX Installation
+c:
+cd C:\Program Files\ProjectX
+
+Rem Don't change this Line
+projectx.jar -ini %ServerINI% %1%

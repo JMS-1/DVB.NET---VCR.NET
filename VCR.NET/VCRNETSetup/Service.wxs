@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    
+    <ComponentGroup Id="Service">
+      
+      <!-- Installation des VCR.NET Recording Service Windows Dienstes. -->
+      <Component Id="ServiceInstall" Directory="BIN">
+
+        <!-- Installation der Dienstdatei. -->
+        <File Source="$(var.Service.TargetPath)" KeyPath="yes" />
+        <File Source="$(var.Service.TargetPath).config" />
+
+        <!-- Installation des Dienstes. -->
+        <ServiceInstall
+            Description="!(loc.SERVICEDESCRIPTION)"
+            DisplayName="!(loc.SERVICENAME)"
+            Name="VCR.NET Service"
+            Account="LocalSystem"
+            ErrorControl="normal"
+            Type="ownProcess"
+            Start="demand"
+            Vital="yes">
+          <ServiceDependency Id="HTTP"/>
+        </ServiceInstall>
+
+        <!-- De facto die Deinstallation des Dienstes. -->
+        <ServiceControl Id="SERVICEUNINSTALL" Stop="both" Remove="uninstall" Wait="yes" Name="VCR.NET Service" />
+        
+      </Component>
+      
+    </ComponentGroup>
+    
+  </Fragment>
+</Wix>

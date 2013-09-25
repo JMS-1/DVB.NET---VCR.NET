@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+
+    <!-- Sonderdateien -->    
+    <Component Id="PlugInFiles" Directory="PLUGINS"  Guid="8e126508-da44-4e01-a908-b22df8f6cd23">
+      <File Source="$(var.TVBrowserPlugIn.ProjectDir)Configuration\$(var.TVBrowserPlugIn.TargetName).reg" />
+      <File Source="$(var.TVBrowserPlugIn.ProjectDir)Configuration\$(var.TVBrowserPlugIn.TargetName).tcf" />
+    </Component>
+
+  </Fragment>
+</Wix>

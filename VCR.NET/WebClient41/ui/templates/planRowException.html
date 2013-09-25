@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <table>
+        <tr id="template">
+            <td>&nbsp;</td>
+            <td colspan="6">
+                <fieldset>
+                    <legend>Ausnahmeregel bearbeiten<a href="#faq;repeatingschedules"><img class="linkImage" src="ui/images/info.png" /></a></legend>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>Start</td>
+                                <td class="spaceColumn">&nbsp;</td>
+                                <td data-property="displayStart()"></td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>Ende</td>
+                                <td class="spaceColumn">&nbsp;</td>
+                                <td data-property="displayEnd()"></td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td data-validation-result="isDurationDeltaValid()">Dauer</td>
+                                <td class="spaceColumn">&nbsp;</td>
+                                <td><span data-property="displayDuration()"></span>&nbsp;Minute(n)</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>Startverschiebung</td>
+                                <td class="spaceColumn">&nbsp;</td>
+                                <td><span data-property="startDelta"></span>&nbsp;Minute(n)</td>
+                                <td>
+                                    <div id="startSlider" class="exceptionSlider"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Laufzeitanpassung</td>
+                                <td class="spaceColumn">&nbsp;</td>
+                                <td><span data-property="durationDelta"></span>&nbsp;Minute(n)</td>
+                                <td>
+                                    <div id="durationSlider" class="exceptionSlider"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="exceptionButtons">
+                                    <a id="clearButton" href="javascript:void(0)">Ursprüngliche Planung</a>
+                                    <a id="disableButton" href="javascript:void(0)">Nicht aufzeichnen</a>
+                                    <a id="sendButton" href="javascript:void(0)">Einstellungen übernehmen</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+
+
+

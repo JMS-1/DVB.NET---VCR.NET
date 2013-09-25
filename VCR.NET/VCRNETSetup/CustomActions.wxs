@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+
+    <!-- Die .NET Installationserweiterung wird in das CAB des MSI eingebettet und nicht lokal installiert. -->
+    <Binary Id="INSTALLERDLL" SourceFile="$(var.InstallerActions.TargetPath)" />
+
+    <!-- Übertragen von Installationsparameter in die Übergabeparameter der .NET Installationserweiterung. -->
+    <CustomAction Id="ASADMINDATA" Return="check" Property="ASADMIN" Value="AUTOSTARTMODE=[AUTOSTARTSERVICE];STARTSERVICE=[STARTSERVICE];ROOTDIR=[INSTALLFOLDER]" />
+    
+    <!-- Zuerst erfolgt der Aufruf einer Erweiterung im normalen (LocalSystem) Kontext der Installation, bei dem letztlich der Dienst laufbereit gemacht wird. -->
+    <CustomAction
+        BinaryKey="INSTALLERDLL"
+        DllEntry="AsAdmin"
+        Execute="commit"
+        Impersonate="no"
+        Return="check"
+        Id="ASADMIN"
+    />
+    
+    <!-- Die VCR.NET Übeerwachung hingegen muss im Kontext des Anwenders gestartet werden. -->
+    <CustomAction
+        ExeCommand="[TOOLS]$(var.ControlCenter.TargetName).exe /install"
+        Return="asyncNoWait"
+        Impersonate="yes"
+        Directory="TOOLS"
+        Execute="commit"
+        Id="STARTVCC"
+    />
+
+  </Fragment>
+</Wix>

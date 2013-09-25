@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <Fragment>
+
+    <DirectoryRef Id="Setup.Sources">
+      <Component Id="Setup.VCRNETSetup" Guid="*">
+        <File Id="Setup.VCRNETSetup" Source="VCRNETSetup.wixproj" />
+      </Component>
+      <Component Id="Setup.CustomActions" Guid="*">
+        <File Id="Setup.CustomActions" Source="CustomActions.wxs" />
+      </Component>
+      <Component Id="Setup.Deutsch" Guid="*">
+        <File Id="Setup.Deutsch" Source="Deutsch.wxl" />
+      </Component>
+      <Component Id="Setup.DirectoryTree" Guid="*">
+        <File Id="Setup.DirectoryTree" Source="DirectoryTree.wxs" />
+      </Component>
+      <Component Id="Setup.InstallationsOptionsDlg" Guid="*">
+        <File Id="Setup.InstallationsOptionsDlg" Source="InstallationsOptionsDlg.wxs" />
+      </Component>
+      <Component Id="Setup.Localization" Guid="*">
+        <File Id="Setup.Localization" Source="Localization.wxs" />
+      </Component>
+      <Component Id="Setup.Product" Guid="*">
+        <File Id="Setup.Product" Source="Product.wxs" />
+      </Component>
+      <Component Id="Setup.SampleFiles" Guid="*">
+        <File Id="Setup.SampleFiles" Source="SampleFiles.wxs" />
+      </Component>
+      <Component Id="Setup.Service" Guid="*">
+        <File Id="Setup.Service" Source="Service.wxs" />
+      </Component>
+      <Component Id="Setup.Shortcuts" Guid="*">
+        <File Id="Setup.Shortcuts" Source="Shortcuts.wxs" />
+      </Component>
+      <Component Id="Setup.WixSource" Guid="*">
+        <File Id="Setup.WixSource" Source="WixSource.wxs" />
+      </Component>
+      <Component Id="Setup.Wizard" Guid="*">
+        <File Id="Setup.Wizard" Source="Wizard.wxs" />
+      </Component>
+      <Component Id="Setup.AspNetWebApi" Guid="*">
+        <File Id="Setup.AspNetWebApi" Source="AspNetWebApi.wxs" />
+      </Component>
+    </DirectoryRef>
+
+    <ComponentGroup Id="Setup.Sources">
+      <ComponentRef Id="Setup.VCRNETSetup" />
+      <ComponentRef Id="Setup.CustomActions" />
+      <ComponentRef Id="Setup.Deutsch" />
+      <ComponentRef Id="Setup.DirectoryTree" />
+      <ComponentRef Id="Setup.InstallationsOptionsDlg" />
+      <ComponentRef Id="Setup.Localization" />
+      <ComponentRef Id="Setup.Product" />
+      <ComponentRef Id="Setup.SampleFiles" />
+      <ComponentRef Id="Setup.Service" />
+      <ComponentRef Id="Setup.Shortcuts" />
+      <ComponentRef Id="Setup.WixSource" />
+      <ComponentRef Id="Setup.Wizard" />
+      <ComponentRef Id="Setup.AspNetWebApi" />      
+    </ComponentGroup>
+
+  </Fragment>
+</Wix>

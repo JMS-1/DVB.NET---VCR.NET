@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>[Fragment]</title>
+</head>
+<body>
+    <div>
+        <div id="faqContents" data-title="Laufende Aufzeichnungen verändern">
+            Sobald eine Aufzeichnung gestartet wird kennt der VCR.NET Recording Service diese
+        in zweierlei Weise: da ist zum einen die ursprüngliche Programmierung der Aufzeichnung,
+        die im Regelfall unverändert bleibt. Es gibt aber auch eine zweite Sicht über die
+        gerade laufende<a href="#current"><img class="linkImage" src="ui/images/devices.png" /></a> Aufzeichnung.
+        In dieser wird etwa vermerkt, wenn der Anwender den Endzeitpunkt verschiebt.
+            Manchmal ist es wichtig zu verstehen, welche Veränderung den VCR.NET Recording Service beeinflussen.<br />
+            <br />
+            Der einfachste Fall ist es, die Programmierung einer Aufzeichnung zu verändern,
+        ohne die gerade aktive Ausführung anzurühren. In dieser Situation gilt folgende
+        einfache Regel: jede Veränderung wird ignoriert. Der VCR.NET Recording Service wird
+        die laufende Aufzeichnung wie ursprünglich programmiert beenden.<br />
+            <br />
+            Wird die laufende Ausführung verändert, so entfernt der VCR.NET Recording Service
+        die zugehörige Aufzeichnung aus der Planungsansicht<a href="#plan"><img class="linkImage" src="ui/images/plan.png" /></a>. Handelt
+        es sich um eine <a href="#faq;repeatingschedules">Serienaufzeichnung</a>, so erscheint
+        diese erst bei der nächsten Wiederholung im Plan. Dies kann verwirrend für den Anwender
+        sein, stört die Gesamtplanung im VCR.NET Recording Service allerdings nicht.       
+        </div>
+    </div>
+</body>
+</html>

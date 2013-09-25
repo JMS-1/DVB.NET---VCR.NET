@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <table>
+        <tr id="options">
+            <td class="editLabel">Besonderheiten:<a href="#faq;filecontents"><img class="linkImage" src="ui/images/info.png" /></a></td>
+            <td class="spaceColumn">&nbsp;</td>
+            <td>
+                <input data-property="includeDolby" id="ckDolby" type="checkbox" />Dolby Digital (AC3)
+                            <input data-property="allLanguages" id="ckLang" type="checkbox" />Alle Sprachen
+                            <input data-property="withVideotext" id="ckTTX" type="checkbox" />Videotext
+                            <input data-property="withSubtitles" id="ckSub" type="checkbox" />DVB Untertitel</td>
+        </tr>
+        <tr id="source">
+            <td class="editLabel">Quelle:<a href="#faq;sourcechooser"><img class="linkImage" src="ui/images/info.png" /></a></td>
+            <td class="spaceColumn">&nbsp;</td>
+            <td>
+                <select id="selSource" />
+                <select id="filterName">
+                    <option value="">(Zuletzt verwendet)</option>
+                    <option value="AC">A B C</option>
+                    <option value="DF">D E F</option>
+                    <option value="GI">G H I</option>
+                    <option value="JL">J K L</option>
+                    <option value="MO">M N O</option>
+                    <option value="PR">Q P R</option>
+                    <option value="SU">S T U</option>
+                    <option value="VX">V W X</option>
+                    <option value="YZ">Y Z</option>
+                    <option value="09">0 1 2 3 4 5 6 7 8 9</option>
+                    <option value="!">(Andere)</option>
+                    <option value="*">(Alle Quellen)</option>
+                </select>
+                <select id="filterType">
+                    <option value="RT">Alle Quellen</option>
+                    <option value="R">Nur Radio</option>
+                    <option value="T">Nur Fernsehen</option>
+                </select>
+                <select id="filterEncryption">
+                    <option value="FP">Alle Quellen</option>
+                    <option value="P">Nur verschlüsselte Quellen</option>
+                    <option value="F">Nur unverschlüsselte Quellen</option>
+                </select><input id="sourceName" data-property="sourceName" data-validation-target="#selSource" type="hidden" /></td>
+        </tr>
+    </table>
+</body>
+</html>

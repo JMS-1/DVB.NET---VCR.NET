@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>[Fragment]</title>
+</head>
+
+<body>
+    <div>
+        <div id="mainContent">
+            Diese Ansicht zeigt alle im VCR.NET Recording Service gespeicherten Aufträge.<a href="#faq;archive"><img class="linkImage" src="ui/images/info.png" /></a>
+            Je nach Auswahl beschränkt sich die Liste entweder auf die noch aktiven Aufträge oder bereits ausgeführte Aufträge, die bereits in das
+            Archiv übertragen wurden.     
+            <div class="inlineHelp">
+                <h3>Erläuterungen zur Bedienung</h3>
+                <div>
+                    Zu jedem Auftrag wir die Liste der zugeordneten Aufzeichnungen angezeigt.<a href="#faq;jobsandschedules"><img class="linkImage" src="ui/images/info.png" /></a>
+                    Durch Auswahl einer solchen Aufzeichnung
+                    kann unmittelbar zur Pflege der Daten dieser Aufzeichnung gewechselt werden. Der jeweils erste Eintrag unterhalb
+                    des Auftrags selbst wird dabei verwendet, um einem bereits existierenden Auftrag eine ganz neue Aufzeichnung
+                    hinzu zu fügen.
+                </div>
+            </div>
+
+            <div id="filter" class="jobStorage">
+                <input type="radio" id="selActive" name="filter" /><label for="selActive" class="toggleButton">Aktiv</label>
+                <input type="radio" id="selArchive" name="filter" /><label for="selArchive" class="toggleButton">Archiviert</label>
+            </div>
+
+            <fieldset>
+                <legend class="invisible" />
+                <table class="jobTable">
+                    <tbody id="jobTable"></tbody>
+                </table>
+            </fieldset>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>[Fragment]</title>
+</head>
+
+<body>
+    <div>
+        <div id="mainContent">
+            Die Programmzeitschrift<a href="#faq;epg"><img class="linkImage" src="ui/images/info.png" /></a>
+            zeigt pro Gerät alle Sendungen der Quellen, für die eine Sammlung der Daten konfiguriert 
+            wurde.<a href="#faq;epgconfig"><img class="linkImage" src="ui/images/info.png" /></a> Über
+            diese Ansicht ist es nicht nur möglich, sich die Details einzelner Sendungen anzeigen zu lassen. Vielmehr ist es dabei
+            auch sofort möglich, eine neue Aufzeichnung anzulegen.
+            <div class="inlineHelp">
+                <h3>Erläuterungen zur Bedienung</h3>
+                <div>
+                    <p>
+                        Sollten mehrere Geräte eingesetzt werden, so kann für jedes Gerät die Programmzeitschrift separat abgefragt werden. 
+                    Abhängig von der konkret eingesetzten DVB Hardware können sich die Verfügbaren Sender durchaus unterscheiden. Nach
+                    der Auswahl des Gerätes kann direkt daneben direkt eine Vorauswahl der Quelle erfolgen worauf hin dann nur die
+                    Sendungen dieser Quelle angezeigt werden.                  
+                    </p>
+                    <p>
+                        In der Grundeinstellung wird der darunter angegebene Suchtext verwendet, um die Anzeige auf die Sendungen zu
+                    beschränken, bei denen der Suchtext entweder im Namen oder in der Beschreibung vorkommt. Die Suche in der
+                    Beschreibung kann durch den Schalter neben dem Suchtext auch deaktiviert werden, so dass nur noch Sendungen
+                    berücksichtigt werden, bei denen der Suchtext im Namen vorkommt.
+                    </p>
+                    <p>
+                        Mit der Auswahl von Tag und Uhrzeit wird die Anzeige der Sendungen zusätzlich auf die Sendungen beschränkt,
+                    die frühestens zum gewählten Zeitpunkt beginnen. In der Voreinstellung werden alle Sendungen berücksichtigt,
+                    die zum aktuellen Zeitpunkt noch nicht beendet sind - mit den Schaltflächen 'Jetzt' und 'Neue Suche' kann 
+                    jederzeit in diesen Zustand zurück gewechselt werden.
+                    </p>
+                    <p>
+                        Da die Anzahl der Sendungen im Allgemeinen größer ist als die konfigurierte Anzahl der in der Liste anzuzeigenden
+                    Einträgen ist es über weitere Schaltflächen möglich, zur jeweils nächsten oder vorherigen respektive ersten
+                    Seite zu wechseln.
+                    </p>
+                    <p>
+                        Durch Anwahl des Namens einer Sendung werden dazu Detailinformationen eingeblendet. Ist die Sendung noch
+                    nicht vorbei, so kann hierüber auch direkt eine zugehörige Aufzeichnung angelegt werden. Dabei werden die
+                    konfigurierten Vor- und Nachlaufzeiten berücksichtigt. In der Voreinstellung wird bei dieser Aktion ein
+                    neuer Auftrag angelegt, es ist allerdings auch möglich zu einem existierenden Auftrag des gerade gewählten
+                    Geräteprofils eine weitere Aufzeichnung hinzu zu fügen.
+                    </p>
+                </div>
+            </div>
+
+            <fieldset>
+                <legend>Einschränkungen festlegen</legend>
+                <div class="guideSelection">
+                    Gerät:
+                <select id="selDevice"></select>
+                    Quelle:
+                <select id="selSource"></select>
+                </div>
+                <div class="guideSelection">
+                    Suche nach:
+                <span class="optionButton">
+                    <input type="text" id="searchText" size="40" />
+                    <input type="checkbox" id="withContent" checked="checked" /><label for="withContent" class="toggleButton">Auch in Beschreibung suchen</label>
+                    <a id="resetAll" href="javascript:void(0)">Neue Suche</a>
+                    <a id="favorites" href="javascript:void(0)">Favoriten</a>
+                </span>
+                </div>
+                <div class="guideDays guideSelection">
+                    Datum: <span class="optionButton" id="selectDay"></span>
+                </div>
+                <div class="guideHours guideSelection">
+                    Start ab: <span class="optionButton"><a href="javascript:void(0)" data-hour="0">00:00</a>
+                        <a href="javascript:void(0)" data-hour="6">06:00</a>
+                        <a href="javascript:void(0)" data-hour="12">12:00</a>
+                        <a href="javascript:void(0)" data-hour="18">18:00</a>
+                        <a href="javascript:void(0)" data-hour="20">20:00</a>
+                        <a href="javascript:void(0)" data-hour="22">22:00</a></span>
+                </div>
+            </fieldset>
+
+            <div class="displayArea invisible">
+                <div class="optionButton guideNavigation">
+                    <a class="firstButton" href="javascript:void(0)">Erste Seite</a>
+                    <a class="prevButton" href="javascript:void(0)">Vorherige Seite</a>
+                    <a class="nextButton" href="javascript:void(0)">Nächste Seite</a>
+                </div>
+                <table class="dataTable">
+                    <thead>
+                        <tr>
+                            <td>Beginn</td>
+                            <td>Ende</td>
+                            <td>Quelle</td>
+                            <td colspan="3" class="guideName">Name</td>
+                        </tr>
+                    </thead>
+
+                    <tbody id="guideTable"></tbody>
+                </table>
+                <div class="optionButton guideNavigation">
+                    <a class="firstButton" href="javascript:void(0)">Erste Seite</a>
+                    <a class="prevButton" href="javascript:void(0)">Vorherige Seite</a>
+                    <a class="nextButton" href="javascript:void(0)">Nächste Seite</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

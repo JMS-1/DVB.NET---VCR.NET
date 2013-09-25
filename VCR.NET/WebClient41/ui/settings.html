@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>[Fragment]</title>
+</head>
+
+<body>
+    <div>
+        <div id="mainContent">
+            Hier werden im Wesentlichen Voreinstellungen für einzelne Teil der Web Anwendung des VCR.NET Recording Service
+            festgelegt.
+            <table id="settingsData" class="settingsTable">
+                <tr>
+                    <td>
+                        <div class="inlineHelp">
+                            <h3>Erläuterungen</h3>
+                            <div>
+                                <p>
+                                    Im Aufzeichnungsplan<a href="#plan"><img class="linkImage" src="ui/images/plan.png" /></a> werden die Daten aller
+                            geplanten Aufzeichnungen in einer Liste angezeigt. Um eine gewisse Übersichtlichkeit zu erhalten wird allerdings
+                            nur eine begrenzte Anzahl von Aufzeichnungen auf einmal angezeigt. Die im Folgenden angezeigte Zahl legt fest,
+                            wie viele Tage pro Seite im Aufzeichnungsplan berücksichtigt werden sollen.
+                                </p>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Anzahl der Vorschautage im Aufzeichnungsplan:
+                        <input type="text" data-property="planDaysToShow" size="3" /></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="inlineHelp">
+                            <h3>Erläuterungen</h3>
+                            <div>
+                                <p>
+                                    Bei der Programmierung neuer Aufzeichnungen können eine ganze Reihe von Einstellungen verwendet werden, 
+                                    die bei der Auswahl der zu verwendenden Quelle helfen.<a href="#faq;sourcechooser"><img class="linkImage" src="ui/images/info.png" /></a>
+                                    Hier wird die gewünschte Vorbelegung dieser Einstellungen festgelegt.
+                                </p>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Inhalte der Senderlisten bei Aufzeichnungen:
+                        <select data-property="defaultType">
+                            <option value="RT">Alle Quellen</option>
+                            <option value="R">Nur Radio</option>
+                            <option value="T">Nur Fernsehen</option>
+                        </select>
+                        <select data-property="defaultEncryption">
+                            <option value="FP">Alle Quellen</option>
+                            <option value="P">Nur verschlüsselte Quellen</option>
+                            <option value="F">Nur unverschlüsselte Quellen</option>
+                        </select></td>
+                </tr>
+                <tr>
+                    <td>Maximale Größe der Liste zuletzt verwendeter Sendern:
+                        <input type="text" data-property="maximumRecentSources" size="3" /></td>
+                </tr>
+                <tr>
+                    <td>Bevorzugte Zusatzoptionen für Aufzeichnungen:
+                        <input type="checkbox" data-property="defaultDolby" />Dolby Digital (AC3)
+                        <input type="checkbox" data-property="defaultAllLanguages" />Alle Sprachen
+                        <input type="checkbox" data-property="defaultVideotext" />Videotext
+                        <input type="checkbox" data-property="defaultDVBSubtitles" />DVB Untertitel
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="inlineHelp">
+                            <h3>Erläuterungen</h3>
+                            <div>
+                                <p>
+                                    Wird eine aktive Aufzeichnung<a href="#current"><img class="linkImage" src="ui/images/devices.png" /></a>
+                                    vorzeitig beendet, so wird der VCR.NET Recording Service prüfen, ob
+                                    der Rechner in den Schlafzustand versetzt werden soll.<a href="#faq;hibernation"><img class="linkImage" src="ui/images/info.png" /></a>
+                                    Diese Verhalten kann pro Abbruch gesondert deaktiviert werden und die folgende Einstellung legt
+                                    das bevorzugte Verhalten fest.
+                                </p>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" data-property="noHibernateOnAbort" />Beim Abbrechen von Aufzeichnungen bevorzugt den Schlafzustand unterdrücken</td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="inlineHelp">
+                            <h3>Erläuterungen</h3>
+                            <div>
+                                <p>
+                                    Wird eine neue Aufzeichnung aus der Programmzeitschrift<a href="#faq;epg"><img class="linkImage" src="ui/images/info.png" /></a>
+                                    heraus angelegt, so können hier vor allem die Vor- und Nachlaufzeiten der Aufzeichnung relativ zu den exakten
+                                    Daten aus der Programmzeitschrift festgelegt werden. Es handelt sich allerdings nur um Vorschlagswerte, die
+                                    in den Daten der neuen Aufzeichnung jederzeit korrigiert werden können. Da Sendungen in den seltensten Fällen
+                                    genau wie von den Sendeanstalten geplant beginnen, macht der Einsatz dieser Zeiten im Allgemeinen sehr viel 
+                                    Sinn - selbst wenn wie bei der Tagesschau zumindest der Startzeitpunkt sehr exakt festliegt kann es immer noch
+                                    sein, dass der Rechner, auf dem der VCR.NET Recording Service ausgeführt wird, nicht mit dieser genauen Zeit
+                                    synchronisiert ist.
+                                </p>
+                                <p>
+                                    Hier wird auch festgelegt, wie viele Einträge die Programmzeitschrift<a href="#guide"><img class="linkImage" src="ui/images/guide.png" /></a>
+                                    pro Seite anzeigen soll. Zu große Werte erhöhen nicht nur die Zeit zur Anzeige einer Seite sondern sorgen oft
+                                    auch dafür, dass nicht alle Sendungen einer Seite auf einen Blick erfasst werden können.
+                                </p>
+                                <p>
+                                    Wenn die Programmierung einer Aufzeichnung aus der Programmzeitschrift abgeschlossen ist wird normalerweise
+                                    zum Aufzeichnungsplan<a href="#plan"><img class="linkImage" src="ui/images/plan.png" /></a>
+                                    gewechselt. Ist die unten als letztes angebotene Einstellung aktiviert wird in diesem Fall erneut die
+                                    Programmzeitschrift aufgerufen.
+                                </p>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Anzahl der Einträge pro Seite in der Programmzeitschrift:
+                        <input type="text" data-property="rowsInGuide" size="3" /></td>
+                </tr>
+                <tr>
+                    <td>Vorlaufzeit bei Programmierung über die Programmzeitschrift (in Minuten):
+                        <input type="text" data-property="guidePreTime" size="3" /></td>
+                </tr>
+                <tr>
+                    <td>Nachlaufzeit bei Programmierung über die Programmzeitschrift (in Minuten):
+                        <input type="text" data-property="guidePostTime" size="3" /></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" data-property="guideAfterAdd" />Nach Anlegen einer neuen Aufzeichnung zurück zur Programmzeitschrift</td>
+                </tr>
+            </table>
+            <a id="settingsUpdateButton" href="javascript:void(0)" class="editButtons">Aktualisieren</a>
+        </div>
+    </div>
+</body>
+
+</html>

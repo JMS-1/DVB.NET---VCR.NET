@@ -1,0 +1,660 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>[Fragment]</title>
+</head>
+
+<body>
+    <div>
+        <div id="mainContent">
+            <div class="invisible serverRestart">
+                Der VCR.NET Recording Service startet nun neu und steht in Kürze wieder zur Verfügung.
+            </div>
+            <div id="adminTabs" class="adminView">
+                <ul>
+                    <li><a href="#security">Sicherheit</a></li>
+                    <li><a href="#directories">Verzeichnisse</a></li>
+                    <li><a href="#devices">Geräte</a></li>
+                    <li><a href="#guide">Programmzeitschrift</a></li>
+                    <li><a href="#sources">Quellen</a></li>
+                    <li><a href="#rules">Planungsregeln</a></li>
+                    <li><a href="#other">Sonstiges</a></li>
+                </ul>
+                <div id="security">
+                    <h2>Auswahl der Benutzergruppen</h2>
+                    <div>
+                        Der VCR.NET Recording Service unterscheidet zwischen regulären Anwendern, die Aufzeichnungen anlegen, ändern und entfernen dürfen 
+                        und Administratoren, die zusätzlich sämtliche Betriebsparameter verändern dürfen.
+                        <div class="inlineHelp">
+                            <h3>Erläuterungen zur Bedienung</h3>
+                            <div>
+                                <p>
+                                    In der Voreinstellung sind alle Windows Benutzer sowohl reguläre Anwender als auch Administratoren.
+                                    Die Auswahllisten zeigen jeweils alle Windows Benutzergruppen des lokalen Rechners und erlauben 
+                                    eine einfache Zuordnung passend zur jeweiligen Anforderung - der VCR.NET Recording Service unterstützt
+                                    die Verwendung von Domänengruppen nicht. Der jeweils erste Eintrag der Listen erlaubt die Rückkehr
+                                    zur Voreinstellung. Die Änderung wird erst nach dem Betätigen der Schaltfläche aktiv, ein Neustart des
+                                    VCR.NET Dienstes ist nicht notwendig.
+                                </p>
+                                <p>
+                                    Man beachte, dass ein VCR.NET Administrator auch Rechte besitzt, die über den eigentlichen Betrieb
+                                    des VCR.NET Recording Service hinaus gehen. So kann er etwa bei der Auswahl der Aufzeichnungsverzeichnisse
+                                    im Allgemeinen sämtliche Verzeichnisse sehen, die auf dem Rechner vorhanden sind - einschließlich der
+                                    Verzeichnisse, die einem normalen Anwender üblicherweise verborgen bleiben.
+                                </p>
+                            </div>
+                        </div>
+                        <table>
+                            <tr>
+                                <td>Benutzer:</td>
+                                <td>
+                                    <select id="selUserGroup" data-property="users" class="groupSelector">
+                                        <option value="">(Alle Benutzer)</option>
+                                    </select></td>
+                            </tr>
+                            <tr>
+                                <td>Administratoren:</td>
+                                <td>
+                                    <select id="selAdminGroup" data-property="admins" class="groupSelector">
+                                        <option value="">(Alle Benutzer)</option>
+                                    </select></td>
+                            </tr>
+                        </table>
+                        <a id="updateSecurity" href="javascript:void(0)" class="editButtons">Ändern</a>
+                    </div>
+                </div>
+                <div id="directories">
+                    <h2>Aufzeichnungsverzeichnisse und Dateinamen</h2>
+                    <div>
+                        Da Aufzeichnungsdateien von erheblicher Größe sein können erlaubt es der VCR.NET Recording Service für
+                        diesen Zweck separate Verzeichnisse festzugelegen. Dadurch können dann zum Beispiel gesonderte Festplatten
+                        oder Partitionen für Aufzeichnungen genutzt werden. Zusätzlich kann hier definiert werden, wie sich die
+                        Namen von Aufzeichnungsdateien aus den Daten einer Aufzeichnung zusammensetzen sollen.
+                        <div class="inlineHelp">
+                            <h3>Erläuterungen zur Bedienung</h3>
+                            <div>
+                                <p>
+                                    Im oberen Teil wird die Liste der Verzeichnisse angezeigt, die zurzeit als Aufzeichnunsverzeichnisse
+                                    beim Anlegen eines neuen Auftrags ausgewählt werden können. Durch Auswählen eines oder mehrere
+                                    Verzeichnisse können diese aus der Liste entfernt werden und stehen nicht mehr als Ziel für
+                                    Aufzeichnungen zur Verfügung. Man beachte, dass dies auch bereits früher programmierte Aufträge
+                                    betrifft: sollten diese ein Aufzeichnungsverzeichnis verwenden, dass nicht mehr zugelassen ist,
+                                    so kann die Aufzeichnung nicht durchgeführt werden. 
+                                </p>
+                            </div>
+                        </div>
+                        <table class="directoryBrowser">
+                            <tr>
+                                <td colspan="2">
+                                    <select id="recordingDirectories" size="10" multiple="multiple"></select></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><a id="removeDirectory" href="javascript:void(0)" class="editButtons directoryButtons">Verzeichnisse entfernen</a></td>
+                            </tr>
+                        </table>
+                        <div class="inlineHelp">
+                            <h3>Erläuterungen zur Bedienung</h3>
+                            <div>
+                                <p>
+                                    Die Liste der Aufzeichnungsverzeichnisse kann durch Auswahl eines Verzeichnisses oder durch
+                                    direkte Eingabe eines Netzwerkpfades erweitert werden. Die Navigation durch die Verzeichnisstruktur
+                                    des Rechners, auf dem der VCR.NET Recording Service läuft, erfolgt unmittelbar durch Auswahl
+                                    eines Unterverzeichnisses in der angebotenen Liste. Mit der Schaltfläche direkt darunter kann
+                                    auf das jeweils übergeordnete Verzeichnis zurück gewechselt werden. 
+                                </p>
+                                <p>
+                                    Wird das Hinzufügen eines Verzeichnisses gewählt, so wird die Eingabe eines Netzwerkverzeichnisses
+                                    bevorzugt verwendet. Dabei wird dann zusätzlich geprüft, ob das eingegebene Verzeichnis auch vom
+                                    VCR.NET Dienst angesprochen werden kann. Ist dies der Fall, so wird es in die Liste der Aufzeichnungsverzeichnisse
+                                    übernommen und ansonsten ein Fehler angezeigt. Ist die Eingabe leer, so wird das ausgewählte 
+                                    Verzeichnis des Servers übernommen. 
+                                </p>
+                                <p>
+                                    Die Übernahme der Änderungen erfolgt erst, wenn dies durch Auswahl der entsprechenden Schaltfläche
+                                    explizit angefordert wird. Ist zu diesem Zeitpunkt die Liste der Aufzeichnungsverzeichnisse leer,
+                                    so wird ein Verzeichnis im Installationsverzeichnis des VCR.NET Recordings Service verwendet - es
+                                    wird aber dringend empfohlen, immer mindestens ein Aufzeichnungsverzeichnis festzulegen. Änderungen
+                                    an den Aufzeichnungsverzeichnissen oder dem Namensmuster für Aufzeichnungsdateien erfordern keinen
+                                    Neustart des VCR.NET Dienstes.
+                                </p>
+                            </div>
+                        </div>
+                        <fieldset>
+                            <legend>Neues Verzeichnis</legend>
+                            <table class="directoryBrowser">
+                                <tr>
+                                    <td>Netzwerk-Share:</td>
+                                    <td>
+                                        <input id="networkShare" size="75" /></td>
+                                </tr>
+                                <tr>
+                                    <td><em>oder</em></td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr class="serverDir">
+                                    <td>Server-Verzeichnis:</td>
+                                    <td>
+                                        <select id="browseDirectory"></select></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><a id="toParentDir" href="javascript:void(0)" class="editButtons directoryButtons">Übergeordnetes Verzeichnis</a><a id="acceptDir" href="javascript:void(0)" class="editButtons directoryButtons">Verzeichnis hinzufügen</a></td>
+                                </tr>
+                            </table>
+                        </fieldset>
+                        <div class="adminSetting adminSettingGap">
+                            Muster für Dateinamen:
+                            <input id="filePattern" size="72" data-property="pattern" />
+                        </div>
+                        <div class="inlineHelp">
+                            <h3>Mögliche Platzhalter in den Dateinamen</h3>
+                            <div>
+                                <p>
+                                    Für jede Aufzeichnung wird im Allgemeinen genau eine Aufzeichnungsdatei 
+                                    erstellt.<a href="#faq;numberoffiles"><img class="linkImage" src="ui/images/info.png" /></a>
+                                    Der VCR.NET Recording Service 
+                                    nutzt die Daten der Programmierung sowie weitere Umgebungsparameter wie die aktuelle Uhrzeit zur Erzeugung eines 
+                                    Dateinamens. Die Regeln zur Komposition dieses Namens können frei konfiguriert werden, es wird allerdings dringend 
+                                    empfohlen ein Schema zu wählen, das eine Eindeutigkeit der Dateinamen garantiert - ohne Einbeziehung des Zeitpunktes 
+                                    der Aufzeichnung kann es etwa leicht dazu kommen, dass eine Aufzeichnung die Aufzeichnungsdatei eine frühere Ausführung 
+                                    überschreibt.
+                                </p>
+                                <table class="filePatternTable">
+                                    <thead>
+                                        <tr>
+                                            <td>Regel</td>
+                                            <td>&nbsp;</td>
+                                            <td>Bedeutung (in Klammern einige Beispiele)</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>%Job%</td>
+                                            <td>&nbsp;</td>
+                                            <td>Name des Auftrags zur Aufzeichnung (James Bond)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>%Schedule%</td>
+                                            <td>&nbsp;</td>
+                                            <td>Name der Aufzeichnung (Octupussy)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>%Start%</td>
+                                            <td>&nbsp;</td>
+                                            <td>Beginn der Aufzeichnung (06-12-2006 13-43-22)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>%Duration%</td>
+                                            <td>&nbsp;</td>
+                                            <td>Dauer der Aufzeichnung in Minuten</td>
+                                        </tr>
+                                        <tr>
+                                            <td>%AllAudio%</td>
+                                            <td>&nbsp;</td>
+                                            <td><em>MultiLang</em>, wenn alle MP2 Sprachen mit aufgezeichnet wurden, sonst leer</td>
+                                        </tr>
+                                        <tr>
+                                            <td>%AC3%</td>
+                                            <td>&nbsp;</td>
+                                            <td><em>AC3</em>, wenn der Dolby Digital Ton mit aufgezeichnet wurde, sonst leer</td>
+                                        </tr>
+                                        <tr>
+                                            <td>%TTX%</td>
+                                            <td>&nbsp;</td>
+                                            <td><em>TTX</em>, wenn der Videotext mit aufgezeichnet wurde, sonst leer</td>
+                                        </tr>
+                                        <tr>
+                                            <td>%DVBSub%</td>
+                                            <td>&nbsp;</td>
+                                            <td><i>DVBSUB</i>, wenn DVB Untertitel mit aufgezeichnet wurden, sonst leer</td>
+                                        </tr>
+                                        <tr>
+                                            <td>%StationFull%</td>
+                                            <td>&nbsp;</td>
+                                            <td>Vollständiger, normalerweise eindeutiger Name des Senders (RTL2 [RTL World])</td>
+                                        </tr>
+                                        <tr>
+                                            <td>%Transponder%</td>
+                                            <td>&nbsp;</td>
+                                            <td>Name des Anbieters (RTL World)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>%Station%</td>
+                                            <td>&nbsp;</td>
+                                            <td>Name des Senders (RTL2)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>%Profile%</td>
+                                            <td>&nbsp;</td>
+                                            <td>Name des verwendeten DVB.NET Geräteprofils (Nexus)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>%Audio%</td>
+                                            <td>&nbsp;</td>
+                                            <td>Optionaler Name der primären Tonspur (Deutsch [402])</td>
+                                        </tr>
+                                        <tr>
+                                            <td>%SortableStart%</td>
+                                            <td>&nbsp;</td>
+                                            <td>Beginn der Aufzeichnung (2006-12-06 13-43-22)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>%SortableDate%</td>
+                                            <td>&nbsp;</td>
+                                            <td>Datum, an dem die Aufzeichnung begonnen hat (2006-12-06)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>%Date%</td>
+                                            <td>&nbsp;</td>
+                                            <td>Datum, an dem die Aufzeichnung begonnen hat (06-12-2006)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>%Time%</td>
+                                            <td>&nbsp;</td>
+                                            <td>Uhrzeit zu der die Aufzeichnung begonnen hat (13-43-22)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>%Year%</td>
+                                            <td>&nbsp;</td>
+                                            <td>Jahr (vierstellig), in dem die Aufzeichnung begonnen hat (2006)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>%Minute%</td>
+                                            <td>&nbsp;</td>
+                                            <td>Minute (zweistellig), in der die Aufzeichnung begonnen hat (43)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>%Second%</td>
+                                            <td>&nbsp;</td>
+                                            <td>Sekunde (zweistellig), zu der die Aufzeichnung begonnen hat (22)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>%Month%</td>
+                                            <td>&nbsp;</td>
+                                            <td>Monat (zweistellig), in dem die Aufzeichnung begonnen hat (12)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>%Hour%</td>
+                                            <td>&nbsp;</td>
+                                            <td>Stunde (zweistellig), in der die Aufzeichnung begonnen hat (13)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>%Day%</td>
+                                            <td>&nbsp;</td>
+                                            <td>Tag im Monat (zweistellig), an dem die Aufzeichnung begonnen hat (06)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <a id="updateDirectory" href="javascript:void(0)" class="editButtons">Ändern</a>
+                    </div>
+                </div>
+                <div id="devices">
+                    <h2>Aktivierung von DVB.NET Geräteprofilen</h2>
+                    <div>
+                        Für den VCR.NET Recording Service kann festgelegt werden, welche der auf dem zugehörigen Rechner
+                        installierten DVB.NET<a href="#faq;dvbnet"><img class="linkImage" src="ui/images/info.png" /></a>
+                        Geräteprofile für Aufzeichnungen verwendet werden dürfen. Eines dieser Geräte
+                        muss dann als bevorzugtes Gerät festgelegt werden.
+                        <div class="inlineHelp">
+                            <h3>Erläuterungen zur Bedienung</h3>
+                            <div>
+                                <p>
+                                    Die Tabelle zeigt alle DVB.NET Geräte des Rechners, auf dem der VCR.NET Dienst läuft. Über
+                                    die erste Spalte können beliebig viele davon für Aufzeichnungen durch den VCR.NET Recording
+                                    Service freigeschaltet werden. Eines dieser Geräte muss dann zusätzlich als bevorzugtes
+                                    Gerät festgelegt werden. Dieses bevorzugte Gerät wird zum Beispiel bei neuen Aufträgen
+                                    aber auch beim Aufruf der Programmzeitschrift als Vorauswahl verwendet.
+                                </p>
+                                <p>
+                                    Zusätzlich können für jedes Gerät auch einige Geräteparameter festgelegt werden - alternativ
+                                    zur direkten Pfelge über die <a href="http://www.psimarron.net/DVBNET/html/dialogrecording.html" target="_blank">DVB.NET 
+                                    Konfiguration und Administration</a>. Hier vorgenomme Änderungen werden für alle Geräte übernommen,
+                                    selbst wenn VCR.NET diese nicht verwendet. Grundsätzlich werden Änderungen in der Tabelle erst
+                                    durch eine explizite Bestätigung über die entsprechende Schaltfläche übernommen. Änderungen an
+                                    den Geräten erfordern fast immer einen Neustart des VCR.NET Dienstes.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="adminSetting">
+                            Bevorzugtes Gerät (zum Beispiel für neue Aufzeichnungen):
+                            <select id="selDefaultProfile" data-property="defaultProfile"></select>
+                        </div>
+                        <table class="dataTable">
+                            <thead>
+                                <tr>
+                                    <td>Verwenden</td>
+                                    <td>Name</td>
+                                    <td>Priorität</td>
+                                    <td>Entschlüsselung</td>
+                                    <td>Quellen</td>
+                                </tr>
+                            </thead>
+                            <tbody id="deviceList">
+                            </tbody>
+                        </table>
+                        <a id="updateDevices" href="javascript:void(0)" class="editButtons">Ändern und neu Starten</a>
+                    </div>
+                </div>
+                <div id="guide">
+                    <h2>Einstellungen zum Aufbau der Programmzeitschrift</h2>
+                    <div>
+                        Auf Wunsch kann der VCR.NET Recording Service die Elektronische Programmzeitschrift (EPG)<a href="#faq;epg"><img class="linkImage" src="ui/images/info.png" /></a>
+                        periodisch aktualisieren<a href="#faq;epgconfig"><img class="linkImage" src="ui/images/info.png" /></a> und
+                        dann zur Programmierung von neuen Aufzeichnungen anbieten.<a href="#edit"><img class="linkImage" src="ui/images/new.png" /></a>
+                        Hier werden die Eckdaten für die Aktualisierung festgelegt.
+                        <div class="adminSetting adminSettingGap">
+                            <input type="checkbox" data-property="activated" />Aktualisierung aktivieren
+                        </div>
+                        <div id="guideForm" class="invisible adminSetting">
+                            <div class="inlineHelp">
+                                <h3>Erläuterungen zur Bedienung</h3>
+                                <div>
+                                    <p>
+                                        Der VCR.NET Recording Service verwaltet eine geräteübergreifende Liste von Quellen, die in der
+                                        Programmzeitschrift zu berücksichtigen sind. Nach Auswahl von Quellen aus der Liste können diese
+                                        einfach daraus entfernt werden.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="guideStations">
+                                <div>
+                                    <select id="guideSources" size="10" multiple="multiple"></select>
+                                    <a id="removeFromGuide" href="javascript:void(0)" class="editButtons">Entfernen</a>
+                                    <div class="inlineHelp">
+                                        <h3>Erläuterungen zur Bedienung</h3>
+                                        <div>
+                                            <p>
+                                                Wenn auch Quellen zu britischen Sendern in der Liste enthalten sind, so muss auch die Option
+                                                aktiviert werden um die zugehörigen Vorschaudaten mit einzusammeln. Dies ist notwendig, da
+                                                hierfür andere technische Voraussetzungen beim Emfpang der Elektronischen Programmzeitschrift
+                                                gelten.
+                                            </p>
+                                            <p>
+                                                Sollen Quellen zur Liste hinzugeführt werden, so ist zuerst einmal das Gerät auszuwählen,
+                                                über das die gewünschten Quellen empfangen werden können. Danach können die von der Programmierung
+                                                neuer Aufzeichnungen her bekannten Mechanismen zur schnellen Auswahl der Quelle verwendet 
+                                                werden.<a href="#faq;sourcechooser"><img class="linkImage" src="ui/images/info.png" /></a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="adminSetting">
+                                        <input type="checkbox" data-property="includeUK" />Sendungsvorschau englischer Sender (FreeSat UK) abrufen
+                                    </div>
+                                    <table id="guideSourceSelector" class="adminSetting">
+                                        <tbody>
+                                            <tr>
+                                                <td>Quellen des Gerätes:
+                                                <select id="profileForGuide"></select><a id="addToGuide" href="javascript:void(0)" class="editButtons">Hinzufügen</a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="inlineHelp adminSettingGap">
+                                <h3>Erläuterungen zur Bedienung</h3>
+                                <div>
+                                    <p>
+                                        Zur Planung der Aktualisierungen zwischen regulären Aufzeichnungen benötigt der VCR.NET
+                                        Recording Service eine zeitliche Begrenzung für die Ausführung der Aktualisierung. Wird
+                                        diese erreicht, so wird die Aktualisierung vorzeitig beendet und die Programmzeitschrift
+                                        ist eventuell unvollständig. Zu große Werte können dazu führen, dass Aktualisierungen 
+                                        durch zeitliche Kollisionen mit regulären Aufzeichnungen später als geplant ausgeführt
+                                        werden, da reguläre Aufzeichnung immer vorrangig ausgeführt werden. Ein realistischer
+                                        Wert für die Laufzeit macht hier immer Sinn - kann die Aktualisierung in kürzerer Zeit
+                                        abgeschlossen werden, so wird der VCR.NET Recording Service diese auch zeitnah beenden -
+                                        das nutzt aber für die Aufzeichnungsplanung nichts.
+                                    </p>
+                                    <p>
+                                        Für die Aktualisierungen werden oft eine Reihe fester Uhrzeiten vorgegeben. Ergänzend oder
+                                        alternativ kann auch ein Zeitintervall vorgegeben werden, in dem Aktualisierungen durchgeführt
+                                        werden sollen - etwa alle 4 Stunden. Eine Besonderheit ist die zusätzliche Latenzzeit: hat
+                                        der VCR.NET Recording Service gerade eine Aufzeichnung ausgeführt und würde nun keines
+                                        der Geräte mehr nutzen, so kann eine anstehende Aktualisierung vorzogen werden, wenn die
+                                        vorherige Aktualisierung bereits mehr als das konfigurierte Intervall in der Vergangenheit
+                                        liegt.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="adminSetting">
+                                Maximale Laufzeit einer Aktualisierung in Minuten:
+                                    <input size="5" data-property="duration" />
+                            </div>
+                            <div class="adminSetting guideHours">
+                                Uhrzeiten:
+                            </div>
+                            <div class="adminSetting adminSettingGap">
+                                Wartezeit zwischen zwei Aktualisierungen in Stunden (optional):
+                                    <input size="5" data-property="minDelay" />
+                            </div>
+                            <div class="adminSetting">
+                                Latenzzeit für vorgezogene Aktualisierungen in Stunden (optional):
+                                    <input size="5" data-property="joinHours" />
+                            </div>
+                        </div>
+                        <div class="inlineHelp">
+                            <h3>Erläuterungen zur Bedienung</h3>
+                            <div>
+                                <p>
+                                    Alle Änderungen müssen durch das explizite Betätigen der entsprechenden Schaltfläche
+                                        bestätigt werden und werden auch damit erst übernommen. Änderungen an der Konfiguration
+                                        der Aktualisierung der Programmzeitschrift erfordern keinen Neustart des VCR.NET Dienstes.
+                                </p>
+                            </div>
+                        </div>
+                        <a id="updateGuide" href="javascript:void(0)" class="editButtons">Ändern</a>
+                    </div>
+                </div>
+                <div id="sources">
+                    <h2>Aktualisierung der Quellen konfigurieren</h2>
+                    <div>
+                        Der VCR.NET Recording Service ist in der Lage, die Liste der Quellen der verwendeten DVB.NET
+                        Geräte zu aktualisieren.<a href="#faq;psiconfig"><img class="linkImage" src="ui/images/info.png" /></a>
+                        Dies kann automatisch oder gemäß eines Zeitplans erfolgen.
+                        <div class="adminSettingGap">
+                            <select data-property="mode">
+                                <option value="D">Aktualisierung deaktivieren</option>
+                                <option value="M">Manuell aktualisieren</option>
+                                <option value="P">Aktualisieren nach Zeitplan</option>
+                            </select>
+                        </div>
+                        <div id="scanFormDuration" class="invisible adminSetting">
+                            <div class="inlineHelp">
+                                <h3>Erläuterungen zur Bedienung</h3>
+                                <div>
+                                    <p>
+                                        Wenn die Aktualisierung der Quellen (auch als Sendersuchlauf bekannt) nicht gänzlich deaktiviert ist,
+                                    so muss zumindest eine Laufzeitbegrenzung für die Aktualisierung angegeben werden. Wird dieser
+                                    während einer Aktualisierung überschritten, so wird die Aktualisierung vorzeitig beenden und es
+                                    wurden möglicherweise nicht alle Quellen korrekt berücksichtigt. Da diese Zeit allerdings auch
+                                    bei der Aufzeichnungsplanung berücksichtigt wird, sollte der Wert nicht unnötig groß gewählt
+                                    werden - ist eine Aktualisierung vor Ablauf des Zeitraums abgeschlossen, so wird sie zwar
+                                    vorzeitig beendet, die Planung erfolgt allerdings immer mit dem gesamten Zeitraum. Mit Abschluss
+                                    der Aktualisierung werden die neuen Informationen zu den Quellen in die aktuelle Liste der
+                                    Quellen eingemischt. Auf Wunsch kann die Liste auch ersetzt werden, was allerdings in einigen
+                                    Fällen zum unerwünschten Verlust von Quellen führen kann.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="adminSetting">
+                                Maximale Laufzeit für einen Sendersuchlauf in Minuten:
+                                <input type="text" size="3" data-property="duration" />
+                            </div>
+                            <div class="adminSetting">
+                                <input type="checkbox" data-property="merge" />Senderliste nach dem Suchlauf mit der vorherigen zusammenführen (empfohlen)
+                            </div>
+                        </div>
+                        <div id="scanFormPeriodic" class="invisible adminSetting">
+                            <div class="inlineHelp adminSettingGap">
+                                <h3>Erläuterungen zur Bedienung</h3>
+                                <div>
+                                    <p>
+                                        Für eine automatische Aktualisierung muss immer angegeben werden, wieviel Zeit zwischen zwei
+                                        Läufen mindestens verstreichen muss. Zusätzlich kann die Aktualisierung auf feste Stunden
+                                        festgelegt werden. Als Besonderheit erlaubt die Latenzzeit eine vorgezogene Aktualisierung
+                                        für den Fall, dass der VCR.NET Recording Service gerade alle ausstehenden Aufzeichnungen
+                                        abgeschlössen hat und die vorherige Aktualisierung mehr als das konfigurierte Intervall 
+                                        in der Vergangenheit liegt.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="adminSetting scanHours">
+                                Uhrzeiten:
+                            </div>
+                            <div class="adminSetting">
+                                Minimale Anzahl von Tagen zwischen zwei Suchläufen:
+                                <input type="text" size="3" data-property="interval" />
+                            </div>
+                            <div class="adminSetting">
+                                Latenzzeit für vorgezogene Aktualisierungen in Tagen (optional):
+                                <input type="text" size="3" data-property="joinDays" />
+                            </div>
+                        </div>
+                        <div class="inlineHelp">
+                            <h3>Erläuterungen zur Bedienung</h3>
+                            <div>
+                                <p>
+                                    Für eine Übernahme der hier vorgenommenen Änderungen muss die entsprechende Schaltfläche
+                                        explizit betätigt werden. Die Konfiguration der Aktualisierung der Liste der Quellen
+                                        erfordert keinen Neustart des VCR.NET Dienstes.
+                                </p>
+                            </div>
+                        </div>
+                        <a id="updateScan" href="javascript:void(0)" class="editButtons">Ändern</a>
+                    </div>
+                </div>
+                <div id="rules" />
+                <div id="other">
+                    <h2>Sonstige Betriebsparameter</h2>
+                    <div>
+                        Hier handelt es sich um grundsätzliche Betriebsparameter des VCR.NET Dienstes. Änderungen hier erfordern
+                        üblicherweise ein tieferes Verständnis der Arbeitsweise des VCR.NET Recording Service, da Fehleinstellungen
+                        durchaus dazu führen können, dass der Dienst nicht mehr funktionsfähig ist.
+                        <div class="inlineHelp">
+                            <h3>Erläuterungen zur Bedienung</h3>
+                            <div>
+                                <p>
+                                    Der VCR.NET Recording Service ist ein Web Server<a href="#faq;websettings"><img class="linkImage" src="ui/images/info.png" /></a>
+                                    auf Basis der Microsoft ASP.NET / .NET 
+                                    Technologie. Als solcher ist es mindestens notwendig, einen TCP/IP Port für die Kommunikation
+                                    mit den Clients und auch dieser Web Anwendung festzulegen. Weitere Einstellungen erlauben
+                                    das Verschlüsseln der Kommunikation mit dem Web Server oder alternative Autorisierungsprotokolle.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="adminSetting">
+                            TCP/IP Port für den Web Server:
+                            <input type="text" size="5" data-property="webPort" />
+                        </div>
+                        <div class="adminSetting">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" data-property="ssl" /></td>
+                                    <td>Sichere Verbindung zusätzlich anbieten</td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>TCP/IP Port für den sicheren Zugang:
+                            <input type="text" size="5" data-property="sslPort" /></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" data-property="basicAuth" /></td>
+                                    <td>Benutzererkennung über Basic (RFC 2617) zusätzlich erlauben (nicht empfohlen)</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="inlineHelp">
+                            <h3>Erläuterungen zur Bedienung</h3>
+                            <div>
+                                <p>
+                                    Es kann dem VCR.NET Recording Service gestattet werden, den Rechner nach erfolgten Aufzeichnungen
+                                    in den Schlafzustand zu versetzen.<a href="#faq;hibernation"><img class="linkImage" src="ui/images/info.png" /></a>
+                                    Unabhängig davon wird der VCR.NET Dienst versuchen, den
+                                    Rechner für Aufzeichnungen aus dem Schlafzustand zu wecken, falls dieser nicht erst kurz
+                                    vorher ausgelöst wurde - dieser Grenzwert kann hier eingestellt werden. Da nicht jedes System
+                                    gleich schnell aus dem Schlafzustand in den Betriebszsutand wecheln kann, ist es fernen
+                                    möglich, eine Vorlaufzeit für das Aufwecken festzulegen.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="adminSetting">
+                            Art des von VCR.NET ausgelösten Schlafzustands:
+                            <select data-property="hibernate">
+                                <option value="OFF">Nicht verwenden</option>
+                                <option value="S3">StandBy / Suspend (S3)</option>
+                                <option value="S4">Hibernate (S4)</option>
+                            </select>
+                        </div>
+                        <div class="adminSetting">
+                            Vorlaufzeit für das Aufwachen aus dem Schlafzustand in Sekunden:
+                            <input type="text" size="5" data-property="hibernationDelay" />
+                        </div>
+                        <div class="adminSetting">
+                            Minimale Pause nach einem erzwungenen Schlafzustand in Minuten:
+                            <input type="text" size="5" data-property="forcedHibernationDelay" />
+                        </div>
+                        <div class="adminSetting">
+                            <input type="checkbox" data-property="suppressHibernationDelay" />
+                            Pause für erzwungenen Schlafzustand ignorieren
+                        </div>
+                        <div class="inlineHelp">
+                            <h3>Erläuterungen zur Bedienung</h3>
+                            <div>
+                                <p>
+                                    Nach erfolgter Aufzeichnung erstellt der VCR.NET Recording Service automatisch einen Protokolleintrag
+                                    mit den Eckdaten der Gerätenutzung.<a href="#faq;log"><img class="linkImage" src="ui/images/info.png" /></a>
+                                    Diese werden allerdings nur eine begrenzte Zeit vorgehalten und dann
+                                    automatisch endgültig gelöscht. Ähnlich verhält es sich mit vollständig abgeschlossenen Aufträgen:<a href="#faq;archive"><img class="linkImage" src="ui/images/info.png" /></a>
+                                    diese werden für einen gewissen Zeitraum archiviert, bevor sie endgültig entfernt werden. Während des Verbleibs
+                                    im Archive können sie jederzeit abgefrufen<a href="#jobs;archive"><img class="linkImage" src="ui/images/jobs.png" /></a> und erneut verwendet werden.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="adminSetting">
+                            Aufbewahrungsdauer für Protokolle in Wochen:
+                            <input type="text" size="5" data-property="protocol" />
+                        </div>
+                        <div class="adminSetting">
+                            Aufbewahrungsdauer von archivierten Aufzeichnungen in Wochen:
+                            <input type="text" size="5" data-property="archive" />
+                        </div>
+                        <div class="adminSetting adminSettingGap">
+                            <input type="checkbox" data-property="noH264PCR" />
+                            Systemzeit (PCR) in Aufzeichnungsdateien nicht aus einem H.264 Bildsignal ableiten
+                        </div>
+                        <div class="adminSetting">
+                            <input type="checkbox" data-property="noMPEG2PCR" />
+                            Systemzeit (PCR) in Aufzeichnungsdateien nicht aus einem MPEG2 Bildsignal ableiten
+                        </div>
+                        <div class="adminSetting adminSettingGap">
+                            Umfang der Protokollierung in das Windows Ereignisprotokoll:
+                            <select data-property="logging">
+                                <option value="Errors">Nur Fehler</option>
+                                <option value="Security">Nur Sicherheitsprobleme</option>
+                                <option value="Schedules">Aufzeichnungen</option>
+                                <option value="Full">Vollständig</option>
+                            </select>
+                        </div>
+                        <div class="inlineHelp">
+                            <h3>Erläuterungen zur Bedienung</h3>
+                            <div>
+                                <p>
+                                    Alle Änderungen werden erst durch explizites Betätigen der Schaltfläche übernommen. Einige
+                                    Änderungen wie etwa die Konfiguration des Web Servers erfordern den Neustart des VCR.NET
+                                    Dienstes.
+                                </p>
+                            </div>
+                        </div>
+                        <a id="updateOther" href="javascript:void(0)" class="editButtons">Ändern und eventuell neu Starten</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,293 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{29831854-70AB-4B45-ACAD-89C9756C986F}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WebClient41</RootNamespace>
+    <AssemblyName>WebClient41</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode>true</IISExpressUseClassicPipelineMode>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptIncludeComments>true</TypeScriptIncludeComments>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptIncludeComments>false</TypeScriptIncludeComments>
+    <TypeScriptSourceMap>false</TypeScriptSourceMap>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="JMS.DVB.SourceManagement, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.1\RunTime\JMS.DVB.SourceManagement.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft ASP.NET\ASP.NET MVC 4\Packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Net.Http">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="content\jmslib.css">
+      <DependentUpon>jmslib.less</DependentUpon>
+    </Content>
+    <Content Include="content\jmslib.min.css">
+      <DependentUpon>jmslib.less</DependentUpon>
+    </Content>
+    <Content Include="content\themes\base\images\animated-overlay.gif" />
+    <Content Include="content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="content\themes\base\jquery-ui.css" />
+    <Content Include="FAQ\archive.html" />
+    <Content Include="FAQ\configuration.html" />
+    <Content Include="FAQ\controlcenter.html" />
+    <Content Include="FAQ\recover.png" />
+    <Content Include="FAQ\webserver.png" />
+    <Content Include="FAQ\websettings.html" />
+    <Content Include="FAQ\tsplayer.html" />
+    <Content Include="FAQ\tasks.html" />
+    <Content Include="FAQ\streaming.html" />
+    <Content Include="FAQ\sourcelimit.html" />
+    <Content Include="FAQ\sourcechooser.html" />
+    <Content Include="FAQ\repeatingschedules.html" />
+    <Content Include="FAQ\psiconfig.html" />
+    <Content Include="FAQ\parallelrecording.html" />
+    <Content Include="FAQ\overview.html" />
+    <Content Include="FAQ\numberoffiles.html" />
+    <Content Include="FAQ\nexus.html" />
+    <Content Include="FAQ\log.html" />
+    <Content Include="FAQ\jobsandschedules.html" />
+    <Content Include="FAQ\hibernation.html" />
+    <Content Include="FAQ\filecontents.html" />
+    <Content Include="FAQ\epgconfig.html" />
+    <Content Include="FAQ\epg.html" />
+    <Content Include="FAQ\editcurrent.html" />
+    <Content Include="FAQ\dvbnet.html" />
+    <Content Include="FAQ\decryption.html" />
+    <Content Include="FAQ\currentstream.html" />
+    <Content Include="FAQ\decryptlimit.png" />
+    <Content Include="FAQ\endchange.png" />
+    <Content Include="FAQ\epgonoff.png" />
+    <Content Include="FAQ\epgsources.png" />
+    <Content Include="FAQ\epgtimes.png" />
+    <Content Include="FAQ\exceptions.png" />
+    <Content Include="FAQ\hibernate.png" />
+    <Content Include="FAQ\hibernatevcc.png" />
+    <Content Include="FAQ\jobsandschedules.png" />
+    <Content Include="FAQ\manualsleep.png" />
+    <Content Include="FAQ\psi.png" />
+    <Content Include="FAQ\repeating.png" />
+    <Content Include="FAQ\sendtonetwork.png" />
+    <Content Include="FAQ\sourcelimit.png" />
+    <Content Include="FAQ\sources.png" />
+    <Content Include="FAQ\streamoptions.png" />
+    <Content Include="FAQ\streamprotection.png" />
+    <Content Include="scripts\jmslib.js">
+      <DependentUpon>jmslib.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="scripts\jmslib.ts" />
+    <Content Include="scripts\jquery-2.0.3.min.js" />
+    <Content Include="scripts\jquery-ui-1.10.3.min.js" />
+    <Content Include="scripts\typings\jqueryui\jqueryui.d.ts" />
+    <Content Include="scripts\typings\jquery\jquery.d.ts" />
+    <Content Include="scripts\vcrnet.js">
+      <DependentUpon>vcrnet.ts</DependentUpon>
+    </Content>
+    <Content Include="favicon.ico" />
+    <Content Include="ui\admin.html" />
+    <Content Include="ui\faq.html" />
+    <Content Include="ui\images\delete.png" />
+    <Content Include="ui\images\info.png" />
+    <Content Include="ui\images\recording.png" />
+    <Content Include="ui\log.html" />
+    <Content Include="ui\home.html" />
+    <Content Include="ui\guide.html" />
+    <Content Include="ui\current.html" />
+    <Content Include="ui\images\admin.png" />
+    <Content Include="ui\images\devices.png" />
+    <Content Include="ui\images\jobs.png" />
+    <Content Include="ui\images\psimarron.gif" />
+    <Content Include="ui\jobs.html" />
+    <Content Include="ui\settings.html" />
+    <Content Include="ui\plan.html" />
+    <Content Include="ui\edit.html" />
+    <Content Include="ui\images\exceptOff.png" />
+    <Content Include="ui\images\exceptOn.png" />
+    <Content Include="ui\images\guide.png" />
+    <Content Include="ui\images\home.png" />
+    <Content Include="ui\images\intime.gif" />
+    <Content Include="ui\images\plan.png" />
+    <Content Include="ui\images\late.gif" />
+    <Content Include="ui\images\lost.gif" />
+    <Content Include="ui\images\new.png" />
+    <Content Include="ui\images\null.gif" />
+    <Content Include="ui\images\refresh.png" />
+    <Content Include="ui\images\running.gif" />
+    <Content Include="ui\images\settings.png" />
+    <Content Include="ui\templates\checkUpdate.html" />
+    <Content Include="ui\templates\adminRules.html" />
+    <Content Include="ui\templates\favoriteRow.html" />
+    <Content Include="ui\templates\favorites.html" />
+    <Content Include="ui\templates\logRowDetails.html" />
+    <Content Include="ui\templates\logRow.html" />
+    <Content Include="ui\templates\planRowDetails.html" />
+    <Content Include="ui\templates\startScan.html" />
+    <Content Include="ui\templates\startGuide.html" />
+    <Content Include="ui\templates\profileRow.html" />
+    <Content Include="ui\templates\guideDetails.html" />
+    <Content Include="ui\templates\guideRow.html" />
+    <Content Include="ui\templates\editCurrent.html" />
+    <Content Include="ui\templates\currentGuide.html" />
+    <Content Include="ui\templates\currentRow.html" />
+    <Content Include="ui\templates\exceptionRow.html" />
+    <Content Include="ui\templates\jobRow.html" />
+    <Content Include="ui\templates\sourceSelection.html" />
+    <Content Include="ui\templates\planRow.html" />
+    <Content Include="ui\templates\planRowException.html" />
+    <TypeScriptCompile Include="scripts\vcrnet.ts" />
+    <Content Include="content\vcrnet.css">
+      <DependentUpon>vcrnet.less</DependentUpon>
+    </Content>
+    <Content Include="default.html" />
+    <Content Include="content\jmslib.less" />
+    <None Include="content\vcrnet.min.css">
+      <DependentUpon>vcrnet.less</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="scripts\vcrserver.ts" />
+    <Content Include="scripts\vcrserver.js">
+      <DependentUpon>vcrserver.ts</DependentUpon>
+    </Content>
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="content\vcrnet.less" />
+    <Content Include="scripts\vcrnet.js.map">
+      <DependentUpon>vcrnet.ts</DependentUpon>
+    </Content>
+    <Content Include="scripts\jmslib.js.map">
+      <DependentUpon>jmslib.ts</DependentUpon>
+    </Content>
+    <Content Include="scripts\vcrserver.js.map">
+      <DependentUpon>vcrserver.ts</DependentUpon>
+    </Content>
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ServiceCore\ServiceCore.csproj">
+      <Project>{669082ef-72b4-440a-a5ab-a74a9c273b8c}</Project>
+      <Name>ServiceCore</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>50324</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:49897/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>http://localhost:81</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

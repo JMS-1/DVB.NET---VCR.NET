@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>3.7</ProductVersion>
+    <ProjectGuid>b93d01f4-2245-48f0-90ef-62a7ed9593f2</ProjectGuid>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputName>VCRNET</OutputName>
+    <OutputType>Package</OutputType>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <EnableProjectHarvesting>True</EnableProjectHarvesting>
+    <ProjectOutputGroups>Binaries;Content;Sources</ProjectOutputGroups>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <OutputPath>..\msi\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <DefineConstants>Debug;ExtensionsPath=..\FTPWrap\VCR.NET Extension</DefineConstants>
+    <Cultures>de-de</Cultures>
+    <SuppressPdbOutput>True</SuppressPdbOutput>
+    <CompilerAdditionalOptions>_Extensions.wxs</CompilerAdditionalOptions>
+    <LinkerAdditionalOptions>obj\$(Configuration)\_Extensions.wixobj</LinkerAdditionalOptions>
+    <SuppressIces>ICE57;ICE43</SuppressIces>
+    <WixVariables>SETUPVERSION=4.2.30</WixVariables>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>..\msi\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <Cultures>de-de</Cultures>
+    <SuppressPdbOutput>True</SuppressPdbOutput>
+    <DefineConstants>ExtensionsPath=..\FTPWrap\VCR.NET Extension</DefineConstants>
+    <SuppressIces>ICE57;ICE43</SuppressIces>
+    <CompilerAdditionalOptions>_Extensions.wxs</CompilerAdditionalOptions>
+    <LinkerAdditionalOptions>obj\$(Configuration)\_Extensions.wixobj</LinkerAdditionalOptions>
+    <WixVariables>SETUPVERSION=4.2.30</WixVariables>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AspNetWebApi.wxs" />
+    <Compile Include="CustomActions.wxs" />
+    <Compile Include="DirectoryTree.wxs" />
+    <Compile Include="InstallationsOptionsDlg.wxs" />
+    <Compile Include="Localization.wxs" />
+    <Compile Include="Product.wxs" />
+    <Compile Include="SampleFiles.wxs" />
+    <Compile Include="Service.wxs" />
+    <Compile Include="Shortcuts.wxs" />
+    <Compile Include="WixSource.wxs" />
+    <Compile Include="Wizard.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Deutsch.wxl" />
+  </ItemGroup>
+  <ItemGroup>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
+      <Name>WixUIExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixNetFxExtension">
+      <HintPath>$(WixExtDir)\WixNetFxExtension.dll</HintPath>
+      <Name>WixNetFxExtension</Name>
+    </WixExtension>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ControlCenter\ControlCenter.csproj">
+      <Name>ControlCenter</Name>
+      <Project>{ee19b344-ecda-40b6-8a7b-710c23da5d44}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Sources;Content;Binaries</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\EasyCut\EasyCut.csproj">
+      <Name>EasyCut</Name>
+      <Project>{cc6fdf21-49c4-4cc8-bff0-f3c224ef82b5}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Sources;Content;Binaries</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\FTPWrap\FTPWrap.csproj">
+      <Name>FTPWrap</Name>
+      <Project>{63858bee-11bc-4971-821e-20de85080571}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Sources;Content;Binaries</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\InstallerActions\InstallerActions.csproj">
+      <Name>InstallerActions</Name>
+      <Project>{1c0b9fae-458d-4811-961d-5471c4e1fd87}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\ServiceCore\ServiceCore.csproj">
+      <Name>ServiceCore</Name>
+      <Project>{669082ef-72b4-440a-a5ab-a74a9c273b8c}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Sources;Content;Binaries</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Service\Service.csproj">
+      <Name>Service</Name>
+      <Project>{40d95974-629c-44c5-b7ab-a156c04c56a2}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\TVBrowserPlugIn\TVBrowserPlugIn.csproj">
+      <Name>TVBrowserPlugIn</Name>
+      <Project>{28dc3ce9-f268-49ff-9897-7519b5be7a8a}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\WebClient41\WebClient41.csproj">
+      <Name>WebClient41</Name>
+      <Project>{29831854-70ab-4b45-acad-89c9756c986f}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\SetupHelper\ManufacturerSettings.wxi">
+      <Link>ManufacturerSettings.wxi</Link>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(WixTargetsPath)" />
+  <PropertyGroup>
+    <PostBuildEvent>set "$(WixVariables)"
+
+"%25ProgramFiles%25\Windows Kits\8.0\bin\x86\msiinfo.exe" "$(TargetDir)\de-de\$(TargetFileName)" /T "VCR.NET for Power Users %25SETUPVERSION%25"</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>“%25WIX%25\bin\heat.exe” dir "$(SolutionDir)FTPWrap/VCR.NET Extension" -ag -sfrag -dr Extensions -var var.ExtensionsPath -cg Extensions -srd -out "$(ProjectDir)_Extensions.wxs"</PreBuildEvent>
+  </PropertyGroup>
+  <!--
+	To modify your build process, add your task inside one of the targets below and uncomment it.
+	Other similar extension points exist, see Wix.targets.
+	<Target Name="BeforeBuild">
+	</Target>
+	<Target Name="AfterBuild">
+	</Target>
+	-->
+</Project>

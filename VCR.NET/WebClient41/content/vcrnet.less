@@ -1,0 +1,813 @@
+﻿// Die Hintergrundfarbe der als Listeneinträge in den Tabellen.
+@tableRowColor: #e0e0e0;
+
+// Die Kopfzeile aller unsere Tabellen ist etwas dunkler als die einzelnen Listeneinträge.
+@tableHeaderRowColor: #cccccc;
+
+// Die Farbe des Rahmens für die Anzeige logisch getrennter Bereiche auf einer Seite der Anwendung.
+@softBorderColor: #ccc;
+
+// Die Hintergrundfarbe für Trennlinien und den Sprungbereich.
+@lineBackgroundColor: #ddd;
+
+// Die Hintergrundfarbe des Anwendung.
+@background: #f4f4f4;
+
+// Der Zeichensatz der Anwendung.
+@font: Arial,sans-serif;
+
+// Die Farbe aller Verweise in allen Zuständen.
+@linkColor: #0000ff;
+
+// Diese Farbe markiert eine Schaltfläche, deren Aktion nicht ausgeführt werden konnte.
+@updateFailedColor: darkred;
+
+// Die veränderte Rahmenbreite einer Schaltfläche, deren Aktion nicht ausgeführt werden konnte.
+@updateFailedWeight: bolder;
+
+// Wird verwendet um den Anwender kurz auf Änderungen aufmerksam zu machen.
+@textHighlightColor: #111111;
+
+// Festlegung des allgemeinen Hintergrunds. Das betrifft hier vor allen Zeichensatz,
+// Hintergrund und Darstellung der Verweise.
+body
+{
+    background-color: @background;
+    font-family: @font;
+
+    :link
+    {
+        color: @linkColor;
+    }
+
+    :visited
+    {
+        color: @linkColor;
+    }
+
+    .ui-button
+    {
+        color: black;
+    }
+}
+
+// Einige Symbole werden als visuelle Unterstützung von Verweisen in andere Teile der Anwendung
+// eingesetzt. Sie stellen sich zentriert und ohne Rahmen und Link Feedback dar.
+.linkImage
+{
+    vertical-align: middle;
+    padding-bottom: 2px;
+    margin-left: 2px;
+    border: none;
+}
+
+// In der eingebetteten Hilfe werden Tabellen als Legenden verwendet, wobei für unterschiedliche
+// in der Anwendungen verwendete Symbole eine kurze Beschreibung angezeigt wird. Die erste Spalte
+// eine solchen Tabelle enthält dabei immer das entsprechende Symbole. Da alle Symbole der
+// Anwendung die gleiche Ausdehnung besitzten kann hier durch explizite Positionierung eine
+// horizontale Ausrichtung realisiert werden.
+.helpLegend
+{
+    margin-left: 20px;
+
+    td :first-child
+    {
+        padding-right: 5px;
+    }
+
+    img
+    {
+        border-style: none;
+    }
+
+    tr
+    {
+        vertical-align: top;
+    }
+}
+
+// Listen werden in der Anwendung im Allgemeinen als Tabellen dargestellt. Die Darstellung
+// erfolgt in Erinnerung an frühere Versionen unter Verwendung eines Zeichensatzes mit
+// fester Zeichenbreite. Die Kopfzeile wird zudem besonders hervor gehoben.
+.dataTable
+{
+    font-family: 'Courier New';
+    border-spacing: 0px;
+    margin-top: 5px;
+
+    thead
+    {
+        tr
+        {
+            background-color: @tableHeaderRowColor;
+            font-weight: bold;
+        }
+    }
+
+    tr
+    {
+        background-color: @tableRowColor;
+    }
+
+    td:first-child
+    {
+        border-left: 0px;
+    }
+
+    td
+    {
+        padding: 2px 10px 2px 4px;
+        border-left: 2px;
+        border-right: 0px;
+        border-top: 1px;
+        border-bottom: 1px;
+        border-color: @background;
+        border-style: solid;
+    }
+}
+
+// Für die eingeblendeten Detailansichten müssen wird die Farbgebung kompensieren.
+.detailView
+{
+    td
+    {
+        border-color: @tableRowColor;
+    }
+}
+
+// Bei der Detailanzeige zu einer Zeile in einer Tabelle wird dafür gesorgt, dass der als
+// normale Tabellenzeile realisierte Inhalt die ursprüngliche Breite der Tabelle nicht
+// verändert.
+.spanExpando
+{
+    width: 0px;
+}
+
+// In der Anzeige der Aktivitäten wird die Spalte mit dem Namen verwendet, um die Tabelle auf
+// eine Minimalgröße zu bringen. Damit soll erreicht werden, dass bei die Anzeige der
+// Programmzeitschrift nicht zu schmal wird.
+.currentNameColumn
+{
+    min-width: 600px;
+}
+
+// Die Seiten der Fragen & Antworten werden grundsätzlich mit reduzierter Breite angezeigt.
+.faqContent
+{
+    width: 90%;
+
+    .faqShot
+    {
+        border-style: dotted;
+        border-width: 1px;
+        padding: 5px;
+    }
+}
+
+// In einigen Tabellen wird für eine Aufzeichnung oder Aktivität in der ersten Spalte ein
+// Symbol präsentiert, dass eine direkte Information zum Zustand visualisiert. Dieses wird
+// optisch durch eine explizite Positionierung in der zugehörigen Spalte horizontal
+// zentriert präsentiert.
+.planItemMode
+{
+    img
+    {
+        padding-left: 6px;
+        border: none;
+    }
+}
+
+// Die Positionierung der Anzeige der Sendungsdaten aus der Programmzeitschrift innerhalb
+// der Liste der Aktivitäten aller Geräte.
+.guideInPlan
+{
+    margin-top: 8px;
+
+    td
+    {
+        vertical-align: top;
+    }
+}
+
+// Bei der Darstellung einer Beschreibung zu einem Eintrag der Programmzeitschrift wird
+// sichergestellt, dass die ursprüngliche Formatierung durch Zeilenvorschübe erhalten
+// bleibt.
+.guideDescription
+{
+    white-space: pre-wrap;
+}
+
+// Die einzelnen Farben für das Kamerasymbol des VCR.NET Kontrollzentrums.
+.vccRed
+{
+    color: #FF0000;
+}
+
+.vccBlue
+{
+    color: #000099;
+}
+
+.vccYellow
+{
+    color: #FFEE00;
+}
+
+.vccGreen
+{
+    color: #009900;
+}
+
+// Die Beschreibung der Ersetzungsmuster für Dateinamen.
+.filePatternTable
+{
+    thead
+    {
+        font-weight: bold;
+
+        td:nth-child(2)
+        {
+            width: 10px;
+        }
+    }
+}
+
+// Die Startseite hat einige besondere Anforderung an die Darstellung. Zum einen wird hier niemals
+// die Sprungleiste angezeigt und auch die zugehörigen Leerräume sollen aus der Anzeige verschwinden.
+// Zum anderen werden die eingeblendeten Schnellstartbereiche für die Aktualisierungen so aufbereitet,
+// dass sie optisch zur durchgängigen Verwendung der Detailanzeigen in Tabellen passend. Schließlich
+// werden Verweise etwas diskreter dargestellt als die üblichen HTML Verweise.
+.homeContent
+{
+    margin-top: -20px;
+
+    :link
+    {
+        color: black;
+    }
+
+    :visited
+    {
+        color: black;
+    }
+
+    .taskStarter
+    {
+        margin-top: 4px;
+        margin-bottom: 4px;
+        list-style-type: none;
+        width: 70% !important;
+    }
+}
+
+// Die betont hervorgehobene Anzeige der Warnung, dass der VCR.NET Recording Service mindestens
+// ein DVB Gerät in Benutzung hat.
+.serverActive
+{
+    font-weight: bold;
+    color: red;
+}
+
+// Die dezente Anzeige des Copyrights.
+.copyright
+{
+    vertical-align: middle;
+    margin-top: 10px;
+    font-size: small;
+}
+
+// Die einzelnen Benutzerpräferenzen werden in einer einspaltigen Tabelle präsentiert.
+// Zwischen den einzelnen logisch zusammenhängenden Gruppen von Einstellungen wird
+// normalerweise eine horizontaler Balken eingeblendet.
+.settingsTable
+{
+    margin: 0px 20px 0px 20px;
+    width: 80%;
+
+    td
+    {
+        padding: 7px;
+    }
+
+    .inlineHelp
+    {
+        margin-bottom: 0px !important;
+    }
+}
+
+// Beschreibt den Hintergurnd für den Sprungbereich, der auf quasi allen Seiten oben angezeigt wird.
+.linkArea
+{
+    background-color: @lineBackgroundColor;
+    font-size: small;
+    padding: 5px;
+
+    a
+    {
+        vertical-align: middle;
+    }
+}
+
+// Legt die Nutzung der vollen Breite fest.}
+.fullWidth
+{
+    width: 100%;
+}
+
+// Normale Schaltflächen werden in einer etwas diskreteren Form dargestellt, als JQueryUI
+// das von Hause aus vorhat.
+.editButtons
+{
+    font-size: small;
+    margin-top: 10px;
+}
+
+// Eine Auflistung von Erläuterungen innerhalb der in die Seiten eingebetteten Hilfetexte.
+.optionHelpTable
+{
+    margin: 10px 0px 10px 10px;
+
+    .optionHelpName
+    {
+        font-weight: bold;
+    }
+
+    .optionHelpDescription
+    {
+        padding-left: 30px;
+    }
+}
+
+// Eine Gruppe von Eigenschaften auf dem Formular zum Ändern von Aufzeichnungen.
+.editPart
+{
+    width: 80%;
+
+    .lockDeviceOption
+    {
+        position: relative;
+        top: 2px;
+    }
+}
+
+// Der Name einer Eigenschaft auf dem Formular zum Ändern von Aufzeichnungen.
+.editLabel
+{
+    width: 13em;
+}
+
+// Der Raum zwischen dem Namen einer Eigenschaft und dem zugehörigen Wert
+// zum Beispiel auf dem Formular zum Ändern von Aufzeichnungen.
+.spaceColumn
+{
+    width: 5px;
+}
+
+// Der Endzeitpunkt bei einer sich wiederholenden Aufzeichnung
+// auf dem Formular zum Ändern von Aufzeichnungen.
+.repeatEndLabel
+{
+    vertical-align: top;
+}
+
+// Die Filter für die Anzeige der Protokolle sollen letztlich genauso aussehen wie der Sprungbereich.
+.logFilter.linkArea
+{
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+// Der Name der Aufzeichnung in der Liste der Protokoll wird verwendet, um die Breite der
+// Tabelle zu fixieren und gleichzeitig genug Raum für das Einblenden der Informationen aus
+// der Programmzeitschrift zu erlauben.
+.logNameColumn
+{
+    min-width: 800px;
+}
+
+// Die diskrete Darstellung eines Umschalters als Schaltfläche mit Einrastoption.
+.optionButton
+{
+    font-size: x-small;
+}
+
+// Falls eine Alternativauswahl als Schaltfläche dargestellt werden soll wird die aktive
+// Auswahl besonders hervorgehoben.
+.toggleButton.ui-state-active
+{
+    font-weight: bold;
+}
+
+
+// Wird zum Hervorheben einer Schaltfläche verwendet, wenn der Anwender diese ausgelöst hat,
+// die zugehörige Aktion aber fehlgeschlagen ist. Im Allgemeinen handelt es sich dabei dann
+// um einen Aufruf eines Web Dienstes, der trotz der Prüfungen im Client nicht ausgeführt
+// werden konnte. Alternativ wird die Visualisierung aber auch als Warnung bei kritischen
+// Befehlen verwendet, die ein zweites Auslösen der Schaltfläche als Bestätigung verlangen -
+// etwa das Löschen einer Aufzeichnung.
+.danger
+{
+    font-weight: @updateFailedWeight;
+    border-color: @updateFailedColor;
+    border-width: 2px;
+
+    .ui-button-text
+    {
+        color: @updateFailedColor;
+    }
+}
+
+// Feintuning eines Auswahlbereiches der Programmzeitschrift.
+.guideSelection
+{
+    margin: 5px;
+
+    .ui-button
+    {
+        margin-bottom: 4px;
+        margin-right: 4px;
+    }
+}
+
+// Der Bereich der Programmzeitschrift, in der die Liste der Sendungen dargestellt wird.
+.displayArea
+{
+    margin-top: 10px;
+
+    .dataTable
+    {
+        margin-left: 20px;
+    }
+}
+
+// Die Liste der Schaltflächen zum Blättern in der Programmzeitschrift.
+.guideNavigation
+{
+    margin: 10px 0px 10px 0px;
+}
+
+// Die Spalte mit dem Namen einer Sendung der Programmzeitschrift wird ausreichend dimensioniert,
+// so dass beim Aufklappen der Detailinformationen diese genügend Platz zur Anzeige haben.
+.guideName
+{
+    min-width: 600px;
+}
+
+// Die Breite des Balkens zum Veränderung von Zeiten.
+.exceptionSlider
+{
+    width: 500px;
+}
+
+// Die Darstellung des Reglers auf dem Balken zum Verändern von Zeiten.
+.exceptionButtons
+{
+    font-size: x-small;
+}
+
+// Das Symbol im Aufzeichnungsplan, über das die Ausnahmeregel verändert werden kann.
+.exceptionImage
+{
+    vertical-align: middle;
+    margin-left: 8px;
+    float: right;
+}
+
+// Die Anzeige des Zustands einer Ausnahme im Formular zum Ändern von Aufzeichnungen.
+.exceptionState
+{
+    text-align: center;
+}
+
+// Der Umschalter für die Deaktivierung der Prüfung auf den Schlafzustand beim Abbruch
+// einer laufenden Aufzeichnung.
+.hibernateFlag
+{
+    vertical-align: middle;
+}
+
+// Spaltenbreite für den Namen einer Eigenschaft bei der Anzeige einer Sendung aus der Programmzeitschrift.
+.guideDetails
+{
+    width: 10px;
+}
+
+// Verschiebt die Anzeige der Detailinformationen in der programmzeitschrift ein wenig nach rechts.
+.guideInGuide
+{
+    margin-left: 20px;
+}
+
+// In der Programmzeitschrift bei den Details einer Sendung der Bereich mit der Option,
+// eine neue Aufzeichnung anzulegen.
+.guideSpacing
+{
+    margin-top: 10px;
+    vertical-align: middle;
+
+    .optionButton
+    {
+        margin-bottom: 4px;
+    }
+}
+
+// Anzeige der Aufzeichnungsoptionen im Aufzeichnungsplan mit den Optionen, was die zugehörige
+// Aufzeichnungsdatei gelangen soll.
+.recordingOptions
+{
+    margin: 3px 3px 0px 5px;
+    font-size: smaller;
+}
+
+// Streicht den Namen einer Aufzeichnungsoption durch, wenn diese nicht in der Aufzeichnungsdatei
+// verwendet wird.
+.inactiveRecordingOption
+{
+    text-decoration: line-through;
+}
+
+// In der Liste der Aufträge die Überschrift mit dem Namen des Auftrags.
+.jobText
+{
+    padding-top: 15px;
+    font-size: large;
+}
+
+// In der Liste der Aufträge alle Zeilen mit Ausnahme der Aufträge selbst.
+.jobTextPlaceholder
+{
+    padding-left: 20px;
+}
+
+// Die Darstellung für die Situation, in der ein Neustart erforderlich ist.
+.serverRestart
+{
+    padding: 100px;
+    margin: 100px;
+    vertical-align: middle;
+    text-align: center;
+    font-size: xx-large;
+    font-weight: bold;
+    background-color: @softBorderColor + #111111;
+    border: 10px solid @softBorderColor;
+    border-radius: 5px;
+}
+
+// Die Auswahl von Datumswerten stellt sich etwas diskreter dar.
+.ui-datepicker
+{
+    font-size: small;
+}
+
+// Auswahl des Startzeitpunktes im Aufzeichnungsplan.
+.selectByCheckBox
+{
+    vertical-align: middle;
+}
+
+// Ein kurzzeitig markierter Text um dem Anwender über eine Änderung zu informieren.
+.highlightText
+{
+    font-weight: bold;
+    color: @textHighlightColor;
+}
+
+// Die Auswahl für den Bereich bei der Anzeige aller Aufträge und Aufzeichnungen.
+.jobStorage
+{
+    font-size: x-small;
+    margin-bottom: 10px;
+}
+
+// Die Tabelle mit allen Aufträgen und Aufzeichnungen.
+.jobTable
+{
+    padding-bottom: 15px;
+    padding-right: 5px;
+    padding-left: 5px;
+    width: 80%;
+    // Dezenter Hinweis auf Verweise - die Anzeige der Aufträge und Aufzeichnungen wäre sonst optisch überladen.
+    a
+    {
+        color: black;
+        text-decoration: none;
+
+        :hover
+        {
+            color: @softBorderColor;
+        }
+    }
+}
+
+// Die Anzeige bereits ausgewählter Aufzeichnungsverzeichnisse verwendet eine minimale Breite.
+.directoryBrowser
+{
+    select
+    {
+        min-width: 500px;
+        margin-right: 5px;
+    }
+}
+
+// Die Tabulatoren auf der Konfigurationsseite werden etwas diskreter dargestellt.
+.ui-tabs-nav.ui-widget-header
+{
+    background-color: white;
+    background-image: none;
+    border-style: none;
+}
+
+// Die Konfigurationsseite ist am aufwändigsten, da diese wiederrum eine Reihe
+// von Registerkarten enthält.
+.adminView.ui-tabs-vertical
+{
+    width: 100%;
+    font-size: medium;
+    // Auswahllisten werden grundsätzlich in kleinerer Schrift dargestellt.
+    select
+    {
+        font-size: small;
+    }
+    // Aufbereitung der Darstellung für die Auswahl der Registerkarten.
+    .ui-tabs-nav
+    {
+        padding: .2em .1em .2em .2em;
+        float: left;
+        width: 12em;
+        // Die einzelnen Register.
+        li
+        {
+            clear: left;
+            width: 100%;
+            border-width: 1px !important;
+            border-radius: 4px !important;
+            margin: 0 -1px .2em 0;
+            // Die Auswahl einer Registerkarte.
+            a
+            {
+                display: block;
+                width: 83%;
+            }
+            // Die aktive Registerkarte.
+            .ui-tabs-active
+            {
+                padding-bottom: 0;
+                padding-right: .1em;
+            }
+        }
+    }
+    // Die Ausrichtung des Inhaltes der Registerkarten.
+    .ui-tabs-panel
+    {
+        float: left;
+        width: 70%;
+        padding: 0px 1em 10px 1em;
+    }
+    // Normale Schaltfächen.
+    .editButtons
+    {
+        font-size: small;
+    }
+    // Die Schaltflächen zur Pflege der Aufzeichnungsverzeichnisse.
+    .directoryButtons
+    {
+        margin-top: 0px;
+        margin-bottom: 10px;
+        margin-right: 5px;
+    }
+    // Die Auswahl der Sender für die Aktualisierung der Programmzeitschrift.
+    .guideStations
+    {
+        margin-bottom: 10px;
+    }
+    // Der Name eines einzelnen Konfigurationswertes.
+    .adminSetting
+    {
+        margin-top: 6px;
+        margin-bottom: 4px;
+        vertical-align: middle;
+    }
+    // Der Abstand zwischen dem Namen eines Konfigurationswertes und dem eigentlichen Wert.
+    .adminSettingGap
+    {
+        margin-top: 30px;
+    }
+    // Positioniert die Schaltfläche zum Erweitern der Quellen für die Aktualisierung der
+    // Programmzeitschrift relativ zu der Auswahlliste für das Gerät.
+    #addToGuide
+    {
+        margin-top: -4px;
+        margin-left: 5px;
+    }
+    // Positionier die Schaltfläche zum Entfernen von Quellen aus der Aktualisierung der
+    // Programmzeitschrift relativ zur Liste der ausgewählten Quellen.
+    #removeFromGuide
+    {
+        vertical-align: top;
+        text-align: left;
+        margin-top: 0px;
+    }
+    // Aufbereitung der einzelnen Stunden eines Tages für die Aktualisierung der Programmzeitschrift.
+    .guideHours .ui-button
+    {
+        font-size: x-small;
+        margin-top: -3px;
+    }
+    // Aufbereitung der einzelnen Stunden eines Tages für die Aktualisierung der Quellen.
+    .scanHours .ui-button
+    {
+        font-size: x-small;
+        margin-top: -3px;
+    }
+    // Die Liste der bereits ausgewählten Quellen für die Aktualisierung der Programmzeitschrift
+    // erhält eine minimale Breite.
+    #guideSources
+    {
+        min-width: 30%;
+    }
+    // Die Spalten für die Pflege der Einstellungen der DVB.NET Geräte.
+    .scanColumn
+    {
+        padding-left: 10px;
+        padding-right: 0px;
+        text-align: center;
+
+        input[type=text]
+        {
+            font-size: medium;
+            text-align: center;
+            background-color: #f8f8f8;
+        }
+    }
+}
+
+// Die Anzeigeblock für die Favoriten der Programmzeitschrift
+.guideFavorites
+{
+    margin: 10px;
+
+    fieldset
+    {
+        padding-top: 0px;
+    }
+}
+
+// Die Spalte mit der Anzeige der Anzahl der Sendung zu einem Favoriten
+// der Programmzeitschrift
+.favoriteCount
+{
+    text-align: center;
+}
+
+// Die Spalte mit dem Namen der Aufzeichnung im Aufzeichnungsplan
+.planName
+{
+}
+
+// Die Spalte im Aufzeichnungsplan, die für sich wiederholende Aufzeichnungen
+// das Symbol zur Pflege der Ausnahme anzeigt
+.planException
+{
+    border-left: 0px !important;
+}
+
+// Ein bißchen Ausrichtung beim Ändern einer laufenden Aufzeichnung
+.editCurrent
+{
+    vertical-align: middle;
+}
+
+// Zeigt die aktuelle und die Online-Version an
+.versionTable
+{
+    margin-left: 15px;
+    margin-top: 5px;
+}
+
+// Markiert eine neuere Version
+.outdatedVersion
+{
+    font-weight: bold;
+    color: red;
+}
+
+// Eine Gruppe von logisch zusammengehörigen Eingabeparametern
+fieldset
+{
+    background-color: transparent;
+    padding: 10px;
+
+    legend
+    {
+        font-weight: bold;
+        font-size: small;
+    }
+}
+
+// Hebt ein Beispiel gesondert hervor
+.codeSample
+{
+    background-color: @background;
+    border: 1px solid black;
+    padding: 5px;
+}

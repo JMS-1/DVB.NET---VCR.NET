@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>[Fragment]</title>
+</head>
+<body>
+    <div>
+        <div id="faqContents" data-title="Aufträge und Aufzeichnungen">
+            Schaut man sich die Programmierung von Aufzeichnungen etwas genauer an, dann sieht
+        man, dass der VCR.NET Recording Service hier auf zwei Konzepten aufsetzt.<br />
+            <br />
+            <img alt="Auftrag und Aufzeichnung" class="faqShot" src="FAQ/jobsandschedules.png" />
+            <br />
+            <br />
+            Eine Aufzeichnung wird grundsätzlich als Teil eines Auftrags angelegt. Über die
+        Liste aller Aufzeichnungen<a href="#jobs"><img class="linkImage" src="ui/images/jobs.png" /></a> (nicht den
+        Aufzeichnungsplan<a href="#plan"><img class="linkImage" src="ui/images/plan.png" /></a>) ist
+        es dann auch möglich, einem Auftrag mehrere Aufzeichnungen zuzuordnen. Einige der
+        für eine Aufzeichnung notwendigen Parameter sind nur über den Auftrag verfügbar
+        und werden von allen Aufzeichnungen gemeinsam genutzt.
+        <br />
+            <br />
+            Der Hintergrund dieser Trennung liegt in der Historie des VCR.NET Recording Service
+        begründet. In der Entstehungszeit im Jahre 2003 wurde der VCR.NET hauptsächlich
+        dafür eingesetzt <a href="#faq;repeatingschedules">Serien</a> aufzuzeichnen. Zwar
+        bietet die Serienaufnahme einer einzelnen Aufzeichnung die Möglichkeit, diese an
+        verschiedenen Wochentagen zu wiederholen, aber das war es noch nicht ganz. Gerade
+        bei Serien, die auch am Wochenende ausgestrahlt werden ergeben sich oft deutlich
+        andere Sendezeiten. Manchmal lassen diese sich durch großzügige Vor- und Nachlaufzeiten
+        kompensieren, manchmal ufert dieser Ansatz aber auch einfach aus. Daher hat der
+        VCR.NET Recording Service die Möglichkeit erhalten, mehrere Aufzeichnungen in einem
+        Auftrag zu bündeln.
+        <br />
+            <br />
+            Für alle Aufzeichnungen ist insbesondere die Auswahl des verwendeten DVB Gerätes
+        und des <a href="#faq;configuration">Ablageverzeichnisses</a> für die Aufzeichnungsdateien
+        gemeinsam. Auf Wunsch kann sogar die Quelle (der Sender) vorgewählt werden und muss
+        dann nicht mehr pro Aufzeichnung explizit angegeben werden - es ist aber möglich,
+        die Quelle individuell für jede Aufzeichnung festzulegen. Ähnlich verhält es sich
+        mit dem Namen: ein Auftrag hat immer einen Namen, der im Allgemeinen ein wesentlicher
+        Bestandteil des Dateinamens von Aufzeichnungsdateien
+        ist. Eine Aufzeichnung muss keinen eigenen Namen haben. Wird allerdings ein solcher
+        angegeben, so trägt er üblicherweise zusätzlich zum Namen des Auftrags zum Dateinamen
+        bei.
+        <br />
+            <br />
+            Es ist möglich, einzelne Aufzeichnungen eines Auftrags zu löschen. Diese werden
+        dann aus dem Auftrag entfernt, alle weiteren Aufzeichnungen bleiben unberührt. Beim
+        Entfernen der letzten Aufzeichnung wird der <a href="#faq;archive">Auftrag automatisch
+            mit entfernt</a> - das ist vermutlich der Normalfall bei Einsatz des VCR.NET
+        Recording Service. Ergänzend ist es auch möglich, einen Auftrag als Ganzes samt
+        aller Aufzeichnungen drin in einem Rutsch zu entfernen.       
+        </div>
+    </div>
+</body>
+</html>

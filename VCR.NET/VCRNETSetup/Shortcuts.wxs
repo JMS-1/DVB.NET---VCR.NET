@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+
+    <!-- Einträge für das Startmenü. -->
+    <Component Id="StartMenu" Directory="ShortCutFolder" Guid="2cbfae32-689e-43d8-9665-ab5b6c06d4d6">
+      
+      <!-- Ein bißchen Magie, damit auch die Deinstallation die Einträge sauber entfernt. -->
+      <RemoveFolder Id="ShortCutFolder" On="uninstall"/>
+      <RegistryValue Root="HKMU" Key="SOFTWARE\JMS\VCR.NET" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+
+      <!-- Das VCR.NET Kontrollzentrum. -->
+      <Shortcut Id="ControlCenterShortCut"
+          Target="[TOOLS]$(var.ControlCenter.TargetName).exe"
+          Description="!(loc.VCCDESCRIPTION)"
+          WorkingDirectory="TOOLS"
+          Name="!(loc.VCCNAME)"
+          Icon="VCRNETICON" />
+
+      <!-- Das EasyCut Werkzug. -->
+      <Shortcut Id="EasyCutShortCut"
+          Target="[TOOLS]$(var.EasyCut.TargetName).exe"
+          Description="!(loc.EASYCUTDESCRIPTION)"
+          WorkingDirectory="TOOLS"
+          Name="!(loc.EASYCUTNAME)"
+          Icon="EASYCUTICON" />
+
+      <!-- Die Konfiguration der TV Browser Integration(en). -->
+      <Shortcut Id="BrowserPlugInShortCut"
+          Target="[PLUGINS]$(var.TVBrowserPlugIn.TargetName).exe"
+          Description="!(loc.TVBDESCRIPTION)"
+          WorkingDirectory="PLUGINS"
+          Name="!(loc.TVBNAME)"
+          Icon="BROWSERICON" />
+    </Component>
+
+    <!-- Das VCR.NET Kontrollzentrum landet auch immer im AutoStart aller Anwender. -->
+    <Component Id="AutoStartControlCenter" Directory="TARGETDIR" Guid="6ba66091-7dbb-4425-89f4-3faf5a82bbd7">
+      <Shortcut Id="ControlCenterAutoStartShortCut"
+          Target="[TOOLS]$(var.ControlCenter.TargetName).exe"
+          Description="Startet die VCR.NET Überwachung"
+          Directory="StartupFolder"
+          WorkingDirectory="TOOLS"
+          Name="!(loc.VCCNAME)"
+          Icon="VCRNETICON" />
+    </Component>
+
+  </Fragment>
+</Wix>
