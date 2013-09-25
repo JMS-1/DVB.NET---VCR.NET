@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <Fragment>
+
+    <Component Id="Libraries" Directory="INSTALLFOLDER" Guid="1741607f-3a0a-4f66-889c-555ae6cfb7ca">
+      <File Source="$(var.DVBNETViewer.TargetDir)Newtonsoft.Json.dll" />
+    </Component>
+	
+  </Fragment>
+  
+</Wix>

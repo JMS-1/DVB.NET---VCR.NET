@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+
+    <!-- Die deutschen Sprachdateien der Werkzeuge werden gesondert installiert, da die aktuelle WiX Version 3.7 Probleme mit dem Harvesting macht (Heat). -->
+    <Component Id="German" Directory="German" Guid="0f769578-c30e-4df3-b528-d3b1d2e275fb">
+      <File Source="$(var.JMS.DVB.Viewer.TargetDir)de\$(var.JMS.DVB.Viewer.TargetName).resources.dll" />
+      <File Source="$(var.DVBNETViewer.TargetDir)de\$(var.DVBNETViewer.TargetName).resources.dll" />
+    </Component>
+
+  </Fragment>
+</Wix>

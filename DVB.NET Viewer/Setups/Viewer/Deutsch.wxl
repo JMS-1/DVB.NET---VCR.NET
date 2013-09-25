@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<WixLocalization Culture="de-de" xmlns="http://schemas.microsoft.com/wix/2006/localization">
+  <String Id="FEATUREBINARIES">DVB.NET / VCR.NET Viewer</String>
+  <String Id="FEATURESOURCE">Quellcode</String>
+  <String Id="FEATUREINTELLISENSE">Intellisense Dateien</String>
+  <String Id="ALREADYINSTALLED">Vor der Installation muss die existierende Version des DVB.NET / VCR.NET Viewers deinstalliert werden.</String>
+  <String Id="DOTNETMISSING">Der DVB.NET / VCR.NET Viewer setzt eine Installation des Microsoft .NET Frameworks in der Version 4.0 voraus.</String>
+  <String Id="DVBNETMISSING">
+    Zur Installation des DVB.NET / VCR.NET Viewers muss DVB.NET bereits installiert sein. Die aktuelle Version kann hier heruntergeladen werden:
+
+    http://www.psimarron.net/DVBNET/html/download.html
+
+  </String>
+  <String Id="MENULOCAL">DVB.NET Viewer (lokal)</String>
+  <String Id="MENULOCALDESCR">Lokales DVB Gerät verwenden.</String>
+  <String Id="MENUVCR">DVB.NET Viewer (VCR.NET)</String>
+  <String Id="MENUVCRDESCR">Verbindung zu einem VCR.NET Recording Service.</String>
+  <String Id="MENURC">DVB.NET Viewer (Fernbedienung anlernen)</String>
+  <String Id="MENURCDESCR">Anlernen einer Fernbedienung.</String>
+  <String Id="MENURESET">DVB.NET Viewer (Einstellungen zurücksetzen)</String>
+  <String Id="MENURESETDESCR">Alle Einstellungen auf die Voreinstellung zurück setzen.</String>
+
+</WixLocalization>

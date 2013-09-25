@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <Fragment>
+
+    <Component Id="Registry" Directory="TARGETDIR" Guid="1b3596cf-7d46-463f-a68c-d9f7f0351b4e">
+
+      <RegistryValue Root="HKCR" Key="Applications\DVBNETViewer.exe\shell\open\command" Type="string" Value='"[INSTALLFOLDER]DVBNETViewer.exe" "/FILE=%1"'/>
+      <RegistryValue Root="HKCR" Key="dvbnet" Type="string" Value='URL:DVB.NET / VCR.NET Viewer'/>
+      <RegistryValue Root="HKCR" Key="dvbnet" Name="URL Protocol" Type="string" Value=''/>
+      <RegistryValue Root="HKCR" Key="dvbnet\DefaultIcon" Type="string" Value='[INSTALLFOLDER]DVBNETViewer.exe'/>
+      <RegistryValue Root="HKCR" Key="dvbnet\shell\open\command" Type="string" Value='"[INSTALLFOLDER]DVBNETViewer.exe" "%1"'/>
+
+    </Component>
+
+  </Fragment>
+
+</Wix>

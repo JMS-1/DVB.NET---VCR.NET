@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <?include ..\..\..\..\SetupHelper\ManufacturerSettings.wxi ?>
+
+  <Product
+    Id="*"
+    Name="DVB.NET Viewer 4.1"
+    Language="1031"
+    Version="!(wix.SETUPVERSION)"
+    Manufacturer="$(var.Manufacturer)"    
+    UpgradeCode="e3b8f345-fe3b-4387-93d4-da199990744e">
+
+    <Package
+      InstallPrivileges="elevated"      
+      Languages="1031"
+      InstallerVersion="200"
+      Compressed="yes"
+      Platform="x86"
+      InstallScope="perMachine" />
+
+    <WixVariable Id="WixUIBannerBmp" Value="..\..\..\..\SetupHelper\PsiMarronBanner.bmp" />
+
+    <!-- Wir verwenden ein einziges CAB Archiv und das wird auch in das MSI integriert -->
+    <MediaTemplate EmbedCab="yes" />
+
+    <!-- Für alle Installationen identische Einstellungen -->
+    <Property Id="ARPURLINFOABOUT" Value="$(var.ManufacturerUrl)" />
+    <Property Id="ARPCONTACT" Value="$(var.Author)" />
+
+    <!-- Alle unseren Bildchen -->
+    <Icon Id="THEICON" SourceFile="$(var.DVBNETViewer.ProjectDir)DVBNETViewer.ico" />
+
+    <!-- Spezielle Einstellungen für die Installation -->
+    <Property Id="ARPHELPLINK" Value="http://www.watchersnet.de/Default.aspx?tabid=52&amp;g=topics&amp;f=19" />
+    <Property Id="ARPCOMMENTS" Value="DVB.NET Viewer 4.1" />
+    <Property Id="ARPPRODUCTICON" Value="THEICON" />
+
+    <!-- Sonderoptionen für die Installation -->
+
+    <!-- Ohne .NET in der richtigen Version geht gar nichts -->
+    <PropertyRef Id="NETFRAMEWORK40FULL"/>
+    <Condition Message="!(loc.DOTNETMISSING)">
+      <![CDATA[NETFRAMEWORK40FULL]]>
+    </Condition>
+
+    <!-- Eine vorherige Installation muss entfernt werden -->
+    <Property Id="ISINSTALLED">
+      <RegistrySearch Id="ISINSTALLEDREG" Root="HKLM" Key="SOFTWARE\JMS\DVB.NET Viewer" Name="installed" Type="raw" />
+    </Property>
+    <Condition Message="!(loc.ALREADYINSTALLED)">
+      <![CDATA[Installed OR NOT ISINSTALLED]]>
+    </Condition>
+
+    <!-- DVB.NET muss in der korrekten Version installiert sein -->
+    <Property Id="DVBNETCORE">
+      <RegistrySearch Id="DVBNETCOREREG" Win64="no" Root="HKLM" Key="Software\JMS\DVB.NET\4.1.0.0" Name="Root Directory" Type="raw" />
+    </Property>
+    <Condition Message="!(loc.DVBNETMISSING)">
+      <![CDATA[Installed OR DVBNETCORE]]>
+    </Condition>
+
+    <!-- Die Kerninstallation. -->
+    <Feature Id="ProductFeature" Title="!(loc.FEATUREBINARIES)" Level="1" Absent="disallow" TypicalDefault="install" AllowAdvertise="no">
+
+      <ComponentGroupRef Id="JMS.DVB.Viewer.Binaries" />
+      <ComponentGroupRef Id="DVBNETViewer.Binaries" />
+      <ComponentRef Id="Libraries" />
+      <ComponentRef Id="German" />
+      <ComponentRef Id="StartMenu" />
+      <ComponentRef Id="Registry" />
+
+    </Feature>
+
+    <!-- Die Installation der Quelltexte, die völlig optional ist. -->
+    <Feature Id="SourceFeature" Title="!(loc.FEATURESOURCE)" Level="2" Absent="allow" AllowAdvertise="no">
+
+      <ComponentGroupRef Id="JMS.DVB.Viewer.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.Viewer.Content" />
+      <ComponentGroupRef Id="DVBNETViewer.Sources" />
+      <ComponentGroupRef Id="DVBNETViewer.Content" />
+      
+    </Feature>
+
+    <!-- Die Installation der Intellisense Dateien, die völlig optional ist. -->
+    <Feature Id="DocFeature" Title="!(loc.FEATUREINTELLISENSE)" Level="2" Absent="allow" AllowAdvertise="no">
+
+      <ComponentGroupRef Id="JMS.DVB.Viewer.Documents" />
+
+    </Feature>
+
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <UIRef Id="CommonWizard" />
+
+  </Product>
+
+</Wix>

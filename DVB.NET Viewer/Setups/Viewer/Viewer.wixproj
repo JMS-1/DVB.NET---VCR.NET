@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>3.7</ProductVersion>
+    <ProjectGuid>ac44fac9-4952-4572-81c4-76b9525fe4bc</ProjectGuid>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputName>DVBNETViewer</OutputName>
+    <OutputType>Package</OutputType>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <EnableProjectHarvesting>True</EnableProjectHarvesting>
+    <ProjectOutputGroups>Binaries;Content;Sources</ProjectOutputGroups>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <OutputPath>..\msi\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <DefineConstants>Debug</DefineConstants>
+    <WixVariables>SETUPVERSION=4.2.3</WixVariables>
+    <Cultures>de-de</Cultures>
+    <SuppressPdbOutput>True</SuppressPdbOutput>
+    <SuppressIces>ICE57</SuppressIces>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>..\msi\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <WixVariables>SETUPVERSION=4.2.3</WixVariables>
+    <Cultures>de-de</Cultures>
+    <SuppressPdbOutput>True</SuppressPdbOutput>
+    <SuppressIces>ICE57</SuppressIces>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\..\SetupHelper\CommonWizard.wxs">
+      <Link>CommonWizard.wxs</Link>
+    </Compile>
+    <Compile Include="DirectoryTree.wxs" />
+    <Compile Include="Libraries.wxs" />
+    <Compile Include="Localization.wxs" />
+    <Compile Include="Menu.wxs" />
+    <Compile Include="Product.wxs" />
+    <Compile Include="Registry.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Application\DVBNETViewer.csproj">
+      <Name>DVBNETViewer</Name>
+      <Project>{b9d413fc-aecf-4bfb-b6a4-bd1c99704df5}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ViewerControl\JMS.DVB.Viewer.csproj">
+      <Name>JMS.DVB.Viewer</Name>
+      <Project>{6a6df1ab-1ae0-46d9-ba37-fc497f4a1e95}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\..\SetupHelper\ManufacturerSettings.wxi">
+      <Link>ManufacturerSettings.wxi</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\..\..\SetupHelper\CommonWizardGerman.wxl">
+      <Link>CommonWizardGerman.wxl</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Deutsch.wxl" />
+  </ItemGroup>
+  <ItemGroup>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
+      <Name>WixUIExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixNetFxExtension">
+      <HintPath>$(WixExtDir)\WixNetFxExtension.dll</HintPath>
+      <Name>WixNetFxExtension</Name>
+    </WixExtension>
+  </ItemGroup>
+  <Import Project="$(WixTargetsPath)" />
+  <PropertyGroup>
+    <PostBuildEvent>set "$(WixVariables)"
+
+"%25ProgramFiles%25\Windows Kits\8.0\bin\x86\msiinfo.exe" "$(TargetDir)\de-de\$(TargetFileName)" /T "DVB.NET Viewer %25SETUPVERSION%25"</PostBuildEvent>
+  </PropertyGroup>
+  <!--
+	To modify your build process, add your task inside one of the targets below and uncomment it.
+	Other similar extension points exist, see Wix.targets.
+	<Target Name="BeforeBuild">
+	</Target>
+	<Target Name="AfterBuild">
+	</Target>
+	-->
+</Project>

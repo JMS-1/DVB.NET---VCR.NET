@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+
+    <!-- Einträge für das Startmenü. -->
+    <Component Id="StartMenu" Directory="ShortCutFolder" Guid="7ea2cdd3-f20d-48c5-bcb0-0a71cd644ef7">
+
+      <!-- Ein bißchen Magie, damit auch die Deinstallation die Einträge sauber entfernt. -->
+      <RemoveFolder Id="ShortCutFolder" On="uninstall"/>
+      <RegistryValue Root="HKMU" Key="SOFTWARE\JMS\DVB.NET Viewer" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+
+      <Shortcut Id="RegularStart"
+          Target="[INSTALLFOLDER]$(var.DVBNETViewer.TargetName).exe"
+          Description="!(loc.MENULOCALDESCR)"
+          WorkingDirectory="INSTALLDIR"
+          Name="!(loc.MENULOCAL)"
+          Icon="THEICON" />
+
+      <Shortcut Id="VCRConnect"
+          Target="[INSTALLFOLDER]$(var.DVBNETViewer.TargetName).exe"
+          Description="!(loc.MENUVCRDESCR)"
+          WorkingDirectory="INSTALLDIR"
+          Name="!(loc.MENUVCR)"
+          Arguments="/VCR"
+          Icon="THEICON" />
+
+      <Shortcut Id="LearnRC"
+          Target="[INSTALLFOLDER]$(var.DVBNETViewer.TargetName).exe"
+          Description="!(loc.MENURCDESCR)"
+          WorkingDirectory="INSTALLDIR"
+          Name="!(loc.MENURC)"
+          Arguments="/LearnRC"
+          Icon="THEICON" />
+
+      <Shortcut Id="Reset"
+          Target="[INSTALLFOLDER]$(var.DVBNETViewer.TargetName).exe"
+          Description="!(loc.MENURESETDESCR)"
+          WorkingDirectory="INSTALLDIR"
+          Name="!(loc.MENURESET)"
+          Arguments="/Reset"
+          Icon="THEICON" />
+
+    </Component>
+
+  </Fragment>
+</Wix>
