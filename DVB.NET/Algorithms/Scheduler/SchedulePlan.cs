@@ -167,24 +167,34 @@ namespace JMS.DVB.Algorithms.Scheduler
 
                         // Process all allocations
                         foreach (var allocation in allocations)
-                            if (!allocation.IsIdle)
-                                for (; ; )
-                                {
-                                    // Too early
-                                    if (allocation.End <= startTime)
-                                        break;
+                        {
+                            // Doing nothing is no problem
+                            if (allocation.IsIdle)
+                                continue;
 
-                                    // Rule violated
-                                    if (allocation.Start <= startTime)
-                                        badCount++;
+                            // As long as necessary
+                            for (; ; )
+                            {
+                                // Too early
+                                if (allocation.End <= startTime)
+                                    break;
 
-                                    // Adjust to next
-                                    if (++startIndex >= startTimes.Length)
-                                        break;
+                                // Rule violated
+                                if (allocation.Start <= startTime)
+                                    badCount++;
 
-                                    // Reload for next try
-                                    startTime = startTimes[startIndex];
-                                }
+                                // Adjust to next
+                                if (++startIndex >= startTimes.Length)
+                                    break;
+
+                                // Reload for next try
+                                startTime = startTimes[startIndex];
+                            }
+
+                            // We already processed all start times - speed up at least a tiny bit
+                            if (startIndex >= startTimes.Length)
+                                break;
+                        }
                     }
 
                     // Report the total violations - overall: the less the better
