@@ -159,3 +159,5 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+/DVB.NET/BDA4/JMS.DVB.DeviceAccess.sln
+/DVB.NET/HardwareAbstraction/JMS.DVB.HardwareAbstraction.sln
