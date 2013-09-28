@@ -301,11 +301,9 @@ namespace JMS.DVB.Algorithms
         private GroupInformation SelectGroup( Hardware device, GroupLocation location, SourceGroup group, ref SpectrumInversions lastInversion )
         {
             // See if this is a cable group
-            CableGroup cableGroup = group as CableGroup;
-
-            // Use the last inversion
-            if (null != cableGroup)
-                if (SpectrumInversions.Auto == cableGroup.SpectrumInversion)
+            var cableGroup = group as CableGroup;
+            if (cableGroup != null)
+                if (cableGroup.SpectrumInversion == SpectrumInversions.Auto)
                     cableGroup.SpectrumInversion = lastInversion;
 
             // Report
@@ -315,11 +313,9 @@ namespace JMS.DVB.Algorithms
             // Choose group
             device.SelectGroup( location, group );
 
-            // Report
-            GroupInformation info = device.GetGroupInformation();
-
             // Did it
-            if (null != info)
+            var info = device.GetGroupInformation();
+            if (info != null)
                 return info;
 
             // Report
@@ -327,11 +323,11 @@ namespace JMS.DVB.Algorithms
                 Trace.WriteLine( string.Format( Properties.Resources.Trace_Scanner_NoGroupInfo, location, group ), ScannerTraceSwitch.DisplayName );
 
             // Not cable
-            if (null == cableGroup)
+            if (cableGroup == null)
                 return info;
 
             // Swap inversion
-            lastInversion = (SpectrumInversions.On == lastInversion) ? SpectrumInversions.Off : SpectrumInversions.On;
+            lastInversion = (lastInversion == SpectrumInversions.On) ? SpectrumInversions.Off : SpectrumInversions.On;
 
             // Put into group
             cableGroup.SpectrumInversion = lastInversion;
