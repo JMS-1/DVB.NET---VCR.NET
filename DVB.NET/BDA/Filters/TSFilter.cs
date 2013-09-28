@@ -751,7 +751,7 @@ namespace JMS.DVB.DirectShow.Filters
         public string QueryVendorInfo()
         {
             // Some stuff
-            return "DVB.NET 4.1 Injection Filter";
+            return "DVB.NET 4.2 Injection Filter";
         }
 
         #endregion
