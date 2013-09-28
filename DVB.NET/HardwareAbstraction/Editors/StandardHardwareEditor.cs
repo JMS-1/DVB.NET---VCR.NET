@@ -217,10 +217,10 @@ namespace JMS.DVB.Editors
         /// <summary>
         /// Füllt eine Auswahlliste mit Geräten oder Filtern.
         /// </summary>
-        /// <typeparam name="T">Die konkrete Art der Information - letztlich identisch behandelt.</typeparam>
+        /// <typeparam name="TInformationType">Die konkrete Art der Information - letztlich identisch behandelt.</typeparam>
         /// <param name="target">Die zu befüllende Auswahlliste.</param>
         /// <param name="informations">Die bereitgestellten Informationen.</param>
-        private void Fill<T>( ComboBox target, IEnumerable<T> informations ) where T : IDeviceOrFilterInformation
+        private void Fill<TInformationType>( ComboBox target, IEnumerable<TInformationType> informations ) where TInformationType : IDeviceOrFilterInformation
         {
             // Load
             foreach (var information in informations)
