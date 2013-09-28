@@ -104,6 +104,12 @@ namespace JMS.DVB.DeviceAccess
         private SourceIdentifier[] m_currentDecryption = s_NoSources;
 
         /// <summary>
+        /// Gesetzt um zu verhindern, dass bei einem fehlgeschlagenen Wechsel der Quellgruppe die Entschlüsselung
+        /// zurückgesetzt wird. Diese Einstellung kann den Sendersuchlauf erheblich beschleunigen.
+        /// </summary>
+        public bool DisableCIResetOnTuneFailure { get; set; }
+
+        /// <summary>
         /// Erzeugt einen neuen Graphen.
         /// </summary>
         public DataGraph()
@@ -129,8 +135,8 @@ namespace JMS.DVB.DeviceAccess
                 throw new NotSupportedException( Properties.Resources.Exception_NotStarted );
 
             // PAT wait configuration - will use 1/10sec per retry
-            int patRetries = Configuration.MinimumPATCountWaitTime;
-            int patsExpected = Configuration.MinimumPATCount;
+            var patRetries = Configuration.MinimumPATCountWaitTime;
+            var patsExpected = Configuration.MinimumPATCount;
 
             // Attach to helper
             var analyser = TransportStreamAnalyser;
@@ -138,7 +144,7 @@ namespace JMS.DVB.DeviceAccess
             var parser = (manager == null) ? null : manager.TSParser;
 
             // May want to retry at least four times
-            for (int outerRetry = 4; outerRetry-- > 0; patsExpected += 5, patRetries += 25)
+            for (var outerRetry = 4; outerRetry-- > 0; patsExpected += 5, patRetries += 25)
             {
                 // Always stop raw dump
                 if (manager != null)
@@ -162,7 +168,7 @@ namespace JMS.DVB.DeviceAccess
                     try
                     {
                         // Set counter
-                        int tuneRetry = 10;
+                        var tuneRetry = 10;
 
                         // Wait
                         for (; tuneRetry-- > 0; Thread.Sleep( 100 ))
@@ -199,9 +205,9 @@ namespace JMS.DVB.DeviceAccess
                 parser.RestartPATCounter();
 
                 // Request the number of bytes currently processed
-                long bytes = parser.BytesReceived;
-                int limit = patsExpected;
-                int retry = patRetries;
+                var bytes = parser.BytesReceived;
+                var limit = patsExpected;
+                var retry = patRetries;
 
                 // Wait a bit
                 for (; (parser.ValidPATCount < limit) && (retry-- > 0); )
@@ -225,7 +231,7 @@ namespace JMS.DVB.DeviceAccess
                     Trace.WriteLine( Properties.Resources.Trace_TuneFailed, BDASettings.BDATraceSwitch.DisplayName );
 
                 // Inform all helpers on reset
-                SendEmptyTuneRequest();
+                SendEmptyTuneRequest( DisableCIResetOnTuneFailure );
             }
         }
 
@@ -285,13 +291,16 @@ namespace JMS.DVB.DeviceAccess
         /// Sendet eine leere Anfrage zum Wechsel der Quellgruppe. Diese kann von allen Aktionen
         /// verwendet werden, um interne Zustände zu (re-)initialisieren.
         /// </summary>
-        private void SendEmptyTuneRequest()
+        /// <param name="disableDecryptionReset">Gesetzt, um die Neuinitialisierung der Entschlüsselung
+        /// zu deaktivieren.</param>
+        private void SendEmptyTuneRequest( bool disableDecryptionReset = false )
         {
             // Process
             using (var tune = TuneToken.Create( TunePipeline, null, null ))
                 tune.Execute();
-            using (var crypt = DecryptToken.Create( DecryptionPipeline, null ))
-                crypt.Execute();
+            if (!disableDecryptionReset)
+                using (var crypt = DecryptToken.Create( DecryptionPipeline, null ))
+                    crypt.Execute();
             using (var sig = SignalToken.Create( SignalPipeline ))
                 sig.Execute();
 

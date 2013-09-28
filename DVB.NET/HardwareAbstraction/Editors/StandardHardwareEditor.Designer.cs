@@ -51,6 +51,7 @@
             this.selDVBS2 = new System.Windows.Forms.ComboBox();
             this.ckWakeup = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.ckCIDuringScan = new System.Windows.Forms.CheckBox();
             this.cmdEditSig = new System.Windows.Forms.Button();
             this.cmdEditCAM = new System.Windows.Forms.Button();
             this.cmdEditS2 = new System.Windows.Forms.Button();
@@ -65,6 +66,7 @@
             // 
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
+            this.toolTips.SetToolTip(this.label1, resources.GetString("label1.ToolTip"));
             // 
             // selTuner
             // 
@@ -79,6 +81,7 @@
             // 
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
+            this.toolTips.SetToolTip(this.label2, resources.GetString("label2.ToolTip"));
             // 
             // selCapture
             // 
@@ -93,6 +96,7 @@
             // 
             resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
+            this.toolTips.SetToolTip(this.label3, resources.GetString("label3.ToolTip"));
             // 
             // selPATCount
             // 
@@ -109,6 +113,7 @@
             // 
             resources.ApplyResources(this.label4, "label4");
             this.label4.Name = "label4";
+            this.toolTips.SetToolTip(this.label4, resources.GetString("label4.ToolTip"));
             // 
             // selPATDelay
             // 
@@ -130,6 +135,7 @@
             // 
             resources.ApplyResources(this.label5, "label5");
             this.label5.Name = "label5";
+            this.toolTips.SetToolTip(this.label5, resources.GetString("label5.ToolTip"));
             // 
             // selDiSEqC
             // 
@@ -165,11 +171,13 @@
             // 
             resources.ApplyResources(this.label6, "label6");
             this.label6.Name = "label6";
+            this.toolTips.SetToolTip(this.label6, resources.GetString("label6.ToolTip"));
             // 
             // label7
             // 
             resources.ApplyResources(this.label7, "label7");
             this.label7.Name = "label7";
+            this.toolTips.SetToolTip(this.label7, resources.GetString("label7.ToolTip"));
             // 
             // selWakeup
             // 
@@ -184,6 +192,7 @@
             // 
             resources.ApplyResources(this.label8, "label8");
             this.label8.Name = "label8";
+            this.toolTips.SetToolTip(this.label8, resources.GetString("label8.ToolTip"));
             // 
             // ckNoMoniker
             // 
@@ -211,6 +220,8 @@
             // 
             // groupBox1
             // 
+            resources.ApplyResources(this.groupBox1, "groupBox1");
+            this.groupBox1.Controls.Add(this.ckCIDuringScan);
             this.groupBox1.Controls.Add(this.cmdEditSig);
             this.groupBox1.Controls.Add(this.cmdEditCAM);
             this.groupBox1.Controls.Add(this.cmdEditS2);
@@ -235,14 +246,22 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.selTuner);
             this.groupBox1.Controls.Add(this.label1);
-            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
+            this.toolTips.SetToolTip(this.groupBox1, resources.GetString("groupBox1.ToolTip"));
+            // 
+            // ckCIDuringScan
+            // 
+            resources.ApplyResources(this.ckCIDuringScan, "ckCIDuringScan");
+            this.ckCIDuringScan.Name = "ckCIDuringScan";
+            this.toolTips.SetToolTip(this.ckCIDuringScan, resources.GetString("ckCIDuringScan.ToolTip"));
+            this.ckCIDuringScan.UseVisualStyleBackColor = true;
             // 
             // cmdEditSig
             // 
             resources.ApplyResources(this.cmdEditSig, "cmdEditSig");
             this.cmdEditSig.Name = "cmdEditSig";
+            this.toolTips.SetToolTip(this.cmdEditSig, resources.GetString("cmdEditSig.ToolTip"));
             this.cmdEditSig.UseVisualStyleBackColor = true;
             this.cmdEditSig.Click += new System.EventHandler(this.PipelineParameterEdit);
             // 
@@ -250,6 +269,7 @@
             // 
             resources.ApplyResources(this.cmdEditCAM, "cmdEditCAM");
             this.cmdEditCAM.Name = "cmdEditCAM";
+            this.toolTips.SetToolTip(this.cmdEditCAM, resources.GetString("cmdEditCAM.ToolTip"));
             this.cmdEditCAM.UseVisualStyleBackColor = true;
             this.cmdEditCAM.Click += new System.EventHandler(this.PipelineParameterEdit);
             // 
@@ -257,6 +277,7 @@
             // 
             resources.ApplyResources(this.cmdEditS2, "cmdEditS2");
             this.cmdEditS2.Name = "cmdEditS2";
+            this.toolTips.SetToolTip(this.cmdEditS2, resources.GetString("cmdEditS2.ToolTip"));
             this.cmdEditS2.UseVisualStyleBackColor = true;
             this.cmdEditS2.Click += new System.EventHandler(this.PipelineParameterEdit);
             // 
@@ -264,6 +285,7 @@
             // 
             resources.ApplyResources(this.cmdEditDiSEqC, "cmdEditDiSEqC");
             this.cmdEditDiSEqC.Name = "cmdEditDiSEqC";
+            this.toolTips.SetToolTip(this.cmdEditDiSEqC, resources.GetString("cmdEditDiSEqC.ToolTip"));
             this.cmdEditDiSEqC.UseVisualStyleBackColor = true;
             this.cmdEditDiSEqC.Click += new System.EventHandler(this.PipelineParameterEdit);
             // 
@@ -271,6 +293,7 @@
             // 
             resources.ApplyResources(this.label9, "label9");
             this.label9.Name = "label9";
+            this.toolTips.SetToolTip(this.label9, resources.GetString("label9.ToolTip"));
             // 
             // StandardHardwareEditor
             // 
@@ -278,6 +301,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox1);
             this.Name = "StandardHardwareEditor";
+            this.toolTips.SetToolTip(this, resources.GetString("$this.ToolTip"));
             this.Load += new System.EventHandler(this.StandardHardwareEditor_Load);
             ((System.ComponentModel.ISupportInitialize)(this.selPATCount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.selPATDelay)).EndInit();
@@ -315,5 +339,6 @@
         private System.Windows.Forms.Button cmdEditCAM;
         private System.Windows.Forms.Button cmdEditS2;
         private System.Windows.Forms.Button cmdEditDiSEqC;
+        private System.Windows.Forms.CheckBox ckCIDuringScan;
     }
 }

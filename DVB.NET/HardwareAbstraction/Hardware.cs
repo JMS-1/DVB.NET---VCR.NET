@@ -58,6 +58,13 @@ namespace JMS.DVB
         public const string Parameter_EnableWakeup = "ResetAfterWakeup";
 
         /// <summary>
+        /// Der Parametername für die Einstellung, ob während einer Aktualisierung der Liste der Quellen bei
+        /// einem Fehlversuch die Entschlüsselung neu initialisiert werden sollen - einige Module benötigen
+        /// dies zur korrekten Resynchronisation.
+        /// </summary>
+        public const string Parameter_EnableCIDuringScan = "EnableDecryptionForSourceScan";
+
+        /// <summary>
         /// Mit diesem Schalter kann ausgewählt werden, in welchem Umfang Manipulationen der Verbraucher
         /// protokolliert werden sollen.
         /// </summary>
@@ -492,6 +499,14 @@ namespace JMS.DVB
         {
             // Not here
             throw new NotSupportedException();
+        }
+
+        /// <summary>
+        /// Bereitet einen Sendersuchlauf vor.
+        /// </summary>
+        public virtual void PrepareSourceScan()
+        {
+            // Silently discard
         }
 
         /// <summary>
@@ -1118,19 +1133,19 @@ namespace JMS.DVB
     /// <summary>
     /// Implementierungshilfe für Geräte einer bestimmten Art.
     /// </summary>
-    /// <typeparam name="P">Die genaue Art des Geräteprofils.</typeparam>
-    /// <typeparam name="L">Die Art des Ursprungs.</typeparam>
-    /// <typeparam name="G">Die Art der Quellgruppe.</typeparam>
-    public abstract class Hardware<P, L, G> : Hardware
-        where P : Profile
-        where L : GroupLocation
-        where G : SourceGroup
+    /// <typeparam name="TProfileType">Die genaue Art des Geräteprofils.</typeparam>
+    /// <typeparam name="TLocationType">Die Art des Ursprungs.</typeparam>
+    /// <typeparam name="TGroupType">Die Art der Quellgruppe.</typeparam>
+    public abstract class Hardware<TProfileType, TLocationType, TGroupType> : Hardware
+        where TProfileType : Profile
+        where TLocationType : GroupLocation
+        where TGroupType : SourceGroup
     {
         /// <summary>
         /// Initialisiert eine neue Geräteimplementierung.
         /// </summary>
         /// <param name="profile">Das zugehörige Geräteprofil.</param>
-        protected Hardware( P profile )
+        protected Hardware( TProfileType profile )
             : base( profile )
         {
         }
@@ -1138,45 +1153,24 @@ namespace JMS.DVB
         /// <summary>
         /// Meldet das zugeordnete Geräteprofil.
         /// </summary>
-        public new P Profile
-        {
-            get
-            {
-                // Forward
-                return (P) base.Profile;
-            }
-        }
+        public new TProfileType Profile { get { return (TProfileType) base.Profile; } }
 
         /// <summary>
         /// Meldet den aktuell verwendeten Ursprung.
         /// </summary>
-        public new L CurrentLocation
-        {
-            get
-            {
-                // Forward
-                return (L) base.CurrentLocation;
-            }
-        }
+        public new TLocationType CurrentLocation { get { return (TLocationType) base.CurrentLocation; } }
 
         /// <summary>
         /// Meldet die aktuelle Quellgruppe.
         /// </summary>
-        public new G CurrentGroup
-        {
-            get
-            {
-                // Forward
-                return (G) base.CurrentGroup;
-            }
-        }
+        public new TGroupType CurrentGroup { get { return (TGroupType) base.CurrentGroup; } }
 
         /// <summary>
         /// Stellt den Empfang auf eine bestimmte Quellgruppe eines Ursprungs ein.
         /// </summary>
         /// <param name="location">Der gewünschte Ursprung.</param>
         /// <param name="group">Die gewünschte Quellgruppe.</param>
-        public void SelectGroup( L location, G group )
+        public void SelectGroup( TLocationType location, TGroupType group )
         {
             // Forward
             base.SelectGroup( location, group );
@@ -1190,10 +1184,10 @@ namespace JMS.DVB
         protected override sealed bool OnCanHandle( SourceGroup group )
         {
             // Check type
-            if (group.GetType() != typeof( G ))
+            if (group.GetType() != typeof( TGroupType ))
                 return false;
             else
-                return OnCanHandle( (G) group );
+                return OnCanHandle( (TGroupType) group );
         }
 
         /// <summary>
@@ -1201,7 +1195,7 @@ namespace JMS.DVB
         /// </summary>
         /// <param name="group">Eine Quellgruppe zur Prüfung.</param>
         /// <returns>Gesetzt, wenn die Quellgruppe angesteuert werden kann.</returns>
-        protected virtual bool OnCanHandle( G group )
+        protected virtual bool OnCanHandle( TGroupType group )
         {
             // Default is yes
             return true;
@@ -1212,7 +1206,7 @@ namespace JMS.DVB
         /// </summary>
         /// <param name="group">Eine Quellgruppe zur Prüfung.</param>
         /// <returns>Gesetzt, wenn die Quellgruppe angesteuert werden kann.</returns>
-        public bool CanHandle( G group )
+        public bool CanHandle( TGroupType group )
         {
             // Forward
             return (group != null) && OnCanHandle( group );
@@ -1223,7 +1217,7 @@ namespace JMS.DVB
         /// </summary>
         /// <param name="location">Der gewünschte Ursprung.</param>
         /// <param name="group">Die gewünschte Quellgruppe.</param>
-        protected abstract void OnSelect( L location, G group );
+        protected abstract void OnSelect( TLocationType location, TGroupType group );
 
         /// <summary>
         /// Stellt den Empfang auf eine bestimmte Quellgruppe eines Ursprungs ein.
@@ -1233,7 +1227,7 @@ namespace JMS.DVB
         protected override sealed void OnSelectGroup( GroupLocation location, SourceGroup group )
         {
             // Forward
-            OnSelect( (L) location, (G) group );
+            OnSelect( (TLocationType) location, (TGroupType) group );
         }
     }
 

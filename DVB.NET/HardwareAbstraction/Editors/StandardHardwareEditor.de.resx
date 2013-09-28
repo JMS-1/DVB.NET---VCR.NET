@@ -112,20 +112,17 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>86, 13</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>&amp;Empfangsfilter (*)</value>
-  </data>
-  <data name="label1.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="selTuner.ToolTip" xml:space="preserve">
     <value>Der BDA Empfangsfilter zum Wechsel der Quellgruppen</value>
@@ -136,9 +133,6 @@
   <data name="label2.Text" xml:space="preserve">
     <value>&amp;Datenübernahmefilter</value>
   </data>
-  <data name="label2.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="selCapture.ToolTip" xml:space="preserve">
     <value>Der BDA Datenfilter zur Übertragung der Rohdaten in den Graphen</value>
   </data>
@@ -148,20 +142,14 @@
   <data name="label3.Text" xml:space="preserve">
     <value>Synchronisations&amp;zähler</value>
   </data>
-  <data name="label3.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="selPATCount.ToolTip" xml:space="preserve">
     <value>Anzahl der PAT Tabellen, die nach einem Wechsel der Quellgruppe mindestens empfangen werden müssen, um den Wechsel anzuerkennen</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>168, 13</value>
+    <value>146, 13</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
     <value>Synchronisations&amp;verzögerung</value>
-  </data>
-  <data name="label4.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="selPATDelay.ToolTip" xml:space="preserve">
     <value>Die Verzögerung (in Millisekunden) nach einem nicht anerkannten Wechsel der Quellgruppe</value>
@@ -171,9 +159,6 @@
   </data>
   <data name="label5.Text" xml:space="preserve">
     <value>&amp;Antennensteuerung</value>
-  </data>
-  <data name="label5.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="selDiSEqC.ToolTip" xml:space="preserve">
     <value>Erweiterung, die es DVB.NET erlaubt, mit Hilfe des DiSEqC 1.0 Protokolls bis zu 4 Satellitenschüsseln anzusteuern</value>
@@ -190,17 +175,11 @@
   <data name="label6.Text" xml:space="preserve">
     <value>Entschl&amp;üsselung</value>
   </data>
-  <data name="label6.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>81, 13</value>
   </data>
   <data name="label7.Text" xml:space="preserve">
     <value>Empfangs&amp;signal</value>
-  </data>
-  <data name="label7.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="selWakeup.ToolTip" xml:space="preserve">
     <value>Ein Windows Gerät, das nach dem Aufwachen aus dem Schlafzustand aktiviert werden soll</value>
@@ -210,9 +189,6 @@
   </data>
   <data name="label8.Text" xml:space="preserve">
     <value>&amp;Reaktivierungsgerät</value>
-  </data>
-  <data name="label8.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="ckNoMoniker.Size" type="System.Drawing.Size, System.Drawing">
     <value>242, 17</value>
@@ -235,13 +211,10 @@
   <data name="ckWakeup.ToolTip" xml:space="preserve">
     <value>Gesetzt, wenn ein Neustart eines Windows Gerätes nach dem Aufwachen aus dem Schlafzustand erwünscht ist</value>
   </data>
-  <data name="label9.ToolTip" xml:space="preserve">
-    <value />
+  <data name="ckCIDuringScan.Size" type="System.Drawing.Size, System.Drawing">
+    <value>386, 17</value>
   </data>
-  <data name="groupBox1.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="$this.ToolTip" xml:space="preserve">
-    <value />
+  <data name="ckCIDuringScan.Text" xml:space="preserve">
+    <value>Entschlüsselung während der Aktualisierung der Liste der &amp;Quellen  aktivieren</value>
   </data>
 </root>

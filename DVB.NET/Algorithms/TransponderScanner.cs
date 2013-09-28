@@ -362,24 +362,27 @@ namespace JMS.DVB.Algorithms
                 using (HardwareManager.Open())
                 {
                     // Attach to the hardware itself
-                    Hardware device = HardwareManager.OpenHardware( Profile );
+                    var device = HardwareManager.OpenHardware( Profile );
+
+                    // Tell it that we only do a scan
+                    device.PrepareSourceScan();
 
                     // Start loading location result list
-                    foreach (GroupLocation location in m_Locations)
+                    foreach (var location in m_Locations)
                         m_ScanResults.Add( location.Clone() );
 
                     // Reset counters
                     TotalLocations = m_Locations.Count;
 
                     // Last successfull inversion
-                    SpectrumInversions lastInversion = SpectrumInversions.On;
+                    var lastInversion = SpectrumInversions.On;
 
                     // Process all transponders
                     for (CurrentLocation = 0; CurrentLocation < m_Locations.Count; )
                     {
                         // Get new and old
-                        GroupLocation location = m_Locations[CurrentLocation];
-                        GroupLocation newLocation = m_ScanResults[CurrentLocation];
+                        var location = m_Locations[CurrentLocation];
+                        var newLocation = m_ScanResults[CurrentLocation];
 
                         // Count
                         ++CurrentLocation;
@@ -393,26 +396,27 @@ namespace JMS.DVB.Algorithms
                             return;
 
                         // Allow NIT scan on...
-                        List<SourceGroup> enableNIT = new List<SourceGroup>(), foundInfo = new List<SourceGroup>();
+                        var enableNIT = new List<SourceGroup>();
+                        var foundInfo = new List<SourceGroup>();
 
                         // Startup and load the groups from the configuration
                         foreach (SourceGroup group in location.Groups)
                             enableNIT.Add( group );
 
                         // All we have to process
-                        List<SourceGroup> process = new List<SourceGroup>( enableNIT );
+                        var process = new List<SourceGroup>( enableNIT );
 
                         // Allowed group type
-                        Type groupType = (process.Count > 0) ? process[0].GetType() : null;
+                        var groupType = (process.Count > 0) ? process[0].GetType() : null;
 
                         // All we did so far
-                        Dictionary<SourceGroup, bool> done = new Dictionary<SourceGroup, bool>();
+                        var done = new HashSet<SourceGroup>();
 
                         // Process all groups                        
                         while (process.Count > 0)
                         {
                             // Take the first one
-                            SourceGroup group = process[0];
+                            var group = process[0];
 
                             // Remove it
                             process.RemoveAt( 0 );
@@ -424,18 +428,18 @@ namespace JMS.DVB.Algorithms
                             ++CurrentLocationGroup;
 
                             // Already done
-                            if (done.ContainsKey( group ))
+                            if (done.Contains( group ))
                                 continue;
 
                             // Found group information on equivalent group
-                            if (null != foundInfo.FirstOrDefault( g => g.CompareTo( group, true ) ))
+                            if (foundInfo.FirstOrDefault( g => g.CompareTo( group, true ) ) != null)
                                 continue;
 
                             // Mark as done
-                            done[group] = true;
+                            done.Add( group );
 
                             // Check for external termination
-                            if (null == m_Worker)
+                            if (m_Worker == null)
                                 return;
 
                             // Not supported
@@ -449,10 +453,10 @@ namespace JMS.DVB.Algorithms
                             }
 
                             // Read the configuration
-                            SourceGroupFilter filter = Profile.GetFilter( group );
+                            var filter = Profile.GetFilter( group );
 
                             // See if this should be skiped
-                            if (null != filter)
+                            if (filter != null)
                                 if (filter.ExcludeFromScan)
                                 {
                                     // Remember
@@ -467,7 +471,7 @@ namespace JMS.DVB.Algorithms
                                 return;
 
                             // See if we should process the NIT
-                            bool checkNIT = enableNIT.Contains( group );
+                            var checkNIT = enableNIT.Contains( group );
 
                             // See if we should process
                             if (checkNIT || group.IsComplete)
@@ -476,16 +480,16 @@ namespace JMS.DVB.Algorithms
                                 group = SourceGroup.FromString<SourceGroup>( group.ToString() );
 
                                 // Attach to the group
-                                GroupInformation info = SelectGroup( device, location, group, ref lastInversion );
+                                var info = SelectGroup( device, location, group, ref lastInversion );
 
                                 // Mark as done again - group may be updated for DVB-C and if unchanged this is simply a no-operation
-                                done[group] = true;
+                                done.Add( group );
 
                                 // Read the configuration again - actually for DVB-C it may change
                                 filter = Profile.GetFilter( group );
 
                                 // See if this should be skiped
-                                if (null != filter)
+                                if (filter != null)
                                     if (filter.ExcludeFromScan)
                                     {
                                         // Remember
@@ -496,32 +500,32 @@ namespace JMS.DVB.Algorithms
                                     }
 
                                 // Remember that we found a group information - transponder is not dead
-                                if (null != info)
+                                if (info != null)
                                     foundInfo.Add( group );
 
                                 // See if NIT update is allowed
                                 if (checkNIT)
-                                    if (null != info)
+                                    if (info != null)
                                     {
                                         // See if we are a cable group
-                                        CableGroup cableGroup = group as CableGroup;
+                                        var cableGroup = group as CableGroup;
 
                                         // Try load
-                                        LocationInformation nit = device.GetLocationInformation();
-                                        if (null != nit)
+                                        var nit = device.GetLocationInformation();
+                                        if (nit != null)
                                             foreach (SourceGroup other in nit.Groups)
                                                 if (other.GetType() == groupType)
                                                 {
                                                     // See if this is a cable group
-                                                    CableGroup otherCable = other as CableGroup;
+                                                    var otherCable = other as CableGroup;
 
                                                     // Disable NIT scan on the group as is
                                                     enableNIT.RemoveAll( g => g.CompareTo( other, true ) );
                                                     process.RemoveAll( g => g.CompareTo( other, true ) );
 
                                                     // Set inversion
-                                                    if (null != otherCable)
-                                                        if (null != cableGroup)
+                                                    if (otherCable != null)
+                                                        if (cableGroup != null)
                                                         {
                                                             // Use same parameters
                                                             otherCable.SpectrumInversion = cableGroup.SpectrumInversion;
@@ -551,19 +555,19 @@ namespace JMS.DVB.Algorithms
                                     newLocation.Groups.Add( group );
 
                                     // Process this group                            
-                                    if (null == info)
+                                    if (info == null)
                                         m_Protocol.Add( new ProtocolRecord { Mode = ProtocolRecordMode.EmptyGroup, Location = location, Group = group } );
                                     else
-                                        foreach (SourceIdentifier source in info.Sources)
+                                        foreach (var source in info.Sources)
                                         {
                                             // Only stations
-                                            Station station = source as Station;
-                                            if (null == station)
+                                            var station = source as Station;
+                                            if (station == null)
                                                 continue;
 
                                             // Attach to the filter
-                                            SourceModifier modifiers = Profile.GetFilter( source );
-                                            if (null != modifiers)
+                                            var modifiers = Profile.GetFilter( source );
+                                            if (modifiers != null)
                                                 if (modifiers.ExcludeFromScan)
                                                     continue;
                                                 else

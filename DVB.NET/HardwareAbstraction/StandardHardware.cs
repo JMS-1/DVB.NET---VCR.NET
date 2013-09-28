@@ -1,9 +1,8 @@
 ﻿using System;
-
-using JMS.DVB.Editors;
 using JMS.DVB.DeviceAccess;
-using JMS.DVB.DeviceAccess.Interfaces;
 using JMS.DVB.DeviceAccess.Enumerators;
+using JMS.DVB.DeviceAccess.Interfaces;
+using JMS.DVB.Editors;
 
 
 namespace JMS.DVB
@@ -48,7 +47,7 @@ namespace JMS.DVB
         public static HardwareRestriction GetRestriction( Profile profile )
         {
             // Report default
-            if (null == profile)
+            if (profile == null)
                 return null;
             else
                 return new HardwareRestriction();
@@ -83,7 +82,7 @@ namespace JMS.DVB
         protected override void OnStop( Hardware.StreamInformation stream )
         {
             // Validate
-            if (null == stream)
+            if (stream == null)
                 throw new ArgumentNullException( "stream" );
 
             // Not started
@@ -91,7 +90,7 @@ namespace JMS.DVB
                 return;
 
             // Not of interest to us
-            if (null == stream.Consumer)
+            if (stream.Consumer == null)
                 return;
 
             // Just forward
@@ -105,7 +104,7 @@ namespace JMS.DVB
         protected override void OnStart( Hardware.StreamInformation stream )
         {
             // Validate
-            if (null == stream)
+            if (stream == null)
                 throw new ArgumentNullException( "stream" );
 
             // Not started
@@ -113,7 +112,7 @@ namespace JMS.DVB
                 return;
 
             // Not of interest to us
-            if (null == stream.Consumer)
+            if (stream.Consumer == null)
                 return;
 
             // Attach to the data manager
@@ -126,11 +125,11 @@ namespace JMS.DVB
             {
                 case StreamTypes.StandardTable: siTableMode = true; break;
                 case StreamTypes.ExtendedTable: siTableMode = true; break;
-                case StreamTypes.Audio: siTableMode = false; break;
-                case StreamTypes.SubTitle: siTableMode = false; break;
                 case StreamTypes.UnknownPES: siTableMode = false; break;
-                case StreamTypes.Video: siTableMode = false; break;
                 case StreamTypes.VideoText: siTableMode = false; break;
+                case StreamTypes.SubTitle: siTableMode = false; break;
+                case StreamTypes.Audio: siTableMode = false; break;
+                case StreamTypes.Video: siTableMode = false; break;
                 default: throw new NotSupportedException( type.ToString() );
             }
 
@@ -282,6 +281,22 @@ namespace JMS.DVB
         }
 
         /// <summary>
+        /// Bereitet einen Sendersuchlauf vor.
+        /// </summary>
+        public override void PrepareSourceScan()
+        {
+            // Check mode
+            bool enableDecryptionDuringScan;
+            if (bool.TryParse( GetParameter( Parameter_EnableCIDuringScan ), out enableDecryptionDuringScan ))
+                if (enableDecryptionDuringScan)
+                    return;
+
+            // Forward
+            if (m_Receiver != null)
+                m_Receiver.DisableCIResetOnTuneFailure = true;
+        }
+
+        /// <summary>
         /// Reaktiviert den Treiber über den Neustart eines Gerätes.
         /// </summary>
         public override void ResetWakeupDevice()
@@ -344,14 +359,7 @@ namespace JMS.DVB
         /// <summary>
         /// Meldet die Art des DVB Empfangs.
         /// </summary>
-        protected override DVBSystemType DVBType
-        {
-            get
-            {
-                // Report
-                return DVBSystemType.Satellite;
-            }
-        }
+        protected override DVBSystemType DVBType { get { return DVBSystemType.Satellite; } }
     }
 
     /// <summary>
@@ -372,14 +380,7 @@ namespace JMS.DVB
         /// <summary>
         /// Meldet die Art des DVB Empfangs.
         /// </summary>
-        protected override DVBSystemType DVBType
-        {
-            get
-            {
-                // Report
-                return DVBSystemType.Cable;
-            }
-        }
+        protected override DVBSystemType DVBType { get { return DVBSystemType.Cable; } }
     }
 
     /// <summary>
@@ -400,13 +401,6 @@ namespace JMS.DVB
         /// <summary>
         /// Meldet die Art des DVB Empfangs.
         /// </summary>
-        protected override DVBSystemType DVBType
-        {
-            get
-            {
-                // Report
-                return DVBSystemType.Terrestrial;
-            }
-        }
+        protected override DVBSystemType DVBType { get { return DVBSystemType.Terrestrial; } }
     }
 }

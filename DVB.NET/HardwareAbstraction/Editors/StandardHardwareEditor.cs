@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
-using System.Collections.Generic;
-
 using JMS.DVB.DeviceAccess;
 using JMS.DVB.DeviceAccess.Enumerators;
 
@@ -276,10 +275,11 @@ namespace JMS.DVB.Editors
             }
 
             // Flags and values
-            Profile.Parameters.Add( new ProfileParameter( Parameter_NoMoniker, ckNoMoniker.Checked ) );
-            Profile.Parameters.Add( new ProfileParameter( Hardware.Parameter_EnableWakeup, ckWakeup.Checked ) );
-            Profile.Parameters.Add( new ProfileParameter( BDAEnvironment.MiniumPATCountName, (uint) selPATCount.Value ) );
             Profile.Parameters.Add( new ProfileParameter( BDAEnvironment.MinimumPATCountWaitName, (uint) selPATDelay.Value ) );
+            Profile.Parameters.Add( new ProfileParameter( Hardware.Parameter_EnableCIDuringScan, ckCIDuringScan.Checked ) );
+            Profile.Parameters.Add( new ProfileParameter( BDAEnvironment.MiniumPATCountName, (uint) selPATCount.Value ) );
+            Profile.Parameters.Add( new ProfileParameter( Hardware.Parameter_EnableWakeup, ckWakeup.Checked ) );
+            Profile.Parameters.Add( new ProfileParameter( Parameter_NoMoniker, ckNoMoniker.Checked ) );
 
             // Tuner
             var device = selTuner.SelectedItem as DeviceSelector;
@@ -395,6 +395,11 @@ namespace JMS.DVB.Editors
         /// <param name="e">Wird ignoriert.</param>
         private void StandardHardwareEditor_Load( object sender, EventArgs e )
         {
+            // Load flag
+            bool ciDuringScan;
+            if (bool.TryParse( Profile.Parameters.GetParameter( Hardware.Parameter_EnableCIDuringScan ), out ciDuringScan ))
+                ckCIDuringScan.Checked = ciDuringScan;
+
             // See if we can translate from previous version
             try
             {
