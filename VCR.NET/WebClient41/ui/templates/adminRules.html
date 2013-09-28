@@ -111,6 +111,29 @@ ByPriority:End</pre>
                                     vielen gleichzeitigen Aufzeichnungen mit und ohne Überlappung ist diese Bewertung 
                                     allerdings recht unzuverlässig, obwohl sie in Einzelfällen durchaus Sinn macht.
                                 </p>
+                                <p>
+                                    <i><strong>ParallelSource</strong></i> ermittelt über einen Planungszeitraum für jede Quelle
+                                    die Gesamtzeit, über die diese auf mehreren Geräten gleichzeitig aufgezeichnet wird. Mit der
+                                    Ordnung <i>Min</i> wird VCR.NET aufgefordert diese Zeit auf ein Minimum zu reduzieren,
+                                    selbst wenn dadurch die Planungspriorität der Geräte überschrieben wird.
+                                </p>
+                                <p>
+                                    <i><strong>StartTime:</strong>regelwerk</i> untersucht die relativen Startzeitpunkte von Geräten und
+                                    versucht zu verhindern, dass ein Geräte nach einem anderen aktiviert wird - etwa
+                                    weil bekannt ist, dass bei dem Start der zugehörigen Gerätetreiber auf anderen Geräten
+                                    Störungen ausgelöst werden. Anstelle einer Ordnung wird hier ein Regelwerk aus Einzelregeln
+                                    angegeben, die durch einen senkrechten Strich (|) getrennt sind. Jede Regel beginnt mit dem
+                                    Namen eines Gerätes, darauf folgt das Symbol für <i>kleiner als</i> (&lt;) und dann eine
+                                    ebenfalls durch <i>kleiner als</i> getrennte Liste von Gerätenamen.
+                                </p>
+                                <p class="helpIndent">
+                                    Ein kleines Beispiel dazu: <i>dev1&lt;dev2&lt;dev3|dev4&lt;dev2</i> bevorzugt Planungen, bei denen das Gerät
+                                    <i>dev1</i> <strong>nicht</strong> nach <i>dev2</i> und <i>dev3</i> gestartet wird und 
+                                    <i>dev4</i> <strong>nicht nach</strong> <i>dev2</i>. Der einfachste Fall ist mein privates
+                                    Beispiel mit der <i>Hauppauge Nexus-S</i> unter Windows 7 (32-Bit natürlich) die beim Starten
+                                    Aufzeichnungen anderer Geräte stört: <i>Nexus&lt;*</i> mit der Sonderregel, dass der Stern (*)
+                                    alle (anderen) für VCR.NET freigeschalteten DVB Geräte bezeichnet.
+                                </p>
                             </div>
                         </div>
                 <textarea data-property="rules" rows="20" cols="100" />

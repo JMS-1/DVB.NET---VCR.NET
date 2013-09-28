@@ -423,3 +423,6 @@ fieldset legend {
   border: 1px solid black;
   padding: 5px;
 }
+.helpIndent {
+  margin-left: 10px;
+}
