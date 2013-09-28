@@ -17,6 +17,7 @@ build/
 [Aa]ssemblies/
 
 VCR.NET/WebClient41/Tools
+VCR.NET/WebClient41/Jobs
 
 # Enable "build/" folder in the NuGet Packages folder since NuGet packages use it for MSBuild targets
 !packages/*/build/
@@ -48,6 +49,7 @@ VCR.NET/WebClient41/Tools
 *.pidb
 *.log
 *.scc
+*.vup
 
 # Visual C++ cache files
 ipch/
