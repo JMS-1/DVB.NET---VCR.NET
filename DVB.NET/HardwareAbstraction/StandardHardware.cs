@@ -11,25 +11,30 @@ namespace JMS.DVB
     /// Beschreibt die Standardanbindung für DVB.NET 4.0ff Geräte. Die Standardansteuerung setzt 
     /// auf die Microsoft <i>Broadcast Driver Architecture (BDA)</i> Technologie.
     /// </summary>
-    /// <typeparam name="P">Die genaue Art des Geräteprofils.</typeparam>
-    /// <typeparam name="L">Die Art des Ursprungs.</typeparam>
-    /// <typeparam name="G">Die Art der Quellgruppe.</typeparam>
+    /// <typeparam name="TProfileType">Die genaue Art des Geräteprofils.</typeparam>
+    /// <typeparam name="TLocationType">Die Art des Ursprungs.</typeparam>
+    /// <typeparam name="TSourceGroupType">Die Art der Quellgruppe.</typeparam>
     [HardwareEditor( typeof( StandardHardwareEditor ) )]
-    public abstract class StandardHardware<P, L, G> : Hardware<P, L, G>
-        where P : Profile
-        where L : GroupLocation
-        where G : SourceGroup
+    public abstract class StandardHardware<TProfileType, TLocationType, TSourceGroupType> : Hardware<TProfileType, TLocationType, TSourceGroupType>
+        where TProfileType : Profile
+        where TLocationType : GroupLocation
+        where TSourceGroupType : SourceGroup
     {
         /// <summary>
         /// Steuert den Zugriff auf das Gerät über eine DirectShow Graphen.
         /// </summary>
-        private DataGraph m_Receiver;
+        private DataGraph m_receiver;
+
+        /// <summary>
+        /// Gesetzt, wenn die Entschlüsselung deaktiviert werden soll.
+        /// </summary>
+        private bool m_disableEncryption;
 
         /// <summary>
         /// Erzeugt eine neue Instanz.
         /// </summary>
         /// <param name="profile">Das zugehörige Geräteprofil.</param>
-        public StandardHardware( P profile )
+        public StandardHardware( TProfileType profile )
             : base( profile )
         {
         }
@@ -86,7 +91,7 @@ namespace JMS.DVB
                 throw new ArgumentNullException( "stream" );
 
             // Not started
-            if (m_Receiver == null)
+            if (m_receiver == null)
                 return;
 
             // Not of interest to us
@@ -94,7 +99,7 @@ namespace JMS.DVB
                 return;
 
             // Just forward
-            m_Receiver.TransportStreamAnalyser.DataManager.StopFilter( stream.Identifier );
+            m_receiver.TransportStreamAnalyser.DataManager.StopFilter( stream.Identifier );
         }
 
         /// <summary>
@@ -108,7 +113,7 @@ namespace JMS.DVB
                 throw new ArgumentNullException( "stream" );
 
             // Not started
-            if (m_Receiver == null)
+            if (m_receiver == null)
                 return;
 
             // Not of interest to us
@@ -116,7 +121,7 @@ namespace JMS.DVB
                 return;
 
             // Attach to the data manager
-            var manager = m_Receiver.TransportStreamAnalyser.DataManager;
+            var manager = m_receiver.TransportStreamAnalyser.DataManager;
 
             // Check mode
             var type = stream.StreamType;
@@ -147,10 +152,10 @@ namespace JMS.DVB
         protected override void OnGetSignal( SignalInformation signal )
         {
             // Only if started
-            if (m_Receiver != null)
+            if (m_receiver != null)
             {
                 // Try to fill
-                var status = m_Receiver.SignalStatus;
+                var status = m_receiver.SignalStatus;
                 if (status != null)
                 {
                     // Copy over
@@ -181,10 +186,10 @@ namespace JMS.DVB
         /// </summary>
         /// <param name="location">Der Ursprung der Quellgruppe.</param>
         /// <param name="group">Die eigentliche Quellgruppe.</param>
-        protected override void OnSelect( L location, G group )
+        protected override void OnSelect( TLocationType location, TSourceGroupType group )
         {
             // Create once
-            if (m_Receiver == null)
+            if (m_receiver == null)
             {
                 // Create receiver
                 var receiver = new DataGraph();
@@ -193,6 +198,7 @@ namespace JMS.DVB
                     // Load device data
                     receiver.CaptureInformation = FindFilter( Aspect_CaptureName, Aspect_CaptureMoniker, false );
                     receiver.TunerInformation = FindFilter( Aspect_TunerName, Aspect_TunerMoniker, true );
+                    receiver.DisableCIResetOnTuneFailure = m_disableEncryption;
                     receiver.DVBType = DVBType;
 
                     // Load optional data           
@@ -224,11 +230,11 @@ namespace JMS.DVB
                 }
 
                 // Remember
-                m_Receiver = receiver;
+                m_receiver = receiver;
             }
 
             // Blind forward
-            m_Receiver.Tune( location, group );
+            m_receiver.Tune( location, group );
         }
 
         /// <summary>
@@ -238,11 +244,11 @@ namespace JMS.DVB
         protected override bool OnStopAll()
         {
             // Not started
-            if (m_Receiver == null)
+            if (m_receiver == null)
                 return false;
 
             // Forward
-            m_Receiver.TransportStreamAnalyser.DataManager.RemoveAllFilters();
+            m_receiver.TransportStreamAnalyser.DataManager.RemoveAllFilters();
 
             // Did it
             return true;
@@ -254,8 +260,8 @@ namespace JMS.DVB
         protected override void OnDispose()
         {
             // Forget graph
-            using (m_Receiver)
-                m_Receiver = null;
+            using (m_receiver)
+                m_receiver = null;
         }
 
         /// <summary>
@@ -263,7 +269,7 @@ namespace JMS.DVB
         /// </summary>
         /// <param name="group">Die zu prüfende Quellgruppe.</param>
         /// <returns>Gesetzt, wenn die Quellgruppe verwendet werden kann.</returns>
-        protected override bool OnCanHandle( G group )
+        protected override bool OnCanHandle( TSourceGroupType group )
         {
             // Let's try
             return true;
@@ -276,8 +282,8 @@ namespace JMS.DVB
         public override void Decrypt( params SourceIdentifier[] sources )
         {
             // Forward
-            if (m_Receiver != null)
-                m_Receiver.Decrypt( sources );
+            if (m_receiver != null)
+                m_receiver.Decrypt( sources );
         }
 
         /// <summary>
@@ -291,9 +297,8 @@ namespace JMS.DVB
                 if (enableDecryptionDuringScan)
                     return;
 
-            // Forward
-            if (m_Receiver != null)
-                m_Receiver.DisableCIResetOnTuneFailure = true;
+            // Disable encryption to speed up source scan
+            m_disableEncryption = true;
         }
 
         /// <summary>

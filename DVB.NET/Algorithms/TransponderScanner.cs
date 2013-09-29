@@ -269,7 +269,7 @@ namespace JMS.DVB.Algorithms
             Reset();
 
             // Load all locations to process
-            m_Locations = new List<GroupLocation>( Profile.CreateScanLocations() );
+            m_Locations = Profile.CreateScanLocations().ToList();
 
             // Clear lists
             m_UnhandledGroups.Clear();
@@ -284,9 +284,8 @@ namespace JMS.DVB.Algorithms
             m_Aborted = false;
 
             // Start the new scanner thread
-            m_Worker = new Thread( worker );
+            m_Worker = new Thread( worker ) { Priority = ThreadPriority.AboveNormal };
             m_Worker.SetApartmentState( ApartmentState.STA );
-            m_Worker.Priority = ThreadPriority.AboveNormal;
             m_Worker.Start();
         }
 
@@ -324,7 +323,7 @@ namespace JMS.DVB.Algorithms
 
             // Not cable
             if (cableGroup == null)
-                return info;
+                return null;
 
             // Swap inversion
             lastInversion = (lastInversion == SpectrumInversions.On) ? SpectrumInversions.Off : SpectrumInversions.On;

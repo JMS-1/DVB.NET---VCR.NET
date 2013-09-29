@@ -570,4 +570,3 @@ else
     })();
     JMSLib.HourListSettings = HourListSettings;
 })(JMSLib || (JMSLib = {}));
-//# sourceMappingURL=jmslib.js.map

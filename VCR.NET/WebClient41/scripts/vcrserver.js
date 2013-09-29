@@ -598,4 +598,3 @@ else
     })();
     VCRServer.UserProfile = UserProfile;
 })(VCRServer || (VCRServer = {}));
-//# sourceMappingURL=vcrserver.js.map
