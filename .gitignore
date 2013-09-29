@@ -50,6 +50,7 @@ VCR.NET/WebClient41/Jobs
 *.log
 *.scc
 *.vup
+*.msi
 
 # Visual C++ cache files
 ipch/
