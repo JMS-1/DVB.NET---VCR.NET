@@ -189,6 +189,7 @@
     <Content Include="ui\images\settings.png" />
     <Content Include="ui\templates\checkUpdate.html" />
     <Content Include="ui\templates\adminRules.html" />
+    <Content Include="ui\templates\adminDevices.html" />
     <Content Include="ui\templates\favoriteRow.html" />
     <Content Include="ui\templates\favorites.html" />
     <Content Include="ui\templates\logRowDetails.html" />

@@ -3129,7 +3129,12 @@ class adminPage extends Page implements IPage {
             .then(function (data: VCRServer.DirectorySettingsContract): JQueryPromise<any> { me.directory = data; return VCRServer.getGuideSettings(); })
             .then(function (data: VCRServer.GuideSettingsContract): JQueryPromise<any> { me.guide = data; return VCRServer.getSourceScanSettings(); })
             .then(function (data: VCRServer.SourceScanSettingsContract): JQueryPromise<any> { me.scan = data; return VCRServer.getProfileSettings(); })
-            .then(function (data: VCRServer.ProfileSettingsContract): JQueryPromise<any> { me.devices = data; return VCRServer.getOtherSettings(); })
+            .then(function (data: VCRServer.ProfileSettingsContract): JQueryPromise<any> { me.devices = data; return JMSLib.TemplateLoader.load('adminDevices'); })
+            .then(function (template: string): JQueryPromise<any> {
+                $('#devices').append($(template).find('#template').children());
+
+                return VCRServer.getOtherSettings();
+            })
             .then(function (data: VCRServer.OtherSettingsContract): JQueryPromise<any> { me.other = data; return VCRServer.getSchedulerRules(); })
             .then(function (data: VCRServer.SchedulerRulesContract): JQueryPromise<any> { me.rules = data; return JMSLib.TemplateLoader.load('adminRules'); })
             .then(function (template: string): void {

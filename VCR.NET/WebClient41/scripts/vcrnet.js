@@ -2474,6 +2474,10 @@ else
             return VCRServer.getProfileSettings();
         }).then(function (data) {
             me.devices = data;
+            return JMSLib.TemplateLoader.load('adminDevices');
+        }).then(function (template) {
+            $('#devices').append($(template).find('#template').children());
+
             return VCRServer.getOtherSettings();
         }).then(function (data) {
             me.other = data;
@@ -3648,3 +3652,4 @@ else
     };
     return logPage;
 })(Page);
+//# sourceMappingURL=vcrnet.js.map
