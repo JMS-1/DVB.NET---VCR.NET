@@ -18,6 +18,7 @@ build/
 
 VCR.NET/WebClient41/Tools
 VCR.NET/WebClient41/Jobs
+VCR.NET/Service/app.config
 
 # Enable "build/" folder in the NuGet Packages folder since NuGet packages use it for MSBuild targets
 !packages/*/build/
@@ -162,3 +163,4 @@ $RECYCLE.BIN/
 .DS_Store
 /DVB.NET/BDA4/JMS.DVB.DeviceAccess.sln
 /DVB.NET/HardwareAbstraction/JMS.DVB.HardwareAbstraction.sln
+/DVB.NET/Provider/Duoflex/JMS.DVB.Provider.Duoflex.sln
