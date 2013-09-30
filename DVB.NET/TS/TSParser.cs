@@ -1,9 +1,11 @@
 using System;
-using JMS.DVB.EPG;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
+using JMS.DVB.EPG;
 using JMS.DVB.EPG.Tables;
 using JMS.DVB.TS.TSBuilders;
-using System.Collections.Generic;
+
 
 namespace JMS.DVB.TS
 {
@@ -88,7 +90,12 @@ namespace JMS.DVB.TS
         /// <summary>
         /// Verwaltet alle Verbraucher von einzelnen Datenströmen innerhalb des Gesamtdatenstroms.
         /// </summary>
-        private Dictionary<ushort, TSBuilder> m_Consumers = new Dictionary<ushort, TSBuilder>();
+        private readonly Dictionary<ushort, TSBuilder> m_Consumers = new Dictionary<ushort, TSBuilder>();
+
+        /// <summary>
+        /// Verwaltet alle Verbraucher, die Datenströme aus den Gesamtdaten vollständig abzweigen.
+        /// </summary>
+        private readonly Dictionary<ushort, Action<byte[]>> m_Extractors = new Dictionary<ushort, Action<byte[]>>();
 
         /// <summary>
         /// Enthält eine Statistik über die Anteile der individuellen Datenströme am Gesamtdatenstrom.
@@ -121,166 +128,56 @@ namespace JMS.DVB.TS
         private int m_PacketPos = 0;
 
         /// <summary>
-        /// Anzahl der als fehlerhaft markierten Rohdatenpakete.
-        /// </summary>
-        private long m_TransmissionErrors = 0;
-
-        /// <summary>
-        /// Anzahl der empfangenen Rohdatenpakete.
-        /// </summary>
-        private long m_PacketsReceived = 0;
-
-        /// <summary>
-        /// Anzahl der Fehler in Nutzdatenströmen.
-        /// </summary>
-        private long m_CorruptedStream = 0;
-
-        /// <summary>
-        /// Anzahl der Fehler in Kontrolldatenströmen.
-        /// </summary>
-        private long m_CorruptedTable = 0;
-
-        /// <summary>
         /// Anzahl der bisher ordnungsgemäß verarbeiteten PATs.
         /// </summary>
         private long m_ValidPATCount = 0;
 
         /// <summary>
-        /// Anzahl der notwendigen Synchronisationen des Gesamtdatenstroms nach schweren
-        /// Übertragungsfehlern.
-        /// </summary>
-        private long m_Resynchronized = 0;
-
-        /// <summary>
-        /// Anzahl der empfagenen Bytes im Gesamtdatenstrom.
-        /// </summary>
-        private long m_BytesReceived = 0;
-
-        /// <summary>
-        /// Anzahl der Bytes, die wegen erfolgter Synchronisationen des Gesamtdatenstroms
-        /// verworfen wurden.
-        /// </summary>
-        private long m_BytesSkipped = 0;
-
-        /// <summary>
-        /// Anzahl der verschlüsselten Rohdatenpakete.
-        /// </summary>
-        private long m_Scrambled = 0;
-
-        /// <summary>
-        /// Anzahl der empfangenen Rohdatenpaketblöcke.
-        /// </summary>
-        private long m_Callbacks = 0;
-
-        /// <summary>
         /// Meldet die Anzahl der als fehlerhaft markierten Rohdatenpakete.
         /// </summary>
-        public long TransmissionErrors
-        {
-            get
-            {
-                // Report
-                return m_TransmissionErrors;
-            }
-        }
+        public long TransmissionErrors { get; private set; }
 
         /// <summary>
         /// Meldet die Anzahl der Fehler in Nutzdatenströmen.
         /// </summary>
-        public long CorruptedStream
-        {
-            get
-            {
-                // Report
-                return m_CorruptedStream;
-            }
-        }
+        public long CorruptedStream { get; private set; }
 
         /// <summary>
         /// Meldet die Anzahl der Fehler in Kontrolldatenströmen.
         /// </summary>
-        public long CorruptedTable
-        {
-            get
-            {
-                // Report
-                return m_CorruptedTable;
-            }
-        }
+        public long CorruptedTable { get; private set; }
 
         /// <summary>
         /// Meldet die Anzahl der empfangenen Rohdatenpaketblöcke.
         /// </summary>
-        public long Callbacks
-        {
-            get
-            {
-                // Report
-                return m_Callbacks;
-            }
-        }
+        public long Callbacks { get; private set; }
 
         /// <summary>
         /// Meldet die Anzahl der als fehlerhaft markierten Rohdatenpakete.
         /// </summary>
-        public long PacketsReceived
-        {
-            get
-            {
-                // Report
-                return m_PacketsReceived;
-            }
-        }
+        public long PacketsReceived { get; private set; }
 
         /// <summary>
         /// Meldet die Anzahl der notwendigen Synchronisationen des Gesamtdatenstroms nach schweren
         /// Übertragungsfehlern.
         /// </summary>
-        public long Resynchronized
-        {
-            get
-            {
-                // Report
-                return m_Resynchronized;
-            }
-        }
+        public long Resynchronized { get; private set; }
 
         /// <summary>
         /// Meldet die Anzahl der empfagenen Bytes im Gesamtdatenstrom.
         /// </summary>
-        public long BytesReceived
-        {
-            get
-            {
-                // Report
-                return m_BytesReceived;
-            }
-        }
+        public long BytesReceived { get; private set; }
 
         /// <summary>
         /// Meldet die Anzahl der Bytes, die wegen erfolgter Synchronisationen des Gesamtdatenstroms
         /// verworfen wurden.
         /// </summary>
-        public long BytesSkipped
-        {
-            get
-            {
-                // Report
-                return m_BytesSkipped;
-            }
-        }
+        public long BytesSkipped { get; private set; }
 
         /// <summary>
         /// Meldet die Anzahl der verschlüsselten Rohdatenpakete.
         /// </summary>
-        public long Scrambled
-        {
-            get
-            {
-                // Report
-                return m_Scrambled;
-            }
-        }
+        public long Scrambled { get; private set; }
 
         /// <summary>
         /// Hilfskomponente zur Analyse der PAT.
@@ -380,7 +277,7 @@ namespace JMS.DVB.TS
         private void OnPMTFound( PMT pmt )
         {
             // Validate
-            if (null != pmt)
+            if (pmt != null)
                 if (pmt.ProgramNumber != m_WaitForService)
                     pmt = null;
 
@@ -389,12 +286,12 @@ namespace JMS.DVB.TS
             m_WaitForPID = 0;
 
             // Nothing to do
-            if (null == pmt)
+            if (pmt == null)
                 return;
 
             // Forward
-            PMTFoundHandler callback = PMTFound;
-            if (null != callback)
+            var callback = PMTFound;
+            if (callback != null)
                 callback( pmt );
         }
 
@@ -437,15 +334,25 @@ namespace JMS.DVB.TS
         }
 
         /// <summary>
-        /// Überträgte Rohdatenpakete in den Gesamtdatenstrom.
+        /// Injiziert Daten in den Datenstrom, ohne dass diese sofort wieder extrahiert werden.
         /// </summary>
-        /// <param name="buffer">Ein Speicherblock mit Rohdatenpaketen.</param>
-        /// <param name="index">Erstes Byte im Speicherblock, das analysiert werden soll.</param>
-        /// <param name="length">Anzahl der zu analyiserenden Bytes.</param>
-        public void AddPayload( byte[] buffer, int index, int length )
+        /// <param name="buffer">Speicher mit Nutzdaten.</param>
+        public void Inject( byte[] buffer )
+        {
+            // Forward
+            Inject( buffer, 0, buffer.Length );
+        }
+
+        /// <summary>
+        /// Injiziert Daten in den Datenstrom, ohne dass diese sofort wieder extrahiert werden.
+        /// </summary>
+        /// <param name="buffer">Speicher mit Nutzdaten.</param>
+        /// <param name="index">Der 0-basierte Index des ersten zu nutzenden Bytes im Speicher.</param>
+        /// <param name="length">Die Anzahl der zu nutzenden Bytes im Speicher.</param>
+        public void Inject( byte[] buffer, int index, int length )
         {
             // Validate
-            if (null == buffer)
+            if (buffer == null)
                 throw new ArgumentNullException( "buffer" );
             if ((index < 0) || (index > buffer.Length))
                 throw new ArgumentException( index.ToString(), "index" );
@@ -454,12 +361,95 @@ namespace JMS.DVB.TS
             if ((index + length) > buffer.Length)
                 throw new ArgumentException( length.ToString(), "length" );
 
-            // Count
-            m_BytesReceived += length;
-            m_Callbacks += 1;
+            // We may only inject full packages
+            if ((length % m_Packet.Length) != 0)
+                throw new ArgumentException( length.ToString(), "length" );
 
-            // As long as necessary
+            // Full protect and serialize processing - normally only a single thread will call on us
             lock (m_Consumers)
+                for (; length > 0; index += m_Packet.Length, length -= m_Packet.Length)
+                {
+                    // Invalid feed - stop at once
+                    if (buffer[index + 0] != 0x47)
+                        return;
+
+                    // Get information from header
+                    byte flags = buffer[index + 3];
+                    int pidh = buffer[index + 1];
+                    int pidl = buffer[index + 2];
+
+                    // We can only accept injections of valid and non encrypted packaged
+                    if ((0x80 & pidh) == 0x80)
+                        return;
+                    if ((0xc0 & flags) != 0x00)
+                        return;
+
+                    // Numbers
+                    var pid = (ushort) (pidl + 256 * (0x1f & pidh));
+                    var counter = (byte) (0xf & flags);
+
+                    // Load flags
+                    var adaption = (0x20 == (0x20 & flags));
+                    var payload = (0x10 == (0x10 & flags));
+                    var first = (0x40 == (0x40 & pidh));
+
+                    // Get the payload
+                    int start = index + 4, size = Manager.PacketSize;
+
+                    // Cut off adaption
+                    if (adaption)
+                    {
+                        // Read size
+                        int skip = buffer[start];
+
+                        // Reduce
+                        start += ++skip;
+                        size -= skip;
+
+                        // In error
+                        if (size < 0)
+                            return;
+                    }
+
+                    // There are special situations where the counter is not incremented
+                    var noInc = (adaption && !payload && (size == 0));
+
+                    // Get the real size which is 0 if the payload indicator is not set
+                    var realSize = (payload ? size : 0);
+
+                    // Check for custom handler
+                    TSBuilder consumer;
+                    if (m_Consumers.TryGetValue( pid, out consumer ))
+                        consumer.AddPacket( buffer, start, realSize, noInc, first, counter );
+                }
+        }
+
+        /// <summary>
+        /// Überträgte Rohdatenpakete in den Gesamtdatenstrom.
+        /// </summary>
+        /// <param name="buffer">Ein Speicherblock mit Rohdatenpaketen.</param>
+        /// <param name="index">Erstes Byte im Speicherblock, das analysiert werden soll.</param>
+        /// <param name="length">Anzahl der zu analyiserenden Bytes.</param>
+        public void AddPayload( byte[] buffer, int index, int length )
+        {
+            // Validate
+            if (buffer == null)
+                throw new ArgumentNullException( "buffer" );
+            if ((index < 0) || (index > buffer.Length))
+                throw new ArgumentException( index.ToString(), "index" );
+            if ((length < 0) || (length > buffer.Length))
+                throw new ArgumentException( length.ToString(), "length" );
+            if ((index + length) > buffer.Length)
+                throw new ArgumentException( length.ToString(), "length" );
+
+            // Full protect and serialize processing - normally only a single thread will call on us
+            lock (m_Consumers)
+            {
+                // Count
+                BytesReceived += length;
+                Callbacks += 1;
+
+                // As long as necessary
                 lock (m_PacketStatistics)
                     while (length > 0)
                     {
@@ -467,17 +457,13 @@ namespace JMS.DVB.TS
                         while (m_SyncIndex < m_SyncBuffer.Length)
                         {
                             // How many to copy
-                            int copy = Math.Min( m_SyncBuffer.Length - m_SyncIndex, length );
-
-                            // Copy
+                            var copy = Math.Min( m_SyncBuffer.Length - m_SyncIndex, length );
                             if (copy > 0)
                                 Array.Copy( buffer, index, m_SyncBuffer, m_SyncIndex, copy );
 
-                            // Advance
+                            // Advance and count
                             m_SyncIndex += copy;
-
-                            // Count
-                            m_BytesSkipped += copy;
+                            BytesSkipped += copy;
 
                             // Not filled
                             if (m_SyncIndex < m_SyncBuffer.Length)
@@ -494,28 +480,29 @@ namespace JMS.DVB.TS
                             for (int i = 0, j, t; i < Manager.FullSize; ++i)
                             {
                                 // Not a candidate
-                                if (0x47 != m_SyncBuffer[i])
+                                if (m_SyncBuffer[i] != 0x47)
                                     continue;
 
                                 // Test all
                                 for (j = SyncCount, t = i; j-- > 1; )
-                                    if (0x47 != m_SyncBuffer[t += Manager.FullSize])
+                                    if (m_SyncBuffer[t += Manager.FullSize] != 0x47)
                                         break;
 
                                 // Did it
-                                if (0 == j)
+                                if (j == 0)
                                 {
                                     // See how many bytes we could use
-                                    int copyBack = m_SyncBuffer.Length - i;
+                                    var copyBack = m_SyncBuffer.Length - i;
 
                                     // Adjust
-                                    while (copyBack > copy) copyBack -= Manager.FullSize;
+                                    while (copyBack > copy)
+                                        copyBack -= Manager.FullSize;
 
                                     // Check mode
                                     if (copyBack > 0)
                                     {
                                         // Correct counter
-                                        m_BytesSkipped -= copyBack;
+                                        BytesSkipped -= copyBack;
 
                                         // Push data back to current buffer
                                         length += copyBack;
@@ -530,7 +517,7 @@ namespace JMS.DVB.TS
                                         m_PacketPos = Manager.FullSize - i;
 
                                         // Correct counter
-                                        m_BytesSkipped -= m_PacketPos;
+                                        BytesSkipped -= m_PacketPos;
 
                                         // Copy in
                                         Array.Copy( m_SyncBuffer, m_SyncBuffer.Length - m_PacketPos, m_Packet, 0, m_PacketPos );
@@ -561,7 +548,7 @@ namespace JMS.DVB.TS
                             return;
 
                         // Count and restart
-                        m_PacketsReceived += 1;
+                        PacketsReceived += 1;
                         m_PacketPos = 0;
 
                         // Adjust
@@ -569,7 +556,7 @@ namespace JMS.DVB.TS
                         index += packet;
 
                         // Needs re-synchronize
-                        if (0x47 != m_Packet[0])
+                        if (m_Packet[0] != 0x47)
                         {
                             // Internal reset
                             Resynchronize();
@@ -584,8 +571,8 @@ namespace JMS.DVB.TS
                         byte flags = m_Packet[3];
 
                         // Numbers
-                        ushort pid = (ushort) (pidl + 256 * (0x1f & pidh));
-                        byte counter = (byte) (0xf & flags);
+                        var pid = (ushort) (pidl + 256 * (0x1f & pidh));
+                        var counter = (byte) (0xf & flags);
 
                         // See if statistics should be updated
                         if (m_FillStatisics)
@@ -600,29 +587,40 @@ namespace JMS.DVB.TS
                         }
 
                         // Check for error
-                        if (0x80 == (0x80 & pidh))
+                        if ((0x80 & pidh) == 0x80)
                         {
                             // Skip packet
-                            m_TransmissionErrors += 1;
+                            TransmissionErrors += 1;
+
+                            // Next
+                            continue;
+                        }
+
+                        // Check for complete extraction 
+                        Action<byte[]> extractor;
+                        if (m_Extractors.TryGetValue( pid, out extractor ))
+                        {
+                            // Feed it
+                            extractor( m_Packet );
 
                             // Next
                             continue;
                         }
 
                         // Check for scrambled data
-                        if (0x00 != (0xc0 & flags))
+                        if ((0xc0 & flags) != 0x00)
                         {
                             // Skip packet
-                            m_Scrambled += 1;
+                            Scrambled += 1;
 
                             // Next
                             continue;
                         }
 
                         // Load flags
-                        bool adaption = (0x20 == (0x20 & flags));
-                        bool payload = (0x10 == (0x10 & flags));
-                        bool first = (0x40 == (0x40 & pidh));
+                        var adaption = (0x20 == (0x20 & flags));
+                        var payload = (0x10 == (0x10 & flags));
+                        var first = (0x40 == (0x40 & pidh));
 
                         // Get the payload
                         int start = 4, size = Manager.PacketSize;
@@ -649,10 +647,10 @@ namespace JMS.DVB.TS
                         }
 
                         // There are special situations where the counter is not incremented
-                        bool noInc = (adaption && !payload && (0 == size));
+                        var noInc = (adaption && !payload && (0 == size));
 
                         // Get the real size which is 0 if the payload indicator is not set
-                        int realSize = (payload ? size : 0);
+                        var realSize = (payload ? size : 0);
 
                         // Check for custom handler
                         TSBuilder consumer;
@@ -671,6 +669,7 @@ namespace JMS.DVB.TS
                                     if (m_WaitForPID == pid)
                                         m_PMTBuilder.AddPacket( m_Packet, start, realSize, noInc, first, counter );
                     }
+            }
         }
 
         /// <summary>
@@ -705,7 +704,8 @@ namespace JMS.DVB.TS
         public void SetFilter( ushort pid, bool isSITable, FilterHandler callback )
         {
             // Validate
-            if (null == callback) throw new ArgumentNullException( "callback" );
+            if (callback == null)
+                throw new ArgumentNullException( "callback" );
 
             // Create
             TSBuilder consumer;
@@ -727,7 +727,7 @@ namespace JMS.DVB.TS
         public void RegisterCustomFilter( ushort pid, TSBuilder consumer )
         {
             // Validate
-            if (null == consumer)
+            if (consumer == null)
                 throw new ArgumentNullException( "consumer" );
 
             // Remove previous
@@ -736,6 +736,36 @@ namespace JMS.DVB.TS
             // Add synchronized
             lock (m_Consumers)
                 m_Consumers[pid] = consumer;
+        }
+
+        /// <summary>
+        /// Definiert einen Verbraucher, der einen Teildatenstrom vollständig abzieht.
+        /// </summary>
+        /// <param name="pid">Die gewünschte Datenstromkennung.</param>
+        /// <param name="filter">Der zu verwendende Verbraucher.</param>
+        public void RegisterExtractor( ushort pid, Action<byte[]> filter )
+        {
+            // Validate
+            if (filter == null)
+                throw new ArgumentNullException( "filter" );
+
+            // Remove previous
+            RemoveExtractor( pid );
+
+            // Add synchronized
+            lock (m_Consumers)
+                m_Extractors[pid] = filter;
+        }
+
+        /// <summary>
+        /// Entfernt einen Extraktionsverbraucher.
+        /// </summary>
+        /// <param name="pid">Die gewünschte Datenstromkennung.</param>
+        public void RemoveExtractor( ushort pid )
+        {
+            // Do it
+            lock (m_Consumers)
+                m_Extractors.Remove( pid );
         }
 
         /// <summary>
@@ -762,19 +792,19 @@ namespace JMS.DVB.TS
         private void Resynchronize()
         {
             // Count
-            m_Resynchronized += 1;
+            Resynchronized += 1;
 
             // Reset buffer
             m_SyncIndex = 0;
 
             // Forward to all receivers
-            foreach (TSBuilder consumer in m_Consumers.Values)
+            foreach (var consumer in m_Consumers.Values)
                 consumer.Reset();
 
             // Forward to PAT / PMT
-            if (null != m_PATBuilder)
+            if (m_PATBuilder != null)
                 m_PATBuilder.Reset();
-            if (null != m_PMTBuilder)
+            if (m_PMTBuilder != null)
                 m_PMTBuilder.Reset();
         }
 
@@ -784,7 +814,7 @@ namespace JMS.DVB.TS
         internal void TableCorrupted()
         {
             // Count
-            m_CorruptedTable += 1;
+            CorruptedTable += 1;
         }
 
         /// <summary>
@@ -793,7 +823,7 @@ namespace JMS.DVB.TS
         internal void StreamCorrupted()
         {
             // Count
-            m_CorruptedStream += 1;
+            CorruptedStream += 1;
         }
 
         /// <summary>
@@ -810,7 +840,8 @@ namespace JMS.DVB.TS
                 lock (m_PacketStatistics)
                 {
                     // Validate
-                    if (!m_FillStatisics) throw new InvalidOperationException( "Statisics are disabled" );
+                    if (!m_FillStatisics)
+                        throw new InvalidOperationException( "Statisics are disabled" );
 
                     // Clone
                     return new Dictionary<ushort, long>( m_PacketStatistics );
@@ -877,7 +908,7 @@ namespace JMS.DVB.TS
             lock (m_Consumers)
             {
                 // PAT
-                if (null != m_PATBuilder)
+                if (m_PATBuilder != null)
                     try
                     {
                         // Discard
@@ -890,7 +921,7 @@ namespace JMS.DVB.TS
                     }
 
                 // PMT
-                if (null != m_PMTBuilder)
+                if (m_PMTBuilder != null)
                     try
                     {
                         // Discard
@@ -904,23 +935,23 @@ namespace JMS.DVB.TS
             }
 
             // To clear
-            List<TSBuilder> cleanup = new List<TSBuilder>();
-
-            // Forward
+            TSBuilder[] cleanup;
             lock (m_Consumers)
                 try
                 {
                     // Copy over
-                    cleanup.AddRange( m_Consumers.Values );
+                    cleanup = m_Consumers.Values.ToArray();
                 }
                 finally
                 {
                     // Clear
+                    m_Extractors.Clear();
                     m_Consumers.Clear();
                 }
 
             // Shutdown all
-            foreach (TSBuilder consumer in cleanup) consumer.Dispose();
+            foreach (var consumer in cleanup)
+                consumer.Dispose();
         }
 
         #endregion

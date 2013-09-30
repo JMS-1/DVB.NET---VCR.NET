@@ -1,9 +1,10 @@
 using System;
 
+
 namespace JMS.DVB.TS.TSBuilders
 {
     /// <summary>
-    /// Basisklasse für Rekonstuktionsalgorithmen auf einem <i>Transport Stream</i>.
+    /// Basisklasse für Rekonstruktionsalgorithmen auf einem <i>Transport Stream</i>.
     /// </summary>
     public abstract class TSBuilder : IDisposable
     {
@@ -20,22 +21,7 @@ namespace JMS.DVB.TS.TSBuilders
         /// <summary>
         /// Ein optionaler Verbraucher für rekonstruierte Pakete.
         /// </summary>
-        private FilterHandler m_Callback;
-
-        /// <summary>
-        /// Die Anzahl der weitergereichten Pakete.
-        /// </summary>
-        private long m_Packets = 0;
-
-        /// <summary>
-        /// Die zugehörige Analyseeinheit.
-        /// </summary>
-        private TSParser m_Parser;
-
-        /// <summary>
-        /// Die insgesamt weitergereichten Bytes.
-        /// </summary>
-        private long m_Bytes = 0;
+        private readonly FilterHandler m_Callback;
 
         /// <summary>
         /// Initialisiert die Rekonstruktionsinstanz.
@@ -46,68 +32,33 @@ namespace JMS.DVB.TS.TSBuilders
         {
             // Remember
             m_Callback = callback;
-            m_Parser = parser;
+            Parser = parser;
         }
 
         /// <summary>
         /// Meldet die Größe des kleinsten an den Verbraucher gemeldeten Paketes.
         /// </summary>
-        public int MinimumPacketSize
-        {
-            get
-            {
-                // Report
-                return (int.MaxValue == m_MinPacket) ? 0 : m_MinPacket;
-            }
-        }
+        public int MinimumPacketSize { get { return (m_MinPacket == int.MaxValue) ? 0 : m_MinPacket; } }
 
         /// <summary>
         /// Meldet die Größe des größten an den Verbraucher gemeldeten Paketes.
         /// </summary>
-        public int MaximumPacketSize
-        {
-            get
-            {
-                // Report
-                return (int.MinValue == m_MaxPacket) ? 0 : m_MaxPacket;
-            }
-        }
+        public int MaximumPacketSize { get { return (m_MaxPacket == int.MinValue) ? 0 : m_MaxPacket; } }
 
         /// <summary>
         /// Meldet die Anzahl der an den Verbraucher durchgereichten Pakete.
         /// </summary>
-        public long PacketCount
-        {
-            get
-            {
-                // Report
-                return m_Packets;
-            }
-        }
+        public long PacketCount { get; private set; }
 
         /// <summary>
         /// Meldet die gesamte Anzahl der an den Verbraucher durchgereichten Bytes.
         /// </summary>
-        public long TotalBytes
-        {
-            get
-            {
-                // Report
-                return m_Bytes;
-            }
-        }
+        public long TotalBytes { get; private set; }
 
         /// <summary>
         /// Meldet die zugehörige Analyseeinheit.
         /// </summary>
-        protected TSParser Parser
-        {
-            get
-            {
-                // Report
-                return m_Parser;
-            }
-        }
+        protected TSParser Parser { get; private set; }
 
         /// <summary>
         /// Überträgt ein elementares Paket von der Analyseeinheit zur Rekonstruktion.
@@ -132,8 +83,8 @@ namespace JMS.DVB.TS.TSBuilders
         protected void Process( byte[] buffer )
         {
             // Counter
-            m_Bytes += buffer.Length;
-            m_Packets += 1;
+            TotalBytes += buffer.Length;
+            PacketCount += 1;
 
             // Bounds
             if (buffer.Length < m_MinPacket)
@@ -154,7 +105,7 @@ namespace JMS.DVB.TS.TSBuilders
         protected void Process( byte[] buffer, int start, int length )
         {
             // Allocate new
-            byte[] data = new byte[length];
+            var data = new byte[length];
 
             // Copy
             Array.Copy( buffer, start, data, 0, data.Length );
