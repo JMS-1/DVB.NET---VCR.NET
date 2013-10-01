@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -26,23 +27,18 @@ namespace JMS.DVB
         /// <summary>
         /// Alle möglichen Arten von Geräteprofilen.
         /// </summary>
-        private static Dictionary<string, XmlSerializer> ProfileTypes = new Dictionary<string, XmlSerializer>();
+        private static readonly Dictionary<string, XmlSerializer> ProfileTypes =
+            new Dictionary<string, XmlSerializer>
+            {
+                {"TerrestrialProfile", new XmlSerializer( typeof( TerrestrialProfile ), Profile.Namespace )},
+                {"SatelliteProfile", new XmlSerializer( typeof( SatelliteProfile ), Profile.Namespace )},
+                {"CableProfile", new XmlSerializer( typeof( CableProfile ), Profile.Namespace )},
+            };
 
         /// <summary>
         /// Alle bekannten Geräteprofile.
         /// </summary>
-        private static List<Profile> Profiles = null;
-
-        /// <summary>
-        /// Initialisiert globale Strukturen.
-        /// </summary>
-        static ProfileManager()
-        {
-            // Remember types
-            ProfileTypes["TerrestrialProfile"] = new XmlSerializer( typeof( TerrestrialProfile ), Profile.Namespace );
-            ProfileTypes["SatelliteProfile"] = new XmlSerializer( typeof( SatelliteProfile ), Profile.Namespace );
-            ProfileTypes["CableProfile"] = new XmlSerializer( typeof( CableProfile ), Profile.Namespace );
-        }
+        private static List<Profile> m_profiles = null;
 
         /// <summary>
         /// Meldet den vollen Pfad zum Verzeichnis aller Geräteprofile.
@@ -78,15 +74,15 @@ namespace JMS.DVB
             try
             {
                 // Remember position
-                long pos = stream.Seek( 0, SeekOrigin.Current );
+                var pos = stream.Seek( 0, SeekOrigin.Current );
 
                 // Load the profile
-                using (XmlReader reader = XmlReader.Create( stream ))
+                using (var reader = XmlReader.Create( stream ))
                     while (reader.Read())
                         if (reader.IsStartElement())
                         {
                             // Attach to the serializer
-                            XmlSerializer serializer = ProfileTypes[reader.Name];
+                            var serializer = ProfileTypes[reader.Name];
 
                             // Reset the stream
                             stream.Seek( pos, SeekOrigin.Begin );
@@ -116,13 +112,13 @@ namespace JMS.DVB
             {
                 // Not there
                 if (path.Exists)
-                    using (FileStream stream = new FileStream( path.FullName, FileMode.Open, FileAccess.Read, FileShare.Read ))
+                    using (var stream = new FileStream( path.FullName, FileMode.Open, FileAccess.Read, FileShare.Read ))
                     {
                         // Load the profile
-                        Profile profile = LoadProfile( stream );
+                        var profile = LoadProfile( stream );
 
                         // Attach to file
-                        if (null != profile)
+                        if (profile != null)
                             profile.ProfilePath = path;
 
                         // Report
@@ -139,34 +135,6 @@ namespace JMS.DVB
         }
 
         /// <summary>
-        /// Lädt einmalig alle Geräteprofile aus der persistenten Form.
-        /// </summary>
-        private static void LoadProfiles()
-        {
-            // Load once
-            if (null != Profiles)
-                return;
-
-            // Create
-            Profiles = new List<Profile>();
-
-            // Attach to the path
-            DirectoryInfo profileDirectory = ProfilePath;
-
-            // Find all
-            if (profileDirectory.Exists)
-                foreach (FileInfo profilePath in profileDirectory.GetFiles( "*." + ProfileExtension ))
-                {
-                    // Load it
-                    Profile profile = LoadProfile( profilePath );
-
-                    // Remember it
-                    if (null != profile)
-                        Profiles.Add( profile );
-                }
-        }
-
-        /// <summary>
         /// Fügt ein neues Geräteprofil im Speicher hinzu.
         /// </summary>
         /// <param name="profile">Das hinzuzufügende temporäre Profil.</param>
@@ -176,7 +144,7 @@ namespace JMS.DVB
         public static void AddVolatileProfile( Profile profile )
         {
             // Validate
-            if (null == profile)
+            if (profile == null)
                 throw new ArgumentNullException( "profile" );
 
             // Must be volatile
@@ -185,14 +153,10 @@ namespace JMS.DVB
 
             // Synchronize
             lock (ProfileTypes)
-            {
-                // Must not yet exist
-                if (null != FindProfile( profile.Name ))
+                if (FindProfile( profile.Name ) != null)
                     throw new ArgumentException( profile.Name, "profile" );
-
-                // Remember
-                Profiles.Add( profile );
-            }
+                else
+                    m_profiles.Add( profile );
         }
 
         /// <summary>
@@ -207,10 +171,29 @@ namespace JMS.DVB
                 lock (ProfileTypes)
                 {
                     // Load once
-                    LoadProfiles();
+                    if (m_profiles == null)
+                    {
+                        // Create
+                        m_profiles = new List<Profile>();
+
+                        // Attach to the path
+                        var profileDirectory = ProfilePath;
+
+                        // Find all
+                        if (profileDirectory.Exists)
+                            foreach (var profilePath in profileDirectory.GetFiles( "*." + ProfileExtension ))
+                            {
+                                // Load it
+                                var profile = LoadProfile( profilePath );
+
+                                // Remember it
+                                if (profile != null)
+                                    m_profiles.Add( profile );
+                            }
+                    }
 
                     // Report
-                    return Profiles.ToArray();
+                    return m_profiles.ToArray();
                 }
             }
         }
@@ -222,10 +205,7 @@ namespace JMS.DVB
         {
             // Synchronize
             lock (ProfileTypes)
-            {
-                // Forget all
-                Profiles = null;
-            }
+                m_profiles = null;
         }
 
         /// <summary>
@@ -242,8 +222,10 @@ namespace JMS.DVB
         public static T CreateProfile<T>( string name ) where T : Profile, new()
         {
             // Validate
-            if (string.IsNullOrEmpty( name )) throw new ArgumentNullException( "name" );
-            if (name.IndexOfAny( Path.GetInvalidFileNameChars() ) >= 0) throw new ArgumentException( name, "name" );
+            if (string.IsNullOrEmpty( name ))
+                throw new ArgumentNullException( "name" );
+            if (name.IndexOfAny( Path.GetInvalidFileNameChars() ) >= 0)
+                throw new ArgumentException( name, "name" );
 
             // Create the new instance
             T profile = new T();
@@ -254,9 +236,8 @@ namespace JMS.DVB
             // Validate
             if (profile.ProfilePath.Exists)
                 throw new ArgumentException( profile.ProfilePath.FullName, "name" );
-
-            // Report it 
-            return profile;
+            else
+                return profile;
         }
 
         /// <summary>
@@ -268,18 +249,10 @@ namespace JMS.DVB
         public static SourceSelection[] FindSource( SourceIdentifier source )
         {
             // Validate
-            if (null == source)
+            if (source == null)
                 throw new ArgumentNullException( "source" );
-
-            // Helper
-            List<SourceSelection> sources = new List<SourceSelection>();
-
-            // Scan
-            foreach (Profile profile in AllProfiles)
-                sources.AddRange( profile.FindSource( source ) );
-
-            // Report
-            return sources.ToArray();
+            else
+                return AllProfiles.SelectMany( profile => profile.FindSource( source ) ).ToArray();
         }
     }
 }

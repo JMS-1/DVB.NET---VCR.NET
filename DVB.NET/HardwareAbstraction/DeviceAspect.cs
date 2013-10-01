@@ -22,12 +22,5 @@ namespace JMS.DVB
         /// </summary>
         [XmlText]
         public string Value { get; set; }
-
-        /// <summary>
-        /// Erzeugt einen neuen Parameter.
-        /// </summary>
-        public DeviceAspect()
-        {
-        }
     }
 }

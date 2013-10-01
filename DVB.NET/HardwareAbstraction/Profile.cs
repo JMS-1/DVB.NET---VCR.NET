@@ -1,12 +1,12 @@
 ﻿using System;
-using System.IO;
-using System.Xml;
-using System.Linq;
-using System.Text;
-using System.Reflection;
 using System.Collections;
-using System.Xml.Serialization;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Xml;
+using System.Xml.Serialization;
 
 
 namespace JMS.DVB
@@ -124,22 +124,18 @@ namespace JMS.DVB
         public void Save( FileInfo file )
         {
             // Validate
-            if (null == file)
+            if (file == null)
                 throw new ArgumentNullException( "file" );
 
             // Make sure that directory exists
             file.Directory.Create();
 
-            // Create serializer
-            XmlSerializer serializer = new XmlSerializer( GetType(), Namespace );
-
-            // Create settings
-            XmlWriterSettings settings = new XmlWriterSettings();
-            settings.Encoding = Encoding.Unicode;
-            settings.Indent = true;
+            // Create serializer and settings
+            var serializer = new XmlSerializer( GetType(), Namespace );
+            var settings = new XmlWriterSettings { Encoding = Encoding.Unicode, Indent = true };
 
             // Store
-            using (XmlWriter writer = XmlWriter.Create( file.FullName, settings ))
+            using (var writer = XmlWriter.Create( file.FullName, settings ))
                 serializer.Serialize( writer, this );
         }
 
@@ -151,7 +147,7 @@ namespace JMS.DVB
         public IEnumerable<PipelineItem> GetPipelineItems( PipelineTypes forType )
         {
             // Report
-            return Pipeline.Where( p => (0 != (p.SupportedOperations & forType)) );
+            return Pipeline.Where( p => (p.SupportedOperations & forType) != 0 );
         }
 
         /// <summary>
@@ -160,7 +156,7 @@ namespace JMS.DVB
         public void Delete()
         {
             // Forward
-            if (null != ProfilePath)
+            if (ProfilePath != null)
                 if (ProfilePath.Exists)
                     ProfilePath.Delete();
         }
@@ -174,7 +170,7 @@ namespace JMS.DVB
             {
                 // Check mode
                 if (string.IsNullOrEmpty( VolatileName ))
-                    return (null == ProfilePath) ? null : Path.GetFileNameWithoutExtension( ProfilePath.FullName );
+                    return (ProfilePath == null) ? null : Path.GetFileNameWithoutExtension( ProfilePath.FullName );
                 else
                     return VolatileName;
             }
@@ -241,17 +237,17 @@ namespace JMS.DVB
                     return this;
 
                 // Create cycle lock
-                Dictionary<string, bool> done = new Dictionary<string, bool>();
+                var done = new HashSet<string>();
 
                 // Process all
-                for (Profile test = this; null != (test = ProfileManager.FindProfile( test.UseSourcesFrom )); )
+                for (Profile test = this; (test = ProfileManager.FindProfile( test.UseSourcesFrom )) != null; )
                 {
                     // Wrong type
                     if (!IsCompatibleTo( test ))
                         break;
 
                     // This is a cycle
-                    if (done.ContainsKey( test.Name ))
+                    if (done.Contains( test.Name ))
                         break;
 
                     // This is the leaf
@@ -259,7 +255,7 @@ namespace JMS.DVB
                         return test;
 
                     // Lock out
-                    done[test.Name] = true;
+                    done.Add( test.Name );
                 }
 
                 // Not found or cycle
@@ -276,25 +272,17 @@ namespace JMS.DVB
         public SourceSelection[] FindSource( SourceIdentifier source )
         {
             // Validate
-            if (null == source)
+            if (source == null)
                 throw new ArgumentNullException( "source" );
-
-            // Forward
-            return InternalFindSource( source ).ToArray();
+            else
+                return InternalFindSource( source ).ToArray();
         }
 
         /// <summary>
         /// Meldet die Zugriffsdaten zu allen Quellen dieses Geräteprofils.
         /// </summary>
         [XmlIgnore]
-        public IEnumerable<SourceSelection> AllSources
-        {
-            get
-            {
-                // Forward
-                return InternalFindSource( null );
-            }
-        }
+        public IEnumerable<SourceSelection> AllSources { get { return InternalFindSource( null ); } }
 
         /// <summary>
         /// Ermittelt alle Quellen sortiert nach dem Anzeigenamen <see cref="SourceSelection.DisplayName"/>
@@ -311,27 +299,23 @@ namespace JMS.DVB
             {
                 // Last processed
                 SourceSelection last = null;
-
-                // Last name found
                 string lastName = null;
 
                 // Process all sorted
-                foreach (SourceSelection source in AllSources.OrderBy( s => s.DisplayName, StringComparer.InvariantCultureIgnoreCase ))
+                foreach (var source in AllSources.OrderBy( s => s.DisplayName, StringComparer.InvariantCultureIgnoreCase ))
                 {
                     // Attach to the station
-                    Station station = (Station) source.Source;
-
-                    // Skip
+                    var station = (Station) source.Source;
                     if (station.SourceType == SourceTypes.Unknown)
                         if (!station.IsService)
                             continue;
 
                     // Check names
-                    if (null != lastName)
-                        if (0 == string.Compare( source.DisplayName, lastName, StringComparison.InvariantCultureIgnoreCase ))
+                    if (lastName != null)
+                        if (StringComparer.InvariantCultureIgnoreCase.Equals( source.DisplayName, lastName ))
                         {
                             // Send last entry
-                            if (null != last)
+                            if (last != null)
                                 yield return new SourceSelection { DisplayName = last.QualifiedName, ProfileName = last.ProfileName, Location = last.Location, Group = last.Group, Source = last.Source };
 
                             // Send this entry
@@ -345,7 +329,7 @@ namespace JMS.DVB
                         }
 
                     // Send
-                    if (null != last)
+                    if (last != null)
                         yield return last;
 
                     // Next
@@ -354,7 +338,7 @@ namespace JMS.DVB
                 }
 
                 // Finish
-                if (null != last)
+                if (last != null)
                     yield return last;
             }
         }
@@ -385,9 +369,8 @@ namespace JMS.DVB
             // Validate
             if (string.IsNullOrEmpty( name ))
                 throw new ArgumentNullException( "name" );
-
-            // Forward
-            return InternalFindSource( name, matching ).ToArray();
+            else
+                return InternalFindSource( name, matching ).ToArray();
         }
 
         /// <summary>
@@ -399,17 +382,17 @@ namespace JMS.DVB
         private IEnumerable<SourceSelection> InternalFindSource( string name, SourceNameMatchingModes matching )
         {
             // Process all
-            foreach (SourceSelection source in AllSources)
+            foreach (var source in AllSources)
             {
                 // Attach to station
-                Station station = (Station) source.Source;
+                var station = (Station) source.Source;
 
                 // Test all
-                if ((0 != (matching & SourceNameMatchingModes.Name)) && (0 == string.Compare( name, station.Name, true )))
+                if (((matching & SourceNameMatchingModes.Name) != 0) && StringComparer.InvariantCultureIgnoreCase.Equals( name, station.Name ))
                     yield return source;
-                else if ((0 != (matching & SourceNameMatchingModes.FullName)) && (0 == string.Compare( name, station.FullName, true )))
+                else if (((matching & SourceNameMatchingModes.FullName) != 0) && StringComparer.InvariantCultureIgnoreCase.Equals( name, station.FullName ))
                     yield return source;
-                else if ((0 != (matching & SourceNameMatchingModes.QualifiedName)) && (0 == string.Compare( name, station.QualifiedName, true )))
+                else if (((matching & SourceNameMatchingModes.QualifiedName) != 0) && StringComparer.InvariantCultureIgnoreCase.Equals( name, station.QualifiedName ))
                     yield return source;
             }
         }
@@ -422,41 +405,44 @@ namespace JMS.DVB
         private IEnumerable<SourceSelection> InternalFindSource( SourceIdentifier source )
         {
             // Get the name of the real profile
-            Profile leaf = LeafProfile;
+            var leaf = LeafProfile;
 
             // Not found
-            if (null != leaf)
-                if (leaf == this)
-                {
-                    // Scan us completly
-                    foreach (GroupLocation location in Locations)
-                        foreach (SourceGroup group in location.Groups)
-                            if (SupportsGroup( group ))
-                                foreach (SourceIdentifier identifier in group.Sources)
-                                    if ((null == source) || Equals( source, identifier ))
-                                        yield return
-                                            new SourceSelection
-                                            {
-                                                DisplayName = ((Station) identifier).FullName,
-                                                Location = location,
-                                                Source = identifier,
-                                                ProfileName = Name,
-                                                Group = group
-                                            };
-                }
-                else
-                {
-                    // Update profile name
-                    foreach (SourceSelection selection in leaf.InternalFindSource( source ))
-                        if (SupportsGroup( selection.Group ))
-                        {
-                            // Update profile association
-                            selection.ProfileName = Name;
+            if (ReferenceEquals( leaf, null ))
+                yield break;
 
-                            // Report
-                            yield return selection;
-                        }
-                }
+            // Check mode
+            if (ReferenceEquals( leaf, this ))
+            {
+                // Scan us completly
+                foreach (GroupLocation location in Locations)
+                    foreach (SourceGroup group in location.Groups)
+                        if (SupportsGroup( group ))
+                            foreach (var identifier in group.Sources)
+                                if ((source == null) || Equals( source, identifier ))
+                                    yield return
+                                        new SourceSelection
+                                        {
+                                            DisplayName = ((Station) identifier).FullName,
+                                            Location = location,
+                                            Source = identifier,
+                                            ProfileName = Name,
+                                            Group = group
+                                        };
+            }
+            else
+            {
+                // Update profile name
+                foreach (var selection in leaf.InternalFindSource( source ))
+                    if (SupportsGroup( selection.Group ))
+                    {
+                        // Update profile association
+                        selection.ProfileName = Name;
+
+                        // Report
+                        yield return selection;
+                    }
+            }
         }
 
         /// <summary>
@@ -489,8 +475,8 @@ namespace JMS.DVB
                         return null;
 
                     // Create type
-                    Type device = Type.GetType( HardwareType, false );
-                    if (null == device)
+                    var device = Type.GetType( HardwareType, false );
+                    if (device == null)
                         return null;
 
                     // Check methode
@@ -521,11 +507,14 @@ namespace JMS.DVB
     /// <summary>
     /// Beschreibt eine DVB Hardware.
     /// </summary>
+    /// <typeparam name="TLocationType">Die Art des Ursprungs.</typeparam>
+    /// <typeparam name="TGroupType">Die Art der Quellgruppe.</typeparam>
+    /// <typeparam name="TScanType">Die Art der Informationen für die Aktualisierung der Quellen.</typeparam>
     [Serializable]
-    public abstract class Profile<L, G, S> : Profile
-        where L : GroupLocation<G>, new()
-        where G : SourceGroup, new()
-        where S : ScanLocation<G>
+    public abstract class Profile<TLocationType, TGroupType, TScanType> : Profile
+        where TLocationType : GroupLocation<TGroupType>, new()
+        where TGroupType : SourceGroup, new()
+        where TScanType : ScanLocation<TGroupType>
     {
         /// <summary>
         /// Initialisiert eine neue Beschreibung.
@@ -533,25 +522,25 @@ namespace JMS.DVB
         protected Profile()
         {
             // Create helper
-            TypedScanLocations = new List<ScanTemplate<L>>();
-            ScanningFilter = new ScanningFilter<G>();
+            TypedScanLocations = new List<ScanTemplate<TLocationType>>();
+            ScanningFilter = new ScanningFilter<TGroupType>();
         }
 
         /// <summary>
         /// Alle Informationen zur Durchführung eines Sendersuchlaufs.
         /// </summary>
         [XmlElement( "ScanLocation" )]
-        public readonly List<ScanTemplate<L>> TypedScanLocations;
+        public readonly List<ScanTemplate<TLocationType>> TypedScanLocations;
 
         /// <summary>
         /// Setzt oder meldet die Regeln, die beim Sendersuchlauf als Ausnahmen berücksichtigt werden sollen.
         /// </summary>
-        public ScanningFilter<G> ScanningFilter { get; set; }
+        public ScanningFilter<TGroupType> ScanningFilter { get; set; }
 
         /// <summary>
         /// Enthält alle möglichen Ursprünge und die damit verbundenen Gruppen von Quellen.
         /// </summary>
-        public readonly List<L> GroupLocations = new List<L>();
+        public readonly List<TLocationType> GroupLocations = new List<TLocationType>();
 
         /// <summary>
         /// Prüft, ob ein Geräteprofil zu einem anderen kompatibel ist. Kompatibel sind jeweils
@@ -562,11 +551,10 @@ namespace JMS.DVB
         public override bool IsCompatibleTo( Profile other )
         {
             // Never
-            if (null == other)
+            if (ReferenceEquals( other, null ))
                 return false;
-
-            // Just test
-            return (other is Profile<L, G, S>);
+            else
+                return (other is Profile<TLocationType, TGroupType, TScanType>);
         }
 
         /// <summary>
@@ -577,34 +565,32 @@ namespace JMS.DVB
         public override GroupLocation[] CreateScanLocations()
         {
             // Create result
-            List<L> locations = new List<L>();
+            var locations = new List<TLocationType>();
 
             // Process all known templates
-            foreach (ScanTemplate location in TypedScanLocations)
-                if (null != location.GroupLocation)
+            foreach (var location in TypedScanLocations)
+                if (location.GroupLocation != null)
                 {
                     // Clone it
-                    L clone = (L) location.GroupLocation.Clone();
+                    var clone = (TLocationType) location.GroupLocation.Clone();
 
                     // Process all entries
-                    if (null != location.ScanLocations)
-                        foreach (string scan in location.ScanLocations)
+                    if (location.ScanLocations != null)
+                        foreach (var scan in location.ScanLocations)
                         {
                             // Try to find
-                            S config = JMS.DVB.ScanLocations.Default.Find<S>( scan );
-
-                            // Not there
-                            if (null == config)
+                            var config = JMS.DVB.ScanLocations.Default.Find<TScanType>( scan );
+                            if (config == null)
                                 continue;
 
                             // Process all
                             foreach (SourceGroup group in config.Groups)
                             {
                                 // Clone it
-                                SourceGroup clonedGroup = SourceGroup.FromString<SourceGroup>( group.ToString() );
+                                var clonedGroup = SourceGroup.FromString<SourceGroup>( group.ToString() );
 
                                 // Add it
-                                if (null != clonedGroup)
+                                if (clonedGroup != null)
                                     clone.Groups.Add( clonedGroup );
                             }
                         }
@@ -622,54 +608,32 @@ namespace JMS.DVB
         /// Meldet die Sonderkonfiguration für den Sendersuchlauf.
         /// </summary>
         [XmlIgnore]
-        public override ScanningFilter ScanConfiguration
-        {
-            get
-            {
-                // Report
-                return ScanningFilter;
-            }
-        }
+        public override ScanningFilter ScanConfiguration { get { return ScanningFilter; } }
 
         /// <summary>
         /// Erlaubt den Zugriff auf die Liste der Ursprünge für den Sendersuchlauf.
         /// </summary>
         [XmlIgnore]
-        public override IList ScanLocations
-        {
-            get
-            {
-                // Report
-                return TypedScanLocations;
-            }
-        }
+        public override IList ScanLocations { get { return TypedScanLocations; } }
 
         /// <summary>
         /// Meldet alle Ursprünge zu diesem Profil.
         /// </summary>
         [XmlIgnore]
-        public override IList Locations
-        {
-            get
-            {
-                // Report
-                return GroupLocations;
-            }
-        }
+        public override IList Locations { get { return GroupLocations; } }
 
         /// <summary>
         /// Prüft, ob das zugehörige Gerät eine bestimmte Quellgruppe überhaupt unterstützt.
         /// </summary>
         /// <param name="group">Die zu prüfende Quellgruppe.</param>
         /// <returns>Gesetzt, wenn die Quellgruppe unterstützt wird.</returns>
-        public virtual bool SupportsGroup( G group )
+        public virtual bool SupportsGroup( TGroupType group )
         {
             // Check parameter
-            if (null == group)
+            if (ReferenceEquals( group, null ))
                 return false;
-
-            // Normally we do
-            return true;
+            else
+                return true;
         }
 
         /// <summary>
@@ -680,7 +644,7 @@ namespace JMS.DVB
         public override sealed bool SupportsGroup( SourceGroup group )
         {
             // Forward
-            return SupportsGroup( group as G );
+            return SupportsGroup( group as TGroupType );
         }
     }
 }

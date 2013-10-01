@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections;
-using System.Xml.Serialization;
-using System.Collections.Generic;
+
 
 namespace JMS.DVB
 {
@@ -17,13 +13,6 @@ namespace JMS.DVB
         /// Wird gesetzt, um DVB-S2 Gruppen grundsätzlich auszuschliessen.
         /// </summary>
         public bool DisableS2Groups { get; set; }
-
-        /// <summary>
-        /// Erzeugt eine neue DVB-S(2) Beschreibung.
-        /// </summary>
-        public SatelliteProfile()
-        {
-        }
 
         /// <summary>
         /// Prüft, ob das zugehörige Gerät eine bestimmte Quellgruppe überhaupt unterstützt.

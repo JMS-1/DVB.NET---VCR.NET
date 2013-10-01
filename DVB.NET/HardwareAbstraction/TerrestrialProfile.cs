@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections;
-using System.Xml.Serialization;
-using System.Collections.Generic;
+
 
 namespace JMS.DVB
 {
@@ -13,12 +9,6 @@ namespace JMS.DVB
     [Serializable]
     public class TerrestrialProfile : Profile<TerrestrialLocation, TerrestrialGroup, TerrestrialScanLocation>
     {
-        /// <summary>
-        /// Erzeugt eine neue DVB-T Beschreibung.
-        /// </summary>
-        public TerrestrialProfile()
-        {
-        }
     }
 }
 
