@@ -129,26 +129,22 @@ namespace JMS.DVB.Algorithms.Scheduler
                 var bestEnd = allocationPerResource.Values.Min();
                 var resources = new HashSet<IScheduleResource>( allocationPerResource.Where( p => p.Value == bestEnd ).Select( p => p.Key ), allocationPerResource.Comparer );
 
-                // For each task see if at least one is interested in doing something
-                for (int ti = 0, timax = tasks.Count; ti < timax; ti++)
+                // Process tasks in order of next activity
+                foreach (var orderedTask in tasks.Select( ( task, index ) => new { Task = task, Index = index } ).OrderBy( ot => ot.Task.Current.Planned.Start ))
                 {
-                    // Load the task
-                    var task = tasks[ti];
-                    var resource = task.AllowedResources.FirstOrDefault( r => resources.Contains( r ) );
-
-                    // No of the resources available can be used
+                    // See if this task can be assigned to any of the ressources currently under inspection
+                    var task = orderedTask.Task;
+                    var resource = task.AllowedResources.FirstOrDefault( resources.Contains );
                     if (resource == null)
                         continue;
 
-                    // Load the suggested time
+                    // May move a bit in the future - task starting late is not considered a problem
                     var time = task.Current;
-
-                    // May move a bit in the future
                     var startsLate = (time.Planned.Start < bestEnd);
                     if (startsLate)
                         time.Planned.Start = bestEnd;
 
-                    // Update the end 
+                    // Update the end of the unused area of the ressource
                     allocationPerResource[resource] = time.Planned.End;
 
 #if !SILVERLIGHT
@@ -166,12 +162,10 @@ namespace JMS.DVB.Algorithms.Scheduler
                     // Report
                     yield return new ScheduleInfo( task.Definition, resource, time.Planned, startsLate );
 
-                    // Next
+                    // Move next an remove task from list if we processed all of it - which is rarely the case since tasks are normally executed infintly
                     task.MoveNext();
-
-                    // Discard
                     if (task.Current == null)
-                        tasks.RemoveAt( ti );
+                        tasks.RemoveAt( orderedTask.Index );
 
                     // At least we did anything so better remove nothing at all
                     resources.Clear();
