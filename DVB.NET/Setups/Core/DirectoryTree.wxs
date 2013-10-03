@@ -38,6 +38,8 @@
             <Directory Id="JMS.DVB.Provider.TTPremium.Documents" Name="Adapter" />
             <Directory Id="JMS.TechnoTrend.MFCWrapper.Binaries" Name="Adapter" />
             <Directory Id="JMS.TechnoTrend.MFCWrapper.Documents" Name="Adapter" />
+            <Directory Id="JMS.DVB.Provider.TeViiS2.Binaries" Name="Adapter" />
+            <Directory Id="JMS.DVB.Provider.TeViiS2.Documents" Name="Adapter" />
 
             <Directory Id="AdapterBinaries" Name="Adapter">
               <Directory Id="AdapterGerman" Name="de" />
@@ -149,6 +151,8 @@
                 <Directory Id="JMS.DVB.Provider.FireDTV.Content" Name="FireDTV" />
                 <Directory Id="JMS.DVB.Provider.KNC.Sources" Name="KNC" />
                 <Directory Id="JMS.DVB.Provider.KNC.Content" Name="KNC" />
+                <Directory Id="JMS.DVB.Provider.TeViiS2.Sources" Name="TeViiS2" />
+                <Directory Id="JMS.DVB.Provider.TeViiS2.Content" Name="TeViiS2" />
 
                 <Directory Id="HauppaugeSources" Name="Hauppauge">
                   <Directory Id="JMS.DVB.Provider.NovaS2.Sources" Name="NovaS2" />

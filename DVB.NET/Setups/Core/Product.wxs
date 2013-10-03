@@ -59,6 +59,7 @@
       <ComponentGroupRef Id="JMS.DVB.Provider.FireDTV.Binaries" />
       <ComponentGroupRef Id="JMS.DVB.Provider.KNC.Binaries" />
       <ComponentGroupRef Id="JMS.DVB.Provider.NovaS2.Binaries" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.TeViiS2.Binaries" />
       <ComponentGroupRef Id="JMS.DVB.Provider.TTBudget.Binaries" />
       <ComponentGroupRef Id="JMS.DVB.Provider.TTPremium.Binaries" />
       <ComponentGroupRef Id="JMS.TechnoTrend.MFCWrapper.Binaries" />
@@ -138,6 +139,8 @@
       <ComponentGroupRef Id="JMS.DVB.Provider.KNC.Content" />
       <ComponentGroupRef Id="JMS.DVB.Provider.NovaS2.Sources" />
       <ComponentGroupRef Id="JMS.DVB.Provider.NovaS2.Content" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.TeViiS2.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.TeViiS2.Content" />
       <ComponentGroupRef Id="JMS.TechnoTrend.MFCWrapper.Sources" />
       <ComponentGroupRef Id="JMS.TechnoTrend.MFCWrapper.Content" />
       <ComponentGroupRef Id="JMS.DVB.Provider.TTBudget.Sources" />
@@ -163,6 +166,7 @@
       <ComponentGroupRef Id="JMS.DVB.Provider.FireDTV.Documents" />
       <ComponentGroupRef Id="JMS.DVB.Provider.KNC.Documents" />
       <ComponentGroupRef Id="JMS.DVB.Provider.NovaS2.Documents" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.TeViiS2.Documents" />
       <ComponentGroupRef Id="JMS.DVB.Provider.TTBudget.Documents" />
       <ComponentGroupRef Id="JMS.DVB.Provider.TTPremium.Documents" />
       <ComponentGroupRef Id="JMS.TechnoTrend.MFCWrapper.Documents" />

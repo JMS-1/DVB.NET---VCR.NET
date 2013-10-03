@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Threading;
-
 using JMS.DVB.DeviceAccess;
-using JMS.DVB.DeviceAccess.Pipeline;
 using JMS.DVB.DeviceAccess.Interfaces;
+using JMS.DVB.DeviceAccess.Pipeline;
 
 
 namespace JMS.DVB.Provider.NovaS2
@@ -11,22 +10,13 @@ namespace JMS.DVB.Provider.NovaS2
     /// <summary>
     /// DiSEqC Anbindung für die Hauppauge Nova-S Reihe der neueren Baureihe (nicht TechnoTrend Budget Line)
     /// </summary>
-    [
-        Pipeline( PipelineTypes.DiSEqC, "Hauppauge Nova-S" ),
-    ]
+    [Pipeline( PipelineTypes.DiSEqC, "Hauppauge Nova-S" )]
     public class NovaDiSEqC : IPipelineExtension
     {
         /// <summary>
         /// Die Erweiterungseigenschaft, die für die DiSEqC Steuerung verwendet werden soll.
         /// </summary>
         private static readonly Guid BdaTunerExtensionProperties = new Guid( "faa8f3e5-31d4-4e41-88ef-00a0c9f21fc7" );
-
-        /// <summary>
-        /// Initialisiert die Instanz des Providers.
-        /// </summary>
-        public NovaDiSEqC()
-        {
-        }
 
         #region IPipelineExtension Members
 
@@ -38,9 +28,8 @@ namespace JMS.DVB.Provider.NovaS2
         /// <param name="types">Die gewünschte Aktivierung.</param>
         void IPipelineExtension.Install( DataGraph graph, Profile profile, PipelineTypes types )
         {
-            // Validate
-            
-       if (graph == null)
+            // Validate            
+            if (graph == null)
                 throw new ArgumentNullException( "graph" );
             if (profile == null)
                 throw new ArgumentNullException( "profile" );

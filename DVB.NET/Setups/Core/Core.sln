@@ -209,6 +209,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JMS.DVB.SchedulerTests", ".
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "CoreSetup", "CoreSetup.wixproj", "{0E19F354-14CB-493E-9CF3-3195237ACCAD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JMS.DVB.Provider.TeViiS2", "..\..\Provider\TeViiS2\JMS.DVB.Provider.TeViiS2.csproj", "{B26CE348-CB62-4DA1-949D-EDA4526F892D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{046BA60E-E22F-48AA-AB52-5D8AA7F0A6C4} = {046BA60E-E22F-48AA-AB52-5D8AA7F0A6C4}
+		{6662DE38-74C1-4432-9512-C7E94C2EFDFA} = {6662DE38-74C1-4432-9512-C7E94C2EFDFA}
+		{620B2A8D-ACCC-401A-A67B-70F3AAE47F55} = {620B2A8D-ACCC-401A-A67B-70F3AAE47F55}
+		{76D4B1A1-14FF-4265-8351-06DFD98F2DC3} = {76D4B1A1-14FF-4265-8351-06DFD98F2DC3}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -499,6 +507,16 @@ Global
 		{0E19F354-14CB-493E-9CF3-3195237ACCAD}.Release|Mixed Platforms.Build.0 = Release|x86
 		{0E19F354-14CB-493E-9CF3-3195237ACCAD}.Release|x86.ActiveCfg = Release|x86
 		{0E19F354-14CB-493E-9CF3-3195237ACCAD}.Release|x86.Build.0 = Release|x86
+		{B26CE348-CB62-4DA1-949D-EDA4526F892D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B26CE348-CB62-4DA1-949D-EDA4526F892D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B26CE348-CB62-4DA1-949D-EDA4526F892D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B26CE348-CB62-4DA1-949D-EDA4526F892D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B26CE348-CB62-4DA1-949D-EDA4526F892D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B26CE348-CB62-4DA1-949D-EDA4526F892D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B26CE348-CB62-4DA1-949D-EDA4526F892D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B26CE348-CB62-4DA1-949D-EDA4526F892D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B26CE348-CB62-4DA1-949D-EDA4526F892D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B26CE348-CB62-4DA1-949D-EDA4526F892D}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

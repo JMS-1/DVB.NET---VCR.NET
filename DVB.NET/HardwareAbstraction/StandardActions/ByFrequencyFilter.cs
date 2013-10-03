@@ -16,13 +16,6 @@ namespace JMS.DVB.StandardActions
     public class ByFrequencyFilter : IPipelineExtension
     {
         /// <summary>
-        /// Erzeugt eine neue Implementierung.
-        /// </summary>
-        public ByFrequencyFilter()
-        {
-        }
-
-        /// <summary>
         /// Führt die DiSEqC Steuerung aus.
         /// </summary>
         /// <param name="token">Die aktuellen Informationen zum Wechsel der Quellgruppe.</param>
