@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 
 
-namespace S24600DiSEqC
+namespace JMS.DVB.Provider.TeViiS2
 {
 
     /// <summary>

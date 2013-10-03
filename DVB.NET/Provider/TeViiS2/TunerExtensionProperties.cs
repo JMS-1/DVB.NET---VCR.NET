@@ -1,6 +1,6 @@
 ﻿
 
-namespace S24600DiSEqC
+namespace JMS.DVB.Provider.TeViiS2
 {
     /// <summary>
     /// Die einzelnen Konfigurationsparameter.

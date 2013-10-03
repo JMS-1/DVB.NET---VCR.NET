@@ -1,11 +1,10 @@
 ﻿using System;
-using JMS.DVB;
 using JMS.DVB.DeviceAccess;
 using JMS.DVB.DeviceAccess.Interfaces;
 using JMS.DVB.DeviceAccess.Pipeline;
 
 
-namespace S24600DiSEqC
+namespace JMS.DVB.Provider.TeViiS2
 {
     /// <summary>
     /// DiSEqC Steuerung für die TeVii DVB-S2 Geräte, zu denen auch die TechnoTrend S2-4600 gehört.
