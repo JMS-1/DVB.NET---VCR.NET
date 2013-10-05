@@ -13,18 +13,18 @@
     <EnableProjectHarvesting>True</EnableProjectHarvesting>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <OutputPath>..\msi\</OutputPath>
+    <OutputPath>..\..\..\msi\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <DefineConstants>Debug</DefineConstants>
-    <WixVariables>SETUPVERSION=4.2.6</WixVariables>
+    <WixVariables>SETUPVERSION=4.2.7</WixVariables>
     <Cultures>de-de</Cultures>
     <SuppressPdbOutput>True</SuppressPdbOutput>
     <SuppressIces>ICE57</SuppressIces>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <OutputPath>..\msi\</OutputPath>
+    <OutputPath>..\..\..\msi\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
-    <WixVariables>SETUPVERSION=4.2.6</WixVariables>
+    <WixVariables>SETUPVERSION=4.2.7</WixVariables>
     <Cultures>de-de</Cultures>
     <SuppressPdbOutput>True</SuppressPdbOutput>
     <SuppressIces>ICE57</SuppressIces>

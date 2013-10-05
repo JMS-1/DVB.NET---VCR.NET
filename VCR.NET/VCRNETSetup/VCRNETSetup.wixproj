@@ -14,7 +14,7 @@
     <ProjectOutputGroups>Binaries;Content;Sources</ProjectOutputGroups>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <OutputPath>..\msi\</OutputPath>
+    <OutputPath>..\..\msi\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <DefineConstants>Debug;ExtensionsPath=..\FTPWrap\VCR.NET Extension</DefineConstants>
     <Cultures>de-de</Cultures>
@@ -22,10 +22,10 @@
     <CompilerAdditionalOptions>_Extensions.wxs</CompilerAdditionalOptions>
     <LinkerAdditionalOptions>obj\$(Configuration)\_Extensions.wixobj</LinkerAdditionalOptions>
     <SuppressIces>ICE57;ICE43</SuppressIces>
-    <WixVariables>SETUPVERSION=4.2.35</WixVariables>
+    <WixVariables>SETUPVERSION=4.2.36</WixVariables>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <OutputPath>..\msi\</OutputPath>
+    <OutputPath>..\..\msi\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <Cultures>de-de</Cultures>
     <SuppressPdbOutput>True</SuppressPdbOutput>
@@ -33,7 +33,7 @@
     <SuppressIces>ICE57;ICE43</SuppressIces>
     <CompilerAdditionalOptions>_Extensions.wxs</CompilerAdditionalOptions>
     <LinkerAdditionalOptions>obj\$(Configuration)\_Extensions.wixobj</LinkerAdditionalOptions>
-    <WixVariables>SETUPVERSION=4.2.35</WixVariables>
+    <WixVariables>SETUPVERSION=4.2.36</WixVariables>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AspNetWebApi.wxs" />
