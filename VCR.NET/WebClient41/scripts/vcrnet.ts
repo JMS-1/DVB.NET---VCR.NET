@@ -1488,16 +1488,22 @@ class ScheduleData {
         var startTime = JMSLib.DateFormatter.parseTime(this.startTime);
         var endTime = JMSLib.DateFormatter.parseTime(this.endTime);
 
-        var duration = endTime - startTime;
-        if (duration < 0)
-            duration += 86400000;
+        // Wir müssen sicherstellen, dass uns die Umstellung zwischen Sommer- und Winterzeit keinen Streich spielt
+        var firstYear = this.firstStart.getFullYear();
+        var firstMonth = this.firstStart.getMonth();
+        var firstDay = this.firstStart.getDate();
+        var fullStart = new Date(firstYear, firstMonth, firstDay, Math.floor(startTime / 3600000), (startTime / 60000) % 60);
+        var fullEnd = new Date(firstYear, firstMonth, firstDay, Math.floor(endTime / 3600000), (endTime / 60000) % 60);
+
+        if (startTime >= endTime)
+            fullEnd.setDate(firstDay + 1);
+
+        var duration = fullEnd.getTime() - fullStart.getTime();
 
         var localEnd = this.lastDay;
         if (localEnd == null)
             localEnd = new Date(2999, 11, 31);
         var utcEnd = new Date(Date.UTC(localEnd.getFullYear(), localEnd.getMonth(), localEnd.getDate()));
-
-        var localStart = new Date(this.firstStart.getTime() + startTime);
 
         // Nun noch die verbleibenden Ausnahmen einrichten
         var exceptions = new Array();
@@ -1509,7 +1515,7 @@ class ScheduleData {
 
         // Fertig
         var contract: VCRServer.EditScheduleContract = {
-            firstStart: localStart.toISOString(),
+            firstStart: fullStart.toISOString(),
             repeatPattern: this.repeatPattern(),
             withVideotext: this.withVideotext,
             withSubtitles: this.withSubtitles,
