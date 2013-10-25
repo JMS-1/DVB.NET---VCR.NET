@@ -507,16 +507,14 @@ namespace JMS.DVB.Algorithms.Scheduler
         }
 
         /// <summary>
+        /// Meldet, wann die aktuelle Planung beginnt.
+        /// </summary>
+        public DateTime PlanStart { get { return m_Allocations[0].End; } }
+
+        /// <summary>
         /// Meldet, wann die aktuelle Planung endet.
         /// </summary>
-        public DateTime PlanEnd
-        {
-            get
-            {
-                // Report
-                return m_Allocations[m_Allocations.Count - 1].Start;
-            }
-        }
+        public DateTime PlanEnd { get { return m_Allocations[m_Allocations.Count - 1].Start; } }
 
         /// <summary>
         /// Meldet alle aktiven Einträge.

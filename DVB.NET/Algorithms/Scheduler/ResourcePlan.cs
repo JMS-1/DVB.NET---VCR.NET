@@ -201,7 +201,7 @@ namespace JMS.DVB.Algorithms.Scheduler
         public ResourcePlan Restart( SchedulePlan plan )
         {
             // Create new - this will reset the allocation map to improve performance
-            return new ResourcePlan( Resource, plan, DecryptionCounters );
+            return new ResourcePlan( Resource, plan, DecryptionCounters, Allocations );
         }
 
         /// <summary>
@@ -330,13 +330,11 @@ namespace JMS.DVB.Algorithms.Scheduler
         /// <summary>
         /// Meldet, wann die aktuelle Planung endet.
         /// </summary>
-        public DateTime PlanEnd
-        {
-            get
-            {
-                // Report
-                return Allocations.PlanEnd;
-            }
-        }
+        public DateTime PlanEnd { get { return Allocations.PlanEnd; } }
+
+        /// <summary>
+        /// Meldet, wann die aktuelle Planung beginnt.
+        /// </summary>
+        public DateTime PlanStart { get { return Allocations.PlanStart; } }
     }
 }

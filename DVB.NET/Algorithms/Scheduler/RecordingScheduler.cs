@@ -26,6 +26,11 @@ namespace JMS.DVB.Algorithms.Scheduler
         public static uint MaximumRecordingsInPlan = 1000;
 
         /// <summary>
+        /// Die maximale Anzahl gleichzeitig untersucher Alternativlösungen.
+        /// </summary>
+        public static uint MaximumAlternativesInPlan = 250;
+
+        /// <summary>
         /// Alle Geräte, die bei der Planung zu berücksichtigen sind.
         /// </summary>
         internal ResourceCollection Resources { get; private set; }

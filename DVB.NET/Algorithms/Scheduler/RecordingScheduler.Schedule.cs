@@ -128,11 +128,13 @@ namespace JMS.DVB.Algorithms.Scheduler
 #endif
 
                 // Get the current end of plans and see if we can dump the state - this may increase performance
+                var planStart = plans.SelectMany( p => p.Resources ).Min( r => (DateTime?) r.PlanStart );
                 var planEnd = plans.SelectMany( p => p.Resources ).Max( r => (DateTime?) r.PlanEnd );
                 var canEndPlan = planEnd.HasValue && (planEnd.Value != DateTime.MinValue) && (candiateTime.Planned.Start >= planEnd.Value);
+                var mustEndPlan = planStart.HasValue && (planStart.Value != DateTime.MaxValue) && planEnd.HasValue && (planEnd.Value != DateTime.MinValue) && ((planEnd.Value - planStart.Value).TotalDays > 2);
 
                 // Count this effort
-                if ((++steps > MaximumRecordingsInPlan) || canEndPlan)
+                if ((++steps > MaximumRecordingsInPlan) || canEndPlan || mustEndPlan || (plans.Count > MaximumAlternativesInPlan))
                 {
                     // Find best plan
                     var best = SchedulePlan.FindBest( plans, m_comparer );

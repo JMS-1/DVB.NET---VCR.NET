@@ -243,5 +243,52 @@ namespace JMS.DVB.SchedulerTests
             // Validate
             Assert.IsNull( schedule.Resource, "Resource" );
         }
+
+        /// <summary>
+        /// Auch sehr lange Aufzeichnungen mit sehr vielen Geräten können bearbeitet werden.
+        /// </summary>
+        [TestMethod]
+        public void Can_Handle_Very_Long_Recordings_With_Multiple_Devices()
+        {
+            // All sources
+            var sources =
+                Enumerable
+                    .Range( 0, 100 )
+                    .Select( i => SourceMock.Create( "S" + i.ToString( "00" ) ) )
+                    .ToArray();
+
+            // Create environment
+            var device1 = ResourceMock.Create( "D1", sources );
+            var device2 = ResourceMock.Create( "D2", sources );
+            var device3 = ResourceMock.Create( "D3", sources );
+            var device4 = ResourceMock.Create( "D4", sources );
+
+            // Create the plan
+            var allDays = new[] { DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday, DayOfWeek.Sunday };
+            var refTime = new DateTime( 2013, 12, 1 );
+            var plan1 = RecordingDefinition.Create( false, "test1", Guid.NewGuid(), null, sources[0], refTime, TimeSpan.FromHours( 23 ), refTime.AddYears( 100 ), allDays );
+            var plan2 = RecordingDefinition.Create( false, "test2", Guid.NewGuid(), null, sources[1], refTime.AddHours( 22 ), TimeSpan.FromHours( 4 ), refTime.AddYears( 100 ), allDays );
+
+            // Create the component under test
+            var cut = new RecordingScheduler( StringComparer.InvariantCultureIgnoreCase ) { device1, device2, device3, device4, plan1, plan2 };
+
+            // Other
+            foreach (var plan in
+                Enumerable
+                    .Range( 2, 10 )
+                    .Select( i => RecordingDefinition.Create( false, "test" + i.ToString( "00" ), Guid.NewGuid(), null, sources[i], refTime.AddMinutes( 5 * i ), TimeSpan.FromMinutes( 6 ), refTime.AddYears( 100 ), allDays ) ))
+                cut.Add( plan );
+
+            // Get the schedule
+            var schedules = cut.GetSchedules( refTime.AddHours( -1 ) ).Take( 500 ).ToArray();
+
+            // Validate
+            Assert.AreEqual( 500, schedules.Length, "#count" );
+            Assert.IsFalse( schedules.Any( schedule => schedule.StartsLate ), "late!" );
+
+            // Dump plan
+            foreach (var schedule in schedules)
+                Console.WriteLine( schedule );
+        }
     }
 }
