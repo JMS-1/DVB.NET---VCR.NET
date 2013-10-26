@@ -497,6 +497,9 @@ class Page {
     show(): void {
         var page = <IPage> <any> this;
 
+        // Aktionen zurücksetzen
+        $('.refreshLink').off('click');
+
         page.onShow();
 
         // Vorbereitung des Bereichs, der allen Seiten gemeinsam ist (Überschrift und Verweisleiste)
