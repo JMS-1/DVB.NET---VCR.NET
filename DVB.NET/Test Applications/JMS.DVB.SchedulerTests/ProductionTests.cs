@@ -24,7 +24,7 @@ namespace JMS.DVB.SchedulerTests
         public void Performance_Of_A_Real_Life_Scenario()
         {
             // Get the path to the test directories
-            var jobDirectory = @"C:\Backup\Software\Current\GIT\DVB.NET---VCR.NET\VCR.NET\WebClient41\Jobs\Active";
+            var jobDirectory = @"*TBD*";
             var profileDirectory = Environment.ExpandEnvironmentVariables( @"%AllUsersProfile%\DVBNETProfiles" );
 
             // Helper - will be reused

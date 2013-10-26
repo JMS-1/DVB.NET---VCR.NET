@@ -184,13 +184,16 @@ namespace JMS.DVB
         public override bool Equals( object obj )
         {
             // Change type
-            SatelliteGroup other = obj as SatelliteGroup;
+            var other = obj as SatelliteGroup;
 
-            // Not possible
-            if (null == other)
+            // By identity
+            if (ReferenceEquals( other, null ))
                 return false;
-            else
-                return OnCompare( other, false );
+            if (ReferenceEquals( other, this ))
+                return true;
+
+            // Forward
+            return OnCompare( other, false );
         }
 
         /// <summary>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -23,6 +24,16 @@ namespace JMS.DVB
         /// Dateiendung für DVB.NET Geräteprofile ab Version 4.0.
         /// </summary>
         public const string ProfileExtension = "dnp";
+
+        /// <summary>
+        /// Der aktuelle Änderungszähler.
+        /// </summary>
+        private static volatile int _RefreshCounter;
+
+        /// <summary>
+        /// Meldet den aktuellen Änderungszähler.
+        /// </summary>
+        public static int RefreshCounter { get { return _RefreshCounter; } }
 
         /// <summary>
         /// Alle möglichen Arten von Geräteprofilen.
@@ -206,6 +217,11 @@ namespace JMS.DVB
             // Synchronize
             lock (ProfileTypes)
                 m_profiles = null;
+
+            // Count up
+#pragma warning disable 0420
+            Interlocked.Increment( ref _RefreshCounter );
+#pragma warning restore 0420
         }
 
         /// <summary>

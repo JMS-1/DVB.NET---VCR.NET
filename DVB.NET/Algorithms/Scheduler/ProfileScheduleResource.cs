@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Linq;
 
 
@@ -61,38 +62,17 @@ namespace JMS.DVB.Algorithms.Scheduler
             /// <summary>
             /// Meldet, ob diese Quelle eine Entschlüsselung benötigt.
             /// </summary>
-            public bool IsEncrypted
-            {
-                get
-                {
-                    // We use static information only
-                    return Station.IsEncrypted;
-                }
-            }
+            public bool IsEncrypted { get { return Station.IsEncrypted; } }
 
             /// <summary>
             /// Meldet, ob es sich bei der Quelle um einen Radiosender handelt.
             /// </summary>
-            public bool IsAudioOnly
-            {
-                get
-                {
-                    // Report
-                    return (Station.SourceType == SourceTypes.Radio);
-                }
-            }
+            public bool IsAudioOnly { get { return (Station.SourceType == SourceTypes.Radio); } }
 
             /// <summary>
             /// Meldet die vollen Informationen zur Quelle.
             /// </summary>
-            public Station Station
-            {
-                get
-                {
-                    // Just cast
-                    return (Station) Source.Source;
-                }
-            }
+            public Station Station { get { return (Station) Source.Source; } }
 
             /// <summary>
             /// Prüft, ob diese Quelle mit einer anderen parallel aufgezeichnet werden kann.
@@ -165,6 +145,16 @@ namespace JMS.DVB.Algorithms.Scheduler
         private class _Implementation : ScheduleResource<_Implementation, _Source>
         {
             /// <summary>
+            /// Alle Quellen, die wir bereits einmal getestet haben.
+            /// </summary>
+            private readonly ConcurrentDictionary<SourceSelection, bool> m_accessTests = new ConcurrentDictionary<SourceSelection, bool>( ReferenceComparer<SourceSelection>.Default );
+
+            /// <summary>
+            /// Der Änderungszähler der Geräteprofile - wir wissen, dass der Zähler immer bei 0 beginnt, i.e. wir erzwingen immer ein einmaliges Zurücksetzen.
+            /// </summary>
+            private volatile int m_profileVersion = -1;
+
+            /// <summary>
             /// Das zu verwendende Geräteprofil.
             /// </summary>
             public Profile Profile
@@ -229,11 +219,18 @@ namespace JMS.DVB.Algorithms.Scheduler
             /// <returns>Gesetzt, wenn die Quelle angesprochen werden kann.</returns>
             protected override bool TestAccess( _Source source )
             {
-                // Get the full selection information
-                var selection = source.Source;
+                // Check for reset - typically after a source scan
+                if (m_profileVersion != ProfileManager.RefreshCounter)
+                {
+                    // Reset
+                    m_accessTests.Clear();
+
+                    // Remember
+                    m_profileVersion = ProfileManager.RefreshCounter;
+                }
 
                 // See if we can provide exactly this source
-                return Profile.FindSource( selection.Source ).Any( s => Equals( s.Group, selection.Group ) && Equals( s.Location, selection.Location ) );
+                return m_accessTests.GetOrAdd( source.Source, selection => Profile.FindSource( selection.Source ).Any( s => Equals( s.Group, selection.Group ) && Equals( s.Location, selection.Location ) ) );
             }
         }
 

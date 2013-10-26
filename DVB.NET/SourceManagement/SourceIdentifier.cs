@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Xml.Serialization;
 using System.Text.RegularExpressions;
+using System.Xml.Serialization;
+
 
 namespace JMS.DVB
 {
@@ -105,11 +106,13 @@ namespace JMS.DVB
         public override bool Equals( object obj )
         {
             // Check type
-            SourceIdentifier other = obj as SourceIdentifier;
+            var other = obj as SourceIdentifier;
 
-            // Not comparable
-            if (null == other)
+            // By identity
+            if (ReferenceEquals( other, null ))
                 return false;
+            if (ReferenceEquals( other, this ))
+                return true;
 
             // Check all of it starting with the most variable part
             return (Service == other.Service) && (TransportStream == other.TransportStream) && (Network == other.Network);
@@ -177,14 +180,7 @@ namespace JMS.DVB
         /// Meldet, ob alle DVB Parameter der Kennung <i>0</i> sind.
         /// </summary>
         [XmlIgnore]
-        public bool IsEmpty
-        {
-            get
-            {
-                // Test all
-                return (0 == Service) && (0 == TransportStream) && (0 == Network);
-            }
-        }
+        public bool IsEmpty { get { return (Service == 0) && (TransportStream == 0) && (Network == 0); } }
 
         /// <summary>
         /// Rekonstruiert einen eindeutigen Namen aus den Teilen der DVB Kennung.

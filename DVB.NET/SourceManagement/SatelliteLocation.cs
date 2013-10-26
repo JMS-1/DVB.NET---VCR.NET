@@ -79,11 +79,13 @@ namespace JMS.DVB
         public override bool Equals( object obj )
         {
             // Change type
-            SatelliteLocation other = obj as SatelliteLocation;
+            var other = obj as SatelliteLocation;
 
-            // Not possible - wrong type
-            if (null == other)
+            // By identity
+            if (ReferenceEquals( other, null ))
                 return false;
+            if (ReferenceEquals( other, this ))
+                return true;
 
             // If two instance are different than in the selection of the LNB
             if (LNB != other.LNB)

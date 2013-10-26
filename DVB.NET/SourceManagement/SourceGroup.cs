@@ -63,9 +63,11 @@ namespace JMS.DVB
         /// <returns>Gesetzt, wenn die Gruppen identisch sind.</returns>
         public bool CompareTo( SourceGroup group, bool legacy )
         {
-            // Not possible
-            if (null == group)
+            // By identity
+            if (ReferenceEquals( group, null ))
                 return false;
+            if (ReferenceEquals( group, this ))
+                return true;
 
             // Wrong type
             if (group.GetType() != GetType())
