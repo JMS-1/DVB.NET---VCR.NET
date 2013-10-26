@@ -129,8 +129,9 @@ namespace JMS.DVB.Algorithms.Scheduler
         /// <param name="schedulePlan">Die zugehörige Gesamtplanung.</param>
         /// <param name="decryptionCounter">Die Zähler für die Entschlüsselung.</param>
         /// <param name="allocations">Optional alle bereits vorgenommenen Zuordnungen.</param>
+        /// <param name="planTime">Der aktuelle Planungsbeginn, sofern bekannt.</param>
         /// <exception cref="ArgumentNullException">Es wurde kein Gerät angegeben.</exception>
-        public ResourcePlan( IScheduleResource resource, SchedulePlan schedulePlan, HashSet<Guid> decryptionCounter = null, AllocationMap allocations = null )
+        public ResourcePlan( IScheduleResource resource, SchedulePlan schedulePlan, HashSet<Guid> decryptionCounter = null, AllocationMap allocations = null, DateTime? planTime = null )
         {
             // Remember
             SchedulePlan = schedulePlan;
@@ -143,7 +144,7 @@ namespace JMS.DVB.Algorithms.Scheduler
             if (allocations != null)
             {
                 // Just clone
-                Allocations = allocations.Clone();
+                Allocations = allocations.Clone( planTime );
             }
             else
             {
@@ -197,11 +198,12 @@ namespace JMS.DVB.Algorithms.Scheduler
         /// Erzeugt eine neue Instanz unter Berücksichtigung der vorgenommenen Gerätezuordnung.
         /// </summary>
         /// <param name="plan">Ein neuer Plan.</param>
+        /// <param name="planTime">Der aktuelle Planungsbeginn, sofern bekannt.</param>
         /// <returns>Eine Beschreibung des Gerätes.</returns>
-        public ResourcePlan Restart( SchedulePlan plan )
+        public ResourcePlan Restart( SchedulePlan plan, DateTime? planTime )
         {
             // Create new - this will reset the allocation map to improve performance
-            return new ResourcePlan( Resource, plan, DecryptionCounters, Allocations );
+            return new ResourcePlan( Resource, plan, DecryptionCounters, Allocations, planTime );
         }
 
         /// <summary>

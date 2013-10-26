@@ -489,11 +489,36 @@ namespace JMS.DVB.Algorithms.Scheduler
         /// <summary>
         /// Erzeugt eine Kopie.
         /// </summary>
+        /// <param name="planTime">Der aktuelle Planungsbeginn, sofern bekannt.</param>
         /// <returns>Die gewünschte Kopie.</returns>
-        public AllocationMap Clone()
+        public AllocationMap Clone( DateTime? planTime )
         {
-            // Forward
-            return new AllocationMap( this );
+            // Create
+            var clone = new AllocationMap( this );
+
+            // No check needed
+            if (!planTime.HasValue)
+                return clone;
+
+            // See who is below the limit
+            var allocations = clone.m_Allocations;
+            var index = allocations.FindIndex( allocation => allocation.End > planTime.Value );
+
+            // Cut off if not the very first
+            if (--index > 0)
+            {
+                // Load the very start of it all
+                var allocation = allocations[0];
+
+                // Update it's end time
+                allocations[0] = allocation.Clone( allocation.Start, allocations[index].End );
+
+                // Cleanup the rest
+                allocations.RemoveRange( 1, index );
+            }
+
+            // Report
+            return clone;
         }
 
         /// <summary>

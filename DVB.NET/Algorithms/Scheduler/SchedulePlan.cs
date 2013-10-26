@@ -286,7 +286,7 @@ namespace JMS.DVB.Algorithms.Scheduler
         /// <param name="resources">Die zugehörige Planungsinstanz.</param>
         /// <exception cref="ArgumentNullException">Es wurden keine Geräte angegeben.</exception>
         public SchedulePlan( ResourceCollection resources )
-            : this( resources, default( Dictionary<Guid, AllocationMap> ) )
+            : this( resources, default( Dictionary<Guid, AllocationMap> ), null )
         {
             // Load
             Resources = resources.Select( r => new ResourcePlan( r, this ) ).ToArray();
@@ -304,7 +304,8 @@ namespace JMS.DVB.Algorithms.Scheduler
         /// </summary>
         /// <param name="resources">Die zugehörige Planungsinstanz.</param>
         /// <param name="counters">Alle Informationen zu Entschlüsselungen.</param>
-        private SchedulePlan( ResourceCollection resources, Dictionary<Guid, AllocationMap> counters )
+        /// <param name="planTime">Der aktuelle Planungsbeginn, sofern bekannt.</param>
+        private SchedulePlan( ResourceCollection resources, Dictionary<Guid, AllocationMap> counters, DateTime? planTime )
         {
             // Validate
             if (resources == null)
@@ -316,7 +317,7 @@ namespace JMS.DVB.Algorithms.Scheduler
             // Clone decryption information
             if (counters != null)
                 foreach (var pair in counters)
-                    DecryptionCounters.Add( pair.Key, pair.Value.Clone() );
+                    DecryptionCounters.Add( pair.Key, pair.Value.Clone( planTime ) );
         }
 
         /// <summary>
@@ -324,7 +325,7 @@ namespace JMS.DVB.Algorithms.Scheduler
         /// </summary>
         /// <param name="original">Die ursprüngliche Planung.</param>
         private SchedulePlan( SchedulePlan original )
-            : this( original.ResourceCollection, original.DecryptionCounters )
+            : this( original.ResourceCollection, original.DecryptionCounters, null )
         {
             // Create array
             Resources = new ResourcePlan[original.Resources.Length];
@@ -382,14 +383,15 @@ namespace JMS.DVB.Algorithms.Scheduler
         /// <summary>
         /// Erzeugt einen neuen Plan basierend auf der aktuellen Zuordnung.
         /// </summary>
+        /// <param name="planTime">Der aktuelle Planungsbeginn, sofern bekannt.</param>
         /// <returns>Ein neuer Plan.</returns>
-        public SchedulePlan Restart()
+        public SchedulePlan Restart( DateTime? planTime )
         {
             // Create - make sure that we keep the decryption allocations
-            var clone = new SchedulePlan( ResourceCollection, DecryptionCounters );
+            var clone = new SchedulePlan( ResourceCollection, DecryptionCounters, planTime );
 
             // Fill
-            clone.Resources = Resources.Select( r => r.Restart( clone ) ).ToArray();
+            clone.Resources = Resources.Select( r => r.Restart( clone, planTime ) ).ToArray();
 
             // Report
             return clone;

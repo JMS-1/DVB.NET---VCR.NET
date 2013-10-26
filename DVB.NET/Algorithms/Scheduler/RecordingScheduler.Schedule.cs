@@ -130,7 +130,7 @@ namespace JMS.DVB.Algorithms.Scheduler
                 // Get the current end of plans and see if we can dump the state - this may increase performance
                 var planStart = plans.SelectMany( p => p.Resources ).Min( r => (DateTime?) r.PlanStart );
                 var planEnd = plans.SelectMany( p => p.Resources ).Max( r => (DateTime?) r.PlanEnd );
-                var canEndPlan = planEnd.HasValue && (planEnd.Value != DateTime.MinValue) && (candiateTime.Planned.Start >= planEnd.Value);
+                var canEndPlan = planEnd.HasValue && (planEnd.Value != DateTime.MinValue) && (planned.Start >= planEnd.Value);
                 var mustEndPlan = planStart.HasValue && (planStart.Value != DateTime.MaxValue) && planEnd.HasValue && (planEnd.Value != DateTime.MinValue) && ((planEnd.Value - planStart.Value).TotalDays > 2);
 
                 // Count this effort
@@ -145,7 +145,7 @@ namespace JMS.DVB.Algorithms.Scheduler
 
                     // Reset
                     plans.Clear();
-                    plans.Add( best.Restart() );
+                    plans.Add( best.Restart( planned.Start ) );
 
                     // Reset
                     steps = 1;
