@@ -507,6 +507,10 @@ namespace JMS.DVB.Algorithms.Scheduler
             // Cut off if not the very first
             if (--index > 0)
             {
+                // Collapse if only two are left
+                if (index == allocations.Count - 2)
+                    index++;
+
                 // Load the very start of it all
                 var allocation = allocations[0];
 
