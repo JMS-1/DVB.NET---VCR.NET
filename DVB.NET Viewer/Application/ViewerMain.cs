@@ -1,12 +1,11 @@
 using System;
-using System.Drawing;
 using System.Diagnostics;
+using System.Drawing;
 using System.Windows.Forms;
-
-using JMS.DVB;
-using JMS.DVB.Viewer;
-using JMS.DVB.DirectShow;
 using DVBNETViewer.Dialogs;
+using JMS.DVB;
+using JMS.DVB.DirectShow;
+using JMS.DVB.Viewer;
 
 
 namespace DVBNETViewer
@@ -229,6 +228,9 @@ namespace DVBNETViewer
 
             // Delay start streaming
             tickStart.Enabled = true;
+
+            // Make us active
+            Activate();
         }
 
         /// <summary>
@@ -273,7 +275,8 @@ namespace DVBNETViewer
             ResetOptions();
 
             // Reset title
-            if (Equals( Text, newText )) Text = oldText;
+            if (Equals( Text, newText ))
+                Text = oldText;
 
             // Up and running
             m_Starting = false;
