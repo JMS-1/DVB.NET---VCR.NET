@@ -16,7 +16,7 @@
     <OutputPath>..\..\..\msi\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <DefineConstants>Debug</DefineConstants>
-    <WixVariables>SETUPVERSION=4.2.8</WixVariables>
+    <WixVariables>SETUPVERSION=4.2.12</WixVariables>
     <Cultures>de-de</Cultures>
     <SuppressPdbOutput>True</SuppressPdbOutput>
     <SuppressIces>ICE57</SuppressIces>
@@ -24,7 +24,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>..\..\..\msi\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
-    <WixVariables>SETUPVERSION=4.2.8</WixVariables>
+    <WixVariables>SETUPVERSION=4.2.12</WixVariables>
     <Cultures>de-de</Cultures>
     <SuppressPdbOutput>True</SuppressPdbOutput>
     <SuppressIces>ICE57</SuppressIces>
