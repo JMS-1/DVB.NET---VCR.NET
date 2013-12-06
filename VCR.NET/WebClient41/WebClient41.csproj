@@ -226,9 +226,9 @@
     <Content Include="scripts\vcrserver.js">
       <DependentUpon>vcrserver.ts</DependentUpon>
     </Content>
-    <Content Include="Web.config">
+    <None Include="Web.config">
       <SubType>Designer</SubType>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="content\vcrnet.less" />
