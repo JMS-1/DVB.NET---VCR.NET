@@ -6,7 +6,7 @@
 
   <Product 
     Id="*" 
-    Name="DVB.NET Server 4.1" 
+    Name="DVB.NET Server 4.2" 
     Language="1031" 
     Version="!(wix.SETUPVERSION)" 
     Manufacturer="$(var.Manufacturer)" 
@@ -41,7 +41,7 @@
 
     <!-- Eine vorherige Installation muss entfernt werden -->
     <Property Id="ISINSTALLED">
-      <RegistrySearch Id="ISINSTALLEDREG" Win64="no" Root="HKLM" Key="Software\JMS\DVB.NET\4.1.0.0" Name="Server Directory" Type="raw" />
+      <RegistrySearch Id="ISINSTALLEDREG" Win64="no" Root="HKLM" Key="Software\JMS\DVB.NET\4.2.0.0" Name="Server Directory" Type="raw" />
     </Property>
     <Condition Message="!(loc.ALREADYINSTALLED)">
       <![CDATA[Installed OR NOT ISINSTALLED]]>
@@ -49,7 +49,7 @@
 
     <!-- DVB.NET muss in der korrekten Version installiert sein -->
     <Property Id="DVBNETCORE">
-      <RegistrySearch Id="DVBNETCOREREG" Win64="no" Root="HKLM" Key="Software\JMS\DVB.NET\4.1.0.0" Name="Root Directory" Type="raw" />
+      <RegistrySearch Id="DVBNETCOREREG" Win64="no" Root="HKLM" Key="Software\JMS\DVB.NET\4.2.0.0" Name="Root Directory" Type="raw" />
     </Property>
     <Condition Message="!(loc.DVBNETMISSING)">
       <![CDATA[Installed OR DVBNETCORE]]>

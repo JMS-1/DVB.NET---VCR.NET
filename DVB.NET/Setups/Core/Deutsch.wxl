@@ -2,7 +2,7 @@
 
 <WixLocalization Culture="de-de" xmlns="http://schemas.microsoft.com/wix/2006/localization">
 
-  <String Id="FEATUREBINARIES">DVB.NET Bibliothek 4.1</String>
+  <String Id="FEATUREBINARIES">DVB.NET Bibliothek 4.2</String>
   <String Id="FEATURESOURCE">Quellcode</String>
   <String Id="FEATUREINTELLISENSE">Intellisense Dateien</String>
   <String Id="ALREADYINSTALLED">Vor der Installation muss die existierende Version der DVB.NET Bibliothek deinstalliert werden.</String>

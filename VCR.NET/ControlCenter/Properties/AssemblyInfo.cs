@@ -6,22 +6,22 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("VCR.NET Control Center")]
-[assembly: AssemblyDescription("Application to Manage a random number of VCR.NET Recording Services")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("VCR.NET")]
-[assembly: AssemblyCopyright("")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+[assembly: AssemblyTitle( "VCR.NET Control Center" )]
+[assembly: AssemblyDescription( "Application to Manage a random number of VCR.NET Recording Services" )]
+[assembly: AssemblyConfiguration( "" )]
+[assembly: AssemblyCompany( "" )]
+[assembly: AssemblyProduct( "VCR.NET" )]
+[assembly: AssemblyCopyright( "" )]
+[assembly: AssemblyTrademark( "" )]
+[assembly: AssemblyCulture( "" )]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
 // COM, set the ComVisible attribute to true on that type.
-[assembly: ComVisible(false)]
+[assembly: ComVisible( false )]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("50278bd2-dc3d-44b1-ae40-955fa96353b1")]
+[assembly: Guid( "50278bd2-dc3d-44b1-ae40-955fa96353b1" )]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -30,5 +30,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("4.1.0.0")]
-[assembly: AssemblyFileVersion("4.1.0.0")]
+[assembly: AssemblyVersion( "4.2.0.0" )]
+[assembly: AssemblyFileVersion( "4.2.0.0" )]

@@ -69,48 +69,48 @@
     <RegisterForComInterop>false</RegisterForComInterop>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JMS.DVB, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.1\RunTime\JMS.DVB.dll</HintPath>
+    <Reference Include="JMS.DVB, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.2\RunTime\JMS.DVB.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Aliases>oldVersion</Aliases>
       <Private>False</Private>
     </Reference>
-    <Reference Include="JMS.DVB.Administration.Profiles, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.1\Administration PlugIns\JMS.DVB.Administration.Profiles.dll</HintPath>
+    <Reference Include="JMS.DVB.Administration.Profiles, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.2\Administration PlugIns\JMS.DVB.Administration.Profiles.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-    <Reference Include="JMS.DVB.Algorithms, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.1\RunTime\JMS.DVB.Algorithms.dll</HintPath>
+    <Reference Include="JMS.DVB.Algorithms, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.2\RunTime\JMS.DVB.Algorithms.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-    <Reference Include="JMS.DVB.CardServerCore, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.1\RunTime\JMS.DVB.CardServerCore.dll</HintPath>
+    <Reference Include="JMS.DVB.CardServerCore, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.2\RunTime\JMS.DVB.CardServerCore.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-    <Reference Include="JMS.DVB.Common, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.1\GAC\JMS.DVB.Common.dll</HintPath>
+    <Reference Include="JMS.DVB.Common, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.2\GAC\JMS.DVB.Common.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="JMS.DVB.HardwareAbstraction, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.1\RunTime\JMS.DVB.HardwareAbstraction.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="JMS.DVB.SITables, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.1\RunTime\JMS.DVB.SITables.dll</HintPath>
+    <Reference Include="JMS.DVB.HardwareAbstraction, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.2\RunTime\JMS.DVB.HardwareAbstraction.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-    <Reference Include="JMS.DVB.SourceManagement, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.1\RunTime\JMS.DVB.SourceManagement.dll</HintPath>
+    <Reference Include="JMS.DVB.SITables, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.2\RunTime\JMS.DVB.SITables.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-    <Reference Include="JMS.DVB.TS, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.1\RunTime\JMS.DVB.TS.dll</HintPath>
+    <Reference Include="JMS.DVB.SourceManagement, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.2\RunTime\JMS.DVB.SourceManagement.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JMS.DVB.TS, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.2\RunTime\JMS.DVB.TS.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>

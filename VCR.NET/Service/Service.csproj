@@ -84,8 +84,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JMS.DVB.Common, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.1\GAC\JMS.DVB.Common.dll</HintPath>
+    <Reference Include="JMS.DVB.Common, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.2\GAC\JMS.DVB.Common.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="System">

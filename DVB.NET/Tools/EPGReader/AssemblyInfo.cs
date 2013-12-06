@@ -6,14 +6,14 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("DVB.NET EPG Extractor Utility")]
-[assembly: AssemblyDescription("DVB.NET Tool to extract EPG Data from a Stream")]
-[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyTitle( "DVB.NET EPG Extractor Utility" )]
+[assembly: AssemblyDescription( "DVB.NET Tool to extract EPG Data from a Stream" )]
+[assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "JMS" )]
 [assembly: AssemblyProduct( "DVB.NET" )]
 [assembly: AssemblyCopyright( "Copyright © 2008-13" )]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]		
+[assembly: AssemblyTrademark( "" )]
+[assembly: AssemblyCulture( "" )]
 
 //
 // Version information for an assembly consists of the following four values:
@@ -26,7 +26,7 @@ using System.Runtime.CompilerServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("4.1.0.0")]
+[assembly: AssemblyVersion( "4.2.0.0" )]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
@@ -53,4 +53,4 @@ using System.Runtime.CompilerServices;
 //   (*) Delay Signing is an advanced option - see the Microsoft .NET Framework
 //       documentation for more information on this.
 //
-[assembly: AssemblyDelaySign(false)]
+[assembly: AssemblyDelaySign( false )]

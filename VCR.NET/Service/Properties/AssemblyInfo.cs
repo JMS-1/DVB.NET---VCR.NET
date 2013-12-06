@@ -6,14 +6,14 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("VCR.NET Recording Service")]
-[assembly: AssemblyDescription("Windows Service to manage Recording Jobs from VCR.NET")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]		
+[assembly: AssemblyTitle( "VCR.NET Recording Service" )]
+[assembly: AssemblyDescription( "Windows Service to manage Recording Jobs from VCR.NET" )]
+[assembly: AssemblyConfiguration( "" )]
+[assembly: AssemblyCompany( "" )]
+[assembly: AssemblyProduct( "" )]
+[assembly: AssemblyCopyright( "" )]
+[assembly: AssemblyTrademark( "" )]
+[assembly: AssemblyCulture( "" )]
 
 //
 // Version information for an assembly consists of the following four values:
@@ -26,4 +26,4 @@ using System.Runtime.CompilerServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("4.1.0.0")]
+[assembly: AssemblyVersion( "4.2.0.0" )]

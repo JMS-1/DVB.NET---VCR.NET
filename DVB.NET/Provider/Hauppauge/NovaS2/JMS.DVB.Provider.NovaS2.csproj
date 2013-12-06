@@ -40,19 +40,19 @@
     <DocumentationFile>..\..\..\Assemblies\Adapter\JMS.DVB.Provider.NovaS2.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JMS.DVB.DeviceAccess, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+    <Reference Include="JMS.DVB.DeviceAccess, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
       <HintPath>..\..\..\Assemblies\RunTime\JMS.DVB.DeviceAccess.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="JMS.DVB.HardwareAbstraction, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+    <Reference Include="JMS.DVB.HardwareAbstraction, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
       <HintPath>..\..\..\Assemblies\RunTime\JMS.DVB.HardwareAbstraction.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="JMS.DVB.SITables, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+    <Reference Include="JMS.DVB.SITables, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
       <HintPath>..\..\..\Assemblies\RunTime\JMS.DVB.SITables.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="JMS.DVB.SourceManagement, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+    <Reference Include="JMS.DVB.SourceManagement, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
       <HintPath>..\..\..\Assemblies\RunTime\JMS.DVB.SourceManagement.dll</HintPath>
       <Private>False</Private>
     </Reference>

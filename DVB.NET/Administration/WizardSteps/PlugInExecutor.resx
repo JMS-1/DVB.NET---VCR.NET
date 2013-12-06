@@ -128,6 +128,6 @@
     <value>PlugInExecutor</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>DVBNETAdmin.WizardSteps.Step, DVBNETAdmin, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1</value>
+    <value>DVBNETAdmin.WizardSteps.Step, DVBNETAdmin, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1</value>
   </data>
 </root>

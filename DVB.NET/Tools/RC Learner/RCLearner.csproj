@@ -45,15 +45,15 @@
     <ApplicationIcon>app.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JMS.DVB.Common, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+    <Reference Include="JMS.DVB.Common, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
       <HintPath>..\..\Assemblies\JMS.DVB.Common.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="JMS.DVB.DirectShow, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+    <Reference Include="JMS.DVB.DirectShow, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
       <HintPath>..\..\Assemblies\RunTime\JMS.DVB.DirectShow.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="JMS.DVB.HardwareAbstraction, Version=4.1.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+    <Reference Include="JMS.DVB.HardwareAbstraction, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
       <HintPath>..\..\Assemblies\RunTime\JMS.DVB.HardwareAbstraction.dll</HintPath>
       <Private>False</Private>
     </Reference>

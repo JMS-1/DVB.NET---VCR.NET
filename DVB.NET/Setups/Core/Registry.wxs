@@ -6,7 +6,7 @@
 
     <Component Id="Registry" Directory="TARGETDIR" Guid="1f97ac2c-ac74-4424-9572-d9214e8525cf" Win64="no">
 
-      <RegistryValue Root="HKLM" Key="Software\JMS\DVB.NET\4.1.0.0" Type="string" Name="Root Directory" Value='[INSTALLFOLDER]'/>
+      <RegistryValue Root="HKLM" Key="Software\JMS\DVB.NET\4.2.0.0" Type="string" Name="Root Directory" Value='[INSTALLFOLDER]'/>
 
     </Component>
 
