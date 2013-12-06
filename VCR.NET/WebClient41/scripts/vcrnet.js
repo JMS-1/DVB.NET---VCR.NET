@@ -42,6 +42,7 @@ var SavedGuideQuery = (function () {
         this.loadingCount = false;
         var me = this;
 
+        // Das deserialisierte Objekt sieht aus wie wir hat aber nur Eigenschaften
         if (rawQuery != null) {
             me.titleOnly = rawQuery.titleOnly;
             me.device = rawQuery.device;
@@ -57,8 +58,8 @@ var SavedGuideQuery = (function () {
             SavedGuideQuery.onClick(me);
         };
     }
-    SavedGuideQuery.dispatchLoad = // Aktiviert den nächsten Ladevorgang
-    function () {
+    // Aktiviert den nächsten Ladevorgang
+    SavedGuideQuery.dispatchLoad = function () {
         if (SavedGuideQuery.loading)
             return;
         if (SavedGuideQuery.loadQueue.length < 1)
@@ -89,6 +90,7 @@ var SavedGuideQuery = (function () {
             query.cachedCount = count;
             query.loadingCount = false;
 
+            // Und mal schauen, ob jemand darauf wartet
             if (SavedGuideQuery.onCountLoaded != null)
                 SavedGuideQuery.onCountLoaded(query);
         });
@@ -96,9 +98,11 @@ var SavedGuideQuery = (function () {
 
     // Die aktuelle Anzahl von Sendungen zur Suche
     SavedGuideQuery.prototype.count = function () {
+        // Das haben wir bereits gemacht
         if (this.cachedCount != null)
             return this.cachedCount;
 
+        // Wir haben noch nie gefragt
         if (!this.loadingCount) {
             this.loadingCount = true;
 
@@ -109,8 +113,8 @@ var SavedGuideQuery = (function () {
         return '-';
     };
 
-    SavedGuideQuery.filterProperties = // Stellt sicher, dass einige Eigenschaften nicht serialisiert werden
-    function (key, value) {
+    // Stellt sicher, dass einige Eigenschaften nicht serialisiert werden
+    SavedGuideQuery.filterProperties = function (key, value) {
         if (key == 'onExecute')
             return undefined;
         if (key == 'onDelete')
@@ -127,6 +131,7 @@ var SavedGuideQuery = (function () {
     SavedGuideQuery.prototype.displayText = function () {
         var display = 'Alle Sendungen, die über das Gerät ' + this.device;
 
+        // Die Quelle ist optional
         if (this.source != null)
             if (this.source.length > 0) {
                 display += ' von der Quelle ';
@@ -137,6 +142,7 @@ var SavedGuideQuery = (function () {
         if (!this.titleOnly)
             display += 'oder Beschreibung ';
 
+        // Auch wenn wir das jetzt nicht unterstützen gibt es auch die Suche nach exakter Gleichheit
         if (this.text[0] != '*')
             display += 'mit';
 
@@ -146,7 +152,7 @@ var SavedGuideQuery = (function () {
 
         if (this.text[0] == '*')
             display += 'enthält';
-else
+        else
             display += 'ist';
 
         return display;
@@ -167,8 +173,8 @@ else
 var SavedGuideQueries = (function () {
     function SavedGuideQueries() {
     }
-    SavedGuideQueries.load = // Ermittelt alle gespeicherten Suchen
-    function () {
+    // Ermittelt alle gespeicherten Suchen
+    SavedGuideQueries.load = function () {
         // Bereits geladen
         var cache = SavedGuideQueries.queries;
         if (cache != undefined)
@@ -180,7 +186,7 @@ var SavedGuideQueries = (function () {
             fromStore = localStorage.getItem(SavedGuideQueries.storeName);
             if (fromStore == null)
                 cache = new Array();
-else
+            else
                 cache = JSON.parse(fromStore);
         } else
             cache = JSON.parse(fromStore);
@@ -193,8 +199,8 @@ else
         return SavedGuideQueries.queries;
     };
 
-    SavedGuideQueries.save = // Aktualisiert die gespeicherten Suchen
-    function () {
+    // Aktualisiert die gespeicherten Suchen
+    SavedGuideQueries.save = function () {
         VCRServer.updateSearchQueries(JSON.stringify(SavedGuideQueries.queries, SavedGuideQuery.filterProperties));
     };
     SavedGuideQueries.storeName = 'vcrnet.guidequeries';
@@ -303,9 +309,10 @@ var GuideFilter = (function () {
     };
 
     GuideFilter.prototype.changeQuery = function (newText, withContent) {
+        // Suchtext in Suchmuster umsetzen
         if (newText.length < 1)
             newText = null;
-else
+        else
             newText = '*' + newText;
 
         // Neue Suchmuster ermitteln und gegen die bisherigen prüfen
@@ -320,6 +327,7 @@ else
         this.title = newTitle;
         this.index = 0;
 
+        // Ausstehende verzögerte Aktualisierung deaktiviern
         if (this.timeout != null)
             window.clearTimeout(this.timeout);
 
@@ -347,8 +355,8 @@ else
         this.fireChange();
     };
 
-    GuideFilter.filterProperties = // Sorgt dafür, dass unsere internen Eigenschaften nicht zum Server gesendet werden
-    function (key, value) {
+    // Sorgt dafür, dass unsere internen Eigenschaften nicht zum Server gesendet werden
+    GuideFilter.filterProperties = function (key, value) {
         return ((key == 'timeout') || (key == 'moreAvailable') || (key == 'onChange')) ? undefined : value;
     };
 
@@ -395,6 +403,7 @@ var JobScheduleDataContract = (function () {
     return JobScheduleDataContract;
 })();
 
+
 // Basisklasse für alle Teilanwendungen
 var Page = (function () {
     function Page() {
@@ -418,12 +427,14 @@ var Page = (function () {
 
     // Wird aufgerufen, wenn eine asynchrone Initialisierung abgeschlossen wurde
     Page.prototype.finishedAsyncCall = function (mask) {
+        // Das machen wir nur ein einziges Mal
         if (this.pending == 0)
             return;
 
         // Fertigen Aufruf anmelden
         this.pending &= ~mask;
 
+        // Wenn alles bereit steht anzeigen lassen
         if (this.pending == 0)
             this.show();
     };
@@ -432,7 +443,7 @@ var Page = (function () {
     Page.prototype.initialize = function (mainContent) {
         this.mainContent = mainContent;
 
-        (this).onInitialize();
+        this.onInitialize();
 
         this.finishedAsyncCall(1);
     };
@@ -514,7 +525,7 @@ $(function () {
         JMSLib.TemplateLoader.loadAbsolute('ui/' + template + '.html').done(function (wholeFile) {
             var content = $(wholeFile).find('#mainContent');
             var starterClass = template + 'Page';
-            var starter = new window[starterClass]();
+            var starter = new window[starterClass];
 
             // Alles, was initial unsichtbar war, nun auf unsichtbar schalten
             $(tagClass).addClass(JMSLib.CSSClass.invisible);
@@ -563,9 +574,10 @@ var SourceSelector = (function () {
         me.options = loader.optionTemplate.clone();
         me.source = loader.sourceTemplate.clone();
 
+        // Diese Kopien an der gewünschten Stelle in der Oberfläche einblenden
         if (pure)
             me.source.find('.' + CSSClass.editLabel + ', .' + CSSClass.editSpacing).remove();
-else
+        else
             me.options.insertAfter(sibling);
         me.source.insertAfter(sibling);
 
@@ -639,24 +651,24 @@ else
             nameFilter = function (source) {
                 return true;
             };
-else if (nameFilterMode == '!')
+        else if (nameFilterMode == '!')
             nameFilter = function (source) {
                 var first = source.firstNameCharacter;
 
                 if (first < '0')
                     return true;
-else if (first > 'Z')
+                else if (first > 'Z')
                     return true;
-else
+                else
                     return (first > '9') && (first < 'A');
             };
-else if (nameFilterMode.length == 2)
+        else if (nameFilterMode.length == 2)
             nameFilter = function (source) {
                 var first = source.firstNameCharacter;
 
                 return (first >= nameFilterMode[0]) && (first <= nameFilterMode[1]);
             };
-else {
+        else {
             // Immer alle Quellen anzeigen
             filterOutTelevision = undefined;
             filterOutEncrypted = undefined;
@@ -692,6 +704,7 @@ else {
         me.sourceNameField.change();
         me.sourceSelectionList.change();
 
+        // Beim ersten Aufruf sind wir fertig
         if (firstCall)
             return;
 
@@ -855,14 +868,15 @@ var GuideItemCache = (function () {
     GuideItemCache.prototype.request = function (device, source, start, end, dataAvailable) {
         var me = this;
 
+        // Haben wir schon
         if (me.guideItem == undefined)
             VCRServer.getGuideItem(device, source, start, end).done(function (rawData) {
                 if (rawData == null)
                     me.guideItem = null;
-else
+                else
                     dataAvailable(me.guideItem = new GuideItem(rawData));
             });
-else if (me.guideItem != null)
+        else if (me.guideItem != null)
             dataAvailable(me.guideItem);
     };
     return GuideItemCache;
@@ -909,16 +923,18 @@ var PlanEntry = (function () {
         me.videoText = rawData.ttx ? '' : CSSClass.inactiveOptionClass;
         me.dolby = rawData.ac3 ? '' : CSSClass.inactiveOptionClass;
 
+        // Für Aufgaben konfigurieren wir keine Verweise
         if (me.station == 'PSI')
             return;
         if (me.station == 'EPG')
             return;
 
+        // Aufzeichungsmodus ermitteln
         if (rawData.lost)
             me.mode = 'lost';
-else if (rawData.late)
+        else if (rawData.late)
             me.mode = 'late';
-else
+        else
             me.mode = 'intime';
 
         // Detailanzeige immer aktivieren
@@ -927,9 +943,11 @@ else
         };
         me.detailsLink = 'javascript:void(0)';
 
+        // Bearbeiten aktivieren
         if (me.legacyId != null)
             me.editLink = '#edit;id=' + me.legacyId;
 
+        // Abruf der Programmzeitschrift vorbereiten
         if (rawData.epg) {
             me.showGuide = function () {
                 me.onShowGuide(me, this);
@@ -937,6 +955,7 @@ else
             me.guideLink = 'javascript:void(0)';
         }
 
+        // Ausnahmen auswerten
         if (rawData.exception != null) {
             me.exceptionInfo = new PlanException(rawData.exception);
 
@@ -1020,6 +1039,7 @@ var PlanException = (function () {
 
     // Bereitet das Formular für Änderungen vor.
     PlanException.prototype.startEdit = function (item, element, reload) {
+        // Wir wurden deaktiviert
         if (element == null)
             return;
 
@@ -1058,6 +1078,7 @@ var PlanException = (function () {
         });
         durationSlider.slider({
             slide: function (slider, newValue) {
+                // Das geht nicht
                 if (me.originalDuration + newValue.value < 0)
                     return false;
 
@@ -1096,6 +1117,7 @@ var ScheduleData = (function () {
         this.exceptionInfos = new Array();
         var me = this;
 
+        // Schauen wir mal, ob wir geladen wurden
         if (existingData != null) {
             // Aufzeichnungsdaten prüfen
             var rawData = existingData.schedule;
@@ -1273,7 +1295,7 @@ var ScheduleDataValidator = (function () {
         var firstDay = schedule.firstStart;
         if (firstDay == null)
             this.firstStart = 'Es muss ein Datum für die erste Aufzeichnung angegeben werden';
-else if (firstDay < ScheduleData.minimumDate)
+        else if (firstDay < ScheduleData.minimumDate)
             this.firstStart = 'Das Datum für die erste Aufzeichnung ist ungültig';
 
         // Sichtbarkeit prüfen
@@ -1286,17 +1308,19 @@ else if (firstDay < ScheduleData.minimumDate)
             var lastDay = schedule.lastDay;
             if (lastDay == null)
                 this.lastDay = 'Es muss ein Datum für die letzte Aufzeichnung angegeben werden';
-else if (firstDay != null)
+            else if (firstDay != null)
                 if (lastDay < firstDay)
                     this.lastDay = 'Das Datum der letzten Aufzeichnung darf nicht vor der ersten Aufzeichnung liegen';
         }
 
+        // Der Auftrag muss auch geprüft werden
         if (!JMSLib.Bindings.validate(me.job))
             return;
 
         // Ergebnis berechnen
         var isValid = (me.firstStart == null) && (me.startTime == null) && (me.lastDay == null) && (me.endTime == null) && (me.name == null);
 
+        // Schaltfläche deaktivieren
         if (!isValid)
             me.job.sendButton.button('option', 'disabled', true);
     };
@@ -1308,6 +1332,7 @@ var JobData = (function () {
     function JobData(existingData, defaultProfile) {
         var me = this;
 
+        // Schauen wir mal, ob wir etwas ändern sollen
         if (existingData != null) {
             // Auftragsdaten müssen vorhanden sein
             var rawData = existingData.job;
@@ -1365,7 +1390,7 @@ var JobData = (function () {
         var whenFinished;
         if (this.guideAfterAdd)
             whenFinished = 'guide';
-else
+        else
             whenFinished = 'plan';
 
         var data = new JobScheduleDataContract(this.toWebService(), schedule.toWebService());
@@ -1421,9 +1446,10 @@ var JobDataValidator = (function () {
         job.name = job.name.trim();
         if (job.name.length < 1)
             this.name = 'Ein Auftrag muss immer einen Namen haben';
-else if (!JobDataValidator.isNameValid(job.name))
+        else if (!JobDataValidator.isNameValid(job.name))
             this.name = 'Der Name des Auftrags enthält ungültige Zeichen';
 
+        // Quelle
         if (job.sourceName.length < 1)
             $.each(me.schedules, function (index, schedule) {
                 var sourceName = schedule.model.sourceName;
@@ -1504,7 +1530,7 @@ var DirectorySettingsValidator = (function () {
         var pattern = this.model.pattern;
         if ((pattern != null) && (pattern.length > 0))
             this.pattern = null;
-else
+        else
             this.pattern = 'Das Muster für Dateinamen darf nicht leer sein.';
 
         this.sendButton.button('option', 'disabled', this.pattern != null);
@@ -1525,17 +1551,17 @@ var GuideSettingsValidator = (function () {
         // Aktivierung berücksichtigen
         GuideSettingsValidator.activated(settings, settings.duration > 0);
     }
-    GuideSettingsValidator.activated = // Liest oder setzt den Aktivierungszustand
-    function (settings, newValue) {
+    // Liest oder setzt den Aktivierungszustand
+    GuideSettingsValidator.activated = function (settings, newValue) {
         if (typeof newValue === "undefined") { newValue = null; }
         if (newValue != null)
             settings['activated'] = newValue;
-else
+        else
             return settings['activated'];
     };
 
-    GuideSettingsValidator.filterPropertiesOnSend = // Stellt sicher, dass nur bekannte Eigenschaften an den Dienst übertragen werden
-    function (key, value) {
+    // Stellt sicher, dass nur bekannte Eigenschaften an den Dienst übertragen werden
+    GuideSettingsValidator.filterPropertiesOnSend = function (key, value) {
         if (key == 'sourceName')
             return undefined;
         if (key == 'activated')
@@ -1554,18 +1580,18 @@ else
         var isActive = GuideSettingsValidator.activated(model);
         if (isActive)
             this.editForm.removeClass(JMSLib.CSSClass.invisible);
-else
+        else
             this.editForm.addClass(JMSLib.CSSClass.invisible);
 
         // Zahlwerte prüfen
         this.duration = JMSLib.Bindings.checkNumber(model.duration, 5, 55);
         if ((model.joinHours != null) && (model.joinHours.length > 0))
             this.joinHours = JMSLib.Bindings.checkNumber(model.joinHours, 1, 23);
-else
+        else
             this.joinHours = null;
         if ((model.minDelay != null) && (model.minDelay.length > 0))
             this.minDelay = JMSLib.Bindings.checkNumber(model.minDelay, 1, 23);
-else
+        else
             this.minDelay = null;
 
         // Stundenmuster zurückmischen
@@ -1588,24 +1614,25 @@ var SourceScanSettingsValidator = (function () {
         // Stundenliste in Markierungen umsetzen
         JMSLib.HourListSettings.decompress(settings, settings.hours);
 
+        // Modus setzen
         if (settings.interval == null)
             SourceScanSettingsValidator.mode(settings, 'D');
-else if (settings.interval < 0)
+        else if (settings.interval < 0)
             SourceScanSettingsValidator.mode(settings, 'M');
-else
+        else
             SourceScanSettingsValidator.mode(settings, 'P');
     }
-    SourceScanSettingsValidator.mode = // Liest oder setzt den Aktivierungszustand
-    function (settings, newValue) {
+    // Liest oder setzt den Aktivierungszustand
+    SourceScanSettingsValidator.mode = function (settings, newValue) {
         if (typeof newValue === "undefined") { newValue = null; }
         if (newValue != null)
             settings['mode'] = newValue;
-else
+        else
             return settings['mode'];
     };
 
-    SourceScanSettingsValidator.filterPropertiesOnSend = // Stellt sicher, dass nur bekannte Eigenschaften an den Dienst übertragen werden
-    function (key, value) {
+    // Stellt sicher, dass nur bekannte Eigenschaften an den Dienst übertragen werden
+    SourceScanSettingsValidator.filterPropertiesOnSend = function (key, value) {
         if (key == 'mode')
             return undefined;
         if (JMSLib.HourListSettings.isHourFlag(key))
@@ -1640,7 +1667,7 @@ else
         this.interval = JMSLib.Bindings.checkNumber(model.interval, 1, 28);
         if ((model.joinDays != null) && (model.joinDays.length > 0))
             this.joinDays = JMSLib.Bindings.checkNumber(model.joinDays, 1, 14);
-else
+        else
             this.joinDays = null;
 
         // Stundenmuster zurückmischen
@@ -1650,7 +1677,7 @@ else
         var isValid = true;
         if (mode == 'P')
             isValid = (this.duration == null) && (this.joinDays == null) && (this.interval == null);
-else if (mode == 'M')
+        else if (mode == 'M')
             isValid = (this.duration == null);
 
         this.sendButton.button('option', 'disabled', !isValid);
@@ -1748,17 +1775,17 @@ var OtherSettingsValidator = (function () {
         if (settings.mayHibernate)
             if (settings.useStandBy)
                 OtherSettingsValidator.hibernationMode(settings, 'S3');
-else
+            else
                 OtherSettingsValidator.hibernationMode(settings, 'S4');
-else
+        else
             OtherSettingsValidator.hibernationMode(settings, 'OFF');
     }
-    OtherSettingsValidator.hibernationMode = // Liest oder setzt die Art des Übergangs in den Schlafzustand
-    function (settings, newValue) {
+    // Liest oder setzt die Art des Übergangs in den Schlafzustand
+    OtherSettingsValidator.hibernationMode = function (settings, newValue) {
         if (typeof newValue === "undefined") { newValue = null; }
         if (newValue != null)
             settings['hibernate'] = newValue;
-else
+        else
             return settings['hibernate'];
     };
 
@@ -1808,16 +1835,19 @@ var CurrentInfo = (function () {
         me.start = start;
         me.end = end;
 
+        // Aufzeichungsmodus ermitteln
         if (me.scheduleIdentifier != null)
             me.mode = 'running';
-else if (rawData.late)
+        else if (rawData.late)
             me.mode = 'late';
-else
+        else
             me.mode = 'intime';
 
+        // Bearbeiten aktivieren
         if (me.legacyId != null)
             me.editLink = '#edit;id=' + me.legacyId;
 
+        // Abruf der Programmzeitschrift vorbereiten
         if (rawData.epg) {
             me.showGuide = function () {
                 CurrentInfo.guideDisplay(me, this);
@@ -1825,6 +1855,7 @@ else
             me.guideLink = 'javascript:void(0)';
         }
 
+        // Manipulation laufender Aufzeichnungen
         if (me.scheduleIdentifier != null) {
             me.editActive = function () {
                 CurrentInfo.startAbort(me, this);
@@ -1840,6 +1871,7 @@ else
             }
         }
 
+        // Zieladresse ausblenden
         if (me.streamTarget == null)
             me.hideTarget = JMSLib.CSSClass.invisible;
     }
@@ -1858,8 +1890,8 @@ else
         this.guideItem.request(this.device, this.source, this.start, this.end, dataAvailable);
     };
 
-    CurrentInfo.load = // Ruft die aktuelle Liste der Aufzeichnungen vom Web Dienst ab.
-    function (whenLoaded) {
+    // Ruft die aktuelle Liste der Aufzeichnungen vom Web Dienst ab.
+    CurrentInfo.load = function (whenLoaded) {
         VCRServer.getPlanCurrent().done(function (data) {
             whenLoaded($.map(data, function (rawData) {
                 return new CurrentInfo(rawData);
@@ -1875,6 +1907,7 @@ else
     };
     return CurrentInfo;
 })();
+
 
 // Stelle die Daten einer Aufzeichnung dar
 var InfoSchedule = (function () {
@@ -1894,9 +1927,10 @@ var InfoSchedule = (function () {
         var pattern = rawInfo.repeatPattern;
         var startAsString;
 
+        // Startzeitpunkt und Wiederholungsmuster berechnen
         if (pattern == 0)
             startAsString = JMSLib.DateFormatter.getStartTime(start);
-else {
+        else {
             var merged = '';
             if ((pattern & ScheduleData.flagMonday) != 0)
                 merged += 'Mo';
@@ -1953,8 +1987,8 @@ var InfoJob = (function () {
         me.jobText = rawInfo.name;
         me.legacyId = rawInfo.id;
     }
-    InfoJob.load = // Aktualisiert die Liste der Aufträge
-    function (whenLoaded) {
+    // Aktualisiert die Liste der Aufträge
+    InfoJob.load = function (whenLoaded) {
         VCRServer.getInfoJobs().done(function (data) {
             // Wandeln
             var rows = new Array();
@@ -2160,9 +2194,11 @@ var homePage = (function (_super) {
         var me = this;
         var serverInfo = me.serverInfo;
 
+        // Visualisieren, dass mindestens ein Gerät aktiv ist
         if (serverInfo.active)
             $('.serverActive').removeClass(JMSLib.CSSClass.invisible);
 
+        // Administration deaktivieren, wenn der Anwender kein Administrator ist oder mindestens ein Gerät aktiv ist
         if (serverInfo.active || !serverInfo.userIsAdmin) {
             $('#startAdmin').removeAttr('href');
             $('#startAdminIcon').removeAttr('href');
@@ -2172,7 +2208,7 @@ var homePage = (function (_super) {
         var startScan = $('#startScan');
         if (!serverInfo.canScan)
             startScan.removeAttr('href');
-else
+        else
             startScan.click(function () {
                 me.showUpdate(startScan, 1, 'sourceScan');
             });
@@ -2181,7 +2217,7 @@ else
         var startGuide = $('#startGuide');
         if (!serverInfo.hasGuides)
             startGuide.removeAttr('href');
-else
+        else
             startGuide.click(function () {
                 me.showUpdate(startGuide, 0, 'guideUpdate');
             });
@@ -2231,6 +2267,7 @@ var planPage = (function (_super) {
         var midnight = new Date(Date.now());
         midnight = new Date(midnight.getFullYear(), midnight.getMonth(), midnight.getDate());
 
+        // Anfangszeitpunkt setzen
         if (selected == '') {
             window.location.hash = '#plan';
 
@@ -2280,6 +2317,7 @@ var planPage = (function (_super) {
         // Verweis deaktivieren
         origin.removeAttribute('href');
 
+        // Prüfen
         if (origin.showingGuide)
             return;
 
@@ -2331,6 +2369,7 @@ var planPage = (function (_super) {
             // Liste der Aufzeichnungen aktualisieren
             me.planRowTemplate.loadList(plan);
 
+            // Abschluss melden
             if (whenLoaded != null)
                 whenLoaded();
         });
@@ -2445,7 +2484,7 @@ var adminPage = (function (_super) {
         $.each(directories, function (index, directory) {
             if (directory == null)
                 selDir.append(new Option('<Bitte auswählen>', ''));
-else
+            else
                 selDir.append(new Option(directory));
         });
     };
@@ -2456,6 +2495,7 @@ else
 
         me.directoryBrowser = $('#browseDirectory');
 
+        // Gruppen nur einmal laden
         if (adminPage.groups == null) {
             var groupsLoaded = me.registerAsyncCall();
 
@@ -2528,8 +2568,8 @@ else
         VCRServer.UserProfile.global.register(me.registerAsyncCall());
     };
 
-    adminPage.restartServer = // Schaltet alle Oberflächen Elemnte ab und zeigt vor dem verzögerten Übergang auf die Startseite eine knappe Information an.
-    function () {
+    // Schaltet alle Oberflächen Elemnte ab und zeigt vor dem verzögerten Übergang auf die Startseite eine knappe Information an.
+    adminPage.restartServer = function () {
         $('.adminView').addClass(JMSLib.CSSClass.invisible);
         $('.linkArea').addClass(JMSLib.CSSClass.invisible);
         $('.serverRestart').removeClass(JMSLib.CSSClass.invisible);
@@ -2545,11 +2585,12 @@ else
         button.removeAttr('title');
 
         VCRServer.updateConfiguration(type, contract, filter).done(function (data) {
+            // Ergebnis bearbeiten
             if (data == null)
                 button.addClass(CSSClass.danger);
-else if (data)
+            else if (data)
                 adminPage.restartServer();
-else {
+            else {
                 VCRServer.RecordingDirectoryCache.reset();
 
                 window.location.hash = 'home';
@@ -2713,7 +2754,7 @@ else {
                 me.guide.sources = $.map($('#guideSources option'), function (option) {
                     return option.value;
                 });
-else
+            else
                 me.guide.duration = 0;
 
             me.update('guide', me.guide, guideUpdate, GuideSettingsValidator.filterPropertiesOnSend);
@@ -2840,8 +2881,8 @@ else
 
         // Oberfläche vorbereiten
         navigator.tabs(options).addClass('ui-tabs-vertical ui-helper-clearfix');
-        navigator.on('tabsactivate', function (ev, ui) {
-            window.location.hash = 'admin;' + ui.newPanel.selector.substr(1);
+        navigator.on('tabsactivate', function (ev) {
+            window.location.hash = 'admin;' + arguments[1].newPanel.selector.substr(1);
         });
 
         // Oberfläche vorbereiten
@@ -3007,6 +3048,7 @@ var editPage = (function (_super) {
         var job = new JobDataValidator(me.existingData, $('#update'), me.sourceSelections.profileSelector.val());
         var schedule = new ScheduleDataValidator(job, me.existingData);
 
+        // Rücksprung vorbereiten.
         if (me.fromGuide)
             job.model.guideAfterAdd = VCRServer.UserProfile.global.guideAfterAdd;
 
@@ -3018,11 +3060,12 @@ var editPage = (function (_super) {
         me.jobSources.initialize();
         me.scheduleSources.initialize();
 
+        // Überschrift setzen
         if (job.model.id == null)
             me.title = 'Neuen Auftrag anlegen';
-else if (schedule.model.id == null)
+        else if (schedule.model.id == null)
             me.title = 'Neue Aufzeichnung anlegen';
-else {
+        else {
             me.title = 'Aufzeichnung bearbeiten';
 
             var deleteButton = $('#delete');
@@ -3037,7 +3080,7 @@ else {
         var exceptions = schedule.model.exceptionInfos;
         if (exceptions.length > 0)
             me.exceptionRowTemplate.loadList(exceptions);
-else
+        else
             $('#exceptionArea').addClass(JMSLib.CSSClass.invisible);
     };
 
@@ -3086,6 +3129,7 @@ else
         startDate.datepicker(dateOptions);
         endDate.datepicker(dateOptions);
 
+        // Daten zur Aufzeichnung laden
         if (hasId) {
             var epgLoaded = me.registerAsyncCall();
 
@@ -3198,7 +3242,7 @@ var guidePage = (function (_super) {
             var display = $('.displayArea');
             if (items.length > 0)
                 display.removeClass(JMSLib.CSSClass.invisible);
-else
+            else
                 display.addClass(JMSLib.CSSClass.invisible);
         });
     };
@@ -3254,6 +3298,7 @@ else
                     me.dayChanged(ev);
                 });
 
+                // Nun können wir eine Aktualisierung anfordern
                 if (!filterIsCurrent)
                     GuideFilter.global.changeDevice(newDevice, selSource.val());
             });
@@ -3371,6 +3416,7 @@ else
     guidePage.prototype.onShow = function () {
         $('.firstButton, .prevButton, .nextButton, .guideHours a, .scanHours a, #resetAll, #favorites').button();
 
+        // Wenn wir Geräteprofile haben, müssen wir etwas mehr tun
         if (this.profiles.length > 0) {
             // Die Auswahlliste der Geräte füllen
             var selDevice = $('#selDevice');
@@ -3509,7 +3555,7 @@ var jobsPage = (function (_super) {
         var showArchive = (window.location.hash.indexOf(';archive') >= 0);
         if (showArchive)
             $('#selArchive').prop('checked', true);
-else
+        else
             me.isActive.prop('checked', true);
 
         // Auswahl aufbereiten
@@ -3580,13 +3626,15 @@ var logPage = (function (_super) {
                     var fileUI = view.find('#files');
                     var files = model.files;
 
+                    // Aufzeichnungsdatein zur Anzeige anbieten
                     if (files.length < 1)
                         fileUI.parent().remove();
-else
+                    else
                         $.each(files, function (index, url) {
                             fileUI.append('<a href="' + url + '"><img src="ui/images/recording.png" class="linkImage"/></img>');
                         });
 
+                    // Es gibt keine Primärdatei, deren Namen wir anzeigen könnten
                     if ((model.primaryFile == null) || (model.primaryFile.length < 1))
                         $('#primaryFile').parent().remove();
                 };
@@ -3598,6 +3646,7 @@ else
             me.detailsManager.reset();
             me.rowTemplate.loadList(models);
 
+            // Fertig - beim Starten wartet jemand auf uns
             if (whenLoaded != null)
                 whenLoaded();
         });

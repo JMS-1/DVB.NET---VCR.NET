@@ -258,7 +258,7 @@ module JMSLib {
         filter: (item: any) => boolean = function (item: any) { return true; };
 
         // Die aktuellen Daten
-        private items: Array;
+        private items: Array<any>;
 
         // Die zu verwendende Vorlage
         private template: JQuery = null;

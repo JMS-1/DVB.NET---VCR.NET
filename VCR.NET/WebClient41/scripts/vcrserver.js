@@ -18,6 +18,60 @@ var VCRServer;
     // Der Präfix für alle REST Zugiffe
     var restRoot = serverRoot + '/vcr.net/';
 
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     function getRestRoot() {
         return restRoot;
     }
@@ -323,9 +377,11 @@ var VCRServer;
             type: 'POST'
         };
 
+        // Eventuell existiert der Auftrag schon
         if (jobId != null) {
             sendOptions.url += '/' + jobId;
 
+            // Eventuell existiert dann auch die Aufzeichnung
             if (scheduleId != null) {
                 sendOptions.url += scheduleId;
 
@@ -343,16 +399,16 @@ var VCRServer;
     var RecordingDirectoryCache = (function () {
         function RecordingDirectoryCache() {
         }
-        RecordingDirectoryCache.reset = // Vergisst alles, was wir wissen
-        function () {
+        // Vergisst alles, was wir wissen
+        RecordingDirectoryCache.reset = function () {
             RecordingDirectoryCache.directories = null;
         };
 
-        RecordingDirectoryCache.load = // Ruft die Verzeichnisse ab
-        function () {
+        // Ruft die Verzeichnisse ab
+        RecordingDirectoryCache.load = function () {
             if (RecordingDirectoryCache.directories != null)
                 return $.Deferred().resolve(RecordingDirectoryCache.directories);
-else
+            else
                 return getRecordingDirectories().done(function (data) {
                     RecordingDirectoryCache.directories = data;
                 });
@@ -366,11 +422,11 @@ else
     var ProfileCache = (function () {
         function ProfileCache() {
         }
-        ProfileCache.load = // Ruft die Profile ab
-        function () {
+        // Ruft die Profile ab
+        ProfileCache.load = function () {
             if (ProfileCache.profiles != null)
                 return $.Deferred().resolve(ProfileCache.profiles);
-else
+            else
                 return getProfileInfos().done(function (data) {
                     ProfileCache.profiles = data;
                 });
@@ -395,13 +451,14 @@ else
     var GuideInfoCache = (function () {
         function GuideInfoCache() {
         }
-        GuideInfoCache.getInfo = // Meldet die Daten zu einem Gerät
-        function (profileName) {
+        // Meldet die Daten zu einem Gerät
+        GuideInfoCache.getInfo = function (profileName) {
             var info = GuideInfoCache.guideInfoCache[profileName];
 
+            // Einmal laden reicht
             if (info != undefined)
                 return $.Deferred().resolve(info);
-else
+            else
                 return getGuideInfo(profileName).done(function (data) {
                     GuideInfoCache.guideInfoCache[profileName] = data;
                 });
@@ -437,9 +494,10 @@ else
         SourceEntryCollection.prototype.requestSources = function (profileName, whenDone) {
             var me = this;
 
+            // Eventuell haben wir das schon einmal gemacht
             if (me.getSourcesForProfile(profileName) != undefined)
                 whenDone();
-else
+            else
                 getProfileSources(profileName).done(function (data) {
                     me.profileSources[profileName] = $.map(data, function (rawData) {
                         return new SourceEntry(rawData);
@@ -453,7 +511,7 @@ else
         SourceEntryCollection.prototype.getSourcesForProfile = function (profileName) {
             if (profileName == null)
                 return [];
-else
+            else
                 return this.profileSources[profileName];
         };
 
@@ -549,6 +607,7 @@ else
             me.rowsInGuide = data.guideRows;
             me.defaultDolby = data.dolby;
 
+            // Benachrichtigung auslösen
             if (me.loaded != null)
                 me.loaded();
         };

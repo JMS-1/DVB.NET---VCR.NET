@@ -46,13 +46,13 @@ var JMSLib;
     var TemplateLoader = (function () {
         function TemplateLoader() {
         }
-        TemplateLoader.load = // Lädt eine Vorlage asynchron
-        function (templateName) {
+        // Lädt eine Vorlage asynchron
+        TemplateLoader.load = function (templateName) {
             return TemplateLoader.loadAbsolute(TemplateLoader.templateRoot + templateName + '.html');
         };
 
-        TemplateLoader.loadAbsolute = // Lädt eine Vorlage asynchron
-        function (fullName) {
+        // Lädt eine Vorlage asynchron
+        TemplateLoader.loadAbsolute = function (fullName) {
             var template = TemplateLoader.loaded[fullName];
 
             if (template == undefined)
@@ -69,12 +69,14 @@ var JMSLib;
     })();
     JMSLib.TemplateLoader = TemplateLoader;
 
+    
+
     // Hilfsklasse zur Bindung von Formulareigenschaften an Modelldaten
     var Bindings = (function () {
         function Bindings() {
         }
-        Bindings.bind = // Führt die Bindung einer prüfbaren Klasse an ein Oberflächenelement aus.
-        function (validator, form) {
+        // Führt die Bindung einer prüfbaren Klasse an ein Oberflächenelement aus.
+        Bindings.bind = function (validator, form) {
             // Die prüfbare Klasse weiß zu jeder Zeit, mit welche Oberflächenelement das Modell als Ganzes verbunden ist
             validator.view = form;
 
@@ -94,9 +96,9 @@ var JMSLib;
                 function propertyChanged() {
                     if (target.is(':checkbox'))
                         model[targetProperty] = target.prop('checked');
-else if (target.data('datepicker') != undefined)
+                    else if (target.data('datepicker') != undefined)
                         model[targetProperty] = target.datepicker('getDate');
-else
+                    else
                         model[targetProperty] = target.val();
 
                     Bindings.validate(validator);
@@ -112,8 +114,8 @@ else
             Bindings.validate(validator);
         };
 
-        Bindings.setErrorIndicator = // Markiert ein Oberflächenelement als Fehleingabe und setzt die Fehlermeldung als Tooltip
-        function (target, message) {
+        // Markiert ein Oberflächenelement als Fehleingabe und setzt die Fehlermeldung als Tooltip
+        Bindings.setErrorIndicator = function (target, message) {
             var element = target[0];
 
             if (message == null) {
@@ -125,20 +127,21 @@ else
             }
         };
 
-        Bindings.validate = // Führt alle Prüfungen auf einer prüfbaren Klasse aus.
-        function (validator) {
+        // Führt alle Prüfungen auf einer prüfbaren Klasse aus.
+        Bindings.validate = function (validator) {
             validator.validate();
 
             Bindings.synchronizeErrors(validator);
         };
 
-        Bindings.synchronizeErrors = // Aktualisiert die Darstellung der Fehlermeldungen
-        function (validator) {
+        // Aktualisiert die Darstellung der Fehlermeldungen
+        Bindings.synchronizeErrors = function (validator) {
             // Über die Namenskonvention die Fehlermeldungen aus der prüfbaren Klasse auslesen - nicht die tatsächlichen Werte aus den Modelleigenschaften!
             validator.view.find('[' + Bindings.propertyAttribute + ']').each(function (index, element) {
                 var targetProperty = element.getAttribute(Bindings.propertyAttribute);
                 var errorMessage = validator[targetProperty];
 
+                // Hier müssen wir Refenzgleichheit verlangen
                 if (errorMessage === undefined)
                     return;
 
@@ -152,8 +155,8 @@ else
             });
         };
 
-        Bindings.fromModelToForm = // Alle Daten aus dem Modell in die Oberflächenelemente übertragen.
-        function (model, form) {
+        // Alle Daten aus dem Modell in die Oberflächenelemente übertragen.
+        Bindings.fromModelToForm = function (model, form) {
             form.find('[' + Bindings.propertyAttribute + ']').each(function (index, element) {
                 var targetProperty = element.getAttribute(Bindings.propertyAttribute);
                 var data = model[targetProperty];
@@ -164,6 +167,7 @@ else
                 if (targetSelector != null)
                     target = target.find(targetSelector);
 
+                // Die Übertragung erfolgt abhängig von der Art des Oberfächenelementes - in einigen Fällen wird der Wert zurück kopiert um so ungültige Werte zu kompensieren
                 if (target.is(':checkbox')) {
                     target.prop('checked', data);
                 } else if (target.data('datepicker') != undefined) {
@@ -175,14 +179,14 @@ else
 
                     if (element.nodeName == 'SPAN')
                         target.text(data);
-else
+                    else
                         model[targetProperty] = target.val();
                 }
             });
         };
 
-        Bindings.checkNumber = // Prüft, ob eine Zahl in einem bestimmten Wertebereich liegt und meldet bei Bedarf einen Fehlertext.
-        function (input, min, max) {
+        // Prüft, ob eine Zahl in einem bestimmten Wertebereich liegt und meldet bei Bedarf einen Fehlertext.
+        Bindings.checkNumber = function (input, min, max) {
             if (!Bindings.numberPattern.test(input))
                 return 'Keine gültige Zahl';
 
@@ -225,6 +229,7 @@ else
         HTMLTemplate.prototype.refresh = function () {
             var me = this;
 
+            // Die Daten stehen leider noch nicht zur Verfügung
             if (me.template == null)
                 return;
             if (me.items == undefined)
@@ -240,12 +245,13 @@ else
             });
         };
 
-        HTMLTemplate.retrieveProperty = // Ermittelt eine Eigenschaft gemäß dem Wert von data-property.
-        function (data, propertyPath) {
+        // Ermittelt eine Eigenschaft gemäß dem Wert von data-property.
+        HTMLTemplate.retrieveProperty = function (data, propertyPath) {
             // Zerlegen um auf Subobjektreferenzen zu prüfen
             var parts = propertyPath.split('.');
 
             for (var i = 0; i < parts.length; i++) {
+                // Da ist nichts mehr
                 if (data == null)
                     return null;
 
@@ -254,9 +260,10 @@ else
                 var coreLength = name.length - 2;
                 var isCall = (coreLength > 0) && (name.substr(coreLength) == '()');
 
+                // Wert direkt oder per Methodenaufruf laden
                 if (isCall)
                     data = data[name.substr(0, coreLength)]();
-else
+                else
                     data = data[name];
             }
 
@@ -264,14 +271,15 @@ else
             return data;
         };
 
-        HTMLTemplate.applyTemplate = // Ersetzt alle Platzhalter in einem Oberflächenmodell und schaltet dieses dann sichtbar.
-        function (model, element) {
+        // Ersetzt alle Platzhalter in einem Oberflächenmodell und schaltet dieses dann sichtbar.
+        HTMLTemplate.applyTemplate = function (model, element) {
             // Platzhalter zum Ersetzen durch Werte
             element.find('[' + Bindings.propertyAttribute + ']').each(function (index, element) {
                 // Rohdaten auslesen
                 var dataProperty = element.getAttribute(Bindings.propertyAttribute);
                 var dataValue = HTMLTemplate.retrieveProperty(model, dataProperty);
 
+                // Eventuell ganz entfernen
                 if (dataValue == null)
                     if (element.getAttribute(HTMLTemplate.requiredAttribute)) {
                         element.parentNode.removeChild(element);
@@ -302,7 +310,7 @@ else
                             });
                     } else
                         target.text(dataValue);
-else
+                else
                     target.attr(attributeTarget, dataValue);
             });
 
@@ -312,7 +320,7 @@ else
                 var validationPath = element.getAttribute(HTMLTemplate.validationResultAttribute);
                 if (HTMLTemplate.retrieveProperty(model, validationPath))
                     target.removeClass(CSSClass.warning);
-else
+                else
                     target.addClass(CSSClass.warning);
             });
 
@@ -328,8 +336,8 @@ else
             element.removeClass(CSSClass.invisible);
         };
 
-        HTMLTemplate.cloneAndApplyTemplate = // Erzeugt eine Kopie einer Vorlage und erstzt dann in dieser Kopie alle Platzhalter.
-        function (model, element) {
+        // Erzeugt eine Kopie einer Vorlage und erstzt dann in dieser Kopie alle Platzhalter.
+        HTMLTemplate.cloneAndApplyTemplate = function (model, element) {
             // Kopie erstellen
             element = element.clone();
 
@@ -408,6 +416,7 @@ else
             if (active != null) {
                 active.parentNode.removeChild(active.nextSibling);
 
+                // Wir sollen einfach nur zuklappen
                 if (this.activeTemplate == templateIndex)
                     if (active === row) {
                         this.activeNode = null;
@@ -437,44 +446,44 @@ else
     var DateFormatter = (function () {
         function DateFormatter() {
         }
-        DateFormatter.formatNumber = // Stellt sicher, dass eine Zahl immer zweistellig ist
-        function (num) {
+        // Stellt sicher, dass eine Zahl immer zweistellig ist
+        DateFormatter.formatNumber = function (num) {
             var asString = num.toString();
             if (asString.length > 1)
                 return asString;
-else
+            else
                 return '0' + asString;
         };
 
-        DateFormatter.getEndTime = // Ermittelt die Uhrzeit
-        function (end) {
+        // Ermittelt die Uhrzeit
+        DateFormatter.getEndTime = function (end) {
             return DateFormatter.formatNumber(end.getHours()) + ':' + DateFormatter.formatNumber(end.getMinutes());
         };
 
-        DateFormatter.getDuration = // Ermittelt eine Dauer in Minuten und stellt diese als Uhrzeit dar
-        function (duration) {
+        // Ermittelt eine Dauer in Minuten und stellt diese als Uhrzeit dar
+        DateFormatter.getDuration = function (duration) {
             return DateFormatter.formatNumber(duration.getUTCHours()) + ':' + DateFormatter.formatNumber(duration.getUTCMinutes());
         };
 
-        DateFormatter.getStartDate = // Ermittelt ein Datum
-        function (start) {
+        // Ermittelt ein Datum
+        DateFormatter.getStartDate = function (start) {
             return DateFormatter.getShortDate(start) + '.' + start.getFullYear().toString();
         };
 
-        DateFormatter.getShortDate = // Ermittelt ein Datum ohne Jahresangabe
-        function (start) {
+        // Ermittelt ein Datum ohne Jahresangabe
+        DateFormatter.getShortDate = function (start) {
             return DateFormatter.germanDays[start.getDay()] + ' ' + DateFormatter.formatNumber(start.getDate()) + '.' + DateFormatter.formatNumber(1 + start.getMonth());
         };
 
-        DateFormatter.getStartTime = // Ermittelt einen Startzeitpunkt
-        function (start) {
+        // Ermittelt einen Startzeitpunkt
+        DateFormatter.getStartTime = function (start) {
             var time = DateFormatter.formatNumber(start.getHours()) + ':' + DateFormatter.formatNumber(start.getMinutes());
 
             return DateFormatter.getStartDate(start) + ' ' + time;
         };
 
-        DateFormatter.parseTime = // Prüft eine Eingabe auf eine gültige Uhrzeit (H:M, jeweils ein oder zweistellig)
-        function (time) {
+        // Prüft eine Eingabe auf eine gültige Uhrzeit (H:M, jeweils ein oder zweistellig)
+        DateFormatter.parseTime = function (time) {
             var parts = time.split(':');
             if (parts.length != 2)
                 return null;
@@ -493,8 +502,8 @@ else
             return (60 * hour + minute) * 60000;
         };
 
-        DateFormatter.parseHourMinute = // Analyisiert eine Eingabe auf eine gültige, maximal zweistellige nicht negative Zahl
-        function (hourMinute) {
+        // Analyisiert eine Eingabe auf eine gültige, maximal zweistellige nicht negative Zahl
+        DateFormatter.parseHourMinute = function (hourMinute) {
             if (hourMinute.length == 1)
                 hourMinute = '0' + hourMinute;
             if (hourMinute.length != 2)
@@ -510,8 +519,8 @@ else
             return upper * 10 + lower;
         };
 
-        DateFormatter.parseDigit = // Anlysiert die Eingabe einer Ziffer
-        function (digit) {
+        // Anlysiert die Eingabe einer Ziffer
+        DateFormatter.parseDigit = function (digit) {
             if (digit < 0x30)
                 return null;
             if (digit > 0x39)
@@ -528,8 +537,8 @@ else
     var HourListSettings = (function () {
         function HourListSettings() {
         }
-        HourListSettings.decompress = // Zerlegt eine Liste von Zahlen in einzelne Markierungen
-        function (settings, hours) {
+        // Zerlegt eine Liste von Zahlen in einzelne Markierungen
+        HourListSettings.decompress = function (settings, hours) {
             for (var i = 0; i < 24; i++)
                 settings['hour' + DateFormatter.formatNumber(i)] = false;
 
@@ -540,8 +549,8 @@ else
             });
         };
 
-        HourListSettings.compress = // Kombiniert Markierungen zu einer Liste
-        function (settings) {
+        // Kombiniert Markierungen zu einer Liste
+        HourListSettings.compress = function (settings) {
             var hours = new Array();
             for (var i = 0; i < 24; i++)
                 if (settings['hour' + DateFormatter.formatNumber(i)])
@@ -550,13 +559,13 @@ else
             return hours;
         };
 
-        HourListSettings.isHourFlag = // Prüft, ob ein bestimmter Name eine unserer Markierungseigenschaften ist
-        function (name) {
+        // Prüft, ob ein bestimmter Name eine unserer Markierungseigenschaften ist
+        HourListSettings.isHourFlag = function (name) {
             return (name.length == 6) && (name.substr(0, 4) == 'hour');
         };
 
-        HourListSettings.createHourButtons = // Erstellt die Schaltflächen für die Auswahl der Uhrzeiten.
-        function (hours, namePrefix) {
+        // Erstellt die Schaltflächen für die Auswahl der Uhrzeiten.
+        HourListSettings.createHourButtons = function (hours, namePrefix) {
             for (var i = 0; i < 24; i++) {
                 var fullHour = DateFormatter.formatNumber(i);
                 var name = namePrefix + fullHour;

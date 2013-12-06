@@ -3133,20 +3133,20 @@ class adminPage extends Page implements IPage {
         // Alles nacheinander laden - die Zahl der gleichzeitig offenen Requests ist beschränkt!
         VCRServer
             .browseDirectories('', true)
-            .then(function (directories: string[]): JQueryPromise<any> { me.fillDirectories(directories); return VCRServer.getSecuritySettings(); })
-            .then(function (data: VCRServer.SecuritySettingsContract): JQueryPromise<any> { me.security = data; return VCRServer.getDirectorySettings(); })
-            .then(function (data: VCRServer.DirectorySettingsContract): JQueryPromise<any> { me.directory = data; return VCRServer.getGuideSettings(); })
-            .then(function (data: VCRServer.GuideSettingsContract): JQueryPromise<any> { me.guide = data; return VCRServer.getSourceScanSettings(); })
-            .then(function (data: VCRServer.SourceScanSettingsContract): JQueryPromise<any> { me.scan = data; return VCRServer.getProfileSettings(); })
-            .then(function (data: VCRServer.ProfileSettingsContract): JQueryPromise<any> { me.devices = data; return JMSLib.TemplateLoader.load('adminDevices'); })
-            .then(function (template: string): JQueryPromise<any> {
+            .then<any>(function (directories: string[]): JQueryPromise<any> { me.fillDirectories(directories); return VCRServer.getSecuritySettings(); })
+            .then<any>(function (data: VCRServer.SecuritySettingsContract): JQueryPromise<any> { me.security = data; return VCRServer.getDirectorySettings(); })
+            .then<any>(function (data: VCRServer.DirectorySettingsContract): JQueryPromise<any> { me.directory = data; return VCRServer.getGuideSettings(); })
+            .then<any>(function (data: VCRServer.GuideSettingsContract): JQueryPromise<any> { me.guide = data; return VCRServer.getSourceScanSettings(); })
+            .then<any>(function (data: VCRServer.SourceScanSettingsContract): JQueryPromise<any> { me.scan = data; return VCRServer.getProfileSettings(); })
+            .then<any>(function (data: VCRServer.ProfileSettingsContract): JQueryPromise<any> { me.devices = data; return JMSLib.TemplateLoader.load('adminDevices'); })
+            .then<any>(function (template: string): JQueryPromise<any> {
                 $('#devices').append($(template).find('#template').children());
 
                 return VCRServer.getOtherSettings();
             })
-            .then(function (data: VCRServer.OtherSettingsContract): JQueryPromise<any> { me.other = data; return VCRServer.getSchedulerRules(); })
-            .then(function (data: VCRServer.SchedulerRulesContract): JQueryPromise<any> { me.rules = data; return JMSLib.TemplateLoader.load('adminRules'); })
-            .then(function (template: string): void {
+            .then<any>(function (data: VCRServer.OtherSettingsContract): JQueryPromise<any> { me.other = data; return VCRServer.getSchedulerRules(); })
+            .then<any>(function (data: VCRServer.SchedulerRulesContract): JQueryPromise<any> { me.rules = data; return JMSLib.TemplateLoader.load('adminRules'); })
+            .then<any>(function (template: string): void {
                 $('#rules').append($(template).find('#template').children());
 
                 loadFinished();
@@ -3452,8 +3452,8 @@ class adminPage extends Page implements IPage {
 
         // Oberfläche vorbereiten
         navigator.tabs(options).addClass('ui-tabs-vertical ui-helper-clearfix');
-        navigator.on('tabsactivate', function (ev: JQueryEventObject, ui: any): void {
-            window.location.hash = 'admin;' + ui.newPanel.selector.substr(1);
+        navigator.on('tabsactivate', function (ev: JQueryEventObject): void {
+            window.location.hash = 'admin;' + arguments[1].newPanel.selector.substr(1);
         });
 
         // Oberfläche vorbereiten
