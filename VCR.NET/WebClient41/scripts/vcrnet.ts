@@ -2826,7 +2826,7 @@ class homePage extends Page implements IPage {
         var checkUpdate = $('#checkUpdate');
         checkUpdate.click(function (): void { me.checkUpdate(checkUpdate); });
 
-        me.title = 'VCR.NET Recording Service ' + serverInfo.version + ' (' + serverInfo.msiVersion + ') (Experimental)';
+        me.title = 'VCR.NET Recording Service ' + serverInfo.version + ' (' + serverInfo.msiVersion + ')';
     }
 }
 

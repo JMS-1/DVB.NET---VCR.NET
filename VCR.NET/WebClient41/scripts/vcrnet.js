@@ -2228,7 +2228,7 @@ var homePage = (function (_super) {
             me.checkUpdate(checkUpdate);
         });
 
-        me.title = 'VCR.NET Recording Service ' + serverInfo.version + ' (' + serverInfo.msiVersion + ') (Experimental)';
+        me.title = 'VCR.NET Recording Service ' + serverInfo.version + ' (' + serverInfo.msiVersion + ')';
     };
     homePage.versionExtract = />VCRNET\.MSI<\/a>[^<]*\s([^\s]+)\s*</i;
     return homePage;
