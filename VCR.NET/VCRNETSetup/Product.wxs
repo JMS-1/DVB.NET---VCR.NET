@@ -79,7 +79,6 @@
       <ComponentGroupRef Id="TVBrowserPlugIn.Binaries" />
       <ComponentGroupRef Id="WebClient41.Binaries" />
       <ComponentGroupRef Id="WebClient41.Content" />
-      <ComponentGroupRef Id="WebClient41.Sources" />
       <ComponentGroupRef Id="Extensions" />
       <ComponentGroupRef Id="Service" />
 
@@ -112,7 +111,7 @@
       <ComponentGroupRef Id="InstallerActions.Sources" />
       <ComponentGroupRef Id="InstallerActions.Content" />
       <ComponentGroupRef Id="Setup.Sources" />
-      <ComponentGroupRef Id="TypeScript.Sources" />
+      <ComponentGroupRef Id="WebProject.Sources" />
 
     </Feature>
 

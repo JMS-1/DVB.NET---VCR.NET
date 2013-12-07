@@ -4,6 +4,10 @@
   <Fragment>
     
     <ComponentGroup Id="Service">
+
+      <Component Id="WebConfiguration" Directory="INSTALLFOLDER">
+        <File Source="$(var.WebClient41.ProjectDir)Web.config" />
+      </Component>
       
       <!-- Installation des VCR.NET Recording Service Windows Dienstes. -->
       <Component Id="ServiceInstall" Directory="BIN">

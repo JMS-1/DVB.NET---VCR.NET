@@ -63,6 +63,16 @@
             </Directory>
 
             <!-- Quellcode (optional) -->
+            <Component Id="WebSources.ProjectFile" Guid="*">
+              <File Id="WebSource.ProjectFile" Source="$(var.WebClient41.ProjectDir)WebClient41.csproj" />
+            </Component>
+            <Directory Id="WebSourcesProperties" Name="Properties">
+              <Component Id="WebSources.Properties" Guid="*">
+                <File Id="WebSource.Properties" Source="$(var.WebClient41.ProjectDir)Properties/AssemblyInfo.cs" />
+              </Component>
+            </Directory>
+
+            <!-- Quellcode (optional) -->
             <Directory Id="ScriptFiles" Name="scripts">
               <Component Id="TypeScriptSource.JMSLib" Guid="*">
                 <File Id="TypeScript.JMSLib" Source="$(var.WebClient41.ProjectDir)scripts/jmslib.ts" />
@@ -86,7 +96,9 @@
 
     </Directory>
 
-    <ComponentGroup Id="TypeScript.Sources">
+    <ComponentGroup Id="WebProject.Sources">
+      <ComponentRef Id="WebSources.ProjectFile"/>
+      <ComponentRef Id="WebSources.Properties"/>
       <ComponentRef Id="TypeScriptSource.JMSLib"/>
       <ComponentRef Id="TypeScriptSource.VCRServer"/>
       <ComponentRef Id="TypeScriptSource.VCRNET"/>
