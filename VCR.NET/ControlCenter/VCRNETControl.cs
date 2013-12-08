@@ -6,7 +6,10 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
@@ -475,6 +478,8 @@ namespace VCRControlCenter
             mnuHibernate.Visible = hasHibernate;
             mnuOpenJobList.Enabled = hasServers;
             mnuLiveConnect.Enabled = hasServers;
+            mnuHibernateServer.Visible = false;
+            mnuWakeupServer.Visible = false;
             mnuCurrent.Enabled = hasServers;
             mnuDefault.Enabled = hasServers;
             mnuNewJob.Enabled = hasServers;
@@ -493,11 +498,17 @@ namespace VCRControlCenter
             if (hasServers)
             {
                 // Find the server
-                PerServerSettings settings = CurrentServer;
-                if (null != settings)
+                var settings = CurrentServer;
+                if (settings != null)
                 {
                     // Change top menu
                     mnuDefault.Text += string.Format( " ({0})", settings.ServerName );
+
+                    // Check mode
+                    if (settings.View.State != TrayColors.Red)
+                        mnuHibernateServer.Visible = true;
+                    else if (!settings.IsLocal)
+                        mnuWakeupServer.Visible = true;
 
                     // No viewer
                     if (!string.IsNullOrEmpty( m_Settings.Viewer ))
@@ -506,7 +517,7 @@ namespace VCRControlCenter
                         bool usesViewer = (!string.IsNullOrEmpty( m_Settings.ViewerArgs ) && m_Settings.ViewerArgs.Contains( "{2}" ));
 
                         // All profiles
-                        foreach (ProfileInfo profile in settings.View.Profiles)
+                        foreach (var profile in settings.View.Profiles)
                         {
                             // Attach to the last known recording
                             var current = profile.CurrentRecordings;
@@ -568,7 +579,8 @@ namespace VCRControlCenter
                 DateTime now = DateTime.UtcNow, zero = now;
 
                 // Reset
-                if (m_BlockHibernate < now) m_BlockHibernate = DateTime.MaxValue;
+                if (m_BlockHibernate < now)
+                    m_BlockHibernate = DateTime.MaxValue;
 
                 // Check mode
                 if (m_BlockHibernate < DateTime.MaxValue)
@@ -1582,6 +1594,162 @@ namespace VCRControlCenter
                     catch
                     {
                     }
+        }
+
+        /// <summary>
+        /// Ermittelt die Netzwerkinformationen.
+        /// </summary>
+        /// <param name="table">Ein vorbereiteter Speicherbereich.</param>
+        /// <param name="size">Die Größe des Speicherbereiches.</param>
+        /// <param name="order">Gesetzt, wenn die Einträge sortiert werden sollen.</param>
+        /// <returns>Ein Fehlercode.</returns>
+        [DllImport( "Iphlpapi.dll" )]
+        private static extern UInt32 GetIpNetTable( IntPtr table, ref UInt32 size, bool order );
+
+        /// <summary>
+        /// Informationen über eine Adresse.
+        /// </summary>
+        [StructLayout( LayoutKind.Sequential, Pack = 1 )]
+        private struct IpNetRow
+        {
+            /// <summary>
+            /// Die Größe in Bytes.
+            /// </summary>
+            public static readonly int SizeOf = Marshal.SizeOf( typeof( IpNetRow ) );
+
+            /// <summary>
+            /// Die laufende Nummer des Eintrags.
+            /// </summary>
+            private UInt32 m_index;
+
+            /// <summary>
+            /// Die Anzahl der Adressbytes.
+            /// </summary>
+            private UInt32 m_physicalAddressBytes;
+
+            /// <summary>
+            /// Die physikalische Adresse.
+            /// </summary>
+            [MarshalAs( UnmanagedType.ByValArray, SizeConst = 8 )]
+            private byte[] m_physicalAddress;
+
+            /// <summary>
+            /// Die Netzwerkadresse.
+            /// </summary>
+            private UInt32 m_ip4Address;
+
+            /// <summary>
+            /// Die Art der Adresse.
+            /// </summary>
+            private UInt32 m_type;
+
+            /// <summary>
+            /// Prüft, ob dieser Eintrag zu einer Adresse passt.
+            /// </summary>
+            /// <param name="addresses">Eine Liste von Adressen.</param>
+            /// <returns>Gesetzt, wenn mindestens eine davon passt.</returns>
+            public bool Matches( IEnumerable<IPAddress> addresses )
+            {
+                // None
+                if (addresses == null)
+                    return false;
+                else
+                    return addresses.Any( new IPAddress( m_ip4Address ).Equals );
+            }
+
+            /// <summary>
+            /// Weckt den zugehörigen Rechner auf.
+            /// </summary>
+            public void Wakeup()
+            {
+                // Create a brand new socket
+                var socket = new Socket( AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp );
+
+                // Configure it
+                socket.SetSocketOption( SocketOptionLevel.Socket, SocketOptionName.Broadcast, true );
+                socket.Connect( IPAddress.Broadcast, 7 );
+
+                // Buffer
+                var buffer = new List<byte>( checked( (int) (6 + 16 * m_physicalAddressBytes) ) );
+
+                // Start with prefix
+                for (var i = 6; i-- > 0; )
+                    buffer.Add( 0xff );
+
+                // Add physical address
+                for (var i = 16; i-- > 0; )
+                    buffer.AddRange( m_physicalAddress.Take( checked( (int) m_physicalAddressBytes ) ) );
+
+                // Process
+                socket.Send( buffer.ToArray() );
+            }
+        }
+
+        /// <summary>
+        /// Versucht den Dienstrechner aufzuwecken.
+        /// </summary>
+        /// <param name="sender">Wird ignoriert.</param>
+        /// <param name="e">Wird ignoriert.</param>
+        private void mnuWakeupServer_Click( object sender, EventArgs e )
+        {
+            // Attach to the related server
+            var settings = CurrentServer;
+            if (settings == null)
+                return;
+
+            // Ask user
+            if (MessageBox.Show( string.Format( Properties.Resources.WakeUp, settings.ServerName ), Properties.Resources.HibernateTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2 ) != DialogResult.Yes)
+                return;
+
+            // Resolve server
+            var server = Dns.GetHostEntry( settings.ServerName );
+            if (server == null)
+                return;
+
+            // Get size of address table
+            UInt32 size = 0;
+            if (GetIpNetTable( IntPtr.Zero, ref size, true ) != 122)
+                return;
+            if (size < 4)
+                return;
+
+            // Load address table
+            var table = Marshal.AllocHGlobal( checked( (int) size ) );
+            try
+            {
+                // Get the table
+                if (GetIpNetTable( table, ref size, true ) != 0)
+                    return;
+
+                // Get the number of entries in the table
+                var count = checked( (UInt32) Marshal.ReadInt32( table, 0 ) );
+
+                // Process entries
+                for (int offset = 4; count-- > 0; offset += IpNetRow.SizeOf)
+                {
+                    // Unmarshal from native representation
+                    var data = (IpNetRow) Marshal.PtrToStructure( table + offset, typeof( IpNetRow ) );
+
+                    // See if this is it
+                    if (data.Matches( server.AddressList ))
+                    {
+                        // Send packet
+                        data.Wakeup();
+
+                        // Done
+                        break;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // Ignore any error
+            }
+            finally
+            {
+                // Cleanup
+                Marshal.FreeHGlobal( table );
+            }
         }
     }
 }

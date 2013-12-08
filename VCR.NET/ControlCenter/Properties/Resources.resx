@@ -168,6 +168,9 @@
   <data name="UpdateTitle" xml:space="preserve">
     <value>Unable to update Settings for local VCR.NET Recording Service</value>
   </data>
+  <data name="WakeUp" xml:space="preserve">
+    <value>Really wake up Server {0}?</value>
+  </data>
   <data name="Yes" xml:space="preserve">
     <value>yes</value>
   </data>

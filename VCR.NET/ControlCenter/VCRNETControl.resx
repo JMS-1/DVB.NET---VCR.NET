@@ -175,11 +175,17 @@
   <data name="mnuHibernateServer.Text" xml:space="preserve">
     <value>H&amp;ibernate Server</value>
   </data>
+  <data name="mnuWakeupServer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>233, 22</value>
+  </data>
+  <data name="mnuWakeupServer.Text" xml:space="preserve">
+    <value>Wake&amp;up Server</value>
+  </data>
   <data name="toolStripMenuItem3.Size" type="System.Drawing.Size, System.Drawing">
     <value>230, 6</value>
   </data>
   <data name="mnuHibernateReset.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
+    <value>152, 22</value>
   </data>
   <data name="mnuHibernateReset.Text" xml:space="preserve">
     <value>As &amp;configured</value>
@@ -206,7 +212,7 @@
     <value>Close VCR&amp;.NET Control Center</value>
   </data>
   <data name="trayMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>234, 292</value>
+    <value>234, 314</value>
   </data>
   <data name="&gt;&gt;trayMenu.Name" xml:space="preserve">
     <value>trayMenu</value>
@@ -939,6 +945,12 @@
     <value>mnuHibernateServer</value>
   </data>
   <data name="&gt;&gt;mnuHibernateServer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;mnuWakeupServer.Name" xml:space="preserve">
+    <value>mnuWakeupServer</value>
+  </data>
+  <data name="&gt;&gt;mnuWakeupServer.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItem3.Name" xml:space="preserve">

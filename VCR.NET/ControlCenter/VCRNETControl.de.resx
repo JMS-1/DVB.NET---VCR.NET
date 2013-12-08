@@ -340,4 +340,7 @@
   <data name="fileChooser.Title" xml:space="preserve">
     <value>Anzeigeanwendung auswählen</value>
   </data>
+  <data name="mnuWakeupServer.Text" xml:space="preserve">
+    <value>Dienstrechner a&amp;ufwecken</value>
+  </data>
 </root>

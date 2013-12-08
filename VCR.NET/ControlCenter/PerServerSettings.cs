@@ -73,28 +73,20 @@ namespace VCRControlCenter
                 SubItems.Add( Settings.RunExtensions ? Properties.Resources.Yes : Properties.Resources.No );
             }
 
-            public IEnumerable<ProfileInfo> Profiles
-            {
-                get
-                {
-                    // Report
-                    return (IEnumerable<ProfileInfo>) m_Info;
-                }
-            }
+            /// <summary>
+            /// Meldet die Liste aller Geräte.
+            /// </summary>
+            public IEnumerable<ProfileInfo> Profiles { get { return (IEnumerable<ProfileInfo>) m_Info; } }
 
-            public ServerInfo ServerInfo
-            {
-                get
-                {
-                    // Report a clone
-                    return m_Info.Clone();
-                }
-                set
-                {
-                    // Use the new one
-                    m_Info = value;
-                }
-            }
+            /// <summary>
+            /// Meldet den aktuellen Zustand des Dienstes.
+            /// </summary>
+            public TrayColors State { get { return m_Info.State; } }
+
+            /// <summary>
+            /// Meldet oder ändert die Zustandsverwaltung.
+            /// </summary>
+            public ServerInfo ServerInfo { get { return m_Info.Clone(); } set { m_Info = value; } }
 
             /// <summary>
             /// Meldet, ob der zugehörige VCR.NET mindestens die angegebene Version hat.
@@ -177,7 +169,7 @@ namespace VCRControlCenter
             get
             {
                 // Report if already checked
-                if (m_Local.HasValue) 
+                if (m_Local.HasValue)
                     return m_Local.Value;
 
                 // Check mode

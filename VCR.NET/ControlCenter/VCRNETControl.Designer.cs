@@ -48,6 +48,7 @@ namespace VCRControlCenter
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuAdmin = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHibernateServer = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuWakeupServer = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuHibernate = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuHibernateReset = new System.Windows.Forms.ToolStripMenuItem();
@@ -117,6 +118,7 @@ namespace VCRControlCenter
             this.toolStripMenuItem1,
             this.mnuAdmin,
             this.mnuHibernateServer,
+            this.mnuWakeupServer,
             this.toolStripMenuItem3,
             this.mnuHibernate,
             this.mnuHibernateSep,
@@ -183,6 +185,12 @@ namespace VCRControlCenter
             this.mnuHibernateServer.Name = "mnuHibernateServer";
             resources.ApplyResources(this.mnuHibernateServer, "mnuHibernateServer");
             this.mnuHibernateServer.Click += new System.EventHandler(this.mnuHibernateServer_Click);
+            // 
+            // mnuWakeupServer
+            // 
+            this.mnuWakeupServer.Name = "mnuWakeupServer";
+            resources.ApplyResources(this.mnuWakeupServer, "mnuWakeupServer");
+            this.mnuWakeupServer.Click += new System.EventHandler(this.mnuWakeupServer_Click);
             // 
             // toolStripMenuItem3
             // 
@@ -627,6 +635,7 @@ namespace VCRControlCenter
 		private System.Windows.Forms.ToolStripSeparator mnuHibernateSep;
         private System.Windows.Forms.ToolStripMenuItem mnuLiveConnect;
         private System.Windows.Forms.ToolStripMenuItem mnuHibernateServer;
+        private System.Windows.Forms.ToolStripMenuItem mnuWakeupServer;
 	}
 }
 
