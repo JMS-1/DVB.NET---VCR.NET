@@ -17,6 +17,54 @@ namespace JMS.DVBVCR.RecordingService.Planning
     public class RecordingPlanner : IDisposable
     {
         /// <summary>
+        /// Beschreibt eine aktive Aufzeichnung.
+        /// </summary>
+        private class ScheduleInformation : IScheduleInformation
+        {
+            /// <summary>
+            /// Die originalen Informationen.
+            /// </summary>
+            private readonly IScheduleInformation m_original;
+
+            /// <summary>
+            /// Erstellt eine neue Beschreibung.
+            /// </summary>
+            /// <param name="original">Die originalen Informationen.</param>
+            public ScheduleInformation( IScheduleInformation original )
+            {
+                // Validate
+                if (original == null)
+                    throw new ArgumentNullException( "original" );
+
+                // Remember
+                m_original = original;
+
+                // Cache time
+                Time = m_original.Time;
+            }
+
+            /// <summary>
+            /// Meldet die zugehörige Aufzeichnung.
+            /// </summary>
+            public IScheduleDefinition Definition { get { return m_original.Definition; } }
+
+            /// <summary>
+            /// Meldet die verwendete Quelle.
+            /// </summary>
+            public IScheduleResource Resource { get { return m_original.Resource; } }
+
+            /// <summary>
+            /// Gesetzt, wenn die Aufzeichnung verspätet beginnt.
+            /// </summary>
+            public bool StartsLate { get { return m_original.StartsLate; } }
+
+            /// <summary>
+            /// Meldet oder ändert den Zeitraum der Aufzeichnung.
+            /// </summary>
+            public PlannedTime Time { get; set; }
+        }
+
+        /// <summary>
         /// Die zugehörige Arbeitsumgebung.
         /// </summary>
         private readonly IRecordingPlannerSite m_site;
@@ -39,7 +87,7 @@ namespace JMS.DVBVCR.RecordingService.Planning
         /// <summary>
         /// Alle laufenden Aufzeichnungen.
         /// </summary>
-        private readonly Dictionary<Guid, IScheduleInformation> m_started = new Dictionary<Guid, IScheduleInformation>();
+        private readonly Dictionary<Guid, ScheduleInformation> m_started = new Dictionary<Guid, ScheduleInformation>();
 
         /// <summary>
         /// Erstellt eine neue Planung.
@@ -216,9 +264,7 @@ namespace JMS.DVBVCR.RecordingService.Planning
                 if (stop != null)
                 {
                     // Lookup the item and report to site
-                    IScheduleInformation schedule;
-
-                    // Must recover
+                    ScheduleInformation schedule;
                     if (!m_started.TryGetValue( stop.UniqueIdentifier, out schedule ))
                         return;
 
@@ -246,7 +292,7 @@ namespace JMS.DVBVCR.RecordingService.Planning
                 return false;
 
             // Remember
-            m_started.Add( item.Definition.UniqueIdentifier, item );
+            m_started.Add( item.Definition.UniqueIdentifier, new ScheduleInformation( item ) );
 
             // Did it
             return true;
@@ -285,7 +331,23 @@ namespace JMS.DVBVCR.RecordingService.Planning
                 newEndTime = newEndLimit;
 
             // Forward
-            return m_manager.Modify( itemIdentifier, newEndTime );
+            if (!m_manager.Modify( itemIdentifier, newEndTime ))
+                return false;
+
+            // See if we know it
+            ScheduleInformation started;
+            if (!m_started.TryGetValue( itemIdentifier, out started ))
+                return true;
+
+            // Try to get the new schedule data
+            recording = m_manager.CurrentAllocations.FirstOrDefault( plan => plan.UniqueIdentifier.Equals( itemIdentifier ) );
+
+            // Update
+            if (recording != null)
+                started.Time = recording.Time;
+
+            // Did it
+            return true;
         }
 
         /// <summary>
@@ -304,6 +366,10 @@ namespace JMS.DVBVCR.RecordingService.Planning
             // Configure it
             m_site.AddRegularJobs( scheduler, disabled, this, context );
 
+            // Enable all
+            if (disabled == null)
+                disabled = identifier => false;
+
             // Do the sort
             context.LoadPlan( scheduler.GetSchedules( referenceTime, m_tasks.Where( task => !disabled( task.UniqueIdentifier ) ).ToArray() ).Take( limit ) );
 
@@ -319,7 +385,7 @@ namespace JMS.DVBVCR.RecordingService.Planning
         public PlanContext GetPlan( DateTime referenceTime )
         {
             // Forward
-            return GetPlan( m_manager.CreateScheduler( false ), referenceTime, identifier => false, 1000 );
+            return GetPlan( m_manager.CreateScheduler( false ), referenceTime, null, 1000 );
         }
 
         /// <summary>

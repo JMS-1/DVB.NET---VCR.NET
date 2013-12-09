@@ -253,7 +253,7 @@ namespace JMS.DVBVCR.UnitTests
                         continue;
 
                     // Register
-                    schedule.AddToScheduler( scheduler, job, new[] { resource }, FindSource, disabled );
+                    schedule.AddToScheduler( scheduler, job, new[] { resource }, FindSource, disabled, context );
 
                     // Connect
                     context.RegisterSchedule( schedule, job );

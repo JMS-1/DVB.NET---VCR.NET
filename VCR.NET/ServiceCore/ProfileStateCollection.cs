@@ -635,7 +635,7 @@ namespace JMS.DVBVCR.RecordingService
                         continue;
 
                     // Register single item
-                    schedule.AddToScheduler( scheduler, job, new[] { resource }, VCRProfiles.FindSource, disabled );
+                    schedule.AddToScheduler( scheduler, job, new[] { resource }, VCRProfiles.FindSource, disabled, context );
 
                     // Remember - even if we skipped it
                     context.RegisterSchedule( schedule, job );

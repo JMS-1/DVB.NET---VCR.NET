@@ -264,7 +264,7 @@ namespace JMS.DVBVCR.RecordingService
         public void SetRestartThreshold( VCRRecordingInfo recording, DateTime endsAt )
         {
             // Forward
-            if (null != recording)
+            if (recording != null)
                 if (recording.JobUniqueID.HasValue)
                     if (recording.ScheduleUniqueID.HasValue)
                         SetRestartThreshold( recording.JobUniqueID.Value, recording.ScheduleUniqueID.Value, endsAt );
@@ -286,13 +286,13 @@ namespace JMS.DVBVCR.RecordingService
             lock (m_Jobs)
             {
                 // Locate job
-                VCRJob job = this[jobIdentifier];
-                if (null == job)
+                var job = this[jobIdentifier];
+                if (job == null)
                     return;
 
                 // Locate schedule
-                VCRSchedule schedule = job[scheduleIdentifier];
-                if (null == schedule)
+                var schedule = job[scheduleIdentifier];
+                if (schedule == null)
                     return;
 
                 // Make sure that this schedule is not used again

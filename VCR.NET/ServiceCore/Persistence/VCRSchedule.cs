@@ -5,6 +5,7 @@ using System.Xml.Serialization;
 using JMS.DVB;
 using JMS.DVB.Algorithms.Scheduler;
 using JMS.DVBVCR.RecordingService.LegacyUpgrades.Pre39;
+using JMS.DVBVCR.RecordingService.Planning;
 
 
 namespace JMS.DVBVCR.RecordingService.Persistence
@@ -344,8 +345,9 @@ namespace JMS.DVBVCR.RecordingService.Persistence
         /// <param name="devices">Die Liste der Geräte, auf denen die Aufzeichnung ausgeführt werden darf.</param>
         /// <param name="findSource">Dient zum Prüfen einer Quelle.</param>
         /// <param name="disabled">Alle deaktivierten Aufträge.</param>
+        /// <param name="context">Die aktuelle Planungsumgebung.</param>
         /// <exception cref="ArgumentNullException">Es wurden nicht alle Parameter angegeben.</exception>
-        public void AddToScheduler( RecordingScheduler scheduler, VCRJob job, IScheduleResource[] devices, Func<SourceSelection, SourceSelection> findSource, Func<Guid, bool> disabled )
+        public void AddToScheduler( RecordingScheduler scheduler, VCRJob job, IScheduleResource[] devices, Func<SourceSelection, SourceSelection> findSource, Func<Guid, bool> disabled, PlanContext context )
         {
             // Validate
             if (scheduler == null)
@@ -354,8 +356,6 @@ namespace JMS.DVBVCR.RecordingService.Persistence
                 throw new ArgumentNullException( "job" );
             if (findSource == null)
                 throw new ArgumentNullException( "findSource" );
-            if (disabled == null)
-                throw new ArgumentNullException( "disabled" );
 
             // Let VCR.NET choose a profile to do the work
             if (job.AutomaticResourceSelection)
@@ -387,8 +387,13 @@ namespace JMS.DVBVCR.RecordingService.Persistence
 
             // See if we are allowed to process
             var identifier = UniqueID.Value;
-            if (disabled( identifier ))
-                return;
+            if (disabled != null)
+                if (disabled( identifier ))
+                    return;
+
+            // See if we cansider the job as running in which case we still consider it in the plan even even end time has been set
+            var isRunning = (disabled == null) && (context.GetRunState( identifier ) != null);
+            var noStartBefore = isRunning ? null : NoStartBefore;
 
             // Load all
             var name = string.IsNullOrEmpty( Name ) ? job.Name : string.Format( "{0} ({1})", job.Name, Name );
@@ -400,17 +405,17 @@ namespace JMS.DVBVCR.RecordingService.Persistence
             var repeat = CreateRepeatPattern();
             if (repeat == null)
             {
-                // Only if not beeing recorded
-                if (!NoStartBefore.HasValue)
+                // Only if not being recorded
+                if (!noStartBefore.HasValue)
                     scheduler.Add( RecordingDefinition.Create( this, name, identifier, devices, source, start, duration ) );
             }
             else
             {
                 // See if we have to adjust the start day
-                if (NoStartBefore.HasValue)
+                if (noStartBefore.HasValue)
                 {
                     // Attach to the limit - actually we shift it a bit further assuming that we did have no large exception towards the past and the duration is moderate
-                    var startAfter = NoStartBefore.Value.AddHours( 12 );
+                    var startAfter = noStartBefore.Value.AddHours( 12 );
                     var startAfterDay = startAfter.ToLocalTime().Date;
 
                     // Localize the start time
