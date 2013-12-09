@@ -311,63 +311,71 @@ namespace JMS.DVBVCR.RecordingService
         /// <summary>
         /// Ermittelt alle archivierten Aufträge zu allen DVB.NET Geräteprofilen.
         /// </summary>
-        public List<VCRJob> ArchivedJobs
+        public VCRJob[] ArchivedJobs
         {
             get
             {
-                // Create helper
-                var jobs = new List<VCRJob>();
-
-                // Get the directory
-                var jobDirectory = ArchiveDirectory;
-
-                // Access limit
-                var firstValid = DateTime.UtcNow.AddDays( -7 * VCRConfiguration.Current.ArchiveLifeTime );
-
-                // Default profile
+                // For legacy updates
                 var profile = VCRProfiles.DefaultProfile;
 
-                // Protect to avoid parallel operations on the archive directory
+                // Process
                 lock (m_Jobs)
-                    foreach (var file in jobDirectory.GetFiles( "*" + VCRJob.FileSuffix ))
-                    {
-                        // Check the last access
-                        if (file.LastWriteTimeUtc < firstValid)
-                        {
-                            // Be safe
-                            try
+                    return
+                        ArchiveDirectory
+                        .GetFiles( "*" + VCRJob.FileSuffix )
+                        .Select( file =>
                             {
-                                // Delete the log entry
-                                file.Delete();
-                            }
-                            catch (Exception e)
-                            {
-                                // Report error
-                                VCRServer.Log( e );
-                            }
+                                // Load
+                                var job = SerializationTools.Load<VCRJob>( file );
 
-                            // Skip processing
-                            continue;
-                        }
+                                // Enrich legacy entries
+                                if (job != null)
+                                    if (profile != null)
+                                        job.SetProfile( profile.Name );
 
-                        // Load it
-                        VCRJob job = SerializationTools.Load<VCRJob>( file );
-
-                        // Invalid
-                        if (null == job)
-                            continue;
-
-                        // Finish
-                        if (null != profile)
-                            job.SetProfile( profile.Name );
-
-                        // Remember
-                        jobs.Add( job );
-                    }
-
-                // Report
-                return jobs;
+                                // Report
+                                return job;
+                            } )
+                        .Where( job => job != null )
+                        .ToArray();
             }
+        }
+
+        /// <summary>
+        /// Der Zeitpunkt, an dem das nächste Mal das Archiv bereinigt werden soll.
+        /// </summary>
+        private DateTime m_nextArchiveCleanup = DateTime.MinValue;
+
+        /// <summary>
+        /// Entfernt veraltete Aufträge aus dem Archiv.
+        /// </summary>
+        internal void CleanupArchivedJobs()
+        {
+            // Not yet
+            if (DateTime.UtcNow < m_nextLogCleanup)
+                return;
+
+            // Remember
+            m_nextLogCleanup = DateTime.UtcNow.AddDays( 1 );
+
+            // Access limit
+            var firstValid = DateTime.UtcNow.AddDays( -7 * VCRConfiguration.Current.ArchiveLifeTime );
+            var jobDirectory = ArchiveDirectory;
+
+            // Protect to avoid parallel operations on the archive directory
+            lock (m_Jobs)
+                foreach (var file in jobDirectory.GetFiles( "*" + VCRJob.FileSuffix ))
+                    if (file.LastWriteTimeUtc < firstValid)
+                        try
+                        {
+                            // Delete the log entry
+                            file.Delete();
+                        }
+                        catch (Exception e)
+                        {
+                            // Report error
+                            VCRServer.Log( e );
+                        }
         }
 
         /// <summary>
@@ -453,7 +461,7 @@ namespace JMS.DVBVCR.RecordingService
 
             // Load all jobs
             foreach (var file in LogDirectory.GetFiles( "*" + VCRRecordingInfo.FileSuffix ))
-                if (file.Name.CompareTo( firstValid ) >= 0)
+                if (file.Name.CompareTo( firstValid ) < 0)
                     try
                     {
                         // Delete the log entry

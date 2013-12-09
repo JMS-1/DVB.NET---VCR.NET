@@ -260,6 +260,7 @@ namespace JMS.DVBVCR.RecordingService
         public void PeriodicCleanup()
         {
             // Forward
+            JobManager.CleanupArchivedJobs();
             JobManager.CleanupLogEntries();
         }
 
