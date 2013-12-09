@@ -254,6 +254,15 @@ namespace JMS.DVBVCR.RecordingService
             }
         }
 
+        /// <summary>
+        /// F?hrt periodische Aufr?umarbeiten aus.
+        /// </summary>
+        public void PeriodicCleanup()
+        {
+            // Forward
+            JobManager.CleanupLogEntries();
+        }
+
         #region IDisposable Members
 
         /// <summary>

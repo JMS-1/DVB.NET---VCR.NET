@@ -449,8 +449,20 @@ namespace JMS.DVBVCR.RecordingService
         {
             // Forever - each five seconds
             for (; m_HibernateHelper != null; Thread.Sleep( 5000 ))
-                if (m_HibernateHelperIsActive)
-                    VCRServer.ExtensionProcessManager.Cleanup();
+                try
+                {
+                    // Do periodic cleanup operations
+                    VCRServer.PeriodicCleanup();
+
+                    // Process the test
+                    if (m_HibernateHelperIsActive)
+                        VCRServer.ExtensionProcessManager.Cleanup();
+                }
+                catch (Exception e)
+                {
+                    // Report error
+                    VCRServer.Log( e );
+                }
         }
 
         #endregion

@@ -398,33 +398,13 @@ namespace JMS.DVBVCR.RecordingService
             var last = lastDate.AddDays( 1 ).ToString( LogEntryDateFormat );
             var first = firstDate.ToString( LogEntryDateFormat );
 
-            // For cleanup
-            var firstValid = DateTime.Now.Date.AddDays( -7 * VCRConfiguration.Current.LogLifeTime ).ToString( LogEntryDateFormat );
-
             // Load all jobs
             foreach (var file in LogDirectory.GetFiles( "*" + VCRRecordingInfo.FileSuffix ))
             {
-                // Auto delete
-                if (file.Name.CompareTo( firstValid ) < 0)
-                {
-                    // Be safe
-                    try
-                    {
-                        // Delete the log entry
-                        file.Delete();
-                    }
-                    catch (Exception e)
-                    {
-                        // Report error
-                        VCRServer.Log( e );
-                    }
-
-                    // Skip processing
-                    continue;
-                }
-
                 // Skip
-                if ((file.Name.CompareTo( first ) < 0) || (file.Name.CompareTo( last ) >= 0))
+                if (file.Name.CompareTo( first ) < 0)
+                    continue;
+                if (file.Name.CompareTo( last ) >= 0)
                     continue;
 
                 // Load item
@@ -449,6 +429,41 @@ namespace JMS.DVBVCR.RecordingService
 
             // Report
             return logs;
+        }
+
+        /// <summary>
+        /// Der Zeitpunkt, an dem die nächste Bereinigung stattfinden soll.
+        /// </summary>
+        private DateTime m_nextLogCleanup = DateTime.MinValue;
+
+        /// <summary>
+        /// Bereinigt alle veralteten Protokolleinträge.
+        /// </summary>
+        internal void CleanupLogEntries()
+        {
+            // Check time
+            if (DateTime.UtcNow < m_nextLogCleanup)
+                return;
+
+            // Not again for now
+            m_nextLogCleanup = DateTime.UtcNow.AddDays( 1 );
+
+            // For cleanup
+            var firstValid = DateTime.Now.Date.AddDays( -7 * VCRConfiguration.Current.LogLifeTime ).ToString( LogEntryDateFormat );
+
+            // Load all jobs
+            foreach (var file in LogDirectory.GetFiles( "*" + VCRRecordingInfo.FileSuffix ))
+                if (file.Name.CompareTo( firstValid ) >= 0)
+                    try
+                    {
+                        // Delete the log entry
+                        file.Delete();
+                    }
+                    catch (Exception e)
+                    {
+                        // Report error
+                        VCRServer.Log( e );
+                    }
         }
     }
 }
