@@ -480,7 +480,7 @@ body .ui-button {
 }
 
 .adminView.ui-tabs-vertical .scanColumn {
-    padding-left: 10px;
+    padding-left: 0px;
     padding-right: 0px;
     text-align: center;
 }
