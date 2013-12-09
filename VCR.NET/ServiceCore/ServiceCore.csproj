@@ -152,6 +152,7 @@
     <Compile Include="ExtensionManager.cs" />
     <Compile Include="Persistence\FileInformation.cs" />
     <Compile Include="Planning\PlanContext.cs" />
+    <Compile Include="Planning\ScheduleInformation.cs" />
     <Compile Include="Planning\SourceListTask.cs" />
     <Compile Include="Planning\ProgramGuideTask.cs" />
     <Compile Include="Planning\RecordingPlanner.cs" />

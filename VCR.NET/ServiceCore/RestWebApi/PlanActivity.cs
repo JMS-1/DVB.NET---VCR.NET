@@ -199,12 +199,13 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
             // May need some correction
             var runningInfo = context.GetRunState( definition.UniqueIdentifier );
             if (runningInfo != null)
-                if (end == runningInfo.Time.End)
+                if (end == runningInfo.Schedule.Time.End)
                 {
-                    // Reload the real start time
-                    start = runningInfo.Time.Start;
+                    // Reload the real start and times - just in case someone manipulated
+                    start = runningInfo.Schedule.Time.Start;
+                    end = runningInfo.RealTime.End;
 
-                    // Take all data from recording
+                    // Never report as late - actually since we have some spin up time most of the time the recording is late
                     activity.IsLate = false;
                 }
 

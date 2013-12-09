@@ -225,4 +225,7 @@
   <data name="BadRuleFile" xml:space="preserve">
     <value>Fehler beim Einlesen der Regeldatei für die Aufzeichnungsplanung: {0}</value>
   </data>
+  <data name="BadScheduleInformation" xml:space="preserve">
+    <value>Es wird versucht, die Aufzeichnung '{1}' ({0}) mehrfach zu starten</value>
+  </data>
 </root>

@@ -17,54 +17,6 @@ namespace JMS.DVBVCR.RecordingService.Planning
     public class RecordingPlanner : IDisposable
     {
         /// <summary>
-        /// Beschreibt eine aktive Aufzeichnung.
-        /// </summary>
-        private class ScheduleInformation : IScheduleInformation
-        {
-            /// <summary>
-            /// Die originalen Informationen.
-            /// </summary>
-            private readonly IScheduleInformation m_original;
-
-            /// <summary>
-            /// Erstellt eine neue Beschreibung.
-            /// </summary>
-            /// <param name="original">Die originalen Informationen.</param>
-            public ScheduleInformation( IScheduleInformation original )
-            {
-                // Validate
-                if (original == null)
-                    throw new ArgumentNullException( "original" );
-
-                // Remember
-                m_original = original;
-
-                // Cache time
-                Time = m_original.Time;
-            }
-
-            /// <summary>
-            /// Meldet die zugehörige Aufzeichnung.
-            /// </summary>
-            public IScheduleDefinition Definition { get { return m_original.Definition; } }
-
-            /// <summary>
-            /// Meldet die verwendete Quelle.
-            /// </summary>
-            public IScheduleResource Resource { get { return m_original.Resource; } }
-
-            /// <summary>
-            /// Gesetzt, wenn die Aufzeichnung verspätet beginnt.
-            /// </summary>
-            public bool StartsLate { get { return m_original.StartsLate; } }
-
-            /// <summary>
-            /// Meldet oder ändert den Zeitraum der Aufzeichnung.
-            /// </summary>
-            public PlannedTime Time { get; set; }
-        }
-
-        /// <summary>
         /// Die zugehörige Arbeitsumgebung.
         /// </summary>
         private readonly IRecordingPlannerSite m_site;
@@ -269,7 +221,7 @@ namespace JMS.DVBVCR.RecordingService.Planning
                         return;
 
                     // Report to site
-                    m_site.Stop( schedule, this );
+                    m_site.Stop( schedule.Schedule, this );
 
                     // Done
                     return;
@@ -287,6 +239,10 @@ namespace JMS.DVBVCR.RecordingService.Planning
         /// <returns>Gesetzt, wenn der Vorgang erfolgreich war.</returns>
         public bool Start( IScheduleInformation item )
         {
+            // Validate
+            if (item is ScheduleInformation)
+                VCRServer.LogError( Properties.Resources.BadScheduleInformation, item.Definition.UniqueIdentifier, item.Definition.Name );
+
             // Try start
             if (!m_manager.Start( item ))
                 return false;
@@ -344,7 +300,7 @@ namespace JMS.DVBVCR.RecordingService.Planning
 
             // Update
             if (recording != null)
-                started.Time = recording.Time;
+                started.RealTime = recording.Time;
 
             // Did it
             return true;

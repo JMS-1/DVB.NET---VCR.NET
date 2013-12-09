@@ -52,7 +52,7 @@ namespace JMS.DVBVCR.RecordingService.Planning
         /// <summary>
         /// Alle laufenden Aufzeichnungen.
         /// </summary>
-        private readonly Dictionary<Guid, IScheduleInformation> m_running;
+        private readonly Dictionary<Guid, ScheduleInformation> m_running;
 
         /// <summary>
         /// Der gesamte Aufzeichnungsplan.
@@ -63,10 +63,10 @@ namespace JMS.DVBVCR.RecordingService.Planning
         /// Erstellt eine neue Detailinformation.
         /// </summary>
         /// <param name="running">Alle laufenden Aufzeichnungen.</param>
-        internal PlanContext( IEnumerable<IScheduleInformation> running )
+        internal PlanContext( IEnumerable<ScheduleInformation> running )
         {
             // Remember
-            m_running = (running ?? Enumerable.Empty<IScheduleInformation>()).ToDictionary( info => info.Definition.UniqueIdentifier );
+            m_running = (running ?? Enumerable.Empty<ScheduleInformation>()).ToDictionary( info => info.Schedule.Definition.UniqueIdentifier );
         }
 
         /// <summary>
@@ -74,10 +74,10 @@ namespace JMS.DVBVCR.RecordingService.Planning
         /// </summary>
         /// <param name="uniqueIdentifier">Die eindeutige Kennung der Aufzeichnung.</param>
         /// <returns>Die Informationen, mit denen die Aufzeichnung gestartet wurde.</returns>
-        public IScheduleInformation GetRunState( Guid uniqueIdentifier )
+        public ScheduleInformation GetRunState( Guid uniqueIdentifier )
         {
             // Report
-            IScheduleInformation info;
+            ScheduleInformation info;
             return m_running.TryGetValue( uniqueIdentifier, out info ) ? info : null;
         }
 

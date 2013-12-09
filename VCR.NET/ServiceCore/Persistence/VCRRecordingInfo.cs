@@ -548,14 +548,14 @@ namespace JMS.DVBVCR.RecordingService.Persistence
             // May want to adjust start time if job is active
             var runningInfo = context.GetRunState( definition.UniqueIdentifier );
             if (runningInfo != null)
-                if (runningInfo.Time.End == recording.EndsAt)
+                if (runningInfo.Schedule.Time.End == recording.EndsAt)
                 {
                     // Assume we never start late - we are running
                     recording.StartsLate = false;
 
-                    // If we startet prior to this plan report the time we really started
-                    if (planItem.Time.Start > runningInfo.Time.Start)
-                        recording.StartsAt = runningInfo.Time.Start;
+                    // If we started prior to this plan report the time we really started
+                    if (planItem.Time.Start > runningInfo.Schedule.Time.Start)
+                        recording.StartsAt = runningInfo.Schedule.Time.Start;
                 }
 
             // Finish
