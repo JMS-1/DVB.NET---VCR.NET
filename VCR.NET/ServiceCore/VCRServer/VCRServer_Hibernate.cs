@@ -56,7 +56,7 @@ namespace JMS.DVBVCR.RecordingService
             VCRConfiguration.Current.HasRecordedSomething = false;
 
             // Get the final plan respecting the fact that we are now hibernating
-            Profiles.WaitForNewPlan();
+            Profiles.EnsureNewPlan();
         }
 
         /// <summary>

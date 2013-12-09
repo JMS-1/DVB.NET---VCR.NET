@@ -449,7 +449,7 @@ namespace JMS.DVBVCR.RecordingService
         /// <summary>
         /// Fordert eine Aktualisierung an und berechnet einen neuen Plan.
         /// </summary>
-        public void WaitForNewPlan()
+        public void EnsureNewPlan()
         {
             // Make sure that we use an up do date plan
             lock (m_planAvailableSync)
