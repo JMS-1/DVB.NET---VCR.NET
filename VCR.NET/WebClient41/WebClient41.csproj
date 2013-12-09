@@ -101,6 +101,7 @@
     <Content Include="content\themes\base\images\ui-icons_888888_256x240.png" />
     <Content Include="content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="content\themes\base\jquery-ui.css" />
+    <Content Include="FAQ\customschedule.html" />
     <Content Include="FAQ\archive.html" />
     <Content Include="FAQ\configuration.html" />
     <Content Include="FAQ\controlcenter.html" />
@@ -231,7 +232,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="content\vcrnet.less" />
+    <None Include="content\vcrnet.less" />
     <Content Include="scripts\vcrnet.js.map">
       <DependentUpon>vcrnet.ts</DependentUpon>
     </Content>

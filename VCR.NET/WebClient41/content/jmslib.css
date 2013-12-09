@@ -1,21 +1,26 @@
 ﻿.invalid {
-  border: 2px solid red;
+    border: 2px solid red;
 }
+
 .validatingCheckbox {
-  padding-top: 4px;
+    padding-top: 4px;
 }
+
 .invisible {
-  display: none;
+    display: none;
 }
+
 .warning {
-  font-weight: bold;
-  color: red;
+    font-weight: bold;
+    color: red;
 }
+
 .inlineHelp {
-  font-size: 16px !important;
-  margin: 10px 10px 10px 10px !important;
-  width: 80% !important;
+    font-size: 16px !important;
+    margin: 10px 10px 10px 10px !important;
+    width: 80% !important;
 }
+
 .inlineHelp .ui-accordion-header {
-  font-size: 12px;
+    font-size: 12px;
 }
