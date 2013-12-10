@@ -179,11 +179,17 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// <returns>Die angeforderte Repräsentation.</returns>
         public static PlanActivity Create( IScheduleInformation schedule, PlanContext context, ProfileStateCollection profiles )
         {
-            // Maybe it's an resource allocation
+            // Request context information
             var definition = schedule.Definition;
-            var resourceAllocation = definition as IResourceAllocationInformation;
-            if (resourceAllocation != null)
-                return null;
+            var runningInfo = context.GetRunState( definition.UniqueIdentifier );
+            var isAllocation = definition is IResourceAllocationInformation;
+
+            // Maybe it's an resource allocation
+            if (isAllocation)
+                if (runningInfo != null)
+                    definition = runningInfo.Schedule.Definition;
+                else
+                    return null;
 
             // Create initial entry
             var time = schedule.Time;
@@ -197,10 +203,13 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
                     };
 
             // May need some correction
-            var runningInfo = context.GetRunState( definition.UniqueIdentifier );
             if (runningInfo != null)
                 if (end == runningInfo.Schedule.Time.End)
                 {
+                    // Only report the allocation itself
+                    if (!isAllocation)
+                        return null;
+
                     // Reload the real start and times - just in case someone manipulated
                     start = runningInfo.Schedule.Time.Start;
                     end = runningInfo.RealTime.End;
