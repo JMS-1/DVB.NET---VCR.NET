@@ -10,7 +10,6 @@ namespace VCRControlCenter
     {
         public readonly string ServerName;
         public readonly ushort ServerPort;
-        public readonly bool RunExtensions;
 
         public PerServerSettings.PerServerView View { get; private set; }
         private VCRNETControl m_Context;
@@ -27,7 +26,6 @@ namespace VCRControlCenter
             // Create a snap shot
             ServerName = settings.ServerName;
             ServerPort = settings.ServerPort;
-            RunExtensions = settings.RunExtensions;
 
             // Report
             View.StartProcessing();

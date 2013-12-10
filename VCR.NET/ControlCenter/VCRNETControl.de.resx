@@ -117,17 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label10.Error" xml:space="preserve">
-    <value />
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="label10.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="label10.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 13</value>
@@ -135,50 +124,14 @@
   <data name="label10.Text" xml:space="preserve">
     <value>Start&amp;verzögerung (Sekunden):</value>
   </data>
-  <data name="label5.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label5.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="label5.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>260, 13</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
     <value>S&amp;prache (Überwachung nach Änderung neu Starten):</value>
   </data>
-  <data name="selDelay.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="selDelay.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="selDelay.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="cmdStreaming.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="cmdStreaming.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="cmdStreaming.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="cmdStreaming.Text" xml:space="preserve">
     <value>Einstellungen für dem Netzwerkver&amp;sand speichern</value>
-  </data>
-  <data name="label9.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label9.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="label9.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
   </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
     <value>95, 13</value>
@@ -186,38 +139,8 @@
   <data name="label9.Text" xml:space="preserve">
     <value>Erster TCP/IP &amp;Port</value>
   </data>
-  <data name="txArgs.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="txArgs.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="txMultiCast.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="txMultiCast.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="label8.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label8.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="label8.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="label8.Text" xml:space="preserve">
     <value>Multi&amp;cast Adresse</value>
-  </data>
-  <data name="label7.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label7.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="label7.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>55, 13</value>
@@ -225,65 +148,14 @@
   <data name="label7.Text" xml:space="preserve">
     <value>&amp;Parameter</value>
   </data>
-  <data name="cmdAppChooser.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="cmdAppChooser.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="cmdAppChooser.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="txViewer.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="txViewer.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="selStreamPort.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="selStreamPort.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="selStreamPort.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="label6.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label6.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="label6.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>101, 13</value>
   </data>
   <data name="label6.Text" xml:space="preserve">
     <value>&amp;Anzeigeanwendung</value>
   </data>
-  <data name="grpStreaming.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="grpStreaming.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="grpStreaming.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="grpStreaming.Text" xml:space="preserve">
     <value>Konfiguration Netzwerkversand</value>
-  </data>
-  <data name="label1.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label1.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="label1.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>112, 13</value>
@@ -291,62 +163,17 @@
   <data name="label1.Text" xml:space="preserve">
     <value>Überwachte Rechner:</value>
   </data>
-  <data name="cmdAdd.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="cmdAdd.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="cmdAdd.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="cmdAdd.Text" xml:space="preserve">
     <value>&amp;Hinzufügen</value>
-  </data>
-  <data name="cmdUpdate.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="cmdUpdate.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="cmdUpdate.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
   </data>
   <data name="cmdUpdate.Text" xml:space="preserve">
     <value>&amp;Ändern</value>
   </data>
-  <data name="cmdUpdateAll.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="cmdUpdateAll.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="cmdUpdateAll.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="cmdUpdateAll.Text" xml:space="preserve">
     <value>Einstellungen für den lokalen VCR&amp;.NET Recording Service speichern</value>
   </data>
-  <data name="selHibernate.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="selHibernate.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="selHibernate.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="selHibernate.Location" type="System.Drawing.Point, System.Drawing">
     <value>404, 30</value>
-  </data>
-  <data name="ckAutoStart.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="ckAutoStart.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="ckAutoStart.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
   </data>
   <data name="ckAutoStart.Size" type="System.Drawing.Size, System.Drawing">
     <value>344, 17</value>
@@ -354,50 +181,14 @@
   <data name="ckAutoStart.Text" xml:space="preserve">
     <value>&amp;Lokalen VCR.NET Recording Service mit der Überwachung starten</value>
   </data>
-  <data name="ckHibernate.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="ckHibernate.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="ckHibernate.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="ckHibernate.Size" type="System.Drawing.Size, System.Drawing">
     <value>374, 17</value>
   </data>
   <data name="ckHibernate.Text" xml:space="preserve">
     <value>Rechner nach Aufzeichnung in den &amp;Schlafzustand versetzen (in Minuten):</value>
   </data>
-  <data name="frameLocal.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="frameLocal.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="frameLocal.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="frameLocal.Text" xml:space="preserve">
     <value>Einstellungen für den VCR.NET Recording Service auf diesem Rechner</value>
-  </data>
-  <data name="selLanguage.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="selLanguage.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="selLanguage.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="label4.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label4.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="label4.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>145, 13</value>
@@ -405,29 +196,11 @@
   <data name="label4.Text" xml:space="preserve">
     <value>A&amp;ktualisierung (in Sekunden):</value>
   </data>
-  <data name="label11.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label11.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="label11.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>134, 13</value>
+    <value>133, 13</value>
   </data>
   <data name="label11.Text" xml:space="preserve">
-    <value>Subnetz (zum Aufwecken):</value>
-  </data>
-  <data name="label2.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label2.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="label2.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>Adresse (zum Aufwecken):</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>77, 13</value>
@@ -435,50 +208,15 @@
   <data name="label2.Text" xml:space="preserve">
     <value>Rechner&amp;name:</value>
   </data>
-  <data name="cmdDelete.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="cmdDelete.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="cmdDelete.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="cmdDelete.Text" xml:space="preserve">
     <value>&amp;Entfernen</value>
-  </data>
-  <data name="txSubNet.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="txSubNet.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="txSubNet.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="txServer.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="txServer.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="txServer.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="label3.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="label3.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="label3.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
   </data>
   <data name="columnHeader1.Text" xml:space="preserve">
     <value>Rechnername</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="columnHeader1.Width" type="System.Int32, mscorlib">
-    <value>87</value>
+    <value>175</value>
   </data>
   <data name="columnHeader3.Text" xml:space="preserve">
     <value>Aktualisierungsrate</value>
@@ -486,56 +224,11 @@
   <data name="columnHeader3.Width" type="System.Int32, mscorlib">
     <value>109</value>
   </data>
-  <data name="columnHeader4.Text" xml:space="preserve">
-    <value>Erweiterungen</value>
-  </data>
   <data name="columnHeader5.Text" xml:space="preserve">
-    <value>Subnetz</value>
+    <value>Weckadresse</value>
   </data>
   <data name="columnHeader5.Width" type="System.Int32, mscorlib">
     <value>129</value>
-  </data>
-  <data name="lstServers.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="lstServers.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="lstServers.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="selInterval.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="selInterval.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="selInterval.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="ckExtensions.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="ckExtensions.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="ckExtensions.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="ckExtensions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 17</value>
-  </data>
-  <data name="ckExtensions.Text" xml:space="preserve">
-    <value>Er&amp;weiterungen ausführen</value>
-  </data>
-  <data name="selPort.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="selPort.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="selPort.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -556,15 +249,6 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Konfiguration der VCR.NET Überwachung</value>
-  </data>
-  <data name="trayMenu.Error" xml:space="preserve">
-    <value />
-  </data>
-  <data name="trayMenu.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>MiddleRight</value>
-  </data>
-  <data name="trayMenu.IconPadding" type="System.Int32, mscorlib">
-    <value>0</value>
   </data>
   <data name="mnuDefault.Size" type="System.Drawing.Size, System.Drawing">
     <value>273, 22</value>

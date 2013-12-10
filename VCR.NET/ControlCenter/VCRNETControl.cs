@@ -378,7 +378,6 @@ namespace VCRControlCenter
                                     {
                                         ServerName = "localhost",
                                         RefreshInterval = 10,
-                                        RunExtensions = true,
                                         ServerPort = port,
                                     };
 
@@ -826,8 +825,7 @@ namespace VCRControlCenter
                 if (subNetAddress.ToString().Equals( server.WakeUpBroadcast ))
                     if (selInterval.Value == server.RefreshInterval)
                         if (selPort.Value == server.ServerPort)
-                            if (ckExtensions.Checked == server.RunExtensions)
-                                return;
+                            return;
 
             // And finally we could update
             cmdUpdate.Enabled = true;
@@ -840,7 +838,6 @@ namespace VCRControlCenter
                 new PerServerSettings
                 {
                     RefreshInterval = (int) selInterval.Value,
-                    RunExtensions = ckExtensions.Checked,
                     ServerPort = (ushort) selPort.Value,
                     WakeUpBroadcast = txSubNet.Text,
                     ServerName = txServer.Text,
@@ -905,7 +902,6 @@ namespace VCRControlCenter
                 // Reste
                 txServer.Text = (lstServers.Items.Count < 1) ? "VCRServer" : null;
                 txSubNet.Text = IPAddress.Broadcast.ToString();
-                ckExtensions.Checked = true;
                 selInterval.Value = 10;
                 selPort.Value = 80;
             }
@@ -917,7 +913,6 @@ namespace VCRControlCenter
 
                 // Load all
                 txSubNet.Text = settings.SubNetAddress.ToString();
-                ckExtensions.Checked = settings.RunExtensions;
                 selInterval.Value = settings.RefreshInterval;
                 txServer.Text = settings.ServerName;
                 selPort.Value = settings.ServerPort;
@@ -982,14 +977,12 @@ namespace VCRControlCenter
 
             // Remember
             var subNetAddress = settings.WakeUpBroadcast;
-            var extensions = settings.RunExtensions;
             var interval = settings.RefreshInterval;
             var server = settings.ServerName;
             var port = settings.ServerPort;
 
             // Update
             settings.RefreshInterval = (int) selInterval.Value;
-            settings.RunExtensions = ckExtensions.Checked;
             settings.ServerPort = (ushort) selPort.Value;
             settings.WakeUpBroadcast = txSubNet.Text;
             settings.ServerName = txServer.Text;
@@ -1013,7 +1006,6 @@ namespace VCRControlCenter
             {
                 // Back
                 settings.WakeUpBroadcast = subNetAddress;
-                settings.RunExtensions = extensions;
                 settings.RefreshInterval = interval;
                 settings.ServerName = server;
                 settings.ServerPort = port;

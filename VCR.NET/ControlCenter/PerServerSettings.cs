@@ -14,8 +14,6 @@ namespace VCRControlCenter
 
         public int RefreshInterval { get; set; }
 
-        public bool RunExtensions { get; set; }
-
         public string WakeUpBroadcast { get; set; }
 
         public class PerServerView : ListViewItem
@@ -48,7 +46,6 @@ namespace VCRControlCenter
                 Text = Settings.ServerName;
                 SubItems.Add( Settings.ServerPort.ToString() );
                 SubItems.Add( Settings.RefreshInterval.ToString() );
-                SubItems.Add( Settings.RunExtensions ? Properties.Resources.Yes : Properties.Resources.No );
                 SubItems.Add( Settings.SubNetAddress.ToString() );
             }
 
