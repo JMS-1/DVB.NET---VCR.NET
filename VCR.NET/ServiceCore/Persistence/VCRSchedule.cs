@@ -391,14 +391,11 @@ namespace JMS.DVBVCR.RecordingService.Persistence
                 if (disabled( identifier ))
                     return;
 
-            // See if we cansider the job as running in which case we still consider it in the plan even even end time has been set
-            var isRunning = (disabled == null) && (context.GetRunState( identifier ) != null);
-            var noStartBefore = isRunning ? null : NoStartBefore;
-
             // Load all
             var name = string.IsNullOrEmpty( Name ) ? job.Name : string.Format( "{0} ({1})", job.Name, Name );
             var source = ProfileScheduleResource.CreateSource( selection );
             var duration = TimeSpan.FromMinutes( Duration );
+            var noStartBefore = NoStartBefore;
             var start = FirstStart;
 
             // Check repetition
