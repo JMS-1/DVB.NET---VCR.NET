@@ -99,6 +99,96 @@ namespace VCRControlCenter
             }
         }
 
+        /// <summary>
+        /// Ermittelt die Netzwerkinformationen.
+        /// </summary>
+        /// <param name="table">Ein vorbereiteter Speicherbereich.</param>
+        /// <param name="size">Die Größe des Speicherbereiches.</param>
+        /// <param name="order">Gesetzt, wenn die Einträge sortiert werden sollen.</param>
+        /// <returns>Ein Fehlercode.</returns>
+        [DllImport( "Iphlpapi.dll" )]
+        private static extern UInt32 GetIpNetTable( IntPtr table, ref UInt32 size, bool order );
+
+        /// <summary>
+        /// Informationen über eine Adresse.
+        /// </summary>
+        [StructLayout( LayoutKind.Sequential, Pack = 1 )]
+        private struct IpNetRow
+        {
+            /// <summary>
+            /// Die Größe in Bytes.
+            /// </summary>
+            public static readonly int SizeOf = Marshal.SizeOf( typeof( IpNetRow ) );
+
+            /// <summary>
+            /// Die laufende Nummer des Eintrags.
+            /// </summary>
+            private UInt32 m_index;
+
+            /// <summary>
+            /// Die Anzahl der Adressbytes.
+            /// </summary>
+            private UInt32 m_physicalAddressBytes;
+
+            /// <summary>
+            /// Die physikalische Adresse.
+            /// </summary>
+            [MarshalAs( UnmanagedType.ByValArray, SizeConst = 8 )]
+            private byte[] m_physicalAddress;
+
+            /// <summary>
+            /// Die Netzwerkadresse.
+            /// </summary>
+            private UInt32 m_ip4Address;
+
+            /// <summary>
+            /// Die Art der Adresse.
+            /// </summary>
+            private UInt32 m_type;
+
+            /// <summary>
+            /// Prüft, ob dieser Eintrag zu einer Adresse passt.
+            /// </summary>
+            /// <param name="addresses">Eine Liste von Adressen.</param>
+            /// <returns>Gesetzt, wenn mindestens eine davon passt.</returns>
+            public bool Matches( IEnumerable<IPAddress> addresses )
+            {
+                // None
+                if (addresses == null)
+                    return false;
+                else
+                    return addresses.Any( new IPAddress( m_ip4Address ).Equals );
+            }
+
+            /// <summary>
+            /// Weckt den zugehörigen Rechner auf.
+            /// </summary>
+            /// <param name="subnet">Die Subnetzaddresse des Rechners.</param>
+            public void Wakeup( IPAddress subnet )
+            {
+                // Create a brand new socket
+                var socket = new Socket( AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp );
+
+                // Configure it
+                socket.SetSocketOption( SocketOptionLevel.Socket, SocketOptionName.Broadcast, true );
+                socket.Connect( subnet, 7 );
+
+                // Buffer
+                var buffer = new List<byte>( checked( (int) (6 + 16 * m_physicalAddressBytes) ) );
+
+                // Start with prefix
+                for (var i = 6; i-- > 0; )
+                    buffer.Add( 0xff );
+
+                // Add physical address
+                for (var i = 16; i-- > 0; )
+                    buffer.AddRange( m_physicalAddress.Take( checked( (int) m_physicalAddressBytes ) ) );
+
+                // Process
+                socket.Send( buffer.ToArray() );
+            }
+        }
+
         private static int[] m_HibernateDelays = { 120, 90, 60, 45, 30, 15, 10, 5, -5, -10, -15, -30, -45, -60, -90, -120 };
 
         private static object m_FileLock = new object();
@@ -708,12 +798,18 @@ namespace VCRControlCenter
             cmdUpdate.Enabled = false;
 
             // Get the server name
-            string serverName = txServer.Text;
-            if (string.IsNullOrEmpty( serverName )) return;
+            var serverName = txServer.Text;
+            if (string.IsNullOrEmpty( serverName ))
+                return;
+
+            // Parse the address
+            IPAddress subNetAddress;
+            if (!IPAddress.TryParse( txSubNet.Text, out subNetAddress ))
+                return;
 
             // Find server
-            PerServerSettings server = FindServer( serverName );
-            if (null == server)
+            var server = FindServer( serverName );
+            if (server == null)
             {
                 // At least we can add it
                 cmdAdd.Enabled = true;
@@ -727,10 +823,11 @@ namespace VCRControlCenter
 
             // See if this is an equal entry
             if (serverName.Equals( server.ServerName ))
-                if (selInterval.Value == server.RefreshInterval)
-                    if (selPort.Value == server.ServerPort)
-                        if (ckExtensions.Checked == server.RunExtensions)
-                            return;
+                if (subNetAddress.ToString().Equals( server.WakeUpBroadcast ))
+                    if (selInterval.Value == server.RefreshInterval)
+                        if (selPort.Value == server.ServerPort)
+                            if (ckExtensions.Checked == server.RunExtensions)
+                                return;
 
             // And finally we could update
             cmdUpdate.Enabled = true;
@@ -739,19 +836,21 @@ namespace VCRControlCenter
         private void cmdAdd_Click( object sender, EventArgs e )
         {
             // Create a brand new item
-            PerServerSettings settings = new PerServerSettings();
-
-            // Initialize it
-            settings.ServerName = txServer.Text;
-            settings.RefreshInterval = (int) selInterval.Value;
-            settings.ServerPort = (ushort) selPort.Value;
-            settings.RunExtensions = ckExtensions.Checked;
+            var settings =
+                new PerServerSettings
+                {
+                    RefreshInterval = (int) selInterval.Value,
+                    RunExtensions = ckExtensions.Checked,
+                    ServerPort = (ushort) selPort.Value,
+                    WakeUpBroadcast = txSubNet.Text,
+                    ServerName = txServer.Text,
+                };
 
             // Update view
             settings.View.Refresh();
 
             // Create the update list
-            List<PerServerSettings> list = new List<PerServerSettings>();
+            var list = new List<PerServerSettings>();
 
             // Existing
             foreach (PerServerSettings.PerServerView view in lstServers.Items)
@@ -801,25 +900,27 @@ namespace VCRControlCenter
         private void lstServers_SelectedIndexChanged( object sender, EventArgs e )
         {
             // Single select only
-            if (1 != lstServers.SelectedItems.Count)
+            if (lstServers.SelectedItems.Count != 1)
             {
                 // Reste
                 txServer.Text = (lstServers.Items.Count < 1) ? "VCRServer" : null;
+                txSubNet.Text = IPAddress.Broadcast.ToString();
+                ckExtensions.Checked = true;
                 selInterval.Value = 10;
                 selPort.Value = 80;
-                ckExtensions.Checked = true;
             }
             else
             {
                 // Attach to the selected item
-                PerServerSettings.PerServerView view = (PerServerSettings.PerServerView) lstServers.SelectedItems[0];
-                PerServerSettings settings = view.Settings;
+                var view = (PerServerSettings.PerServerView) lstServers.SelectedItems[0];
+                var settings = view.Settings;
 
                 // Load all
+                txSubNet.Text = settings.SubNetAddress.ToString();
+                ckExtensions.Checked = settings.RunExtensions;
+                selInterval.Value = settings.RefreshInterval;
                 txServer.Text = settings.ServerName;
                 selPort.Value = settings.ServerPort;
-                selInterval.Value = settings.RefreshInterval;
-                ckExtensions.Checked = settings.RunExtensions;
             }
 
             // Refresh all
@@ -829,11 +930,12 @@ namespace VCRControlCenter
         private void cmdDelete_Click( object sender, EventArgs e )
         {
             // Create a brand new item
-            PerServerSettings settings = FindServer( txServer.Text );
-            if (null == settings) return;
+            var settings = FindServer( txServer.Text );
+            if (settings == null)
+                return;
 
             // Create the update list
-            List<PerServerSettings> list = new List<PerServerSettings>();
+            var list = new List<PerServerSettings>();
 
             // Existing
             foreach (PerServerSettings.PerServerView view in lstServers.Items)
@@ -841,7 +943,7 @@ namespace VCRControlCenter
                     list.Add( view.Settings );
 
             // Old value
-            PerServerSettings[] oldSettings = m_Settings.Servers;
+            var oldSettings = m_Settings.Servers;
 
             // Update
             m_Settings.Servers = list.ToArray();
@@ -874,19 +976,22 @@ namespace VCRControlCenter
         private void cmdUpdate_Click( object sender, EventArgs e )
         {
             // Create a brand new item
-            PerServerSettings settings = FindServer( txServer.Text );
-            if (null == settings) return;
+            var settings = FindServer( txServer.Text );
+            if (settings == null)
+                return;
 
             // Remember
-            bool extensions = settings.RunExtensions;
-            int interval = settings.RefreshInterval;
-            string server = settings.ServerName;
-            ushort port = settings.ServerPort;
+            var subNetAddress = settings.WakeUpBroadcast;
+            var extensions = settings.RunExtensions;
+            var interval = settings.RefreshInterval;
+            var server = settings.ServerName;
+            var port = settings.ServerPort;
 
             // Update
             settings.RefreshInterval = (int) selInterval.Value;
             settings.RunExtensions = ckExtensions.Checked;
             settings.ServerPort = (ushort) selPort.Value;
+            settings.WakeUpBroadcast = txSubNet.Text;
             settings.ServerName = txServer.Text;
 
             // Try save
@@ -907,6 +1012,7 @@ namespace VCRControlCenter
             catch (Exception ex)
             {
                 // Back
+                settings.WakeUpBroadcast = subNetAddress;
                 settings.RunExtensions = extensions;
                 settings.RefreshInterval = interval;
                 settings.ServerName = server;
@@ -1519,17 +1625,18 @@ namespace VCRControlCenter
             lock (m_FileLock)
             {
                 // Read the logging path
-                string logPath = (string) ConfigurationManager.AppSettings["IconLogPath"];
-                if (string.IsNullOrEmpty( logPath )) return;
+                var logPath = ConfigurationManager.AppSettings["IconLogPath"];
+                if (string.IsNullOrEmpty( logPath ))
+                    return;
 
                 // Be safe
                 try
                 {
                     // Create text
-                    byte[] text = Encoding.GetEncoding( 1252 ).GetBytes( string.Format( "{0} {1}\r\n", DateTime.Now, message ) );
+                    var text = Encoding.GetEncoding( 1252 ).GetBytes( string.Format( "{0} {1}\r\n", DateTime.Now, message ) );
 
                     // Attach to the file
-                    using (FileStream stream = new FileStream( logPath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read ))
+                    using (var stream = new FileStream( logPath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read ))
                     {
                         // Move to end
                         stream.Seek( 0, SeekOrigin.End );
@@ -1597,95 +1704,6 @@ namespace VCRControlCenter
         }
 
         /// <summary>
-        /// Ermittelt die Netzwerkinformationen.
-        /// </summary>
-        /// <param name="table">Ein vorbereiteter Speicherbereich.</param>
-        /// <param name="size">Die Größe des Speicherbereiches.</param>
-        /// <param name="order">Gesetzt, wenn die Einträge sortiert werden sollen.</param>
-        /// <returns>Ein Fehlercode.</returns>
-        [DllImport( "Iphlpapi.dll" )]
-        private static extern UInt32 GetIpNetTable( IntPtr table, ref UInt32 size, bool order );
-
-        /// <summary>
-        /// Informationen über eine Adresse.
-        /// </summary>
-        [StructLayout( LayoutKind.Sequential, Pack = 1 )]
-        private struct IpNetRow
-        {
-            /// <summary>
-            /// Die Größe in Bytes.
-            /// </summary>
-            public static readonly int SizeOf = Marshal.SizeOf( typeof( IpNetRow ) );
-
-            /// <summary>
-            /// Die laufende Nummer des Eintrags.
-            /// </summary>
-            private UInt32 m_index;
-
-            /// <summary>
-            /// Die Anzahl der Adressbytes.
-            /// </summary>
-            private UInt32 m_physicalAddressBytes;
-
-            /// <summary>
-            /// Die physikalische Adresse.
-            /// </summary>
-            [MarshalAs( UnmanagedType.ByValArray, SizeConst = 8 )]
-            private byte[] m_physicalAddress;
-
-            /// <summary>
-            /// Die Netzwerkadresse.
-            /// </summary>
-            private UInt32 m_ip4Address;
-
-            /// <summary>
-            /// Die Art der Adresse.
-            /// </summary>
-            private UInt32 m_type;
-
-            /// <summary>
-            /// Prüft, ob dieser Eintrag zu einer Adresse passt.
-            /// </summary>
-            /// <param name="addresses">Eine Liste von Adressen.</param>
-            /// <returns>Gesetzt, wenn mindestens eine davon passt.</returns>
-            public bool Matches( IEnumerable<IPAddress> addresses )
-            {
-                // None
-                if (addresses == null)
-                    return false;
-                else
-                    return addresses.Any( new IPAddress( m_ip4Address ).Equals );
-            }
-
-            /// <summary>
-            /// Weckt den zugehörigen Rechner auf.
-            /// </summary>
-            public void Wakeup()
-            {
-                // Create a brand new socket
-                var socket = new Socket( AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp );
-
-                // Configure it
-                socket.SetSocketOption( SocketOptionLevel.Socket, SocketOptionName.Broadcast, true );
-                socket.Connect( IPAddress.Broadcast, 7 );
-
-                // Buffer
-                var buffer = new List<byte>( checked( (int) (6 + 16 * m_physicalAddressBytes) ) );
-
-                // Start with prefix
-                for (var i = 6; i-- > 0; )
-                    buffer.Add( 0xff );
-
-                // Add physical address
-                for (var i = 16; i-- > 0; )
-                    buffer.AddRange( m_physicalAddress.Take( checked( (int) m_physicalAddressBytes ) ) );
-
-                // Process
-                socket.Send( buffer.ToArray() );
-            }
-        }
-
-        /// <summary>
         /// Versucht den Dienstrechner aufzuwecken.
         /// </summary>
         /// <param name="sender">Wird ignoriert.</param>
@@ -1704,14 +1722,26 @@ namespace VCRControlCenter
             // Resolve server
             var server = Dns.GetHostEntry( settings.ServerName );
             if (server == null)
+            {
+                // Report and finish
+                Log( "No host entry for {0}", settings.ServerName );
                 return;
+            }
 
             // Get size of address table
             UInt32 size = 0;
             if (GetIpNetTable( IntPtr.Zero, ref size, true ) != 122)
+            {
+                // Report and finish
+                Log( "Can not read network table" );
                 return;
+            }
             if (size < 4)
+            {
+                // Report and finish
+                Log( "Network table is empty" );
                 return;
+            }
 
             // Load address table
             var table = Marshal.AllocHGlobal( checked( (int) size ) );
@@ -1719,7 +1749,11 @@ namespace VCRControlCenter
             {
                 // Get the table
                 if (GetIpNetTable( table, ref size, true ) != 0)
+                {
+                    // Report and finish
+                    Log( "Can not read network table" );
                     return;
+                }
 
                 // Get the number of entries in the table
                 var count = checked( (UInt32) Marshal.ReadInt32( table, 0 ) );
@@ -1733,8 +1767,11 @@ namespace VCRControlCenter
                     // See if this is it
                     if (data.Matches( server.AddressList ))
                     {
+                        // Process
+                        Log( "Sending Magic Packet on subnet {0}", settings.SubNetAddress );
+
                         // Send packet
-                        data.Wakeup();
+                        data.Wakeup( settings.SubNetAddress );
 
                         // Done
                         break;

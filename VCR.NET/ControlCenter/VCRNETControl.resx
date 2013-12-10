@@ -185,7 +185,7 @@
     <value>230, 6</value>
   </data>
   <data name="mnuHibernateReset.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>148, 22</value>
   </data>
   <data name="mnuHibernateReset.Text" xml:space="preserve">
     <value>As &amp;configured</value>
@@ -212,7 +212,7 @@
     <value>Close VCR&amp;.NET Control Center</value>
   </data>
   <data name="trayMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>234, 314</value>
+    <value>234, 292</value>
   </data>
   <data name="&gt;&gt;trayMenu.Name" xml:space="preserve">
     <value>trayMenu</value>
@@ -256,13 +256,13 @@
     <value>NoControl</value>
   </data>
   <data name="cmdAdd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>456, 235</value>
+    <value>456, 261</value>
   </data>
   <data name="cmdAdd.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
   <data name="cmdAdd.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>12</value>
   </data>
   <data name="cmdAdd.Text" xml:space="preserve">
     <value>&amp;Add</value>
@@ -283,13 +283,13 @@
     <value>NoControl</value>
   </data>
   <data name="cmdUpdate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>456, 261</value>
+    <value>456, 287</value>
   </data>
   <data name="cmdUpdate.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
   <data name="cmdUpdate.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
+    <value>15</value>
   </data>
   <data name="cmdUpdate.Text" xml:space="preserve">
     <value>&amp;Update</value>
@@ -313,13 +313,16 @@
     <value>Server Name</value>
   </data>
   <data name="columnHeader1.Width" type="System.Int32, mscorlib">
-    <value>222</value>
+    <value>107</value>
   </data>
   <data name="columnHeader2.Text" xml:space="preserve">
     <value>TCP/IP Port</value>
   </data>
   <data name="columnHeader2.Width" type="System.Int32, mscorlib">
-    <value>78</value>
+    <value>71</value>
+  </data>
+  <data name="columnHeader3.DisplayIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
   <data name="columnHeader3.Text" xml:space="preserve">
     <value>Refresh Interval</value>
@@ -327,11 +330,23 @@
   <data name="columnHeader3.Width" type="System.Int32, mscorlib">
     <value>95</value>
   </data>
+  <data name="columnHeader4.DisplayIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
   <data name="columnHeader4.Text" xml:space="preserve">
     <value>Run Extensions</value>
   </data>
   <data name="columnHeader4.Width" type="System.Int32, mscorlib">
     <value>89</value>
+  </data>
+  <data name="columnHeader5.DisplayIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="columnHeader5.Text" xml:space="preserve">
+    <value>Subnet</value>
+  </data>
+  <data name="columnHeader5.Width" type="System.Int32, mscorlib">
+    <value>125</value>
   </data>
   <data name="lstServers.Location" type="System.Drawing.Point, System.Drawing">
     <value>39, 79</value>
@@ -352,7 +367,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lstServers.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>17</value>
   </data>
   <data name="txServer.Location" type="System.Drawing.Point, System.Drawing">
     <value>184, 212</value>
@@ -373,16 +388,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;txServer.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>15</value>
   </data>
   <data name="selPort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>184, 238</value>
+    <value>184, 264</value>
   </data>
   <data name="selPort.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 20</value>
   </data>
   <data name="selPort.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="&gt;&gt;selPort.Name" xml:space="preserve">
     <value>selPort</value>
@@ -394,16 +409,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;selPort.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>20</value>
   </data>
   <data name="selInterval.Location" type="System.Drawing.Point, System.Drawing">
-    <value>184, 264</value>
+    <value>184, 290</value>
   </data>
   <data name="selInterval.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 20</value>
   </data>
   <data name="selInterval.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>14</value>
   </data>
   <data name="&gt;&gt;selInterval.Name" xml:space="preserve">
     <value>selInterval</value>
@@ -415,7 +430,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;selInterval.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>18</value>
   </data>
   <data name="ckExtensions.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -427,13 +442,13 @@
     <value>NoControl</value>
   </data>
   <data name="ckExtensions.Location" type="System.Drawing.Point, System.Drawing">
-    <value>39, 291</value>
+    <value>39, 316</value>
   </data>
   <data name="ckExtensions.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 17</value>
   </data>
   <data name="ckExtensions.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>16</value>
   </data>
   <data name="ckExtensions.Text" xml:space="preserve">
     <value>Run E&amp;xtensions</value>
@@ -448,19 +463,19 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ckExtensions.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>19</value>
   </data>
   <data name="cmdDelete.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="cmdDelete.Location" type="System.Drawing.Point, System.Drawing">
-    <value>456, 287</value>
+    <value>456, 312</value>
   </data>
   <data name="cmdDelete.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
   <data name="cmdDelete.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+    <value>17</value>
   </data>
   <data name="cmdDelete.Text" xml:space="preserve">
     <value>&amp;Delete</value>
@@ -475,7 +490,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cmdDelete.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -505,7 +520,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -514,13 +529,13 @@
     <value>NoControl</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>36, 240</value>
+    <value>36, 266</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>68, 13</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
     <value>TCP/IP &amp;Port:</value>
@@ -535,7 +550,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>16</value>
   </data>
   <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -544,13 +559,13 @@
     <value>NoControl</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>36, 266</value>
+    <value>36, 292</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>136, 13</value>
   </data>
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>13</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
     <value>Refresh Interval (Seconds):</value>
@@ -676,13 +691,13 @@
     <value>3</value>
   </data>
   <data name="frameLocal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 316</value>
+    <value>15, 341</value>
   </data>
   <data name="frameLocal.Size" type="System.Drawing.Size, System.Drawing">
     <value>516, 116</value>
   </data>
   <data name="frameLocal.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
+    <value>18</value>
   </data>
   <data name="frameLocal.Text" xml:space="preserve">
     <value>Settings for local VCR.NET Recording Service</value>
@@ -817,7 +832,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>543, 608</value>
+    <value>543, 634</value>
   </data>
   <data name="label10.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -866,6 +881,57 @@
   </data>
   <data name="&gt;&gt;selDelay.ZOrder" xml:space="preserve">
     <value>3</value>
+  </data>
+  <data name="label11.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label11.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
+    <value>36, 241</value>
+  </data>
+  <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>142, 13</value>
+  </data>
+  <data name="label11.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="label11.Text" xml:space="preserve">
+    <value>Sub-Network (for Wake-Up):</value>
+  </data>
+  <data name="&gt;&gt;label11.Name" xml:space="preserve">
+    <value>label11</value>
+  </data>
+  <data name="&gt;&gt;label11.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label11.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="txSubNet.Location" type="System.Drawing.Point, System.Drawing">
+    <value>184, 238</value>
+  </data>
+  <data name="txSubNet.Size" type="System.Drawing.Size, System.Drawing">
+    <value>242, 20</value>
+  </data>
+  <data name="txSubNet.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;txSubNet.Name" xml:space="preserve">
+    <value>txSubNet</value>
+  </data>
+  <data name="&gt;&gt;txSubNet.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txSubNet.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;txSubNet.ZOrder" xml:space="preserve">
+    <value>14</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1011,6 +1077,12 @@
     <value>columnHeader4</value>
   </data>
   <data name="&gt;&gt;columnHeader4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;columnHeader5.Name" xml:space="preserve">
+    <value>columnHeader5</value>
+  </data>
+  <data name="&gt;&gt;columnHeader5.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tickProcess.Name" xml:space="preserve">
@@ -1236,13 +1308,13 @@
     <value>9</value>
   </data>
   <data name="grpStreaming.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 438</value>
+    <value>15, 463</value>
   </data>
   <data name="grpStreaming.Size" type="System.Drawing.Size, System.Drawing">
     <value>516, 164</value>
   </data>
   <data name="grpStreaming.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
+    <value>19</value>
   </data>
   <data name="grpStreaming.Text" xml:space="preserve">
     <value>Streaming Configuration</value>

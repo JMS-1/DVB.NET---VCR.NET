@@ -8,37 +8,15 @@ namespace VCRControlCenter
 {
     public class PerServerSettings
     {
-        private string m_Server;
+        public string ServerName { get; set; }
 
-        public string ServerName
-        {
-            get { return m_Server; }
-            set { m_Server = value; }
-        }
+        public ushort ServerPort { get; set; }
 
-        private ushort m_Port;
+        public int RefreshInterval { get; set; }
 
-        public ushort ServerPort
-        {
-            get { return m_Port; }
-            set { m_Port = value; }
-        }
+        public bool RunExtensions { get; set; }
 
-        private int m_Interval;
-
-        public int RefreshInterval
-        {
-            get { return m_Interval; }
-            set { m_Interval = value; }
-        }
-
-        private bool m_Extensions = true;
-
-        public bool RunExtensions
-        {
-            get { return m_Extensions; }
-            set { m_Extensions = value; }
-        }
+        public string WakeUpBroadcast { get; set; }
 
         public class PerServerView : ListViewItem
         {
@@ -71,6 +49,7 @@ namespace VCRControlCenter
                 SubItems.Add( Settings.ServerPort.ToString() );
                 SubItems.Add( Settings.RefreshInterval.ToString() );
                 SubItems.Add( Settings.RunExtensions ? Properties.Resources.Yes : Properties.Resources.No );
+                SubItems.Add( Settings.SubNetAddress.ToString() );
             }
 
             /// <summary>
@@ -145,19 +124,34 @@ namespace VCRControlCenter
         [NonSerialized]
         private bool? m_Local = null;
 
-        public PerServerSettings()
-        {
-        }
-
         public PerServerView View
         {
             get
             {
                 // Create once
-                if (null == m_View) m_View = new PerServerView( this );
+                if (m_View == null)
+                    m_View = new PerServerView( this );
 
                 // Report
                 return m_View;
+            }
+        }
+
+        /// <summary>
+        /// Meldet das Subnetz des Rechners.
+        /// </summary>
+        public IPAddress SubNetAddress
+        {
+            get
+            {
+                // Try to convert
+                IPAddress address;
+                if (!string.IsNullOrEmpty( WakeUpBroadcast ))
+                    if (IPAddress.TryParse( WakeUpBroadcast, out address ))
+                        return address;
+
+                // Fallback
+                return IPAddress.Broadcast;
             }
         }
 
@@ -177,10 +171,10 @@ namespace VCRControlCenter
                 {
                     // Load entrys
                     var selfEntry = Dns.GetHostEntry( Dns.GetHostName() );
-                    var serverEntry = Dns.GetHostEntry( m_Server );
+                    var serverEntry = Dns.GetHostEntry( ServerName );
 
                     // Process
-                    m_Local = (0 == string.Compare( serverEntry.HostName, selfEntry.HostName, true ));
+                    m_Local = StringComparer.InvariantCultureIgnoreCase.Equals( serverEntry.HostName, selfEntry.HostName );
                 }
                 catch
                 {

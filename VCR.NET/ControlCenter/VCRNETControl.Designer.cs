@@ -63,6 +63,7 @@ namespace VCRControlCenter
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.txServer = new System.Windows.Forms.TextBox();
             this.selPort = new System.Windows.Forms.NumericUpDown();
             this.selInterval = new System.Windows.Forms.NumericUpDown();
@@ -93,6 +94,8 @@ namespace VCRControlCenter
             this.errorMessages = new System.Windows.Forms.ErrorProvider(this.components);
             this.label10 = new System.Windows.Forms.Label();
             this.selDelay = new System.Windows.Forms.NumericUpDown();
+            this.txSubNet = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.fileChooser = new System.Windows.Forms.OpenFileDialog();
             this.trayMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selPort)).BeginInit();
@@ -253,7 +256,9 @@ namespace VCRControlCenter
             this.columnHeader1,
             this.columnHeader2,
             this.columnHeader3,
-            this.columnHeader4});
+            this.columnHeader4,
+            this.columnHeader5});
+            this.lstServers.FullRowSelect = true;
             this.lstServers.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lstServers.MultiSelect = false;
             this.lstServers.Name = "lstServers";
@@ -276,6 +281,10 @@ namespace VCRControlCenter
             // columnHeader4
             // 
             resources.ApplyResources(this.columnHeader4, "columnHeader4");
+            // 
+            // columnHeader5
+            // 
+            resources.ApplyResources(this.columnHeader5, "columnHeader5");
             // 
             // txServer
             // 
@@ -530,6 +539,17 @@ namespace VCRControlCenter
             this.selDelay.Name = "selDelay";
             this.selDelay.ValueChanged += new System.EventHandler(this.selDelay_ValueChanged);
             // 
+            // txSubNet
+            // 
+            resources.ApplyResources(this.txSubNet, "txSubNet");
+            this.txSubNet.Name = "txSubNet";
+            this.txSubNet.TextChanged += new System.EventHandler(this.UpdateGUI);
+            // 
+            // label11
+            // 
+            resources.ApplyResources(this.label11, "label11");
+            this.label11.Name = "label11";
+            // 
             // fileChooser
             // 
             this.fileChooser.DefaultExt = "exe";
@@ -550,8 +570,10 @@ namespace VCRControlCenter
             this.Controls.Add(this.frameLocal);
             this.Controls.Add(this.selLanguage);
             this.Controls.Add(this.label4);
+            this.Controls.Add(this.label11);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.cmdDelete);
+            this.Controls.Add(this.txSubNet);
             this.Controls.Add(this.txServer);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.lstServers);
@@ -636,6 +658,9 @@ namespace VCRControlCenter
         private System.Windows.Forms.ToolStripMenuItem mnuLiveConnect;
         private System.Windows.Forms.ToolStripMenuItem mnuHibernateServer;
         private System.Windows.Forms.ToolStripMenuItem mnuWakeupServer;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox txSubNet;
 	}
 }
 
