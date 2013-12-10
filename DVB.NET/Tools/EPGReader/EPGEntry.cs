@@ -69,7 +69,7 @@ namespace EPGReader
 
         public readonly object[] CompareData;
 
-        public EPGEntry( ushort service, string name, string description, DateTime start, TimeSpan duration )
+        public EPGEntry( ushort service, string name, string description, DateTime start, TimeSpan duration, ushort? identifier )
         {
             // Main
             Text = string.Format( "{0} (0x{0:x})", service );
@@ -79,6 +79,7 @@ namespace EPGReader
             SubItems.Add( start.Add( duration ).TimeOfDay.ToString() );
             SubItems.Add( name );
             SubItems.Add( description );
+            SubItems.Add( identifier.ToString() );
 
             // Create for compare
             CompareData = new object[] { service, start, start.Add( duration ), name };

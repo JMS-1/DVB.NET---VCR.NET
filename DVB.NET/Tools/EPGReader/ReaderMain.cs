@@ -1,15 +1,14 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using System.ComponentModel;
-using System.Collections.Generic;
-
 using JMS.DVB;
-using JMS.DVB.TS;
 using JMS.DVB.EPG;
-using JMS.DVB.EPG.Tables;
 using JMS.DVB.EPG.Descriptors;
+using JMS.DVB.EPG.Tables;
+using JMS.DVB.TS;
 
 
 namespace EPGReader
@@ -257,7 +256,7 @@ namespace EPGReader
             LoadEventData( out name, out description, entry.Descriptors );
 
             // Remember
-            m_ListItems.Add( new EPGEntry( service, name, description, entry.StartTime.ToLocalTime(), entry.Duration ) );
+            m_ListItems.Add( new EPGEntry( service, name, description, entry.StartTime.ToLocalTime(), entry.Duration, entry.EventIdentifier ) );
         }
 
         private void AddEntry( ContentTransmissionPremiere entry )
@@ -294,7 +293,7 @@ namespace EPGReader
                 }
 
                 // Remember
-                m_ListItems.Add( new EPGEntry( entry.ServiceIdentifier, name, description, schedule.ToLocalTime(), table.Duration ) );
+                m_ListItems.Add( new EPGEntry( entry.ServiceIdentifier, name, description, schedule.ToLocalTime(), table.Duration, null ) );
             }
         }
 
