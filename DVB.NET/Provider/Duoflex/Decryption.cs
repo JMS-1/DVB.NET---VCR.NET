@@ -59,7 +59,7 @@ namespace JMS.DVB.Provider.Duoflex
 
             // Attach to source list
             var sources = (token == null) ? null : token.Sources;
-            var reset = (sources == null) || (sources.Length < 1);
+            var sendNullService = (sources == null) || (sources.Length < 1);
 
             // See if we can do anything
             if (m_DataGraph == null)
@@ -77,7 +77,8 @@ namespace JMS.DVB.Provider.Duoflex
             // Create interface wrapper
             using (var control = new KsControl( controlPtr ))
             {
-                // Deactive if forbiddem
+                // Deactivate if CAM reset is forbidden
+                var reset = sendNullService;
                 if (reset)
                     reset = (m_Suppress != SuppressionMode.Complete);
 
@@ -91,8 +92,11 @@ namespace JMS.DVB.Provider.Duoflex
                     // Process
                     control.Reset();
 
-                    // We did it
+                    // We did it once
                     m_HasBeenReset = true;
+
+                    // No need to send a 0 request - we did a full reset
+                    sendNullService = false;
                 }
 
                 // Start decryption
