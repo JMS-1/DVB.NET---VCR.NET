@@ -1,7 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
-
+using System.IO;
 using JMS.DVB.SI;
 using JMS.DVB.TS;
 
@@ -260,11 +259,11 @@ namespace JMS.DVB
         public bool CreateStream( string filePath, SourceInformation info )
         {
             // Validate
-            if (null != m_TransportStream)
+            if (m_TransportStream != null)
                 throw new InvalidOperationException();
 
             // Load
-            if (null == info)
+            if (info == null)
                 info = GetCurrentInformation();
 
             // Remember settings
@@ -273,11 +272,11 @@ namespace JMS.DVB
             m_FileCount = 0;
 
             // Validate
-            if (null == m_OriginalSettings)
+            if (m_OriginalSettings == null)
                 return false;
 
             // Forward
-            CreateStream( NextStreamIdentifier );
+            CreateStream( NextStreamIdentifier, false );
 
             // Update signature
             m_CurrentSignature = CreateRecordingSignature( m_OriginalSettings );
@@ -299,7 +298,7 @@ namespace JMS.DVB
             get
             {
                 // Check mode
-                if (null == m_TransportStream)
+                if (m_TransportStream == null)
                     return null;
                 else
                     return m_Decrypting;
@@ -531,7 +530,7 @@ namespace JMS.DVB
         public bool RetestSourceInformation( SourceInformation information )
         {
             // Must get the current source information
-            if (null == information)
+            if (information == null)
             {
                 // Close any active stream
                 CloseStream();
@@ -541,21 +540,19 @@ namespace JMS.DVB
             }
 
             // Validate
-            if (null == information.Source)
+            if (information.Source == null)
                 throw new ArgumentNullException( "information.Source" );
             if (!information.Source.Equals( Source ))
                 throw new ArgumentException( information.Source.ToString(), "information.Source" );
 
-            // Get the signature
-            string signature = CreateRecordingSignature( information );
-
             // Nothing changed
-            if (null != m_TransportStream)
+            var signature = CreateRecordingSignature( information );
+            if (m_TransportStream != null)
                 if (signature.Equals( m_CurrentSignature ))
                     return true;
 
             // Get the streaming data
-            string streamTarget = StreamingTarget;
+            var streamTarget = StreamingTarget;
 
             // Stop the current recording
             CloseStream();
@@ -565,13 +562,11 @@ namespace JMS.DVB
             m_CurrentSignature = signature;
 
             // Fire notifications
-            if (null != BeforeRecreateStream)
+            if (BeforeRecreateStream != null)
             {
                 // Request new stream configuration
-                StreamSelection newSelection = BeforeRecreateStream( this );
-
-                // Disabled
-                if (null == newSelection)
+                var newSelection = BeforeRecreateStream( this );
+                if (newSelection == null)
                     return false;
 
                 // Remember
@@ -579,10 +574,10 @@ namespace JMS.DVB
             }
 
             // Forward
-            CreateStream( NextStreamIdentifier );
+            CreateStream( NextStreamIdentifier, true );
 
             // Reactivate streaming
-            if (null != streamTarget)
+            if (streamTarget != null)
                 StreamingTarget = streamTarget;
 
             // Did it
@@ -594,20 +589,19 @@ namespace JMS.DVB
         /// Datei.
         /// </summary>
         /// <param name="nextPID">Die erste Datenstromkennung (PID), die in der Aufzeichnungsdatei verwendet werden darf.</param>
+        /// <param name="recreate">Gesetzt, wenn ein Neustart aufgrund veränderter Nutzdatenströme erforderlich wurde.</param>
         /// <exception cref="ArgumentException">Eine Aufzeichnung der angegebenen Quelle ist nicht möglich.</exception>
-        private void CreateStream( short nextPID )
+        private void CreateStream( short nextPID, bool recreate )
         {
-            // Real file path
-            string filePath = m_OriginalPath;
-
             // Try to get the full name
-            if (null != filePath)
+            var filePath = m_OriginalPath;
+            if (filePath != null)
                 if (m_FileCount > 0)
                 {
                     // Split off the parts
-                    string name = Path.GetFileNameWithoutExtension( filePath );
-                    string dir = Path.GetDirectoryName( filePath );
-                    string ext = Path.GetExtension( filePath );
+                    var name = Path.GetFileNameWithoutExtension( filePath );
+                    var dir = Path.GetDirectoryName( filePath );
+                    var ext = Path.GetExtension( filePath );
 
                     // Construct new name
                     filePath = Path.Combine( dir, string.Format( "{0} - {1}{2}", name, m_FileCount, ext ) );
@@ -786,7 +780,7 @@ namespace JMS.DVB
                 }
 
                 // Remember path
-                if (null != filePath)
+                if (filePath != null)
                     m_AllFiles.Add( new FileStreamInformation { FilePath = filePath, VideoType = m_OriginalSettings.VideoType } );
 
                 // Remember the time
@@ -831,14 +825,12 @@ namespace JMS.DVB
             if (!m_TransportStream.CanSplitFile)
                 return false;
 
-            // Load previous
-            FileStreamInformation last;
-
             // No files so far - strange
-            if (m_AllFiles.Count > 0)
-                last = m_AllFiles[m_AllFiles.Count - 1];
-            else
+            if (m_AllFiles.Count < 1)
                 return false;
+
+            // Load previous
+            var last = m_AllFiles[m_AllFiles.Count - 1];
 
             // Safe split
             try

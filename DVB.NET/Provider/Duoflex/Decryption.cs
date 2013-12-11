@@ -62,39 +62,44 @@ namespace JMS.DVB.Provider.Duoflex
             var reset = (sources == null) || (sources.Length < 1);
 
             // See if we can do anything
-            if (m_DataGraph != null)
-                if (m_FilterIndex >= 0)
-                    if (m_DataGraph.AdditionalFilters.Count > m_FilterIndex)
-                    {
-                        // Check COM interface
-                        var controlPtr = ComIdentity.QueryInterface( m_DataGraph.AdditionalFilters[m_FilterIndex].Interface, typeof( KsControl.Interface ) );
-                        if (controlPtr != IntPtr.Zero)
-                            using (var control = new KsControl( controlPtr ))
-                            {
-                                // Deactive if forbiddem
-                                if (reset)
-                                    reset = (m_Suppress != SuppressionMode.Complete);
+            if (m_DataGraph == null)
+                return PipelineResult.Continue;
+            if (m_FilterIndex < 0)
+                return PipelineResult.Continue;
+            if (m_FilterIndex >= m_DataGraph.AdditionalFilters.Count)
+                return PipelineResult.Continue;
 
-                                // Reset the CAM
-                                if (reset || !m_HasBeenReset)
-                                {
-                                    // Report
-                                    if (BDASettings.BDATraceSwitch.Enabled)
-                                        Trace.WriteLine( Properties.Resources.Trace_ResetCAM, BDASettings.BDATraceSwitch.DisplayName );
+            // Check COM interface
+            var controlPtr = ComIdentity.QueryInterface( m_DataGraph.AdditionalFilters[m_FilterIndex].Interface, typeof( KsControl.Interface ) );
+            if (controlPtr == IntPtr.Zero)
+                return PipelineResult.Continue;
 
-                                    // Process
-                                    control.Reset();
+            // Create interface wrapper
+            using (var control = new KsControl( controlPtr ))
+            {
+                // Deactive if forbiddem
+                if (reset)
+                    reset = (m_Suppress != SuppressionMode.Complete);
 
-                                    // We did it
-                                    m_HasBeenReset = true;
-                                }
+                // Reset the CAM
+                if (reset || !m_HasBeenReset)
+                {
+                    // Report
+                    if (BDASettings.BDATraceSwitch.Enabled)
+                        Trace.WriteLine( Properties.Resources.Trace_ResetCAM, BDASettings.BDATraceSwitch.DisplayName );
 
-                                // Start decryption
-                                if (sources != null)
-                                    foreach (var source in sources)
-                                        control.SetServices( source.Service );
-                            }
-                    }
+                    // Process
+                    control.Reset();
+
+                    // We did it
+                    m_HasBeenReset = true;
+                }
+
+                // Start decryption
+                if (sources != null)
+                    foreach (var source in sources)
+                        control.SetServices( source.Service );
+            }
 
             // Next
             return PipelineResult.Continue;
