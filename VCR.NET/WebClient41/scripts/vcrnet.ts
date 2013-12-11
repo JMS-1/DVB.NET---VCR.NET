@@ -595,7 +595,8 @@ $(function (): void {
 
         if (currentHash == app)
             if (currentHash != 'faq')
-                return;
+                if (currentHash != 'guide')
+                    return;
 
         loadMain(currentHash = app);
     }
@@ -935,6 +936,25 @@ class GuideItem {
 
         // Detailanzeige immer aktivieren
         me.showDetails = function (): void { me.onShowDetails(me, this); };
+
+        // Suche immer aktivieren
+        me.findInGuide = function (): void {
+            var filter = GuideFilter.global;
+
+            // Ganz von vorne
+            filter.reset();
+
+            // Textsuche auf den Namen auf der selben Karte
+            filter.device = me.id.split(':')[1];
+            filter.title = '=' + me.name;
+            filter.station = me.station;
+
+            // Aufrufen
+            if (window.location.hash == '#guide')
+                window.location.hash = '#guide;auto';
+            else
+                window.location.hash = '#guide';
+        };
     }
 
     // Wird aufgerufen, wenn der Anwender die Detailanzeige aktiviert hat
@@ -987,6 +1007,9 @@ class GuideItem {
 
     // Wird an eine Methode gebunden, die onShowDetails() aufruft
     showDetails: () => void;
+
+    // Wird aufgerufen, um nach ähnlichen Sendungen in der Programmzeitschrift zu suchen
+    findInGuide: () => void;
 }
 
 // Verwaltet einen Eintrag aus der Programmzeitschrift und stellt sicher, dass dieser nur einmal angefordert wird
@@ -2943,8 +2966,14 @@ class planPage extends Page implements IPage {
 
         // Eintrag suchen
         item.requestGuide(function (entry: GuideItem): void {
+            // Daten binden
+            var html = JMSLib.HTMLTemplate.cloneAndApplyTemplate(entry, me.guideTemplate);
+
+            // Vorbereiten
+            html.find('#findInGuide').button();
+
             // Anzeigen            
-            guideElement.replaceWith(JMSLib.HTMLTemplate.cloneAndApplyTemplate(entry, me.guideTemplate));
+            guideElement.replaceWith(html);
             guideReferenceElement.addClass(JMSLib.CSSClass.invisible);
         });
     }
@@ -3514,7 +3543,12 @@ class currentPage extends Page implements IPage {
     private showGuide(item: CurrentInfo, origin: any): void {
         var detailsManager = this.detailsManager;
 
-        item.requestGuide(function (entry: GuideItem): void { detailsManager.toggle(entry, origin, 0); });
+        item.requestGuide(function (entry: GuideItem): void {
+            // Anzeige vorbereiten
+            var view = detailsManager.toggle(entry, origin, 0);
+            if (view != null)
+                view.find('#findInGuide').button();
+        });
     }
 
     // Eine laufende Aufzeichnung manipulieren
@@ -3763,9 +3797,10 @@ class guidePage extends Page implements IPage {
         var guideReferenceElement = $(origin.parentNode.parentNode);
         var guideElement = view.find('#planRowProgramGuide');
 
-        // Detailanzeige aus der Vorlage erzeugen
+        // Anzeigen
         var details = JMSLib.HTMLTemplate.cloneAndApplyTemplate(guideItem, me.guideTemplate);
         details.find('#guideHeadline').addClass(JMSLib.CSSClass.invisible);
+        details.find('#findInGuide').button();
 
         // Auswahlliste mit den Aufträgen füllen
         var jobSelector = view.find('#selJob');

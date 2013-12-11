@@ -555,7 +555,8 @@ $(function () {
 
         if (currentHash == app)
             if (currentHash != 'faq')
-                return;
+                if (currentHash != 'guide')
+                    return;
 
         loadMain(currentHash = app);
     };
@@ -856,6 +857,25 @@ var GuideItem = (function () {
         // Detailanzeige immer aktivieren
         me.showDetails = function () {
             me.onShowDetails(me, this);
+        };
+
+        // Suche immer aktivieren
+        me.findInGuide = function () {
+            var filter = GuideFilter.global;
+
+            // Ganz von vorne
+            filter.reset();
+
+            // Textsuche auf den Namen auf der selben Karte
+            filter.device = me.id.split(':')[1];
+            filter.title = '=' + me.name;
+            filter.station = me.station;
+
+            // Aufrufen
+            if (window.location.hash == '#guide')
+                window.location.hash = '#guide;auto';
+            else
+                window.location.hash = '#guide';
         };
     }
     return GuideItem;
@@ -2330,8 +2350,14 @@ var planPage = (function (_super) {
 
         // Eintrag suchen
         item.requestGuide(function (entry) {
+            // Daten binden
+            var html = JMSLib.HTMLTemplate.cloneAndApplyTemplate(entry, me.guideTemplate);
+
+            // Vorbereiten
+            html.find('#findInGuide').button();
+
             // Anzeigen
-            guideElement.replaceWith(JMSLib.HTMLTemplate.cloneAndApplyTemplate(entry, me.guideTemplate));
+            guideElement.replaceWith(html);
             guideReferenceElement.addClass(JMSLib.CSSClass.invisible);
         });
     };
@@ -2942,7 +2968,10 @@ var currentPage = (function (_super) {
         var detailsManager = this.detailsManager;
 
         item.requestGuide(function (entry) {
-            detailsManager.toggle(entry, origin, 0);
+            // Anzeige vorbereiten
+            var view = detailsManager.toggle(entry, origin, 0);
+            if (view != null)
+                view.find('#findInGuide').button();
         });
     };
 
@@ -3188,9 +3217,10 @@ var guidePage = (function (_super) {
         var guideReferenceElement = $(origin.parentNode.parentNode);
         var guideElement = view.find('#planRowProgramGuide');
 
-        // Detailanzeige aus der Vorlage erzeugen
+        // Anzeigen
         var details = JMSLib.HTMLTemplate.cloneAndApplyTemplate(guideItem, me.guideTemplate);
         details.find('#guideHeadline').addClass(JMSLib.CSSClass.invisible);
+        details.find('#findInGuide').button();
 
         // Auswahlliste mit den Aufträgen füllen
         var jobSelector = view.find('#selJob');
