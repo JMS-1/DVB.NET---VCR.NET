@@ -552,11 +552,22 @@ namespace JMS.DVB.DeviceAccess
         }
 
         /// <summary>
+        /// Erstellt eine neue Überwachung der Nutzdatenströme.
+        /// </summary>
+        /// <param name="processor">Der Verarbeitungsalgorithmus.</param>
+        /// <param name="services">Die Liste der Dienste.</param>
+        public void ActivatePMTWatchDog( Func<EPG.Tables.PMT, bool> processor, params SourceIdentifier[] services )
+        {
+            // Forward
+            PMTSequencer.Start( this, services, processor );
+        }
+
+        /// <summary>
         /// Aktiviert die Überwachung des PMT Empfangs.
         /// </summary>
         /// <param name="service">Der zu überwachende Dienst.</param>
         /// <param name="consumer">Der Empfänger für die PMT.</param>
-        private void ActivatePMTWatchDog( SourceIdentifier service, Action<EPG.Tables.PMT> consumer )
+        public void ActivatePMTWatchDog( SourceIdentifier service, Action<EPG.Tables.PMT> consumer )
         {
             // Attach to the transport stream parser unit
             var parser = TransportStreamAnalyser.DataManager.TSParser;

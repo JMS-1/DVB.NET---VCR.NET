@@ -54,6 +54,17 @@ namespace JMS.DVB.DeviceAccess
                 Pipeline.Graph.ActivatePMTWatchDog( source, consumer );
             }
 
+            /// <summary>
+            /// Erstellt eine neue Überwachung der Nutzdatenströme.
+            /// </summary>
+            /// <param name="processor">Der Verarbeitungsalgorithmus.</param>
+            /// <param name="services">Die Liste der Dienste.</param>
+            public void WaitForPMTs( Func<EPG.Tables.PMT, bool> processor, params SourceIdentifier[] services )
+            {
+                // Forward
+                Pipeline.Graph.ActivatePMTWatchDog( processor, services );
+            }
+
             #region IDisposable Members
 
             /// <summary>

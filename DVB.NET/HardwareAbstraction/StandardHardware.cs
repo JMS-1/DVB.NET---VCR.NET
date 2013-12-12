@@ -23,7 +23,7 @@ namespace JMS.DVB
         /// <summary>
         /// Steuert den Zugriff auf das Gerät über eine DirectShow Graphen.
         /// </summary>
-        private DataGraph m_receiver;
+        public DataGraph Receiver { get; private set; }
 
         /// <summary>
         /// Gesetzt, wenn die Entschlüsselung deaktiviert werden soll.
@@ -91,7 +91,7 @@ namespace JMS.DVB
                 throw new ArgumentNullException( "stream" );
 
             // Not started
-            if (m_receiver == null)
+            if (Receiver == null)
                 return;
 
             // Not of interest to us
@@ -99,7 +99,7 @@ namespace JMS.DVB
                 return;
 
             // Just forward
-            m_receiver.TransportStreamAnalyser.DataManager.StopFilter( stream.Identifier );
+            Receiver.TransportStreamAnalyser.DataManager.StopFilter( stream.Identifier );
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace JMS.DVB
                 throw new ArgumentNullException( "stream" );
 
             // Not started
-            if (m_receiver == null)
+            if (Receiver == null)
                 return;
 
             // Not of interest to us
@@ -121,7 +121,7 @@ namespace JMS.DVB
                 return;
 
             // Attach to the data manager
-            var manager = m_receiver.TransportStreamAnalyser.DataManager;
+            var manager = Receiver.TransportStreamAnalyser.DataManager;
 
             // Check mode
             var type = stream.StreamType;
@@ -152,10 +152,10 @@ namespace JMS.DVB
         protected override void OnGetSignal( SignalInformation signal )
         {
             // Only if started
-            if (m_receiver != null)
+            if (Receiver != null)
             {
                 // Try to fill
-                var status = m_receiver.SignalStatus;
+                var status = Receiver.SignalStatus;
                 if (status != null)
                 {
                     // Copy over
@@ -189,7 +189,7 @@ namespace JMS.DVB
         protected override void OnSelect( TLocationType location, TSourceGroupType group )
         {
             // Create once
-            if (m_receiver == null)
+            if (Receiver == null)
             {
                 // Create receiver
                 var receiver = new DataGraph();
@@ -230,11 +230,11 @@ namespace JMS.DVB
                 }
 
                 // Remember
-                m_receiver = receiver;
+                Receiver = receiver;
             }
 
             // Blind forward
-            m_receiver.Tune( location, group );
+            Receiver.Tune( location, group );
         }
 
         /// <summary>
@@ -244,11 +244,11 @@ namespace JMS.DVB
         protected override bool OnStopAll()
         {
             // Not started
-            if (m_receiver == null)
+            if (Receiver == null)
                 return false;
 
             // Forward
-            m_receiver.TransportStreamAnalyser.DataManager.RemoveAllFilters();
+            Receiver.TransportStreamAnalyser.DataManager.RemoveAllFilters();
 
             // Did it
             return true;
@@ -260,8 +260,8 @@ namespace JMS.DVB
         protected override void OnDispose()
         {
             // Forget graph
-            using (m_receiver)
-                m_receiver = null;
+            using (Receiver)
+                Receiver = null;
         }
 
         /// <summary>
@@ -282,8 +282,8 @@ namespace JMS.DVB
         public override void Decrypt( params SourceIdentifier[] sources )
         {
             // Forward
-            if (m_receiver != null)
-                m_receiver.Decrypt( sources );
+            if (Receiver != null)
+                Receiver.Decrypt( sources );
         }
 
         /// <summary>

@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Linq;
-using System.Diagnostics;
-using System.Windows.Forms;
 using System.Collections.Generic;
-
+using System.Diagnostics;
+using System.Threading;
+using System.Windows.Forms;
 using JMS.DVB.DeviceAccess;
-using JMS.DVB.DeviceAccess.Pipeline;
 using JMS.DVB.DeviceAccess.Enumerators;
+using JMS.DVB.DeviceAccess.Pipeline;
 
 
 namespace JMS.DVB.Provider.Duoflex
@@ -41,10 +40,26 @@ namespace JMS.DVB.Provider.Duoflex
         private SuppressionMode m_Suppress;
 
         /// <summary>
-        /// Erzeugt eine neue Erweiterung.
+        /// Zählt die Aufrufe der Entschlüsselungsmethode <see cref="Decrypt(DataGraph.DecryptToken)"/>.
         /// </summary>
-        public Decryption()
+        private int m_ChangeCounter;
+
+        /// <summary>
+        /// Steuert den Zugriff auf die Hardware.
+        /// </summary>
+        private readonly object m_deviceAccess = new object();
+
+        /// <summary>
+        /// Entschlüsselt eine einzelne Quelle.
+        /// </summary>
+        /// <param name="pmt">Die Informationen zur Quelle.</param>
+        private void Decrypt( EPG.Tables.PMT pmt )
         {
+            // Check COM interface
+            var controlPtr = ComIdentity.QueryInterface( m_DataGraph.AdditionalFilters[m_FilterIndex].Interface, typeof( KsControl.Interface ) );
+            if (controlPtr != IntPtr.Zero)
+                using (var control = new KsControl( controlPtr ))
+                    control.SetServices( pmt.ProgramNumber );
         }
 
         /// <summary>
@@ -57,9 +72,8 @@ namespace JMS.DVB.Provider.Duoflex
             if (token != null)
                 m_DataGraph = token.Pipeline.Graph;
 
-            // Attach to source list
-            var sources = (token == null) ? null : token.Sources;
-            var sendNullService = (sources == null) || (sources.Length < 1);
+            // Get unique call identifier
+            var callIdentifier = Interlocked.Increment( ref m_ChangeCounter );
 
             // See if we can do anything
             if (m_DataGraph == null)
@@ -69,41 +83,46 @@ namespace JMS.DVB.Provider.Duoflex
             if (m_FilterIndex >= m_DataGraph.AdditionalFilters.Count)
                 return PipelineResult.Continue;
 
-            // Check COM interface
-            var controlPtr = ComIdentity.QueryInterface( m_DataGraph.AdditionalFilters[m_FilterIndex].Interface, typeof( KsControl.Interface ) );
-            if (controlPtr == IntPtr.Zero)
-                return PipelineResult.Continue;
-
-            // Create interface wrapper
-            using (var control = new KsControl( controlPtr ))
-            {
-                // Deactivate if CAM reset is forbidden
-                var reset = sendNullService;
-                if (reset)
-                    reset = (m_Suppress != SuppressionMode.Complete);
-
-                // Reset the CAM
-                if (reset || !m_HasBeenReset)
+            // Deactivate if CAM reset is forbidden
+            var sources = (token == null) ? null : token.Sources;
+            var noSources = (sources == null) || (sources.Length < 1);
+            if ((noSources && (m_Suppress != SuppressionMode.Complete)) || !m_HasBeenReset)
+                lock (m_deviceAccess)
                 {
-                    // Report
-                    if (BDASettings.BDATraceSwitch.Enabled)
-                        Trace.WriteLine( Properties.Resources.Trace_ResetCAM, BDASettings.BDATraceSwitch.DisplayName );
+                    // Check COM interface
+                    var controlPtr = ComIdentity.QueryInterface( m_DataGraph.AdditionalFilters[m_FilterIndex].Interface, typeof( KsControl.Interface ) );
+                    if (controlPtr == IntPtr.Zero)
+                        return PipelineResult.Continue;
 
                     // Process
-                    control.Reset();
+                    using (var control = new KsControl( controlPtr ))
+                    {
+                        // Report
+                        if (BDASettings.BDATraceSwitch.Enabled)
+                            Trace.WriteLine( Properties.Resources.Trace_ResetCAM, BDASettings.BDATraceSwitch.DisplayName );
 
-                    // We did it once
-                    m_HasBeenReset = true;
+                        // Reset the CAM
+                        control.Reset();
 
-                    // No need to send a 0 request - we did a full reset
-                    sendNullService = false;
+                        // We did it once
+                        m_HasBeenReset = true;
+                    }
                 }
 
-                // Start decryption
-                if (sources != null)
-                    foreach (var source in sources)
-                        control.SetServices( source.Service );
-            }
+            // Start processor
+            token.WaitForPMTs(
+                pmt =>
+                {
+                    // See if we are still allowed to process and do so
+                    lock (m_deviceAccess)
+                        if (Thread.VolatileRead( ref m_ChangeCounter ) == callIdentifier)
+                            Decrypt( pmt );
+                        else
+                            return false;
+
+                    // Next
+                    return true;
+                }, sources );
 
             // Next
             return PipelineResult.Continue;

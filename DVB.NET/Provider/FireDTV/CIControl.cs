@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Threading;
-using System.Windows.Forms;
-using System.Collections.Generic;
-
 using JMS.DVB.DeviceAccess;
-using JMS.DVB.DeviceAccess.Pipeline;
 using JMS.DVB.DeviceAccess.Interfaces;
-using JMS.DVB.DeviceAccess.Enumerators;
+using JMS.DVB.DeviceAccess.Pipeline;
 
 
 namespace JMS.DVB.Provider.FireDTV
@@ -25,14 +21,7 @@ namespace JMS.DVB.Provider.FireDTV
         internal static readonly Guid PropertySetId = new Guid( "ab132414-d060-11d0-8583-00c04fd9baf3" );
 
         /// <summary>
-        /// Erzeugt eine neue Ansteuerung.
-        /// </summary>
-        public CIControl()
-        {
-        }
-
-        /// <summary>
-        /// Zählt die Aufrufe der Entschlüsselungsmethode <see cref="Decrypt"/>.
+        /// Zählt die Aufrufe der Entschlüsselungsmethode <see cref="Decrypt(DataGraph.DecryptToken)"/>.
         /// </summary>
         private int m_ChangeCounter;
 
@@ -42,38 +31,46 @@ namespace JMS.DVB.Provider.FireDTV
         private DataGraph m_DataGraph;
 
         /// <summary>
+        /// Steuert den Zugriff auf die Hardware.
+        /// </summary>
+        private readonly object m_deviceAccess = new object();
+
+        /// <summary>
         /// Wird zur eigentlichen Steuerung der Entschlüsselung aufgerufen.
         /// </summary>
         /// <param name="pmt">Die Informationen zur Quelle.</param>
         /// <param name="reset">Gesetzt, um einen Neustart der Entschlüsselung zu erzwingen.</param>
-        private void Decrpyt( EPG.Tables.PMT pmt, bool reset )
+        private void Decrypt( EPG.Tables.PMT pmt, bool reset )
         {
             // Check the interface
             var setPtr = ComIdentity.QueryInterface( m_DataGraph.TunerFilter.Interface, typeof( KsPropertySetFireDTV.Interface ) );
-            if (setPtr != IntPtr.Zero)
-                using (var propertySet = new KsPropertySetFireDTV( setPtr ))
-                    try
-                    {
-                        // Load property identifier
-                        var propSetId = PropertySetId;
-                        var supported = propertySet.QuerySupported( ref propSetId, BDAProperties.SendCA );
-                        if ((PropertySetSupportedTypes.Set & supported) != PropertySetSupportedTypes.Set)
-                            return;
+            if (setPtr == IntPtr.Zero)
+                return;
 
-                        // Process reset
-                        if (reset)
-                            propertySet.Send( CACommand.CreateReset() );
-                        else if (pmt == null)
-                            propertySet.Send( CACommand.StopDecryption() );
-                        else
-                            propertySet.Send( CACommand.CreateDecrypt( pmt ) );
-                    }
-                    catch
-                    {
-                        // Forward if not resetting
-                        if (pmt != null)
-                            throw;
-                    }
+            // Process
+            using (var propertySet = new KsPropertySetFireDTV( setPtr ))
+                try
+                {
+                    // Load property identifier
+                    var propSetId = PropertySetId;
+                    var supported = propertySet.QuerySupported( ref propSetId, BDAProperties.SendCA );
+                    if ((PropertySetSupportedTypes.Set & supported) != PropertySetSupportedTypes.Set)
+                        return;
+
+                    // Process reset
+                    if (reset)
+                        propertySet.Send( CACommand.CreateReset() );
+                    else if (pmt == null)
+                        propertySet.Send( CACommand.StopDecryption() );
+                    else
+                        propertySet.Send( CACommand.CreateDecrypt( pmt ) );
+                }
+                catch
+                {
+                    // Forward if not resetting
+                    if (pmt != null)
+                        throw;
+                }
         }
 
         /// <summary>
@@ -91,39 +88,33 @@ namespace JMS.DVB.Provider.FireDTV
 
             // Check mode of operation
             var sources = (token == null) ? null : token.Sources;
-            if ((sources == null) || (sources.Length < 1))
+            var noSources = (sources == null) || (sources.Length < 1);
+            if (noSources)
             {
                 // Shutdown all
                 if (m_DataGraph != null)
                     if (m_DataGraph.TunerFilter != null)
-                        Decrpyt( null, (token == null) || (sources == null) );
+                        lock (m_deviceAccess)
+                            Decrypt( null, (token == null) || (sources == null) );
 
                 // Next
                 return PipelineResult.Continue;
             }
 
-            // Clone list to process
-            var next = ((IEnumerable<SourceIdentifier>) sources.Clone()).GetEnumerator();
+            // Start processor
+            token.WaitForPMTs(
+                pmt =>
+                {
+                    // See if we are still allowed to process and do so
+                    lock (m_deviceAccess)
+                        if (Thread.VolatileRead( ref m_ChangeCounter ) == callIdentifier)
+                            Decrypt( pmt, false );
+                        else
+                            return false;
 
-            // The execution method
-            Action<EPG.Tables.PMT> worker = null;
-            worker = pmt =>
-                 {
-                     // See if we are still allowed to process
-                     if (Thread.VolatileRead( ref m_ChangeCounter ) != callIdentifier)
-                         return;
-
-                     // Process
-                     if (pmt != null)
-                         Decrpyt( pmt, false );
-
-                     // Next
-                     if (next.MoveNext())
-                         token.WaitForPMT( next.Current, worker );
-                 };
-
-            // Start with first source - actually must change a bit to support multiple
-            worker( null );
+                    // Next
+                    return true;
+                }, sources );
 
             // Next
             return PipelineResult.Continue;
