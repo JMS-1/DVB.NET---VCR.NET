@@ -1711,73 +1711,81 @@ namespace VCRControlCenter
             if (MessageBox.Show( string.Format( Properties.Resources.WakeUp, settings.ServerName ), Properties.Resources.HibernateTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2 ) != DialogResult.Yes)
                 return;
 
-            // Resolve server
-            var server = Dns.GetHostEntry( settings.ServerName );
-            if (server == null)
-            {
-                // Report and finish
-                Log( "No host entry for {0}", settings.ServerName );
-                return;
-            }
-
-            // Get size of address table
-            UInt32 size = 0;
-            if (GetIpNetTable( IntPtr.Zero, ref size, true ) != 122)
-            {
-                // Report and finish
-                Log( "Can not read network table" );
-                return;
-            }
-            if (size < 4)
-            {
-                // Report and finish
-                Log( "Network table is empty" );
-                return;
-            }
-
-            // Load address table
-            var table = Marshal.AllocHGlobal( checked( (int) size ) );
+            // Be safe
             try
             {
-                // Get the table
-                if (GetIpNetTable( table, ref size, true ) != 0)
+                // Resolve server
+                var server = Dns.GetHostEntry( settings.ServerName );
+                if (server == null)
+                {
+                    // Report and finish
+                    Log( "No host entry for {0}", settings.ServerName );
+                    return;
+                }
+
+                // Get size of address table
+                UInt32 size = 0;
+                if (GetIpNetTable( IntPtr.Zero, ref size, true ) != 122)
                 {
                     // Report and finish
                     Log( "Can not read network table" );
                     return;
                 }
-
-                // Get the number of entries in the table
-                var count = checked( (UInt32) Marshal.ReadInt32( table, 0 ) );
-
-                // Process entries
-                for (int offset = 4; count-- > 0; offset += IpNetRow.SizeOf)
+                if (size < 4)
                 {
-                    // Unmarshal from native representation
-                    var data = (IpNetRow) Marshal.PtrToStructure( table + offset, typeof( IpNetRow ) );
+                    // Report and finish
+                    Log( "Network table is empty" );
+                    return;
+                }
 
-                    // See if this is it
-                    if (data.Matches( server.AddressList ))
+                // Load address table
+                var table = Marshal.AllocHGlobal( checked( (int) size ) );
+                try
+                {
+                    // Get the table
+                    if (GetIpNetTable( table, ref size, true ) != 0)
                     {
-                        // Process
-                        Log( "Sending Magic Packet on subnet {0}", settings.SubNetAddress );
-
-                        // Send packet
-                        data.Wakeup( settings.SubNetAddress );
-
-                        // Done
-                        break;
+                        // Report and finish
+                        Log( "Can not read network table" );
+                        return;
                     }
+
+                    // Get the number of entries in the table
+                    var count = checked( (UInt32) Marshal.ReadInt32( table, 0 ) );
+
+                    // Process entries
+                    for (int offset = 4; count-- > 0; offset += IpNetRow.SizeOf)
+                    {
+                        // Unmarshal from native representation
+                        var data = (IpNetRow) Marshal.PtrToStructure( table + offset, typeof( IpNetRow ) );
+
+                        // See if this is it
+                        if (data.Matches( server.AddressList ))
+                        {
+                            // Process
+                            Log( "Sending Magic Packet on subnet {0}", settings.SubNetAddress );
+
+                            // Send packet
+                            data.Wakeup( settings.SubNetAddress );
+
+                            // Done
+                            return;
+                        }
+                    }
+
+                    // Report
+                    MessageBox.Show( this, string.Format( Properties.Resources.WakeUpFailed, settings.ServerName, "MAC" ), Text );
+                }
+                finally
+                {
+                    // Cleanup
+                    Marshal.FreeHGlobal( table );
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // Ignore any error
-            }
-            finally
-            {
-                // Cleanup
-                Marshal.FreeHGlobal( table );
+                // Report
+                MessageBox.Show( this, string.Format( Properties.Resources.WakeUpFailed, settings.ServerName, ex.Message ), Text );
             }
         }
     }

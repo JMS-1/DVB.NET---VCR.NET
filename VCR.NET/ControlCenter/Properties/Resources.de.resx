@@ -171,6 +171,9 @@
   <data name="WakeUp" xml:space="preserve">
     <value>Soll der Rechner {0} wirklich aus dem Schlafzustand aufgeweckt werden?</value>
   </data>
+  <data name="WakeUpFailed" xml:space="preserve">
+    <value>Der Rechner {0} kann nicht aufgeweckt werden: {1}</value>
+  </data>
   <data name="Yes" xml:space="preserve">
     <value>ja</value>
   </data>

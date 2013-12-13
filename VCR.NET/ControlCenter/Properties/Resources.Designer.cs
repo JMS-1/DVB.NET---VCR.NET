@@ -223,6 +223,15 @@ namespace VCRControlCenter.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to wake up server {0}: {1}.
+        /// </summary>
+        internal static string WakeUpFailed {
+            get {
+                return ResourceManager.GetString("WakeUpFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to yes.
         /// </summary>
         internal static string Yes {
