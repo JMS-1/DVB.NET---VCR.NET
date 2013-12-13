@@ -1717,26 +1717,14 @@ namespace VCRControlCenter
                 // Resolve server
                 var server = Dns.GetHostEntry( settings.ServerName );
                 if (server == null)
-                {
-                    // Report and finish
-                    Log( "No host entry for {0}", settings.ServerName );
-                    return;
-                }
+                    throw new ArgumentException( "IP" );
 
                 // Get size of address table
                 UInt32 size = 0;
                 if (GetIpNetTable( IntPtr.Zero, ref size, true ) != 122)
-                {
-                    // Report and finish
-                    Log( "Can not read network table" );
-                    return;
-                }
+                    throw new InvalidOperationException( "No ARP table" );
                 if (size < 4)
-                {
-                    // Report and finish
-                    Log( "Network table is empty" );
-                    return;
-                }
+                    throw new InvalidOperationException( "ARP table is empty" );
 
                 // Load address table
                 var table = Marshal.AllocHGlobal( checked( (int) size ) );
@@ -1744,11 +1732,7 @@ namespace VCRControlCenter
                 {
                     // Get the table
                     if (GetIpNetTable( table, ref size, true ) != 0)
-                    {
-                        // Report and finish
-                        Log( "Can not read network table" );
-                        return;
-                    }
+                        throw new InvalidOperationException( "Bad ARP table" );
 
                     // Get the number of entries in the table
                     var count = checked( (UInt32) Marshal.ReadInt32( table, 0 ) );
@@ -1773,8 +1757,8 @@ namespace VCRControlCenter
                         }
                     }
 
-                    // Report
-                    MessageBox.Show( this, string.Format( Properties.Resources.WakeUpFailed, settings.ServerName, "MAC" ), Text );
+                    // Failed
+                    throw new ArgumentException( "MAC" );
                 }
                 finally
                 {
@@ -1784,6 +1768,9 @@ namespace VCRControlCenter
             }
             catch (Exception ex)
             {
+                // Create protocol entry
+                Log( Properties.Resources.WakeUpFailed, settings.ServerName, ex.Message );
+
                 // Report
                 MessageBox.Show( this, string.Format( Properties.Resources.WakeUpFailed, settings.ServerName, ex.Message ), Text );
             }
