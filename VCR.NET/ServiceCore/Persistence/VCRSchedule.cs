@@ -185,17 +185,38 @@ namespace JMS.DVBVCR.RecordingService.Persistence
                 if (!UniqueID.HasValue)
                     return false;
 
-                // Direct test if not repeating 
+                // Read recording parameters
                 var now = DateTime.UtcNow;
-                if (!IsRepeatable)
-                    return (now < (FirstStart + TimeSpan.FromMinutes( Duration )));
+                var duration = Duration;
+                var start = FirstStart;
 
-                // If we repeat see if the the last recording day is in the future - we do not detailed check and may be a bit wrong
-                if (LastDay.HasValue)
-                    return (now.ToLocalTime().Date <= LastDay.Value.Date);
+                // Direct test if not repeating 
+                if (IsRepeatable)
+                {
+                    // Unlimited repetition always is a good candidate
+                    if (!LastDay.HasValue)
+                        return true;
 
-                // Unlimited repetition always is a good candidate
-                return true;
+                    // When will we record for the very last time
+                    var lastDate = new DateTime( LastDay.Value.Date.Ticks, DateTimeKind.Local );
+                    if (lastDate == Schedule_Pre39.NoEndIndicator)
+                        return true;
+
+                    // Move time to the very last recording day
+                    start = (lastDate + start.ToLocalTime().TimeOfDay).ToUniversalTime();
+
+                    // May need to correct for exception
+                    var exception = GetException( lastDate );
+                    if (exception != null)
+                    {
+                        // Correct
+                        start = start.AddMinutes( exception.ShiftTime.GetValueOrDefault( 0 ) );
+                        duration = exception.Duration.GetValueOrDefault( duration );
+                    }
+                }
+
+                // Survive if we are not at or beyond the end of the recording
+                return (now < (start + TimeSpan.FromMinutes( duration )));
             }
         }
 
