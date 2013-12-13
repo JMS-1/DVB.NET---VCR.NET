@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
@@ -107,6 +108,7 @@ namespace VCRControlCenter
         /// <param name="order">Gesetzt, wenn die Einträge sortiert werden sollen.</param>
         /// <returns>Ein Fehlercode.</returns>
         [DllImport( "Iphlpapi.dll" )]
+        [SuppressUnmanagedCodeSecurity]
         private static extern UInt32 GetIpNetTable( IntPtr table, ref UInt32 size, bool order );
 
         /// <summary>
@@ -1747,7 +1749,7 @@ namespace VCRControlCenter
                         if (data.Matches( server.AddressList ))
                         {
                             // Process
-                            Log( "Sending Magic Packet on subnet {0}", settings.SubNetAddress );
+                            Log( "Sending Magic Packet on Sub-Net {0}", settings.SubNetAddress );
 
                             // Send packet
                             data.Wakeup( settings.SubNetAddress );
