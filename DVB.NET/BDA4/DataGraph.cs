@@ -556,7 +556,7 @@ namespace JMS.DVB.DeviceAccess
         /// </summary>
         /// <param name="processor">Der Verarbeitungsalgorithmus.</param>
         /// <param name="services">Die Liste der Dienste.</param>
-        public void ActivatePMTWatchDog( Func<EPG.Tables.PMT, bool> processor, params SourceIdentifier[] services )
+        public void ActivatePMTWatchDog( Func<EPG.Tables.PMT, bool, bool> processor, params SourceIdentifier[] services )
         {
             // Forward
             PMTSequencer.Start( this, services, processor );

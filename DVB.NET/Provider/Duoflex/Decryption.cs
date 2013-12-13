@@ -52,14 +52,14 @@ namespace JMS.DVB.Provider.Duoflex
         /// <summary>
         /// Entschlüsselt eine einzelne Quelle.
         /// </summary>
-        /// <param name="pmt">Die Informationen zur Quelle.</param>
-        private void Decrypt( EPG.Tables.PMT pmt )
+        /// <param name="service">Die Informationen zur Quelle.</param>
+        private void Decrypt( ushort service )
         {
             // Check COM interface
             var controlPtr = ComIdentity.QueryInterface( m_DataGraph.AdditionalFilters[m_FilterIndex].Interface, typeof( KsControl.Interface ) );
             if (controlPtr != IntPtr.Zero)
                 using (var control = new KsControl( controlPtr ))
-                    control.SetServices( pmt.ProgramNumber );
+                    control.SetServices( service );
         }
 
         /// <summary>
@@ -111,14 +111,22 @@ namespace JMS.DVB.Provider.Duoflex
 
             // Start processor
             token.WaitForPMTs(
-                pmt =>
+                ( pmt, first ) =>
                 {
                     // See if we are still allowed to process and do so
                     lock (m_deviceAccess)
-                        if (Thread.VolatileRead( ref m_ChangeCounter ) == callIdentifier)
-                            Decrypt( pmt );
-                        else
+                    {
+                        // No longer current
+                        if (Thread.VolatileRead( ref m_ChangeCounter ) != callIdentifier)
                             return false;
+
+                        // Try reset
+                        if (!first)
+                            Decrypt( 0 );
+
+                        // Regular
+                        Decrypt( pmt.ProgramNumber );
+                    }
 
                     // Next
                     return true;

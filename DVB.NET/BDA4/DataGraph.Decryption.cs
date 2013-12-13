@@ -59,7 +59,7 @@ namespace JMS.DVB.DeviceAccess
             /// </summary>
             /// <param name="processor">Der Verarbeitungsalgorithmus.</param>
             /// <param name="services">Die Liste der Dienste.</param>
-            public void WaitForPMTs( Func<EPG.Tables.PMT, bool> processor, params SourceIdentifier[] services )
+            public void WaitForPMTs( Func<EPG.Tables.PMT, bool, bool> processor, params SourceIdentifier[] services )
             {
                 // Forward
                 Pipeline.Graph.ActivatePMTWatchDog( processor, services );

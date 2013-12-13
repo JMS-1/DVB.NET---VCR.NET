@@ -103,7 +103,7 @@ namespace JMS.DVB.Provider.FireDTV
 
             // Start processor
             token.WaitForPMTs(
-                pmt =>
+                ( pmt, first ) =>
                 {
                     // See if we are still allowed to process and do so
                     lock (m_deviceAccess)

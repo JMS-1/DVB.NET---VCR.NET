@@ -34,7 +34,7 @@ namespace JMS.DVB.DeviceAccess
         /// <summary>
         /// Die Verarbeitungsmethode.
         /// </summary>
-        private readonly Func<PMT, bool> m_processor;
+        private readonly Func<PMT, bool, bool> m_processor;
 
         /// <summary>
         /// Startet eine Überwachung.
@@ -42,7 +42,7 @@ namespace JMS.DVB.DeviceAccess
         /// <param name="graph">Die zugehörige Empfangsinstanz.</param>
         /// <param name="services">Die Liste der Dienste.</param>
         /// <param name="processor">Der Verarbeitungsalgorithmus.</param>
-        public static void Start( DataGraph graph, SourceIdentifier[] services, Func<PMT, bool> processor )
+        public static void Start( DataGraph graph, SourceIdentifier[] services, Func<PMT, bool, bool> processor )
         {
             // Validate
             if (graph == null)
@@ -71,7 +71,7 @@ namespace JMS.DVB.DeviceAccess
         /// <param name="graph">Die zugehörige Empfangsinstanz.</param>
         /// <param name="services">Die Liste der Dienste.</param>
         /// <param name="processor">Der Verarbeitungsalgorithmus.</param>
-        private PMTSequencer( DataGraph graph, SourceIdentifier[] services, Func<PMT, bool> processor )
+        private PMTSequencer( DataGraph graph, SourceIdentifier[] services, Func<PMT, bool, bool> processor )
         {
             // Remember
             m_services = services.Where( s => s != null ).ToArray();
@@ -96,7 +96,7 @@ namespace JMS.DVB.DeviceAccess
                     {
                         // Report on change or first request
                         if ((previous == null) || (previous.Version != table.Version))
-                            if (!m_processor( table ))
+                            if (!m_processor( table, previous == null ))
                                 return;
 
                         // Update
