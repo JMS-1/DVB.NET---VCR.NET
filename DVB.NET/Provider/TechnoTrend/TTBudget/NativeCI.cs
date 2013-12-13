@@ -1,14 +1,13 @@
 ﻿using System;
+using System.Configuration;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security;
 using System.Threading;
-using System.Configuration;
-using System.Runtime.InteropServices;
-
-using JMS.TechnoTrend;
 using JMS.DVB.DeviceAccess;
-using JMS.DVB.DeviceAccess.Pipeline;
 using JMS.DVB.DeviceAccess.Interfaces;
+using JMS.DVB.DeviceAccess.Pipeline;
+using JMS.TechnoTrend;
 
 
 namespace JMS.DVB.Provider.TTBudget
@@ -147,6 +146,11 @@ namespace JMS.DVB.Provider.TTBudget
         private DataGraph m_DataGraph;
 
         /// <summary>
+        /// Steuert den Zugriff auf die Hardware.
+        /// </summary>
+        private readonly object m_deviceAccess = new object();
+
+        /// <summary>
         /// Wird zur eigentlichen Steuerung der Entschlüsselung aufgerufen.
         /// </summary>
         /// <param name="pmt">Die Informationen zur Quelle.</param>
@@ -186,7 +190,8 @@ namespace JMS.DVB.Provider.TTBudget
             {
                 // Shutdown
                 if (sources == null)
-                    Close();
+                    lock (m_deviceAccess)
+                        Close();
 
                 // Next
                 return PipelineResult.Continue;
@@ -197,12 +202,18 @@ namespace JMS.DVB.Provider.TTBudget
                 throw new NotSupportedException( Properties.Resources.Exception_DecryptSingle );
 
             // Wait for PMT
-            token.WaitForPMT( sources[0], pmt =>
+            token.WaitForPMTs( ( pmt, first ) =>
                 {
-                    // See if we are still allowed to process
-                    if (Thread.VolatileRead( ref m_ChangeCounter ) == callIdentifier)
-                        Decrypt( pmt );
-                } );
+                    // See if we are still allowed to process and do so
+                    lock (m_deviceAccess)
+                        if (Thread.VolatileRead( ref m_ChangeCounter ) == callIdentifier)
+                            Decrypt( pmt );
+                        else
+                            return false;
+
+                    // Next
+                    return true;
+                }, sources );
 
             // Next
             return PipelineResult.Continue;

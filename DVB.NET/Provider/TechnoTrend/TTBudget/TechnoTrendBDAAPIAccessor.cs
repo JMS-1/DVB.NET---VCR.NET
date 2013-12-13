@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Security;
 using System.Runtime.InteropServices;
-
+using System.Security;
 using JMS.DVB.DeviceAccess;
 using JMS.DVB.DeviceAccess.Interfaces;
 
@@ -37,23 +36,9 @@ namespace JMS.DVB.Provider.TTBudget
         private IntPtr m_Device;
 
         /// <summary>
-        /// Initialisiert eine Zugriffsinstanz.
-        /// </summary>
-        protected TechnoTrendBDAAPIAccessor()
-        {
-        }
-
-        /// <summary>
         /// Meldet das aktuelle Gerät.
         /// </summary>
-        protected IntPtr Device
-        {
-            get
-            {
-                // Report
-                return m_Device;
-            }
-        }
+        protected IntPtr Device { get { return m_Device; } }
 
         /// <summary>
         /// Stellt die Verbindung zur properitären Schnittstelle her.
