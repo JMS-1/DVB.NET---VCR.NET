@@ -78,10 +78,6 @@ namespace JMS.DVBVCR.RecordingService
             JobDirectory.Create();
             LogDirectory.Create();
 
-            // Convert all jobs from versions before 3.9
-            LegacyUpgrades.Pre39.Job_Pre39.UpgradeAndDelete( JobDirectory );
-            LegacyUpgrades.Pre39.Job_Pre39.UpgradeAndDelete( ArchiveDirectory );
-
             // Load all jobs
             foreach (var job in VCRJob.Load( JobDirectory ))
                 if (job.UniqueID.HasValue)

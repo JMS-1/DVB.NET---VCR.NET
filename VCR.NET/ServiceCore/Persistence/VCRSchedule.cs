@@ -4,7 +4,6 @@ using System.Linq;
 using System.Xml.Serialization;
 using JMS.DVB;
 using JMS.DVB.Algorithms.Scheduler;
-using JMS.DVBVCR.RecordingService.LegacyUpgrades.Pre39;
 using JMS.DVBVCR.RecordingService.Planning;
 
 
@@ -199,7 +198,7 @@ namespace JMS.DVBVCR.RecordingService.Persistence
 
                     // When will we record for the very last time
                     var lastDate = new DateTime( LastDay.Value.Date.Ticks, DateTimeKind.Local );
-                    if (lastDate == Schedule_Pre39.NoEndIndicator)
+                    if (lastDate == MaxMovableDay)
                         return true;
 
                     // Move time to the very last recording day
@@ -449,7 +448,7 @@ namespace JMS.DVBVCR.RecordingService.Persistence
 
                 // Read the rest
                 var exceptions = Exceptions.Select( e => e.ToPlanException( duration ) ).ToArray();
-                var endDay = LastDay.GetValueOrDefault( Schedule_Pre39.NoEndIndicator );
+                var endDay = LastDay.GetValueOrDefault( MaxMovableDay );
 
                 // A bit more complex
                 if (start.Date <= endDay.Date)
