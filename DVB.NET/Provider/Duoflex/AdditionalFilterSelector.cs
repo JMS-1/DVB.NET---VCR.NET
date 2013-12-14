@@ -40,7 +40,7 @@ namespace JMS.DVB.Provider.Duoflex
         public const string CancelEncryptionOnChangedStream = "DDCancelOnChange";
 
         /// <summary>
-        /// Die Zeitverzögerung in Sekunden, bevor eine auf eine Änderung der Senderdaten an
+        /// Die Zeitverzögerung in Millisekunden, bevor eine auf eine Änderung der Senderdaten an
         /// die Entschlüsselung weitergegeben wird.
         /// </summary>
         public const string DelayOnChangedStream = "DDDelayOnChange";

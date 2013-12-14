@@ -121,7 +121,7 @@
     <value>2</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
-    <value>S&amp;ynchronisation Delay on Changes (Seconds):</value>
+    <value>S&amp;ynchronisation Delay on Changes (Milliseconds):</value>
   </data>
   <data name="ckResetTune.Text" xml:space="preserve">
     <value>Keep Reset on Re-&amp;Tune and Termination</value>
@@ -140,7 +140,7 @@
     <value>&amp;Cancel</value>
   </data>
   <data name="udChangeDelay.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 20</value>
+    <value>64, 20</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>AdditionalFilterSelector</value>
@@ -217,7 +217,7 @@
     <value>cmdCancel</value>
   </data>
   <data name="udChangeDelay.Location" type="System.Drawing.Point, System.Drawing">
-    <value>249, 131</value>
+    <value>259, 131</value>
   </data>
   <data name="&gt;&gt;cmdCancel.Parent" xml:space="preserve">
     <value>$this</value>
@@ -301,7 +301,7 @@
     <value>$this</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>226, 13</value>
+    <value>241, 13</value>
   </data>
   <data name="&gt;&gt;ckReset.Parent" xml:space="preserve">
     <value>$this</value>

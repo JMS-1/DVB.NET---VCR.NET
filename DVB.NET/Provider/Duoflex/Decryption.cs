@@ -139,7 +139,7 @@ namespace JMS.DVB.Provider.Duoflex
 
                         // Wait for it
                         if (m_changeDelay > 0)
-                            Thread.Sleep( 1000 * m_changeDelay );
+                            Thread.Sleep( m_changeDelay );
 
                         // Regular
                         Decrypt( pmt.ProgramNumber );

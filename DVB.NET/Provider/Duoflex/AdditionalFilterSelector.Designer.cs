@@ -99,7 +99,7 @@
             // 
             resources.ApplyResources(this.udChangeDelay, "udChangeDelay");
             this.udChangeDelay.Maximum = new decimal(new int[] {
-            10,
+            1000,
             0,
             0,
             0});

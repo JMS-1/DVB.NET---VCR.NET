@@ -149,13 +149,13 @@
     <value>Entschlüsselung bei Änderungen &amp;zurücksetzen</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>285, 13</value>
+    <value>300, 13</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
-    <value>S&amp;ynchronisationsverzögerung bei Änderungen (Sekunden):</value>
+    <value>S&amp;ynchronisationsverzögerung bei Änderungen (Millisekunden):</value>
   </data>
   <data name="udChangeDelay.Location" type="System.Drawing.Point, System.Drawing">
-    <value>303, 131</value>
+    <value>318, 131</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Entschlüsselung konfigurieren</value>
