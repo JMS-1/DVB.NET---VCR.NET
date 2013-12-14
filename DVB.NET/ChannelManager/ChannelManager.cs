@@ -387,28 +387,17 @@ namespace JMS.ChannelManagement
         /// Report all stations in this channel.
         /// </summary>
         [XmlIgnore]
-        public IEnumerable Stations
-        {
-            get
-            {
-                // Report
-                return m_ByNetwork.Values;
-            }
-        }
+        public IEnumerable Stations        {            get            {                return m_ByNetwork.Values;            }        }
 
         /// <summary>
         /// Report all transponders for this channel.
         /// </summary>
         [XmlIgnore]
-        public IEnumerable Transponders
-        {
-            get
-            {
-                // Report
-                return m_Transponders.Values;
-            }
-        }
+        public IEnumerable Transponders        {            get            {                return m_Transponders.Values;            }        }
 
+        /// <summary>
+        /// Meldet alle bekannten Quellgruppen.
+        /// </summary>
         [XmlIgnore]
         public Transponder[] ActiveTransponders
         {

@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "ToolSetup", "ToolSetup.wixproj", "{9B7A01CF-EC8C-4A43-89B0-8EE770481870}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JMS.DVB.Tools.SourceValidation", "..\..\Tools\SignalTools\JMS.DVB.Tools.SourceValidation.csproj", "{C7035B14-1924-405E-9258-98D76A169AA5}"

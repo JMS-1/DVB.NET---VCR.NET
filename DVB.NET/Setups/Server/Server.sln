@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JMS.DVB.CardServerCore", "..\..\Card Server\CardServerCore\JMS.DVB.CardServerCore.csproj", "{FFAB1C54-9C74-4BCF-8306-86F796B1DEB6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JMS.DVB.CardServer", "..\..\Card Server\CardServer\JMS.DVB.CardServer.csproj", "{1BA89BB6-A869-491A-9C2C-6E51F9145479}"
@@ -13,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardServerTester", "..\..\C
 		{FFAB1C54-9C74-4BCF-8306-86F796B1DEB6} = {FFAB1C54-9C74-4BCF-8306-86F796B1DEB6}
 	EndProjectSection
 EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "CardServerSetup", ".\CardServerSetup.wixproj", "{CAF56487-8936-4AD7-8CF8-291AFEEDEE0A}"
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "CardServerSetup", "CardServerSetup.wixproj", "{CAF56487-8936-4AD7-8CF8-291AFEEDEE0A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
