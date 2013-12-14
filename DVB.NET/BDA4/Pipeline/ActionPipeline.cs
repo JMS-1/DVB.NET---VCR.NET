@@ -159,14 +159,12 @@ namespace JMS.DVB.DeviceAccess.Pipeline
         /// <summary>
         /// Gesetzt, wenn diese Liste keine Aktionen enthält.
         /// </summary>
-        public override bool IsEmpty
-        {
-            get
-            {
-                // Report
-                return (m_Actions.Count < 1);
-            }
-        }
+        public override bool IsEmpty { get { return (m_Actions.Count < 1); } }
+
+        /// <summary>
+        /// Meldet alle bekannten Bearbeitungsschritte.
+        /// </summary>
+        public Func<T, PipelineResult>[] Actions { get { return m_Actions.ToArray(); } }
 
         /// <summary>
         /// Führt alle Aktionen im Kontext eines Zustands aus.

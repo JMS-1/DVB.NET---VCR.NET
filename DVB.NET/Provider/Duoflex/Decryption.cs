@@ -65,10 +65,11 @@ namespace JMS.DVB.Provider.Duoflex
         /// Entschlüsselt eine einzelne Quelle.
         /// </summary>
         /// <param name="service">Die Informationen zur Quelle.</param>
-        private void Decrypt( ushort service )
+        /// <param name="graph">Der zu verwendende Graph.</param>
+        public void Decrypt( ushort service, DataGraph graph )
         {
             // Check COM interface
-            var controlPtr = ComIdentity.QueryInterface( m_dataGraph.AdditionalFilters[m_filterIndex].Interface, typeof( KsControl.Interface ) );
+            var controlPtr = ComIdentity.QueryInterface( graph.AdditionalFilters[m_filterIndex].Interface, typeof( KsControl.Interface ) );
             if (controlPtr != IntPtr.Zero)
                 using (var control = new KsControl( controlPtr ))
                     control.SetServices( service );
@@ -135,14 +136,14 @@ namespace JMS.DVB.Provider.Duoflex
                         // Try reset
                         if (!first)
                             if (m_disableOnChange)
-                                Decrypt( 0 );
+                                Decrypt( 0, m_dataGraph );
 
                         // Wait for it
                         if (m_changeDelay > 0)
                             Thread.Sleep( m_changeDelay );
 
                         // Regular
-                        Decrypt( pmt.ProgramNumber );
+                        Decrypt( pmt.ProgramNumber, m_dataGraph );
                     }
 
                     // Next
