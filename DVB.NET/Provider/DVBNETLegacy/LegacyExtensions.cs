@@ -1,11 +1,9 @@
 ﻿extern alias oldVersion;
 
 using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
 
 using legacy = oldVersion::JMS.DVB;
+
 
 namespace JMS.DVB.Provider.Legacy
 {
@@ -124,18 +122,19 @@ namespace JMS.DVB.Provider.Legacy
         public static legacy.Transponder ToLegacy( this SatelliteGroup group )
         {
             // None
-            if (null == group)
+            if (group == null)
                 return null;
 
             // Create the channel
-            legacy.Satellite.SatelliteChannel channel = new legacy.Satellite.SatelliteChannel();
-
-            // Configure
-            channel.SpectrumInversion = legacy.SpectrumInversion.Auto;
-            channel.S2Modulation = group.UsesS2Modulation;
-            channel.SymbolRate = group.SymbolRate;
-            channel.Frequency = group.Frequency;
-            channel.LNBIndex = 0;
+            var channel =
+                new legacy.Satellite.SatelliteChannel
+                {
+                    SpectrumInversion = legacy.SpectrumInversion.Auto,
+                    S2Modulation = group.UsesS2Modulation,
+                    SymbolRate = group.SymbolRate,
+                    Frequency = group.Frequency,
+                    LNBIndex = 0,
+                };
 
             // Power modes
             switch (group.Polarization)

@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 using JMS.TechnoTrend;
-using JMS.ChannelManagement;
 using JMS.DVB.DeviceAccess.Enumerators;
 
 using legacy = oldVersion.JMS.DVB;
@@ -34,10 +33,6 @@ namespace JMS.DVB.Provider.TTBudget
         private CommonInterface m_CI = null;
 
         private int m_DeviceIndex = 0;
-
-        private ChannelManager m_Channels = null;
-
-        private DeviceProfile m_Profile = null;
 
         private string m_WakeupDevice = null;
 
@@ -135,37 +130,6 @@ namespace JMS.DVB.Provider.TTBudget
             m_CI = new CommonInterface();
         }
 
-        private ChannelManager ChannelManager
-        {
-            get
-            {
-                // Create once
-                if (null == m_Channels)
-                {
-                    // The channel configuration
-                    ReceiverConfiguration config = null;
-
-                    // Try profile first
-                    if (null != m_Profile) config = m_Profile.RealChannels;
-
-                    // Check mode
-                    if (null != config)
-                    {
-                        // Use it
-                        m_Channels = config.Channels;
-                    }
-                    else
-                    {
-                        // Empty manager
-                        m_Channels = new ChannelManager( null );
-                    }
-                }
-
-                // Report
-                return m_Channels;
-            }
-        }
-
         public override string ToString()
         {
             // Must access hardware
@@ -221,12 +185,6 @@ namespace JMS.DVB.Provider.TTBudget
             }
         }
 
-        public legacy.Station FindStation( legacy.Identifier key )
-        {
-            // Forward
-            return ChannelManager.Find( key );
-        }
-
         public long GetFilterBytes( ushort pid )
         {
             // Ask filter
@@ -255,18 +213,6 @@ namespace JMS.DVB.Provider.TTBudget
 
             // Create new
             m_Filters[pid] = new FilterToCode( pid, callback );
-        }
-
-        public void ReloadChannels()
-        {
-            // Forget
-            m_Channels = null;
-        }
-
-        public legacy.Station[] ResolveStation( string station, string provider )
-        {
-            // Forward
-            return ChannelManager.Find( station, provider );
         }
 
         public void SetVideoAudio( ushort videoPID, ushort audioPID, ushort ac3PID )
@@ -322,15 +268,6 @@ namespace JMS.DVB.Provider.TTBudget
             filter.Start( filterData, filterMask );
         }
 
-        public IEnumerable Stations
-        {
-            get
-            {
-                // Ask channel manager
-                return ChannelManager.Stations;
-            }
-        }
-
         public void StopFilter( ushort pid )
         {
             // Load it
@@ -381,23 +318,6 @@ namespace JMS.DVB.Provider.TTBudget
 
             // Send request
             m_Frontend.Tune( transponder, diseqc );
-        }
-
-        /// <summary>
-        /// Get or set the active profile.
-        /// </summary>
-        public legacy.IDeviceProfile Profile
-        {
-            get
-            {
-                // Report
-                return m_Profile;
-            }
-            set
-            {
-                // Update
-                m_Profile = (DeviceProfile) value;
-            }
         }
 
         public void WakeUp()

@@ -1,8 +1,12 @@
 ﻿using System;
-using System.Linq;
-using System.Threading;
 using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
 using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Serialization;
 
 
 namespace JMS.DVB
@@ -13,9 +17,108 @@ namespace JMS.DVB
     public static class UserProfile
     {
         /// <summary>
-        /// Die Einstellungen des aktuellen Anwenders.
+        /// Beschreibt die benutzerspezifischen Vorgaben.
         /// </summary>
-        private static JMS.ChannelManagement.UserProfile m_Settings = JMS.ChannelManagement.UserProfile.Load();
+        [
+            Serializable,
+            XmlRoot( "UserProfile" )
+        ]
+        private class Persistence
+        {
+            /// <summary>
+            /// Der XML Namensraum, der für die serialisierte Form verwendet wird.
+            /// </summary>
+            private const string ProfileNamespace = "http://jochen-manns.de/DVB.NET/Profiles/User";
+
+            /// <summary>
+            /// Die Datei, aus der diese Vorgaben entnommen wurden.
+            /// </summary>
+            private FileInfo m_File;
+
+            /// <summary>
+            /// Die bevorzugte Benutzersprache.
+            /// </summary>
+            public string PreferredLanguage { get; set; }
+
+            /// <summary>
+            /// Das zugehörige Geräteprofil.
+            /// </summary>
+            public string ProfileName { get; set; }
+
+            /// <summary>
+            /// Meldet oder legt fest, ob die Auswahl des Geräteprofils immer angezeigt werden soll.
+            /// </summary>
+            public bool AllwaysShowDialog { get; set; }
+
+            /// <summary>
+            /// Spichert die Vorgaben ab.
+            /// </summary>
+            public void Save()
+            {
+                // Open and forward
+                using (var stream = new FileStream( m_File.FullName, FileMode.Create, FileAccess.Write, FileShare.None ))
+                {
+                    // Create configuration
+                    var settings = new XmlWriterSettings { Encoding = Encoding.Unicode, Indent = true };
+
+                    // Create serializer
+                    var serializer = new XmlSerializer( GetType(), ProfileNamespace );
+
+                    // Process
+                    using (var writer = XmlWriter.Create( stream, settings ))
+                        serializer.Serialize( writer, this );
+                }
+            }
+
+            /// <summary>
+            /// Lädt die Vorgaben des aktuellen Anwenders.
+            /// </summary>
+            /// <returns>Die Vorgaben für diesen Anwender.</returns>
+            public static Persistence Load()
+            {
+                // Get the user profile directory
+                var profileDir = new DirectoryInfo( Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.LocalApplicationData ), "DVBNETProfiles" ) );
+
+                // Create
+                profileDir.Create();
+
+                // Get the file name
+                var profile = new FileInfo( Path.Combine( profileDir.FullName, "UserProfile.dup" ) );
+
+                // The new profile
+                Persistence settings;
+
+                // Load or create
+                if (profile.Exists)
+                {
+                    // Open
+                    using (var stream = new FileStream( profile.FullName, FileMode.Open, FileAccess.Read, FileShare.Read ))
+                    {
+                        // Create serializer
+                        var serializer = new XmlSerializer( typeof( UserProfile ), ProfileNamespace );
+
+                        // Process
+                        settings = (Persistence) serializer.Deserialize( stream );
+                    }
+                }
+                else
+                {
+                    // Create new
+                    settings = new Persistence();
+                }
+
+                // Remember root
+                settings.m_File = profile;
+
+                // Report
+                return settings;
+            }
+        }
+
+        /// <summary>
+        /// Die aktuelle Konfiguration.
+        /// </summary>
+        private static Persistence m_Settings = Persistence.Load();
 
         /// <summary>
         /// Speichert die Einstellungen des aktuellen Anwenders.
@@ -29,33 +132,7 @@ namespace JMS.DVB
         /// <summary>
         /// Der Name des zu verwendenden Geräteprofils.
         /// </summary>
-        public static string RawProfileName
-        {
-            get
-            {
-                // None
-                if (null == m_Settings.Profile)
-                    return null;
-
-                // Not valid
-                if (!m_Settings.Profile.IsSystemProfile)
-                    return null;
-
-                // Not set
-                if (string.IsNullOrEmpty( m_Settings.Profile.ProfileName ))
-                    return null;
-                else
-                    return m_Settings.Profile.ProfileName;
-            }
-            set
-            {
-                // Store
-                if (null == value)
-                    m_Settings.Profile = null;
-                else
-                    m_Settings.Profile = new JMS.ChannelManagement.DeviceProfileReference( value, true );
-            }
-        }
+        public static string RawProfileName { get { return m_Settings.ProfileName; } set { m_Settings.ProfileName = value; } }
 
         /// <summary>
         /// Meldet das zu verwendende Geräteprofil. Sollte dieses nicht gesetzt sein, so wird
@@ -102,8 +179,8 @@ namespace JMS.DVB
         public static bool ShowDialog()
         {
             // Just show it
-            using (UserProfileManager dialog = new UserProfileManager())
-                return (DialogResult.OK == dialog.ShowDialog());
+            using (var dialog = new UserProfileManager())
+                return (dialog.ShowDialog() == DialogResult.OK);
         }
 
         /// <summary>
@@ -114,16 +191,12 @@ namespace JMS.DVB
             get
             {
                 // Get parameter list
-                string[] args = Environment.GetCommandLineArgs();
-
-                // None
+                var args = Environment.GetCommandLineArgs();
                 if (null == args)
                     return null;
 
                 // Find the parameter
-                string overwrite = args.FirstOrDefault( a => (null != a) && a.StartsWith( "/profile=Common:" ) );
-
-                // Not found
+                var overwrite = args.FirstOrDefault( a => (null != a) && a.StartsWith( "/profile=Common:" ) );
                 if (string.IsNullOrEmpty( overwrite ))
                     return null;
 
@@ -166,16 +239,12 @@ namespace JMS.DVB
             get
             {
                 // Get parameter list
-                string[] args = Environment.GetCommandLineArgs();
-
-                // None
+                var args = Environment.GetCommandLineArgs();
                 if (null == args)
                     return RawLanguage;
 
                 // Find the parameter
-                string overwrite = Array.Find( args, a => (null != a) && a.StartsWith( "/language=" ) );
-
-                // Not found
+                var overwrite = Array.Find( args, a => (null != a) && a.StartsWith( "/language=" ) );
                 if (string.IsNullOrEmpty( overwrite ))
                     return RawLanguage;
 
@@ -196,9 +265,7 @@ namespace JMS.DVB
         public static void ApplyLanguage()
         {
             // Load the language
-            string language = Language;
-
-            // None set
+            var language = Language;
             if (string.IsNullOrEmpty( language ))
                 return;
 
@@ -241,18 +308,6 @@ namespace JMS.DVB
         /// <summary>
         /// Meldet oder legt fest, ob der Auswahldialog immer angezeigt werden soll.
         /// </summary>
-        public static bool RawAlwaysShowDialog
-        {
-            get
-            {
-                // Report
-                return m_Settings.AllwaysShowDialog;
-            }
-            set
-            {
-                // Store
-                m_Settings.AllwaysShowDialog = value;
-            }
-        }
+        public static bool RawAlwaysShowDialog { get { return m_Settings.AllwaysShowDialog; } set { m_Settings.AllwaysShowDialog = value; } }
     }
 }

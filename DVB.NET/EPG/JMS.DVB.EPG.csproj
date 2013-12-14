@@ -215,9 +215,6 @@
     <Compile Include="ServiceEntry.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ServiceParser.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ServiceTypes.cs" />
     <Compile Include="SITScanner.cs" />
     <Compile Include="StandardProgramGuideEncoding.cs" />

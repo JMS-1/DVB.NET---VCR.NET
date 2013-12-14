@@ -27,35 +27,18 @@ namespace CardServerTester
         }
 
         /// <summary>
-        /// Die bevorzugten Werte des aktuellen Anwenders.
-        /// </summary>
-        public static legacy.UserProfile UserProfile { get; private set; }
-
-        /// <summary>
         /// Einsprungpunkt der Anwendung.
         /// </summary>
         /// <param name="args">Befehlszeilenparameter zur Anwendung.</param>
         [STAThread]
         public static void Main( string[] args )
         {
-            // Load user profile
-            try
-            {
-                // Load
-                UserProfile = legacy.UserProfile.Load();
-            }
-            catch
-            {
-                // Use empty
-                UserProfile = new legacy.UserProfile();
-            }
-
             // Set language
-            if (!string.IsNullOrEmpty( UserProfile.PreferredLanguage ))
+            if (!string.IsNullOrEmpty( UserProfile.Language ))
                 try
                 {
                     // Set the language
-                    Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture( UserProfile.PreferredLanguage );
+                    Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture( UserProfile.Language );
                 }
                 catch
                 {

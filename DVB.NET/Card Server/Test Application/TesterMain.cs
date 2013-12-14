@@ -47,10 +47,8 @@ namespace CardServerTester
             SelectProfile( Properties.Settings.Default.ProfileName );
 
             // See if user has a preferred profile
-            if (null == selProfiles.SelectedItem)
-                if (null != Program.UserProfile.Profile)
-                    if (Program.UserProfile.Profile.IsSystemProfile)
-                        SelectProfile( Program.UserProfile.Profile.ProfileName );
+            if (selProfiles.SelectedItem == null)
+                SelectProfile( UserProfile.ProfileName );
 
             // Load other flags
             ckInProcess.Checked = Properties.Settings.Default.UseInMemory;

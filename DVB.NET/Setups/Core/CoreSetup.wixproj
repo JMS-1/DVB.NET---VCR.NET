@@ -134,16 +134,6 @@
       <RefTargetDir>
       </RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\..\ChannelManager\JMS.ChannelManagement.csproj">
-      <Name>JMS.ChannelManagement</Name>
-      <Project>{259f46ec-78ea-45e2-ad08-c5349385dfd1}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>
-      </DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
-      <RefTargetDir>
-      </RefTargetDir>
-    </ProjectReference>
     <ProjectReference Include="..\..\Common\JMS.DVB.Common.csproj">
       <Name>JMS.DVB.Common</Name>
       <Project>{a224b2d5-7987-4c86-8ff7-cdd09ed76ba0}</Project>

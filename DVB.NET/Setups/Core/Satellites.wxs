@@ -16,7 +16,6 @@
     </Component>
 
     <Component Id="LibraryGerman" Directory="LibraryGerman" Guid="517b9a39-7ed4-4513-98f6-6a94b4322a5a">
-      <File Source="$(var.JMS.ChannelManagement.TargetDir)de\$(var.JMS.ChannelManagement.TargetName).resources.dll" />
       <File Source="$(var.JMS.DVB.Algorithms.TargetDir)de\$(var.JMS.DVB.Algorithms.TargetName).resources.dll" />
       <File Source="$(var.JMS.DVB.DeviceAccess.TargetDir)de\$(var.JMS.DVB.DeviceAccess.TargetName).resources.dll" />
       <File Source="$(var.JMS.DVB.DirectShow.TargetDir)de\$(var.JMS.DVB.DirectShow.TargetName).resources.dll" />

@@ -20,18 +20,6 @@ namespace JMS.DVB
 		FrontendType ReceiverType { get; }
 
 		/// <summary>
-		/// Report all known stations.
-		/// </summary>
-		IEnumerable Stations { get; }
-
-		/// <summary>
-		/// Using a unique identification find the related station record.
-		/// </summary>
-		/// <param name="key">The unique identification of the station.</param>
-		/// <returns>A station record or <i>null</i>.</returns>
-		Station FindStation(Identifier key);
-		
-		/// <summary>
 		/// Stop all PID filters.
 		/// </summary>
 		void StopFilters();
@@ -95,22 +83,6 @@ namespace JMS.DVB
 		void StopFilter(ushort pid);
 
 		/// <summary>
-		/// Find the station information for the indicated station name.
-		/// </summary>
-		/// <remarks>
-		/// If no station with the indicated name can be found on any transponder
-		/// the <see cref="Array"/> reported is empty. If the transponder name is
-		/// given the resulting <see cref="Array"/> includes at most a station with
-		/// both names matching. If the transponder name is <i>null</i> there may
-		/// be more than one station record in the return value if the station
-		/// name is used inside different transponders.
-		/// </remarks>
-		/// <param name="station">The name of the station.</param>
-		/// <param name="provider">The name of the transponder which may be <i>null</i>.</param>
-		/// <returns></returns>
-		Station[] ResolveStation(string station, string provider);
-
-		/// <summary>
 		/// Filter a single stream to a file.
 		/// </summary>
 		/// <param name="pid">Stream identifier (PID) to filter.</param>
@@ -152,16 +124,6 @@ namespace JMS.DVB
 		/// <seealso cref="BeginRegister"/>
 		/// </summary>
 		void EndRegister();
-
-		/// <summary>
-		/// Reload the channel file.
-		/// </summary>
-		void ReloadChannels();
-
-		/// <summary>
-		/// Get or set the current profile to use.
-		/// </summary>
-		IDeviceProfile Profile { get; set; }
 
 		/// <summary>
 		/// Called after a wakeup from hibernation prior to the first tune request.

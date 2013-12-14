@@ -42,11 +42,6 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JMS.ChannelManagement, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Assemblies\RunTime\JMS.ChannelManagement.dll</HintPath>
-      <Aliases>oldVersion</Aliases>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="JMS.DVB, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
       <HintPath>..\..\..\Assemblies\RunTime\JMS.DVB.dll</HintPath>
       <Aliases>oldVersion</Aliases>
@@ -104,12 +99,6 @@
     <Compile Include="ProfileDeleter.cs" />
     <Compile Include="HardwareTypeItem.cs" />
     <Compile Include="NewProfile.cs" />
-    <Compile Include="ProfileConversion.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ProfileConversion.Designer.cs">
-      <DependentUpon>ProfileConversion.cs</DependentUpon>
-    </Compile>
     <Compile Include="ProfileCreator.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -123,7 +112,6 @@
       <DependentUpon>ProfileDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="ProfileEditor.cs" />
-    <Compile Include="ProfileUpgrade.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.de.Designer.cs">
       <DependentUpon>Resources.de.resx</DependentUpon>
@@ -149,14 +137,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DeleteConfirmation.resx">
       <DependentUpon>DeleteConfirmation.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProfileConversion.de.resx">
-      <DependentUpon>ProfileConversion.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProfileConversion.resx">
-      <DependentUpon>ProfileConversion.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ProfileCreator.de.resx">
       <DependentUpon>ProfileCreator.cs</DependentUpon>

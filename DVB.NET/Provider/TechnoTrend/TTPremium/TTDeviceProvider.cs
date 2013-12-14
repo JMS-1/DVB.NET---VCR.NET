@@ -3,12 +3,9 @@ using System.IO;
 using System.Text;
 using System.Collections;
 using System.Configuration;
-
 using JMS.TechnoTrend;
 using JMS.TechnoTrend.MFCWrapper;
 using JMS.DVB.DeviceAccess.Enumerators;
-
-using chman = JMS.ChannelManagement;
 
 
 namespace JMS.DVB.Provider.TTPremium
@@ -21,12 +18,6 @@ namespace JMS.DVB.Provider.TTPremium
     public class TTDeviceProvider : IDeviceProvider
     {
         /// <summary>
-        /// List of stations available.
-        /// <seealso cref="Channels"/>
-        /// </summary>
-        private chman.ChannelManager m_Channels = null;
-
-        /// <summary>
         /// Set as soon as the TechnoTrend API/SDK 2.19b is initialized.
         /// </summary>
         private bool m_Registered = false;
@@ -35,11 +26,6 @@ namespace JMS.DVB.Provider.TTPremium
         /// Do not register with the TechnoTrend API/SDK 2.19b.
         /// </summary>
         private bool m_NoRegister = false;
-
-        /// <summary>
-        /// The currently active profile.
-        /// </summary>
-        private chman.DeviceProfile m_Profile = null;
 
         /// <summary>
         /// Set to a log file when each method call should be logged.
@@ -61,7 +47,7 @@ namespace JMS.DVB.Provider.TTPremium
         /// the default station list.
         /// </summary>
         public TTDeviceProvider()
-            : this( 0, null )
+            : this( 0 )
         {
         }
 
@@ -70,25 +56,16 @@ namespace JMS.DVB.Provider.TTPremium
         /// </summary>
         /// <param name="args">Dynamic argument list.</param>
         public TTDeviceProvider( Hashtable args )
-            : this( ArgumentToDevice( args ), null, false, ArgumentToNetwork( args ), (string) args["WakeupDevice"], (string) args["WakeupDeviceMoniker"] )
+            : this( ArgumentToDevice( args ), false, ArgumentToNetwork( args ), (string) args["WakeupDevice"], (string) args["WakeupDeviceMoniker"] )
         {
         }
 
         /// <summary>
-        /// Create a new TechnoTrend DVB abstraction using the default station list.
+        /// Create a new TechnoTrend DVB abstraction.
         /// </summary>
         /// <param name="device">The zero based index of the device to use.</param>
         public TTDeviceProvider( int device )
-            : this( device, null )
-        {
-        }
-
-        /// <summary>
-        /// Create a new TechnoTrend DVB abstraction using the first device.
-        /// </summary>
-        /// <param name="manager">May preset list of stations to optimize loading.</param>
-        public TTDeviceProvider( chman.ChannelManager manager )
-            : this( 0, manager )
+            : this( device, false, true, null, null )
         {
         }
 
@@ -96,22 +73,11 @@ namespace JMS.DVB.Provider.TTPremium
         /// Create a new TechnoTrend DVB abstraction.
         /// </summary>
         /// <param name="device">The zero based index of the device to use.</param>
-        /// <param name="manager">May preset list of stations to optimize loading.</param>
-        public TTDeviceProvider( int device, chman.ChannelManager manager )
-            : this( device, manager, false, true, null, null )
-        {
-        }
-
-        /// <summary>
-        /// Create a new TechnoTrend DVB abstraction.
-        /// </summary>
-        /// <param name="device">The zero based index of the device to use.</param>
-        /// <param name="manager">May preset list of stations to optimize loading.</param>
         /// <param name="noRegister">Set if this instance should not register with the TechnoTrend API (legacy mode).</param>
         /// <param name="withNetwork">Set to initialize including network access.</param>
         /// <param name="wakeupDevice">Device to reset after resume from hibernation.</param>
-        protected TTDeviceProvider( int device, chman.ChannelManager manager, bool noRegister, bool withNetwork, string wakeupDevice )
-            : this( device, manager, noRegister, withNetwork, wakeupDevice, null )
+        protected TTDeviceProvider( int device, bool noRegister, bool withNetwork, string wakeupDevice )
+            : this( device, noRegister, withNetwork, wakeupDevice, null )
         {
         }
 
@@ -119,18 +85,16 @@ namespace JMS.DVB.Provider.TTPremium
         /// Create a new TechnoTrend DVB abstraction.
         /// </summary>
         /// <param name="device">The zero based index of the device to use.</param>
-        /// <param name="manager">May preset list of stations to optimize loading.</param>
         /// <param name="noRegister">Set if this instance should not register with the TechnoTrend API (legacy mode).</param>
         /// <param name="withNetwork">Set to initialize including network access.</param>
         /// <param name="wakeupDevice">Device to reset after resume from hibernation.</param>
         /// <param name="wakeupDeviceMoniker">Instance name of the reset device.</param>
-        protected TTDeviceProvider( int device, chman.ChannelManager manager, bool noRegister, bool withNetwork, string wakeupDevice, string wakeupDeviceMoniker )
+        protected TTDeviceProvider( int device, bool noRegister, bool withNetwork, string wakeupDevice, string wakeupDeviceMoniker )
         {
             // Remember
             m_WakeupDeviceInstance = wakeupDeviceMoniker;
             m_WakeupDevice = wakeupDevice;
             m_NoRegister = noRegister;
-            m_Channels = manager;
 
             // Forward global settings
             Context.WithNetwork = withNetwork;
@@ -198,24 +162,6 @@ namespace JMS.DVB.Provider.TTPremium
 
             // We are registered
             m_Registered = true;
-
-            // Attach the DISEqC
-            Context.TheContext.DiSEqCConfiguration = Channels.DiSEqCConfiguration;
-        }
-
-        /// <summary>
-        /// Find a station definition identified by the unique network
-        /// identification.
-        /// </summary>
-        /// <param name="key">The unique identification.</param>
-        /// <returns>Will be <i>null</i> if no such station is known.</returns>
-        public Station FindStation( Identifier key )
-        {
-            // Report
-            if (MethodLog) LogMessage( "FindStation {0}", key );
-
-            // Forward
-            return Channels.Find( key );
         }
 
         /// <summary>
@@ -362,57 +308,6 @@ namespace JMS.DVB.Provider.TTPremium
         }
 
         /// <summary>
-        /// Find a station description using the name of the station.
-        /// </summary>
-        /// <param name="station">Name of the station.</param>
-        /// <param name="provider">Optional name of the transponder to use.</param>
-        /// <returns>If there is not exactly one element in the <see cref="Array"/>
-        /// the station is either unknown or the same name is used in different
-        /// providers.</returns>
-        public Station[] ResolveStation( string station, string provider )
-        {
-            // Report
-            if (MethodLog) LogMessage( "ResolveStation {0} {1}", station, provider );
-
-            // Forward
-            return Channels.Find( station, provider );
-        }
-
-        /// <summary>
-        /// Report the current list of stations available.
-        /// </summary>
-        private chman.ChannelManager Channels
-        {
-            get
-            {
-                // Create once
-                if (null == m_Channels)
-                {
-                    // The channel configuration
-                    chman.ReceiverConfiguration config = null;
-
-                    // Try profile first
-                    if (null != m_Profile) config = m_Profile.RealChannels;
-
-                    // Check mode
-                    if (null != config)
-                    {
-                        // Use it
-                        m_Channels = config.Channels;
-                    }
-                    else
-                    {
-                        // Conventional load
-                        m_Channels = new chman.ChannelManager( null );
-                    }
-                }
-
-                // Report
-                return m_Channels;
-            }
-        }
-
-        /// <summary>
         /// Prepare filtering a DVB stream.
         /// </summary>
         /// <remarks>
@@ -477,21 +372,6 @@ namespace JMS.DVB.Provider.TTPremium
 
             // Process
             Context.TheContext.RawFilter[pid].Stop();
-        }
-
-        /// <summary>
-        /// Report all known stations.
-        /// </summary>
-        public IEnumerable Stations
-        {
-            get
-            {
-                // Report
-                if (MethodLog) LogMessage( "Stations" );
-
-                // Forward
-                return Channels.Stations;
-            }
         }
 
         /// <summary>
@@ -626,44 +506,6 @@ namespace JMS.DVB.Provider.TTPremium
 
                 // Report
                 return Context.TheContext.FrontendType;
-            }
-        }
-
-        /// <summary>
-        /// Reload the channel definition file on next call.
-        /// </summary>
-        public void ReloadChannels()
-        {
-            // Report
-            if (MethodLog) LogMessage( "ReloadChannels" );
-
-            // Forget
-            m_Channels = null;
-
-            // Not yet connected
-            if (!m_Registered) return;
-
-            // Attach the DISEqC
-            Context.TheContext.DiSEqCConfiguration = Channels.DiSEqCConfiguration;
-        }
-
-        /// <summary>
-        /// Get or set the active profile.
-        /// </summary>
-        public IDeviceProfile Profile
-        {
-            get
-            {
-                // Report
-                if (MethodLog) LogMessage( "Profile" );
-
-                // Report
-                return m_Profile;
-            }
-            set
-            {
-                // Update
-                m_Profile = (chman.DeviceProfile) value;
             }
         }
 

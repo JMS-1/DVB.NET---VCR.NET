@@ -131,7 +131,7 @@
     <Compile Include="ConfigurationFile\StringList.cs" />
     <Compile Include="ConfigurationFile\TerrestrialSection.cs" />
     <Compile Include="ConfigurationMap.cs" />
-    <Compile Include="DeviceProfileReference.cs" />
+    <None Include="DeviceProfileReference.cs" />
     <Compile Include="Postprocessing\AudioUpdateModes.cs" />
     <Compile Include="Postprocessing\ExcludeModes.cs" />
     <Compile Include="Postprocessing\StationFilters.cs" />
@@ -143,8 +143,8 @@
     <Compile Include="Postprocessing\TransponderFilters.cs" />
     <Compile Include="Postprocessing\UpdateModes.cs" />
     <Compile Include="Postprocessing\VideoUpdateModes.cs" />
-    <Compile Include="UserProfile.cs" />
-    <Compile Include="DeviceProfile.cs" />
+    <None Include="UserProfile.cs" />
+    <None Include="DeviceProfile.cs" />
     <Compile Include="DiSEqCItem.cs" />
     <Compile Include="Properties\Resources.de.Designer.cs">
       <DependentUpon>Resources.de.resx</DependentUpon>

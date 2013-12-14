@@ -132,7 +132,6 @@
     <Compile Include="Channel.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IDeviceProfile.cs" />
     <Compile Include="DeviceInformation.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -65,7 +65,6 @@
       <ComponentGroupRef Id="JMS.TechnoTrend.MFCWrapper.Binaries" />
       <ComponentGroupRef Id="JMS.DVB.Administration.Profiles.Binaries" />
       <ComponentGroupRef Id="JMS.DVB.Administration.TransponderScan.Binaries" />
-      <ComponentGroupRef Id="JMS.ChannelManagement.Binaries" />
       <ComponentGroupRef Id="JMS.DVB.Binaries" />
       <ComponentGroupRef Id="JMS.DVB.Algorithms.Binaries" />
       <ComponentGroupRef Id="JMS.DVB.DeviceAccess.Binaries" />
@@ -103,8 +102,6 @@
       <ComponentGroupRef Id="JMS.DVB.DirectShow.Content" />
       <ComponentGroupRef Id="JMS.DVB.DeviceAccess.Sources" />
       <ComponentGroupRef Id="JMS.DVB.DeviceAccess.Content" />
-      <ComponentGroupRef Id="JMS.ChannelManagement.Sources" />
-      <ComponentGroupRef Id="JMS.ChannelManagement.Content" />
       <ComponentGroupRef Id="JMS.DVB.Common.Sources" />
       <ComponentGroupRef Id="JMS.DVB.Common.Content" />
       <ComponentGroupRef Id="JMS.DVB.Sources" />
@@ -170,7 +167,6 @@
       <ComponentGroupRef Id="JMS.DVB.Provider.TTBudget.Documents" />
       <ComponentGroupRef Id="JMS.DVB.Provider.TTPremium.Documents" />
       <ComponentGroupRef Id="JMS.TechnoTrend.MFCWrapper.Documents" />
-      <ComponentGroupRef Id="JMS.ChannelManagement.Documents" />
       <ComponentGroupRef Id="JMS.DVB.Documents" />
       <ComponentGroupRef Id="JMS.DVB.Algorithms.Documents" />
       <ComponentGroupRef Id="JMS.DVB.DeviceAccess.Documents" />
