@@ -111,7 +111,7 @@ namespace JMS.DVBVCR.RecordingService.Requests
 
             // Complete
             info.EndsAt = info.Recording.EndsAt;
-            
+
             // Fill depending on the current task
             OnFillInformation( info, finalCall, m_state );
 

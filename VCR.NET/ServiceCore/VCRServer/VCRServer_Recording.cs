@@ -55,21 +55,12 @@ namespace JMS.DVBVCR.RecordingService
         /// <param name="streamIdentifier">Die eindeutige Kennung des zu verwendenden Datenstroms.</param>
         /// <param name="newEndTime">Der neue Endzeitpunkt.</param>
         /// <param name="disableHibernation">Gesetzt, wenn der Übergang in den Schlafzustand deaktiviert werden soll.</param>
-        /// <returns>Gesetzt, wenn die Operation erfolgreich war.</returns>
-        public bool ChangeRecordingStreamEndTime( string profile, Guid streamIdentifier, DateTime newEndTime, bool disableHibernation )
+        public void ChangeRecordingStreamEndTime( string profile, Guid streamIdentifier, DateTime newEndTime, bool disableHibernation )
         {
-            // Attach to the profile and process
+            // Forward
             var state = FindProfile( profile );
-            if (state == null)
-                return false;
-
-            // Attach to the request
-            var request = state.ChangeStreamEnd( streamIdentifier, newEndTime, disableHibernation );
-            if (request == null)
-                return false;
-
-            // Done
-            return true;
+            if (state != null)
+                state.ChangeStreamEnd( streamIdentifier, newEndTime, disableHibernation );
         }
 
         /// <summary>
@@ -79,15 +70,12 @@ namespace JMS.DVBVCR.RecordingService
         /// <param name="source">Die betroffene Quelle.</param>
         /// <param name="uniqueIdentifier">Die eindeutige Kennung der Teilaufzeichnung.</param>
         /// <param name="target">Das neue Ziel des Netzwerkversands.</param>
-        /// <returns>Gesetzt, wenn die Operation ausgeführt wurde.</returns>
-        public bool SetStreamTarget( string profile, SourceIdentifier source, Guid uniqueIdentifier, string target )
+        public void SetStreamTarget( string profile, SourceIdentifier source, Guid uniqueIdentifier, string target )
         {
             // Attach to the profile and process
             var state = FindProfile( profile );
-            if (state == null)
-                return false;
-            else
-                return state.SetStreamTarget( source, uniqueIdentifier, target );
+            if (state != null)
+                state.SetStreamTarget( source, uniqueIdentifier, target );
         }
 
         /// <summary>

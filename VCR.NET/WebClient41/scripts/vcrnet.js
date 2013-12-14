@@ -1840,6 +1840,7 @@ var CurrentInfo = (function () {
         var duration = rawData.duration * 1000;
         var start = new Date(rawData.start);
         var end = new Date(start.getTime() + duration);
+        var outdated = end.getTime() <= Date.now();
 
         // Übernehmen
         me.displayStart = JMSLib.DateFormatter.getStartTime(start);
@@ -1857,7 +1858,10 @@ var CurrentInfo = (function () {
 
         // Aufzeichungsmodus ermitteln
         if (me.scheduleIdentifier != null)
-            me.mode = 'running';
+            if (outdated)
+                me.mode = 'null';
+            else
+                me.mode = 'running';
         else if (rawData.late)
             me.mode = 'late';
         else
@@ -1868,12 +1872,13 @@ var CurrentInfo = (function () {
             me.editLink = '#edit;id=' + me.legacyId;
 
         // Abruf der Programmzeitschrift vorbereiten
-        if (rawData.epg) {
-            me.showGuide = function () {
-                CurrentInfo.guideDisplay(me, this);
-            };
-            me.guideLink = 'javascript:void(0)';
-        }
+        if (!outdated)
+            if (rawData.epg) {
+                me.showGuide = function () {
+                    CurrentInfo.guideDisplay(me, this);
+                };
+                me.guideLink = 'javascript:void(0)';
+            }
 
         // Manipulation laufender Aufzeichnungen
         if (me.scheduleIdentifier != null) {

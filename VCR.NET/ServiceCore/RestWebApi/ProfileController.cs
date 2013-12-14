@@ -57,7 +57,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
             var end = DateTime.Parse( endTime, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind );
 
             // Forward
-            ServerRuntime.VCRServer.ChangeRecordingStreamEndTime( detail, scheduleIdentifier, end, disableHibernate );
+            ServerRuntime.VCRServer.ChangeRecordingStreamEndTime( detail, scheduleIdentifier, end, disableHibernate );            
         }
 
         /// <summary>
