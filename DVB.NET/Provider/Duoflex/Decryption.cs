@@ -41,6 +41,12 @@ namespace JMS.DVB.Provider.Duoflex
         private bool m_disableOnChange;
 
         /// <summary>
+        /// Die Wartezeit in Sekunden vor der Übergabe einer Entschlüsselung nach einer Veränderung
+        /// der Senderdaten.
+        /// </summary>
+        private int m_changeDelay;
+
+        /// <summary>
         /// Die Art, wie das CI/CAM Zurücksetzen behandelt werden soll.
         /// </summary>
         private SuppressionMode m_suppress;
@@ -131,6 +137,10 @@ namespace JMS.DVB.Provider.Duoflex
                             if (m_disableOnChange)
                                 Decrypt( 0 );
 
+                        // Wait for it
+                        if (m_changeDelay > 0)
+                            Thread.Sleep( 1000 * m_changeDelay );
+
                         // Regular
                         Decrypt( pmt.ProgramNumber );
                     }
@@ -187,6 +197,8 @@ namespace JMS.DVB.Provider.Duoflex
                 // Analyse settings
                 if (!bool.TryParse( profile.Parameters.GetParameter( PipelineTypes.CICAM, AdditionalFilterSelector.CancelEncryptionOnChangedStream ), out m_disableOnChange ))
                     m_disableOnChange = false;
+                if (!int.TryParse( profile.Parameters.GetParameter( PipelineTypes.CICAM, AdditionalFilterSelector.DelayOnChangedStream ), out m_changeDelay ))
+                    m_changeDelay = 0;
 
                 // Register in pipeline
                 graph.DecryptionPipeline.AddPostProcessing( Decrypt );

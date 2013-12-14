@@ -40,6 +40,12 @@ namespace JMS.DVB.Provider.Duoflex
         public const string CancelEncryptionOnChangedStream = "DDCancelOnChange";
 
         /// <summary>
+        /// Die Zeitverzögerung in Sekunden, bevor eine auf eine Änderung der Senderdaten an
+        /// die Entschlüsselung weitergegeben wird.
+        /// </summary>
+        public const string DelayOnChangedStream = "DDDelayOnChange";
+
+        /// <summary>
         /// Erzeugt ein neues Auswahlfenster.
         /// </summary>
         /// <param name="parameters">Die aktuelle Wahl der Parameter.</param>
@@ -62,6 +68,13 @@ namespace JMS.DVB.Provider.Duoflex
                 ckDisableOnChange.Checked = disableOnChange;
             else
                 ckDisableOnChange.Checked = false;
+
+            // Load delay
+            int delay;
+            if (int.TryParse( parameters.GetParameter( DelayOnChangedStream ), out delay ))
+                udChangeDelay.Value = Math.Max( Math.Min( delay, udChangeDelay.Maximum ), udChangeDelay.Minimum );
+            else
+                udChangeDelay.Value = udChangeDelay.Minimum;
 
             // Load
             foreach (var information in DeviceAndFilterInformations.Cache.AllFilters)
@@ -151,6 +164,11 @@ namespace JMS.DVB.Provider.Duoflex
             // Copy change behaviour
             if (ckDisableOnChange.Checked)
                 parameters.Add( new ProfileParameter( CancelEncryptionOnChangedStream, true ) );
+
+            // Copy delay
+            var delay = (int) udChangeDelay.Value;
+            if (delay > 0)
+                parameters.Add( new ProfileParameter( DelayOnChangedStream, delay ) );
 
             // Check selection
             var selected = selFilter.SelectedItem as DeviceSelector;

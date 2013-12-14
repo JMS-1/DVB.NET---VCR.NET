@@ -36,6 +36,9 @@
             this.ckReset = new System.Windows.Forms.CheckBox();
             this.ckResetTune = new System.Windows.Forms.CheckBox();
             this.ckDisableOnChange = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.udChangeDelay = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.udChangeDelay)).BeginInit();
             this.SuspendLayout();
             // 
             // selFilter
@@ -87,12 +90,29 @@
             this.ckDisableOnChange.Name = "ckDisableOnChange";
             this.ckDisableOnChange.UseVisualStyleBackColor = true;
             // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
+            // udChangeDelay
+            // 
+            resources.ApplyResources(this.udChangeDelay, "udChangeDelay");
+            this.udChangeDelay.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.udChangeDelay.Name = "udChangeDelay";
+            // 
             // AdditionalFilterSelector
             // 
             this.AcceptButton = this.cmdAccept;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cmdCancel;
+            this.Controls.Add(this.udChangeDelay);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.ckDisableOnChange);
             this.Controls.Add(this.ckResetTune);
             this.Controls.Add(this.ckReset);
@@ -106,6 +126,7 @@
             this.Name = "AdditionalFilterSelector";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            ((System.ComponentModel.ISupportInitialize)(this.udChangeDelay)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -120,5 +141,7 @@
         private System.Windows.Forms.CheckBox ckReset;
         private System.Windows.Forms.CheckBox ckResetTune;
         private System.Windows.Forms.CheckBox ckDisableOnChange;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.NumericUpDown udChangeDelay;
     }
 }
