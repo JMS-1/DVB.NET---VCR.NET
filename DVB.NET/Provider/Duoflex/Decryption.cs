@@ -22,27 +22,33 @@ namespace JMS.DVB.Provider.Duoflex
         /// <summary>
         /// Der zuletzt beobachtete BDA Graph.
         /// </summary>
-        private DataGraph m_DataGraph;
+        private DataGraph m_dataGraph;
 
         /// <summary>
         /// Die laufende Nummer unseres Filters.
         /// </summary>
-        private int m_FilterIndex = -1;
+        private int m_filterIndex = -1;
 
         /// <summary>
         /// Gesetzt, sobald das CAM einmal zurückgesetzt wurde.
         /// </summary>
-        private bool m_HasBeenReset;
+        private bool m_hasBeenReset;
+
+        /// <summary>
+        /// Gesetzt, wenn bei Änderungen des Datenstroms kurzzeitig die Entschlüsselung
+        /// deaktiviert werden soll.
+        /// </summary>
+        private bool m_disableOnChange;
 
         /// <summary>
         /// Die Art, wie das CI/CAM Zurücksetzen behandelt werden soll.
         /// </summary>
-        private SuppressionMode m_Suppress;
+        private SuppressionMode m_suppress;
 
         /// <summary>
         /// Zählt die Aufrufe der Entschlüsselungsmethode <see cref="Decrypt(DataGraph.DecryptToken)"/>.
         /// </summary>
-        private int m_ChangeCounter;
+        private int m_changeCounter;
 
         /// <summary>
         /// Steuert den Zugriff auf die Hardware.
@@ -56,7 +62,7 @@ namespace JMS.DVB.Provider.Duoflex
         private void Decrypt( ushort service )
         {
             // Check COM interface
-            var controlPtr = ComIdentity.QueryInterface( m_DataGraph.AdditionalFilters[m_FilterIndex].Interface, typeof( KsControl.Interface ) );
+            var controlPtr = ComIdentity.QueryInterface( m_dataGraph.AdditionalFilters[m_filterIndex].Interface, typeof( KsControl.Interface ) );
             if (controlPtr != IntPtr.Zero)
                 using (var control = new KsControl( controlPtr ))
                     control.SetServices( service );
@@ -70,27 +76,27 @@ namespace JMS.DVB.Provider.Duoflex
         {
             // Load graph
             if (token != null)
-                m_DataGraph = token.Pipeline.Graph;
+                m_dataGraph = token.Pipeline.Graph;
 
             // Get unique call identifier
-            var callIdentifier = Interlocked.Increment( ref m_ChangeCounter );
+            var callIdentifier = Interlocked.Increment( ref m_changeCounter );
 
             // See if we can do anything
-            if (m_DataGraph == null)
+            if (m_dataGraph == null)
                 return PipelineResult.Continue;
-            if (m_FilterIndex < 0)
+            if (m_filterIndex < 0)
                 return PipelineResult.Continue;
-            if (m_FilterIndex >= m_DataGraph.AdditionalFilters.Count)
+            if (m_filterIndex >= m_dataGraph.AdditionalFilters.Count)
                 return PipelineResult.Continue;
 
             // Deactivate if CAM reset is forbidden
             var sources = (token == null) ? null : token.Sources;
             var noSources = (sources == null) || (sources.Length < 1);
-            if ((noSources && (m_Suppress != SuppressionMode.Complete)) || !m_HasBeenReset)
+            if ((noSources && (m_suppress != SuppressionMode.Complete)) || !m_hasBeenReset)
                 lock (m_deviceAccess)
                 {
                     // Check COM interface
-                    var controlPtr = ComIdentity.QueryInterface( m_DataGraph.AdditionalFilters[m_FilterIndex].Interface, typeof( KsControl.Interface ) );
+                    var controlPtr = ComIdentity.QueryInterface( m_dataGraph.AdditionalFilters[m_filterIndex].Interface, typeof( KsControl.Interface ) );
                     if (controlPtr == IntPtr.Zero)
                         return PipelineResult.Continue;
 
@@ -105,7 +111,7 @@ namespace JMS.DVB.Provider.Duoflex
                         control.Reset();
 
                         // We did it once
-                        m_HasBeenReset = true;
+                        m_hasBeenReset = true;
                     }
                 }
 
@@ -117,12 +123,13 @@ namespace JMS.DVB.Provider.Duoflex
                     lock (m_deviceAccess)
                     {
                         // No longer current
-                        if (Thread.VolatileRead( ref m_ChangeCounter ) != callIdentifier)
+                        if (Thread.VolatileRead( ref m_changeCounter ) != callIdentifier)
                             return false;
 
                         // Try reset
                         if (!first)
-                            Decrypt( 0 );
+                            if (m_disableOnChange)
+                                Decrypt( 0 );
 
                         // Regular
                         Decrypt( pmt.ProgramNumber );
@@ -174,8 +181,12 @@ namespace JMS.DVB.Provider.Duoflex
             if ((types & PipelineTypes.CICAM) != 0)
             {
                 // Load static settings
-                m_Suppress = AdditionalFilterSelector.GetSuppression( PipelineTypes.CICAM, profile.Parameters );
-                m_HasBeenReset = (m_Suppress != SuppressionMode.None);
+                m_suppress = AdditionalFilterSelector.GetSuppression( PipelineTypes.CICAM, profile.Parameters );
+                m_hasBeenReset = (m_suppress != SuppressionMode.None);
+
+                // Analyse settings
+                if (!bool.TryParse( profile.Parameters.GetParameter( PipelineTypes.CICAM, AdditionalFilterSelector.CancelEncryptionOnChangedStream ), out m_disableOnChange ))
+                    m_disableOnChange = false;
 
                 // Register in pipeline
                 graph.DecryptionPipeline.AddPostProcessing( Decrypt );
@@ -188,7 +199,7 @@ namespace JMS.DVB.Provider.Duoflex
                     var filterMoniker = profile.Parameters.GetParameter( PipelineTypes.CICAM, AdditionalFilterSelector.FilterMoniker );
 
                     // Remember position of our extension
-                    m_FilterIndex = graph.AdditionalFilterInformations.Count;
+                    m_filterIndex = graph.AdditionalFilterInformations.Count;
 
                     // Register in graph
                     graph.AdditionalFilterInformations.Add( DeviceAndFilterInformations.Cache.AllFilters.FindFilter( filterDisplayName, filterMoniker ) );

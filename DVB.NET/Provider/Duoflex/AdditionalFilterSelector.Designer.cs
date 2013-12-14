@@ -35,6 +35,7 @@
             this.ckDisplayOnly = new System.Windows.Forms.CheckBox();
             this.ckReset = new System.Windows.Forms.CheckBox();
             this.ckResetTune = new System.Windows.Forms.CheckBox();
+            this.ckDisableOnChange = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // selFilter
@@ -80,12 +81,19 @@
             this.ckResetTune.Name = "ckResetTune";
             this.ckResetTune.UseVisualStyleBackColor = true;
             // 
+            // ckDisableOnChange
+            // 
+            resources.ApplyResources(this.ckDisableOnChange, "ckDisableOnChange");
+            this.ckDisableOnChange.Name = "ckDisableOnChange";
+            this.ckDisableOnChange.UseVisualStyleBackColor = true;
+            // 
             // AdditionalFilterSelector
             // 
             this.AcceptButton = this.cmdAccept;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cmdCancel;
+            this.Controls.Add(this.ckDisableOnChange);
             this.Controls.Add(this.ckResetTune);
             this.Controls.Add(this.ckReset);
             this.Controls.Add(this.ckDisplayOnly);
@@ -111,5 +119,6 @@
         private System.Windows.Forms.CheckBox ckDisplayOnly;
         private System.Windows.Forms.CheckBox ckReset;
         private System.Windows.Forms.CheckBox ckResetTune;
+        private System.Windows.Forms.CheckBox ckDisableOnChange;
     }
 }

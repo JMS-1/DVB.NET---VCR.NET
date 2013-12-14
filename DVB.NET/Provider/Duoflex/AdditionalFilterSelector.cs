@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Windows.Forms;
 using System.Collections.Generic;
-
-using JMS.DVB.Editors;
+using System.Windows.Forms;
 using JMS.DVB.DeviceAccess.Enumerators;
+using JMS.DVB.Editors;
 
 
 namespace JMS.DVB.Provider.Duoflex
@@ -35,6 +34,12 @@ namespace JMS.DVB.Provider.Duoflex
         public const string ResetSuppressionMode = "DDSuppressCAMReset";
 
         /// <summary>
+        /// Der Name des Parameters, der für eine kurzzeitige Deaktivierung der Entschlüsselung bei
+        /// Änderungen der Senderdaten sorgt.
+        /// </summary>
+        public const string CancelEncryptionOnChangedStream = "DDCancelOnChange";
+
+        /// <summary>
         /// Erzeugt ein neues Auswahlfenster.
         /// </summary>
         /// <param name="parameters">Die aktuelle Wahl der Parameter.</param>
@@ -50,6 +55,13 @@ namespace JMS.DVB.Provider.Duoflex
                 case SuppressionMode.Startup: ckReset.Checked = true; break;
                 default: ckResetTune.Enabled = false; break;
             }
+
+            // Load flag
+            bool disableOnChange;
+            if (bool.TryParse( parameters.GetParameter( CancelEncryptionOnChangedStream ), out disableOnChange ))
+                ckDisableOnChange.Checked = disableOnChange;
+            else
+                ckDisableOnChange.Checked = false;
 
             // Load
             foreach (var information in DeviceAndFilterInformations.Cache.AllFilters)
@@ -135,6 +147,10 @@ namespace JMS.DVB.Provider.Duoflex
                 // Create parameter
                 parameters.Add( new ProfileParameter( ResetSuppressionMode, mode ) );
             }
+
+            // Copy change behaviour
+            if (ckDisableOnChange.Checked)
+                parameters.Add( new ProfileParameter( CancelEncryptionOnChangedStream, true ) );
 
             // Check selection
             var selected = selFilter.SelectedItem as DeviceSelector;
