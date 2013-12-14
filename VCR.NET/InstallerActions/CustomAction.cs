@@ -1,5 +1,4 @@
-﻿extern alias oldVersion;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,7 +10,6 @@ using JMS.DVB.Provider.Legacy;
 using JMS.DVBVCR.InstallerActions;
 using Microsoft.Deployment.WindowsInstaller;
 using Microsoft.Win32;
-using legacy = oldVersion.JMS;
 
 
 namespace InstallerActions
@@ -93,7 +91,7 @@ namespace InstallerActions
                 }
             }
             catch (Exception)
-            { 
+            {
             }
 
             // Did it
@@ -245,47 +243,8 @@ namespace InstallerActions
 
                 // See if use should choose profile
                 if (string.IsNullOrEmpty( profileNames ))
-                {
-                    // Ask user
                     using (var dialog = new ProfileInstaller( newConfiguration ))
                         dialog.ShowDialog();
-                }
-                else
-                {
-                    // All legacy profiles
-                    var oldProfiles = legacy.ChannelManagement.DeviceProfile.SystemProfiles.ToDictionary( p => p.Name, ProfileManager.ProfileNameComparer );
-
-                    // Run conversion
-                    foreach (var profileNameRaw in profileNames.Split( '|' ))
-                    {
-                        // Get the name
-                        var profileName = profileNameRaw.Trim();
-                        if (ProfileManager.FindProfile( profileName ) != null)
-                            continue;
-
-                        // Load it
-                        legacy.ChannelManagement.DeviceProfile oldProfile;
-                        if (!oldProfiles.TryGetValue( profileName, out oldProfile ))
-                            continue;
-
-                        // Try to convert
-                        try
-                        {
-                            // Process
-                            var newProfile = ProfileTools.Convert( oldProfile );
-
-                            // Finish
-                            newProfile.MakePermanent();
-
-                            // Refresh
-                            ProfileManager.Refresh();
-                        }
-                        catch
-                        {
-                            // Ignore any error.
-                        }
-                    }
-                }
 
                 // Save the configuration
                 newConfiguration.Save( newConfigurationPath.FullName );

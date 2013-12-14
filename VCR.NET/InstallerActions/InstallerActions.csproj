@@ -46,12 +46,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JMS.ChannelManagement, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.2\RunTime\JMS.ChannelManagement.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-      <Aliases>oldVersion</Aliases>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="JMS.DVB, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.2\RunTime\JMS.DVB.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>

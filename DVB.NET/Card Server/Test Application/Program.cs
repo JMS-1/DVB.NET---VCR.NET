@@ -1,13 +1,8 @@
-﻿extern alias oldVersion;
-
-using System;
-using System.Threading;
+﻿using System;
 using System.Globalization;
+using System.Threading;
 using System.Windows.Forms;
-
 using JMS.DVB;
-
-using legacy = oldVersion.JMS.ChannelManagement;
 
 
 namespace CardServerTester

@@ -23,8 +23,20 @@ namespace JMS.DVB
             Serializable,
             XmlRoot( "UserProfile" )
         ]
-        private class Persistence
+        public class Persisted
         {
+            /// <summary>
+            /// Die alte Art der Darstellung.
+            /// </summary>
+            [Serializable]
+            public class Legacy
+            {
+                /// <summary>
+                /// Der Name des Geräteprofils.
+                /// </summary>
+                public string ProfileName { get; set; }
+            }
+
             /// <summary>
             /// Der XML Namensraum, der für die serialisierte Form verwendet wird.
             /// </summary>
@@ -43,7 +55,32 @@ namespace JMS.DVB
             /// <summary>
             /// Das zugehörige Geräteprofil.
             /// </summary>
-            public string ProfileName { get; set; }
+            public Legacy Profile { get; set; }
+
+            /// <summary>
+            /// Der Name des zugehörigen Geräteprofils.
+            /// </summary>
+            [XmlIgnore]
+            public string ProfileName
+            {
+                get
+                {
+                    // Check profile
+                    var profile = Profile;
+                    if (profile == null)
+                        return null;
+                    else
+                        return profile.ProfileName;
+                }
+                set
+                {
+                    // Update
+                    if (string.IsNullOrEmpty( value ))
+                        Profile = null;
+                    else
+                        Profile = new Legacy { ProfileName = value };
+                }
+            }
 
             /// <summary>
             /// Meldet oder legt fest, ob die Auswahl des Geräteprofils immer angezeigt werden soll.
@@ -74,7 +111,7 @@ namespace JMS.DVB
             /// Lädt die Vorgaben des aktuellen Anwenders.
             /// </summary>
             /// <returns>Die Vorgaben für diesen Anwender.</returns>
-            public static Persistence Load()
+            public static Persisted Load()
             {
                 // Get the user profile directory
                 var profileDir = new DirectoryInfo( Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.LocalApplicationData ), "DVBNETProfiles" ) );
@@ -86,26 +123,20 @@ namespace JMS.DVB
                 var profile = new FileInfo( Path.Combine( profileDir.FullName, "UserProfile.dup" ) );
 
                 // The new profile
-                Persistence settings;
+                Persisted settings;
 
                 // Load or create
-                if (profile.Exists)
-                {
-                    // Open
+                if (!profile.Exists)
+                    settings = new Persisted();
+                else
                     using (var stream = new FileStream( profile.FullName, FileMode.Open, FileAccess.Read, FileShare.Read ))
                     {
                         // Create serializer
-                        var serializer = new XmlSerializer( typeof( UserProfile ), ProfileNamespace );
+                        var serializer = new XmlSerializer( typeof( Persisted ), ProfileNamespace );
 
                         // Process
-                        settings = (Persistence) serializer.Deserialize( stream );
+                        settings = (Persisted) serializer.Deserialize( stream );
                     }
-                }
-                else
-                {
-                    // Create new
-                    settings = new Persistence();
-                }
 
                 // Remember root
                 settings.m_File = profile;
@@ -118,7 +149,7 @@ namespace JMS.DVB
         /// <summary>
         /// Die aktuelle Konfiguration.
         /// </summary>
-        private static Persistence m_Settings = Persistence.Load();
+        private static Persisted m_Settings = Persisted.Load();
 
         /// <summary>
         /// Speichert die Einstellungen des aktuellen Anwenders.

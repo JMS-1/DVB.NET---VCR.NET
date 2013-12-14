@@ -47,11 +47,6 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JMS.ChannelManagement, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\Assemblies\RunTime\JMS.ChannelManagement.dll</HintPath>
-      <Aliases>oldVersion</Aliases>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="JMS.DVB.CardServerCore, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
       <HintPath>..\..\Assemblies\RunTime\JMS.DVB.CardServerCore.dll</HintPath>
       <Private>False</Private>
