@@ -1,6 +1,5 @@
-using System;
 
-namespace JMS.DVB.Cable
+namespace JMS.TechnoTrend
 {
 	/// <summary>
 	/// [Don't know]

@@ -1,10 +1,6 @@
-extern alias oldVersion;
-
 using System;
-using System.Threading;
 using System.Collections.Generic;
-
-using legacy = oldVersion.JMS.DVB;
+using System.Threading;
 
 
 namespace JMS.DVB.Provider.TTBudget
@@ -18,9 +14,9 @@ namespace JMS.DVB.Provider.TTBudget
         private long m_QueueLimit = 0;
         private long m_QueueSize = 0;
 
-        private legacy.FilterHandler m_Handler;
+        private FilterHandler m_Handler;
 
-        public FilterQueue( legacy.FilterHandler callback )
+        public FilterQueue( FilterHandler callback )
         {
             // Remember
             m_Handler = callback;

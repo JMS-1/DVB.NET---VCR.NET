@@ -5,10 +5,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Threading;
 using JMS.DVB;
-using JMS.DVB.Cable;
 using JMS.DVB.DeviceAccess;
-using JMS.DVB.Satellite;
-using JMS.DVB.Terrestrial;
 using ScanLog = JMS.DVB.EPG.Tools;
 
 
@@ -181,11 +178,6 @@ namespace JMS.TechnoTrend.MFCWrapper
         private static readonly byte[] m_NoData = { };
 
         /// <summary>
-        /// Configuration of satellite receivers.
-        /// </summary>
-        public DiSEqCConfiguration DiSEqCConfiguration = new DiSEqCConfiguration();
-
-        /// <summary>
         /// Holder of the C++ instance.
         /// </summary>
         private ClassHolder m_Class = null;
@@ -194,11 +186,6 @@ namespace JMS.TechnoTrend.MFCWrapper
         /// All <see cref="DVBRawFilter"/> instances indexed by its <see cref="DVBRawFilter.FilterPID"/>.
         /// </summary>
         private Dictionary<ushort, DVBRawFilter> m_Filters = new Dictionary<ushort, DVBRawFilter>();
-
-        /// <summary>
-        /// Last DiSEqC command we sent.
-        /// </summary>
-        private DiSEqCMessage m_LastMessage = null;
 
         /// <summary>
         /// Die zuletzt versendete Antennensteuerung.
@@ -264,7 +251,6 @@ namespace JMS.TechnoTrend.MFCWrapper
             if (DVBError.None != eCode) throw new DVBException( "Can not initialize Frontend", eCode );
 
             // Reset
-            m_LastMessage = null;
             m_lastMessage = null;
         }
 
@@ -291,34 +277,20 @@ namespace JMS.TechnoTrend.MFCWrapper
         /// <summary>
         /// Retrieve the type of the frontend.
         /// </summary>
-        public FrontendType FrontendType
-        {
-            get
-            {
-                // Load it
-                return CDVBFrontend_GetType( m_Class.ClassPointer );
-            }
-        }
+        public FrontendType FrontendType { get { return CDVBFrontend_GetType( m_Class.ClassPointer ); } }
 
         /// <summary>
         /// Retrieve the capabiltites of the frontend.
         /// </summary>
-        public FrontendCapabilities Capabilities
-        {
-            get
-            {
-                // Load it
-                return CDVBFrontend_GetCapabilities( m_Class.ClassPointer );
-            }
-        }
+        public FrontendCapabilities Capabilities { get { return CDVBFrontend_GetCapabilities( m_Class.ClassPointer ); } }
 
         /// <summary>
-        /// Simply forwards to <see cref="SetChannel(Channel, DiSEqC)"/> with <i>false</i>
-        /// as a third parameter.
+        /// Wählt eine Quellgruppe aus.
         /// </summary>
-        /// <param name="pChannel">Channel to select.</param>
-        /// <param name="diseqc">Optional DiSEqC configuration for DVB-S.</param>
-        public void SetChannel( Channel pChannel, DiSEqC diseqc )
+        /// <param name="group">Díe Daten der Quellgruppe.</param>
+        /// <param name="location">Die Wahl des Ursprungs, über den die Quellgruppe empfangen werden kann.</param>
+        /// <returns>Gesetzt, wenn es sich um eine DVB-S Quellgruppe handelt.</returns>
+        public void SetChannel( SourceGroup group, GroupLocation location )
         {
             // Stop all filters
             StopFilters();
@@ -326,44 +298,11 @@ namespace JMS.TechnoTrend.MFCWrapper
             // May repeat some times
             for (int nRetry = 3; nRetry-- > 0; )
             {
-                // Try terrestrial
-                TerrestrialChannel pTerra = pChannel as TerrestrialChannel;
-
-                // Process
-                if (null != pTerra)
-                {
-                    // Call it
-                    SendChannel( pTerra );
-                }
-                else
-                {
-                    // Try cable
-                    CableChannel pCable = pChannel as CableChannel;
-
-                    // Process
-                    if (null != pCable)
-                    {
-                        // Call it
-                        SendChannel( pCable );
-                    }
-                    else
-                    {
-                        // Try satellite
-                        SatelliteChannel pSat = pChannel as SatelliteChannel;
-
-                        // Process
-                        if (null != pSat)
-                        {
-                            // Call it
-                            SendChannel( pSat, diseqc );
-                        }
-                        else
-                        {
-                            // Unsupported
-                            throw new DVBException( "Unsupported Channel Type " + pChannel.GetType().FullName );
-                        }
-                    }
-                }
+                // Supported types in order of importance
+                if (!SendChannel( group as SatelliteGroup, location as SatelliteLocation ))
+                    if (!SendChannel( group as CableGroup ))
+                        if (!SendChannel( group as TerrestrialGroup ))
+                            throw new DVBException( "Unsupported Channel Type " + group.GetType().FullName );
 
                 // Wait for the signal
                 for (int n = 10; n-- > 0; Thread.Sleep( 50 ))
@@ -371,7 +310,7 @@ namespace JMS.TechnoTrend.MFCWrapper
                         return;
 
                 // Force to resend DiSEqC command
-                m_LastMessage = null;
+                m_lastMessage = null;
             }
         }
 
@@ -409,74 +348,19 @@ namespace JMS.TechnoTrend.MFCWrapper
         }
 
         /// <summary>
-        /// Unpacks the <see cref="SatelliteChannel"/> to a <see cref="Channel_S"/> and
-        /// updates the frontend accordingly.
-        /// </summary>
-        /// <remarks>
-        /// The current <see cref="DiSEqCConfiguration"/> is used to calculate the <see cref="Channel_S.b22kHz"/>,
-        /// <see cref="Channel_S.LOF"/> and <see cref="Channel_S.LNBPower"/> fields.
-        /// </remarks>
-        /// <param name="pChannel">Satellite channel to use.</param>
-        /// <param name="diseqc">Optional DiSEqC configuration for the channel.</param>
-        private void SendChannel( SatelliteChannel pChannel, DiSEqC diseqc )
-        {
-            // Validate
-            if (FrontendType.Satellite != FrontendType) throw new DVBException( "Expected " + FrontendType.ToString() + " Channel" );
-
-            // Helper
-            Channel_S rData = new Channel_S();
-
-            // Fill
-            rData.Frequency = pChannel.Frequency;
-            rData.Inversion = pChannel.SpectrumInversion;
-            rData.SymbolRate = pChannel.SymbolRate;
-
-            // Attach to the DiSEqC setting
-            DiSEqC selector = (null != diseqc) ? diseqc : DiSEqCConfiguration[pChannel.LNBIndex];
-
-            // Request the message to send
-            DiSEqCMessage message = selector.CreateMessage( pChannel );
-
-            // See if the message is different from the last one
-            if (!message.Equals( m_LastMessage ))
-            {
-                // Remember
-                m_LastMessage = message.Clone();
-
-                // As long as necessary
-                for (int nCount = message.Repeat; nCount-- > 0; Thread.Sleep( 120 ))
-                {
-                    // Send it
-                    DVBException.ThrowOnError( CDVBFrontend_SendDiSEqCMsg( m_Class.ClassPointer, message.Request, (byte) message.Request.Length, message.Burst ), "Could not send DiSEqC Message" );
-
-                    // Set repeat flag
-                    if (message.Request.Length > 0) message.Request[0] |= 1;
-                }
-            }
-
-            // Calculated items
-            rData.b22kHz = selector.Use22kHz( pChannel.Frequency ) ? 1 : 0;
-            rData.LOF = (0 == rData.b22kHz) ? selector.LOF1 : selector.LOF2;
-            rData.LNBPower = selector.UsePower ? pChannel.Power : PowerMode.Off;
-
-            // Process
-            CheckChannel( CDVBFrontend_SetChannel( m_Class.ClassPointer, rData, false ) );
-
-            // Check up for synchronisation
-            Channel_S rValidate;
-
-            // Get channel twice
-            CheckChannel( CDVBFrontend_GetChannel( m_Class.ClassPointer, out rValidate ) );
-            CheckChannel( CDVBFrontend_GetChannel( m_Class.ClassPointer, out rValidate ) );
-        }
-
-        /// <summary>
         /// Wählt eine Quellgruppe aus.
         /// </summary>
-        /// <param name="location">Die Wahl der zu verwendenden Antwenne.</param>
         /// <param name="group">Díe Daten der Quellgruppe.</param>
-        private void SendChannel( SatelliteLocation location, SatelliteGroup group )
+        /// <param name="location">Die Wahl des Ursprungs, über den die Quellgruppe empfangen werden kann.</param>
+        /// <returns>Gesetzt, wenn es sich um eine DVB-S Quellgruppe handelt.</returns>
+        private bool SendChannel( SatelliteGroup group, SatelliteLocation location )
         {
+            // Not us
+            if (location == null)
+                return false;
+            if (group == null)
+                return false;
+
             // Validate
             if (FrontendType != FrontendType.Satellite)
                 throw new DVBException( "Expected " + FrontendType.ToString() + " Channel" );
@@ -522,69 +406,123 @@ namespace JMS.TechnoTrend.MFCWrapper
                 case Polarizations.Horizontal: rData.LNBPower = PowerMode.Horizontal; break;
                 case Polarizations.Vertical: rData.LNBPower = PowerMode.Vertical; break;
                 case Polarizations.NotDefined: rData.LNBPower = PowerMode.Off; break;
-                default: throw new ArgumentException( group.Polarization.ToString(), "group.Polarization" );
+                default: throw new ArgumentException( group.Polarization.ToString(), "Polarization" );
             }
 
             // Process
             CheckChannel( CDVBFrontend_SetChannel( m_Class.ClassPointer, rData, false ) );
 
             // Check up for synchronisation
-            Channel_S rValidate;
+            Channel_S val1, val2;
 
             // Get channel twice
-            CheckChannel( CDVBFrontend_GetChannel( m_Class.ClassPointer, out rValidate ) );
-            CheckChannel( CDVBFrontend_GetChannel( m_Class.ClassPointer, out rValidate ) );
+            CheckChannel( CDVBFrontend_GetChannel( m_Class.ClassPointer, out val1 ) );
+            CheckChannel( CDVBFrontend_GetChannel( m_Class.ClassPointer, out val2 ) );
+
+            // Did it
+            return true;
         }
 
         /// <summary>
-        /// Unpacks the <see cref="CableChannel"/> to a <see cref="Channel_C"/> and
-        /// updates the frontend accordingly.
+        /// Wählt eine Quellgruppe an.
         /// </summary>
-        /// <param name="pChannel">Cable channel to use.</param>
-        private void SendChannel( CableChannel pChannel )
+        /// <param name="group">Die Daten zur Quellgruppe.</param>
+        /// <returns>Gesetzt, wenn es sich um eine DVB-C Quellgruppe handelt.</returns>
+        private bool SendChannel( CableGroup group )
         {
+            // Not us
+            if (group == null)
+                return false;
+
             // Validate
-            if (FrontendType.Cable != FrontendType) throw new DVBException( "Expected " + FrontendType.ToString() + " Channel" );
+            if (FrontendType != FrontendType.Cable)
+                throw new DVBException( "Expected " + FrontendType.ToString() + " Channel" );
 
             // Helper
-            Channel_C rData = new Channel_C();
+            var rData =
+                new Channel_C
+                {
+                    Frequency = group.Frequency,
+                    SymbolRate = group.SymbolRate,
+                };
 
-            // Fill
-            rData.Frequency = pChannel.Frequency;
-            rData.Inversion = pChannel.SpectrumInversion;
-            rData.SymbolRate = pChannel.SymbolRate;
-            rData.Qam = pChannel.QAM;
-            rData.Bandwidth = pChannel.Bandwidth;
+            // Spectrum inversion
+            switch (group.SpectrumInversion)
+            {
+                case SpectrumInversions.On: rData.Inversion = SpectrumInversion.On; break;
+                case SpectrumInversions.Off: rData.Inversion = SpectrumInversion.Off; break;
+                case SpectrumInversions.Auto: rData.Inversion = SpectrumInversion.Auto; break;
+                default: rData.Inversion = SpectrumInversion.Auto; break;
+            }
+
+            // Modulation
+            switch (group.Modulation)
+            {
+                case CableModulations.QAM16: rData.Qam = Qam.Qam16; break;
+                case CableModulations.QAM32: rData.Qam = Qam.Qam32; break;
+                case CableModulations.QAM64: rData.Qam = Qam.Qam64; break;
+                case CableModulations.QAM128: rData.Qam = Qam.Qam128; break;
+                case CableModulations.QAM256: rData.Qam = Qam.Qam256; break;
+                default: rData.Qam = Qam.Qam64; break;
+            }
+
+            // Check supported modes
+            switch (group.Bandwidth)
+            {
+                case Bandwidths.Six: rData.Bandwidth = BandwidthType.Six; break;
+                case Bandwidths.Seven: rData.Bandwidth = BandwidthType.Seven; break;
+                case Bandwidths.Eight: rData.Bandwidth = BandwidthType.Eight; break;
+                case Bandwidths.NotDefined: rData.Bandwidth = BandwidthType.None; break;
+                default: rData.Bandwidth = BandwidthType.Auto; break;
+            }
 
             // Process
             CheckChannel( CDVBFrontend_SetChannel( m_Class.ClassPointer, rData, false ) );
 
             // Check up for synchronisation
-            Channel_C rVal1, rVal2;
+            Channel_C val1, val2;
 
             // Get channel twice
-            CheckChannel( CDVBFrontend_GetChannel( m_Class.ClassPointer, out rVal1 ) );
-            CheckChannel( CDVBFrontend_GetChannel( m_Class.ClassPointer, out rVal2 ) );
+            CheckChannel( CDVBFrontend_GetChannel( m_Class.ClassPointer, out val1 ) );
+            CheckChannel( CDVBFrontend_GetChannel( m_Class.ClassPointer, out val2 ) );
+
+            // Did it
+            return true;
         }
 
         /// <summary>
-        /// Unpacks the <see cref="TerrestrialChannel"/> to a <see cref="Channel_T"/> and
-        /// updates the frontend accordingly.
+        /// Wählt eine Quellgruppe an.
         /// </summary>
-        /// <param name="pChannel">Terrestrial channel to use.</param>
-        private void SendChannel( TerrestrialChannel pChannel )
+        /// <param name="group">Die Daten zur Quellgruppe.</param>
+        /// <returns>Gesetzt, wenn es sich um eine DVB-T Quellgruppe handelt.</returns>
+        private bool SendChannel( TerrestrialGroup group )
         {
+            // Not us 
+            if (group == null)
+                return false;
+
             // Validate
-            if (FrontendType.Terrestrial != FrontendType) throw new DVBException( "Expected " + FrontendType.ToString() + " Channel" );
+            if (FrontendType != FrontendType.Terrestrial)
+                throw new DVBException( "Expected " + FrontendType.ToString() + " Channel" );
 
             // Helper
-            Channel_T rData = new Channel_T();
+            var rData =
+                new Channel_T
+                {
+                    Frequency = group.Frequency,
+                    Inversion = SpectrumInversion.Off,
+                    Scan = false,
+                };
 
-            // Fill
-            rData.Frequency = pChannel.Frequency;
-            rData.Inversion = pChannel.SpectrumInversion;
-            rData.Scan = pChannel.FullRescan;
-            rData.Bandwidth = pChannel.Bandwidth;
+            // Check supported modes
+            switch (group.Bandwidth)
+            {
+                case Bandwidths.Six: rData.Bandwidth = BandwidthType.Six; break;
+                case Bandwidths.Seven: rData.Bandwidth = BandwidthType.Seven; break;
+                case Bandwidths.Eight: rData.Bandwidth = BandwidthType.Eight; break;
+                case Bandwidths.NotDefined: rData.Bandwidth = BandwidthType.None; break;
+                default: rData.Bandwidth = BandwidthType.Auto; break;
+            }
 
             // Process
             CheckChannel( CDVBFrontend_SetChannel( m_Class.ClassPointer, rData, false ) );
@@ -595,6 +533,9 @@ namespace JMS.TechnoTrend.MFCWrapper
             // Get channel twice
             CheckChannel( CDVBFrontend_GetChannel( m_Class.ClassPointer, out rVal1 ) );
             CheckChannel( CDVBFrontend_GetChannel( m_Class.ClassPointer, out rVal2 ) );
+
+            // Did it
+            return true;
         }
 
         /// <summary>
@@ -626,14 +567,7 @@ namespace JMS.TechnoTrend.MFCWrapper
         /// <summary>
         /// Create an <see cref="_Filters"/> accessor instance on <see cref="m_Filters"/>.
         /// </summary>
-        public _Filters Filter
-        {
-            get
-            {
-                // Report
-                return new _Filters( m_Filters, this );
-            }
-        }
+        public _Filters Filter { get { return new _Filters( m_Filters, this ); } }
 
         /// <summary>
         /// Remove a filter from the map.

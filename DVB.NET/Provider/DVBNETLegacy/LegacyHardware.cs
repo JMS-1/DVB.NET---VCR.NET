@@ -140,6 +140,18 @@ namespace JMS.DVB.Provider.Legacy
         }
 
         /// <summary>
+        /// Konfiguriert den Empfang einer Quellgruppe.
+        /// </summary>
+        /// <param name="location">Optional der Ursprung der Gruppe.</param>
+        /// <param name="group">Die gewünschte Quellgruppe.</param>
+        protected override void OnSelect( L location, G group )
+        {
+            // Forward
+            if (group != null)
+                LegacyDevice.Tune( group, location );
+        }
+
+        /// <summary>
         /// Aktiviert den Datenempfang für einen bestimmten Datenstrom.
         /// </summary>
         /// <param name="stream">Die Informationen zum betroffenen Datenstrom.</param>

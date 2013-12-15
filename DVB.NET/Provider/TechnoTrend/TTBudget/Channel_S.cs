@@ -1,12 +1,7 @@
-extern alias oldVersion;
-
 using System;
 using System.Security;
 using System.Runtime.InteropServices;
-
 using JMS.TechnoTrend;
-
-using legacy = oldVersion.JMS.DVB;
 
 
 namespace JMS.DVB.Provider.TTBudget
@@ -24,7 +19,7 @@ namespace JMS.DVB.Provider.TTBudget
 
         public UInt32 Frequency;
 
-        public legacy.SpectrumInversion Inversion;
+        public SpectrumInversion Inversion;
 
         public UInt32 SymbolRate;
 
@@ -32,9 +27,9 @@ namespace JMS.DVB.Provider.TTBudget
 
         public Int32 b22kHz;
 
-        public legacy.Satellite.PowerMode LNBPower;
+        public PowerMode LNBPower;
 
-        public legacy.Satellite.Viterbi Viterbi;
+        public Viterbi Viterbi;
 
         public DVBSMode Mode;
 

@@ -95,6 +95,11 @@
       <HintPath>..\Assemblies\JMS.DVB.Common.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="JMS.DVB.SourceManagement, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\Assemblies\RunTime\JMS.DVB.SourceManagement.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -119,17 +124,7 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AudioInfo.cs" />
     <Compile Include="BandwidthType.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Cable\CableChannel.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Cable\Qam.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Channel.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DeviceInformation.cs">
@@ -150,48 +145,11 @@
     <Compile Include="ProviderMissingException.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Satellite\DiSEqC.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Satellite\DiSEqCConfiguration.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Satellite\DiSEqCMessage.cs" />
-    <Compile Include="Satellite\DiSEqCMulti.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Satellite\DiSEqCNone.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Satellite\DiSEqCSimple.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Satellite\LNBSettings.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Satellite\PowerMode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Satellite\SatelliteChannel.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Satellite\Viterbi.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="SignalStatus.cs" />
     <Compile Include="SpectrumInversion.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Station.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DVBSubtitleInfo.cs" />
-    <Compile Include="Terrestrial\TerrestrialChannel.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Transponder.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <None Include="DVBSubtitleInfo.cs" />
     <EmbeddedResource Include="DVBNETProviders.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>

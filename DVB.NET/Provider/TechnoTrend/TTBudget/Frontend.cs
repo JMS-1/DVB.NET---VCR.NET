@@ -1,14 +1,11 @@
-extern alias oldVersion;
-
 using System;
+using System.Runtime.InteropServices;
 using System.Security;
 using System.Threading;
-using System.Runtime.InteropServices;
-
+using JMS.DVB;
+using JMS.DVB.DeviceAccess;
 using JMS.TechnoTrend;
 using JMS.TechnoTrend.MFCWrapper;
-
-using legacy = oldVersion.JMS.DVB;
 
 
 namespace JMS.DVB.Provider.TTBudget
@@ -29,7 +26,7 @@ namespace JMS.DVB.Provider.TTBudget
 
         [DllImport( "ttlcdacc.dll", EntryPoint = "?GetType@CDVBFrontend@@QAE?AW4_FRONTEND_TYPE@1@XZ", ExactSpelling = true, CallingConvention = CallingConvention.ThisCall )]
         [SuppressUnmanagedCodeSecurity]
-        private static extern legacy.FrontendType _GetType( IntPtr classPointer );
+        private static extern FrontendType _GetType( IntPtr classPointer );
 
         [DllImport( "ttlcdacc.dll", EntryPoint = "?GetCapabilities@CDVBFrontend@@QAEKXZ", ExactSpelling = true, CallingConvention = CallingConvention.ThisCall )]
         [SuppressUnmanagedCodeSecurity]
@@ -45,7 +42,7 @@ namespace JMS.DVB.Provider.TTBudget
 
         private ClassHolder m_Class = null;
 
-        private legacy.Satellite.DiSEqCMessage m_LastMessage = null;
+        private StandardDiSEqC m_lastMessage = null;
 
         public Frontend()
         {
@@ -87,76 +84,32 @@ namespace JMS.DVB.Provider.TTBudget
             if (DVBError.None != errorCode) throw new DVBException( "Can not initialize frontend", errorCode );
         }
 
-        public legacy.FrontendType FrontendType
-        {
-            get
-            {
-                // Load it
-                return _GetType( m_Class.ClassPointer );
-            }
-        }
+        public FrontendType FrontendType { get { return _GetType( m_Class.ClassPointer ); } }
 
-        public FrontendCapabilities Capabilities
-        {
-            get
-            {
-                // Load it
-                return _GetCapabilities( m_Class.ClassPointer );
-            }
-        }
+        public FrontendCapabilities Capabilities { get { return _GetCapabilities( m_Class.ClassPointer ); } }
 
-        public void Tune( legacy.Transponder transponder, legacy.Satellite.DiSEqC diseqc )
-        {
-            // Forward
-            Tune( transponder, diseqc, false );
-        }
-
-        public void Tune( legacy.Transponder transponder, legacy.Satellite.DiSEqC diseqc, bool powerOnly )
+        /// <summary>
+        /// Wählt eine Quellgruppe aus.
+        /// </summary>
+        /// <param name="group">Díe Daten der Quellgruppe.</param>
+        /// <param name="location">Die Wahl des Ursprungs, über den die Quellgruppe empfangen werden kann.</param>
+        public void Tune( SourceGroup group, GroupLocation location )
         {
             // May repeat some times
             for (int retryCount = 3; retryCount-- > 0; Thread.Sleep( 250 ))
             {
-                // Try terrestrial
-                var terrestrial = transponder as legacy.Terrestrial.TerrestrialChannel;
-
-                // Process
-                if (null != terrestrial)
-                {
-                    // Call it
-                    Tune( terrestrial );
-                }
-                else
-                {
-                    // Try cable
-                    var cable = transponder as legacy.Cable.CableChannel;
-
-                    // Process
-                    if (null != cable)
-                    {
-                        // Call it
-                        Tune( cable );
-                    }
-                    else
-                    {
-                        // Try satellite
-                        var satellite = transponder as legacy.Satellite.SatelliteChannel;
-
-                        // Process
-                        if (null != satellite)
-                        {
-                            // Call it
-                            Tune( satellite, diseqc, powerOnly );
-                        }
-                        else
-                        {
-                            // Unsupported
-                            throw new DVBException( "Unsupported channel type " + transponder.GetType().FullName );
-                        }
-                    }
-                }
+                // All supported in order of importance
+                if (!Tune( group as SatelliteGroup, location as SatelliteLocation ).HasValue)
+                    if (!Tune( group as CableGroup ).HasValue)
+                        if (!Tune( group as TerrestrialGroup ).HasValue)
+                            throw new DVBException( "Unsupported channel type " + group.GetType().FullName );
 
                 // Done if locked
-                if (SignalStatus.Locked) break;
+                if (SignalStatus.Locked)
+                    break;
+
+                // Enforce reset
+                m_lastMessage = null;
             }
         }
 
@@ -166,84 +119,163 @@ namespace JMS.DVB.Provider.TTBudget
             DVBException.ThrowOnError( errorCode, "Unable to set channel" );
         }
 
-        private Channel_S Tune( legacy.Satellite.SatelliteChannel transponder, legacy.Satellite.DiSEqC diseqc, bool powerOnly )
+        /// <summary>
+        /// Wählt eine Quellgruppe aus.
+        /// </summary>
+        /// <param name="group">Díe Daten der Quellgruppe.</param>
+        /// <param name="location">Die Wahl des Ursprungs, über den die Quellgruppe empfangen werden kann.</param>
+        /// <returns>Gesetzt, wenn es sich um eine DVB-S Quellgruppe handelt.</returns>
+        private Channel_S? Tune( SatelliteGroup group, SatelliteLocation location )
         {
-            // Validate
-            if (null == diseqc) throw new ArgumentNullException( "diseqc" );
+            // Not us
+            if (location == null)
+                return null;
+            if (group == null)
+                return null;
 
             // Validate
-            if (legacy.FrontendType.Satellite != FrontendType) throw new DVBException( "Expected " + FrontendType.ToString() + " channel" );
+            if (FrontendType != FrontendType.Satellite)
+                throw new DVBException( "Expected " + FrontendType.ToString() + " Channel" );
 
-            // Helper
-            Channel_S data = new Channel_S();
+            // Create channel
+            var data =
+                new Channel_S
+                {
+                    Mode = group.UsesS2Modulation ? DVBSMode.DVB_S2 : DVBSMode.DVB_S,
+                    Inversion = SpectrumInversion.Auto,
+                    SymbolRate = group.SymbolRate,
+                    Frequency = group.Frequency,
+                };
 
-            // Fill
-            data.Mode = transponder.S2Modulation ? DVBSMode.DVB_S2 : DVBSMode.DVB_S;
-            data.Inversion = transponder.SpectrumInversion;
-            data.SymbolRate = transponder.SymbolRate;
-            data.Frequency = transponder.Frequency;
 
-            // Request the message to send
-            var message = diseqc.CreateMessage( transponder );
+            // Attach to the DiSEqC setting
+            var selector = StandardDiSEqC.FromSourceGroup( group, location );
 
             // See if the message is different from the last one
-            if (!message.Equals( m_LastMessage ))
+            if (!selector.Equals( m_lastMessage ))
             {
                 // Remember
-                m_LastMessage = message.Clone();
+                m_lastMessage = selector.Clone();
 
                 // As long as necessary
-                for (int n = message.Repeat; n-- > 0; Thread.Sleep( 120 ))
+                for (int nCount = selector.Repeat; nCount-- > 0; Thread.Sleep( 120 ))
                 {
                     // Send it
-                    DVBException.ThrowOnError( _SendDiSEqCMsg( m_Class.ClassPointer, message.Request, (byte) message.Request.Length, message.Burst ), "Could not send DiSEqC message" );
+                    DVBException.ThrowOnError( _SendDiSEqCMsg( m_Class.ClassPointer, selector.Request, (byte) selector.Request.Length, selector.Burst ), "Could not send DiSEqC message" );
 
                     // Set repeat flag
-                    if (message.Request.Length > 0) message.Request[0] |= 1;
+                    if (selector.Request.Length > 0)
+                        selector.Request[0] |= 1;
                 }
             }
 
             // Calculated items
-            data.LNBPower = diseqc.UsePower ? transponder.Power : legacy.Satellite.PowerMode.Off;
-            data.b22kHz = diseqc.Use22kHz( transponder.Frequency ) ? 1 : 0;
-            data.LOF = (0 == data.b22kHz) ? diseqc.LOF1 : diseqc.LOF2;
+            data.b22kHz = (group.Frequency >= location.SwitchFrequency) ? 1 : 0;
+            data.LOF = (0 == data.b22kHz) ? location.Frequency1 : location.Frequency2;
+
+            // Power modes
+            switch (group.Polarization)
+            {
+                case Polarizations.Horizontal: data.LNBPower = PowerMode.Horizontal; break;
+                case Polarizations.Vertical: data.LNBPower = PowerMode.Vertical; break;
+                case Polarizations.NotDefined: data.LNBPower = PowerMode.Off; break;
+                default: throw new ArgumentException( group.Polarization.ToString(), "Polarization" );
+            }
 
             // Process
-            return data.SetChannel( this, powerOnly );
+            return data.SetChannel( this, false );
         }
 
-        private Channel_C Tune( legacy.Cable.CableChannel transponder )
+        /// <summary>
+        /// Wählt eine Quellgruppe an.
+        /// </summary>
+        /// <param name="group">Die Daten zur Quellgruppe.</param>
+        /// <returns>Gesetzt, wenn es sich um eine DVB-C Quellgruppe handelt.</returns>
+        private Channel_C? Tune( CableGroup group )
         {
+            // Not us
+            if (group == null)
+                return null;
+
             // Validate
-            if (legacy.FrontendType.Cable != FrontendType) throw new DVBException( "Expected " + FrontendType.ToString() + " channel" );
+            if (FrontendType != FrontendType.Cable)
+                throw new DVBException( "Expected " + FrontendType.ToString() + " Channel" );
 
             // Helper
-            Channel_C data = new Channel_C();
+            var data =
+                new Channel_C
+                {
+                    Frequency = group.Frequency,
+                    SymbolRate = group.SymbolRate,
+                };
 
-            // Fill
-            data.Inversion = transponder.SpectrumInversion;
-            data.SymbolRate = transponder.SymbolRate;
-            data.Frequency = transponder.Frequency;
-            data.Bandwidth = transponder.Bandwidth;
-            data.Qam = transponder.QAM;
+            // Spectrum inversion
+            switch (group.SpectrumInversion)
+            {
+                case SpectrumInversions.On: data.Inversion = SpectrumInversion.On; break;
+                case SpectrumInversions.Off: data.Inversion = SpectrumInversion.Off; break;
+                case SpectrumInversions.Auto: data.Inversion = SpectrumInversion.Auto; break;
+                default: data.Inversion = SpectrumInversion.Auto; break;
+            }
+
+            // Modulation
+            switch (group.Modulation)
+            {
+                case CableModulations.QAM16: data.Qam = Qam.Qam16; break;
+                case CableModulations.QAM32: data.Qam = Qam.Qam32; break;
+                case CableModulations.QAM64: data.Qam = Qam.Qam64; break;
+                case CableModulations.QAM128: data.Qam = Qam.Qam128; break;
+                case CableModulations.QAM256: data.Qam = Qam.Qam256; break;
+                default: data.Qam = Qam.Qam64; break;
+            }
+
+            // Check supported modes
+            switch (group.Bandwidth)
+            {
+                case Bandwidths.Six: data.Bandwidth = BandwidthType.Six; break;
+                case Bandwidths.Seven: data.Bandwidth = BandwidthType.Seven; break;
+                case Bandwidths.Eight: data.Bandwidth = BandwidthType.Eight; break;
+                case Bandwidths.NotDefined: data.Bandwidth = BandwidthType.None; break;
+                default: data.Bandwidth = BandwidthType.Auto; break;
+            }
 
             // Process
             return data.SetChannel( this );
         }
 
-        private Channel_T Tune( legacy.Terrestrial.TerrestrialChannel transponder )
+        /// <summary>
+        /// Wählt eine Quellgruppe an.
+        /// </summary>
+        /// <param name="group">Die Daten zur Quellgruppe.</param>
+        /// <returns>Gesetzt, wenn es sich um eine DVB-T Quellgruppe handelt.</returns>
+        private Channel_T? Tune( TerrestrialGroup group )
         {
+            // Not us 
+            if (group == null)
+                return null;
+
             // Validate
-            if (legacy.FrontendType.Terrestrial != FrontendType) throw new DVBException( "Expected " + FrontendType.ToString() + " channel" );
+            if (FrontendType != FrontendType.Terrestrial)
+                throw new DVBException( "Expected " + FrontendType.ToString() + " Channel" );
 
             // Helper
-            Channel_T data = new Channel_T();
+            var data =
+                new Channel_T
+                {
+                    Frequency = group.Frequency,
+                    Inversion = SpectrumInversion.Off,
+                    Scan = false,
+                };
 
-            // Fill
-            data.Inversion = transponder.SpectrumInversion;
-            data.Frequency = transponder.Frequency;
-            data.Bandwidth = transponder.Bandwidth;
-            data.Scan = transponder.FullRescan;
+            // Check supported modes
+            switch (group.Bandwidth)
+            {
+                case Bandwidths.Six: data.Bandwidth = BandwidthType.Six; break;
+                case Bandwidths.Seven: data.Bandwidth = BandwidthType.Seven; break;
+                case Bandwidths.Eight: data.Bandwidth = BandwidthType.Eight; break;
+                case Bandwidths.NotDefined: data.Bandwidth = BandwidthType.None; break;
+                default: data.Bandwidth = BandwidthType.Auto; break;
+            }
 
             // Process
             return data.SetChannel( this );

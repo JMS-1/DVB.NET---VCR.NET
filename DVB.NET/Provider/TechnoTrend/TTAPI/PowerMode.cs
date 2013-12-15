@@ -1,9 +1,8 @@
-using System;
 
-namespace JMS.DVB.Satellite
+namespace JMS.TechnoTrend
 {
 	/// <summary>
-	/// Power settings to use when switching <see cref="Channel"/>.
+	/// Power settings to use.
 	/// </summary>
 	/// <remarks>
 	/// Do not change layout - will be mapped to TT API constants.

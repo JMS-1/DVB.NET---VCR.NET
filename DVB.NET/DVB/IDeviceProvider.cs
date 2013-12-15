@@ -20,13 +20,11 @@ namespace JMS.DVB
         void StopFilters();
 
         /// <summary>
-        /// Tune the DVB device to the indicated transponder with predefined DiSEqC
-        /// configuration.
+        /// Wählt eine Quellgruppe an.
         /// </summary>
-        /// <param name="transponder">Opaque information of the transponder to use.</param>
-        /// <param name="diseqc">Optional DiSEqC configuration which will be used only
-        /// for DVB-S.</param>
-        void Tune( Transponder transponder, Satellite.DiSEqC diseqc );
+        /// <param name="group">Die Quellgruppe.</param>
+        /// <param name="location">Der Ursprung zur Quellgruppe.</param>
+        void Tune( SourceGroup group, GroupLocation location );
 
         /// <summary>
         /// Set the video and primary audio PID for display and single

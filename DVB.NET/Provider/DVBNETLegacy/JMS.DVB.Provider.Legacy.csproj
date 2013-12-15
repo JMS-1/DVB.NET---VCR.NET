@@ -97,7 +97,6 @@
     </Compile>
     <Compile Include="LegacyHardware.cs" />
     <Compile Include="DVBSLegacy.cs" />
-    <Compile Include="LegacyExtensions.cs" />
     <Compile Include="ParameterItem.cs" />
     <Compile Include="ProfileTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

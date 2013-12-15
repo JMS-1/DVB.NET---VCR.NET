@@ -1,12 +1,7 @@
-extern alias oldVersion;
-
 using System;
-using System.Security;
 using System.Runtime.InteropServices;
-
+using System.Security;
 using JMS.TechnoTrend;
-
-using legacy = oldVersion.JMS.DVB;
 
 
 namespace JMS.DVB.Provider.TTBudget
@@ -39,7 +34,7 @@ namespace JMS.DVB.Provider.TTBudget
 
         private long m_Bytes = 0;
 
-        public FilterToCode( ushort pid, legacy.FilterHandler callback )
+        public FilterToCode( ushort pid, FilterHandler callback )
             : base( pid )
         {
             // Remember

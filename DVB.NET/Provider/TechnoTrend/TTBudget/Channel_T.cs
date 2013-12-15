@@ -1,12 +1,7 @@
-extern alias oldVersion;
-
 using System;
-using System.Security;
 using System.Runtime.InteropServices;
-
+using System.Security;
 using JMS.TechnoTrend;
-
-using legacy = oldVersion.JMS.DVB;
 
 
 namespace JMS.DVB.Provider.TTBudget
@@ -24,11 +19,11 @@ namespace JMS.DVB.Provider.TTBudget
 
         public UInt32 Frequency;
 
-        public legacy.SpectrumInversion Inversion;
+        public SpectrumInversion Inversion;
 
         public bool Scan;
 
-        public legacy.BandwidthType Bandwidth;
+        public BandwidthType Bandwidth;
 
         private UInt32 _pad_1;
 

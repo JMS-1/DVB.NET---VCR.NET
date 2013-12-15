@@ -1,6 +1,5 @@
-using System;
 
-namespace JMS.DVB.Satellite
+namespace JMS.TechnoTrend
 {
 	/// <summary>
 	/// [Don't know]

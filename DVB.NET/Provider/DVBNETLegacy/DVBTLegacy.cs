@@ -22,17 +22,5 @@ namespace JMS.DVB.Provider.Legacy
         /// Meldet die Art des DVB Empfangs.
         /// </summary>
         protected override DVBSystemType SystemType { get { return DVBSystemType.Terrestrial; } }
-
-        /// <summary>
-        /// Stellt den Empfang auf eine bestimmte Quellgruppe eines Ursprungs ein.
-        /// </summary>
-        /// <param name="location">Der gewünschte Ursprung.</param>
-        /// <param name="group">Die gewünschte Quellgruppe.</param>
-        protected override void OnSelect( TerrestrialLocation location, TerrestrialGroup group )
-        {
-            // Do nothing
-            if (group != null)
-                LegacyDevice.Tune( group.ToLegacy(), null );
-        }
     }
 }

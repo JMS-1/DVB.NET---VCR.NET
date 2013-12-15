@@ -1,20 +1,14 @@
-extern alias oldVersion;
-
 using System;
-using System.Security;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-
-using JMS.TechnoTrend;
+using System.Security;
 using JMS.DVB.DeviceAccess.Enumerators;
-
-using legacy = oldVersion.JMS.DVB;
 
 
 namespace JMS.DVB.Provider.TTBudget
 {
-    public class BudgetProvider : legacy.IDeviceProvider
+    public class BudgetProvider : IDeviceProvider
     {
         [DllImport( "ttlcdacc.dll", EntryPoint = "?InitDvbApiDll@@YAXXZ", ExactSpelling = true )]
         [SuppressUnmanagedCodeSecurity]
@@ -46,7 +40,7 @@ namespace JMS.DVB.Provider.TTBudget
             m_DeviceIndex = ArgumentToDevice( args );
         }
 
-        public legacy.SignalStatus SignalStatus
+        public SignalStatus SignalStatus
         {
             get
             {
@@ -57,7 +51,7 @@ namespace JMS.DVB.Provider.TTBudget
                 var status = m_Frontend.SignalStatus;
 
                 // Convert
-                return new legacy.SignalStatus( status.Locked, status.Strength, status.Quality );
+                return new SignalStatus( status.Locked, status.Strength, status.Quality );
             }
         }
 
@@ -139,7 +133,7 @@ namespace JMS.DVB.Provider.TTBudget
             }
         }
 
-        private legacy.FrontendType ReceiverType
+        private FrontendType ReceiverType
         {
             get
             {
@@ -151,7 +145,7 @@ namespace JMS.DVB.Provider.TTBudget
             }
         }
 
-        public void RegisterPipingFilter( ushort pid, bool video, bool smallBuffer, legacy.FilterHandler callback )
+        public void RegisterPipingFilter( ushort pid, bool video, bool smallBuffer, FilterHandler callback )
         {
             // Attach to hardware
             Open();
@@ -180,7 +174,7 @@ namespace JMS.DVB.Provider.TTBudget
             m_Filters[pid].Start();
         }
 
-        public void StartSectionFilter( ushort pid, legacy.FilterHandler callback, byte[] filterData, byte[] filterMask )
+        public void StartSectionFilter( ushort pid, FilterHandler callback, byte[] filterData, byte[] filterMask )
         {
             // Attach to hardware
             Open();
@@ -238,7 +232,12 @@ namespace JMS.DVB.Provider.TTBudget
                 }
         }
 
-        public void Tune( legacy.Transponder transponder, legacy.Satellite.DiSEqC diseqc )
+        /// <summary>
+        /// Wählt eine Quellgruppe an.
+        /// </summary>
+        /// <param name="group">Die Quellgruppe.</param>
+        /// <param name="location">Der Ursprung zur Quellgruppe.</param>
+        public void Tune( SourceGroup group, GroupLocation location )
         {
             // Attach to hardware
             Open();
@@ -247,7 +246,7 @@ namespace JMS.DVB.Provider.TTBudget
             StopFilters();
 
             // Send request
-            m_Frontend.Tune( transponder, diseqc );
+            m_Frontend.Tune( group, location );
         }
 
         public void WakeUp()

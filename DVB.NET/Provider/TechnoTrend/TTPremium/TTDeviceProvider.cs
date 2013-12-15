@@ -150,20 +150,21 @@ namespace JMS.DVB.Provider.TTPremium
         }
 
         /// <summary>
-        /// Switch reception to a given transponder.
+        /// Wählt eine Quellgruppe an.
         /// </summary>
-        /// <param name="transponder">Transponder to use.</param>
-        /// <param name="diseqc">Optional DiSEqC configuration for DVB-S.</param>
-        public void Tune( Transponder transponder, Satellite.DiSEqC diseqc )
+        /// <param name="group">Die Quellgruppe.</param>
+        /// <param name="location">Der Ursprung zur Quellgruppe.</param>
+        public void Tune( SourceGroup group, GroupLocation location )
         {
             // Report
-            if (MethodLog) LogMessage( "Tune {0} {1}", transponder, diseqc );
+            if (MethodLog)
+                LogMessage( "Tune {0} {1}", group, location );
 
             // Must register
             Register();
 
             // Forward
-            Context.TheContext.SetChannel( (Channel) transponder, diseqc );
+            Context.TheContext.SetChannel( group, location );
         }
 
         /// <summary>

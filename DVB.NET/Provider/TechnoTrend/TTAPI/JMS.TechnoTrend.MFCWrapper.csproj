@@ -202,12 +202,15 @@
     <Compile Include="PipeSize.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="PowerMode.cs" />
+    <Compile Include="Qam.cs" />
     <Compile Include="VideoOutput.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="VideoState.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Viterbi.cs" />
     <Content Include="bin\ttdvbacc.dll" />
     <EmbeddedResource Include="Boot\Boot_up.axf" />
     <EmbeddedResource Include="Boot\Dpram" />

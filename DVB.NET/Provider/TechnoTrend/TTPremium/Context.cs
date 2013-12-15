@@ -1,9 +1,7 @@
 using System;
-using System.IO;
 using System.Collections;
-
+using System.IO;
 using JMS.TechnoTrend;
-using JMS.DVB.Satellite;
 using JMS.TechnoTrend.MFCWrapper;
 
 
@@ -401,17 +399,18 @@ namespace JMS.DVB.Provider.TTPremium
         }
 
         /// <summary>
-        /// Forwarded to <see cref="DVBFrontend.SetChannel(Channel, DiSEqC)"/> on <see cref="Frontend"/>.
+        /// Wählt eine Quellgruppe aus.
         /// </summary>
-        /// <param name="channel">The transponder to tune upon.</param>
-        /// <param name="diseqc">Optional DiSEqC configuration for DVB-S.</param>
-        public void SetChannel( Channel channel, DiSEqC diseqc )
+        /// <param name="group">Díe Daten der Quellgruppe.</param>
+        /// <param name="location">Die Wahl des Ursprungs, über den die Quellgruppe empfangen werden kann.</param>
+        /// <returns>Gesetzt, wenn es sich um eine DVB-S Quellgruppe handelt.</returns>
+        public void SetChannel( SourceGroup group, GroupLocation location )
         {
             // Always stop CI
             Decrypt( 0 );
 
             // Store
-            Frontend.SetChannel( channel, diseqc );
+            Frontend.SetChannel( group, location );
         }
 
         /// <summary>
@@ -499,23 +498,6 @@ namespace JMS.DVB.Provider.TTPremium
 
                 // Clear
                 if (m_Users.Count < 1) Dispose();
-            }
-        }
-
-        /// <summary>
-        /// Accesses <see cref="DVBFrontend.DiSEqCConfiguration"/> on <see cref="Frontend"/>.
-        /// </summary>
-        public DiSEqCConfiguration DiSEqCConfiguration
-        {
-            get
-            {
-                // Report
-                return Frontend.DiSEqCConfiguration;
-            }
-            set
-            {
-                // Forward
-                Frontend.DiSEqCConfiguration = value;
             }
         }
 

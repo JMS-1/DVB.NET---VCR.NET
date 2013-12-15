@@ -137,55 +137,6 @@ namespace JMS.DVB.EPG
         }
 
         /// <summary>
-        /// Erzeugt eine neue Beschreibung.
-        /// </summary>
-        /// <param name="info">Zugehörige Daten aus einer DVB.NET Senderliste.</param>
-        /// <returns>Die neu erzeugte Beschreibung.</returns>
-        public static SubtitleInfo Create( DVBSubtitleInfo info )
-        {
-            // Do nothing
-            if (null == info) return null;
-
-            // Create
-            return new SubtitleInfo( info.ISOLanguage, (SubtitleTypes) info.Type, info.Page, info.AncillaryPage );
-        }
-
-        /// <summary>
-        /// Erzeugt alle Untertitelbeschreibungen zu einem Sender.
-        /// </summary>
-        /// <param name="info">Alle Informationen zu DVB Untertiteln des Senders aus der Senderliste.</param>
-        /// <returns>Eine nach Datenströmen sortierte Liste von Untertitelbeschreibungen für den
-        /// Einsatz in SI Tabellen.</returns>
-        public static Dictionary<ushort, List<SubtitleInfo>> Create( List<DVBSubtitleInfo> info )
-        {
-            // Create result
-            Dictionary<ushort, List<SubtitleInfo>> result = new Dictionary<ushort, List<SubtitleInfo>>();
-
-            // Sort per page
-            if (null != info)
-                foreach (DVBSubtitleInfo page in info)
-                    if (null != page)
-                    {
-                        // Get the related list
-                        List<SubtitleInfo> list;
-                        if (!result.TryGetValue( page.PID, out list ))
-                        {
-                            // Create new
-                            list = new List<SubtitleInfo>();
-
-                            // Remember
-                            result[page.PID] = list;
-                        }
-
-                        // Add the entry
-                        list.Add( Create( page ) );
-                    }
-
-            // Report
-            return result;
-        }
-
-        /// <summary>
         /// Erzeugt eine neue Informationsinstanz.
         /// </summary>
         /// <param name="section">Die SI Tabelle, in der die Informationen abgelegt sind.</param>
