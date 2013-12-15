@@ -250,7 +250,7 @@ namespace JMS.DVB.DirectShow.AccessModules
             m_TTXStream = new TS.TTXStream( m_TTXConsumer, 0, false );
 
             // Install parser
-            m_PATParser = new Parser( null );
+            m_PATParser = new Parser();
 
             // Register receiver
             m_PATParser.SectionFound += ProcessPAT;
@@ -259,7 +259,7 @@ namespace JMS.DVB.DirectShow.AccessModules
             m_TSParser.SetFilter( 0, true, m_PATParser.OnData );
 
             // Install EPG parser
-            m_EPGParser = new EPG.Parser( null );
+            m_EPGParser = new Parser();
 
             // Register receiver
             m_EPGParser.SectionFound += ProcessEPG;
@@ -405,7 +405,7 @@ namespace JMS.DVB.DirectShow.AccessModules
                 m_TSParser.RemoveFilter( m_CurrentPMT );
 
             // Re-create parser
-            m_PMTParser = new Parser( null );
+            m_PMTParser = new Parser();
 
             // Connect to handler
             m_PMTParser.SectionFound += ProcessPMT;

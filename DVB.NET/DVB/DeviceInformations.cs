@@ -1,10 +1,8 @@
 using System;
+using System.Collections;
 using System.IO;
 using System.Xml;
-using Microsoft.Win32;
-using System.Threading;
-using System.Collections;
-using System.Windows.Forms;
+
 
 namespace JMS.DVB
 {
@@ -110,28 +108,6 @@ namespace JMS.DVB
                 // Report
                 return device;
             }
-        }
-
-        public IDeviceProvider Create( DeviceInformation provider )
-        {
-            // Forward
-            return provider.Create( Settings );
-        }
-
-        public IDeviceProvider Create( DeviceInformation provider, Hashtable parameterOverwrites )
-        {
-            // Clone hashtable
-            Hashtable settings = new Hashtable( Settings );
-
-            // Merge
-            foreach (DictionaryEntry parameter in parameterOverwrites)
-            {
-                // Merge in
-                settings[parameter.Key] = parameter.Value;
-            }
-
-            // Forward
-            return provider.Create( settings );
         }
 
         #region IEnumerable Members

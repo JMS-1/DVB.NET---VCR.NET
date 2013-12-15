@@ -50,7 +50,6 @@ namespace JMS.DVB.EPG
         /// <param name="device">The hardware abstraction to use</param>
         /// <param name="pid">Die zu verwendende Datenstromkennung.</param>
         protected SITScanner(IDeviceProvider device, ushort pid)
-            : base(null)
         {
 			// Report
 			Tools.WriteToScanLog("SITScanner {1} started for {0}", pid, GetType().Name);

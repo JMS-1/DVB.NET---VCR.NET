@@ -1,7 +1,7 @@
 using System;
-using System.IO;
-using System.Xml;
 using System.Collections;
+using System.Xml;
+
 
 namespace JMS.DVB
 {
@@ -70,25 +70,7 @@ namespace JMS.DVB
                 return FindElement( "Driver" ).InnerText; ;
             }
         }
-
-        internal IDeviceProvider Create( Hashtable settings )
-        {
-            // Clone the hashtable
-            Hashtable mySettings = new Hashtable( settings );
-
-            // See if there are parameters
-            XmlElement parameters = FindElement( "Parameters" );
-
-            // Process all extra settings
-            if (null != parameters)
-                foreach (XmlElement param in parameters)
-                    if (!mySettings.ContainsKey( param.Name ))
-                        mySettings[param.Name] = param.InnerText;
-
-            // Create it
-            return (IDeviceProvider) Activator.CreateInstance( Type.GetType( DriverType ), new object[] { mySettings } );
-        }
-
+        
         public string[] Names
         {
             get

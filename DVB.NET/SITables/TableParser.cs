@@ -29,7 +29,7 @@ namespace JMS.DVB.SI
         /// Übergangslösung für DVB.NET 3.5.1: es wird der SI Mechanismus von DVB.NET 3.5
         /// (oder früher) verwendet.
         /// </summary>
-        private legacy.EPG.Parser m_Parser = new legacy.EPG.Parser( null );
+        private legacy.EPG.Parser m_Parser = new legacy.EPG.Parser();
 
         /// <summary>
         /// Erzeugt eine neue Instanz.

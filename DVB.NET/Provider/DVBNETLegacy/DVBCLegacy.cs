@@ -1,7 +1,4 @@
-﻿using System;
-
-using JMS.DVB.DeviceAccess;
-using JMS.DVB.DeviceAccess.Interfaces;
+﻿using JMS.DVB.DeviceAccess.Interfaces;
 
 
 namespace JMS.DVB.Provider.Legacy
@@ -24,14 +21,7 @@ namespace JMS.DVB.Provider.Legacy
         /// <summary>
         /// Meldet die Art des DVB Empfangs.
         /// </summary>
-        protected override DVBSystemType SystemType
-        {
-            get
-            {
-                // Report
-                return DVBSystemType.Cable;
-            }
-        }
+        protected override DVBSystemType SystemType { get { return DVBSystemType.Cable; } }
 
         /// <summary>
         /// Stellt den Empfang auf eine bestimmte Quellgruppe eines Ursprungs ein.
@@ -41,11 +31,8 @@ namespace JMS.DVB.Provider.Legacy
         protected override void OnSelect( CableLocation location, CableGroup group )
         {
             // Do nothing
-            if (null == group)
-                return;
-
-            // Convert and forward
-            LegacyDevice.Tune( group.ToLegacy(), null );
+            if (group != null)
+                LegacyDevice.Tune( group.ToLegacy(), null );
         }
     }
 }

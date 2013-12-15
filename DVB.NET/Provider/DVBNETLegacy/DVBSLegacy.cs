@@ -31,11 +31,9 @@ namespace JMS.DVB.Provider.Legacy
         protected override void OnSelect( SatelliteLocation location, SatelliteGroup group )
         {
             // Do nothing
-            if ((null == location) || (null == group))
-                return;
-
-            // Convert and forward
-            LegacyDevice.Tune( group.ToLegacy(), location.ToLegacy() );
+            if (location != null)
+                if (group != null)
+                    LegacyDevice.Tune( group.ToLegacy(), location.ToLegacy() );
         }
     }
 }

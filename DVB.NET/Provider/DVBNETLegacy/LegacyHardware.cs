@@ -1,13 +1,10 @@
 ﻿extern alias oldVersion;
-
 using System;
 using System.Collections;
-
-using JMS.DVB.Editors;
-using JMS.TechnoTrend;
 using JMS.DVB.DeviceAccess;
 using JMS.DVB.DeviceAccess.Interfaces;
-
+using JMS.DVB.Editors;
+using JMS.TechnoTrend;
 using legacy = oldVersion::JMS;
 
 
@@ -51,10 +48,10 @@ namespace JMS.DVB.Provider.Legacy
             : base( profile )
         {
             // Create the device configuration
-            Hashtable settings = new Hashtable();
+            var settings = new Hashtable();
 
             // Fill the configuration
-            foreach (ProfileParameter parameter in profile.Parameters)
+            foreach (var parameter in profile.Parameters)
                 if (!string.IsNullOrEmpty( parameter.Value ))
                     settings[parameter.Name] = parameter.Value;
 
@@ -62,7 +59,7 @@ namespace JMS.DVB.Provider.Legacy
             settings["Type"] = SystemType.ToString();
 
             // Find the primary aspect
-            DeviceAspect aspect = profile.DeviceAspects.Find( a => string.IsNullOrEmpty( a.Aspekt ) );
+            var aspect = profile.DeviceAspects.Find( a => string.IsNullOrEmpty( a.Aspekt ) );
 
             // Create the device
             LegacyDevice = (legacy.DVB.IDeviceProvider) Activator.CreateInstance( Type.GetType( aspect.Value, true ), settings );
@@ -79,12 +76,12 @@ namespace JMS.DVB.Provider.Legacy
         public static HardwareRestriction GetRestriction( Profile profile )
         {
             // No profile - no description
-            if (null == profile)
+            if (profile == null)
                 return null;
 
             // Get the driver
-            DeviceAspect aspect = profile.DeviceAspects.Find( a => string.IsNullOrEmpty( a.Aspekt ) );
-            if (null == aspect)
+            var aspect = profile.DeviceAspects.Find( a => string.IsNullOrEmpty( a.Aspekt ) );
+            if (aspect == null)
                 return null;
 
             // None set
@@ -95,12 +92,12 @@ namespace JMS.DVB.Provider.Legacy
             try
             {
                 // Get the type
-                Type driver = Type.GetType( aspect.Value, false );
-                if (null == driver)
+                var driver = Type.GetType( aspect.Value, false );
+                if (driver == null)
                     return null;
 
                 // Create 
-                HardwareRestriction restr = new HardwareRestriction();
+                var restr = new HardwareRestriction();
 
                 // Check mode
                 if (typeof( TTPremium.TTDeviceProvider ).IsAssignableFrom( driver ))
@@ -150,20 +147,20 @@ namespace JMS.DVB.Provider.Legacy
         protected override void OnStart( StreamInformation stream )
         {
             // Validate
-            if (null == stream)
+            if (stream == null)
                 throw new ArgumentNullException( "stream" );
 
             // Not of interest to us
-            if (null == stream.Consumer)
+            if (stream.Consumer == null)
                 return;
 
             // Check type of stream
-            if (StreamTypes.StandardTable == stream.StreamType)
+            if (stream.StreamType == StreamTypes.StandardTable)
             {
                 // Table consumer - autostart included
                 LegacyDevice.StartSectionFilter( stream.Identifier, p => stream.Consumer( p, 0, p.Length ), m_StandardTables, m_TableMask );
             }
-            else if (StreamTypes.ExtendedTable == stream.StreamType)
+            else if (stream.StreamType == StreamTypes.ExtendedTable)
             {
                 // Table consumer - autostart included
                 LegacyDevice.StartSectionFilter( stream.Identifier, p => stream.Consumer( p, 0, p.Length ), m_CustomTables, m_TableMask );
@@ -193,7 +190,7 @@ namespace JMS.DVB.Provider.Legacy
                     if (e.ErrorCode == DVBError.Resources)
                         throw new OutOfConsumersException( 1, 0 );
                     else
-                        throw e;
+                        throw;
                 }
             }
         }
@@ -206,15 +203,12 @@ namespace JMS.DVB.Provider.Legacy
         protected override void OnStop( StreamInformation stream )
         {
             // Validate
-            if (null == stream)
+            if (stream == null)
                 throw new ArgumentNullException( "stream" );
 
             // Not of interest to us
-            if (null == stream.Consumer)
-                return;
-
-            // Just forward
-            LegacyDevice.StopFilter( stream.Identifier );
+            if (stream.Consumer != null)
+                LegacyDevice.StopFilter( stream.Identifier );
         }
 
         /// <summary>
@@ -224,7 +218,7 @@ namespace JMS.DVB.Provider.Legacy
         public override void Decrypt( params SourceIdentifier[] sources )
         {
             // Check mode
-            if ((null == sources) || (sources.Length < 1))
+            if ((sources == null) || (sources.Length < 1))
             {
                 // Forward
                 LegacyDevice.Decrypt( null );
@@ -240,7 +234,7 @@ namespace JMS.DVB.Provider.Legacy
                 SourceIdentifier source = sources[0];
 
                 // Validate
-                if (null == source)
+                if (source == null)
                     throw new ArgumentNullException( "sources[0]" );
 
                 // Process
@@ -277,14 +271,14 @@ namespace JMS.DVB.Provider.Legacy
         protected override void OnGetSignal( SignalInformation signal )
         {
             // No device
-            if (null == LegacyDevice)
+            if (LegacyDevice == null)
                 return;
 
             // Read it
-            legacy.DVB.SignalStatus status = LegacyDevice.SignalStatus;
+            var status = LegacyDevice.SignalStatus;
 
             // None
-            if (null == status)
+            if (status == null)
                 return;
 
             // Copy
