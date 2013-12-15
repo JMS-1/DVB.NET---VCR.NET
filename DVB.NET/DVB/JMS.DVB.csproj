@@ -147,9 +147,6 @@
     <Compile Include="IDeviceProvider.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProviderFeatures.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ProviderMissingException.cs">
       <SubType>Code</SubType>
     </Compile>
