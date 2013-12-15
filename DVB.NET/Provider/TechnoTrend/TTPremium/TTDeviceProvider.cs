@@ -43,62 +43,19 @@ namespace JMS.DVB.Provider.TTPremium
         private string m_WakeupDeviceInstance = null;
 
         /// <summary>
-        /// Create a new TechnoTrend DVB abstraction using the first device and
-        /// the default station list.
-        /// </summary>
-        public TTDeviceProvider()
-            : this( 0 )
-        {
-        }
-
-        /// <summary>
         /// Create a new TechnoTrend DVB abstraction using the default station list.
         /// </summary>
         /// <param name="args">Dynamic argument list.</param>
         public TTDeviceProvider( Hashtable args )
-            : this( ArgumentToDevice( args ), false, ArgumentToNetwork( args ), (string) args["WakeupDevice"], (string) args["WakeupDeviceMoniker"] )
-        {
-        }
-
-        /// <summary>
-        /// Create a new TechnoTrend DVB abstraction.
-        /// </summary>
-        /// <param name="device">The zero based index of the device to use.</param>
-        public TTDeviceProvider( int device )
-            : this( device, false, true, null, null )
-        {
-        }
-
-        /// <summary>
-        /// Create a new TechnoTrend DVB abstraction.
-        /// </summary>
-        /// <param name="device">The zero based index of the device to use.</param>
-        /// <param name="noRegister">Set if this instance should not register with the TechnoTrend API (legacy mode).</param>
-        /// <param name="withNetwork">Set to initialize including network access.</param>
-        /// <param name="wakeupDevice">Device to reset after resume from hibernation.</param>
-        protected TTDeviceProvider( int device, bool noRegister, bool withNetwork, string wakeupDevice )
-            : this( device, noRegister, withNetwork, wakeupDevice, null )
-        {
-        }
-
-        /// <summary>
-        /// Create a new TechnoTrend DVB abstraction.
-        /// </summary>
-        /// <param name="device">The zero based index of the device to use.</param>
-        /// <param name="noRegister">Set if this instance should not register with the TechnoTrend API (legacy mode).</param>
-        /// <param name="withNetwork">Set to initialize including network access.</param>
-        /// <param name="wakeupDevice">Device to reset after resume from hibernation.</param>
-        /// <param name="wakeupDeviceMoniker">Instance name of the reset device.</param>
-        protected TTDeviceProvider( int device, bool noRegister, bool withNetwork, string wakeupDevice, string wakeupDeviceMoniker )
         {
             // Remember
-            m_WakeupDeviceInstance = wakeupDeviceMoniker;
-            m_WakeupDevice = wakeupDevice;
-            m_NoRegister = noRegister;
+            m_WakeupDeviceInstance = (string) args["WakeupDeviceMoniker"];
+            m_WakeupDevice = (string) args["WakeupDevice"];
+            m_NoRegister = false;
 
             // Forward global settings
-            Context.WithNetwork = withNetwork;
-            Context.DefaultDevice = device;
+            Context.WithNetwork = ArgumentToNetwork( args );
+            Context.DefaultDevice = ArgumentToDevice( args );
         }
 
         /// <summary>
@@ -152,7 +109,7 @@ namespace JMS.DVB.Provider.TTPremium
         /// <summary>
         /// Register with TechnoTrend drivers if needed.
         /// </summary>
-        protected void Register()
+        private void Register()
         {
             // Did it
             if (m_NoRegister || m_Registered) return;
@@ -180,7 +137,7 @@ namespace JMS.DVB.Provider.TTPremium
         /// Stop all filters.
         /// </summary>
         /// <param name="initialize">Set to reinitialize the hardware.</param>
-        public void StopFilters( bool initialize )
+        private void StopFilters( bool initialize )
         {
             // Report
             if (MethodLog) LogMessage( "StopFilters {0}", initialize );
@@ -260,51 +217,6 @@ namespace JMS.DVB.Provider.TTPremium
 
             // Start it
             filter.Start( filterData, filterMask );
-        }
-
-        /// <summary>
-        /// Filter a single stream to a file.
-        /// </summary>
-        /// <param name="pid">Stream identifier (PID) to filter.</param>
-        /// <param name="video">Set for a video stream to use largest buffer possible.</param>
-        /// <param name="path">Full path to the file.</param>
-        public void StartFileFilter( ushort pid, bool video, string path )
-        {
-            // Report
-            if (MethodLog) LogMessage( "StartFileFilter {0} {1} {2}", pid, video, path );
-
-            // Must register
-            Register();
-
-            // Attach to filter
-            DVBRawFilter filter = Context.TheContext.RawFilter[pid];
-
-            // Configure
-            filter.FilterType = FilterType.Piping;
-            filter.UseSmallBuffer = !video;
-
-            // Attach file
-            filter.SetTarget( path );
-
-            // Start it
-            filter.Start();
-        }
-
-        /// <summary>
-        /// Retrieve the number of bytes transferred through this filter.
-        /// </summary>
-        /// <param name="pid">Stream identifier (PID) to filter.</param>
-        /// <returns>Bytes this filter has passed through.</returns>
-        public long GetFilterBytes( ushort pid )
-        {
-            // Report
-            if (MethodLog) LogMessage( "GetFilterBytes {0}", pid );
-
-            // Must register
-            Register();
-
-            // Report
-            return Context.TheContext.RawFilter[pid].Length;
         }
 
         /// <summary>
@@ -429,36 +341,6 @@ namespace JMS.DVB.Provider.TTPremium
         }
 
         /// <summary>
-        /// Report the maximum number of PID filters available.
-        /// </summary>
-        public int FilterLimit
-        {
-            get
-            {
-                // Report
-                if (MethodLog) LogMessage( "FilterLimit" );
-
-                // Premium line is quite limited
-                return 8;
-            }
-        }
-
-        /// <summary>
-        /// Report the special features supported by this provider.
-        /// </summary>
-        public virtual ProviderFeatures Features
-        {
-            get
-            {
-                // Report
-                if (MethodLog) LogMessage( "Features" );
-
-                // Report
-                return ProviderFeatures.Decryption | ProviderFeatures.RecordMPEG2 | ProviderFeatures.RecordPVA | ProviderFeatures.VideoDisplayModes | ProviderFeatures.UsesLineIn | ProviderFeatures.CanReInitialize;
-            }
-        }
-
-        /// <summary>
         /// Report the current hardware connection.
         /// </summary>
         /// <returns>A string representing the hardware connection.</returns>
@@ -472,29 +354,9 @@ namespace JMS.DVB.Provider.TTPremium
         }
 
         /// <summary>
-        /// Signal the begin of a filter registration session.
-        /// </summary>
-        public void BeginRegister()
-        {
-            // Report
-            if (MethodLog) LogMessage( "BeginRegister" );
-
-        }
-
-        /// <summary>
-        /// All filters are now registered.
-        /// </summary>
-        public void EndRegister()
-        {
-            // Report
-            if (MethodLog) LogMessage( "EndRegister" );
-
-        }
-
-        /// <summary>
         ///  Report the type of the DVB hardware.
         /// </summary>
-        public FrontendType ReceiverType
+        private FrontendType ReceiverType
         {
             get
             {
@@ -538,7 +400,7 @@ namespace JMS.DVB.Provider.TTPremium
                 Register();
 
                 // Load
-                DVBSignalStatus status = Context.TheContext.SignalStatus;
+                var status = Context.TheContext.SignalStatus;
 
                 // Convert
                 return new SignalStatus( status.Locked, status.Strength, status.Level );

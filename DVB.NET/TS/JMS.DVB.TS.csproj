@@ -160,9 +160,6 @@
     <Compile Include="TSBuilders\SIBuilder.cs" />
     <Compile Include="TSBuilders\TSBuilder.cs" />
     <Compile Include="TSParser.cs" />
-    <Compile Include="TSRecording.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="TTXStream.cs">
       <SubType>Code</SubType>
     </Compile>

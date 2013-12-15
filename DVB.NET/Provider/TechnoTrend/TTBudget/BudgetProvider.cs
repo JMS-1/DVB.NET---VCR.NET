@@ -38,32 +38,12 @@ namespace JMS.DVB.Provider.TTBudget
 
         private string m_WakeupDeviceInstance = null;
 
-        public BudgetProvider()
-            : this( 0 )
-        {
-        }
-
         public BudgetProvider( Hashtable args )
-            : this( ArgumentToDevice( args ), (string) args["WakeupDevice"], (string) args["WakeupDeviceMoniker"] )
-        {
-        }
-
-        public BudgetProvider( int device )
-            : this( device, null, null )
-        {
-        }
-
-        public BudgetProvider( int device, string wakeupDevice )
-            : this( device, wakeupDevice, null )
-        {
-        }
-
-        public BudgetProvider( int device, string wakeupDevice, string wakeupDeviceMoniker )
         {
             // Remember
-            m_WakeupDeviceInstance = wakeupDeviceMoniker;
-            m_WakeupDevice = wakeupDevice;
-            m_DeviceIndex = device;
+            m_WakeupDeviceInstance = (string) args["WakeupDeviceMoniker"];
+            m_WakeupDevice = (string) args["WakeupDevice"];
+            m_DeviceIndex = ArgumentToDevice( args );
         }
 
         public legacy.SignalStatus SignalStatus
@@ -74,7 +54,7 @@ namespace JMS.DVB.Provider.TTBudget
                 Open();
 
                 // Load
-                DVBSignalStatus status = m_Frontend.SignalStatus;
+                var status = m_Frontend.SignalStatus;
 
                 // Convert
                 return new legacy.SignalStatus( status.Locked, status.Strength, status.Quality );
@@ -84,7 +64,7 @@ namespace JMS.DVB.Provider.TTBudget
         private static int ArgumentToDevice( Hashtable args )
         {
             // Load
-            string device = (string) args["Device"];
+            var device = (string) args["Device"];
 
             // Process
             return (null == device) ? 0 : int.Parse( device );
@@ -141,10 +121,6 @@ namespace JMS.DVB.Provider.TTBudget
 
         #region IDeviceProvider Members
 
-        public void BeginRegister()
-        {
-        }
-
         public void Decrypt( legacy.Station station )
         {
             // Connect to hardware
@@ -163,35 +139,7 @@ namespace JMS.DVB.Provider.TTBudget
             }
         }
 
-        public void EndRegister()
-        {
-        }
-
-        public legacy.ProviderFeatures Features
-        {
-            get
-            {
-                // Report
-                return legacy.ProviderFeatures.Decryption;
-            }
-        }
-
-        public int FilterLimit
-        {
-            get
-            {
-                // Report
-                return 200;
-            }
-        }
-
-        public long GetFilterBytes( ushort pid )
-        {
-            // Ask filter
-            return m_Filters[pid].Length;
-        }
-
-        public legacy.FrontendType ReceiverType
+        private legacy.FrontendType ReceiverType
         {
             get
             {
@@ -224,24 +172,6 @@ namespace JMS.DVB.Provider.TTBudget
 
             // Startup API
             Open();
-        }
-
-        public void StartFileFilter( ushort pid, bool video, string path )
-        {
-            // Attach to hardware
-            Open();
-
-            // Stop if running
-            StopFilter( pid );
-
-            // Create filter
-            FilterToFile filter = new FilterToFile( pid, path );
-
-            // Remember
-            m_Filters[pid] = filter;
-
-            // Start at once
-            filter.Start();
         }
 
         public void StartFilter( ushort pid )
@@ -287,7 +217,7 @@ namespace JMS.DVB.Provider.TTBudget
             StopFilters( false );
         }
 
-        public void StopFilters( bool initialize )
+        private void StopFilters( bool initialize )
         {
             // Load
             List<Filter> filters = new List<Filter>( m_Filters.Values );

@@ -149,19 +149,9 @@ namespace JMS.DVB.TS
         public readonly short PID;
 
         /// <summary>
-        /// Related PID if any.
-        /// </summary>
-        private ushort Filter = 0;
-
-        /// <summary>
         /// Counts how often we found non-aligned PES packets.
         /// </summary>
         public long LostData = 0;
-
-        /// <summary>
-        /// DVB hardware we are connected to.
-        /// </summary>
-        private IDeviceProvider DVBDevice = null;
 
         /// <summary>
         /// Initialize this instance.
@@ -684,59 +674,6 @@ namespace JMS.DVB.TS
         {
             // Normally we consider each PES a key frame
             return true;
-        }
-
-        /// <summary>
-        /// Attach this stream to a filter and configure it.
-        /// </summary>
-        /// <param name="device">DVB hardware to connect to.</param>
-        /// <param name="pid">DVB stream identifier (PID) to filter upon.</param>
-        public void AttachToFilter( IDeviceProvider device, ushort pid )
-        {
-            // Forward
-            AttachToFilter( device, pid, false );
-        }
-
-        /// <summary>
-        /// Attach this stream to a filter and configure it.
-        /// </summary>
-        /// <param name="device">DVB hardware to connect to.</param>
-        /// <param name="pid">DVB stream identifier (PID) to filter upon.</param>
-        /// <param name="smallBuffer">Unset to use largest buffer available.</param>
-        public void AttachToFilter( IDeviceProvider device, ushort pid, bool smallBuffer )
-        {
-            // Configure
-            device.RegisterPipingFilter( pid, IsVideo, smallBuffer || !IsVideo, AddPayload );
-
-            // Remember
-            DVBDevice = device;
-            Filter = pid;
-        }
-
-        /// <summary>
-        /// Start the related PID filter.
-        /// </summary>
-        public void StartFilter()
-        {
-            // Forward
-            if (0 != Filter) DVBDevice.StartFilter( Filter );
-        }
-
-        /// <summary>
-        /// Stop the related PID filter.
-        /// </summary>
-        public void StopFilter()
-        {
-            // Be safe
-            try
-            {
-                // Forward
-                if (0 != Filter) DVBDevice.StopFilter( Filter );
-            }
-            catch
-            {
-                // We ignore any error coming out
-            }
         }
 
         #region IDisposable Members

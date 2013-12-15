@@ -203,7 +203,6 @@
     <Compile Include="Parser.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PSIWatchDog.cs" />
     <Compile Include="Section.cs">
       <SubType>Code</SubType>
     </Compile>

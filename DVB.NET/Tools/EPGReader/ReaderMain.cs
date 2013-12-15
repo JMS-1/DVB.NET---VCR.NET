@@ -28,7 +28,7 @@ namespace EPGReader
 
         private Dictionary<string, bool> m_Entries = new Dictionary<string, bool>();
         private List<EPGEntry> m_ListItems = new List<EPGEntry>();
-        private Parser EPGParser = new Parser( null );
+        private Parser EPGParser = new Parser();
         private bool m_Loading = false;
         private FileInfo File = null;
         private string m_StopText;

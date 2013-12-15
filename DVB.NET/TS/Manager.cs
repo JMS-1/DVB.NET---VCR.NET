@@ -473,114 +473,6 @@ namespace JMS.DVB.TS
         }
 
         /// <summary>
-        /// Create a new video stream in this transport stream and attach it
-        /// to a PID filter.
-        /// </summary>
-        /// <param name="device">DVB hardware to connect to.</param>
-        /// <param name="pid">The PID for the filter.</param>
-        /// <param name="encoding">The video encoding.</param>
-        /// <returns><i>null</i> if the parameter is <i>0</i>.</returns>
-        public VideoStream AddVideo( IDeviceProvider device, ushort pid, byte encoding )
-        {
-            // Check mode
-            if (0 == pid) return null;
-
-            // Create
-            VideoStream video = AddVideo( encoding );
-
-            // Attach to filter
-            video.AttachToFilter( device, pid );
-
-            // Report
-            return video;
-        }
-
-        /// <summary>
-        /// Create a new video stream in this transport stream and attach it
-        /// to a PID filter.
-        /// </summary>
-        /// <param name="device">DVB hardware to connect to.</param>
-        /// <param name="pid">The PID for the filter.</param>
-        /// <param name="smallBuffer">Unset to use largest buffer possible.</param>
-        /// <param name="noPCR">If set no PCR from PTS reconstruction is used 
-        /// on this video stream.</param>
-        /// <param name="encoding">The video encoding.</param>
-        /// <returns><i>null</i> if the parameter is <i>0</i>.</returns>
-        public VideoStream AddVideo( IDeviceProvider device, ushort pid, byte encoding, bool smallBuffer, bool noPCR )
-        {
-            // Check mode
-            if (0 == pid) return null;
-
-            // Create
-            VideoStream video = AddVideo( encoding, noPCR );
-
-            // Attach to filter
-            video.AttachToFilter( device, pid, smallBuffer );
-
-            // Report
-            return video;
-        }
-
-        /// <summary>
-        /// Create a new audio stream in this transport stream and attach it
-        /// to a PID filter.
-        /// </summary>
-        /// <param name="device">DVB hardware to connect to.</param>
-        /// <param name="pid">The PID for the filter.</param>
-        /// <param name="name">The ISO name of the language for this audio stream.</param>
-        /// <returns><i>null</i> if the parameter is <i>0</i>.</returns>
-        public AudioStream AddAudio( IDeviceProvider device, ushort pid, string name )
-        {
-            // Check mode
-            if (0 == pid) return null;
-
-            // Create
-            AudioStream audio = AddAudio( name );
-
-            // Attach to filter
-            audio.AttachToFilter( device, pid );
-
-            // Report
-            return audio;
-        }
-
-        /// <summary>
-        /// Create a new Dolby Digital (AC3) audio stream in this transport stream and attach it
-        /// to a PID filter.
-        /// </summary>
-        /// <param name="device">DVB hardware to connect to.</param>
-        /// <param name="pid">The PID for the filter.</param>
-        /// <returns><i>null</i> if the parameter is <i>0</i>.</returns>
-        public DolbyStream AddDolby( IDeviceProvider device, ushort pid )
-        {
-            // Forward
-            return AddDolby( device, pid, null );
-        }
-
-        /// <summary>
-        /// Create a new Dolby Digital (AC3) audio stream in this transport stream and attach it
-        /// to a PID filter.
-        /// </summary>
-        /// <param name="device">DVB hardware to connect to.</param>
-        /// <param name="pid">The PID for the filter.</param>
-        /// <param name="name">Name of the related audio language.</param>
-        /// <returns><i>null</i> if the parameter is <i>0</i>.</returns>
-        public DolbyStream AddDolby( IDeviceProvider device, ushort pid, string name )
-        {
-            // Check mode
-            if (0 == pid) return null;
-
-            // Create
-            DolbyStream dolby = AddDolby( name );
-
-            // Attach to filter
-            dolby.AttachToFilter( device, pid );
-
-            // Report
-            return dolby;
-        }
-
-        /// <summary>
         /// Create a new video stream and add it to this transport stream.
         /// </summary>
         /// <param name="encoding">Encoding of the video stream.</param>
@@ -601,7 +493,7 @@ namespace JMS.DVB.TS
         {
             // Check mode
             var isH264 = (encoding == (byte) EPG.StreamTypes.H264);
-            var forbidPCR = (m_NoHDTVPCR && isH264) || (m_NoSDTVPCR && !isH264 );
+            var forbidPCR = (m_NoHDTVPCR && isH264) || (m_NoSDTVPCR && !isH264);
 
             // Run
             bool isPCR;
@@ -707,50 +599,6 @@ namespace JMS.DVB.TS
 
             // Report
             return dolby;
-        }
-
-        /// <summary>
-        /// Create a new teletext stream in this transport stream and attach it
-        /// to a PID filter.
-        /// </summary>
-        /// <param name="device">DVB hardware to connect to.</param>
-        /// <param name="pid">The PID for the filter.</param>
-        /// <returns><i>null</i> if the parameter is <i>0</i>.</returns>
-        public TTXStream AddTeleText( IDeviceProvider device, ushort pid )
-        {
-            // Check mode
-            if (0 == pid) return null;
-
-            // Create
-            TTXStream ttx = AddTeleText();
-
-            // Attach to filter
-            ttx.AttachToFilter( device, pid );
-
-            // Report
-            return ttx;
-        }
-
-        /// <summary>
-        /// Add DVB subtitles to the stream.
-        /// </summary>
-        /// <param name="device">The related DVB.NET hardware abstraction.</param>
-        /// <param name="pid">The PID for the filter.</param>
-        /// <param name="info">Special information for the DVB subtitles in a single stream.</param>
-        /// <returns><i>null</i> if the parameter is <i>0</i>.</returns>
-        public SubtitleStream AddSubtitles( IDeviceProvider device, ushort pid, EPG.SubtitleInfo[] info )
-        {
-            // Check mode
-            if (0 == pid) return null;
-
-            // Create
-            SubtitleStream sub = AddSubtitles( info );
-
-            // Attach to filter
-            sub.AttachToFilter( device, pid );
-
-            // Report
-            return sub;
         }
 
         /// <summary>
@@ -1514,10 +1362,9 @@ namespace JMS.DVB.TS
         public void StartFilters()
         {
             // Unlock splitter if no guide can be found
-            if ((0 == m_GuidePID) && (null != m_Splitter)) m_Splitter.GuidePTS = -1;
-
-            // Forward to all
-            foreach (StreamBase stream in m_Streams) stream.StartFilter();
+            if (m_GuidePID == 0)
+                if (m_Splitter != null)
+                    m_Splitter.GuidePTS = -1;
         }
 
         /// <summary>
@@ -1528,11 +1375,9 @@ namespace JMS.DVB.TS
             // Stop streaming
             SetStreamTarget( "localhost", 0 );
 
-            // Forward to all
-            foreach (StreamBase stream in m_Streams) stream.StopFilter();
-
             // Forward to splitter
-            if (null != m_Splitter) m_Splitter.Stop();
+            if (m_Splitter != null)
+                m_Splitter.Stop();
         }
 
         /// <summary>
