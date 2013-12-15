@@ -1,15 +1,14 @@
 using System;
-using System.Security;
-using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-
+using System.Security;
+using System.Threading;
 using JMS.DVB;
 using JMS.DVB.Cable;
+using JMS.DVB.DeviceAccess;
 using JMS.DVB.Satellite;
 using JMS.DVB.Terrestrial;
-
 using ScanLog = JMS.DVB.EPG.Tools;
 
 
@@ -202,6 +201,11 @@ namespace JMS.TechnoTrend.MFCWrapper
         private DiSEqCMessage m_LastMessage = null;
 
         /// <summary>
+        /// Die zuletzt versendete Antennensteuerung.
+        /// </summary>
+        private StandardDiSEqC m_lastMessage;
+
+        /// <summary>
         /// Simply use the <see cref="ClassHolder"/> default constructor to create
         /// the C++ instance.
         /// </summary>
@@ -261,6 +265,7 @@ namespace JMS.TechnoTrend.MFCWrapper
 
             // Reset
             m_LastMessage = null;
+            m_lastMessage = null;
         }
 
         /// <summary>
@@ -320,29 +325,12 @@ namespace JMS.TechnoTrend.MFCWrapper
 
 
         /// <summary>
-        /// Simply forwards to <see cref="SetChannel(Channel, DiSEqC, bool)"/> with <i>false</i>
+        /// Simply forwards to <see cref="SetChannel(Channel, DiSEqC)"/> with <i>false</i>
         /// as a third parameter.
         /// </summary>
         /// <param name="pChannel">Channel to select.</param>
         /// <param name="diseqc">Optional DiSEqC configuration for DVB-S.</param>
         public void SetChannel( Channel pChannel, DiSEqC diseqc )
-        {
-            // Forward
-            SetChannel( pChannel, diseqc, false );
-        }
-
-        /// <summary>
-        /// Checks the real type of the channel and forwards to the related overload.
-        /// <see cref="StopFilters"/>
-        /// </summary>
-        /// <param name="pChannel">Channel to select.</param>
-        /// <param name="bPowerOnly">[Don't know]</param>
-        /// <param name="diseqc">Optional DiSEqC configuration for DVB-S.</param>
-        /// <exception cref="DVBException">
-        /// The type of the channel is not supported. Currently satellite, cable
-        /// and teresstrial are supported.
-        /// </exception>
-        public void SetChannel( Channel pChannel, DiSEqC diseqc, bool bPowerOnly )
         {
             // Stop all filters
             StopFilters();
@@ -357,7 +345,7 @@ namespace JMS.TechnoTrend.MFCWrapper
                 if (null != pTerra)
                 {
                     // Call it
-                    SendChannel( pTerra, bPowerOnly );
+                    SendChannel( pTerra );
                 }
                 else
                 {
@@ -368,7 +356,7 @@ namespace JMS.TechnoTrend.MFCWrapper
                     if (null != pCable)
                     {
                         // Call it
-                        SendChannel( pCable, bPowerOnly );
+                        SendChannel( pCable );
                     }
                     else
                     {
@@ -379,7 +367,7 @@ namespace JMS.TechnoTrend.MFCWrapper
                         if (null != pSat)
                         {
                             // Call it
-                            SendChannel( pSat, diseqc, bPowerOnly );
+                            SendChannel( pSat, diseqc );
                         }
                         else
                         {
@@ -441,9 +429,8 @@ namespace JMS.TechnoTrend.MFCWrapper
         /// <see cref="Channel_S.LOF"/> and <see cref="Channel_S.LNBPower"/> fields.
         /// </remarks>
         /// <param name="pChannel">Satellite channel to use.</param>
-        /// <param name="bPowerOnly">[Don't know]</param>
         /// <param name="diseqc">Optional DiSEqC configuration for the channel.</param>
-        private void SendChannel( SatelliteChannel pChannel, DiSEqC diseqc, bool bPowerOnly )
+        private void SendChannel( SatelliteChannel pChannel, DiSEqC diseqc )
         {
             // Validate
             if (FrontendType.Satellite != FrontendType) throw new DVBException( "Expected " + FrontendType.ToString() + " Channel" );
@@ -485,7 +472,73 @@ namespace JMS.TechnoTrend.MFCWrapper
             rData.LNBPower = selector.UsePower ? pChannel.Power : PowerMode.Off;
 
             // Process
-            CheckChannel( CDVBFrontend_SetChannel( m_Class.ClassPointer, rData, bPowerOnly ) );
+            CheckChannel( CDVBFrontend_SetChannel( m_Class.ClassPointer, rData, false ) );
+
+            // Check up for synchronisation
+            Channel_S rValidate;
+
+            // Get channel twice
+            CheckChannel( CDVBFrontend_GetChannel( m_Class.ClassPointer, out rValidate ) );
+            CheckChannel( CDVBFrontend_GetChannel( m_Class.ClassPointer, out rValidate ) );
+        }
+
+        /// <summary>
+        /// Wählt eine Quellgruppe aus.
+        /// </summary>
+        /// <param name="location">Die Wahl der zu verwendenden Antwenne.</param>
+        /// <param name="group">Díe Daten der Quellgruppe.</param>
+        private void SendChannel( SatelliteLocation location, SatelliteGroup group )
+        {
+            // Validate
+            if (FrontendType != FrontendType.Satellite)
+                throw new DVBException( "Expected " + FrontendType.ToString() + " Channel" );
+
+            // Create channel
+            var rData =
+                new Channel_S
+                {
+                    Inversion = SpectrumInversion.Auto,
+                    SymbolRate = group.SymbolRate,
+                    Frequency = group.Frequency,
+                };
+
+
+            // Attach to the DiSEqC setting
+            var selector = StandardDiSEqC.FromSourceGroup( group, location );
+
+            // See if the message is different from the last one
+            if (!selector.Equals( m_lastMessage ))
+            {
+                // Remember
+                m_lastMessage = selector.Clone();
+
+                // As long as necessary
+                for (int nCount = selector.Repeat; nCount-- > 0; Thread.Sleep( 120 ))
+                {
+                    // Send it
+                    DVBException.ThrowOnError( CDVBFrontend_SendDiSEqCMsg( m_Class.ClassPointer, selector.Request, (byte) selector.Request.Length, selector.Burst ), "Could not send DiSEqC Message" );
+
+                    // Set repeat flag
+                    if (selector.Request.Length > 0)
+                        selector.Request[0] |= 1;
+                }
+            }
+
+            // Calculated items
+            rData.b22kHz = (group.Frequency >= location.SwitchFrequency) ? 1 : 0;
+            rData.LOF = (0 == rData.b22kHz) ? location.Frequency1 : location.Frequency2;
+
+            // Power modes
+            switch (group.Polarization)
+            {
+                case Polarizations.Horizontal: rData.LNBPower = PowerMode.Horizontal; break;
+                case Polarizations.Vertical: rData.LNBPower = PowerMode.Vertical; break;
+                case Polarizations.NotDefined: rData.LNBPower = PowerMode.Off; break;
+                default: throw new ArgumentException( group.Polarization.ToString(), "group.Polarization" );
+            }
+
+            // Process
+            CheckChannel( CDVBFrontend_SetChannel( m_Class.ClassPointer, rData, false ) );
 
             // Check up for synchronisation
             Channel_S rValidate;
@@ -500,8 +553,7 @@ namespace JMS.TechnoTrend.MFCWrapper
         /// updates the frontend accordingly.
         /// </summary>
         /// <param name="pChannel">Cable channel to use.</param>
-        /// <param name="bPowerOnly">[Don't know]</param>
-        private void SendChannel( CableChannel pChannel, bool bPowerOnly )
+        private void SendChannel( CableChannel pChannel )
         {
             // Validate
             if (FrontendType.Cable != FrontendType) throw new DVBException( "Expected " + FrontendType.ToString() + " Channel" );
@@ -517,7 +569,7 @@ namespace JMS.TechnoTrend.MFCWrapper
             rData.Bandwidth = pChannel.Bandwidth;
 
             // Process
-            CheckChannel( CDVBFrontend_SetChannel( m_Class.ClassPointer, rData, bPowerOnly ) );
+            CheckChannel( CDVBFrontend_SetChannel( m_Class.ClassPointer, rData, false ) );
 
             // Check up for synchronisation
             Channel_C rVal1, rVal2;
@@ -532,8 +584,7 @@ namespace JMS.TechnoTrend.MFCWrapper
         /// updates the frontend accordingly.
         /// </summary>
         /// <param name="pChannel">Terrestrial channel to use.</param>
-        /// <param name="bPowerOnly">[Don't know]</param>
-        private void SendChannel( TerrestrialChannel pChannel, bool bPowerOnly )
+        private void SendChannel( TerrestrialChannel pChannel )
         {
             // Validate
             if (FrontendType.Terrestrial != FrontendType) throw new DVBException( "Expected " + FrontendType.ToString() + " Channel" );
@@ -548,7 +599,7 @@ namespace JMS.TechnoTrend.MFCWrapper
             rData.Bandwidth = pChannel.Bandwidth;
 
             // Process
-            CheckChannel( CDVBFrontend_SetChannel( m_Class.ClassPointer, rData, bPowerOnly ) );
+            CheckChannel( CDVBFrontend_SetChannel( m_Class.ClassPointer, rData, false ) );
 
             // Check up for synchronisation
             Channel_T rVal1, rVal2;
