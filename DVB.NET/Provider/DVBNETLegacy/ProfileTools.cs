@@ -1,9 +1,5 @@
-﻿extern alias oldVersion;
-
-using System;
+﻿using System;
 using System.Xml;
-
-using legacy = oldVersion.JMS.DVB;
 
 
 namespace JMS.DVB.Provider.Legacy
@@ -16,6 +12,6 @@ namespace JMS.DVB.Provider.Legacy
         /// <summary>
         /// Enthält die Beschreibung zu allen bekannten Geräten der alten DVB.NET Version.
         /// </summary>
-        internal static readonly legacy.DeviceInformations LegacyDevices = new legacy.DeviceInformations();
+        internal static readonly DeviceInformation[] LegacyDevices = DeviceInformation.Load();
     }
 }

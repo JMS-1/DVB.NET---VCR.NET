@@ -136,8 +136,10 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BandwidthType.cs" />
     <Compile Include="ClassHolder.cs" />
     <Compile Include="FilterQueue.cs" />
+    <Compile Include="FrontendType.cs" />
     <Compile Include="InterOpTools.cs" />
     <Compile Include="MFCString.cs" />
     <Compile Include="MFCWrapper\AVCapabilities.cs">
@@ -204,6 +206,7 @@
     </Compile>
     <Compile Include="PowerMode.cs" />
     <Compile Include="Qam.cs" />
+    <Compile Include="SpectrumInversion.cs" />
     <Compile Include="VideoOutput.cs">
       <SubType>Code</SubType>
     </Compile>

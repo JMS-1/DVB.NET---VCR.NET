@@ -124,16 +124,7 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BandwidthType.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="DeviceInformation.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DeviceInformations.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="FrontendType.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Identifier.cs">
@@ -142,14 +133,7 @@
     <Compile Include="IDeviceProvider.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProviderMissingException.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="SignalStatus.cs" />
-    <Compile Include="SpectrumInversion.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <None Include="DVBSubtitleInfo.cs" />
     <EmbeddedResource Include="DVBNETProviders.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>

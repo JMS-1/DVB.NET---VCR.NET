@@ -1,14 +1,9 @@
-﻿extern alias oldVersion;
-
-using System;
+﻿using System;
 using System.Xml;
 using System.Linq;
 using System.Windows.Forms;
 using System.Collections.Generic;
-
 using JMS.DVB.Editors;
-
-using legacy = oldVersion::JMS;
 
 
 namespace JMS.DVB.Provider.Legacy
@@ -37,7 +32,7 @@ namespace JMS.DVB.Provider.Legacy
             InitializeComponent();
 
             // Fill in
-            foreach (legacy.DVB.DeviceInformation device in ProfileTools.LegacyDevices)
+            foreach (DVB.DeviceInformation device in ProfileTools.LegacyDevices)
             {
                 // Remember
                 selDevice.Items.Add( device );
@@ -82,7 +77,7 @@ namespace JMS.DVB.Provider.Legacy
         void IHardwareEditor.UpdateProfile()
         {
             // Get the device selected
-            legacy.DVB.DeviceInformation device = CurrentDevice;
+            DVB.DeviceInformation device = CurrentDevice;
 
             // Wipe out all
             Profile.DeviceAspects.Clear();
@@ -134,12 +129,12 @@ namespace JMS.DVB.Provider.Legacy
         /// <summary>
         /// Liest oder setzt die aktuell ausgewählte Implementierung.
         /// </summary>
-        private legacy.DVB.DeviceInformation CurrentDevice
+        private DVB.DeviceInformation CurrentDevice
         {
             get
             {
                 // Report
-                return (legacy.DVB.DeviceInformation) selDevice.SelectedItem;
+                return (DVB.DeviceInformation) selDevice.SelectedItem;
             }
             set
             {
@@ -289,7 +284,7 @@ namespace JMS.DVB.Provider.Legacy
 
             // Find the device
             if (null != type)
-                foreach (legacy.DVB.DeviceInformation device in selDevice.Items)
+                foreach (DVB.DeviceInformation device in selDevice.Items)
                     if (Equals( type.Value, device.DriverType ))
                     {
                         // Select

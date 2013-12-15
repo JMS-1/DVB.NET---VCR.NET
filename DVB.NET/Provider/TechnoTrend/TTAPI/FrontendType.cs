@@ -1,6 +1,6 @@
 using System;
 
-namespace JMS.DVB
+namespace JMS.TechnoTrend
 {
 	/// <summary>
 	/// The various DVB types supported by DVB.NET.

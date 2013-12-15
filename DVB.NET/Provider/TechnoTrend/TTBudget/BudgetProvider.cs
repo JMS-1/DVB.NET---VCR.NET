@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Security;
 using JMS.DVB.DeviceAccess.Enumerators;
+using JMS.TechnoTrend;
 
 
 namespace JMS.DVB.Provider.TTBudget

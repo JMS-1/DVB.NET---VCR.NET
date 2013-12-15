@@ -1,6 +1,6 @@
 using System;
 
-namespace JMS.DVB
+namespace JMS.TechnoTrend
 {
 	/// <summary>
 	/// Bandwidth type for DVB-C.
