@@ -75,7 +75,7 @@ namespace JMS.DVB
         /// Activate decrypting the indicated station.
         /// </summary>
         /// <param name="station">Some station.</param>
-        void Decrypt( Station station );
+        void Decrypt( ushort? station );
 
         /// <summary>
         /// Called after a wakeup from hibernation prior to the first tune request.

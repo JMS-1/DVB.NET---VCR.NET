@@ -319,7 +319,7 @@ namespace JMS.DVB.Provider.TTPremium
         /// Activate decrypting the indicated station.
         /// </summary>
         /// <param name="station">Some station.</param>
-        public void Decrypt( Station station )
+        public void Decrypt( ushort? station )
         {
             // Report
             if (MethodLog) LogMessage( "Decrypt {0}", station );
@@ -328,15 +328,15 @@ namespace JMS.DVB.Provider.TTPremium
             Register();
 
             // Forward
-            if (null == station)
+            if (station.HasValue)
             {
-                // Switch off
-                Context.TheContext.Decrypt( 0 );
+                // Switch on
+                Context.TheContext.Decrypt( station.Value );
             }
             else
             {
-                // Switch on
-                Context.TheContext.Decrypt( station.ServiceIdentifier );
+                // Switch off
+                Context.TheContext.Decrypt( 0 );
             }
         }
 

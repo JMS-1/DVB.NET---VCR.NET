@@ -121,21 +121,21 @@ namespace JMS.DVB.Provider.TTBudget
 
         #region IDeviceProvider Members
 
-        public void Decrypt( legacy.Station station )
+        public void Decrypt( ushort? station )
         {
             // Connect to hardware
             Open();
 
             // Forward
-            if (null == station)
+            if (station.HasValue)
             {
-                // Switch off
-                m_CI.Decrypt( 0 );
+                // Switch on
+                m_CI.Decrypt( station.Value );
             }
             else
             {
-                // Switch on
-                m_CI.Decrypt( station.ServiceIdentifier );
+                // Switch off
+                m_CI.Decrypt( 0 );
             }
         }
 

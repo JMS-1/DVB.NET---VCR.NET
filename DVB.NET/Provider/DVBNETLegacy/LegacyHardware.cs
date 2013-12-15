@@ -231,14 +231,12 @@ namespace JMS.DVB.Provider.Legacy
             else
             {
                 // Attach to the source
-                SourceIdentifier source = sources[0];
-
-                // Validate
+                var source = sources[0];
                 if (source == null)
                     throw new ArgumentNullException( "sources[0]" );
 
                 // Process
-                LegacyDevice.Decrypt( new legacy.DVB.Station { NetworkIdentifier = source.Network, TransportStreamIdentifier = source.TransportStream, ServiceIdentifier = source.Service } );
+                LegacyDevice.Decrypt( source.Service );
             }
         }
 

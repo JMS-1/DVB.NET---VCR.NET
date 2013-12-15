@@ -313,18 +313,6 @@ namespace JMS.TechnoTrend.MFCWrapper
         }
 
         /// <summary>
-        /// Simply forwards to <see cref="SetChannel(Channel, DiSEqC)"/> with <i>null</i>
-        /// as a second parameter.
-        /// </summary>
-        /// <param name="pChannel">Channel to select.</param>
-        public void SetChannel( Channel pChannel )
-        {
-            // Forward
-            SetChannel( pChannel, null );
-        }
-
-
-        /// <summary>
         /// Simply forwards to <see cref="SetChannel(Channel, DiSEqC)"/> with <i>false</i>
         /// as a third parameter.
         /// </summary>
