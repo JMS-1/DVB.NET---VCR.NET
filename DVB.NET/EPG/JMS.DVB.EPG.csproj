@@ -147,15 +147,11 @@
     <Compile Include="Descriptors\ISOLanguage.cs" />
     <Compile Include="Descriptors\Service.cs" />
     <Compile Include="Descriptors\StreamIdentifier.cs" />
-    <Compile Include="ExtendedSITScanner.cs" />
     <Compile Include="LanguageItem.cs" />
     <Compile Include="OpenTV\Decompressor.cs" />
     <Compile Include="OpenTV\Module.cs" />
     <Compile Include="OpenTV\ModuleCollection.cs" />
     <Compile Include="OuterFECs.cs" />
-    <Compile Include="PATScanner.cs" />
-    <Compile Include="PMTManager.cs" />
-    <Compile Include="PMTScanner.cs" />
     <Compile Include="Polarizations.cs" />
     <Compile Include="ProgramEntry.cs" />
     <Compile Include="IDescriptorContainer.cs" />
@@ -208,7 +204,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PSIWatchDog.cs" />
-    <Compile Include="SDTScanner.cs" />
     <Compile Include="Section.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -216,7 +211,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ServiceTypes.cs" />
-    <Compile Include="SITScanner.cs" />
     <Compile Include="StandardProgramGuideEncoding.cs" />
     <Compile Include="StreamTypes.cs" />
     <Compile Include="SubtitleInfo.cs" />
