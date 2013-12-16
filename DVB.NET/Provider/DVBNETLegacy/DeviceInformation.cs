@@ -10,12 +10,12 @@ namespace JMS.DVB.Provider.Legacy
     /// <summary>
     /// Beschreibt die Parameter einer DVB.NET Hardwareabstraktion.
     /// </summary>
-    internal class DeviceInformation
+    internal class LegacyDeviceInformation
     {
         /// <summary>
         /// Enthält die Beschreibung zu allen bekannten Geräten der alten DVB.NET Version.
         /// </summary>
-        public static readonly DeviceInformation[] LegacyDevices = DeviceInformation.Load();
+        public static readonly LegacyDeviceInformation[] Devices = LegacyDeviceInformation.Load();
 
         /// <summary>
         /// Das Wurzelelement der Konfiguration.
@@ -26,7 +26,7 @@ namespace JMS.DVB.Provider.Legacy
         /// Erzeugt eine neue Beschreibung.
         /// </summary>
         /// <param name="provider">Das Wurzelelement der Konfiguration.</param>
-        public DeviceInformation( XmlElement provider )
+        public LegacyDeviceInformation( XmlElement provider )
         {
             // Load
             Root = provider;
@@ -44,14 +44,7 @@ namespace JMS.DVB.Provider.Legacy
 
         public XmlNodeList Parameters { get { return FindElement( "Parameters" ).ChildNodes; } }
 
-        internal string UniqueIdentifier
-        {
-            get
-            {
-                // Report
-                return (string) Root.GetAttribute( "id" );
-            }
-        }
+        private string UniqueIdentifier { get { return (string) Root.GetAttribute( "id" ); } }
 
         public override string ToString()
         {
@@ -62,7 +55,7 @@ namespace JMS.DVB.Provider.Legacy
         /// <summary>
         /// Meldet den Namen der .NET Klasse zum Zugriff auf die DVB Hardware.
         /// </summary>
-        public string DriverType { get { return FindElement( "Driver" ).InnerText; ;            } }
+        public string DriverType { get { return FindElement( "Driver" ).InnerText; } }
 
         public string[] Names
         {
@@ -80,7 +73,7 @@ namespace JMS.DVB.Provider.Legacy
             }
         }
 
-        public static DeviceInformation[] Load()
+        private static LegacyDeviceInformation[] Load()
         {
             // Remember
             var settings = new Hashtable();
@@ -101,7 +94,7 @@ namespace JMS.DVB.Provider.Legacy
             else
             {
                 // Get the scope
-                var me = typeof( DeviceInformation );
+                var me = typeof( LegacyDeviceInformation );
 
                 // Load the DOM from resource
                 using (var providers = me.Assembly.GetManifestResourceStream( me.Namespace + ".DVBNETProviders.xml" ))
@@ -120,7 +113,7 @@ namespace JMS.DVB.Provider.Legacy
                     .DocumentElement
                     .SelectNodes( "DVBNETProvider" )
                     .Cast<XmlElement>()
-                    .Select( node => new DeviceInformation( node ) )
+                    .Select( node => new LegacyDeviceInformation( node ) )
                     .ToDictionary( info => info.UniqueIdentifier )
                     .Values
                     .ToArray();

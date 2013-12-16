@@ -1,9 +1,8 @@
 using System;
-using System.Text;
-using System.Security;
 using System.Runtime.InteropServices;
+using System.Security;
+using System.Text;
 
-using JMS.DVB;
 
 
 namespace JMS.TechnoTrend.MFCWrapper

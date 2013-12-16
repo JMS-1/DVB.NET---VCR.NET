@@ -1,6 +1,6 @@
 using System;
-using JMS.DVB;
 using System.Runtime.InteropServices;
+
 
 namespace JMS.TechnoTrend.MFCWrapper
 {

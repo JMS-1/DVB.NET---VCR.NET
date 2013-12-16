@@ -32,7 +32,7 @@ namespace JMS.DVB.Provider.Legacy
             InitializeComponent();
 
             // Fill in
-            foreach (var device in DeviceInformation.LegacyDevices)
+            foreach (var device in LegacyDeviceInformation.Devices)
             {
                 // Remember
                 selDevice.Items.Add( device );
@@ -129,12 +129,12 @@ namespace JMS.DVB.Provider.Legacy
         /// <summary>
         /// Liest oder setzt die aktuell ausgewählte Implementierung.
         /// </summary>
-        private DeviceInformation CurrentDevice
+        private LegacyDeviceInformation CurrentDevice
         {
             get
             {
                 // Report
-                return (DeviceInformation) selDevice.SelectedItem;
+                return (LegacyDeviceInformation) selDevice.SelectedItem;
             }
             set
             {
@@ -284,7 +284,7 @@ namespace JMS.DVB.Provider.Legacy
 
             // Find the device
             if (null != type)
-                foreach (DeviceInformation device in selDevice.Items)
+                foreach (LegacyDeviceInformation device in selDevice.Items)
                     if (Equals( type.Value, device.DriverType ))
                     {
                         // Select
