@@ -140,6 +140,7 @@
     <Compile Include="ClassHolder.cs" />
     <Compile Include="FilterQueue.cs" />
     <Compile Include="FrontendType.cs" />
+    <Compile Include="IDeviceProvider.cs" />
     <Compile Include="InterOpTools.cs" />
     <Compile Include="MFCString.cs" />
     <Compile Include="MFCWrapper\AVCapabilities.cs">

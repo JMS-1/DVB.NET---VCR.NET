@@ -130,10 +130,6 @@
     <Compile Include="Identifier.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IDeviceProvider.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="SignalStatus.cs" />
     <EmbeddedResource Include="DVBNETProviders.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>

@@ -1,14 +1,10 @@
 using System;
+using JMS.DVB;
+using JMS.DVB.DeviceAccess.Interfaces;
 
 
-namespace JMS.DVB
+namespace JMS.TechnoTrend
 {
-    /// <summary>
-    /// Callback interface when using PID filters.
-    /// <seealso cref="IDeviceProvider.StartSectionFilter"/>
-    /// </summary>
-    public delegate void FilterHandler( byte[] data );
-
     /// <summary>
     /// Abstraction of the DVB hardware access.
     /// </summary>
@@ -43,7 +39,7 @@ namespace JMS.DVB
         /// <param name="filterData">Filter data for pre-selection.</param>
         /// <param name="filterMask">Masks those bits in the filter data for pre-selection
         /// which are relevant for comparision.</param>
-        void StartSectionFilter( ushort pid, FilterHandler callback, byte[] filterData, byte[] filterMask );
+        void StartSectionFilter( ushort pid, Action<byte[]> callback, byte[] filterData, byte[] filterMask );
 
         /// <summary>
         /// Prepare filtering a DVB stream.
@@ -55,7 +51,7 @@ namespace JMS.DVB
         /// <param name="video">Set if a video stream is used.</param>
         /// <param name="smallBuffer">Unset if the largest possible buffer should be used.</param>
         /// <param name="callback">Method to call when new data is available.</param>
-        void RegisterPipingFilter( ushort pid, bool video, bool smallBuffer, FilterHandler callback );
+        void RegisterPipingFilter( ushort pid, bool video, bool smallBuffer, Action<byte[]> callback );
 
         /// <summary>
         /// Start filtering a DVB stream.

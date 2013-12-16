@@ -199,7 +199,7 @@ namespace JMS.DVB.Provider.TTPremium
         /// <param name="filterData">Filter data for pre-selection.</param>
         /// <param name="filterMask">Masks those bits in the filter data for pre-selection
         /// which are relevant for comparision.</param>
-        public void StartSectionFilter( ushort pid, FilterHandler callback, byte[] filterData, byte[] filterMask )
+        public void StartSectionFilter( ushort pid, Action<byte[]> callback, byte[] filterData, byte[] filterMask )
         {
             // Report
             if (MethodLog) LogMessage( "StartSectionFilter {0}", pid );
@@ -230,7 +230,7 @@ namespace JMS.DVB.Provider.TTPremium
         /// <param name="video">Set if a video stream is used.</param>
         /// <param name="smallBuffer">Unset if the largest possible buffer should be used.</param>
         /// <param name="callback">Method to call when new data is available.</param>
-        public void RegisterPipingFilter( ushort pid, bool video, bool smallBuffer, FilterHandler callback )
+        public void RegisterPipingFilter( ushort pid, bool video, bool smallBuffer, Action<byte[]> callback )
         {
             // Report
             if (MethodLog) LogMessage( "RegisterPipingFilter {0} {1} {2}", pid, video, smallBuffer );
@@ -390,7 +390,7 @@ namespace JMS.DVB.Provider.TTPremium
         /// <summary>
         /// Meldet Informationen zum aktuellem Emfangsstatus.
         /// </summary>
-        public SignalStatus SignalStatus
+        public JMS.DVB.DeviceAccess.Interfaces.SignalStatus SignalStatus
         {
             get
             {
@@ -404,7 +404,7 @@ namespace JMS.DVB.Provider.TTPremium
                 var status = Context.TheContext.SignalStatus;
 
                 // Convert
-                return new SignalStatus( status.Locked, status.Strength, status.Level );
+                return new JMS.DVB.DeviceAccess.Interfaces.SignalStatus( status.Locked, status.Strength, status.Level );
             }
         }
 

@@ -21,14 +21,14 @@ namespace JMS.DVB.TS.TSBuilders
         /// <summary>
         /// Ein optionaler Verbraucher für rekonstruierte Pakete.
         /// </summary>
-        private readonly FilterHandler m_Callback;
+        private readonly Action<byte[]> m_Callback;
 
         /// <summary>
         /// Initialisiert die Rekonstruktionsinstanz.
         /// </summary>
         /// <param name="parser">Die zugehörige Analyseeinheit.</param>
         /// <param name="callback">Optional ein Verbraucher für rekonstruierte Pakete.</param>
-        protected TSBuilder( TSParser parser, FilterHandler callback )
+        protected TSBuilder( TSParser parser, Action<byte[]> callback )
         {
             // Remember
             m_Callback = callback;

@@ -37,7 +37,7 @@ namespace JMS.DVB.TS
             /// <param name="parser">Die zugehörige Instanz zum Gesamtdatenstrom.</param>
             /// <param name="pid">Die betroffenen Datenstromkennung.</param>
             /// <param name="callback">Der Empfänger der eigentlichen Nutzdaten.</param>
-            public PESInfo( TSParser parser, ushort pid, FilterHandler callback )
+            public PESInfo( TSParser parser, ushort pid, Action<byte[]> callback )
             {
                 // Remember
                 PID = pid;
@@ -701,7 +701,7 @@ namespace JMS.DVB.TS
         /// <param name="isSITable">Gesetzt, wenn es sich um einen Kontroll- und keinen
         /// Nutzdatenstrom handelt.</param>
         /// <param name="callback"></param>
-        public void SetFilter( ushort pid, bool isSITable, FilterHandler callback )
+        public void SetFilter( ushort pid, bool isSITable, Action<byte[]> callback )
         {
             // Validate
             if (callback == null)

@@ -22,7 +22,7 @@ namespace JMS.DVB.TS
         /// <summary>
         /// Delegate to receive any data in process.
         /// </summary>
-        public FilterHandler InProcessConsumer = null;
+        public Action<byte[]> InProcessConsumer = null;
 
         /// <summary>
         /// The delay the created PCR advances the corresponding PTS of
@@ -1216,7 +1216,7 @@ namespace JMS.DVB.TS
             m_UDPStream.Send( buf );
 
             // Read consumer
-            FilterHandler consumer = InProcessConsumer;
+            var consumer = InProcessConsumer;
 
             // Finally send to in-process consumer
             if (null != consumer)

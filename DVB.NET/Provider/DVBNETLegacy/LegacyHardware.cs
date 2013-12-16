@@ -36,7 +36,7 @@ namespace JMS.DVB.Provider.Legacy
         /// <summary>
         /// Das zugeordnete DVB.NET 3.5 (oder früher) Geräteprofil.
         /// </summary>
-        protected DVB.IDeviceProvider LegacyDevice { get; private set; }
+        protected IDeviceProvider LegacyDevice { get; private set; }
 
         /// <summary>
         /// Erzeugt eine neue Vermittlungsinstanz.
@@ -60,7 +60,7 @@ namespace JMS.DVB.Provider.Legacy
             var aspect = profile.DeviceAspects.Find( a => string.IsNullOrEmpty( a.Aspekt ) );
 
             // Create the device
-            LegacyDevice = (DVB.IDeviceProvider) Activator.CreateInstance( Type.GetType( aspect.Value, true ), settings );
+            LegacyDevice = (IDeviceProvider) Activator.CreateInstance( Type.GetType( aspect.Value, true ), settings );
 
             // Start it
             LegacyDevice.SetVideoAudio( 0, 0, 0 );

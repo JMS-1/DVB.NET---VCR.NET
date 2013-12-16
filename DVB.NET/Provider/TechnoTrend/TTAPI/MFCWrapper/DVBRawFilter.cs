@@ -15,7 +15,7 @@ namespace JMS.TechnoTrend.MFCWrapper
     /// <remarks>
     /// Concerning the underlying TT API/SDK this class will wrap both a filter using <see cref="Delegate"/>
     /// and a filter which directly writes to a file. The interface introduced here offers a common
-    /// programming model which only differs by the initial call to <see cref="SetTarget(FilterHandler)"/>.
+    /// programming model which only differs by the initial call.
     /// </remarks>
     public unsafe class DVBRawFilter : IDisposable
     {
@@ -148,7 +148,7 @@ namespace JMS.TechnoTrend.MFCWrapper
         /// <summary>
         /// Forward for converted input data.
         /// </summary>
-        private FilterHandler m_DataHandler = null;
+        private Action<byte[]> m_DataHandler = null;
 
         /// <summary>
         /// The type of the filter.
@@ -208,7 +208,7 @@ namespace JMS.TechnoTrend.MFCWrapper
         /// Always calls <see cref="Stop"/>.
         /// </remarks>
         /// <param name="pHandler">Receive <see cref="Array"/> of <see cref="byte"/>.</param>
-        public void SetTarget( FilterHandler pHandler )
+        public void SetTarget( Action<byte[]> pHandler )
         {
             // Start it
             CreateFilter( false, 0 );
@@ -223,7 +223,7 @@ namespace JMS.TechnoTrend.MFCWrapper
         /// </summary>
         /// <param name="pHandler">Receive <see cref="Array"/> of <see cref="byte"/>.</param>
         /// <param name="uBuffer">Size of buffer in bytes.</param>
-        public void SetTarget( FilterHandler pHandler, uint uBuffer )
+        public void SetTarget( Action<byte[]> pHandler, uint uBuffer )
         {
             // Start it
             CreateFilter( true, uBuffer );
@@ -239,8 +239,8 @@ namespace JMS.TechnoTrend.MFCWrapper
         /// Always calls <see cref="Stop"/>.
         /// </remarks>
         /// <param name="pHandler">Receive raw <see cref="byte"/> data as coming
-        /// from the TT API/SDK layer. In contrast to <see cref="SetTarget(FilterHandler)"/>
-        /// using this target mode may help to reduce one level of extra copy.</param>
+        /// from the TT API/SDK layer. Using this target mode may help to reduce
+        /// one level of extra copy.</param>
         public void SetTarget( RawDataHandler pHandler )
         {
             // Start it
@@ -290,8 +290,8 @@ namespace JMS.TechnoTrend.MFCWrapper
         /// size as parameters.
         /// </summary>
         /// <param name="pHandler">Receive raw <see cref="byte"/> data as coming
-        /// from the TT API/SDK layer. In contrast to <see cref="SetTarget(FilterHandler)"/>
-        /// using this target mode may help to reduce one level of extra copy.</param>
+        /// from the TT API/SDK layer. Using this target mode may help to reduce 
+        /// one level of extra copy.</param>
         /// <param name="uBuffer">Size of buffer in bytes.</param>
         public void SetTarget( RawDataHandler pHandler, uint uBuffer )
         {
@@ -419,8 +419,7 @@ namespace JMS.TechnoTrend.MFCWrapper
         /// </summary>
         /// <remarks>
         /// When calling this method <see cref="m_Class"/> is released. To reuse the
-        /// filter instance the client has to call an appropriate overload of
-        /// <see cref="SetTarget(FilterHandler)"/> again.
+        /// filter instance the client has to call an appropriate overload again.
         /// </remarks>
         public void Stop()
         {
@@ -447,8 +446,8 @@ namespace JMS.TechnoTrend.MFCWrapper
                 if ((null == m_Class) || m_FilterToFile) return;
 
                 // Load handlers
-                RawDataHandler raw = m_RawHandler;
-                FilterHandler std = m_DataHandler;
+                var raw = m_RawHandler;
+                var std = m_DataHandler;
 
                 // Call raw handler
                 if (null != raw) raw( (byte*) (pBuf.ToPointer()), (uint) lBuf );

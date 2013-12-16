@@ -28,7 +28,7 @@ namespace JMS.DVB.TS.TSBuilders
         /// </summary>
         /// <param name="parser">Die zugehörige Analyseeinheit.</param>
         /// <param name="callback">Eine Methode zum Empfang rekonstruierter Pakete.</param>
-        public PESBuilder( TSParser parser, FilterHandler callback )
+        public PESBuilder( TSParser parser, Action<byte[]> callback )
             : base( parser, callback )
         {
         }

@@ -14,9 +14,9 @@ namespace JMS.DVB.Provider.TTBudget
         private long m_QueueLimit = 0;
         private long m_QueueSize = 0;
 
-        private FilterHandler m_Handler;
+        private Action<byte[]> m_Handler;
 
-        public FilterQueue( FilterHandler callback )
+        public FilterQueue( Action<byte[]> callback )
         {
             // Remember
             m_Handler = callback;

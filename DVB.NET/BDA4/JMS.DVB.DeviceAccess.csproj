@@ -121,6 +121,7 @@
     <Compile Include="Interfaces\PropertySetSupportedTypes.cs" />
     <Compile Include="Interfaces\RegPinMedium.cs" />
     <Compile Include="Interfaces\RollOff.cs" />
+    <Compile Include="Interfaces\SignalStatus.cs" />
     <Compile Include="PMTSequencer.cs" />
     <Compile Include="SignalInformation.cs" />
     <Compile Include="StandardDiSEqC.cs" />

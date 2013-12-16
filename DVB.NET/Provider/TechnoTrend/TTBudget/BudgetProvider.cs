@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Security;
 using JMS.DVB.DeviceAccess.Enumerators;
+using JMS.DVB.DeviceAccess.Interfaces;
 using JMS.TechnoTrend;
 
 
@@ -146,7 +147,7 @@ namespace JMS.DVB.Provider.TTBudget
             }
         }
 
-        public void RegisterPipingFilter( ushort pid, bool video, bool smallBuffer, FilterHandler callback )
+        public void RegisterPipingFilter( ushort pid, bool video, bool smallBuffer, Action<byte[]> callback )
         {
             // Attach to hardware
             Open();
@@ -175,7 +176,7 @@ namespace JMS.DVB.Provider.TTBudget
             m_Filters[pid].Start();
         }
 
-        public void StartSectionFilter( ushort pid, FilterHandler callback, byte[] filterData, byte[] filterMask )
+        public void StartSectionFilter( ushort pid, Action<byte[]> callback, byte[] filterData, byte[] filterMask )
         {
             // Attach to hardware
             Open();

@@ -34,7 +34,7 @@ namespace JMS.DVB.Provider.TTBudget
 
         private long m_Bytes = 0;
 
-        public FilterToCode( ushort pid, FilterHandler callback )
+        public FilterToCode( ushort pid, Action<byte[]> callback )
             : base( pid )
         {
             // Remember

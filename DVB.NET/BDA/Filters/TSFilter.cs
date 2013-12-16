@@ -444,7 +444,7 @@ namespace JMS.DVB.DirectShow.Filters
         /// <param name="pid">Die zugehörige Datenstromkennung.</param>
         /// <param name="isSITable">Gesetzt, wenn es sich um Kontroll- und nicht Nutzdaten handelt.</param>
         /// <param name="handler">Die zu aktivierende Bearbeitungsmethode.</param>
-        public void AddFilter( ushort pid, bool isSITable, FilterHandler handler )
+        public void AddFilter( ushort pid, bool isSITable, Action<byte[]> handler )
         {
             // Forward
             m_Pin.AddFilter( pid, isSITable, handler );

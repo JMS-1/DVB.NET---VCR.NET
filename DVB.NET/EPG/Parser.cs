@@ -206,8 +206,7 @@ namespace JMS.DVB.EPG
         /// Process incoming data.
         /// </summary>
         /// <remarks>
-        /// This method is intended to be used as in <see cref="IDeviceProvider.StartSectionFilter"/>.
-        /// Finally it will forward to <see cref="OnData(byte[], int, int)"/>. But in contrast
+        /// It will forward to <see cref="OnData(byte[], int, int)"/>. But in contrast
         /// to the other variant this method will ignore any kind of <see cref="Exception"/>
         /// generated while parsing the SI data stream. This makes the filter thread stable
         /// against corrupted streams.

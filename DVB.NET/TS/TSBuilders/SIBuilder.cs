@@ -27,7 +27,7 @@ namespace JMS.DVB.TS.TSBuilders
         /// </summary>
         /// <param name="parser">Die zugehörige Analyseeinheit.</param>
         /// <param name="callback">Eine Methode, an die alle vollständig rekonstruierten Pakete gemeldet werden.</param>
-        public SIBuilder( TSParser parser, FilterHandler callback )
+        public SIBuilder( TSParser parser, Action<byte[]> callback )
             : base( parser, callback )
         {
         }

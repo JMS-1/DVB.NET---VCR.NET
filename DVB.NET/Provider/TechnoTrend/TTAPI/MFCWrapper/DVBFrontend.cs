@@ -366,14 +366,13 @@ namespace JMS.TechnoTrend.MFCWrapper
                 throw new DVBException( "Expected " + FrontendType.ToString() + " Channel" );
 
             // Create channel
-            var rData =
+            var channel =
                 new Channel_S
                 {
                     Inversion = SpectrumInversion.Auto,
                     SymbolRate = group.SymbolRate,
                     Frequency = group.Frequency,
                 };
-
 
             // Attach to the DiSEqC setting
             var selector = StandardDiSEqC.FromSourceGroup( group, location );
@@ -397,20 +396,20 @@ namespace JMS.TechnoTrend.MFCWrapper
             }
 
             // Calculated items
-            rData.b22kHz = (group.Frequency >= location.SwitchFrequency) ? 1 : 0;
-            rData.LOF = (0 == rData.b22kHz) ? location.Frequency1 : location.Frequency2;
+            channel.b22kHz = (group.Frequency >= location.SwitchFrequency) ? 1 : 0;
+            channel.LOF = (0 == channel.b22kHz) ? location.Frequency1 : location.Frequency2;
 
             // Power modes
             switch (group.Polarization)
             {
-                case Polarizations.Horizontal: rData.LNBPower = PowerMode.Horizontal; break;
-                case Polarizations.Vertical: rData.LNBPower = PowerMode.Vertical; break;
-                case Polarizations.NotDefined: rData.LNBPower = PowerMode.Off; break;
+                case Polarizations.Horizontal: channel.LNBPower = PowerMode.Horizontal; break;
+                case Polarizations.Vertical: channel.LNBPower = PowerMode.Vertical; break;
+                case Polarizations.NotDefined: channel.LNBPower = PowerMode.Off; break;
                 default: throw new ArgumentException( group.Polarization.ToString(), "Polarization" );
             }
 
             // Process
-            CheckChannel( CDVBFrontend_SetChannel( m_Class.ClassPointer, rData, false ) );
+            CheckChannel( CDVBFrontend_SetChannel( m_Class.ClassPointer, channel, false ) );
 
             // Check up for synchronisation
             Channel_S val1, val2;
@@ -439,7 +438,7 @@ namespace JMS.TechnoTrend.MFCWrapper
                 throw new DVBException( "Expected " + FrontendType.ToString() + " Channel" );
 
             // Helper
-            var rData =
+            var channel =
                 new Channel_C
                 {
                     Frequency = group.Frequency,
@@ -449,35 +448,35 @@ namespace JMS.TechnoTrend.MFCWrapper
             // Spectrum inversion
             switch (group.SpectrumInversion)
             {
-                case SpectrumInversions.On: rData.Inversion = SpectrumInversion.On; break;
-                case SpectrumInversions.Off: rData.Inversion = SpectrumInversion.Off; break;
-                case SpectrumInversions.Auto: rData.Inversion = SpectrumInversion.Auto; break;
-                default: rData.Inversion = SpectrumInversion.Auto; break;
+                case SpectrumInversions.On: channel.Inversion = SpectrumInversion.On; break;
+                case SpectrumInversions.Off: channel.Inversion = SpectrumInversion.Off; break;
+                case SpectrumInversions.Auto: channel.Inversion = SpectrumInversion.Auto; break;
+                default: channel.Inversion = SpectrumInversion.Auto; break;
             }
 
             // Modulation
             switch (group.Modulation)
             {
-                case CableModulations.QAM16: rData.Qam = Qam.Qam16; break;
-                case CableModulations.QAM32: rData.Qam = Qam.Qam32; break;
-                case CableModulations.QAM64: rData.Qam = Qam.Qam64; break;
-                case CableModulations.QAM128: rData.Qam = Qam.Qam128; break;
-                case CableModulations.QAM256: rData.Qam = Qam.Qam256; break;
-                default: rData.Qam = Qam.Qam64; break;
+                case CableModulations.QAM16: channel.Qam = Qam.Qam16; break;
+                case CableModulations.QAM32: channel.Qam = Qam.Qam32; break;
+                case CableModulations.QAM64: channel.Qam = Qam.Qam64; break;
+                case CableModulations.QAM128: channel.Qam = Qam.Qam128; break;
+                case CableModulations.QAM256: channel.Qam = Qam.Qam256; break;
+                default: channel.Qam = Qam.Qam64; break;
             }
 
             // Check supported modes
             switch (group.Bandwidth)
             {
-                case Bandwidths.Six: rData.Bandwidth = BandwidthType.Six; break;
-                case Bandwidths.Seven: rData.Bandwidth = BandwidthType.Seven; break;
-                case Bandwidths.Eight: rData.Bandwidth = BandwidthType.Eight; break;
-                case Bandwidths.NotDefined: rData.Bandwidth = BandwidthType.None; break;
-                default: rData.Bandwidth = BandwidthType.Auto; break;
+                case Bandwidths.Six: channel.Bandwidth = BandwidthType.Six; break;
+                case Bandwidths.Seven: channel.Bandwidth = BandwidthType.Seven; break;
+                case Bandwidths.Eight: channel.Bandwidth = BandwidthType.Eight; break;
+                case Bandwidths.NotDefined: channel.Bandwidth = BandwidthType.None; break;
+                default: channel.Bandwidth = BandwidthType.Auto; break;
             }
 
             // Process
-            CheckChannel( CDVBFrontend_SetChannel( m_Class.ClassPointer, rData, false ) );
+            CheckChannel( CDVBFrontend_SetChannel( m_Class.ClassPointer, channel, false ) );
 
             // Check up for synchronisation
             Channel_C val1, val2;
@@ -506,7 +505,7 @@ namespace JMS.TechnoTrend.MFCWrapper
                 throw new DVBException( "Expected " + FrontendType.ToString() + " Channel" );
 
             // Helper
-            var rData =
+            var channel =
                 new Channel_T
                 {
                     Frequency = group.Frequency,
@@ -517,15 +516,15 @@ namespace JMS.TechnoTrend.MFCWrapper
             // Check supported modes
             switch (group.Bandwidth)
             {
-                case Bandwidths.Six: rData.Bandwidth = BandwidthType.Six; break;
-                case Bandwidths.Seven: rData.Bandwidth = BandwidthType.Seven; break;
-                case Bandwidths.Eight: rData.Bandwidth = BandwidthType.Eight; break;
-                case Bandwidths.NotDefined: rData.Bandwidth = BandwidthType.None; break;
-                default: rData.Bandwidth = BandwidthType.Auto; break;
+                case Bandwidths.Six: channel.Bandwidth = BandwidthType.Six; break;
+                case Bandwidths.Seven: channel.Bandwidth = BandwidthType.Seven; break;
+                case Bandwidths.Eight: channel.Bandwidth = BandwidthType.Eight; break;
+                case Bandwidths.NotDefined: channel.Bandwidth = BandwidthType.None; break;
+                default: channel.Bandwidth = BandwidthType.Auto; break;
             }
 
             // Process
-            CheckChannel( CDVBFrontend_SetChannel( m_Class.ClassPointer, rData, false ) );
+            CheckChannel( CDVBFrontend_SetChannel( m_Class.ClassPointer, channel, false ) );
 
             // Check up for synchronisation
             Channel_T rVal1, rVal2;

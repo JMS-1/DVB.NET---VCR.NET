@@ -19,7 +19,7 @@ namespace JMS.DVB.DeviceAccess.BDAElements
         /// <summary>
         /// Alle aktiven Verbraucher.
         /// </summary>
-        private Dictionary<ushort, FilterHandler> m_Handlers = new Dictionary<ushort, FilterHandler>();
+        private Dictionary<ushort, Action<byte[]>> m_Handlers = new Dictionary<ushort, Action<byte[]>>();
 
         /// <summary>
         /// Alle Verbraucher, die nicht mit Nutz- sondern mit Kontrolldaten arbeiten.
@@ -171,7 +171,7 @@ namespace JMS.DVB.DeviceAccess.BDAElements
         /// <param name="pid">Die Datenstromkennung.</param>
         /// <param name="isSITable">Gesetzt, wenn nicht Nutz- sondern Steuerdaten verarbeitet werden sollen.</param>
         /// <param name="handler">Der Verbraucher.</param>
-        public void AddFilter( ushort pid, bool isSITable, FilterHandler handler )
+        public void AddFilter( ushort pid, bool isSITable, Action<byte[]> handler )
         {
             // Synchronized add
             lock (m_Handlers)
@@ -235,7 +235,7 @@ namespace JMS.DVB.DeviceAccess.BDAElements
         public void StartFilter( ushort pid )
         {
             // Synchronized load
-            FilterHandler handler;
+            Action<byte[]> handler;
             bool isSITable;
             lock (m_Handlers)
             {

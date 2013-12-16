@@ -6,136 +6,134 @@ using System.Collections.Generic;
 
 namespace JMS.TechnoTrend
 {
-	internal class FilterQueue: IDisposable
-	{
-		private AutoResetEvent m_Request = new AutoResetEvent(false);
-		private List<byte[]> m_Queue = new List<byte[]>();
-		private object m_Lock = new object();
-		private Thread m_Worker = null;
-		private long m_QueueLimit = 0;
-		private long m_QueueSize = 0;
+    internal class FilterQueue : IDisposable
+    {
+        private AutoResetEvent m_Request = new AutoResetEvent( false );
+        private List<byte[]> m_Queue = new List<byte[]>();
+        private object m_Lock = new object();
+        private Thread m_Worker = null;
+        private long m_QueueLimit = 0;
+        private long m_QueueSize = 0;
 
-		public FilterHandler Handler;
+        public Action<byte[]> Handler;
 
-		public FilterQueue(FilterHandler callback)
-		{
-			// Remember
-			Handler = callback;
+        public FilterQueue( Action<byte[]> callback )
+        {
+            // Remember
+            Handler = callback;
 
-			// Create thread
-			m_Worker = new Thread(new ThreadStart(Worker));
+            // Create thread
+            m_Worker = new Thread( new ThreadStart( Worker ) );
 
-			// Start
-			m_Worker.Start();
-		}
+            // Start
+            m_Worker.Start();
+        }
 
-		private void Worker()
-		{
-			// Forever
-			for (; ; )
-			{
-				// Await request
-				m_Request.WaitOne();
+        private void Worker()
+        {
+            // Forever
+            for (; ; )
+            {
+                // Await request
+                m_Request.WaitOne();
 
-				// Empty queue
-				for (; ; )
-				{
-					// To be processed
-					List<byte[]> process;
+                // Empty queue
+                for (; ; )
+                {
+                    // To be processed
+                    List<byte[]> process;
 
-					// Synchronize
-					lock (m_Lock)
-					{
-						// Should finish
-						if (null == m_Queue) return;
+                    // Synchronize
+                    lock (m_Lock)
+                    {
+                        // Should finish
+                        if (null == m_Queue) return;
 
-						// Wait for next event
-						if (m_Queue.Count < 1) break;
+                        // Wait for next event
+                        if (m_Queue.Count < 1) break;
 
-						// Load
-						process = m_Queue;
+                        // Load
+                        process = m_Queue;
 
-						// Reset
-						m_Queue = new List<byte[]>();
-						m_QueueSize = 0;
-					}
+                        // Reset
+                        m_Queue = new List<byte[]>();
+                        m_QueueSize = 0;
+                    }
 
-					// Load handler
-					FilterHandler handler = Handler;
+                    // Load handler
+                    var handler = Handler;
+                    if (null != handler)
+                        foreach (byte[] data in process)
+                            try
+                            {
+                                // Process
+                                handler( data );
+                            }
+                            catch
+                            {
+                                // Ignore all
+                            }
+                }
+            }
+        }
 
-					// Process
-					if (null != handler)
-						foreach (byte[] data in process)
-							try
-							{
-								// Process
-								handler(data);
-							}
-							catch
-							{
-								// Ignore all
-							}
-				}
-			}
-		}
+        public void Clear()
+        {
+            // Synchronize
+            lock (m_Lock)
+                if (null != m_Queue)
+                {
+                    // Reset
+                    m_Queue = new List<byte[]>();
+                    m_QueueSize = 0;
+                }
+        }
 
-		public void Clear()
-		{
-			// Synchronize
-			lock (m_Lock)
-				if (null != m_Queue)
-				{
-					// Reset
-					m_Queue = new List<byte[]>();
-					m_QueueSize = 0;
-				}
-		}
+        public void Enqueue( byte[] data )
+        {
+            // Validate
+            if (null == data) throw new ArgumentNullException( "data" );
 
-		public void Enqueue(byte[] data)
-		{
-			// Validate
-			if (null == data) throw new ArgumentNullException("data");
+            // Process synchronized
+            lock (m_Lock)
+                if (null != m_Queue)
+                {
+                    // Enter
+                    m_Queue.Add( data );
 
-			// Process synchronized
-			lock (m_Lock)
-				if (null != m_Queue)
-				{
-					// Enter
-					m_Queue.Add(data);
+                    // Count
+                    m_QueueSize += data.Length;
 
-					// Count
-					m_QueueSize += data.Length;
+                    // Wake up
+                    if (m_QueueSize >= m_QueueLimit) m_Request.Set();
+                }
+        }
 
-					// Wake up
-					if (m_QueueSize >= m_QueueLimit) m_Request.Set();
-				}
-		}
+        #region IDisposable Members
 
-		#region IDisposable Members
+        public void Dispose()
+        {
+            // Check mode
+            if (null != m_Worker)
+            {
+                // Report finish
+                lock (m_Lock)
+                {
+                    // Destroy queue
+                    m_Queue = null;
 
-		public void Dispose()
-		{
-			// Check mode
-			if (null != m_Worker)
-			{
-				// Report finish
-				lock (m_Lock)
-				{
-					// Destroy queue
-					m_Queue = null;
+                    // Wakeup call
+                    m_Request.Set();
+                }
 
-					// Wakeup call
-					m_Request.Set();
-				}
+                // Wait for thread to finish
+                m_Worker.Join();
 
-				// Wait for thread to finish
-				m_Worker.Join();
+                // Back to CLR
+                m_Worker = null;
+            }
+        }
 
-				// Back to CLR
-				m_Worker = null;
-			}
-		}
-
-		#endregion
-	}
+        #endregion
+    }
 }
