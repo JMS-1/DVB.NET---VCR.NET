@@ -32,7 +32,7 @@ namespace JMS.DVB.Provider.Legacy
             InitializeComponent();
 
             // Fill in
-            foreach (DVB.DeviceInformation device in ProfileTools.LegacyDevices)
+            foreach (var device in DeviceInformation.LegacyDevices)
             {
                 // Remember
                 selDevice.Items.Add( device );
@@ -77,7 +77,7 @@ namespace JMS.DVB.Provider.Legacy
         void IHardwareEditor.UpdateProfile()
         {
             // Get the device selected
-            DVB.DeviceInformation device = CurrentDevice;
+            var device = CurrentDevice;
 
             // Wipe out all
             Profile.DeviceAspects.Clear();
@@ -129,12 +129,12 @@ namespace JMS.DVB.Provider.Legacy
         /// <summary>
         /// Liest oder setzt die aktuell ausgewählte Implementierung.
         /// </summary>
-        private DVB.DeviceInformation CurrentDevice
+        private DeviceInformation CurrentDevice
         {
             get
             {
                 // Report
-                return (DVB.DeviceInformation) selDevice.SelectedItem;
+                return (DeviceInformation) selDevice.SelectedItem;
             }
             set
             {
@@ -284,7 +284,7 @@ namespace JMS.DVB.Provider.Legacy
 
             // Find the device
             if (null != type)
-                foreach (DVB.DeviceInformation device in selDevice.Items)
+                foreach (DeviceInformation device in selDevice.Items)
                     if (Equals( type.Value, device.DriverType ))
                     {
                         // Select

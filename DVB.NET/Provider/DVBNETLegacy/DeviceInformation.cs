@@ -5,13 +5,18 @@ using System.Linq;
 using System.Xml;
 
 
-namespace JMS.DVB
+namespace JMS.DVB.Provider.Legacy
 {
     /// <summary>
     /// Beschreibt die Parameter einer DVB.NET Hardwareabstraktion.
     /// </summary>
-    public class DeviceInformation
+    internal class DeviceInformation
     {
+        /// <summary>
+        /// Enthält die Beschreibung zu allen bekannten Geräten der alten DVB.NET Version.
+        /// </summary>
+        public static readonly DeviceInformation[] LegacyDevices = DeviceInformation.Load();
+
         /// <summary>
         /// Das Wurzelelement der Konfiguration.
         /// </summary>
@@ -21,7 +26,7 @@ namespace JMS.DVB
         /// Erzeugt eine neue Beschreibung.
         /// </summary>
         /// <param name="provider">Das Wurzelelement der Konfiguration.</param>
-        internal DeviceInformation( XmlElement provider )
+        public DeviceInformation( XmlElement provider )
         {
             // Load
             Root = provider;

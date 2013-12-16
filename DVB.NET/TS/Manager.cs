@@ -65,7 +65,7 @@ namespace JMS.DVB.TS
         /// <summary>
         /// Set the service identification for EPG injection.
         /// </summary>
-        public Identifier EPGMapping = null;
+        public SourceIdentifier EPGMapping = null;
 
         /// <summary>
         /// Just in case we send EPG data into the stream.
@@ -1507,7 +1507,7 @@ namespace JMS.DVB.TS
                 return;
 
             // Load the current mapping
-            Identifier mapping = EPGMapping;
+            var mapping = EPGMapping;
 
             // Not enabled
             if (null == mapping)
@@ -1518,11 +1518,11 @@ namespace JMS.DVB.TS
                 return;
 
             // Compare - by service first because normally the rest is equal
-            if (mapping.ServiceIdentifier != eit.ServiceIdentifier)
+            if (mapping.Service != eit.ServiceIdentifier)
                 return;
-            if (mapping.NetworkIdentifier != eit.OriginalNetworkIdentifier)
+            if (mapping.Network != eit.OriginalNetworkIdentifier)
                 return;
-            if (mapping.TransportStreamIdentifier != eit.TransportStreamIdentifier)
+            if (mapping.TransportStream != eit.TransportStreamIdentifier)
                 return;
 
             // Update the table
@@ -1551,7 +1551,7 @@ namespace JMS.DVB.TS
         public void SetEPGMapping( ushort network, ushort transportStream, ushort service )
         {
             // Forward
-            EPGMapping = new Identifier( network, transportStream, service );
+            EPGMapping = new SourceIdentifier( network, transportStream, service );
         }
 
         #region IDisposable Members

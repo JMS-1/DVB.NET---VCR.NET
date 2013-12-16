@@ -42,9 +42,9 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JMS.DVB, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <Aliases>global</Aliases>
-      <Private>False</Private>
+    <Reference Include="JMS.DVB.Common, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Assemblies\JMS.DVB.Common.dll</HintPath>
     </Reference>
     <Reference Include="JMS.DVB.DeviceAccess, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
       <HintPath>..\..\Assemblies\RunTime\JMS.DVB.DeviceAccess.dll</HintPath>
@@ -87,6 +87,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeviceInformation.cs" />
     <Compile Include="DVBTLegacy.cs" />
     <Compile Include="DVBCLegacy.cs" />
     <Compile Include="LegacyEditor.cs">
@@ -98,7 +99,6 @@
     <Compile Include="LegacyHardware.cs" />
     <Compile Include="DVBSLegacy.cs" />
     <Compile Include="ParameterItem.cs" />
-    <Compile Include="ProfileTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -107,6 +107,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LegacyEditor.resx">
       <DependentUpon>LegacyEditor.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DVBNETProviders.xml">
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

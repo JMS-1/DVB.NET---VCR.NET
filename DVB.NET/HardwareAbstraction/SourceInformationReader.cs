@@ -1,12 +1,7 @@
-﻿extern alias oldVersion;
-
-using System;
-using JMS.DVB.SI;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Collections.Generic;
+using JMS.DVB.SI;
 
-using legacy = oldVersion::JMS.DVB;
 
 namespace JMS.DVB
 {

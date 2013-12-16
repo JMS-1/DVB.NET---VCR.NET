@@ -144,16 +144,6 @@
       <RefTargetDir>
       </RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\..\DVB\JMS.DVB.csproj">
-      <Name>JMS.DVB</Name>
-      <Project>{5c2b8408-6616-444c-a808-a79c9a356111}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>
-      </DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
-      <RefTargetDir>
-      </RefTargetDir>
-    </ProjectReference>
     <ProjectReference Include="..\..\EPG\JMS.DVB.EPG.csproj">
       <Name>JMS.DVB.EPG</Name>
       <Project>{90d05fcc-70f9-4423-a79f-b8d31bfbc228}</Project>

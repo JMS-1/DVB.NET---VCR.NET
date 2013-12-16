@@ -46,10 +46,6 @@
     </NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JMS.DVB, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <Aliases>oldVersion</Aliases>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="JMS.DVB.EPG, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
       <Aliases>oldVersion</Aliases>
       <Private>False</Private>

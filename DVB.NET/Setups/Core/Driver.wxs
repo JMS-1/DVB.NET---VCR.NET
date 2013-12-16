@@ -14,7 +14,7 @@
     </Component>
 
     <Component Id="Provider" Directory="INSTALLFOLDER" Guid="0a0f85db-08fe-4447-92d0-047d6fb2887d">
-      <File Source="$(var.JMS.DVB.ProjectDir)DVBNETProviders.xml" />
+      <File Source="$(var.JMS.DVB.Provider.Legacy.ProjectDir)DVBNETProviders.xml" />
     </Component>
 
     <Component Id="Scan" Directory="Scan" Guid="dc68f803-1e93-4d4d-91fa-1b3d27d919ad">

@@ -107,7 +107,7 @@ namespace JMS.TechnoTrend.MFCWrapper
         /// Handler prototype to receive incoming data.
         /// </summary>
         /// <remarks>
-        /// In contrast to the <see cref="FilterHandler"/> this handler will receive the incoming
+        /// Tthis handler will receive the incoming
         /// data in the format of the TT API/SDK which may avoid extra copy operations and 
         /// therefore be faster.
         /// </remarks>
