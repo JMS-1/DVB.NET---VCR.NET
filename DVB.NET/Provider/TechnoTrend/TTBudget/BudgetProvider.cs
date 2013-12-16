@@ -10,7 +10,7 @@ using JMS.TechnoTrend;
 
 namespace JMS.DVB.Provider.TTBudget
 {
-    public class BudgetProvider : IDeviceProvider
+    public class BudgetProvider : ILegacyDevice
     {
         [DllImport( "ttlcdacc.dll", EntryPoint = "?InitDvbApiDll@@YAXXZ", ExactSpelling = true )]
         [SuppressUnmanagedCodeSecurity]

@@ -15,7 +15,7 @@ namespace JMS.DVB.Provider.TTPremium
     /// line hardware - based on the TTDVBACC.DLL API/SDK made available
     /// for .NET applications through the DVB.NET library.
     /// </summary>
-    public class TTDeviceProvider : IDeviceProvider
+    public class TTDeviceProvider : ILegacyDevice
     {
         /// <summary>
         /// Set as soon as the TechnoTrend API/SDK 2.19b is initialized.

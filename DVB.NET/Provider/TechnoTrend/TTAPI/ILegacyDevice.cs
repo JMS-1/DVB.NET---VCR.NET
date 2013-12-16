@@ -8,7 +8,7 @@ namespace JMS.TechnoTrend
     /// <summary>
     /// Abstraction of the DVB hardware access.
     /// </summary>
-    public interface IDeviceProvider : IDisposable
+    public interface ILegacyDevice : IDisposable
     {
         /// <summary>
         /// Stop all PID filters.
