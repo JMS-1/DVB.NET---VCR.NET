@@ -28,8 +28,7 @@ namespace JMS.TechnoTrend
         /// </summary>
         /// <param name="videoPID">The video signal to show.</param>
         /// <param name="audioPID">The audio signal to activate.</param>
-        /// <param name="ac3PID">The Dolby Digital (AC3) audio signal to activate.</param>
-        void SetVideoAudio( ushort videoPID, ushort audioPID, ushort ac3PID );
+        void SetVideoAudio( ushort videoPID, ushort audioPID );
 
         /// <summary>
         /// Start a section filter.

@@ -394,14 +394,7 @@ namespace JMS.TechnoTrend.MFCWrapper
         /// <summary>
         /// Load the capabilities using a direct C++ member invocation.
         /// </summary>
-        public AVCapabilities Capabilities
-        {
-            get
-            {
-                // Load it
-                return CDVBAVControl_GetCapabilities( m_Class.ClassPointer );
-            }
-        }
+        public AVCapabilities Capabilities { get { return CDVBAVControl_GetCapabilities( m_Class.ClassPointer ); } }
 
         /// <summary>
         /// Sets the current video output mode.
@@ -409,14 +402,7 @@ namespace JMS.TechnoTrend.MFCWrapper
         /// <exception cref="DVBException">
         /// Thrown when the C++ method invocation reports some <see cref="DVBError"/>.
         /// </exception>
-        public VideoOutput VideoOutput
-        {
-            set
-            {
-                // Execute
-                DVBException.ThrowOnError( CDVBAVControl_SetVideoOutputMode( m_Class.ClassPointer, value ), "Can not set Video Output Mode to " + value.ToString() );
-            }
-        }
+        public VideoOutput VideoOutput { set { DVBException.ThrowOnError( CDVBAVControl_SetVideoOutputMode( m_Class.ClassPointer, value ), "Can not set Video Output Mode to " + value.ToString() ); } }
 
         /// <summary>
         /// Set all the master PIDs at once. Future versions of this class may allow
@@ -438,35 +424,7 @@ namespace JMS.TechnoTrend.MFCWrapper
         /// Update the audio PID only. This is normally used to choose another 
         /// language on an active program.
         /// </summary>
-        public ushort AudioPID
-        {
-            set
-            {
-                // Execute
-                DVBException.ThrowOnError( CDVBAVControl_SetAudioPID( m_Class.ClassPointer, value ), "Unable to change audio PID" );
-            }
-        }
-
-        /// <summary>
-        /// Update the Dolby Digital/AC3 audio PID only. 
-        /// </summary>
-        /// <remarks>
-        /// Currently disabled.
-        /// </remarks>
-        public ushort AC3PID
-        {
-            set
-            {
-                // Check availabilty of AC3
-                //if (AVCapabilities.HardWareAC3 != (AVCapabilities.HardWareAC3 & Capabilities)) return;
-
-                // Disable AC3PID
-                //if (0 == value) value = 0xffff;
-
-                // Planed for a future version
-                //DVBException.ThrowOnError(CDVBAVControl_SetAC3PID(m_Class.ClassPointer, value), "Unable to change Dolby Digital (AC3) PID");
-            }
-        }
+        public ushort AudioPID { set { DVBException.ThrowOnError( CDVBAVControl_SetAudioPID( m_Class.ClassPointer, value ), "Unable to change audio PID" ); } }
 
         /// <summary>
         /// Load the current video decoder status.

@@ -172,23 +172,16 @@ namespace JMS.DVB.Provider.TTPremium
         /// </summary>
         /// <param name="videoPID">The video stream identifier (PID).</param>
         /// <param name="audioPID">The audio stream identifier (PID).</param>
-        /// <param name="ac3PID">The Dolby Digital (AC3) audio signal to activate.</param>
-        public void SetVideoAudio( ushort videoPID, ushort audioPID, ushort ac3PID )
+        public void SetVideoAudio( ushort videoPID, ushort audioPID )
         {
             // Report
-            if (MethodLog) LogMessage( "SetAudioVideo {0} {1} {2}", videoPID, audioPID, ac3PID );
+            if (MethodLog) LogMessage( "SetAudioVideo {0} {1}", videoPID, audioPID );
 
             // Must register
             Register();
 
-            // Disable AC3
-            if (0 == ac3PID) Context.TheContext.AC3PID = ac3PID;
-
             // Forward
             Context.TheContext.SetPIDs( audioPID, videoPID );
-
-            // Enable AC3
-            if (0 != ac3PID) Context.TheContext.AC3PID = ac3PID;
         }
 
         /// <summary>

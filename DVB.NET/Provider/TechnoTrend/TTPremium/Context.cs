@@ -124,9 +124,6 @@ namespace JMS.DVB.Provider.TTPremium
             if (m_AudioVideo != null)
                 using (m_AudioVideo)
                 {
-                    // Cancel AC3
-                    AC3PID = 0;
-
                     // Shut up
                     SetPIDs( 0, 0 );
 
@@ -231,8 +228,6 @@ namespace JMS.DVB.Provider.TTPremium
             {
                 // Synchronize
                 lock (this)
-                {
-                    // Create once
                     if (null == m_AudioVideo)
                     {
                         // Attach
@@ -241,7 +236,6 @@ namespace JMS.DVB.Provider.TTPremium
                         // Starup
                         m_AudioVideo.Initialize();
                     }
-                }
 
                 // Report
                 return m_AudioVideo;
@@ -381,9 +375,6 @@ namespace JMS.DVB.Provider.TTPremium
 
             // Switch off picture and MP2
             SetPIDs( 0, 0 );
-
-            // Switch off dolby
-            AC3PID = 0;
         }
 
         /// <summary>
@@ -442,18 +433,6 @@ namespace JMS.DVB.Provider.TTPremium
         }
 
         /// <summary>
-        /// Forwarded to <see cref="DVBAVControl.AC3PID"/> on <see cref="AudioVideo"/>.
-        /// </summary>
-        public ushort AC3PID
-        {
-            set
-            {
-                // Forward
-                AudioVideo.AC3PID = value;
-            }
-        }
-
-        /// <summary>
         /// Add the client reference to the <see cref="m_Users"/>. This method
         /// is synchronized.
         /// </summary>
@@ -505,14 +484,7 @@ namespace JMS.DVB.Provider.TTPremium
         /// Report <see cref="DVBFrontend.Filter"/> from our
         /// <see cref="Frontend"/>.
         /// </summary>
-        public DVBFrontend._Filters RawFilter
-        {
-            get
-            {
-                // Forward
-                return Frontend.Filter;
-            }
-        }
+        public DVBFrontend._Filters RawFilter { get { return Frontend.Filter; } }
 
         /// <summary>
         /// Simply call <see cref="DVBFrontend.StopFilters"/> on our <see cref="Frontend"/>.

@@ -159,12 +159,11 @@ namespace JMS.DVB.Provider.TTBudget
             m_Filters[pid] = new FilterToCode( pid, callback );
         }
 
-        public void SetVideoAudio( ushort videoPID, ushort audioPID, ushort ac3PID )
+        public void SetVideoAudio( ushort videoPID, ushort audioPID )
         {
             // Validate
             if (0 != videoPID) throw new ArgumentException( videoPID.ToString(), "videoPID" );
             if (0 != audioPID) throw new ArgumentException( audioPID.ToString(), "audioPID" );
-            if (0 != ac3PID) throw new ArgumentException( ac3PID.ToString(), "ac3PID" );
 
             // Startup API
             Open();

@@ -63,7 +63,7 @@ namespace JMS.DVB.Provider.Legacy
             LegacyDevice = (ILegacyDevice) Activator.CreateInstance( Type.GetType( aspect.Value, true ), settings );
 
             // Start it
-            LegacyDevice.SetVideoAudio( 0, 0, 0 );
+            LegacyDevice.SetVideoAudio( 0, 0 );
         }
 
         /// <summary>
