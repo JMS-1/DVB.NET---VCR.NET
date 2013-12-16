@@ -87,7 +87,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DeviceInformation.cs" />
+    <Compile Include="LegacyDeviceInformation.cs" />
     <Compile Include="DVBTLegacy.cs" />
     <Compile Include="DVBCLegacy.cs" />
     <Compile Include="LegacyEditor.cs">
