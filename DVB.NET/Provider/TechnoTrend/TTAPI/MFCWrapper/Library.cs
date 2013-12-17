@@ -7,7 +7,7 @@ namespace JMS.TechnoTrend.MFCWrapper
     /// <summary>
     /// This class is used to initialize the TTAPI itself.
     /// </summary>
-    public sealed class Library
+    public static class Library
     {
         /// <summary>
         /// Global initialisation method.
@@ -15,13 +15,6 @@ namespace JMS.TechnoTrend.MFCWrapper
         [DllImport("ttdvbacc.dll", EntryPoint = "?InitDvbApiDll@@YAXXZ", ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
         private static extern void _Initialize();
-
-        /// <summary>
-        /// Forbid creating instances.
-        /// </summary>
-        private Library()
-        {
-        }
 
         /// <summary>
         /// Initialize the TTAPI DLL - must be called only once per process.

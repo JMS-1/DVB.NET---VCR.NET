@@ -1,32 +1,60 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace JMS.TechnoTrend
 {
-	public class DVBSignalStatus
-	{
-		public readonly bool Locked;
+    /// <summary>
+    /// Beschreibt ein Empfangssignal.
+    /// </summary>
+    public class DVBSignalStatus
+    {
+        /// <summary>
+        /// Gesetzt, wenn ein Signal bestätigt wurde.
+        /// </summary>
+        public readonly bool Locked;
 
-		public readonly double Level;
+        /// <summary>
+        /// Die Signalstärke.
+        /// </summary>
+        public readonly double Level;
 
-		public readonly double Quality;
+        /// <summary>
+        /// Die Qualität des Signals.
+        /// </summary>
+        public readonly double Quality;
 
-		public readonly double ErrorRate;
+        /// <summary>
+        /// Die Fehlerrate.
+        /// </summary>
+        public readonly double ErrorRate;
 
-		public readonly double Strength;
+        /// <summary>
+        /// Die Stärke des Signals.
+        /// </summary>
+        public readonly double Strength;
 
-		public readonly double SignalNoise;
+        /// <summary>
+        /// Das S/N Verhältnis des Signals.
+        /// </summary>
+        public readonly double SignalNoise;
 
-		public DVBSignalStatus(bool locked, double level, double quality, double BER, double strength, double rawQuality)
-		{
-			// Remember
-			SignalNoise = rawQuality;
-			Strength = strength;
-			Quality = quality;
-			ErrorRate = BER;
-			Locked = locked;
-			Level = level;
-		}
-	}
+        /// <summary>
+        /// Erzeugt eine neue Beschreibung.
+        /// </summary>
+        /// <param name="locked">Gesetzt, wenn ein Signal bestätigt wurde.</param>
+        /// <param name="level">Die Signalstärke.</param>
+        /// <param name="quality">Die Qualität des Signals.</param>
+        /// <param name="BER">Die Fehlerrate.</param>
+        /// <param name="strength">Die Stärke des Signals.</param>
+        /// <param name="rawQuality"></param>
+        public DVBSignalStatus( bool locked, double level, double quality, double BER, double strength, double rawQuality )
+        {
+            // Remember
+            SignalNoise = rawQuality;
+            Strength = strength;
+            Quality = quality;
+            ErrorRate = BER;
+            Locked = locked;
+            Level = level;
+        }
+    }
 }

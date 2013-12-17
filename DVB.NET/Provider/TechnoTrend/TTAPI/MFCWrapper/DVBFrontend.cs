@@ -314,6 +314,9 @@ namespace JMS.TechnoTrend.MFCWrapper
             }
         }
 
+        /// <summary>
+        /// Beschreibt das aktuelle Signal.
+        /// </summary>
         public DVBSignalStatus SignalStatus
         {
             get

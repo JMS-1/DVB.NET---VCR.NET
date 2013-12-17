@@ -133,19 +133,15 @@ namespace JMS.TechnoTrend.MFCWrapper
         public VideoOutput VideoOutput { set { DVBException.ThrowOnError( CDVBAVControl_SetVideoOutputMode( m_Class.ClassPointer, value ), "Can not set Video Output Mode to " + value.ToString() ); } }
 
         /// <summary>
-        /// Set all the master PIDs at once. Future versions of this class may allow
-        /// to update individual PIDs as in <see cref="AudioPID"/>.
+        /// Legt die Nutzdatenströme fest.
         /// </summary>
-        /// <param name="uAudio">Audio PID.</param>
-        /// <param name="uVideo">Video PID.</param>
-        /// <param name="uPCR">[Don't know what this is]</param>
-        /// <exception cref="DVBException">
-        /// Thrown when the C++ method invocation reports some <see cref="DVBError"/>.
-        /// </exception>
-        public void SetPIDs( ushort uAudio, ushort uVideo, ushort uPCR )
+        /// <param name="audio">Der Datenstrom für die Stereo-Tonspur.</param>
+        /// <param name="video">Das Datenstrom des Bildsignals.</param>
+        /// <param name="clock">Der Datenstrom, der den Zeitgeber mit sich führt.</param>
+        public void SetPIDs( ushort audio, ushort video, ushort clock )
         {
             // Execute
-            DVBException.ThrowOnError( CDVBAVControl_SetPIDs( m_Class.ClassPointer, uAudio, uVideo, uPCR ), "Unable to set all PIDs at once" );
+            DVBException.ThrowOnError( CDVBAVControl_SetPIDs( m_Class.ClassPointer, audio, video, clock ), "Unable to set all PIDs at once" );
         }
 
         /// <summary>

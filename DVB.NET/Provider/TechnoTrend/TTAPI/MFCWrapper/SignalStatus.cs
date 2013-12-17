@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace JMS.TechnoTrend.MFCWrapper
 {
     /// <summary>
-    /// 
+    /// Die Beschreibung der Signalstärke, so wie die TechnoTrend Schnittstellen sie anbieten.
     /// </summary>
     [StructLayout( LayoutKind.Sequential )]
     public struct SignalStatus
@@ -50,6 +50,9 @@ namespace JMS.TechnoTrend.MFCWrapper
         /// </summary>
         public double Level { get { return AGC / 255.0; } }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public double Quality { get { return SNR100 / 100.0; } }
 
         /// <summary>
