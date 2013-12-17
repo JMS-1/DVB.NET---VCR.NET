@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using JMS.TechnoTrend;
 using JMS.TechnoTrend.MFCWrapper;
@@ -20,7 +21,7 @@ namespace JMS.DVB.Provider.TTPremium
         /// <summary>
         /// All boot directories temporarily created.
         /// </summary>
-        static private ArrayList m_Directories = new ArrayList();
+        static private List<DirectoryInfo> m_Directories = new List<DirectoryInfo>();
 
         /// <summary>
         /// The device to use.
@@ -92,9 +93,7 @@ namespace JMS.DVB.Provider.TTPremium
             {
                 // Synchronize
                 lock (typeof( Context ))
-                {
-                    // Create once
-                    if (null == m_TheContext)
+                    if (m_TheContext == null)
                     {
                         // Initialize library
                         Library.Initialize();
@@ -102,7 +101,6 @@ namespace JMS.DVB.Provider.TTPremium
                         // Create singleton
                         m_TheContext = new Context();
                     }
-                }
 
                 // Report
                 return m_TheContext;
@@ -142,7 +140,8 @@ namespace JMS.DVB.Provider.TTPremium
             m_AudioVideo = null;
 
             // Check for close
-            if (m_MustClose) CloseDevice();
+            if (m_MustClose)
+                CloseDevice();
         }
 
         /// <summary>
@@ -157,10 +156,8 @@ namespace JMS.DVB.Provider.TTPremium
             {
                 // Synchronizes
                 lock (this)
-                {
-                    // Create once
-                    if (null == m_Board) m_Board = new DVBBoardControl();
-                }
+                    if (m_Board == null)
+                        m_Board = new DVBBoardControl();
 
                 // Report
                 return m_Board;
@@ -176,7 +173,7 @@ namespace JMS.DVB.Provider.TTPremium
             {
                 // Synchronize
                 lock (this)
-                    if (null == m_CI)
+                    if (m_CI == null)
                         m_CI = new DVBCommonInterface();
 
                 // Report
@@ -197,9 +194,7 @@ namespace JMS.DVB.Provider.TTPremium
             {
                 // Synchronize
                 lock (this)
-                {
-                    // Create once
-                    if (null == m_Frontend)
+                    if (m_Frontend == null)
                     {
                         // Attach
                         m_Frontend = new DVBFrontend();
@@ -207,7 +202,6 @@ namespace JMS.DVB.Provider.TTPremium
                         // Startup
                         m_Frontend.Initialize();
                     }
-                }
 
                 // Report
                 return m_Frontend;
@@ -228,7 +222,7 @@ namespace JMS.DVB.Provider.TTPremium
             {
                 // Synchronize
                 lock (this)
-                    if (null == m_AudioVideo)
+                    if (m_AudioVideo == null)
                     {
                         // Attach
                         m_AudioVideo = new DVBAVControl();
@@ -251,7 +245,8 @@ namespace JMS.DVB.Provider.TTPremium
         public void CloseDevice()
         {
             // Check it
-            if (!m_MustClose) throw new DVBException( "No Device open" );
+            if (!m_MustClose)
+                throw new DVBException( "No Device open" );
 
             // Once
             m_MustClose = false;
@@ -260,7 +255,7 @@ namespace JMS.DVB.Provider.TTPremium
             DVBCommon.CloseDevice();
 
             // Time to cleanup directories
-            foreach (DirectoryInfo dir in m_Directories)
+            foreach (var dir in m_Directories)
                 if (dir.Exists)
                     dir.Delete( true );
 
@@ -280,7 +275,8 @@ namespace JMS.DVB.Provider.TTPremium
         public void OpenDevice( int lIndex, string sApp, bool bNoNet )
         {
             // Already did it
-            if (m_MustClose) throw new DVBException( "Must close Device first" );
+            if (m_MustClose)
+                throw new DVBException( "Must close Device first" );
 
             // Forward
             DVBCommon.OpenDevice( lIndex, sApp, bNoNet );
@@ -313,26 +309,7 @@ namespace JMS.DVB.Provider.TTPremium
         /// <summary>
         /// Forwards to <see cref="DVBCommon.GetNumberOfDevices"/>.
         /// </summary>
-        public int NumberOfDevices
-        {
-            get
-            {
-                // Forward
-                return DVBCommon.GetNumberOfDevices();
-            }
-        }
-
-        /// <summary>
-        /// Forwards to <see cref="DVBBoardControl.Version"/> on <see cref="Board"/>.
-        /// </summary>
-        public BoardVersion Version
-        {
-            get
-            {
-                // Forward
-                return Board.Version;
-            }
-        }
+        public int NumberOfDevices { get { return DVBCommon.GetNumberOfDevices(); } }
 
         /// <summary>
         /// Forwards to <see cref="DVBBoardControl.BootARM(out DirectoryInfo)"/> on <see cref="Board"/>.
@@ -340,13 +317,14 @@ namespace JMS.DVB.Provider.TTPremium
         public void BootARM()
         {
             // New directory to cleanup later on
-            DirectoryInfo bootDir = null;
+            DirectoryInfo bootDir;
 
             // Load code
             Board.BootARM( out bootDir );
 
             // Remember
-            if (null != bootDir) m_Directories.Add( bootDir );
+            if (bootDir != null)
+                m_Directories.Add( bootDir );
         }
 
         /// <summary>
@@ -362,16 +340,17 @@ namespace JMS.DVB.Provider.TTPremium
             BootARM();
 
             // Time to set up frontend - will automatically initialize
-            DVBFrontend pLoad = Frontend;
+            var pLoad = Frontend;
 
             // Run with DMA on
             Board.DataDMA = true;
 
             // On all
-            AudioVideo.VideoOutput = JMS.TechnoTrend.VideoOutput.CVBS_RGB;
+            AudioVideo.VideoOutput = VideoOutput.CVBS_RGB;
 
             // Choose digital source
-            if (AVCapabilities.Analog == (AVCapabilities.Analog & AudioVideo.Capabilities)) AudioVideo.ADSwitch = DeviceInput.DVB;
+            if ((AVCapabilities.Analog & AudioVideo.Capabilities) == AVCapabilities.Analog)
+                AudioVideo.ADSwitch = DeviceInput.DVB;
 
             // Switch off picture and MP2
             SetPIDs( 0, 0 );
@@ -380,14 +359,7 @@ namespace JMS.DVB.Provider.TTPremium
         /// <summary>
         /// Forward to <see cref="DVBFrontend.FrontendType"/> on <see cref="Frontend"/>.
         /// </summary>
-        public FrontendType FrontendType
-        {
-            get
-            {
-                // Forward
-                return Frontend.FrontendType;
-            }
-        }
+        public FrontendType FrontendType { get { return Frontend.FrontendType; } }
 
         /// <summary>
         /// Wählt eine Quellgruppe aus.
@@ -412,10 +384,12 @@ namespace JMS.DVB.Provider.TTPremium
         public void Decrypt( ushort serviceIdentifier )
         {
             // Start if needed
-            if (0 == serviceIdentifier) return;
+            if (serviceIdentifier == 0)
+                return;
 
             // Access CI once
-            if (CI.IsIdle) CI.Open();
+            if (CI.IsIdle)
+                CI.Open();
 
             // Start decryption
             CI.Decrypt( serviceIdentifier );
@@ -452,10 +426,12 @@ namespace JMS.DVB.Provider.TTPremium
                 m_Users[pClient] = pClient;
 
                 // Already active
-                if (m_Users.Count > 1) return;
+                if (m_Users.Count > 1)
+                    return;
 
                 // Start us
-                if (!DVBCommon.IsOpen) StartDefault( null );
+                if (!DVBCommon.IsOpen)
+                    StartDefault( null );
             }
         }
 
@@ -476,7 +452,8 @@ namespace JMS.DVB.Provider.TTPremium
                 m_Users.Remove( pClient );
 
                 // Clear
-                if (m_Users.Count < 1) Dispose();
+                if (m_Users.Count < 1)
+                    Dispose();
             }
         }
 
@@ -503,24 +480,14 @@ namespace JMS.DVB.Provider.TTPremium
         {
             // Check mode
             if (initialize)
-            {
-                // Forward
                 Frontend.Initialize();
-            }
             else
-            {
-                // Forward
                 Frontend.StopFilters();
-            }
         }
 
-        public DVBSignalStatus SignalStatus
-        {
-            get
-            {
-                // Forward
-                return Frontend.SignalStatus;
-            }
-        }
+        /// <summary>
+        /// Meldet die Informationen zum aktuellen Signal.
+        /// </summary>
+        public DVBSignalStatus SignalStatus { get { return Frontend.SignalStatus; } }
     }
 }

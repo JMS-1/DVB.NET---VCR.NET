@@ -20,48 +20,6 @@ namespace JMS.TechnoTrend.MFCWrapper
     public class DVBBoardControl : IDisposable
     {
         /// <summary>
-        /// The version information structure packed for use in a C++ method invocation.
-        /// Clients will only use the <see cref="BoardVersion"/>.
-        /// </summary>
-        [StructLayout( LayoutKind.Sequential )]
-        private struct BEVersion
-        {
-            /// <summary>
-            /// Firmware version.
-            /// </summary>
-            public UInt32 Firmware;
-
-            /// <summary>
-            /// Version of the Runtime Support Library.
-            /// </summary>
-            public UInt32 RTSLib;
-
-            /// <summary>
-            /// Video Microcode version.
-            /// </summary>
-            public UInt32 VideoDec;
-
-            /// <summary>
-            /// Compilation date.
-            /// </summary>
-            [MarshalAs( UnmanagedType.ByValArray, SizeConst = 16 )]
-            public sbyte[] CompDate;
-
-            /// <summary>
-            /// Compilation time.
-            /// </summary>
-            [MarshalAs( UnmanagedType.ByValArray, SizeConst = 10 )]
-            public sbyte[] CompTime;
-        };
-
-        /// <summary>
-        /// Read the version.
-        /// </summary>
-        [DllImport( "ttdvbacc.dll", EntryPoint = "?GetBEVersion@CDVBBoardControl@@QAE?AW4DVB_ERROR@@AAU_BE_VERSION@1@@Z", ExactSpelling = true, CallingConvention = CallingConvention.ThisCall )]
-        [SuppressUnmanagedCodeSecurity]
-        private static extern DVBError CDVBBoardControl_GetBEVersion( IntPtr pData, out BEVersion rInfo );
-
-        /// <summary>
         /// Manipulate the use of DMA.
         /// </summary>
         [DllImport( "ttdvbacc.dll", EntryPoint = "?EnableDataDMA@CDVBBoardControl@@QAE?AW4DVB_ERROR@@H@Z", ExactSpelling = true, CallingConvention = CallingConvention.ThisCall )]
@@ -194,31 +152,6 @@ namespace JMS.TechnoTrend.MFCWrapper
                         System.Threading.Thread.Sleep( 1000 );
                     }
                 }
-        }
-
-        /// <summary>
-        /// Load the version information. Must not be called before <see cref="BootARM(string)"/>.
-        /// </summary>
-        /// <remarks>
-        /// The <see cref="BEVersion"/> structure received from the C++ method invocation
-        /// is converted to a <see cref="BoardVersion"/> instance.
-        /// </remarks>
-        /// <exception cref="DVBException">
-        /// Thrown when the C++ method invocation reports some <see cref="DVBError"/>.
-        /// </exception>
-        public BoardVersion Version
-        {
-            get
-            {
-                // Helper
-                BEVersion sVersion;
-
-                // Process
-                DVBException.ThrowOnError( CDVBBoardControl_GetBEVersion( m_Class.ClassPointer, out sVersion ), "Unable to get Version" );
-
-                // Finish
-                return new BoardVersion( sVersion.Firmware, sVersion.RTSLib, sVersion.VideoDec, InterOpTools.ByteArrayToString( sVersion.CompDate ), InterOpTools.ByteArrayToString( sVersion.CompTime ) );
-            }
         }
 
         /// <summary>

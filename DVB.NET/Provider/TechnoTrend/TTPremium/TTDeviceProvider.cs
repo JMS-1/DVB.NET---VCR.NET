@@ -1,11 +1,8 @@
 using System;
-using System.IO;
-using System.Text;
 using System.Collections;
-using System.Configuration;
+using JMS.DVB.DeviceAccess.Enumerators;
 using JMS.TechnoTrend;
 using JMS.TechnoTrend.MFCWrapper;
-using JMS.DVB.DeviceAccess.Enumerators;
 
 
 namespace JMS.DVB.Provider.TTPremium
@@ -26,11 +23,6 @@ namespace JMS.DVB.Provider.TTPremium
         /// Do not register with the TechnoTrend API/SDK 2.19b.
         /// </summary>
         private bool m_NoRegister = false;
-
-        /// <summary>
-        /// Set to a log file when each method call should be logged.
-        /// </summary>
-        private string m_MethodLog = null;
 
         /// <summary>
         /// Device to reset after a wake up from hibernation.
@@ -59,60 +51,15 @@ namespace JMS.DVB.Provider.TTPremium
         }
 
         /// <summary>
-        /// Set if method call logging is enabled.
-        /// </summary>
-        private bool MethodLog
-        {
-            get
-            {
-                // Check name
-                if (null == m_MethodLog)
-                {
-                    // Load
-                    m_MethodLog = ConfigurationManager.AppSettings["ProviderMethodLogPath"];
-
-                    // Set default
-                    if (null == m_MethodLog) m_MethodLog = string.Empty;
-                }
-
-                // Report
-                return (m_MethodLog.Length > 0);
-            }
-        }
-
-        /// <summary>
-        /// Report a method call.
-        /// </summary>
-        /// <param name="format">Message format.</param>
-        /// <param name="args">Message parameters.</param>
-        private void LogMessage( string format, params object[] args )
-        {
-            // Forward
-            LogMessage( string.Format( format, args ) );
-        }
-
-        /// <summary>
-        /// Report a message call.
-        /// </summary>
-        /// <param name="message">Message to report.</param>
-        private void LogMessage( string message )
-        {
-            // Load the file name
-            if (!MethodLog) return;
-
-            // Synchronize access
-            lock (m_MethodLog)
-                using (StreamWriter writer = new StreamWriter( m_MethodLog, true, Encoding.GetEncoding( 1252 ) ))
-                    writer.WriteLine( string.Format( "{0} {1}", DateTime.Now, message ) );
-        }
-
-        /// <summary>
         /// Register with TechnoTrend drivers if needed.
         /// </summary>
         private void Register()
         {
             // Did it
-            if (m_NoRegister || m_Registered) return;
+            if (m_NoRegister)
+                return;
+            if (m_Registered)
+                return;
 
             // Initialize API
             Context.TheContext.Register( this );
@@ -126,9 +73,6 @@ namespace JMS.DVB.Provider.TTPremium
         /// </summary>
         public void StopFilters()
         {
-            // Report
-            if (MethodLog) LogMessage( "StopFilters" );
-
             // Forward
             StopFilters( false );
         }
@@ -139,9 +83,6 @@ namespace JMS.DVB.Provider.TTPremium
         /// <param name="initialize">Set to reinitialize the hardware.</param>
         private void StopFilters( bool initialize )
         {
-            // Report
-            if (MethodLog) LogMessage( "StopFilters {0}", initialize );
-
             // Must register
             Register();
 
@@ -156,10 +97,6 @@ namespace JMS.DVB.Provider.TTPremium
         /// <param name="location">Der Ursprung zur Quellgruppe.</param>
         public void Tune( SourceGroup group, GroupLocation location )
         {
-            // Report
-            if (MethodLog)
-                LogMessage( "Tune {0} {1}", group, location );
-
             // Must register
             Register();
 
@@ -174,9 +111,6 @@ namespace JMS.DVB.Provider.TTPremium
         /// <param name="audioPID">The audio stream identifier (PID).</param>
         public void SetVideoAudio( ushort videoPID, ushort audioPID )
         {
-            // Report
-            if (MethodLog) LogMessage( "SetAudioVideo {0} {1}", videoPID, audioPID );
-
             // Must register
             Register();
 
@@ -194,14 +128,11 @@ namespace JMS.DVB.Provider.TTPremium
         /// which are relevant for comparision.</param>
         public void StartSectionFilter( ushort pid, Action<byte[]> callback, byte[] filterData, byte[] filterMask )
         {
-            // Report
-            if (MethodLog) LogMessage( "StartSectionFilter {0}", pid );
-
             // Must register
             Register();
 
             // Attach to filter
-            DVBRawFilter filter = Context.TheContext.RawFilter[pid];
+            var filter = Context.TheContext.RawFilter[pid];
 
             // Configure
             filter.FilterType = FilterType.Section;
@@ -225,17 +156,15 @@ namespace JMS.DVB.Provider.TTPremium
         /// <param name="callback">Method to call when new data is available.</param>
         public void RegisterPipingFilter( ushort pid, bool video, bool smallBuffer, Action<byte[]> callback )
         {
-            // Report
-            if (MethodLog) LogMessage( "RegisterPipingFilter {0} {1} {2}", pid, video, smallBuffer );
-
             // Must register
             Register();
 
             // Attach to the filter
-            DVBRawFilter filter = Context.TheContext.RawFilter[pid];
+            var filter = Context.TheContext.RawFilter[pid];
 
             // Already active - do not register again
-            if (FilterType.None != filter.FilterType) return;
+            if (filter.FilterType != FilterType.None)
+                return;
 
             // Set the filter type
             filter.FilterType = FilterType.Piping;
@@ -254,9 +183,6 @@ namespace JMS.DVB.Provider.TTPremium
         /// <param name="pid">PID on which the filter runs.</param>
         public void StartFilter( ushort pid )
         {
-            // Report
-            if (MethodLog) LogMessage( "StartFilter {0}", pid );
-
             // Must register
             Register();
 
@@ -270,9 +196,6 @@ namespace JMS.DVB.Provider.TTPremium
         /// <param name="pid">PID on which the filter runs.</param>
         public void StopFilter( ushort pid )
         {
-            // Report
-            if (MethodLog) LogMessage( "StopFilter {0}", pid );
-
             // Must register
             Register();
 
@@ -289,10 +212,11 @@ namespace JMS.DVB.Provider.TTPremium
         private static bool ArgumentToNetwork( Hashtable args )
         {
             // Load
-            string network = (string) args["Network"];
-
-            // Process - changed default for use with Vista
-            return (null == network) ? false : bool.Parse( network );
+            bool network;
+            if (bool.TryParse( (string) args["Network"], out network ))
+                return network;
+            else
+                return false;
         }
 
         /// <summary>
@@ -303,10 +227,11 @@ namespace JMS.DVB.Provider.TTPremium
         private static int ArgumentToDevice( Hashtable args )
         {
             // Load
-            string device = (string) args["Device"];
-
-            // Process
-            return (null == device) ? 0 : int.Parse( device );
+            int device;
+            if (int.TryParse( (string) args["Device"], out device ))
+                return device;
+            else
+                return 0;
         }
 
         /// <summary>
@@ -315,23 +240,14 @@ namespace JMS.DVB.Provider.TTPremium
         /// <param name="station">Some station.</param>
         public void Decrypt( ushort? station )
         {
-            // Report
-            if (MethodLog) LogMessage( "Decrypt {0}", station );
-
             // Must register
             Register();
 
             // Forward
             if (station.HasValue)
-            {
-                // Switch on
                 Context.TheContext.Decrypt( station.Value );
-            }
             else
-            {
-                // Switch off
                 Context.TheContext.Decrypt( 0 );
-            }
         }
 
         /// <summary>
@@ -354,9 +270,6 @@ namespace JMS.DVB.Provider.TTPremium
         {
             get
             {
-                // Report
-                if (MethodLog) LogMessage( "ReceiverType" );
-
                 // Must register
                 Register();
 
@@ -370,9 +283,6 @@ namespace JMS.DVB.Provider.TTPremium
         /// </summary>
         public void WakeUp()
         {
-            // Report
-            if (MethodLog) LogMessage( "WakeUp" );
-
             // Process
             if (!string.IsNullOrEmpty( m_WakeupDeviceInstance ))
                 MediaDevice.WakeUpInstance( m_WakeupDeviceInstance );
@@ -387,9 +297,6 @@ namespace JMS.DVB.Provider.TTPremium
         {
             get
             {
-                // Report
-                if (MethodLog) LogMessage( "SignalStatus" );
-
                 // Must register
                 Register();
 
