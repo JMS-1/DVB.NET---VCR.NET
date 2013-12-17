@@ -6,94 +6,96 @@ using System.Security;
 namespace JMS.TechnoTrend.MFCWrapper
 {
     /// <summary>
-    /// This class wraps all functionality to filter any data stream out of
-    /// the DVB signal.
+    /// Steuert den Empfang eines einzelnen Nutzdatenstroms.
     /// </summary>
-    /// <remarks>
-    /// Concerning the underlying TT API/SDK this class will wrap both a filter using <see cref="Delegate"/>
-    /// and a filter which directly writes to a file. The interface introduced here offers a common
-    /// programming model which only differs by the initial call.
-    /// </remarks>
-    public unsafe class DVBRawFilter : IDisposable
+    public class DVBRawFilter : IDisposable
     {
         /// <summary>
-        /// Create a new <i>CDVBTSFilter</i> using the default buffer size.
+        /// Erstellt eine Empfangsinstanz.
         /// </summary>
+        /// <param name="instance">Das zugehörige C++ Objekt.</param>
         [DllImport( "ttdvbacc.dll", EntryPoint = "??0CDVBTSFilter@@QAE@XZ", ExactSpelling = true, CallingConvention = CallingConvention.ThisCall )]
         [SuppressUnmanagedCodeSecurity]
-        private static extern void CDVBTSFilter_Construct( IntPtr pData );
+        private static extern void CDVBTSFilter_Construct( IntPtr instance );
 
         /// <summary>
-        /// Destroy a <i>CDVBTSFilter</i> instance.
+        /// Vernichtet eine Empfangsinstanz.
         /// </summary>
+        /// <param name="instance">Das zugehörige C++ Objekt.</param>
         [DllImport( "ttdvbacc.dll", EntryPoint = "??1CDVBTSFilter@@UAE@XZ", ExactSpelling = true, CallingConvention = CallingConvention.ThisCall )]
         [SuppressUnmanagedCodeSecurity]
-        private static extern void CDVBTSFilter_Destruct( IntPtr pData );
+        private static extern void CDVBTSFilter_Destruct( IntPtr instance );
 
         /// <summary>
-        /// Initialize the filter condition for a <i>CDVBTSFilter</i> instance and start the filter.
+        /// Startet den Empfang.
         /// </summary>
+        /// <param name="instance">Das zugehörige C++ Objekt.</param>
+        /// <param name="type">Die Art des Nutzdatenstroms.</param>
+        /// <param name="streamIdentifier">Die Datenstromkennung des zu empfangenden Datenstroms.</param>
+        /// <param name="match">Das Vergleichsmuster.</param>
+        /// <param name="mask">Die Auswahl der Vergleichsbits.</param>
+        /// <param name="matchSize">Die Größe des Vergleichsmusters.</param>
+        /// <returns>Ergebnis des Vorgangs.</returns>
         [DllImport( "ttdvbacc.dll", EntryPoint = "?SetFilter@CDVBTSFilter@@QAE?AW4DVB_ERROR@@W4FILTERTYPE@1@GPAE1E@Z", ExactSpelling = true, CallingConvention = CallingConvention.ThisCall )]
         [SuppressUnmanagedCodeSecurity]
-        private static extern DVBError CDVBTSFilter_SetFilter( IntPtr pData, FilterType eType, UInt16 wPID, byte[] pbData, byte[] pbMask, byte bLength );
+        private static extern DVBError CDVBTSFilter_SetFilter( IntPtr instance, FilterType type, UInt16 streamIdentifier, byte[] match, byte[] mask, byte matchSize );
 
         /// <summary>
-        /// Stop filtering on a <i>CDVBTSFilter</i> instance.
+        /// Beendet denh Empfang.
         /// </summary>
+        /// <param name="instance">Das zugehörige C++ Objekt.</param>
+        /// <returns>Ergebnis des Vorgangs.</returns>
         [DllImport( "ttdvbacc.dll", EntryPoint = "?ResetFilter@CDVBTSFilter@@QAE?AW4DVB_ERROR@@XZ", ExactSpelling = true, CallingConvention = CallingConvention.ThisCall )]
         [SuppressUnmanagedCodeSecurity]
-        private static extern DVBError CDVBTSFilter_ResetFilter( IntPtr pData );
+        private static extern DVBError CDVBTSFilter_ResetFilter( IntPtr instance );
 
         /// <summary>
-        /// Prototype <see cref="Delegate"/> for overloading the virtual function of the <i>CDVBTSFilter</i>
-        /// base class.
+        /// Signatur einer Empfangsmethode.
         /// </summary>
-        private delegate void InternalDataArrivalHandler( IntPtr pBuf, Int32 lBuf );
+        /// <param name="buffer">Ein Speicherbereich mit Daten.</param>
+        /// <param name="bytes">Die Anzahl der empfangenen Daten.</param>
+        private delegate void InternalDataArrivalHandler( IntPtr buffer, Int32 bytes );
 
         /// <summary>
-        /// Holds the C++ instance.
+        /// Die zugehörige C++ Instanz.
         /// </summary>
         private ClassHolder m_Class = null;
 
         /// <summary>
-        /// If this field is set the <see cref="UseExplicitBuffer"/> will be ignored and
-        /// the buffer size will become <see cref="PipeSize">Sixteen</see>.
-        /// </summary>
-        public bool UseSmallBuffer = false;
-
-        /// <summary>
-        /// When <see cref="UseSmallBuffer"/> is unset this field can be used to
-        /// choose any buffer size for a piping filter. If the value is <see cref="PipeSize">None</see>
-        /// the maximum <see cref="PipeSize">ThirtyTwo</see> will be used.
+        /// Die Größe des zu verwendenden Zwischenspeichers.
         /// </summary>
         public PipeSize UseExplicitBuffer = PipeSize.None;
 
+        /// <summary>
+        /// Die zugehörige Schnittstelle zum Gerät.
+        /// </summary>
         private DVBFrontend m_Frontend = null;
 
         /// <summary>
-        /// Forward for converted input data.
+        /// Die aktuelle Verarbeitungsmethode.
         /// </summary>
-        private Action<byte[]> m_DataHandler = null;
+        private volatile Action<byte[]> m_DataHandler;
 
         /// <summary>
-        /// The PID to filter upon.
+        /// Die zugehörige Datenstromkennung.
         /// </summary>
-        public readonly ushort FilterPID = 0;
+        private readonly ushort m_streamIdentifier = 0;
 
         /// <summary>
-        /// Create a new filter instance attached to the indicated PID.
+        /// Erstellt einen neuen Empfang.
         /// </summary>
-        internal DVBRawFilter( ushort uPID, DVBFrontend frontend )
+        /// <param name="streamIdentifier">Die Datenstromkennung.</param>
+        /// <param name="frontend">Das zugehörige Gerät.</param>
+        internal DVBRawFilter( ushort streamIdentifier, DVBFrontend frontend )
         {
             // Remember
+            m_streamIdentifier = streamIdentifier;
             FilterType = FilterType.None;
             m_Frontend = frontend;
-            FilterPID = uPID;
         }
 
         /// <summary>
-        /// Simply forwards to <see cref="Dispose"/> - just in case our
-        /// client violates the <see cref="IDisposable"/> rules.
+        /// Zerstört die Empfangsinstanz.
         /// </summary>
         ~DVBRawFilter()
         {
@@ -102,7 +104,7 @@ namespace JMS.TechnoTrend.MFCWrapper
         }
 
         /// <summary>
-        /// Stop the underlying TT API/SDK filter and release all allocated resources.
+        /// Beendet den Empfang endgültig.
         /// </summary>
         public void Dispose()
         {
@@ -145,13 +147,11 @@ namespace JMS.TechnoTrend.MFCWrapper
 
             // Remember
             m_DataHandler = dataSink;
-        } 
+        }
 
         /// <summary>
-        /// Call the appropriate function to stop the filtering on <see cref="m_Class"/>.
-        /// <seealso cref="InternalStop"/>
+        /// Beendet den Empfang kurzzeitig.
         /// </summary>
-        /// <exception cref="DVBException">On any error.</exception>
         private void Suspend()
         {
             // Check operation
@@ -159,10 +159,9 @@ namespace JMS.TechnoTrend.MFCWrapper
         }
 
         /// <summary>
-        /// Stop the current filtering and destroy the C++ instance in <see cref="m_Class"/>.
-        /// <see cref="Suspend"/>
+        /// Beendet den Empfang.
         /// </summary>
-        /// <param name="remove">Set to remove the filter from the collection.</param>
+        /// <param name="remove">Gesetzt, wenn auch eine Abmeldung bei dem zugehörige Gerät erwünscht ist.</param>
         private void InternalStop( bool remove )
         {
             // Remove from frontend
@@ -170,15 +169,14 @@ namespace JMS.TechnoTrend.MFCWrapper
                 if (m_Frontend != null)
                 {
                     // Remove
-                    m_Frontend.RemoveFilter( FilterPID );
+                    m_Frontend.RemoveFilter( m_streamIdentifier );
 
                     // Forget
                     m_Frontend = null;
                 }
 
-            // Discard registered handlers
-            lock (this)
-                m_DataHandler = null;
+            // Discard registered handler
+            m_DataHandler = null;
 
             // Nothing to do
             if (m_Class == null)
@@ -201,13 +199,8 @@ namespace JMS.TechnoTrend.MFCWrapper
         }
 
         /// <summary>
-        /// Stop the current filter.
-        /// <seealso cref="InternalStop"/>
+        /// Beendet den Empfang.
         /// </summary>
-        /// <remarks>
-        /// When calling this method <see cref="m_Class"/> is released. To reuse the
-        /// filter instance the client has to call an appropriate overload again.
-        /// </remarks>
         public void Stop()
         {
             // Forward
@@ -215,10 +208,10 @@ namespace JMS.TechnoTrend.MFCWrapper
         }
 
         /// <summary>
-        /// Nimmt Daten entgegen.
+        /// Nimmt Daten vom Gerät entgegen.
         /// </summary>
-        /// <param name="buffer">Ein Speicherbereich mit Daten.</param>
-        /// <param name="bytes">Die Größe des Bereichs.</param>
+        /// <param name="buffer">Der Speicher mit Daten.</param>
+        /// <param name="bytes">Die Anzahl der empfangenen Bytes.</param>
         private void OnDataArrival( IntPtr buffer, Int32 bytes )
         {
             // Synchronize
@@ -230,93 +223,88 @@ namespace JMS.TechnoTrend.MFCWrapper
 
                 // Load handler
                 var std = m_DataHandler;
-                if (std != null)
-                {
-                    // The data
-                    var aData = new byte[bytes];
+                if (std == null)
+                    return;
 
-                    // Convert
-                    Marshal.Copy( buffer, aData, 0, bytes );
+                // The data
+                var aData = new byte[bytes];
 
-                    // Forward
-                    std( aData );
-                }
+                // Convert
+                Marshal.Copy( buffer, aData, 0, bytes );
+
+                // Forward
+                std( aData );
             }
         }
 
         /// <summary>
-        /// Try to start the current filter.
+        /// Aktiviert den Empfang.
         /// </summary>
-        /// <param name="aData">The filter data bytes.</param>
-        /// <param name="aMask">The filter mask - each set bit indicates a valid bit
-        /// inside the filter data.</param>
-        /// <exception cref="ArgumentException">If the arguments are incompatible.</exception>
-        /// <exception cref="DVBException">On any error from the underlying API.</exception>
-        public void Start( byte[] aData, byte[] aMask )
+        /// <param name="pattern">Das Vergleichsmuster für den Empfang.</param>
+        /// <param name="mask">Die Auswahl der Vergleichbits.</param>
+        public void Start( byte[] pattern, byte[] mask )
         {
             // Check size
-            if ((aData == null) != (aMask == null))
+            if ((pattern == null) != (mask == null))
                 throw new ArgumentException( "Filter Data and Mask do not match" );
-            if (aData != null)
+            if (pattern != null)
             {
                 // Validate
-                if (aData.Length != aMask.Length)
+                if (pattern.Length != mask.Length)
                     throw new ArgumentException( "Filter Data and Mask are not of same Size" );
-                if (aData.Length > 255)
+                if (pattern.Length > 255)
                     throw new ArgumentException( "Filter Data and Mask are too large - a Maximum of 255 Bytes is allowed" );
             }
 
             // Length to send
-            var bLenParam = (byte) ((aData == null) ? 0 : aData.Length);
+            var bLenParam = (byte) ((pattern == null) ? 0 : pattern.Length);
 
             // Piping
             if (FilterType == FilterType.Piping)
             {
                 // Validate
-                if (aData != null)
+                if (pattern != null)
                     throw new ArgumentException( "Piping does not allow Filter Data and Mask" );
 
                 // Set buffer parameter
-                bLenParam = (byte) (UseSmallBuffer ? PipeSize.Sixteen : ((UseExplicitBuffer != PipeSize.None) ? UseExplicitBuffer : PipeSize.ThirtyTwo));
+                bLenParam = (byte) ((UseExplicitBuffer != PipeSize.None) ? UseExplicitBuffer : PipeSize.ThirtyTwo);
             }
 
             // Try to start the current filter
-            DVBException.ThrowOnError( CDVBTSFilter_SetFilter( m_Class.ClassPointer, FilterType, FilterPID, aData, aMask, bLenParam ), "Could not filter" );
+            DVBException.ThrowOnError( CDVBTSFilter_SetFilter( m_Class.ClassPointer, FilterType, m_streamIdentifier, pattern, mask, bLenParam ), "Could not filter" );
         }
 
         /// <summary>
-        /// Forward to <see cref="Start(byte[], byte[])"/> creating a second
-        /// <see cref="Array"/> with the same size as the parameter but all
-        /// elements set to <i>255</i>.
+        /// Aktiviert den Empfang.
         /// </summary>
-        /// <param name="aData">The filter data.</param>
-        public void Start( byte[] aData )
+        /// <param name="pattern">Das Vergleichsmuster für den Empfang.</param>
+        public void Start( byte[] pattern )
         {
             // Short cut
-            if (aData != null)
-                if (aData.Length < 1)
-                    aData = null;
+            if (pattern != null)
+                if (pattern.Length < 1)
+                    pattern = null;
 
             // New array
-            byte[] aMask = null;
+            byte[] mask = null;
 
             // Fill
-            if (aData != null)
+            if (pattern != null)
             {
                 // Allocate
-                aMask = new byte[aData.Length];
+                mask = new byte[pattern.Length];
 
                 // Fill it
-                for (int ix = aMask.Length; ix-- > 0; )
-                    aMask[ix] = 255;
+                for (int ix = mask.Length; ix-- > 0; )
+                    mask[ix] = 255;
             }
 
             // Forward
-            Start( aData, aMask );
+            Start( pattern, mask );
         }
 
         /// <summary>
-        /// Forward to <see cref="Start(byte[], byte[])"/> with two <i>null</i> parameters.
+        /// Aktiviert den Empfang.
         /// </summary>
         public void Start()
         {

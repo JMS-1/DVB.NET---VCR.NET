@@ -170,7 +170,6 @@ namespace JMS.DVB.Provider.TTPremium
             filter.FilterType = FilterType.Piping;
 
             // Comfigure the buffer
-            filter.UseSmallBuffer = false;
             filter.UseExplicitBuffer = video ? (smallBuffer ? PipeSize.Sixteen : PipeSize.ThirtyTwo) : (smallBuffer ? PipeSize.Four : PipeSize.Sixteen);
 
             // Attach callback

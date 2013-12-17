@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Threading;
@@ -183,7 +184,7 @@ namespace JMS.TechnoTrend.MFCWrapper
         private ClassHolder m_Class = null;
 
         /// <summary>
-        /// All <see cref="DVBRawFilter"/> instances indexed by its <see cref="DVBRawFilter.FilterPID"/>.
+        /// All <see cref="DVBRawFilter"/> instances indexed by its <see cref="DVBRawFilter.m_streamIdentifier"/>.
         /// </summary>
         private Dictionary<ushort, DVBRawFilter> m_Filters = new Dictionary<ushort, DVBRawFilter>();
 
@@ -547,13 +548,13 @@ namespace JMS.TechnoTrend.MFCWrapper
         public void StopFilters()
         {
             // Copy
-            List<DVBRawFilter> filters = new List<DVBRawFilter>();
+            DVBRawFilter[] filters;
 
             // Synchronize
             lock (m_Filters)
             {
                 // Copy over
-                filters.AddRange( m_Filters.Values );
+                filters = m_Filters.Values.ToArray();
 
                 // Reset
                 m_Filters.Clear();
@@ -563,7 +564,8 @@ namespace JMS.TechnoTrend.MFCWrapper
             }
 
             // Process all filters
-            foreach (IDisposable filter in filters) filter.Dispose();
+            foreach (var filter in filters)
+                filter.Dispose();
         }
 
         /// <summary>
@@ -580,8 +582,14 @@ namespace JMS.TechnoTrend.MFCWrapper
             // Do it
             lock (m_Filters)
             {
+                // See if it exists
+                DVBRawFilter filter;
+                if (!m_Filters.TryGetValue( pid, out filter ))
+                    return;
+
                 // Process
-                m_Filters.Remove( pid );
+                using (filter)
+                    m_Filters.Remove( pid );
 
                 // Report
                 ScanLog.WriteToScanLog( "Filter {0} removed", pid );
