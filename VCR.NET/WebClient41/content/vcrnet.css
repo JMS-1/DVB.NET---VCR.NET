@@ -540,3 +540,8 @@ fieldset legend {
 .helpIndent {
     margin-left: 10px;
 }
+
+.suspectEnd {
+    background-color: #ffff00;
+    font-weight: bold;
+}

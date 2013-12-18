@@ -171,6 +171,33 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         public PlanException ExceptionRule { get; set; }
 
         /// <summary>
+        /// Gesetzt, wenn die Endzeit möglicherweise durch die Sommerzeit nicht wie
+        /// programmiert ist.
+        /// </summary>
+        [DataMember( Name = "suspectEndTime" )]
+        public bool EndTimeCouldBeWrong { get; set; }
+
+        /// <summary>
+        /// Prüft, ob die Aufzeichnung über eine Zeitumstellung erfolgt.
+        /// </summary>
+        /// <param name="plannedStart">Die ursprünglich gewünschte Startzeit.</param>
+        /// <returns>Gesetzt, wenn die Aufzeichnung eventuell durch eine Zeitumstellung verfälscht wird.</returns>
+        private bool CheckEndTime( DateTime plannedStart )
+        {
+            // What we want
+            var expectedEnd = (plannedStart + Duration).ToLocalTime().TimeOfDay;
+
+            // What we get
+            var realEnd = (StartTime + Duration).ToLocalTime().TimeOfDay;
+
+            // Difference
+            var delta = realEnd - expectedEnd;
+
+            // Compare - give it some room for rounding
+            return Math.Abs( delta.TotalSeconds ) >= 1;
+        }
+
+        /// <summary>
         /// Erstellt einen neuen Eintrag.
         /// </summary>
         /// <param name="schedule">Die zugehörige Beschreibung der geplanten Aktivität.</param>
@@ -285,6 +312,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
                 }
 
                 // Apply special settings
+                activity.EndTimeCouldBeWrong = activity.CheckEndTime( vcrSchedule.FirstStart );
                 activity.CurrentProgramGuide = streams.GetUsesProgramGuide();
                 activity.AllLanguages = streams.GetUsesAllAudio();
                 activity.SubTitles = streams.GetUsesSubtitles();

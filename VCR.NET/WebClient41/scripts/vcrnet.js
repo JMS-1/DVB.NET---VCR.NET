@@ -27,6 +27,8 @@ var CSSClass = (function () {
     CSSClass.noJobText = 'jobTextPlaceholder';
 
     CSSClass.jobText = 'jobText';
+
+    CSSClass.badEndTime = 'suspectEnd';
     return CSSClass;
 })();
 
@@ -984,6 +986,10 @@ var PlanEntry = (function () {
                 me.onException(me, this);
             };
         }
+
+        // Die Endzeit könnte nicht wie gewünscht sein
+        if (rawData.suspectEndTime)
+            me.endTimeSuspect = CSSClass.badEndTime;
     }
     // Fordert die Informationen der Programmzeitschrift einmalig an und liefert das Ergebnis bei Folgeaufrufen.
     PlanEntry.prototype.requestGuide = function (dataAvailable) {

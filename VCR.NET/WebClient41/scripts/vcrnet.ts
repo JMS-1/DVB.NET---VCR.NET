@@ -28,6 +28,9 @@ class CSSClass {
 
     // Die Anzeige des Namens eines Auftrags in der Liste der Aufträge und Aufzeichnungen
     static jobText = 'jobText';
+
+    // Das Ende einer Aufzeichnung ist eventuell nicht wie erwünscht.
+    static badEndTime = 'suspectEnd';
 }
 
 // Beschreibt einen Favoritensuche in der Programmzeitschrift
@@ -1097,6 +1100,10 @@ class PlanEntry {
             me.exceptionMode = me.exceptionInfo.isEmpty() ? 'exceptOff' : 'exceptOn';
             me.showExceptions = function (): void { me.onException(me, this); };
         }
+
+        // Die Endzeit könnte nicht wie gewünscht sein
+        if (rawData.suspectEndTime)
+            me.endTimeSuspect = CSSClass.badEndTime;
     }
 
     // Wird aufgerufen, wenn der Anwender die Detailanzeige aktiviert hat.
@@ -1107,6 +1114,9 @@ class PlanEntry {
 
     // Wird aufgerufen, wenn der Anwender die Ausnahmen konfigurieren möchte.
     onException: (item: PlanEntry, origin: any) => void = function (item: PlanEntry, origin: any): void { };
+
+    // Der Name einer CSS Klasse zur Kennzeichnung von Aufzeichnungen über die Zeitumstellung hinweg
+    endTimeSuspect: string;
 
     // Die Kennung der zugehörigen Quelle.
     private source: string;
