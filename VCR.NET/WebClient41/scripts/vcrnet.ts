@@ -2995,9 +2995,7 @@ class planPage extends Page implements IPage {
             var epgEnd = epgStart + entry.duration;
             var recStart = item.start.getTime();
             var recEnd = item.end.getTime();
-            var minTime = Math.min(epgStart, recStart);
-            var maxTime = Math.max(epgEnd, recEnd);
-            var fullTime = maxTime - minTime;
+            var fullTime = recEnd - recStart;
 
             // Zeigen, ob die Sendung vollständig aufgezeichnet wird
             if (recStart <= epgStart)
@@ -3013,16 +3011,26 @@ class planPage extends Page implements IPage {
                     // Anzeigelement ermitteln
                     var container = html.find('#guideOverlap');
 
+                    // Grenzen korrigieren
+                    if (epgStart < recStart)
+                        epgStart = recStart;
+                    else if (epgStart > recEnd)
+                        epgStart = recEnd;
+                    if (epgEnd < recStart)
+                        epgEnd = recStart;
+                    else if (epgEnd > recEnd)
+                        epgEnd = recEnd;
+
                     // Breiten berechnen
-                    var left = 100.0 * (epgStart - minTime) / fullTime;
-                    var middle = 100.0 * (epgEnd - epgStart) / fullTime;
-                    var right = 100.0 - middle - left;
+                    var left = 90.0 * (epgStart - recStart) / fullTime;
+                    var middle = 90.0 * (epgEnd - epgStart) / fullTime;
+                    var right = Math.max(0, 90.0 - middle - left);
 
                     // Breiten festlegen
                     var all = container.find('div div');
-                    all[0].setAttribute('style', 'width: ' + left + '%');
-                    all[1].setAttribute('style', 'width: ' + middle + '%');
-                    all[2].setAttribute('style', 'width: ' + right + '%');
+                    $(all[0]).width(left + '%');
+                    $(all[1]).width(middle + '%');
+                    $(all[2]).width(right + '%');
 
                     // Sichtbar schalten
                     container.removeClass(JMSLib.CSSClass.invisible);
