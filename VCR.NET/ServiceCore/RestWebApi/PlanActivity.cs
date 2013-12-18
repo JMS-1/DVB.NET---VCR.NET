@@ -312,7 +312,6 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
                 }
 
                 // Apply special settings
-                activity.EndTimeCouldBeWrong = activity.CheckEndTime( vcrSchedule.FirstStart );
                 activity.CurrentProgramGuide = streams.GetUsesProgramGuide();
                 activity.AllLanguages = streams.GetUsesAllAudio();
                 activity.SubTitles = streams.GetUsesSubtitles();
@@ -321,7 +320,9 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
 
                 // Check for exception rule on the day
                 var exception = vcrSchedule.FindException( time.End );
-                if (exception != null)
+                if (exception == null)
+                    activity.EndTimeCouldBeWrong = activity.CheckEndTime( vcrSchedule.FirstStart );
+                else
                     activity.ExceptionRule = PlanException.Create( exception, vcrSchedule );
             }
             else if (definition is ProgramGuideTask)
