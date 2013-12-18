@@ -320,10 +320,12 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
 
                 // Check for exception rule on the day
                 var exception = vcrSchedule.FindException( time.End );
-                if (exception == null)
-                    activity.EndTimeCouldBeWrong = activity.CheckEndTime( vcrSchedule.FirstStart );
-                else
+                if (exception != null)
                     activity.ExceptionRule = PlanException.Create( exception, vcrSchedule );
+
+                // May want to add end time checks
+                if ((exception == null) || exception.IsEmpty)
+                    activity.EndTimeCouldBeWrong = activity.CheckEndTime( vcrSchedule.FirstStart );
             }
             else if (definition is ProgramGuideTask)
                 activity.Station = VCRJob.ProgramGuideName;
