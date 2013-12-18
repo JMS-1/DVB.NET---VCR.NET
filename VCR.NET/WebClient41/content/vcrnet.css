@@ -545,3 +545,20 @@ fieldset legend {
     background-color: #ffff00;
     font-weight: bold;
 }
+
+.guideOverlap div {
+    display: inline;
+    float: left;
+}
+
+.guideInsidePlan {
+    background-color: #55ff55;
+}
+
+.guideOutsidePlan {
+    background-color: #ffff00;
+}
+
+.planOutsideGuide {
+    background-color: #eeeeee;
+}

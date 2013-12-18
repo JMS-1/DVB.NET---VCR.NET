@@ -704,8 +704,30 @@ fieldset {
 }
 
 // Markiert einen Endzeitpunkt, der sich durch die Zeitumstellung eventuell verschoben hat.
-.suspectEnd 
-{
+.suspectEnd {
     background-color: @warning;
     font-weight: bold;
+}
+
+// Der Bereich, der in der Programmzeitschrift den Überlapp mit der Aufzeichnung anzeigt.
+.guideOverlap {
+    div {
+        display: inline;
+        float: left;
+    }
+}
+
+// Meldet, dass eine Aufzeichnung den Eintrag in der Programmzeitschrift überdeckt.
+.guideInsidePlan {
+    background-color: #55ff55;
+}
+
+// Meldet, dass eine Aufzeichnung den Eintrag in der Programmzeitschrift nicht vollständig erfasst.
+.guideOutsidePlan {
+    background-color: #ffff00;
+}
+
+// Der Bereich der Aufzeichnung, der anderes als die Sendung aufzeichnet.
+.planOutsideGuide {
+    background-color: #eeeeee;
 }

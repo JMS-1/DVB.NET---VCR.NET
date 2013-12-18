@@ -29,6 +29,10 @@ var CSSClass = (function () {
     CSSClass.jobText = 'jobText';
 
     CSSClass.badEndTime = 'suspectEnd';
+
+    CSSClass.fullRecord = 'guideInsidePlan';
+
+    CSSClass.partialRecord = 'guideOutsidePlan';
     return CSSClass;
 })();
 
@@ -826,6 +830,8 @@ var GuideItem = (function () {
         // Wird aufgerufen, wenn der Anwender die Detailanzeige aktiviert hat
         this.onShowDetails = function (item, origin) {
         };
+        // Eine CSS Klasse, die den Überlapp einer Aufzeichnung mit dem Eintrag ausdrückt.
+        this.overlapClass = CSSClass.partialRecord;
         // Referenz besorgen
         var me = this;
 
@@ -2361,8 +2367,43 @@ var planPage = (function (_super) {
 
         // Eintrag suchen
         item.requestGuide(function (entry) {
+            // Zeiten ermitteln
+            var epgStart = entry.start.getTime();
+            var epgEnd = epgStart + entry.duration;
+            var recStart = item.start.getTime();
+            var recEnd = item.end.getTime();
+            var minTime = Math.min(epgStart, recStart);
+            var maxTime = Math.max(epgEnd, recEnd);
+            var fullTime = maxTime - minTime;
+
+            // Zeigen, ob die Sendung vollständig aufgezeichnet wird
+            if (recStart <= epgStart)
+                if (recEnd >= epgEnd)
+                    entry.overlapClass = CSSClass.fullRecord;
+
             // Daten binden
             var html = JMSLib.HTMLTemplate.cloneAndApplyTemplate(entry, me.guideTemplate);
+
+            // Anzeige vorbereiten
+            if (fullTime > 0)
+                if (epgEnd > epgStart) {
+                    // Anzeigelement ermitteln
+                    var container = html.find('#guideOverlap');
+
+                    // Breiten berechnen
+                    var left = 100.0 * (epgStart - minTime) / fullTime;
+                    var middle = 100.0 * (epgEnd - epgStart) / fullTime;
+                    var right = 100.0 - middle - left;
+
+                    // Breiten festlegen
+                    var all = container.find('div div');
+                    all[0].setAttribute('style', 'width: ' + left + '%');
+                    all[1].setAttribute('style', 'width: ' + middle + '%');
+                    all[2].setAttribute('style', 'width: ' + right + '%');
+
+                    // Sichtbar schalten
+                    container.removeClass(JMSLib.CSSClass.invisible);
+                }
 
             // Vorbereiten
             html.find('#findInGuide').button();
