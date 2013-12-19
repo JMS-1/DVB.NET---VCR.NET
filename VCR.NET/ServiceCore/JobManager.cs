@@ -13,11 +13,6 @@ namespace JMS.DVBVCR.RecordingService
     public partial class JobManager
     {
         /// <summary>
-        /// Dateiendung für Aufträge im SOAP Format.
-        /// </summary>
-        private const string OldFileSuffix = ".vnj";
-
-        /// <summary>
         /// Das Format, in dem das reine Datum in den Dateinamen von Protokolleinträgen codiert wird.
         /// </summary>
         private const string LogEntryDateFormat = "yyyyMMdd";
@@ -348,11 +343,11 @@ namespace JMS.DVBVCR.RecordingService
         internal void CleanupArchivedJobs()
         {
             // Not yet
-            if (DateTime.UtcNow < m_nextLogCleanup)
+            if (DateTime.UtcNow < m_nextArchiveCleanup)
                 return;
 
             // Remember
-            m_nextLogCleanup = DateTime.UtcNow.AddDays( 1 );
+            m_nextArchiveCleanup = DateTime.UtcNow.AddDays( 1 );
 
             // Access limit
             var firstValid = DateTime.UtcNow.AddDays( -7 * VCRConfiguration.Current.ArchiveLifeTime );
