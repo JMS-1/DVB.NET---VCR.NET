@@ -12,144 +12,144 @@ using System.Xml.Serialization;
 namespace JMS.DVB
 {
     /// <summary>
+    /// Beschreibt die benutzerspezifischen Vorgaben.
+    /// </summary>
+    [
+        Serializable,
+        XmlRoot( "UserProfile" )
+    ]
+    public class PersistedUserProfile
+    {
+        /// <summary>
+        /// Die alte Art der Darstellung.
+        /// </summary>
+        [Serializable]
+        public class Legacy
+        {
+            /// <summary>
+            /// Der Name des Geräteprofils.
+            /// </summary>
+            public string ProfileName { get; set; }
+        }
+
+        /// <summary>
+        /// Der XML Namensraum, der für die serialisierte Form verwendet wird.
+        /// </summary>
+        private const string ProfileNamespace = "http://jochen-manns.de/DVB.NET/Profiles/User";
+
+        /// <summary>
+        /// Die Datei, aus der diese Vorgaben entnommen wurden.
+        /// </summary>
+        private FileInfo m_File;
+
+        /// <summary>
+        /// Die bevorzugte Benutzersprache.
+        /// </summary>
+        public string PreferredLanguage { get; set; }
+
+        /// <summary>
+        /// Das zugehörige Geräteprofil.
+        /// </summary>
+        public Legacy Profile { get; set; }
+
+        /// <summary>
+        /// Der Name des zugehörigen Geräteprofils.
+        /// </summary>
+        [XmlIgnore]
+        public string ProfileName
+        {
+            get
+            {
+                // Check profile
+                var profile = Profile;
+                if (profile == null)
+                    return null;
+                else
+                    return profile.ProfileName;
+            }
+            set
+            {
+                // Update
+                if (string.IsNullOrEmpty( value ))
+                    Profile = null;
+                else
+                    Profile = new Legacy { ProfileName = value };
+            }
+        }
+
+        /// <summary>
+        /// Meldet oder legt fest, ob die Auswahl des Geräteprofils immer angezeigt werden soll.
+        /// </summary>
+        public bool AllwaysShowDialog { get; set; }
+
+        /// <summary>
+        /// Spichert die Vorgaben ab.
+        /// </summary>
+        public void Save()
+        {
+            // Open and forward
+            using (var stream = new FileStream( m_File.FullName, FileMode.Create, FileAccess.Write, FileShare.None ))
+            {
+                // Create configuration
+                var settings = new XmlWriterSettings { Encoding = Encoding.Unicode, Indent = true };
+
+                // Create serializer
+                var serializer = new XmlSerializer( GetType(), ProfileNamespace );
+
+                // Process
+                using (var writer = XmlWriter.Create( stream, settings ))
+                    serializer.Serialize( writer, this );
+            }
+        }
+
+        /// <summary>
+        /// Lädt die Vorgaben des aktuellen Anwenders.
+        /// </summary>
+        /// <returns>Die Vorgaben für diesen Anwender.</returns>
+        public static PersistedUserProfile Load()
+        {
+            // Get the user profile directory
+            var profileDir = new DirectoryInfo( Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.LocalApplicationData ), "DVBNETProfiles" ) );
+
+            // Create
+            profileDir.Create();
+
+            // Get the file name
+            var profile = new FileInfo( Path.Combine( profileDir.FullName, "UserProfile.dup" ) );
+
+            // The new profile
+            PersistedUserProfile settings;
+
+            // Load or create
+            if (!profile.Exists)
+                settings = new PersistedUserProfile();
+            else
+                using (var stream = new FileStream( profile.FullName, FileMode.Open, FileAccess.Read, FileShare.Read ))
+                {
+                    // Create serializer
+                    var serializer = new XmlSerializer( typeof( PersistedUserProfile ), ProfileNamespace );
+
+                    // Process
+                    settings = (PersistedUserProfile) serializer.Deserialize( stream );
+                }
+
+            // Remember root
+            settings.m_File = profile;
+
+            // Report
+            return settings;
+        }
+    }
+
+    /// <summary>
     /// Verwaltet die Voreinstellungen des aktuellen Anwenders.
     /// </summary>
     public static class UserProfile
     {
         /// <summary>
-        /// Beschreibt die benutzerspezifischen Vorgaben.
-        /// </summary>
-        [
-            Serializable,
-            XmlRoot( "UserProfile" )
-        ]
-        public class Persisted
-        {
-            /// <summary>
-            /// Die alte Art der Darstellung.
-            /// </summary>
-            [Serializable]
-            public class Legacy
-            {
-                /// <summary>
-                /// Der Name des Geräteprofils.
-                /// </summary>
-                public string ProfileName { get; set; }
-            }
-
-            /// <summary>
-            /// Der XML Namensraum, der für die serialisierte Form verwendet wird.
-            /// </summary>
-            private const string ProfileNamespace = "http://jochen-manns.de/DVB.NET/Profiles/User";
-
-            /// <summary>
-            /// Die Datei, aus der diese Vorgaben entnommen wurden.
-            /// </summary>
-            private FileInfo m_File;
-
-            /// <summary>
-            /// Die bevorzugte Benutzersprache.
-            /// </summary>
-            public string PreferredLanguage { get; set; }
-
-            /// <summary>
-            /// Das zugehörige Geräteprofil.
-            /// </summary>
-            public Legacy Profile { get; set; }
-
-            /// <summary>
-            /// Der Name des zugehörigen Geräteprofils.
-            /// </summary>
-            [XmlIgnore]
-            public string ProfileName
-            {
-                get
-                {
-                    // Check profile
-                    var profile = Profile;
-                    if (profile == null)
-                        return null;
-                    else
-                        return profile.ProfileName;
-                }
-                set
-                {
-                    // Update
-                    if (string.IsNullOrEmpty( value ))
-                        Profile = null;
-                    else
-                        Profile = new Legacy { ProfileName = value };
-                }
-            }
-
-            /// <summary>
-            /// Meldet oder legt fest, ob die Auswahl des Geräteprofils immer angezeigt werden soll.
-            /// </summary>
-            public bool AllwaysShowDialog { get; set; }
-
-            /// <summary>
-            /// Spichert die Vorgaben ab.
-            /// </summary>
-            public void Save()
-            {
-                // Open and forward
-                using (var stream = new FileStream( m_File.FullName, FileMode.Create, FileAccess.Write, FileShare.None ))
-                {
-                    // Create configuration
-                    var settings = new XmlWriterSettings { Encoding = Encoding.Unicode, Indent = true };
-
-                    // Create serializer
-                    var serializer = new XmlSerializer( GetType(), ProfileNamespace );
-
-                    // Process
-                    using (var writer = XmlWriter.Create( stream, settings ))
-                        serializer.Serialize( writer, this );
-                }
-            }
-
-            /// <summary>
-            /// Lädt die Vorgaben des aktuellen Anwenders.
-            /// </summary>
-            /// <returns>Die Vorgaben für diesen Anwender.</returns>
-            public static Persisted Load()
-            {
-                // Get the user profile directory
-                var profileDir = new DirectoryInfo( Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.LocalApplicationData ), "DVBNETProfiles" ) );
-
-                // Create
-                profileDir.Create();
-
-                // Get the file name
-                var profile = new FileInfo( Path.Combine( profileDir.FullName, "UserProfile.dup" ) );
-
-                // The new profile
-                Persisted settings;
-
-                // Load or create
-                if (!profile.Exists)
-                    settings = new Persisted();
-                else
-                    using (var stream = new FileStream( profile.FullName, FileMode.Open, FileAccess.Read, FileShare.Read ))
-                    {
-                        // Create serializer
-                        var serializer = new XmlSerializer( typeof( Persisted ), ProfileNamespace );
-
-                        // Process
-                        settings = (Persisted) serializer.Deserialize( stream );
-                    }
-
-                // Remember root
-                settings.m_File = profile;
-
-                // Report
-                return settings;
-            }
-        }
-
-        /// <summary>
         /// Die aktuelle Konfiguration.
         /// </summary>
-        private static Persisted m_Settings = Persisted.Load();
+        private static PersistedUserProfile m_Settings = PersistedUserProfile.Load();
 
         /// <summary>
         /// Speichert die Einstellungen des aktuellen Anwenders.
