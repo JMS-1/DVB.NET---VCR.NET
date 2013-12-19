@@ -2403,11 +2403,24 @@ var planPage = (function (_super) {
                     var middle = 90.0 * (epgEnd - epgStart) / fullTime;
                     var right = Math.max(0, 90.0 - middle - left);
 
-                    // Breiten festlegen
+                    // Elemente suchen
                     var all = container.find('div div');
-                    $(all[0]).width(left + '%');
-                    $(all[1]).width(middle + '%');
-                    $(all[2]).width(right + '%');
+                    var preTime = $(all[0]);
+                    var recTime = $(all[1]);
+                    var postTime = $(all[2]);
+
+                    // Breiten festlegen
+                    recTime.width(middle + '%');
+
+                    // Bei den Rändern kann es auch sein, dass wir die ganz loswerden wollen
+                    if (right >= 1)
+                        postTime.width(right + '%');
+                    else
+                        postTime.remove();
+                    if (left >= 1)
+                        preTime.width(left + '%');
+                    else
+                        preTime.remove();
 
                     // Sichtbar schalten
                     container.removeClass(JMSLib.CSSClass.invisible);
