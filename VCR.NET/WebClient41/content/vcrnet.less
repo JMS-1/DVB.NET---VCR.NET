@@ -259,8 +259,11 @@ body {
 // Beschreibt den Hintergurnd für den Sprungbereich, der auf quasi allen Seiten oben angezeigt wird.
 .linkArea {
     background-color: @lineBackgroundColor;
+    border: 0px solid transparent;
+    border-radius: 4px;
     font-size: small;
     padding: 5px;
+    width: 98%;
 
     a {
         vertical-align: middle;
@@ -763,4 +766,20 @@ fieldset {
 // Der Bereich der Aufzeichnung, der anderes als die Sendung aufzeichnet.
 .planOutsideGuide {
     background-color: #eeeeee;
+}
+
+// Der äußere Rahmen der Anwendung.
+.mainOuter {
+    margin-top: 60px;
+}
+
+// Der überall verfügbare Navigationsbereich.
+.mainNavigation {
+    margin-top: -15px;
+    margin-bottom: 20px;
+}
+
+// Die Anzeige der individuellen Teilanwendung.
+.mainInner {
+    margin: 0px 10px;
 }

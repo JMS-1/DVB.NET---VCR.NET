@@ -175,8 +175,11 @@ body .ui-button {
 
 .linkArea {
     background-color: #dddddd;
+    border: 0px solid transparent;
+    border-radius: 4px;
     font-size: small;
     padding: 5px;
+    width: 98%;
 }
 
 .linkArea a {
@@ -589,4 +592,17 @@ fieldset legend {
 
 .planOutsideGuide {
     background-color: #eeeeee;
+}
+
+.mainOuter {
+    margin-top: 60px;
+}
+
+.mainNavigation {
+    margin-top: -15px;
+    margin-bottom: 20px;
+}
+
+.mainInner {
+    margin: 0px 10px;
 }
