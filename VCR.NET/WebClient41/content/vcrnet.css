@@ -186,10 +186,6 @@ body .ui-button {
     vertical-align: middle;
 }
 
-.fullWidth {
-    width: 100%;
-}
-
 .editButtons {
     font-size: small;
     margin-top: 10px;
@@ -603,6 +599,6 @@ fieldset legend {
     margin-bottom: 20px;
 }
 
-.mainInner {
+#mainArea {
     margin: 0px 10px;
 }
