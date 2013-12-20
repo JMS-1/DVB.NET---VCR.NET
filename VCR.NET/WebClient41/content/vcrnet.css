@@ -503,6 +503,10 @@ body .ui-button {
     text-align: center;
 }
 
+.planName {
+    min-width: 400px;
+}
+
 .planException {
     border-left: 0px !important;
 }
