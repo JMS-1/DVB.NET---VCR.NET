@@ -15,40 +15,43 @@
                 <div>
                     <p>
                         Über die Auswahlliste ganz links kann
-    der zeitliche Anfang des angezeigten Ausschnitts festgelegt werden. Das Ende des Ausschnitts ergibt sich daraus
-    und aus der gewünschten Anzahl von zu berücksichtigenden Tagen.<a href="#settings"><img class="linkImage" src="ui/images/settings.png" /></a>
+                        der zeitliche Anfang des angezeigten Ausschnitts festgelegt werden. Das Ende des Ausschnitts ergibt sich daraus
+                        und aus der gewünschten Anzahl von zu berücksichtigenden Tagen.<a href="#settings"><img class="linkImage" src="ui/images/settings.png" /></a>
                     </p>
                     <p>
-                        Die beiden Schaltflächen direkt rechts neben der Auswahlliste für den zeitlichen Anfangen erlauben es zusätzlich zu 
-    den regulären Aufzeichnungen auch die vorgesehenen Zeiten für die Aktualisierung<a href="#faq;tasks"><img class="linkImage" src="ui/images/info.png" /></a>
+                        Die beiden Schaltflächen direkt rechts neben der Auswahlliste für den zeitlichen Anfangen erlauben es zusätzlich zu
+                        den regulären Aufzeichnungen auch die vorgesehenen Zeiten für die Aktualisierung<a href="#faq;tasks"><img class="linkImage" src="ui/images/info.png" /></a>
                         der Programmzeitschrift oder der
-    Senderliste in der Liste darzustellen.
+                        Senderliste in der Liste darzustellen.
                     </p>
                     <p>
-                        Links vor jeder Aufzeichnung in der Liste befindet sich ein kleines Symbol, dass darüber informiert, ob die 
-    Aufzeichnung wie gewünscht ausgeführt werden kann oder nicht. 
+                        Links vor jeder Aufzeichnung in der Liste befindet sich ein kleines Symbol, dass darüber informiert, ob die
+                        Aufzeichnung wie gewünscht ausgeführt werden kann oder nicht.
                     </p>
                     <table class="helpLegend">
                         <tr>
                             <td>
-                                <img src="ui/images/intime.gif" /></td>
+                                <img src="ui/images/intime.gif" />
+                            </td>
                             <td>Die Aufzeichnung wird wie programmiert ausgeführt.</td>
                         </tr>
                         <tr>
                             <td>
-                                <img src="ui/images/late.gif" /></td>
+                                <img src="ui/images/late.gif" />
+                            </td>
                             <td>Die Aufzeichnung beginnt verspätet, eventuell fehlt der Anfang.</td>
                         </tr>
                         <tr>
                             <td>
-                                <img src="ui/images/lost.gif" /></td>
+                                <img src="ui/images/lost.gif" />
+                            </td>
                             <td>Die Aufzeichnung kann nicht ausgeführt werden.</td>
                         </tr>
                     </table>
                     <p>
                         Direkt rechts neben dem Symbol wird der Beginn der
-    Aufzeichnung als Verweis angezeigt. Wird dieser Verweis angeklickt, so werden weitere Details zur Aufzeichnung
-    sichtbar. Je nach vorhandenen Daten wird auch der zugehörige Eintrag der Programmzeitschrift<a href="#faq;epg"><img class="linkImage" src="ui/images/info.png" /></a>
+                        Aufzeichnung als Verweis angezeigt. Wird dieser Verweis angeklickt, so werden weitere Details zur Aufzeichnung
+                        sichtbar. Je nach vorhandenen Daten wird auch der zugehörige Eintrag der Programmzeitschrift<a href="#faq;epg"><img class="linkImage" src="ui/images/info.png" /></a>
                         abgerufen und angezeigt.
                     </p>
                     <p>
@@ -57,19 +60,22 @@
                     <table class="helpLegend">
                         <tr>
                             <td>
-                                <img src="ui/images/exceptOff.png" border="0" /></td>
-                            <td>Handelt es sich um eine sich wiederholende Aufzeichnung,<a href="#faq;repeatingschedules"><img class="linkImage" src="ui/images/info.png" /></a>so 
+                                <img src="ui/images/exceptOff.png" border="0" />
+                            </td>
+                            <td>
+                                Handelt es sich um eine sich wiederholende Aufzeichnung,<a href="#faq;repeatingschedules"><img class="linkImage" src="ui/images/info.png" /></a>so
                                 kann auch das Symbol direkt rechts neben dem Namen angeklickt werden,
-                                um die Ausnahmeregelung für die jeweilige Aufzeichnung anzuzeigen und zu ändern.</td>
+                                um die Ausnahmeregelung für die jeweilige Aufzeichnung anzuzeigen und zu ändern.
+                            </td>
                         </tr>
                     </table>
                 </div>
             </div>
 
             <div class="linkArea">
-                <select id="selectStart" class="selectByCheckBox"></select>
-                <input type="checkbox" id="showGuide" /><label class="optionButton toggleButton" for="showGuide">Programmzeitschrift</label>
-                <input type="checkbox" id="showScan" /><label class="optionButton toggleButton" for="showScan">Sendersuchlauf</label>
+                <span id="startChoice" class="optionButton" />
+                <input type="checkbox" id="showGuide" /><label class="optionButton toggleButton planButton" for="showGuide">Programmzeitschrift</label>
+                <input type="checkbox" id="showScan" /><label class="optionButton toggleButton planButton" for="showScan">Sendersuchlauf</label>
             </div>
 
             <table class="dataTable">
@@ -85,8 +91,7 @@
                     </tr>
                 </thead>
 
-                <tbody id="planRows">
-                </tbody>
+                <tbody id="planRows"></tbody>
 
             </table>
         </div>

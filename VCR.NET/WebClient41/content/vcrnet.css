@@ -241,6 +241,10 @@ body .ui-button {
     font-weight: bold;
 }
 
+.planButton {
+    margin-top: 2px;
+}
+
 .danger {
     font-weight: bolder;
     border-color: #8b0000;

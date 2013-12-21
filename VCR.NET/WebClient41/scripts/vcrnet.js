@@ -2298,24 +2298,24 @@ var planPage = (function (_super) {
         this.detailsManager.reset();
 
         // Auswahl auslesen
-        var selected = this.selStart.val();
+        var choice = this.startChooser.find(':checked').val();
 
         // Auf Mitternacht vorsetzen
         var midnight = new Date(Date.now());
         midnight = new Date(midnight.getFullYear(), midnight.getMonth(), midnight.getDate());
 
         // Anfangszeitpunkt setzen
-        if (selected == '') {
+        if ((choice === undefined) || choice == '0') {
             window.location.hash = '#plan';
 
             // Einfach alles
             this.minStart = new Date(0);
             this.maxStart = new Date(midnight.getTime() + 86400000 * VCRServer.UserProfile.global.planDaysToShow);
         } else {
-            window.location.hash = '#plan;' + selected;
+            window.location.hash = '#plan;' + choice;
 
             // Und Zeitpunkt ermitteln
-            this.minStart = new Date(midnight.getTime() + 86400000 * selected);
+            this.minStart = new Date(midnight.getTime() + 86400000 * choice);
             this.maxStart = new Date(this.minStart.getTime() + 86400000 * VCRServer.UserProfile.global.planDaysToShow);
         }
     };
@@ -2478,28 +2478,39 @@ var planPage = (function (_super) {
         var me = this;
 
         // Aktuelle Auswahl löschen
-        me.selStart.children().remove();
+        me.startChooser.children().remove();
 
-        // Aktueller Zeitpunkt
-        var now = Date.now();
-
-        // Neue Auswahl ergänzen
-        me.selStart.append('<option value="">&lt;Jetzt&gt;</option>');
+        // Mitternacht ermitteln
+        var midnight = new Date(Date.now());
+        midnight = new Date(midnight.getFullYear(), midnight.getMonth(), midnight.getDate());
 
         // Vorauswahl prüfen
         var hash = window.location.hash;
         var startIndex = hash.indexOf(';');
         var selected = (startIndex >= 0) ? hash.substr(startIndex + 1) : null;
+        var rootChecker = (startIndex < 0) ? ' checked="checked"' : '';
+
+        // Neue Auswahl ergänzen
+        me.startChooser.append('<input type="radio" id="startChoice0" name="startChoice"' + rootChecker + ' value="0"/><label for="startChoice0">Jetzt</label>');
 
         for (var i = 1; i < 7; i++) {
             // Werte berechnen
-            var days = (i * VCRServer.UserProfile.global.planDaysToShow).toString();
-            var isSelected = (days == selected);
+            var days = i * VCRServer.UserProfile.global.planDaysToShow;
+            var daysAsString = days.toString();
+            var startDate = new Date(midnight.getTime() + 86400000 * days);
+            var isSelected = (daysAsString == selected);
             var selector = isSelected ? ' selected="selected"' : '';
+            var checker = isSelected ? ' checked="checked"' : '';
 
             // Neue Auswahl ergänzen
-            me.selStart.append('<option value="' + days + '"' + selector + '>in ' + days + ' Tagen</option>');
+            me.startChooser.append('<input type="radio" id="startChoice' + i + '" name="startChoice"' + checker + ' value="' + daysAsString + '"/><label for="startChoice' + i + '">' + JMSLib.DateFormatter.getShortDate(startDate) + '</label>');
         }
+
+        // Anzeige aufbereiten
+        me.startChooser.buttonset();
+        me.startChooser.find('input').click(function () {
+            me.refresh();
+        });
 
         // Filter aktivieren
         me.planRowTemplate.filter = function (item) {
@@ -2512,9 +2523,6 @@ var planPage = (function (_super) {
         // Aktualisierung aufsetzen
         $('.refreshLink').click(function () {
             me.reload(null);
-        });
-        me.selStart.change(function () {
-            me.refresh();
         });
         me.ckGuide.click(function () {
             me.refresh();
@@ -2533,7 +2541,7 @@ var planPage = (function (_super) {
         var planLoaded = me.registerAsyncCall();
 
         // Elemente suchen
-        me.selStart = $('#selectStart');
+        me.startChooser = $('#startChoice');
 
         // Darstellung der Auswahl konfigurieren
         me.ckGuide = $('#showGuide');
