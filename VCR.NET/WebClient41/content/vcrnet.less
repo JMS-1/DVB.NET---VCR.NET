@@ -18,6 +18,7 @@
 
 // Die Farbe aller Verweise in allen Zuständen.
 @linkColor: #0000ff;
+@linkColorHome: #0000a0;
 
 // Diese Farbe markiert eine Schaltfläche, deren Aktion nicht ausgeführt werden konnte.
 @updateFailedColor: darkred;
@@ -31,18 +32,19 @@
 // Zeit eine Warnung an.
 @warning: #FFFF00;
 
-// Festlegung des allgemeinen Hintergrunds. Das betrifft hier vor allen Zeichensatz,
-// Hintergrund und Darstellung der Verweise.
+// Festlegung des allgemeinen Hintergrunds - das betrifft hier vor allen Zeichensatz und den Hintergrund sowie
+// die Verweise.
 body {
     background-color: @background;
     font-family: @font;
 
-    :link {
+    :link, :visited {
         color: @linkColor;
+        text-decoration: none;
     }
 
-    :visited {
-        color: @linkColor;
+    a:hover {
+        text-decoration: underline;
     }
 
     .ui-button {
@@ -212,12 +214,8 @@ body {
 .homeContent {
     margin-top: -20px;
 
-    :link {
-        color: black;
-    }
-
-    :visited {
-        color: black;
+    :link, :visited {
+        color: @linkColorHome;
     }
 
     .taskStarter {
@@ -520,11 +518,6 @@ body {
     // Dezenter Hinweis auf Verweise - die Anzeige der Aufträge und Aufzeichnungen wäre sonst optisch überladen.
     a {
         color: black;
-        text-decoration: none;
-
-        :hover {
-            color: @softBorderColor;
-        }
     }
 }
 

@@ -3,12 +3,14 @@
     font-family: Arial, sans-serif;
 }
 
-body :link {
-    color: #0000ff;
-}
-
+body :link,
 body :visited {
     color: #0000ff;
+    text-decoration: none;
+}
+
+body a:hover {
+    text-decoration: underline;
 }
 
 body .ui-button {
@@ -136,12 +138,9 @@ body .ui-button {
     margin-top: -20px;
 }
 
-.homeContent :link {
-    color: black;
-}
-
+.homeContent :link,
 .homeContent :visited {
-    color: black;
+    color: #0000a0;
 }
 
 .homeContent .taskStarter {
@@ -387,11 +386,6 @@ body .ui-button {
 
 .jobTable a {
     color: black;
-    text-decoration: none;
-}
-
-.jobTable a :hover {
-    color: #cccccc;
 }
 
 .directoryBrowser select {
