@@ -173,3 +173,5 @@ $RECYCLE.BIN/
 /DVB.NET/Card Server/CardServerCore/JMS.DVB.CardServerCore.sln
 /DVB.NET/Provider/FireDTV/JMS.DVB.Provider.FireDTV.sln
 /DVB.NET/Tools/UserProfileManager/UserProfileManager.sln
+/DVB.NET/EPG/JMS.DVB.EPG.sln
+/DVB.NET/FavoriteManager/JMS.FavoriteManager.sln

@@ -1,26 +1,90 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace JMS.DVB.EPG
 {
-	public enum InnerFECs
-	{
-		NotDefined,
-		Conv1_2,
-		Conv2_3,
-		Conv3_4,
-		Conv5_6,
-		Conv7_8,
-		Conv8_9,
-		Reserved0111,
-		Reserved1000,
-		Reserved1001,
-		Reserved1010,
-		Reserved1011,
-		Reserved1100,
-		Reserved1101,
-		Reserved1110,
-		NoConv
-	}
+    /// <summary>
+    /// Die Arten des inneren Fehlerkorrekturverfahrens.
+    /// </summary>
+    public enum InnerFECs
+    {
+        /// <summary>
+        /// Keine Angabe.
+        /// </summary>
+        NotDefined,
+
+        /// <summary>
+        /// 1:2
+        /// </summary>
+        Conv1_2,
+
+        /// <summary>
+        /// 2:3
+        /// </summary>
+        Conv2_3,
+
+        /// <summary>
+        /// 3:4
+        /// </summary>
+        Conv3_4,
+
+        /// <summary>
+        /// 5:6
+        /// </summary>
+        Conv5_6,
+
+        /// <summary>
+        /// 7:8
+        /// </summary>
+        Conv7_8,
+
+        /// <summary>
+        /// 8:9
+        /// </summary>
+        Conv8_9,
+
+        /// <summary>
+        /// Noch nicht in Verwendung
+        /// </summary>
+        Reserved0111,
+
+        /// <summary>
+        /// Noch nicht in Verwendung
+        /// </summary>
+        Reserved1000,
+
+        /// <summary>
+        /// Noch nicht in Verwendung
+        /// </summary>
+        Reserved1001,
+
+        /// <summary>
+        /// Noch nicht in Verwendung
+        /// </summary>
+        Reserved1010,
+
+        /// <summary>
+        /// Noch nicht in Verwendung
+        /// </summary>
+        Reserved1011,
+
+        /// <summary>
+        /// Noch nicht in Verwendung
+        /// </summary>
+        Reserved1100,
+
+        /// <summary>
+        /// Noch nicht in Verwendung
+        /// </summary>
+        Reserved1101,
+
+        /// <summary>
+        /// Noch nicht in Verwendung
+        /// </summary>
+        Reserved1110,
+
+        /// <summary>
+        /// Keine Korrektur
+        /// </summary>
+        NoConv
+    }
 }

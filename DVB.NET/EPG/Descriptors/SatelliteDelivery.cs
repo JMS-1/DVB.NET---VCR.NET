@@ -1,24 +1,53 @@
-using System;
-using System.Collections.Generic;
+
 
 namespace JMS.DVB.EPG.Descriptors
 {
+    /// <summary>
+    /// Beschreibt eine Quellgruppe für den DVB-S Empfang.
+    /// </summary>
     public class SatelliteDelivery : Descriptor
     {
+        /// <summary>
+        /// Die Sendefrequenz.
+        /// </summary>
         public readonly uint Frequency;
 
+        /// <summary>
+        /// Die Symbolrate.
+        /// </summary>
         public readonly uint SymbolRate;
 
+        /// <summary>
+        /// Die Position des Satelliten.
+        /// </summary>
         public readonly ushort OrbitalPosition;
 
+        /// <summary>
+        /// Die Position des Satelliten.
+        /// </summary>
         public readonly bool West;
 
+        /// <summary>
+        /// Die Signalpolarisation.
+        /// </summary>
         public readonly Polarizations Polarization;
 
+        /// <summary>
+        /// Die Modulation des Signals.
+        /// </summary>
         public readonly byte Modulation;
 
+        /// <summary>
+        /// Die innere Fehlerkorrektur.
+        /// </summary>
         public readonly InnerFECs InnerFEC;
 
+        /// <summary>
+        /// Erstellt eine neue Beschreibung.
+        /// </summary>
+        /// <param name="container">Die Sammlung aller Beschreibungen.</param>
+        /// <param name="offset">Das erste Byte in den Rohdaten zu dieser Beschreibung.</param>
+        /// <param name="length">Die Größe der Beschreibung in den Rohdaten.</param>
         public SatelliteDelivery( IDescriptorContainer container, int offset, int length )
             : base( container, offset, length )
         {

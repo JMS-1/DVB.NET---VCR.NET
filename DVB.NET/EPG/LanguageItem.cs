@@ -1,59 +1,84 @@
-using System;
-using System.Text;
 using System.Collections.Generic;
 using System.Globalization;
 
+
 namespace JMS.DVB.EPG
 {
-	public class LanguageItem
-	{
+    /// <summary>
+    /// Beschreibt eine einzelne Sprachkomponente.
+    /// </summary>
+    public class LanguageItem
+    {
+        /// <summary>
+        /// Der <i>ISO</i> Name der Sprache.
+        /// </summary>
         public readonly string ISOLanguage;
 
+        /// <summary>
+        /// Details zur Sprachkomponente.
+        /// </summary>
         public readonly AudioTypes Effect;
 
-		public LanguageItem(string language, AudioTypes effect)
-		{
-			// Remember
-			ISOLanguage = language;
-			Effect = effect;
-		}
+        /// <summary>
+        /// Erstellt eine neue Sprache.
+        /// </summary>
+        /// <param name="language">Die Sprach in <i>ISO</i> Notation.</param>
+        /// <param name="effect">Details zum Imhalt der Sprachkomponente.</param>
+        public LanguageItem( string language, AudioTypes effect )
+        {
+            // Remember
+            ISOLanguage = language;
+            Effect = effect;
+        }
 
-        private LanguageItem(Section section, int offset)
+        /// <summary>
+        /// Erstellt eine neue Sprache.
+        /// </summary>
+        /// <param name="section">Die Rohdaten.</param>
+        /// <param name="offset">Das erste Byte der Beschreibung in den Rohdaten.</param>
+        private LanguageItem( Section section, int offset )
         {
             // Load the string
-            ISOLanguage = section.ReadString(offset, 3);
+            ISOLanguage = section.ReadString( offset, 3 );
 
             // Load the effect
-            Effect = (AudioTypes)section[offset + 3];
+            Effect = (AudioTypes) section[offset + 3];
         }
 
-        public int Length
-        {
-            get
-            {
-                // Report static size
-                return 4;
-            }
-        }
+        /// <summary>
+        /// Meldet die Größe der Rohbeschreibung in Bytes.
+        /// </summary>
+        public int Length { get { return 4; } }
 
-        internal static LanguageItem Create(Section section, int offset, int length)
+        /// <summary>
+        /// Erstellt eine neue Sprache.
+        /// </summary>
+        /// <param name="section">Die Rohdaten.</param>
+        /// <param name="offset">Das erste Byte der Beschreibung in den Rohdaten.</param>
+        /// <param name="length">Die Größe der Rohdaten zu dieser Beschreibung in Bytes.</param>
+        /// <returns>Die gewünschte Beschreibung.</returns>
+        internal static LanguageItem Create( Section section, int offset, int length )
         {
             // Test for length
             if (length < 4) return null;
 
             // Create
-            return new LanguageItem(section, offset);
+            return new LanguageItem( section, offset );
         }
 
-		internal void CreatePayload(TableConstructor buffer)
-		{
-			// Append language
-			buffer.AddLanguage(ISOLanguage);
+        /// <summary>
+        /// Rekonstruiert eine Beschreibung.
+        /// </summary>
+        /// <param name="buffer">Sammelt die Rekonstruktion mehrere Beschreibungen.</param>
+        internal void CreatePayload( TableConstructor buffer )
+        {
+            // Append language
+            buffer.AddLanguage( ISOLanguage );
 
-			// Append effect
-			buffer.Add((byte)Effect);
-		}
-	}
+            // Append effect
+            buffer.Add( (byte) Effect );
+        }
+    }
 
     /// <summary>
     /// Erweiterungsmethoden für das Arbeiten mit Sprachen.
@@ -85,11 +110,11 @@ namespace JMS.DVB.EPG
 
             // Find it
             string shortName;
-            if (LanguageMap.TryGetValue( parts[0], out shortName )) 
+            if (LanguageMap.TryGetValue( parts[0], out shortName ))
                 return shortName;
 
             // Find it
-            if (EnglishLanguageMap.TryGetValue( parts[0], out shortName )) 
+            if (EnglishLanguageMap.TryGetValue( parts[0], out shortName ))
                 return shortName;
 
             // Not found

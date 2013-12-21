@@ -1,310 +1,329 @@
 using System;
-using System.Data;
-using System.Text;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Globalization;
-using System.ComponentModel;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Globalization;
+using System.Windows.Forms;
+
 
 namespace JMS.DVB.Favorites
 {
-	public delegate void ConfigurationFinishHandler(DialogResult result);
+    /// <summary>
+    /// Wird aufgerufen, wenn die Konfiguration verändert wurde.
+    /// </summary>
+    /// <param name="result">Das Ergebnis der Auswahl.</param>
+    public delegate void ConfigurationFinishHandler( DialogResult result );
 
-	public partial class FavoriteConfiguration : UserControl
-	{
-		private UserSettings m_Configuration = null;
+    /// <summary>
+    /// Der Dialog zum Ändern der bevorzugten Quellen.
+    /// </summary>
+    public partial class FavoriteConfiguration : UserControl
+    {
+        private UserSettings m_Configuration = null;
 
-		public event ConfigurationFinishHandler ConfigurationFinished;
- 
-		public FavoriteConfiguration()
-		{
-			// Initialize
-			InitializeComponent();
-		}
+        /// <summary>
+        /// Wird aufgerufen, wenn die Auswahl abgeschlossen wird.
+        /// </summary>
+        public event ConfigurationFinishHandler ConfigurationFinished;
 
-		public void Initialize(ChannelSelector selector)
-		{
-			// Remember
-			m_Configuration = selector.Configuration;
+        /// <summary>
+        /// Erstellt einen neuen Dialog.
+        /// </summary>
+        public FavoriteConfiguration()
+        {
+            // Initialize
+            InitializeComponent();
+        }
 
-			// All favorites
-			Dictionary<string, bool> favorites = new Dictionary<string, bool>();
+        /// <summary>
+        /// Initialisiert den Dialog.
+        /// </summary>
+        /// <param name="selector">Die zu verwendende Auswahlkomponente.</param>
+        public void Initialize( ChannelSelector selector )
+        {
+            // Remember
+            m_Configuration = selector.Configuration;
 
-			// Fill favorites
-			if (null != m_Configuration.FavoriteChannels)
-				foreach (string favorite in m_Configuration.FavoriteChannels)
-				{
-					// Remember
-					favorites[favorite] = true;
+            // All favorites
+            Dictionary<string, bool> favorites = new Dictionary<string, bool>();
 
-					// Add
-					lstFavorites.Items.Add(favorite);
-				}
+            // Fill favorites
+            if (null != m_Configuration.FavoriteChannels)
+                foreach (string favorite in m_Configuration.FavoriteChannels)
+                {
+                    // Remember
+                    favorites[favorite] = true;
 
-			// Fill channels
-			foreach (ChannelItem channel in selector.Channels)
-				if (!favorites.ContainsKey(channel.ChannelName))
-					lstAll.Items.Add(channel.ChannelName);
+                    // Add
+                    lstFavorites.Items.Add( favorite );
+                }
 
-			// Fill language list
-			foreach (CultureInfo info in CultureInfo.GetCultures(CultureTypes.NeutralCultures))
-			{
-				// Skip all sub-languages
-				if (info.NativeName.IndexOf(" (") >= 0) continue;
+            // Fill channels
+            foreach (ChannelItem channel in selector.Channels)
+                if (!favorites.ContainsKey( channel.ChannelName ))
+                    lstAll.Items.Add( channel.ChannelName );
 
-				// Add to map
-				selLanguage.Items.Add(info.NativeName);
-			}
+            // Fill language list
+            foreach (CultureInfo info in CultureInfo.GetCultures( CultureTypes.NeutralCultures ))
+            {
+                // Skip all sub-languages
+                if (info.NativeName.IndexOf( " (" ) >= 0) continue;
 
-			// Copy over
-			selLanguage.Text = m_Configuration.PreferredLanguage;
-			ckUse.Checked = m_Configuration.EnableShortCuts;
-			ckAC3.Checked = m_Configuration.PreferAC3;
+                // Add to map
+                selLanguage.Items.Add( info.NativeName );
+            }
 
-			// Disable
-			cmdSave.Enabled = false;
-		}
+            // Copy over
+            selLanguage.Text = m_Configuration.PreferredLanguage;
+            ckUse.Checked = m_Configuration.EnableShortCuts;
+            ckAC3.Checked = m_Configuration.PreferAC3;
 
-		private void FavoriteConfiguration_Load(object sender, EventArgs e)
-		{
-			// Configure
-			pnlLists_SizeChanged(this, EventArgs.Empty);
-		}
+            // Disable
+            cmdSave.Enabled = false;
+        }
 
-		private void pnlLists_SizeChanged(object sender, EventArgs e)
-		{
-			// Disable
-			lstAll.IntegralHeight = false;
-			lstFavorites.IntegralHeight = false;
+        private void FavoriteConfiguration_Load( object sender, EventArgs e )
+        {
+            // Configure
+            pnlLists_SizeChanged( this, EventArgs.Empty );
+        }
 
-			// Process
-			lstFavorites.Location = new Point(0, 0);
-			lstFavorites.Width = pnlLists.Width / 2 - 20;
-			lstFavorites.Height = pnlLists.Height;
+        private void pnlLists_SizeChanged( object sender, EventArgs e )
+        {
+            // Disable
+            lstAll.IntegralHeight = false;
+            lstFavorites.IntegralHeight = false;
 
-			// Other
-			lstAll.Location = new Point(lstFavorites.Left + lstFavorites.Width + 10, 0);
-			lstAll.Width = lstFavorites.Width;
-			lstAll.Height = lstFavorites.Height;
+            // Process
+            lstFavorites.Location = new Point( 0, 0 );
+            lstFavorites.Width = pnlLists.Width / 2 - 20;
+            lstFavorites.Height = pnlLists.Height;
 
-			// Enable
-			lstAll.IntegralHeight = true;
-			lstFavorites.IntegralHeight = true;
-		}
+            // Other
+            lstAll.Location = new Point( lstFavorites.Left + lstFavorites.Width + 10, 0 );
+            lstAll.Width = lstFavorites.Width;
+            lstAll.Height = lstFavorites.Height;
 
-		private void lstAll_DoubleClick(object sender, EventArgs e)
-		{
-			// Get the item
-			string selected = (string)lstAll.SelectedItem;
+            // Enable
+            lstAll.IntegralHeight = true;
+            lstFavorites.IntegralHeight = true;
+        }
 
-			// None
-			if (null == selected) return;
+        private void lstAll_DoubleClick( object sender, EventArgs e )
+        {
+            // Get the item
+            string selected = (string) lstAll.SelectedItem;
 
-			// Remove in here
-			lstAll.Items.RemoveAt(lstAll.SelectedIndex);
+            // None
+            if (null == selected) return;
 
-			// See if there is a selection
-			if (lstFavorites.SelectedIndex < 0)
-			{
-				// Move over to the end
-				lstFavorites.Items.Add(selected);
-			}
-			else
-			{
-				// Move in
-				lstFavorites.Items.Insert(lstFavorites.SelectedIndex + 1, selected);
-			}
+            // Remove in here
+            lstAll.Items.RemoveAt( lstAll.SelectedIndex );
 
-			// Always select in list
-			lstFavorites.SelectedItem = selected;
+            // See if there is a selection
+            if (lstFavorites.SelectedIndex < 0)
+            {
+                // Move over to the end
+                lstFavorites.Items.Add( selected );
+            }
+            else
+            {
+                // Move in
+                lstFavorites.Items.Insert( lstFavorites.SelectedIndex + 1, selected );
+            }
 
-			// Enable
-			cmdSave.Enabled = true;
-		}
+            // Always select in list
+            lstFavorites.SelectedItem = selected;
 
-		private void lstFavorites_DoubleClick(object sender, EventArgs e)
-		{
-			// Get the item
-			string selected = (string)lstFavorites.SelectedItem;
+            // Enable
+            cmdSave.Enabled = true;
+        }
 
-			// None
-			if (null == selected) return;
+        private void lstFavorites_DoubleClick( object sender, EventArgs e )
+        {
+            // Get the item
+            string selected = (string) lstFavorites.SelectedItem;
 
-			// Remove in here
-			lstFavorites.Items.RemoveAt(lstFavorites.SelectedIndex);
+            // None
+            if (null == selected) return;
 
-			// Move over
-			lstAll.Items.Add(selected);
+            // Remove in here
+            lstFavorites.Items.RemoveAt( lstFavorites.SelectedIndex );
 
-			// Always select
-			lstAll.SelectedItem = selected;
+            // Move over
+            lstAll.Items.Add( selected );
 
-			// Enable
-			cmdSave.Enabled = true;
-		}
+            // Always select
+            lstAll.SelectedItem = selected;
 
-		private void lstFavorites_KeyUp(object sender, KeyEventArgs e)
-		{
-			// Get the index
-			int i = lstFavorites.SelectedIndex;
+            // Enable
+            cmdSave.Enabled = true;
+        }
 
-			// Not possible
-			if (i < 0) return;
+        private void lstFavorites_KeyUp( object sender, KeyEventArgs e )
+        {
+            // Get the index
+            int i = lstFavorites.SelectedIndex;
 
-			// Selection
-			if (Keys.Return == e.KeyCode)
-			{
-				// Did it
-				e.Handled = true;
+            // Not possible
+            if (i < 0) return;
 
-				// Make it a double click
-				lstFavorites_DoubleClick(lstFavorites, EventArgs.Empty);
+            // Selection
+            if (Keys.Return == e.KeyCode)
+            {
+                // Did it
+                e.Handled = true;
 
-				// Done
-				return;
-			}
+                // Make it a double click
+                lstFavorites_DoubleClick( lstFavorites, EventArgs.Empty );
 
-			// Load
-			string selected = (string)lstFavorites.Items[i];
+                // Done
+                return;
+            }
 
-			// Check the mode
-			if (e.KeyCode == Keys.Up)
-			{
-				// Not possible
-				if (i < 1) return;
+            // Load
+            string selected = (string) lstFavorites.Items[i];
 
-				// Simpy move selection
-				if (e.Shift)
-				{
-					// Move up
-					lstFavorites.SelectedIndex = --i;
+            // Check the mode
+            if (e.KeyCode == Keys.Up)
+            {
+                // Not possible
+                if (i < 1) return;
 
-					// We did it
-					e.Handled = true;
+                // Simpy move selection
+                if (e.Shift)
+                {
+                    // Move up
+                    lstFavorites.SelectedIndex = --i;
 
-					// Done
-					return;
-				}
+                    // We did it
+                    e.Handled = true;
 
-				// Remove
-				lstFavorites.Items.RemoveAt(i);
+                    // Done
+                    return;
+                }
 
-				// Correct
-				--i;
-			}
-			else if (e.KeyCode == Keys.Down)
-			{
-				// Not possible
-				if (i >= (lstFavorites.Items.Count - 1)) return;
+                // Remove
+                lstFavorites.Items.RemoveAt( i );
 
-				// Simpy move selection
-				if (e.Shift)
-				{
-					// Move up
-					lstFavorites.SelectedIndex = ++i;
+                // Correct
+                --i;
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                // Not possible
+                if (i >= (lstFavorites.Items.Count - 1)) return;
 
-					// We did it
-					e.Handled = true;
+                // Simpy move selection
+                if (e.Shift)
+                {
+                    // Move up
+                    lstFavorites.SelectedIndex = ++i;
 
-					// Done
-					return;
-				}
+                    // We did it
+                    e.Handled = true;
 
-				// Remove
-				lstFavorites.Items.RemoveAt(i);
+                    // Done
+                    return;
+                }
 
-				// Correct
-				++i;
-			}
-			else
-			{
-				// Done
-				return;
-			}
+                // Remove
+                lstFavorites.Items.RemoveAt( i );
 
-			// Insert
-			lstFavorites.Items.Insert(i, selected);
+                // Correct
+                ++i;
+            }
+            else
+            {
+                // Done
+                return;
+            }
 
-			// Reselect
-			lstFavorites.SelectedIndex = i;
+            // Insert
+            lstFavorites.Items.Insert( i, selected );
 
-			// Done
-			e.Handled = true;
+            // Reselect
+            lstFavorites.SelectedIndex = i;
 
-			// Enable
-			cmdSave.Enabled = true;
-		}
+            // Done
+            e.Handled = true;
 
-		private void lstFavorites_KeyDown(object sender, KeyEventArgs e)
-		{
-			// Done
-			if ((e.KeyCode == Keys.Up) || (e.KeyCode == Keys.Down)) e.Handled = true;
-		}
+            // Enable
+            cmdSave.Enabled = true;
+        }
 
-		private void selLanguage_SelectionChangeCommitted(object sender, EventArgs e)
-		{
-			// Enable
-			cmdSave.Enabled = true;
-		}
+        private void lstFavorites_KeyDown( object sender, KeyEventArgs e )
+        {
+            // Done
+            if ((e.KeyCode == Keys.Up) || (e.KeyCode == Keys.Down)) e.Handled = true;
+        }
 
-		private void ckUse_CheckedChanged(object sender, EventArgs e)
-		{
-			// Enable
-			cmdSave.Enabled = true;
-		}
+        private void selLanguage_SelectionChangeCommitted( object sender, EventArgs e )
+        {
+            // Enable
+            cmdSave.Enabled = true;
+        }
 
-		private void cmdSave_Click(object sender, EventArgs e)
-		{
-			try
-			{
-				// Take over
-				m_Configuration.PreferredLanguage = selLanguage.Text;
-				m_Configuration.PreferAC3 = ckAC3.Checked;
-				m_Configuration.EnableShortCuts = ckUse.Checked;
-				m_Configuration.FavoriteChannels = new string[lstFavorites.Items.Count];
-				
-				// Fill
-				lstFavorites.Items.CopyTo(m_Configuration.FavoriteChannels, 0);
+        private void ckUse_CheckedChanged( object sender, EventArgs e )
+        {
+            // Enable
+            cmdSave.Enabled = true;
+        }
 
-				// Save
-				m_Configuration.Save();
+        private void cmdSave_Click( object sender, EventArgs e )
+        {
+            try
+            {
+                // Take over
+                m_Configuration.PreferredLanguage = selLanguage.Text;
+                m_Configuration.PreferAC3 = ckAC3.Checked;
+                m_Configuration.EnableShortCuts = ckUse.Checked;
+                m_Configuration.FavoriteChannels = new string[lstFavorites.Items.Count];
 
-				// Disable
-				cmdSave.Enabled = false;
+                // Fill
+                lstFavorites.Items.CopyTo( m_Configuration.FavoriteChannels, 0 );
 
-				// Done
-				OnFinished(DialogResult.OK);
-			}
-			catch (Exception ex)
-			{
-				// Report
-				MessageBox.Show(this, ex.Message, Properties.Resources.SaveMessage);
-			}
-		}
+                // Save
+                m_Configuration.Save();
 
-		protected virtual void OnFinished(DialogResult result)
-		{
-			// Fire
-			if (null != ConfigurationFinished) ConfigurationFinished(result);
-		}
+                // Disable
+                cmdSave.Enabled = false;
 
-		private void cmdCancel_Click(object sender, EventArgs e)
-		{
-			// Report
-			OnFinished(DialogResult.Cancel);
-		}
+                // Done
+                OnFinished( DialogResult.OK );
+            }
+            catch (Exception ex)
+            {
+                // Report
+                MessageBox.Show( this, ex.Message, Properties.Resources.SaveMessage );
+            }
+        }
 
-		private void lstAll_KeyPress(object sender, KeyPressEventArgs e)
-		{
-			// Check the key
-			if ('\r' != e.KeyChar) return;
-			
-			// We did it
-			e.Handled = true;
+        /// <summary>
+        /// Wird aufgerufen, wenn der Dialog geschlossen wird.
+        /// </summary>
+        /// <param name="result">Die Art, wie der Dialog geschlossen wurde.</param>
+        protected virtual void OnFinished( DialogResult result )
+        {
+            // Fire
+            if (null != ConfigurationFinished) ConfigurationFinished( result );
+        }
 
-			// Forward
-			lstAll_DoubleClick(lstAll, EventArgs.Empty);
-		}
-	}
+        private void cmdCancel_Click( object sender, EventArgs e )
+        {
+            // Report
+            OnFinished( DialogResult.Cancel );
+        }
+
+        private void lstAll_KeyPress( object sender, KeyPressEventArgs e )
+        {
+            // Check the key
+            if ('\r' != e.KeyChar) return;
+
+            // We did it
+            e.Handled = true;
+
+            // Forward
+            lstAll_DoubleClick( lstAll, EventArgs.Empty );
+        }
+    }
 }

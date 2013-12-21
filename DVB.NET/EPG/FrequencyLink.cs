@@ -1,10 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
+﻿
 
 namespace JMS.DVB.EPG
 {
+    /// <summary>
+    /// Die Referenz auf eine Frequenz.
+    /// </summary>
     public class FrequencyLink
     {
         /// <summary>

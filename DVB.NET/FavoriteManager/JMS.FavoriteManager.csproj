@@ -46,6 +46,7 @@
     <NoWarn>
     </NoWarn>
     <DocumentationFile>..\Assemblies\RunTime\JMS.FavoriteManager.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -57,6 +58,7 @@
     <NoWarn>
     </NoWarn>
     <DocumentationFile>..\Assemblies\RunTime\JMS.FavoriteManager.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

@@ -1,20 +1,43 @@
-using System;
-using System.Collections.Generic;
+
 
 namespace JMS.DVB.EPG.Descriptors
 {
+    /// <summary>
+    /// Beschreibt eine Quellgruppe beim DVB-C Empfang.
+    /// </summary>
     public class CableDelivery : Descriptor
     {
+        /// <summary>
+        /// Die Sendefrequenz.
+        /// </summary>
         public uint Frequency { get; private set; }
 
+        /// <summary>
+        /// Die Symbolrate.
+        /// </summary>
         public uint SymbolRate { get; private set; }
 
+        /// <summary>
+        /// Das äußere Fehlerkorrekturverfahren.
+        /// </summary>
         public OuterFECs OuterFEC { get; private set; }
 
+        /// <summary>
+        /// Die Modulation des Signals.
+        /// </summary>
         public CableModulations Modulation { get; private set; }
 
+        /// <summary>
+        /// Das innere Fehlerkorrekturverfahren.
+        /// </summary>
         public InnerFECs InnerFEC { get; private set; }
 
+        /// <summary>
+        /// Erstellt eine neue Beschreibung.
+        /// </summary>
+        /// <param name="container">Die Sammlung aller Beschreibungen.</param>
+        /// <param name="offset">Das erste Rohdatenbyte zu dieser Beschreibung.</param>
+        /// <param name="length">Die Größe der Beschreibung im Rohformat.</param>
         public CableDelivery( IDescriptorContainer container, int offset, int length )
             : base( container, offset, length )
         {

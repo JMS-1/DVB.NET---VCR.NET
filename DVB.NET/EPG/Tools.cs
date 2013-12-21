@@ -203,6 +203,11 @@ namespace JMS.DVB.EPG
             }
         }
 
+        /// <summary>
+        /// Überträgt eine Nachricht in das Protokoll.
+        /// </summary>
+        /// <param name="format">Das Format zum Aufbau der Nachricht.</param>
+        /// <param name="args">Die Parameter zum Aufbau der Nachricht.</param>
         public static void WriteToScanLog( string format, params object[] args )
         {
             // Forward
