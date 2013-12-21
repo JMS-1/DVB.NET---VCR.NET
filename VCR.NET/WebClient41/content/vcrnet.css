@@ -155,9 +155,18 @@ body .ui-button {
 }
 
 .copyright {
-    vertical-align: middle;
     margin-top: 10px;
     font-size: small;
+}
+
+.copyright a {
+    float: left;
+}
+
+.copyright span {
+    float: left;
+    padding-left: 4px;
+    padding-top: 10px;
 }
 
 .settingsTable {
