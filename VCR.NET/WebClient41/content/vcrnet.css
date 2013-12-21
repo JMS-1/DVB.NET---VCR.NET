@@ -40,6 +40,7 @@ body .ui-button {
 
 .dataTable {
     font-family: 'Courier New';
+    white-space: nowrap;
     border-spacing: 0px;
     margin-top: 5px;
 }
@@ -72,6 +73,7 @@ body .ui-button {
 }
 
 .spanExpando {
+    white-space: normal;
     width: 0px;
 }
 
