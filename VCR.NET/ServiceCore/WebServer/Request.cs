@@ -209,10 +209,10 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         public override void SendResponseFromFile( string filename, long offset, long length )
         {
             // Allocate memory
-            byte[] toBeSend = new byte[length];
+            var toBeSend = new byte[length];
 
             // Load from file
-            using (FileStream stream = new FileStream( filename, FileMode.Open, FileAccess.Read, FileShare.Read ))
+            using (var stream = new FileStream( filename, FileMode.Open, FileAccess.Read, FileShare.Read ))
             {
                 // Position
                 stream.Seek( offset, SeekOrigin.Begin );
