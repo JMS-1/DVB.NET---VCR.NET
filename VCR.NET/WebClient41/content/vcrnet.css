@@ -70,6 +70,14 @@ body .ui-button {
     border-style: solid;
 }
 
+.dataTable.wideTable {
+    min-width: 1050px;
+}
+
+.dataTable.narrowTable {
+    min-width: 800px;
+}
+
 .detailView td {
     border-color: #e0e0e0;
 }
@@ -87,6 +95,10 @@ body .ui-button {
     border-style: dotted;
     border-width: 1px;
     padding: 5px;
+}
+
+.planItemMode {
+    width: 22px;
 }
 
 .planItemMode img {
@@ -508,9 +520,16 @@ body .ui-button {
     text-align: center;
 }
 
+.startColumn {
+    width: 11em;
+}
+
+.endColumn {
+    width: 3em;
+}
+
 .nameColumn {
     white-space: normal;
-    min-width: 35em;
 }
 
 .sourceColumn {
@@ -519,6 +538,7 @@ body .ui-button {
 
 .planException {
     border-left: 0px !important;
+    width: 24px;
 }
 
 .editCurrent {

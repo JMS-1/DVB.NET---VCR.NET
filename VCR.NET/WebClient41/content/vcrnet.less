@@ -117,6 +117,14 @@ body {
     }
 }
 
+    .dataTable.wideTable {
+        min-width: 1050px;
+    }
+
+    .dataTable.narrowTable {
+        min-width: 800px;
+    }
+
 // Für die eingeblendeten Detailansichten müssen wird die Farbgebung kompensieren.
 .detailView {
     td {
@@ -148,6 +156,8 @@ body {
 // optisch durch eine explizite Positionierung in der zugehörigen Spalte horizontal
 // zentriert präsentiert.
 .planItemMode {
+    width: 22px;
+
     img {
         padding-left: 6px;
         border: none;
@@ -653,10 +663,19 @@ body {
     text-align: center;
 }
 
+// Die Spalte der Startzeit einer Aufzeichnung.
+.startColumn {
+    width: 11em;
+}
+
+// Die Spalte mit der Endzeit einer Aufzeichnung.
+.endColumn {
+    width: 3em;
+}
+
 // Die Spalte mit dem Namen einer Aufzeichnung.
 .nameColumn {
     white-space: normal;
-    min-width: 35em;
 }
 
 // Die Spalte mit dem Namen einer Quelle.
@@ -668,6 +687,7 @@ body {
 // das Symbol zur Pflege der Ausnahme anzeigt
 .planException {
     border-left: 0px !important;
+    width: 24px;
 }
 
 // Ein bißchen Ausrichtung beim Ändern einer laufenden Aufzeichnung
