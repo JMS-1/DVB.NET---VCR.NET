@@ -79,10 +79,6 @@ body .ui-button {
     width: 0px;
 }
 
-.currentNameColumn {
-    width: 99%;
-}
-
 .faqContent {
     width: 90%;
 }
@@ -239,8 +235,9 @@ body .ui-button {
     padding-bottom: 0px;
 }
 
-.logNameColumn {
+.logSourceColumn {
     width: 99%;
+    white-space: normal;
 }
 
 .optionButton {
@@ -511,8 +508,13 @@ body .ui-button {
     text-align: center;
 }
 
-.planName {
-    width: 99%;
+.nameColumn {
+    white-space: normal;
+    min-width: 35em;
+}
+
+.sourceColumn {
+    white-space: normal;
 }
 
 .planException {

@@ -132,13 +132,6 @@ body {
     width: 0px;
 }
 
-// In der Anzeige der Aktivitäten wird die Spalte mit dem Namen verwendet, um die Tabelle auf
-// eine Minimalgröße zu bringen. Damit soll erreicht werden, dass bei die Anzeige der
-// Programmzeitschrift nicht zu schmal wird.
-.currentNameColumn {
-    width: 99%;
-}
-
 // Die Seiten der Fragen & Antworten werden grundsätzlich mit reduzierter Breite angezeigt.
 .faqContent {
     width: 90%;
@@ -335,8 +328,9 @@ body {
 // Der Name der Aufzeichnung in der Liste der Protokoll wird verwendet, um die Breite der
 // Tabelle zu fixieren und gleichzeitig genug Raum für das Einblenden der Informationen aus
 // der Programmzeitschrift zu erlauben.
-.logNameColumn {
+.logSourceColumn {
     width: 99%;
+    white-space: normal;
 }
 
 // Die diskrete Darstellung eines Umschalters als Schaltfläche mit Einrastoption.
@@ -659,9 +653,15 @@ body {
     text-align: center;
 }
 
-// Die Spalte mit dem Namen der Aufzeichnung im Aufzeichnungsplan
-.planName {
-    width: 99%;
+// Die Spalte mit dem Namen einer Aufzeichnung.
+.nameColumn {
+    white-space: normal;
+    min-width: 35em;
+}
+
+// Die Spalte mit dem Namen einer Quelle.
+.sourceColumn {
+    white-space: normal;
 }
 
 // Die Spalte im Aufzeichnungsplan, die für sich wiederholende Aufzeichnungen
