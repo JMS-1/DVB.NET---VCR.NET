@@ -2468,10 +2468,10 @@ class CurrentInfo {
     private source: string;
 
     // Der Zeitpunkt, an dem die Aufzeichnung beginnen wird.
-    private start: Date;
+    start: Date;
 
     // Der Zeitpunkt, an dem die Aufzeichnung enden wird.
-    private end: Date;
+    end: Date;
 
     // Die zugehörigen Informationen der Programmzeitschrift.
     private guideItem = new GuideItemCache();
@@ -2970,6 +2970,71 @@ class planPage extends Page implements IPage {
         info.startEdit(item, me.detailsManager.toggle(info, origin, 1), function (): void { me.reload(null); });
     }
 
+    // Überlappungsanzeige vorbereiten
+    static prepareGuideDisplay(entry: GuideItem, template: JQuery, start: Date, end: Date): JQuery {
+        // Zeiten ermitteln
+        var epgStart = entry.start.getTime();
+        var epgEnd = epgStart + entry.duration;
+        var recStart = start.getTime();
+        var recEnd = end.getTime();
+        var fullTime = recEnd - recStart;
+
+        // Zeigen, ob die Sendung vollständig aufgezeichnet wird
+        if (recStart <= epgStart)
+            if (recEnd >= epgEnd)
+                entry.overlapClass = CSSClass.fullRecord;
+
+        // Daten binden
+        var html = JMSLib.HTMLTemplate.cloneAndApplyTemplate(entry, template);
+
+        // Anzeige vorbereiten
+        if (fullTime > 0)
+            if (epgEnd > epgStart) {
+                // Anzeigelement ermitteln
+                var container = html.find('#guideOverlap');
+
+                // Grenzen korrigieren
+                if (epgStart < recStart)
+                    epgStart = recStart;
+                else if (epgStart > recEnd)
+                    epgStart = recEnd;
+                if (epgEnd < recStart)
+                    epgEnd = recStart;
+                else if (epgEnd > recEnd)
+                    epgEnd = recEnd;
+
+                // Breiten berechnen
+                var left = 90.0 * (epgStart - recStart) / fullTime;
+                var middle = 90.0 * (epgEnd - epgStart) / fullTime;
+                var right = Math.max(0, 90.0 - middle - left);
+
+                // Elemente suchen
+                var all = container.find('div div');
+                var preTime = $(all[0]);
+                var recTime = $(all[1]);
+                var postTime = $(all[2]);
+
+                // Breiten festlegen
+                recTime.width(middle + '%');
+
+                // Bei den Rändern kann es auch sein, dass wir die ganz loswerden wollen
+                if (right >= 1)
+                    postTime.width(right + '%');
+                else
+                    postTime.remove();
+                if (left >= 1)
+                    preTime.width(left + '%');
+                else
+                    preTime.remove();
+
+                // Sichtbar schalten
+                container.removeClass(JMSLib.CSSClass.invisible);
+            }
+
+        // Fertiges Präsentationselement melden
+        return html;
+    }
+
     // Eintrag der Programmzeitschrift abrufen
     private rowGuideEntry(item: PlanEntry, origin: any): void {
         var me = this;
@@ -2990,64 +3055,8 @@ class planPage extends Page implements IPage {
 
         // Eintrag suchen
         item.requestGuide(function (entry: GuideItem): void {
-            // Zeiten ermitteln
-            var epgStart = entry.start.getTime();
-            var epgEnd = epgStart + entry.duration;
-            var recStart = item.start.getTime();
-            var recEnd = item.end.getTime();
-            var fullTime = recEnd - recStart;
-
-            // Zeigen, ob die Sendung vollständig aufgezeichnet wird
-            if (recStart <= epgStart)
-                if (recEnd >= epgEnd)
-                    entry.overlapClass = CSSClass.fullRecord;
-
             // Daten binden
-            var html = JMSLib.HTMLTemplate.cloneAndApplyTemplate(entry, me.guideTemplate);
-
-            // Anzeige vorbereiten
-            if (fullTime > 0)
-                if (epgEnd > epgStart) {
-                    // Anzeigelement ermitteln
-                    var container = html.find('#guideOverlap');
-
-                    // Grenzen korrigieren
-                    if (epgStart < recStart)
-                        epgStart = recStart;
-                    else if (epgStart > recEnd)
-                        epgStart = recEnd;
-                    if (epgEnd < recStart)
-                        epgEnd = recStart;
-                    else if (epgEnd > recEnd)
-                        epgEnd = recEnd;
-
-                    // Breiten berechnen
-                    var left = 90.0 * (epgStart - recStart) / fullTime;
-                    var middle = 90.0 * (epgEnd - epgStart) / fullTime;
-                    var right = Math.max(0, 90.0 - middle - left);
-
-                    // Elemente suchen
-                    var all = container.find('div div');
-                    var preTime = $(all[0]);
-                    var recTime = $(all[1]);
-                    var postTime = $(all[2]);
-
-                    // Breiten festlegen
-                    recTime.width(middle + '%');
-
-                    // Bei den Rändern kann es auch sein, dass wir die ganz loswerden wollen
-                    if (right >= 1)
-                        postTime.width(right + '%');
-                    else
-                        postTime.remove();
-                    if (left >= 1)
-                        preTime.width(left + '%');
-                    else
-                        preTime.remove();
-
-                    // Sichtbar schalten
-                    container.removeClass(JMSLib.CSSClass.invisible);
-                }
+            var html = planPage.prepareGuideDisplay(entry, me.guideTemplate, item.start, item.end);
 
             // Vorbereiten
             html.find('#findInGuide').button();
@@ -3633,7 +3642,10 @@ class currentPage extends Page implements IPage {
 
         item.requestGuide(function (entry: GuideItem): void {
             // Anzeige vorbereiten
-            var view = detailsManager.toggle(entry, origin, 0);
+            var view = detailsManager.toggle(entry, origin, 0, function (guideItem: GuideItem, template: JQuery): JQuery {
+                return planPage.prepareGuideDisplay(guideItem, template, item.start, item.end);
+            });
+
             if (view != null)
                 view.find('#findInGuide').button();
         });

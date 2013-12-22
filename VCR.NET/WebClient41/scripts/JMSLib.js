@@ -400,7 +400,8 @@ var JMSLib;
         };
 
         // Blendet eine neue Detailansicht ein oder eine existierende aus
-        DetailManager.prototype.toggle = function (item, origin, templateIndex) {
+        DetailManager.prototype.toggle = function (item, origin, templateIndex, factory) {
+            if (typeof factory === "undefined") { factory = null; }
             // Noch nicht geladen - schade
             var template = this.templates[templateIndex];
             if (template == undefined)
@@ -431,7 +432,11 @@ var JMSLib;
             this.activeNode = row;
 
             // Neues Oberflächenelement aus der Vorlage erzeugen, befüllen und anzeigen
-            var newElement = HTMLTemplate.cloneAndApplyTemplate(item, template);
+            var newElement;
+            if (factory == null)
+                newElement = HTMLTemplate.cloneAndApplyTemplate(item, template);
+            else
+                newElement = factory(item, template);
             newElement.addClass(CSSClass.detailView);
             newElement.removeAttr('id');
             newElement.insertAfter(row);

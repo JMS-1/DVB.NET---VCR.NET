@@ -25,7 +25,7 @@ module JMSLib {
     }
 
     // Wertet eine Fehlermeldung von einem Web Dienst aus
-    export function dispatchErrorMessage(onError: (message: string) => void ): (result: JQueryXHR) => void {
+    export function dispatchErrorMessage(onError: (message: string) => void): (result: JQueryXHR) => void {
         return function (result: JQueryXHR): void {
             var info: any = $.parseJSON(result.responseText);
 
@@ -427,7 +427,7 @@ module JMSLib {
         }
 
         // Blendet eine neue Detailansicht ein oder eine existierende aus
-        toggle(item: any, origin: any, templateIndex: number): JQuery {
+        toggle(item: any, origin: any, templateIndex: number, factory: (item: any, template: JQuery) => JQuery = null): JQuery {
             // Noch nicht geladen - schade
             var template = this.templates[templateIndex];
             if (template == undefined)
@@ -458,7 +458,11 @@ module JMSLib {
             this.activeNode = row;
 
             // Neues Oberflächenelement aus der Vorlage erzeugen, befüllen und anzeigen
-            var newElement = HTMLTemplate.cloneAndApplyTemplate(item, template);
+            var newElement;
+            if (factory == null)
+                newElement = HTMLTemplate.cloneAndApplyTemplate(item, template);
+            else
+                newElement = factory(item, template);
             newElement.addClass(CSSClass.detailView);
             newElement.removeAttr('id');
             newElement.insertAfter(row);
