@@ -83,9 +83,9 @@
     <Content Include="content\jmslib.css">
       <DependentUpon>jmslib.less</DependentUpon>
     </Content>
-    <Content Include="content\jmslib.min.css">
+    <None Include="content\jmslib.min.css">
       <DependentUpon>jmslib.less</DependentUpon>
-    </Content>
+    </None>
     <Content Include="content\themes\base\images\animated-overlay.gif" />
     <Content Include="content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -232,7 +232,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="content\vcrnet.less" />
+    <Content Include="content\vcrnet.less" />
     <Content Include="scripts\vcrnet.js.map">
       <DependentUpon>vcrnet.ts</DependentUpon>
     </Content>
