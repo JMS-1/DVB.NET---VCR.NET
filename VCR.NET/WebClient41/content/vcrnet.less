@@ -161,9 +161,14 @@ body {
 }
 
 // Die Positionierung der Anzeige der Sendungsdaten aus der Programmzeitschrift innerhalb
-// der Liste der Aktivitäten aller Geräte.
+// der Liste der Aktivitäten aller Geräte. Die Spalte mit den Werten soll sich dabei
+// soweit als möglich nach rechts ausdehnen.
 .guideInPlan {
     margin-top: 8px;
+
+    td:last-child:not([colspan]) {
+        width: 100%;
+    }
 
     td {
         vertical-align: top;
