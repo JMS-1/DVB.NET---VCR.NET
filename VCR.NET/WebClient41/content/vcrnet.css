@@ -629,3 +629,14 @@ fieldset legend {
 #mainArea {
     margin: 0px 10px;
 }
+
+#favoritesContainer {
+    padding: 3px 10px 3px 3px;
+    white-space: nowrap;
+    overflow-y: auto;
+    float: left;
+}
+
+#favoritesContainer > div {
+    max-height: 10.2em;
+}
