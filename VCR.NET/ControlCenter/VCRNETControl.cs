@@ -605,7 +605,10 @@ namespace VCRControlCenter
                     if (!string.IsNullOrEmpty( m_Settings.Viewer ))
                     {
                         // See if this is the DVB.NET / VCR.NET Viewer or an equivalent application
-                        bool usesViewer = (!string.IsNullOrEmpty( m_Settings.ViewerArgs ) && m_Settings.ViewerArgs.Contains( "{2}" ));
+                        var usesViewer = (!string.IsNullOrEmpty( m_Settings.ViewerArgs ) && m_Settings.ViewerArgs.Contains( "{2}" ));
+
+                        // Port counter
+                        var port = m_Settings.MinPort;
 
                         // All profiles
                         foreach (var profile in settings.View.Profiles)
@@ -633,9 +636,6 @@ namespace VCRControlCenter
                                 // Next
                                 continue;
                             }
-
-                            // Port counter
-                            var port = m_Settings.MinPort;
 
                             // See if streaming is possible
                             foreach (var stream in current)
