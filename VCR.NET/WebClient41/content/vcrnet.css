@@ -9,12 +9,12 @@ body :visited {
     text-decoration: none;
 }
 
-body a:hover {
-    text-decoration: underline;
+body .ui-button {
+    color: black !important;
 }
 
-body .ui-button {
-    color: black;
+body a:hover {
+    text-decoration: underline;
 }
 
 .linkImage {
