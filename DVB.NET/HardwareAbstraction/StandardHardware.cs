@@ -8,6 +8,17 @@ using JMS.DVB.Editors;
 namespace JMS.DVB
 {
     /// <summary>
+    /// Stellt einige gemeinsame Informationen zur Verfügung.
+    /// </summary>
+    public interface IStandardHardware
+    {
+        /// <summary>
+        /// Steuert den Zugriff auf das Gerät über eine DirectShow Graphen.
+        /// </summary>
+        DataGraph Receiver { get; }
+    }
+
+    /// <summary>
     /// Beschreibt die Standardanbindung für DVB.NET 4.0ff Geräte. Die Standardansteuerung setzt 
     /// auf die Microsoft <i>Broadcast Driver Architecture (BDA)</i> Technologie.
     /// </summary>
@@ -15,7 +26,7 @@ namespace JMS.DVB
     /// <typeparam name="TLocationType">Die Art des Ursprungs.</typeparam>
     /// <typeparam name="TSourceGroupType">Die Art der Quellgruppe.</typeparam>
     [HardwareEditor( typeof( StandardHardwareEditor ) )]
-    public abstract class StandardHardware<TProfileType, TLocationType, TSourceGroupType> : Hardware<TProfileType, TLocationType, TSourceGroupType>
+    public abstract class StandardHardware<TProfileType, TLocationType, TSourceGroupType> : Hardware<TProfileType, TLocationType, TSourceGroupType>, IStandardHardware
         where TProfileType : Profile
         where TLocationType : GroupLocation
         where TSourceGroupType : SourceGroup
@@ -24,6 +35,22 @@ namespace JMS.DVB
         /// Steuert den Zugriff auf das Gerät über eine DirectShow Graphen.
         /// </summary>
         public DataGraph Receiver { get; private set; }
+
+        /// <summary>
+        /// Steuert den Zugriff auf das Gerät über eine DirectShow Graphen.
+        /// </summary>
+        DataGraph IStandardHardware.Receiver
+        {
+            get
+            {
+                // Force create
+                if (Receiver == null)
+                    PrepareReceiver( null, null );
+
+                // Report
+                return Receiver;
+            }
+        }
 
         /// <summary>
         /// Gesetzt, wenn die Entschlüsselung deaktiviert werden soll.
@@ -172,14 +199,7 @@ namespace JMS.DVB
         /// <summary>
         /// Meldet, ob der Pipelinemechanismus von DVB.NET 3.9 verwendet werden soll.
         /// </summary>
-        protected override bool UsesLegacyPipeline
-        {
-            get
-            {
-                // No, this is our pipeline stuff
-                return false;
-            }
-        }
+        protected override bool UsesLegacyPipeline { get { return false; } }
 
         /// <summary>
         /// Wählt eine neue Quellgruppe aus.
@@ -188,53 +208,64 @@ namespace JMS.DVB
         /// <param name="group">Die eigentliche Quellgruppe.</param>
         protected override void OnSelect( TLocationType location, TSourceGroupType group )
         {
-            // Create once
-            if (Receiver == null)
-            {
-                // Create receiver
-                var receiver = new DataGraph();
-                try
-                {
-                    // Load device data
-                    receiver.CaptureInformation = FindFilter( Aspect_CaptureName, Aspect_CaptureMoniker, false );
-                    receiver.TunerInformation = FindFilter( Aspect_TunerName, Aspect_TunerMoniker, true );
-                    receiver.DisableCIResetOnTuneFailure = m_disableEncryption;
-                    receiver.DVBType = DVBType;
-
-                    // Load optional data           
-                    int value;
-                    if (int.TryParse( GetParameter( BDAEnvironment.MiniumPATCountName ), out value ))
-                        if (value >= 0)
-                            receiver.Configuration.MinimumPATCount = value;
-                    if (int.TryParse( GetParameter( BDAEnvironment.MinimumPATCountWaitName ), out value ))
-                        if (value >= 0)
-                            receiver.Configuration.MinimumPATCountWaitTime = value;
-
-                    // Configure pipeline
-                    foreach (var item in Pipeline)
-                        item.CreateExtension<IPipelineExtension>().Install( receiver, Profile, item.SupportedOperations );
-
-                    // Time to create the graph
-                    receiver.Create( location, group );
-
-                    // Activate it
-                    receiver.Start();
-                }
-                catch
-                {
-                    // Cleanup
-                    receiver.Dispose();
-
-                    // Forward
-                    throw;
-                }
-
-                // Remember
-                Receiver = receiver;
-            }
+            // Startup
+            PrepareReceiver( location, group );
 
             // Blind forward
             Receiver.Tune( location, group );
+        }
+
+        /// <summary>
+        /// Wählt eine neue Quellgruppe aus.
+        /// </summary>
+        /// <param name="location">Der Ursprung der Quellgruppe.</param>
+        /// <param name="group">Die eigentliche Quellgruppe.</param>
+        private void PrepareReceiver( TLocationType location, TSourceGroupType group )
+        {
+            // Create once
+            if (Receiver != null)
+                return;
+
+            // Create receiver
+            var receiver = new DataGraph();
+            try
+            {
+                // Load device data
+                receiver.CaptureInformation = FindFilter( Aspect_CaptureName, Aspect_CaptureMoniker, false );
+                receiver.TunerInformation = FindFilter( Aspect_TunerName, Aspect_TunerMoniker, true );
+                receiver.DisableCIResetOnTuneFailure = m_disableEncryption;
+                receiver.DVBType = DVBType;
+
+                // Load optional data           
+                int value;
+                if (int.TryParse( GetParameter( BDAEnvironment.MiniumPATCountName ), out value ))
+                    if (value >= 0)
+                        receiver.Configuration.MinimumPATCount = value;
+                if (int.TryParse( GetParameter( BDAEnvironment.MinimumPATCountWaitName ), out value ))
+                    if (value >= 0)
+                        receiver.Configuration.MinimumPATCountWaitTime = value;
+
+                // Configure pipeline
+                foreach (var item in Pipeline)
+                    item.CreateExtension<IPipelineExtension>().Install( receiver, Profile, item.SupportedOperations );
+
+                // Time to create the graph
+                receiver.Create( location, group );
+
+                // Activate it
+                receiver.Start();
+            }
+            catch
+            {
+                // Cleanup
+                receiver.Dispose();
+
+                // Forward
+                throw;
+            }
+
+            // Remember
+            Receiver = receiver;
         }
 
         /// <summary>
