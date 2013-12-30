@@ -49,6 +49,11 @@ namespace JMS.DVB.DeviceAccess
         private IMediaFilter m_Graph;
 
         /// <summary>
+        /// Meldet den DirectShow Graph.
+        /// </summary>
+        public IMediaFilter Graph { get { return m_Graph; } }
+
+        /// <summary>
         /// Optional eine externe Registrierung des Graphen zu Testzwecken.
         /// </summary>
         private ROTRegister m_ExternalRegistration;
