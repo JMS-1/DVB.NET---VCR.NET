@@ -106,7 +106,6 @@
     <Compile Include="Interfaces\IBDAConditionalAccess.cs" />
     <Compile Include="Interfaces\IBDADeviceControl.cs" />
     <Compile Include="Interfaces\IBDADigitalDemodulator.cs" />
-    <Compile Include="Interfaces\IBDADigitalTopology.cs" />
     <Compile Include="Interfaces\IBDAFrequencyFilter.cs" />
     <Compile Include="Interfaces\IBDASignalStatistics.cs" />
     <Compile Include="Interfaces\IKsPin.cs" />

@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using JMS.DVB.DeviceAccess.Topology;
 
 
 namespace JMS.DVB.DeviceAccess.Interfaces
@@ -288,7 +289,7 @@ namespace JMS.DVB.DeviceAccess.Interfaces
             using (var instance = filter.MarshalToManaged())
             {
                 // Change type  
-                var topology = instance.Object as IBDADigitalTopology;
+                var topology = instance.Object as IBDATopology;
                 if (topology == null)
                     return null;
 
