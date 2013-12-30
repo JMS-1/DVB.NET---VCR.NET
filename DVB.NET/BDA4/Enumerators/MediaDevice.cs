@@ -46,26 +46,12 @@ namespace JMS.DVB.DeviceAccess.Enumerators
         /// <summary>
         /// Report all multi-media devices.
         /// </summary>
-        public static string[] DeviceNames
-        {
-            get
-            {
-                // Ask base class
-                return GetDevices( DeviceClass );
-            }
-        }
+        public static string[] DeviceNames { get { return GetDevices( DeviceClass ); } }
 
         /// <summary>
         /// Report all multi-media devices.
         /// </summary>
-        public static DeviceInformation[] DeviceInformations
-        {
-            get
-            {
-                // Ask base class
-                return GetDeviceInformations( DeviceClass ).ToArray();
-            }
-        }
+        public static DeviceInformation[] DeviceInformations { get { return GetDeviceInformations( DeviceClass ).ToArray(); } }
 
         /// <summary>
         /// Deaktiviert und Reaktiviert ein Gerät.

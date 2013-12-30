@@ -172,38 +172,17 @@ namespace JMS.DVB.DeviceAccess.Enumerators
         /// <summary>
         /// Meldet alle bekannten Filter.
         /// </summary>
-        public IEnumerable<FilterInformation> AllFilters
-        {
-            get
-            {
-                // Report
-                return GetFilters( null );
-            }
-        }
+        public IEnumerable<FilterInformation> AllFilters { get { return GetFilters( null ); } }
 
         /// <summary>
         /// Meldet alle bekannten Nutzdatenkomponenten.
         /// </summary>
-        public IEnumerable<FilterInformation> CaptureFilters
-        {
-            get
-            {
-                // Report
-                return GetFilters( FilterInformation.FilterType.Capture );
-            }
-        }
+        public IEnumerable<FilterInformation> CaptureFilters { get { return GetFilters( FilterInformation.FilterType.Capture ); } }
 
         /// <summary>
         /// Meldet alle bekannten Empfangskomponenten.
         /// </summary>
-        public IEnumerable<FilterInformation> TunerFilters
-        {
-            get
-            {
-                // Report
-                return GetFilters( FilterInformation.FilterType.Tuner );
-            }
-        }
+        public IEnumerable<FilterInformation> TunerFilters { get { return GetFilters( FilterInformation.FilterType.Tuner ); } }
 
         /// <summary>
         /// Meldet alle Filter einer bestimmten Art.
@@ -219,14 +198,7 @@ namespace JMS.DVB.DeviceAccess.Enumerators
         /// <summary>
         /// Meldet alle Geräte.
         /// </summary>
-        public IEnumerable<DeviceInformation> MediaDevices
-        {
-            get
-            {
-                // Report
-                return m_MediaDevices.Values;
-            }
-        }
+        public IEnumerable<DeviceInformation> MediaDevices { get { return m_MediaDevices.Values; } }
     }
 
     /// <summary>

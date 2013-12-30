@@ -1,9 +1,9 @@
 using System;
-using System.Linq;
-using System.Text;
-using System.Security;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security;
+using System.Text;
 
 
 namespace JMS.DVB.DeviceAccess.Enumerators
@@ -26,13 +26,6 @@ namespace JMS.DVB.DeviceAccess.Enumerators
         [DllImport( "setupapi.dll", EntryPoint = "SetupDiGetDeviceRegistryPropertyA" )]
         [SuppressUnmanagedCodeSecurity]
         static private extern bool SetupDiGetDeviceRegistryProperty( IntPtr DeviceInfoSet, ref DeviceInfoData DeviceInfoData, Int32 Property, out UInt32 PropertyRegDataType, byte[] PropertyBuffer, Int32 PropertyBufferSize, out UInt32 RequiredSize );
-
-        /// <summary>
-        /// Wrapper of the ANSI version of the SetupAPI function <i>SetupDiGetDeviceRegistryProperty</i>.
-        /// </summary>
-        [DllImport( "setupapi.dll", EntryPoint = "SetupDiGetDeviceRegistryPropertyA" )]
-        [SuppressUnmanagedCodeSecurity]
-        static private extern bool SetupDiGetDeviceRegistryProperty( IntPtr DeviceInfoSet, ref DeviceInfoData DeviceInfoData, UInt32 Property, out UInt32 PropertyRegDataType, IntPtr PropertyBuffer, UInt32 PropertyBufferSize, out UInt32 RequiredSize );
 
         /// <summary>
         /// Wrapper of the SetupAPI function <i>SetupDiGetDeviceInterfaceDetail</i>.
@@ -258,14 +251,7 @@ namespace JMS.DVB.DeviceAccess.Enumerators
         /// </summary>
         /// <exception cref="DeviceException">For all errors from the SetupAPI
         /// calls.</exception>
-        public bool Enabled
-        {
-            set
-            {
-                // Use helper
-                ChangeState( value ? 1 : 2 );
-            }
-        }
+        public bool Enabled { set { ChangeState( value ? 1 : 2 ); } }
 
         /// <summary>
         /// Will use the SetupAPI to locate the <see cref="m_Adaptor"/> network device
@@ -273,14 +259,7 @@ namespace JMS.DVB.DeviceAccess.Enumerators
         /// </summary>
         /// <exception cref="DeviceException">For all errors from the SetupAPI
         /// calls.</exception>
-        public bool Running
-        {
-            set
-            {
-                // Use helper
-                ChangeState( value ? 4 : 5 );
-            }
-        }
+        public bool Running { set { ChangeState( value ? 4 : 5 ); } }
 
         /// <summary>
         /// Find the related device and change the operating state.
@@ -291,17 +270,17 @@ namespace JMS.DVB.DeviceAccess.Enumerators
         private void ChangeState( int stateCode )
         {
             // Open device
-            IntPtr hInfoList = SetupDiGetClassDevs( ref m_Class, IntPtr.Zero, IntPtr.Zero, 2 );
+            var hInfoList = SetupDiGetClassDevs( ref m_Class, IntPtr.Zero, IntPtr.Zero, 2 );
 
             // Validate
-            if (-1 == (int) hInfoList)
+            if ((int) hInfoList == -1)
                 throw new DeviceException( "Could not create Device Set" );
 
             // With cleanup
             try
             {
                 // Create the device information data block
-                DeviceInfoData pData = new DeviceInfoData();
+                var pData = new DeviceInfoData();
 
                 // Initialize
                 pData.cbSize = Marshal.SizeOf( pData );
@@ -327,13 +306,13 @@ namespace JMS.DVB.DeviceAccess.Enumerators
                         continue;
 
                     // Create update helper
-                    PropChangeParams pParams = new PropChangeParams();
-
-                    // Fill
-                    pParams.ClassInstallHeader.cbSize = ClassInstallHeader.SizeOf;
-                    pParams.ClassInstallHeader.InstallFunction = 0x12;
-                    pParams.Scope = (uint) ((stateCode < 4) ? 1 : 2);
-                    pParams.StateChange = (uint) stateCode;
+                    var pParams =
+                        new PropChangeParams
+                        {
+                            ClassInstallHeader = { cbSize = ClassInstallHeader.SizeOf, InstallFunction = 0x12 },
+                            Scope = (uint) ((stateCode < 4) ? 1 : 2),
+                            StateChange = (uint) stateCode,
+                        };
 
                     // Prepare
                     if (!SetupDiSetClassInstallParams( hInfoList, ref pData, ref pParams, PropChangeParams.SizeOf ))
@@ -380,7 +359,7 @@ namespace JMS.DVB.DeviceAccess.Enumerators
 
             // Open enumerator
             var @class = new Guid( deviceClass );
-            IntPtr hInfoList = SetupDiGetClassDevs( ref @class, IntPtr.Zero, IntPtr.Zero, 2 );
+            var hInfoList = SetupDiGetClassDevs( ref @class, IntPtr.Zero, IntPtr.Zero, 2 );
             if ((int) hInfoList == -1)
                 throw new DeviceException( "Could not create Device Set" );
 
@@ -394,17 +373,20 @@ namespace JMS.DVB.DeviceAccess.Enumerators
                 for (uint ix = 0; SetupDiEnumDeviceInfo( hInfoList, ix++, ref pData ); )
                 {
                     // Friendly name
-                    string friendly = ReadStringProperty( hInfoList, ref pData, 0 );
+                    var friendly = ReadStringProperty( hInfoList, ref pData, 0 );
                     if (string.IsNullOrEmpty( friendly ))
                         continue;
 
                     // Hardware identifiers
-                    string instance = GetInstanceId( hInfoList, ref pData );
+                    var instance = GetInstanceId( hInfoList, ref pData );
                     if (string.IsNullOrEmpty( instance ))
                         continue;
 
+                    // Identification
+                    var idList = ReadStringListProperty( hInfoList, ref pData, 1 );
+
                     // Remember
-                    names.Add( new DeviceInformation( friendly, instance ) );
+                    names.Add( new DeviceInformation( friendly, instance, idList ) );
                 }
             }
             finally
@@ -438,10 +420,10 @@ namespace JMS.DVB.DeviceAccess.Enumerators
         public static string[] GetDevicePaths( Guid deviceClassIdentifier )
         {
             // Result
-            List<string> names = new List<string>();
+            var names = new List<string>();
 
             // Open device
-            IntPtr hInfoList = SetupDiGetClassDevs( ref deviceClassIdentifier, IntPtr.Zero, IntPtr.Zero, 0x12 );
+            var hInfoList = SetupDiGetClassDevs( ref deviceClassIdentifier, IntPtr.Zero, IntPtr.Zero, 0x12 );
             if ((int) hInfoList == -1)
                 throw new DeviceException( "Could not create Device Set" );
 
@@ -455,17 +437,17 @@ namespace JMS.DVB.DeviceAccess.Enumerators
                 int bufferSize = 1000;
 
                 // Memory allocation
-                IntPtr sysmem = Marshal.AllocHGlobal( bufferSize );
-
-                // Initialize
-                Marshal.WriteInt32( sysmem, 6 );
-
-                // Calculate offset
-                IntPtr pathPtr = new IntPtr( sysmem.ToInt64() + 4 );
+                var sysmem = Marshal.AllocHGlobal( bufferSize );
 
                 // Be safe
                 try
                 {
+                    // Initialize
+                    Marshal.WriteInt32( sysmem, 6 );
+
+                    // Calculate offset
+                    var pathPtr = new IntPtr( sysmem.ToInt64() + 4 );
+
                     // Find them all
                     for (uint ix = 0; SetupDiEnumDeviceInterfaces( hInfoList, IntPtr.Zero, ref deviceClassIdentifier, ix++, ref interfaceData ); )
                     {
@@ -528,7 +510,7 @@ namespace JMS.DVB.DeviceAccess.Enumerators
         private static string ReadStringProperty( IntPtr handle, ref DeviceInfoData info, int propertyIndex )
         {
             // Allocate buffer
-            var buffer = new byte[1000];
+            var buffer = new byte[10000];
 
             // Load the name
             UInt32 charCount, regType;
@@ -538,6 +520,23 @@ namespace JMS.DVB.DeviceAccess.Enumerators
                 return AnsiEncoding.GetString( buffer, 0, (int) charCount );
             else
                 return null;
+        }
+
+        /// <summary>
+        /// Ermittelt eine Zeichenkettenlisteneigenschaft eines Gerätes.
+        /// </summary>
+        /// <param name="handle">Die Referenz auf die Liste aller Geräte (einer Art).</param>
+        /// <param name="info">Das gewünschte Gerät.</param>
+        /// <param name="propertyIndex">Die gewünschte Eigenschaft.</param>
+        /// <returns>Der Wert der Eigenschaft oder <i>null</i>.</returns>
+        private static string[] ReadStringListProperty( IntPtr handle, ref DeviceInfoData info, int propertyIndex )
+        {
+            // Load as string
+            var separatedString = ReadStringProperty( handle, ref info, propertyIndex );
+            if (string.IsNullOrEmpty( separatedString ))
+                return null;
+            else
+                return separatedString.Split( '\0' );
         }
 
         /// <summary>
