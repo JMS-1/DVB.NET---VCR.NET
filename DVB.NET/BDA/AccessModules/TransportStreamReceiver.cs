@@ -1,7 +1,7 @@
 using System;
 using System.Net;
-using System.Threading;
 using System.Net.Sockets;
+using System.Threading;
 
 
 namespace JMS.DVB.DirectShow.AccessModules
@@ -252,13 +252,6 @@ namespace JMS.DVB.DirectShow.AccessModules
         /// Meldet den zugeordneten TCP/IP UDP Port für die Entgegennahme des eingehenden
         /// Transport Streams.
         /// </summary>
-        public ushort Port
-        {
-            get
-            {
-                // Report
-                return (ushort) m_EndPoint.Port;
-            }
-        }
+        public ushort Port { get { return (ushort) m_EndPoint.Port; } }
     }
 }
