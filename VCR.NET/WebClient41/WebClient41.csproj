@@ -152,6 +152,7 @@
     <TypeScriptCompile Include="scripts\jmslib.ts" />
     <Content Include="scripts\jquery-2.0.3.min.js" />
     <Content Include="scripts\jquery-ui-1.10.3.min.js" />
+    <Content Include="scripts\jquery.mobile-1.3.2.min.js" />
     <Content Include="scripts\typings\jqueryui\jqueryui.d.ts" />
     <Content Include="scripts\typings\jquery\jquery.d.ts" />
     <Content Include="scripts\vcrnet.js">
@@ -209,6 +210,7 @@
     <Content Include="ui\templates\sourceSelection.html" />
     <Content Include="ui\templates\planRow.html" />
     <Content Include="ui\templates\planRowException.html" />
+    <TypeScriptCompile Include="scripts\typings\jquerymobile\jquerymobile.d.ts" />
     <TypeScriptCompile Include="scripts\vcrnet.ts" />
     <Content Include="content\vcrnet.css">
       <DependentUpon>vcrnet.less</DependentUpon>

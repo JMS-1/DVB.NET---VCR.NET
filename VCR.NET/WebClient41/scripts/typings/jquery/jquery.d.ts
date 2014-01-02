@@ -18,9 +18,9 @@ and limitations under the License.
 // Definitions by: Boris Yankov <https://github.com/borisyankov/>, Christian Hoffmeister <https://github.com/choffmeister>, Steve Fenton, Diullei Gomes <https://github.com/Diullei>, Tass Iliopoulos <https://github.com/tasoili>, Jason Swearingen, Sean Hill <https://github.com/seanski>, Guus Goossens <https://github.com/Guuz>, Kelly Summerlin <https://github.com/ksummerlin>, Basarat Ali Syed <https://github.com/basarat>, Nicholas Wolverson <https://github.com/nwolverson>, Derek Cicerone <https://github.com/derekcicerone>, Andrew Gaspar <https://github.com/AndrewGaspar>, James Harrison Fisher <https://github.com/jameshfisher>, Seikichi Kondo <https://github.com/seikichi>, Benjamin Jackman <https://github.com/benjaminjackman>, Poul Sorensen <https://github.com/s093294>, Josh Strobl <https://github.com/JoshStrobl>, John Reilly <https://github.com/johnnyreilly/>
 // Definitions: https://github.com/borisyankov/DefinitelyTyped
 
-/*
-    Interface for the AJAX setting that will configure the AJAX request
-*/
+/**
+ * Interface for the AJAX setting that will configure the AJAX request
+ */
 interface JQueryAjaxSettings {
     /**
      * The content type sent in the request header that tells the server what kind of response it will accept in return. If the accepts setting needs modification, it is recommended to do so once in the $.ajaxSetup() method.
@@ -348,6 +348,21 @@ interface JQueryEventConstructor {
     new (name: string, eventProperties?: any): JQueryEventObject;
 }
 
+/**
+ * The interface used to specify coordinates.
+ */
+interface JQueryCoordinates {
+    left: number;
+    top: number;
+}
+
+/**
+ * The interface used to specify easing functions.
+ */
+interface JQueryEasing {
+    linear(p: number): number;
+    swing(p: number): number;
+}
 
 /*
     Static members of jQuery (those on $ and jQuery themselves)
@@ -624,7 +639,7 @@ interface JQueryStatic {
     /**
      * Parses a string into an XML document.
      *
-     * @param dataa well-formed XML string to be parsed
+     * @param data a well-formed XML string to be parsed
      */
     parseXML(data: string): XMLDocument;
 
@@ -647,66 +662,268 @@ interface JQueryStatic {
 
     Animation(elem: any, properties: any, options: any): any;
 
+    easing: JQueryEasing;
 }
 
-/*
-    The jQuery instance members
-*/
+/**
+ * The jQuery instance members
+ */
 interface JQuery {
-    // AJAX
-    ajaxComplete(handler: any): JQuery;
-    ajaxError(handler: (event: any, jqXHR: any, settings: any, exception: any) => any): JQuery;
-    ajaxSend(handler: (event: any, jqXHR: any, settings: any, exception: any) => any): JQuery;
+    /**
+     * Register a handler to be called when Ajax requests complete. This is an AjaxEvent.
+     *
+     * @param handler The function to be invoked.
+     */
+    ajaxComplete(handler: (event: JQueryEventObject, XMLHttpRequest: XMLHttpRequest, ajaxOptions: any) => any): JQuery;
+    /**
+     * Register a handler to be called when Ajax requests complete with an error. This is an Ajax Event.
+     *
+     * @param handler The function to be invoked.
+     */
+    ajaxError(handler: (event: JQueryEventObject, jqXHR: JQueryXHR, ajaxSettings: JQueryAjaxSettings, thrownError: any) => any): JQuery;
+    /**
+     * Attach a function to be executed before an Ajax request is sent. This is an Ajax Event.
+     *
+     * @param handler The function to be invoked.
+     */
+    ajaxSend(handler: (event: JQueryEventObject, jqXHR: JQueryXHR, ajaxOptions: JQueryAjaxSettings) => any): JQuery;
+    /**
+     * Register a handler to be called when the first Ajax request begins. This is an Ajax Event.
+     *
+     * @param handler The function to be invoked.
+     */
     ajaxStart(handler: () => any): JQuery;
+    /**
+     * Register a handler to be called when all Ajax requests have completed. This is an Ajax Event.
+     *
+     * @param handler The function to be invoked.
+     */
     ajaxStop(handler: () => any): JQuery;
-    ajaxSuccess(handler: (event: any, jqXHR: any, settings: any, exception: any) => any): JQuery;
+    /**
+     * Attach a function to be executed whenever an Ajax request completes successfully. This is an Ajax Event.
+     *
+     * @param handler The function to be invoked.
+     */
+    ajaxSuccess(handler: (event: JQueryEventObject, XMLHttpRequest: XMLHttpRequest, ajaxOptions: JQueryAjaxSettings) => any): JQuery;
 
-    load(url: string, data?: any, complete?: any): JQuery;
+    /**
+     * Load data from the server and place the returned HTML into the matched element.
+     *
+     * @param url A string containing the URL to which the request is sent.
+     * @param data A plain object or string that is sent to the server with the request.
+     * @param complete A callback function that is executed when the request completes.
+     */
+    load(url: string, data?: string, complete?: (responseText: string, textStatus: string, XMLHttpRequest: XMLHttpRequest) => any): JQuery;
+    /**
+     * Load data from the server and place the returned HTML into the matched element.
+     *
+     * @param url A string containing the URL to which the request is sent.
+     * @param data A plain object or string that is sent to the server with the request.
+     * @param complete A callback function that is executed when the request completes.
+     */
+    load(url: string, data?: Object, complete?: (responseText: string, textStatus: string, XMLHttpRequest: XMLHttpRequest) => any): JQuery;
 
+    /**
+     * Encode a set of form elements as a string for submission.
+     */
     serialize(): string;
-    serializeArray(): any[];
+    /**
+     * Encode a set of form elements as an array of names and values.
+     */
+    serializeArray(): Object[];
 
-    // Attributes
-    addClass(classNames: string): JQuery;
-    addClass(func: (index: any, currentClass: any) => string): JQuery;
+    /**
+     * Adds the specified class(es) to each of the set of matched elements.
+     *
+     * @param className One or more space-separated classes to be added to the class attribute of each matched element.
+     */
+    addClass(className: string): JQuery;
+    /**
+     * Adds the specified class(es) to each of the set of matched elements.
+     *
+     * @param function A function returning one or more space-separated class names to be added to the existing class name(s). Receives the index position of the element in the set and the existing class name(s) as arguments. Within the function, this refers to the current element in the set.
+     */
+    addClass(func: (index: number, className: string) => string): JQuery;
 
-    // http://api.jquery.com/addBack/
+    /**
+     * Add the previous set of elements on the stack to the current set, optionally filtered by a selector.
+     */
     addBack(selector?: string): JQuery;
 
-
+    /**
+     * Get the value of an attribute for the first element in the set of matched elements.
+     *
+     * @param attributeName The name of the attribute to get.
+     */
     attr(attributeName: string): string;
-    attr(attributeName: string, value: any): JQuery;
-    attr(attributeName: string, func: (index: any, attr: any) => any): JQuery;
-    attr(map: any): JQuery;
-
+    /**
+     * Set one or more attributes for the set of matched elements.
+     *
+     * @param attributeName The name of the attribute to set.
+     * @param value A value to set for the attribute.
+     */
+    attr(attributeName: string, value: string): JQuery;
+    /**
+     * Set one or more attributes for the set of matched elements.
+     *
+     * @param attributeName The name of the attribute to set.
+     * @param value A value to set for the attribute.
+     */
+    attr(attributeName: string, value: number): JQuery;
+    /**
+     * Set one or more attributes for the set of matched elements.
+     *
+     * @param attributeName The name of the attribute to set.
+     * @param func A function returning the value to set. this is the current element. Receives the index position of the element in the set and the old attribute value as arguments.
+     */
+    attr(attributeName: string, func: (index: number, attr: any) => any): JQuery;
+    /**
+     * Set one or more attributes for the set of matched elements.
+     *
+     * @param attributes An object of attribute-value pairs to set.
+     */
+    attr(attributes: Object): JQuery;
+    
+    /**
+     * Determine whether any of the matched elements are assigned the given class.
+     *
+     * @param className The class name to search for.
+     */
     hasClass(className: string): boolean;
 
+    /**
+     * Get the HTML contents of the first element in the set of matched elements.
+     */
     html(): string;
+    /**
+     * Set the HTML contents of each element in the set of matched elements.
+     *
+     * @param htmlString A string of HTML to set as the content of each matched element.
+     */
     html(htmlString: string): JQuery;
-    html(htmlContent: (index: number, oldhtml: string) => string): JQuery;
-    html(obj: JQuery): JQuery;
+    /**
+     * Set the HTML contents of each element in the set of matched elements.
+     *
+     * @param func A function returning the HTML content to set. Receives the index position of the element in the set and the old HTML value as arguments. jQuery empties the element before calling the function; use the oldhtml argument to reference the previous content. Within the function, this refers to the current element in the set.
+     */
+    html(func: (index: number, oldhtml: string) => string): JQuery;
+    /**
+     * Set the HTML contents of each element in the set of matched elements.
+     *
+     * @param func A function returning the HTML content to set. Receives the index position of the element in the set and the old HTML value as arguments. jQuery empties the element before calling the function; use the oldhtml argument to reference the previous content. Within the function, this refers to the current element in the set.
+     */
 
+    /**
+     * Get the value of a property for the first element in the set of matched elements.
+     *
+     * @param propertyName The name of the property to get.
+     */
     prop(propertyName: string): any;
-    prop(propertyName: string, value: any): JQuery;
-    prop(map: any): JQuery;
-    prop(propertyName: string, func: (index: any, oldPropertyValue: any) => any): JQuery;
+    /**
+     * Set one or more properties for the set of matched elements.
+     *
+     * @param propertyName The name of the property to set.
+     * @param value A value to set for the property.
+     */
+    prop(propertyName: string, value: string): JQuery;
+    /**
+     * Set one or more properties for the set of matched elements.
+     *
+     * @param propertyName The name of the property to set.
+     * @param value A value to set for the property.
+     */
+    prop(propertyName: string, value: number): JQuery;
+    /**
+     * Set one or more properties for the set of matched elements.
+     *
+     * @param propertyName The name of the property to set.
+     * @param value A value to set for the property.
+     */
+    prop(propertyName: string, value: boolean): JQuery;
+    /**
+     * Set one or more properties for the set of matched elements.
+     *
+     * @param properties An object of property-value pairs to set.
+     */
+    prop(properties: Object): JQuery;
+    /**
+     * Set one or more properties for the set of matched elements.
+     *
+     * @param propertyName The name of the property to set.
+     * @param func A function returning the value to set. Receives the index position of the element in the set and the old property value as arguments. Within the function, the keyword this refers to the current element.
+     */
+    prop(propertyName: string, func: (index: number, oldPropertyValue: any) => any): JQuery;
 
+    /**
+     * Remove an attribute from each element in the set of matched elements.
+     *
+     * @param attributeName An attribute to remove; as of version 1.7, it can be a space-separated list of attributes.
+     */
     removeAttr(attributeName: string): JQuery;
 
+    /**
+     * Remove a single class, multiple classes, or all classes from each element in the set of matched elements.
+     *
+     * @param className One or more space-separated classes to be removed from the class attribute of each matched element.
+     */
     removeClass(className?: string): JQuery;
-    removeClass(func: (index: any, cls: any) => any): JQuery;
+    /**
+     * Remove a single class, multiple classes, or all classes from each element in the set of matched elements.
+     *
+     * @param function A function returning one or more space-separated class names to be removed. Receives the index position of the element in the set and the old class value as arguments.
+     */
+    removeClass(func: (index: number, className: string) => string): JQuery;
 
+    /**
+     * Remove a property for the set of matched elements.
+     *
+     * @param propertyName The name of the property to remove.
+     */
     removeProp(propertyName: string): JQuery;
 
+    /**
+     * Add or remove one or more classes from each element in the set of matched elements, depending on either the class's presence or the value of the switch argument.
+     *
+     * @param className One or more class names (separated by spaces) to be toggled for each element in the matched set.
+     * @param swtch A Boolean (not just truthy/falsy) value to determine whether the class should be added or removed.
+     */
     toggleClass(className: string, swtch?: boolean): JQuery;
+    /**
+     * Add or remove one or more classes from each element in the set of matched elements, depending on either the class's presence or the value of the switch argument.
+     *
+     * @param swtch A boolean value to determine whether the class should be added or removed.
+     */
     toggleClass(swtch?: boolean): JQuery;
-    toggleClass(func: (index: any, cls: any, swtch: any) => any): JQuery;
+    /**
+     * Add or remove one or more classes from each element in the set of matched elements, depending on either the class's presence or the value of the switch argument.
+     *
+     * @param func A function that returns class names to be toggled in the class attribute of each element in the matched set. Receives the index position of the element in the set, the old class value, and the switch as arguments.
+     * @param swtch A boolean value to determine whether the class should be added or removed.
+     */
+    toggleClass(func: (index: number, className: string, swtch: boolean) => string, swtch?: boolean): JQuery;
 
+    /**
+     * Get the current value of the first element in the set of matched elements.
+     */
     val(): any;
-    val(value: string[]): JQuery;
+    /**
+     * Set the value of each element in the set of matched elements.
+     *
+     * @param value A string of text or an array of strings corresponding to the value of each matched element to set as selected/checked.
+     */
     val(value: string): JQuery;
-    val(value: number): JQuery;
-    val(func: (index: any, value: any) => any): JQuery;
+    /**
+     * Set the value of each element in the set of matched elements.
+     *
+     * @param value A string of text or an array of strings corresponding to the value of each matched element to set as selected/checked.
+     */
+    val(value: string[]): JQuery;
+    /**
+     * Set the value of each element in the set of matched elements.
+     *
+     * @param func A function returning the value to set. this is the current element. Receives the index position of the element in the set and the old value as arguments.
+     */
+    val(func: (index: number, value: any) => any): JQuery;
 
     /**
      * Get the value of style properties for the first element in the set of matched elements.
@@ -763,20 +980,73 @@ interface JQuery {
      */
     css(properties: Object): JQuery;
 
+    /**
+     * Get the current computed height for the first element in the set of matched elements.
+     */
     height(): number;
+    /**
+     * Set the CSS height of every matched element.
+     *
+     * @param value An integer representing the number of pixels, or an integer with an optional unit of measure appended (as a string).
+     */
     height(value: number): JQuery;
+    /**
+     * Set the CSS height of every matched element.
+     *
+     * @param value An integer representing the number of pixels, or an integer with an optional unit of measure appended (as a string).
+     */
     height(value: string): JQuery;
-    height(func: (index: any, height: any) => any): JQuery;
+    /**
+     * Set the CSS height of every matched element.
+     *
+     * @param func A function returning the height to set. Receives the index position of the element in the set and the old height as arguments. Within the function, this refers to the current element in the set.
+     */
+    height(func: (index: number, height: number) => number): JQuery;
+    /**
+     * Set the CSS height of every matched element.
+     *
+     * @param func A function returning the height to set. Receives the index position of the element in the set and the old height as arguments. Within the function, this refers to the current element in the set.
+     */
+    height(func: (index: number, height: string) => string): JQuery;
+    /**
+     * Set the CSS height of every matched element.
+     *
+     * @param func A function returning the height to set. Receives the index position of the element in the set and the old height as arguments. Within the function, this refers to the current element in the set.
+     */
+    height(func: (index: number, height: string) => number): JQuery;
+    /**
+     * Set the CSS height of every matched element.
+     *
+     * @param func A function returning the height to set. Receives the index position of the element in the set and the old height as arguments. Within the function, this refers to the current element in the set.
+     */
+    height(func: (index: number, height: number) => string): JQuery;
 
+    /**
+     * Get the current computed height for the first element in the set of matched elements, including padding but not border.
+     */
     innerHeight(): number;
-    innerHeight(value: number): JQuery;
 
+    /**
+     * Get the current computed width for the first element in the set of matched elements, including padding but not border.
+     */
     innerWidth(): number;
-    innerWidth(value: number): JQuery;
 
-    offset(): { left: number; top: number; };
-    offset(coordinates: any): JQuery;
-    offset(func: (index: any, coords: any) => any): JQuery;
+    /**
+     * Get the current coordinates of the first element in the set of matched elements, relative to the document.
+     */
+    offset(): JQueryCoordinates;
+    /**
+     * An object containing the properties top and left, which are integers indicating the new top and left coordinates for the elements.
+     *
+     * @param coordinates An object containing the properties top and left, which are integers indicating the new top and left coordinates for the elements.
+     */
+    offset(coordinates: JQueryCoordinates): JQuery;
+    /**
+     * An object containing the properties top and left, which are integers indicating the new top and left coordinates for the elements.
+     *
+     * @param func A function to return the coordinates to set. Receives the index of the element in the collection as the first argument and the current coordinates as the second argument. The function should return an object with the new top and left properties.
+     */
+    offset(func: (index: number, coords: JQueryCoordinates) => JQueryCoordinates): JQuery;
 
     outerHeight(includeMargin?: boolean): number;
     outerHeight(value: number, includeMargin?: boolean): JQuery;
@@ -792,10 +1062,46 @@ interface JQuery {
     scrollTop(): number;
     scrollTop(value: number): JQuery;
 
+    /**
+     * Get the current computed width for the first element in the set of matched elements.
+     */
     width(): number;
+    /**
+     * Set the CSS width of each element in the set of matched elements.
+     *
+     * @param value An integer representing the number of pixels, or an integer along with an optional unit of measure appended (as a string).
+     */
     width(value: number): JQuery;
+    /**
+     * Set the CSS width of each element in the set of matched elements.
+     *
+     * @param value An integer representing the number of pixels, or an integer along with an optional unit of measure appended (as a string).
+     */
     width(value: string): JQuery;
-    width(func: (index: any, height: any) => any): JQuery;
+    /**
+     * Set the CSS width of each element in the set of matched elements.
+     *
+     * @param func A function returning the width to set. Receives the index position of the element in the set and the old width as arguments. Within the function, this refers to the current element in the set.
+     */
+    width(func: (index: number, width: number) => number): JQuery;
+    /**
+     * Set the CSS width of each element in the set of matched elements.
+     *
+     * @param func A function returning the width to set. Receives the index position of the element in the set and the old width as arguments. Within the function, this refers to the current element in the set.
+     */
+    width(func: (index: number, width: string) => string): JQuery;
+    /**
+     * Set the CSS width of each element in the set of matched elements.
+     *
+     * @param func A function returning the width to set. Receives the index position of the element in the set and the old width as arguments. Within the function, this refers to the current element in the set.
+     */
+    width(func: (index: number, width: string) => number): JQuery;
+    /**
+     * Set the CSS width of each element in the set of matched elements.
+     *
+     * @param func A function returning the width to set. Receives the index position of the element in the set and the old width as arguments. Within the function, this refers to the current element in the set.
+     */
+    width(func: (index: number, width: number) => string): JQuery;
 
     // Data
     clearQueue(queueName?: string): JQuery;
@@ -855,7 +1161,8 @@ interface JQuery {
     toggle(showOrHide: boolean): JQuery;
 
     // Events
-    bind(eventType: string, eventData?: any, handler?: (eventObject: JQueryEventObject) => any): JQuery;
+    bind(eventType: string, eventData: any, handler: (eventObject: JQueryEventObject) => any): JQuery;
+    bind(eventType: string, handler: (eventObject: JQueryEventObject) => any): JQuery;
     bind(eventType: string, eventData: any, preventBubble: boolean): JQuery;
     bind(eventType: string, preventBubble: boolean): JQuery;
     bind(...events: any[]): JQuery;
@@ -1204,9 +1511,9 @@ interface JQuery {
      * Attach an event handler function for one or more events to the selected elements.
      *
      * @param events One or more space-separated event types and optional namespaces, such as "click" or "keydown.myPlugin".
-     * @param handler A function to execute when the event is triggered. The value false is also allowed as a shorthand for a function that simply does return false.
+     * @param handler A function to execute when the event is triggered. The value false is also allowed as a shorthand for a function that simply does return false. Rest parameter args is for optional parameters passed to jQuery.trigger(). Note that the actual parameters on the event handler function must be marked as optional (? syntax).
      */
-    on(events: string, handler: (eventObject: JQueryEventObject) => any): JQuery;
+    on(events: string, handler: (eventObject: JQueryEventObject, ...args: any[]) => any): JQuery;
     /**
      * Attach an event handler function for one or more events to the selected elements.
      *
