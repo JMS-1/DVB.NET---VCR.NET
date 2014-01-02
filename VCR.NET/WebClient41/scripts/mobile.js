@@ -10,10 +10,5 @@ $(function () {
     VCRServer.getServerVersion().done(function (data) {
         $('#headline').text('VCR.NET Recording Service ' + data.version);
     });
-
-    // Navigation vorbereiten
-    window.onhashchange = function (event) {
-        return undefined;
-    };
 });
 //# sourceMappingURL=mobile.js.map

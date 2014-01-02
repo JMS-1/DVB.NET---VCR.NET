@@ -11,9 +11,4 @@ $(function (): void {
     VCRServer.getServerVersion().done(function (data: VCRServer.InfoServiceContract): void {
         $('#headline').text('VCR.NET Recording Service ' + data.version);
     });
-
-    // Navigation vorbereiten
-    window.onhashchange =  function (event: Event): any {
-        return undefined;
-    };
 });
