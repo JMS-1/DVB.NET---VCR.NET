@@ -167,8 +167,9 @@ namespace JMS.DVBVCR.RecordingService
         /// <typeparam name="TInfo">Die Art der Informationen.</typeparam>
         /// <param name="fromActive">Erstellt eine Liste von Beschreibungen zu einer aktuellen Aufzeichnung.</param>
         /// <param name="fromPlan">Erstellt eine einzelne Beschreibung zu einer Aufzeichnung aus dem Aufzeichnungsplan.</param>
+        /// <param name="forIdle">Erstellt eine Beschreibung für ein Gerät, für das keine Aufzeichnungen geplant sind.</param>
         /// <returns>Die Liste aller Informationen.</returns>
-        public TInfo[] GetCurrentRecordings<TInfo>( Func<FullInfo, VCRServer, TInfo[]> fromActive, Func<IScheduleInformation, PlanContext, VCRServer, TInfo> fromPlan )
+        public TInfo[] GetCurrentRecordings<TInfo>( Func<FullInfo, VCRServer, TInfo[]> fromActive, Func<IScheduleInformation, PlanContext, VCRServer, TInfo> fromPlan, Func<string, TInfo> forIdle )
         {
             // Validate
             if (fromActive == null)
@@ -219,6 +220,10 @@ namespace JMS.DVBVCR.RecordingService
                     if (idleProfiles.Count < 1)
                         break;
                 }
+
+                // Idle stuff
+                foreach (var idleProfile in idleProfiles)
+                    perProfile.Add( idleProfile, new[] { forIdle( idleProfile ) } );
             }
 
             // Report

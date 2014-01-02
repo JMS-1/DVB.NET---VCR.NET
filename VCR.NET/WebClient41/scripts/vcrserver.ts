@@ -132,6 +132,9 @@ module VCRServer {
 
         // Die verbleibende Anzahl von Minuten einer aktiven Aufzeichnung oder Aufgabe
         remainingMinutes: number;
+
+        // Zeigt an, dass dieser Eintrag nur ein Platzhalter für ein Gerät ist, für das keine Planungsdaten vorliegen.
+        isIdle: boolean;
     }
 
     // Repräsentiert die Klasse GuideItem

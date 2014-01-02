@@ -2330,6 +2330,21 @@ class CurrentInfo {
     constructor(rawData: VCRServer.PlanCurrentContract) {
         var me = this;
 
+        // Sonderbehandlung für unbenutzte Geräte
+        if (rawData.isIdle) {
+            // Eigentlich zeigen wir nichts
+            me.hideTarget = JMSLib.CSSClass.invisible;
+            me.name = '(keine Aufzeichnung geplant)';
+            me.device = rawData.device;
+            me.displayStart = '';
+            me.displayEnd = '';
+            me.mode = 'intime';
+            me.size = '';
+
+            // Fertig
+            return;
+        }
+
         // Zeiten umrechnen
         var duration = rawData.duration * 1000;
         var start = new Date(rawData.start);
@@ -2413,7 +2428,7 @@ class CurrentInfo {
     size: string;
 
     // Aktiv, wenn die Aufzeichnung verändert werden kann.
-    editLink: string;
+    editLink: string = null;
 
     // Aktiv, wenn zum Aufzeichnungszeitraum Informationen in der Programmzeitschrift existieren.
     guideLink: string;

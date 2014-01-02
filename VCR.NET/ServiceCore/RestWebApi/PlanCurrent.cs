@@ -139,6 +139,12 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         public string[] Files { get; set; }
 
         /// <summary>
+        /// Gesetzt, wenn es sich hier um einen Platzhalter für ein Gerät handelt, dass nicht in Benutzung ist.
+        /// </summary>
+        [DataMember( Name = "isIdle" )]
+        public bool IsIdle { get; set; }
+
+        /// <summary>
         /// Rundet einen Datumswert auf die volle Sekunde.
         /// </summary>
         /// <param name="original">Die originale Zeit.</param>
@@ -345,6 +351,17 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
 
             // Report
             return planned;
+        }
+
+        /// <summary>
+        /// Erstellt einen Eintrag für ein Geräteprofil, das nicht verwendet wird.
+        /// </summary>
+        /// <param name="profileName">Der Name des Geräteprofils.</param>
+        /// <returns>Die zugehörige Beschreibung.</returns>
+        public static PlanCurrent Create( string profileName )
+        {
+            // Create
+            return new PlanCurrent { ProfileName = profileName, IsIdle = true };
         }
     }
 }

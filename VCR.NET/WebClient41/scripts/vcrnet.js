@@ -1842,11 +1842,28 @@ var OtherSettingsValidator = (function () {
 // Das Modell zur Anzeige einer Aktivität auf einem Gerät
 var CurrentInfo = (function () {
     function CurrentInfo(rawData) {
+        // Aktiv, wenn die Aufzeichnung verändert werden kann.
+        this.editLink = null;
         // Die CSS Klasse zum Verbergen der Verweise zur Ansicht einer Aufzeichnung.
         this.hideViewer = JMSLib.CSSClass.invisible;
         // Die zugehörigen Informationen der Programmzeitschrift.
         this.guideItem = new GuideItemCache();
         var me = this;
+
+        // Sonderbehandlung für unbenutzte Geräte
+        if (rawData.isIdle) {
+            // Eigentlich zeigen wir nichts
+            me.hideTarget = JMSLib.CSSClass.invisible;
+            me.name = '(keine Aufzeichnung geplant)';
+            me.device = rawData.device;
+            me.displayStart = '';
+            me.displayEnd = '';
+            me.mode = 'intime';
+            me.size = '';
+
+            // Fertig
+            return;
+        }
 
         // Zeiten umrechnen
         var duration = rawData.duration * 1000;

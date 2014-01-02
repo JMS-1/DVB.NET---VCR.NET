@@ -53,7 +53,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
             return
                 ServerRuntime
                     .VCRServer
-                    .GetCurrentRecordings( PlanCurrent.Create, PlanCurrent.Create )
+                    .GetCurrentRecordings( PlanCurrent.Create, PlanCurrent.Create, PlanCurrent.Create )
                     .OrderBy( current => current.StartTime )
                     .ThenBy( current => current.Duration )
                     .ToArray();
