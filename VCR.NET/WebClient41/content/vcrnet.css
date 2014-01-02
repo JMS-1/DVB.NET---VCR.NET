@@ -13,7 +13,7 @@ body .ui-button {
     color: black !important;
 }
 
-body a[href]:hover {
+body a[href]:not(.ui-button):hover {
     text-decoration: underline;
 }
 
