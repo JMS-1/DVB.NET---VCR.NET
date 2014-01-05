@@ -592,7 +592,7 @@ module VCRServer {
         });
     }
 
-    export function getPlanCurrent(): JQueryPromise<any> {
+    export function getPlanCurrent(): JQueryPromise<PlanCurrentContract[]> {
         return $.ajax({
             url: restRoot + 'plan',
             dataType: 'json',

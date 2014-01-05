@@ -16,29 +16,55 @@
 </head>
 
 <body>
-    <div data-role="page" data-quicklinks="true">
-
+    <div data-role="page" id="homePage">
         <div data-role="header">
-            <h2 id="headline">(bitte einen Moment Geduld)</h2>
+            <h2 class="headline">VCR.NET Recording Service</h2>
         </div>
 
-        <div data-role="content">
-            <div data-role="collapsible-set" data-expanded-icon="carat-u" data-collapsed-icon="carat-d" data-iconpos="right">
-                <div data-role="collapsible">
-                    <h4>DVB-S2</h4>
-                    <div>Details</div>
-                </div>
-                <div data-role="collapsible" data-expanded-icon="carat-u" data-collapsed-icon="carat-d" data-iconpos="right">
-                    <h4>Nexus</h4>
-                    <div>Details</div>
-                </div>
-            </div>
-        </div>
-
-        <div data-role="footer">
-            <h2>[To be done]</h2>
+        <div role="main" class="ui-content">
+            <ul data-role="listview" data-inset="true">
+                <li><a href="#devicePage">Geräte</a></li>
+                <li><a href="#planPage">Aufzeichnung</a></li>
+                <li><a href="#guidePage">Neue Aufzeichnung</a></li>
+            </ul>
         </div>
     </div>
+
+    <div data-role="page" id="planPage">
+        <div data-role="header">
+            <h2 class="headline">VCR.NET Recording Service</h2>
+        </div>
+
+        <div role="main" class="ui-content">
+            [Aufzeichnungsplan]
+
+            <a class="ui-btn ui-corner-all" href="#" data-rel="back">Zurück</a>
+        </div>
+    </div>
+
+    <div data-role="page" id="devicePage">
+        <div data-role="header">
+            <h2 class="headline">VCR.NET Recording Service</h2>
+        </div>
+
+        <div role="main" class="ui-content">
+            <a class="ui-btn ui-corner-all" href="#" data-rel="back">Zurück</a>
+        </div>
+
+    </div>
+
+    <div data-role="page" id="guidePage">
+        <div data-role="header">
+            <h2 class="headline">VCR.NET Recording Service</h2>
+        </div>
+
+        <div role="main" class="ui-content">
+            [Programmzeitschrift]
+
+            <a class="ui-btn ui-corner-all" href="#" data-rel="back">Zurück</a>
+        </div>
+    </div>
+
 </body>
 
 </html>

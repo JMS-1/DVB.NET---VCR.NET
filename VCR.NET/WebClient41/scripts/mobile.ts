@@ -2,13 +2,25 @@
 /// <reference path='typings/jquerymobile/jquerymobile.d.ts' />
 /// <reference path='vcrserver.ts' />
 
+var jMobile = <JQueryMobile.JQueryStatic> <any> $;
+
 // Globale Initialisierungen
 $(function (): void {
+    // Seitenbearbeitung anmelden
+    $(document).on('pagebeforecreate', '#devicePage', function (event: JQueryEventObject): void {
+        var content = $(event.currentTarget).find('.ui-content');
+
+        VCRServer.getPlanCurrent().done(function (data: VCRServer.PlanCurrentContract[]): void {
+            content.prepend('<ul data-role="listview" data-inset="true"><li><a href="#">DVB-S2</a></li><li><a href="#">Nexus</a></li></ul>');
+            content.trigger('create');
+        });
+    });
+
     // Benutzereinstellungen einmalig anfordern
     VCRServer.UserProfile.global.refresh();
 
     // Informationsdaten ermitteln
     VCRServer.getServerVersion().done(function (data: VCRServer.InfoServiceContract): void {
-        $('#headline').text('VCR.NET Recording Service ' + data.version);
+        $('.headline').text('VCR.NET Recording Service ' + data.version);
     });
 });
