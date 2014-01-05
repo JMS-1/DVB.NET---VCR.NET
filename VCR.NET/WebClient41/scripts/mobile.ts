@@ -1,4 +1,4 @@
-/// <reference path='typings/jquery/jquery.d.ts' />
+﻿/// <reference path='typings/jquery/jquery.d.ts' />
 /// <reference path='typings/jquerymobile/jquerymobile.d.ts' />
 /// <reference path='vcrserver.ts' />
 
@@ -7,11 +7,23 @@ var jMobile = <JQueryMobile.JQueryStatic> <any> $;
 // Globale Initialisierungen
 $(function (): void {
     // Seitenbearbeitung anmelden
-    $(document).on('pagebeforecreate', '#devicePage', function (event: JQueryEventObject): void {
-        var content = $(event.currentTarget).find('.ui-content');
+    $(document).on('pagecreate', '#devicePage', function (event: JQueryEventObject): void {
+        // Da werden wir die Daten platzieren
+        var content = $(event.currentTarget).find('[data-role="content"]');
 
-        VCRServer.getPlanCurrent().done(function (data: VCRServer.PlanCurrentContract[]): void {
-            content.prepend('<ul data-role="listview" data-inset="true"><li><a href="#">DVB-S2</a></li><li><a href="#">Nexus</a></li></ul>');
+        // Daten abrufen
+        VCRServer.getPlanCurrentForMobile().done(function (data: VCRServer.PlanCurrentContractMobile[]): void {
+            // Container anlegen
+            var list = $('<div data-role="collapsible-set"/>');
+
+            // Elemente eintragen
+            $.each(data, function (index: number, plan: VCRServer.PlanCurrentContractMobile): void {
+                list.append('<div data-role="collapsible"><H3>' + plan.device + '</H3>Stuff comes in here</div>');
+            });
+
+            // Und in die Anzeige übernehmen
+            content.find('[data-role="collapsible-set"]').remove();
+            content.prepend(list);
             content.trigger('create');
         });
     });

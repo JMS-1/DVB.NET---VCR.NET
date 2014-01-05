@@ -60,6 +60,18 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         }
 
         /// <summary>
+        /// Ermittelt Informationen zu allen Geräteprofilen.
+        /// </summary>
+        /// <param name="mobile">Schalter zum Umschalten auf die Liste für mobile Geräte.</param>
+        /// <returns>Die gewünschte Liste.</returns>
+        [HttpGet]
+        public PlanCurrentMobile[] GetCurrent( string mobile )
+        {
+            // Forward
+            return GetCurrent().Select( PlanCurrentMobile.Create ).ToArray();
+        }
+
+        /// <summary>
         /// Fordert die Aktualisierung der Quellen an.
         /// </summary>
         /// <param name="sourceScan">Wird zur Unterscheidung der Methoden verwendet.</param>

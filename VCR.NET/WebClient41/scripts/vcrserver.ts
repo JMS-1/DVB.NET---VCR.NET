@@ -93,12 +93,15 @@ module VCRServer {
     }
 
     // Repräsentiert die Klasse PlanCurrent
-    export interface PlanCurrentContract {
+    export interface PlanCurrentContractMobile {
         // Das Gerät, auf dem die Aktivität stattfindet
         device: string;
 
         // Der Name der Aktivität
         name: string;
+
+        // Der Name der Quelle
+        source: string;
 
         // Eine eindeutige Kennung einer laufenden Aufzeichnung oder Aufgabe, mit Hilfe derer diese beendet werden kann
         referenceId: string;
@@ -115,14 +118,16 @@ module VCRServer {
         // Gesetzt, wenn eine zukünftige Aktivität verspätet beginnen wird
         late: boolean;
 
-        // Hinweistext mit einer Größenangabe
-        size: string;
-
         // Eine eindeutige Kennung einer Aufzeichnung zum Abruf der Detailinformationen
         id: string;
 
-        // Der Name der Quelle
-        source: string;
+        // Zeigt an, dass dieser Eintrag nur ein Platzhalter für ein Gerät ist, für das keine Planungsdaten vorliegen.
+        isIdle: boolean;
+    };
+
+    export interface PlanCurrentContract extends PlanCurrentContractMobile {
+        // Hinweistext mit einer Größenangabe
+        size: string;
 
         // Die interne laufende Nummer des Aufzeichnungsdatenstroms
         streamIndex: number;
@@ -132,9 +137,6 @@ module VCRServer {
 
         // Die verbleibende Anzahl von Minuten einer aktiven Aufzeichnung oder Aufgabe
         remainingMinutes: number;
-
-        // Zeigt an, dass dieser Eintrag nur ein Platzhalter für ein Gerät ist, für das keine Planungsdaten vorliegen.
-        isIdle: boolean;
     }
 
     // Repräsentiert die Klasse GuideItem
@@ -595,6 +597,13 @@ module VCRServer {
     export function getPlanCurrent(): JQueryPromise<PlanCurrentContract[]> {
         return $.ajax({
             url: restRoot + 'plan',
+            dataType: 'json',
+        });
+    }
+
+    export function getPlanCurrentForMobile(): JQueryPromise<PlanCurrentContractMobile[]> {
+        return $.ajax({
+            url: restRoot + 'plan?mobile',
             dataType: 'json',
         });
     }

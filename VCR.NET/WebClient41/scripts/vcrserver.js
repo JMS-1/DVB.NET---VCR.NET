@@ -25,6 +25,7 @@ var VCRServer;
     
 
     
+    ;
 
     
 
@@ -143,6 +144,14 @@ var VCRServer;
         });
     }
     VCRServer.getPlanCurrent = getPlanCurrent;
+
+    function getPlanCurrentForMobile() {
+        return $.ajax({
+            url: restRoot + 'plan?mobile',
+            dataType: 'json'
+        });
+    }
+    VCRServer.getPlanCurrentForMobile = getPlanCurrentForMobile;
 
     function getProfileJobInfos(device) {
         return $.ajax({

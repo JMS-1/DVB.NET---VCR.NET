@@ -19,13 +19,8 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
     /// </summary>
     [Serializable]
     [DataContract]
-    public class PlanCurrent
+    public class PlanCurrentMobile
     {
-        /// <summary>
-        /// Eine leere Liste von Dateien.
-        /// </summary>
-        private static readonly string[] _NoFiles = { };
-
         /// <summary>
         /// Der Name des Gerätes.
         /// </summary>
@@ -37,6 +32,12 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// </summary>
         [DataMember( Name = "name" )]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Die eindeutige Kennung der Aufzeichnung.
+        /// </summary>
+        [DataMember( Name = "id" )]
+        public string Identifier { get; set; }
 
         /// <summary>
         /// Gesetzt, wenn die Aufzeichung gerade ausgeführt wird.
@@ -87,6 +88,56 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         public bool IsLate { get; set; }
 
         /// <summary>
+        /// Gesetzt, wenn es sich hier um einen Platzhalter für ein Gerät handelt, dass nicht in Benutzung ist.
+        /// </summary>
+        [DataMember( Name = "isIdle" )]
+        public bool IsIdle { get; set; }
+
+        /// <summary>
+        /// Die zugehörige Quelle, sofern bekannt.
+        /// </summary>
+        [DataMember( Name = "source" )]
+        public string Source { get; set; }
+
+        /// <summary>
+        /// Erstellt eine reduzierte Version der Information zu einer Aktivität.
+        /// </summary>
+        /// <param name="full">Die volle Information.</param>
+        /// <returns>Die reduzierte Information.</returns>
+        public static PlanCurrentMobile Create( PlanCurrent full )
+        {
+            // Cut down
+            return
+                new PlanCurrentMobile
+                {
+                    PlanIdentifier = full.PlanIdentifier,
+                    HasGuideEntry = full.HasGuideEntry,
+                    ProfileName = full.ProfileName,
+                    Identifier = full.Identifier,
+                    StartTime = full.StartTime,
+                    Duration = full.Duration,
+                    Source = full.Source,
+                    IsIdle = full.IsIdle,
+                    IsLate = full.IsLate,
+                    Name = full.Name,
+                };
+        }
+    }
+
+    /// <summary>
+    /// Beschreibt eine Aufzeichnung, die entweder aktiv ist oder als mächstes auf einem gerade unbenutzen
+    /// Gerät ausgeführt wird.
+    /// </summary>
+    [Serializable]
+    [DataContract]
+    public class PlanCurrent : PlanCurrentMobile
+    {
+        /// <summary>
+        /// Eine leere Liste von Dateien.
+        /// </summary>
+        private static readonly string[] _NoFiles = { };
+
+        /// <summary>
         /// Eine Beschreibung der Größe, Anzahl etc.
         /// </summary>
         [DataMember( Name = "size" )]
@@ -97,18 +148,6 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// </summary>
         [NonSerialized]
         private SourceSelection m_source;
-
-        /// <summary>
-        /// Die eindeutige Kennung der Aufzeichnung.
-        /// </summary>
-        [DataMember( Name = "id" )]
-        public string Identifier { get; set; }
-
-        /// <summary>
-        /// Die zugehörige Quelle, sofern bekannt.
-        /// </summary>
-        [DataMember( Name = "source" )]
-        public string Source { get; set; }
 
         /// <summary>
         /// Die laufende Nummer des Datenstroms, die zur Anzeige benötigt wird.
@@ -137,12 +176,6 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// </summary>
         [DataMember( Name = "files" )]
         public string[] Files { get; set; }
-
-        /// <summary>
-        /// Gesetzt, wenn es sich hier um einen Platzhalter für ein Gerät handelt, dass nicht in Benutzung ist.
-        /// </summary>
-        [DataMember( Name = "isIdle" )]
-        public bool IsIdle { get; set; }
 
         /// <summary>
         /// Rundet einen Datumswert auf die volle Sekunde.
