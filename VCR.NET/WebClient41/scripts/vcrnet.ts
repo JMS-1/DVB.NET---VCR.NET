@@ -2349,13 +2349,13 @@ class CurrentInfo {
         var outdated = end.getTime() <= Date.now();
 
         // Übernehmen
+        me.sourceName = (rawData.sourceName == null) ? '' : rawData.sourceName;
         me.displayStart = JMSLib.DateFormatter.getStartTime(start);
         me.originalRemainingMinutes = rawData.remainingMinutes;
         me.size = (rawData.size == null) ? '' : rawData.size;
         me.displayEnd = JMSLib.DateFormatter.getEndTime(end);
         me.scheduleIdentifier = rawData.referenceId;
         me.streamTarget = rawData.streamTarget;
-        me.sourceName = rawData.sourceName;
         me.device = rawData.device;
         me.source = rawData.source;
         me.legacyId = rawData.id;
