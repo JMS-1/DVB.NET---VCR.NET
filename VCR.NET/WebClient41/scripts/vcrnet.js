@@ -1842,10 +1842,18 @@ var OtherSettingsValidator = (function () {
 // Das Modell zur Anzeige einer Aktivität auf einem Gerät
 var CurrentInfo = (function () {
     function CurrentInfo(rawData) {
+        // Der Anzeigetext für den Startzeitpunkt.
+        this.displayStart = '';
+        // Der Anzeigetext für das Ende.
+        this.displayEnd = '';
+        // Ein vom Web Server bereitgestellte Information über die aktuelle Größe der Aufzeichnung.
+        this.size = '';
         // Aktiv, wenn die Aufzeichnung verändert werden kann.
         this.editLink = null;
         // Die CSS Klasse zum Verbergen der Verweise zur Ansicht einer Aufzeichnung.
         this.hideViewer = JMSLib.CSSClass.invisible;
+        // Der Name der zugehörigen Quelle.
+        this.sourceName = '';
         // Die zugehörigen Informationen der Programmzeitschrift.
         this.guideItem = new GuideItemCache();
         var me = this;
@@ -1856,10 +1864,7 @@ var CurrentInfo = (function () {
             me.hideTarget = JMSLib.CSSClass.invisible;
             me.name = '(keine Aufzeichnung geplant)';
             me.device = rawData.device;
-            me.displayStart = '';
-            me.displayEnd = '';
             me.mode = 'intime';
-            me.size = '';
 
             // Fertig
             return;
@@ -1878,6 +1883,7 @@ var CurrentInfo = (function () {
         me.displayEnd = JMSLib.DateFormatter.getEndTime(end);
         me.scheduleIdentifier = rawData.referenceId;
         me.streamTarget = rawData.streamTarget;
+        me.sourceName = rawData.sourceName;
         me.device = rawData.device;
         me.source = rawData.source;
         me.legacyId = rawData.id;

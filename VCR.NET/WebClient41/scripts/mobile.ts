@@ -7,6 +7,42 @@ module VCRMobile {
     // Einfach nur einige Typwandlungen
     var jMobile = <JQueryMobile.JQueryStatic> <any> $;
 
+    // Die Information zu einer einzelnen laufenden Aufzeichnung
+    class CurrentItem {
+        // Das verwendete Gerät
+        profileName: string;
+
+        // Der Name der Aufzeichnung
+        name: string;
+
+        // Der Startzeitpunkt der Aufzeichnung
+        start: string;
+
+        // Das Ende der Aufzeichnung
+        end: string;
+
+        // Der zugehörige Sender
+        sourceName: string;
+
+        static create(serverItem: VCRServer.PlanCurrentContractMobile): CurrentItem {
+            var item = new CurrentItem();
+
+            // Zeiten umrechnen
+            var duration = serverItem.duration * 1000;
+            var start = new Date(serverItem.start);
+            var end = new Date(start.getTime() + duration);
+
+            // Einfache Übernahme
+            item.start = JMSLib.DateFormatter.getShortDate(start) + '. ' + JMSLib.DateFormatter.getEndTime(start);
+            item.end = JMSLib.DateFormatter.getEndTime(end);
+            item.sourceName = serverItem.sourceName;
+            item.profileName = serverItem.device;
+            item.name = serverItem.name;
+
+            return item;
+        }
+    }
+
     // Repräsentiert irgendeine Seite
     interface IPage {
     }
@@ -76,7 +112,7 @@ module VCRMobile {
             // Daten abrufen
             VCRServer.getPlanCurrentForMobile().done(function (data: VCRServer.PlanCurrentContractMobile[]): void {
                 // Daten aktualisieren
-                me.rowTemplate.loadList(data);
+                me.rowTemplate.loadList($.map(data, CurrentItem.create));
 
                 // Und in die Anzeige übernehmen
                 me.content.trigger('create');

@@ -101,10 +101,7 @@ module VCRServer {
         name: string;
 
         // Der Name der Quelle
-        source: string;
-
-        // Eine eindeutige Kennung einer laufenden Aufzeichnung oder Aufgabe, mit Hilfe derer diese beendet werden kann
-        referenceId: string;
+        sourceName: string;
 
         // Der Startzeitpunkt in ISO Notation
         start: string;
@@ -114,18 +111,24 @@ module VCRServer {
 
         // Gesetzt, wenn Daten aus der Programmzeitschrift für die Dauer der Aktivität vorliegen
         epg: boolean;
+    };
+
+    export interface PlanCurrentContract extends PlanCurrentContractMobile {
+        // Eine eindeutige Kennung einer Aufzeichnung zum Abruf der Detailinformationen
+        id: string;
+
+        // Eine eindeutige Kennung einer laufenden Aufzeichnung oder Aufgabe, mit Hilfe derer diese beendet werden kann
+        referenceId: string;
 
         // Gesetzt, wenn eine zukünftige Aktivität verspätet beginnen wird
         late: boolean;
 
-        // Eine eindeutige Kennung einer Aufzeichnung zum Abruf der Detailinformationen
-        id: string;
-
         // Zeigt an, dass dieser Eintrag nur ein Platzhalter für ein Gerät ist, für das keine Planungsdaten vorliegen.
         isIdle: boolean;
-    };
 
-    export interface PlanCurrentContract extends PlanCurrentContractMobile {
+        // Der Name der Quelle
+        source: string;
+
         // Hinweistext mit einer Größenangabe
         size: string;
 

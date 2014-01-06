@@ -13,6 +13,30 @@ var VCRMobile;
     // Einfach nur einige Typwandlungen
     var jMobile = $;
 
+    // Die Information zu einer einzelnen laufenden Aufzeichnung
+    var CurrentItem = (function () {
+        function CurrentItem() {
+        }
+        CurrentItem.create = function (serverItem) {
+            var item = new CurrentItem();
+
+            // Zeiten umrechnen
+            var duration = serverItem.duration * 1000;
+            var start = new Date(serverItem.start);
+            var end = new Date(start.getTime() + duration);
+
+            // Einfache Übernahme
+            item.start = JMSLib.DateFormatter.getShortDate(start) + '. ' + JMSLib.DateFormatter.getEndTime(start);
+            item.end = JMSLib.DateFormatter.getEndTime(end);
+            item.sourceName = serverItem.sourceName;
+            item.profileName = serverItem.device;
+            item.name = serverItem.name;
+
+            return item;
+        };
+        return CurrentItem;
+    })();
+
     
 
     // Repräsentiert irgendeine Seite
@@ -78,7 +102,7 @@ var VCRMobile;
             // Daten abrufen
             VCRServer.getPlanCurrentForMobile().done(function (data) {
                 // Daten aktualisieren
-                me.rowTemplate.loadList(data);
+                me.rowTemplate.loadList($.map(data, CurrentItem.create));
 
                 // Und in die Anzeige übernehmen
                 me.content.trigger('create');

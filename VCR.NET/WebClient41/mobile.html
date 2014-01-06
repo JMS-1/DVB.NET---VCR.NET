@@ -54,7 +54,7 @@
                 <div data-role="collapsible" data-collapsed-icon="info " data-expanded-icon="info "><h1>(Daten werden angefordert)</h1>Bitte etwas Geduld...</div>
             </div>
 
-            <div class="ui-grid-a">
+            <div class="ui-grid-a ui-responsive ">
                 <div class=" ui-block-a"><a class="ui-btn ui-corner-all refreshLink" href="#">Aktualisieren</a></div>
                 <div class=" ui-block-b"><a class="ui-btn ui-corner-all" href="#" data-rel="back">Zurück</a></div>
             </div>
@@ -73,7 +73,10 @@
         </div>
     </div>
 
-    <div data-role="collapsible" id="deviceRow" class="invisible"><h3 data-property="device">*</h3><span>*</span></div>
+    <div data-role="collapsible" id="deviceRow" class="invisible">
+        <h3 data-property="name">*</h3>
+        <span data-property="start">*</span>-<span data-property="end">*</span> auf <span data-property="sourceName">*</span> über <span data-property="profileName">*</span>
+    </div>
 </body>
 
 </html>

@@ -34,18 +34,6 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         public string Name { get; set; }
 
         /// <summary>
-        /// Die eindeutige Kennung der Aufzeichnung.
-        /// </summary>
-        [DataMember( Name = "id" )]
-        public string Identifier { get; set; }
-
-        /// <summary>
-        /// Gesetzt, wenn die Aufzeichung gerade ausgeführt wird.
-        /// </summary>
-        [DataMember( Name = "referenceId" )]
-        public string PlanIdentifier { get; set; }
-
-        /// <summary>
         /// Der Startzeitpunkt der Aufzeichnung.
         /// </summary>
         [DataMember( Name = "start" )]
@@ -82,22 +70,10 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         public bool HasGuideEntry { get; set; }
 
         /// <summary>
-        /// Gesetzt, wenn die Aufzeichnung verspätet beginnt.
-        /// </summary>
-        [DataMember( Name = "late" )]
-        public bool IsLate { get; set; }
-
-        /// <summary>
-        /// Gesetzt, wenn es sich hier um einen Platzhalter für ein Gerät handelt, dass nicht in Benutzung ist.
-        /// </summary>
-        [DataMember( Name = "isIdle" )]
-        public bool IsIdle { get; set; }
-
-        /// <summary>
         /// Die zugehörige Quelle, sofern bekannt.
         /// </summary>
-        [DataMember( Name = "source" )]
-        public string Source { get; set; }
+        [DataMember( Name = "sourceName" )]
+        public string SourceName { get; set; }
 
         /// <summary>
         /// Erstellt eine reduzierte Version der Information zu einer Aktivität.
@@ -110,15 +86,11 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
             return
                 new PlanCurrentMobile
                 {
-                    PlanIdentifier = full.PlanIdentifier,
                     HasGuideEntry = full.HasGuideEntry,
                     ProfileName = full.ProfileName,
-                    Identifier = full.Identifier,
+                    SourceName = full.SourceName,
                     StartTime = full.StartTime,
                     Duration = full.Duration,
-                    Source = full.Source,
-                    IsIdle = full.IsIdle,
-                    IsLate = full.IsLate,
                     Name = full.Name,
                 };
         }
@@ -138,6 +110,30 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         private static readonly string[] _NoFiles = { };
 
         /// <summary>
+        /// Die eindeutige Kennung der Aufzeichnung.
+        /// </summary>
+        [DataMember( Name = "id" )]
+        public string Identifier { get; set; }
+
+        /// <summary>
+        /// Gesetzt, wenn die Aufzeichung gerade ausgeführt wird.
+        /// </summary>
+        [DataMember( Name = "referenceId" )]
+        public string PlanIdentifier { get; set; }
+
+        /// <summary>
+        /// Gesetzt, wenn die Aufzeichnung verspätet beginnt.
+        /// </summary>
+        [DataMember( Name = "late" )]
+        public bool IsLate { get; set; }
+
+        /// <summary>
+        /// Gesetzt, wenn es sich hier um einen Platzhalter für ein Gerät handelt, dass nicht in Benutzung ist.
+        /// </summary>
+        [DataMember( Name = "isIdle" )]
+        public bool IsIdle { get; set; }
+
+        /// <summary>
         /// Eine Beschreibung der Größe, Anzahl etc.
         /// </summary>
         [DataMember( Name = "size" )]
@@ -148,6 +144,12 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// </summary>
         [NonSerialized]
         private SourceSelection m_source;
+
+        /// <summary>
+        /// Die zugehörige Quelle, sofern bekannt.
+        /// </summary>
+        [DataMember( Name = "source" )]
+        public string Source { get; set; }
 
         /// <summary>
         /// Die laufende Nummer des Datenstroms, die zur Anzeige benötigt wird.
@@ -283,6 +285,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
 
             // Load the profile
             HasGuideEntry = profile.ProgramGuide.HasEntry( m_source.Source, StartTime, StartTime + Duration );
+            SourceName = m_source.GetUniqueName();
         }
 
         /// <summary>

@@ -2336,10 +2336,7 @@ class CurrentInfo {
             me.hideTarget = JMSLib.CSSClass.invisible;
             me.name = '(keine Aufzeichnung geplant)';
             me.device = rawData.device;
-            me.displayStart = '';
-            me.displayEnd = '';
             me.mode = 'intime';
-            me.size = '';
 
             // Fertig
             return;
@@ -2358,6 +2355,7 @@ class CurrentInfo {
         me.displayEnd = JMSLib.DateFormatter.getEndTime(end);
         me.scheduleIdentifier = rawData.referenceId;
         me.streamTarget = rawData.streamTarget;
+        me.sourceName = rawData.sourceName;
         me.device = rawData.device;
         me.source = rawData.source;
         me.legacyId = rawData.id;
@@ -2416,16 +2414,16 @@ class CurrentInfo {
     device: string;
 
     // Der Anzeigetext für den Startzeitpunkt.
-    displayStart: string;
+    displayStart: string = '';
 
     // Der Anzeigetext für das Ende.
-    displayEnd: string;
+    displayEnd: string = '';
 
     // Die Art der Aufzeichnung.
     mode: string;
 
     // Ein vom Web Server bereitgestellte Information über die aktuelle Größe der Aufzeichnung.
-    size: string;
+    size: string = '';
 
     // Aktiv, wenn die Aufzeichnung verändert werden kann.
     editLink: string = null;
@@ -2478,6 +2476,9 @@ class CurrentInfo {
     currentEndDisplay(): string {
         return JMSLib.DateFormatter.getEndTime(this.currentEnd());
     }
+
+    // Der Name der zugehörigen Quelle.
+    sourceName: string = '';
 
     // Die Kennung der zugehörigen Quelle.
     private source: string;
