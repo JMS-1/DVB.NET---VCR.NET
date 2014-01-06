@@ -1,6 +1,7 @@
 ﻿/// <reference path='typings/jquery/jquery.d.ts' />
 /// <reference path='typings/jquerymobile/jquerymobile.d.ts' />
 /// <reference path='vcrserver.ts' />
+/// <reference path='jmslib.ts' />
 
 module VCRMobile {
     // Einfach nur einige Typwandlungen
@@ -35,15 +36,15 @@ module VCRMobile {
 
                 // Ausführen
                 me.onCreate();
-
-                // Und in die Anzeige übernehmen
-                me.content.trigger('create');
             });
         }
     }
 
     // Repräsentiert die Seite mit der Geräteübersicht
     class devicePage extends Page {
+        // Die Vorlage für einen einzelnen Eintrag
+        private rowTemplate: JMSLib.HTMLTemplate = null;
+
         // Erstellt eine neue Seite
         constructor() {
             super();
@@ -58,18 +59,27 @@ module VCRMobile {
         onCreate(): void {
             var me = this;
 
+            // Aktualisierung anmelden
+            me.content.find('.refreshLink').on('click', function (eventObject: JQueryEventObject): void {
+                me.refresh();
+            });
+
+            // Vorlage einmalig anlegen und Daten erstmalig anfordern
+            me.rowTemplate = JMSLib.HTMLTemplate.staticCreate(me.content.find('[data-role="collapsible-set"]'), $('#deviceRow'));
+            me.refresh();
+        }
+
+        // Fordert alle Daten (erneut) an
+        refresh(): void {
+            var me = this;
+
             // Daten abrufen
             VCRServer.getPlanCurrentForMobile().done(function (data: VCRServer.PlanCurrentContractMobile[]): void {
-                // Container anlegen
-                var list = me.content.find('[data-role="collapsible-set"]');
+                // Daten aktualisieren
+                me.rowTemplate.loadList(data);
 
-                // Alle bisherige entfernen
-                list.children().remove();
-
-                // Elemente eintragen
-                $.each(data, function (index: number, plan: VCRServer.PlanCurrentContractMobile): void {
-                    list.append('<div data-role="collapsible"><H3>' + plan.device + '</H3>Stuff comes in here</div>');
-                });
+                // Und in die Anzeige übernehmen
+                me.content.trigger('create');
             });
         }
     }

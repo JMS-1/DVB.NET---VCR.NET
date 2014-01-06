@@ -209,22 +209,39 @@ var JMSLib;
 
     // Verwaltet ein unsichtbares HTML Element als Vorlage für eine Zeile in einer Liste
     var HTMLTemplate = (function () {
-        function HTMLTemplate(list, templateName) {
+        function HTMLTemplate() {
             // Der Filter ist für alle Elemente gesetzt, die angezeigt werden sollen
             this.filter = function (item) {
                 return true;
             };
             // Die zu verwendende Vorlage
             this.template = null;
-            var me = this;
-            me.list = list;
+        }
+        // Erstellt eine neue Vorlage
+        HTMLTemplate.dynamicCreate = function (list, templateName) {
+            var newTemplate = new HTMLTemplate();
+
+            newTemplate.list = list;
 
             // Laden anstossen
             TemplateLoader.load(templateName).done(function (template) {
-                me.template = $(template).find('#template');
-                me.refresh();
+                newTemplate.template = $(template).find('#template');
+                newTemplate.refresh();
             });
-        }
+
+            return newTemplate;
+        };
+
+        // Erstellt eine neue Vorlage
+        HTMLTemplate.staticCreate = function (list, template) {
+            var newTemplate = new HTMLTemplate();
+
+            newTemplate.list = list;
+            newTemplate.template = template;
+
+            return newTemplate;
+        };
+
         // Baut die Darstellung gemäß der aktuellen Filterbedingung neu auf
         HTMLTemplate.prototype.refresh = function () {
             var me = this;
@@ -334,6 +351,7 @@ var JMSLib;
 
             // Erst anzeigen, nachdem alles ersetzt wurde
             element.removeClass(CSSClass.invisible);
+            element.removeAttr('id');
         };
 
         // Erzeugt eine Kopie einer Vorlage und erstzt dann in dieser Kopie alle Platzhalter.

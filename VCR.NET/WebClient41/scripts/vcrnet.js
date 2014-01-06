@@ -2577,7 +2577,7 @@ var planPage = (function (_super) {
 
         // Vorlagen vorbereiten
         me.detailsManager = new JMSLib.DetailManager(2, 'planRowDetails', 'planRowException');
-        me.planRowTemplate = new JMSLib.HTMLTemplate($('#planRows'), 'planRow');
+        me.planRowTemplate = JMSLib.HTMLTemplate.dynamicCreate($('#planRows'), 'planRow');
 
         // Filter deaktivieren
         me.planRowTemplate.filter = function (item) {
@@ -3150,7 +3150,7 @@ var currentPage = (function (_super) {
 
         // Vorlagen laden
         me.detailsManager = new JMSLib.DetailManager(2, 'currentGuide', 'editCurrent');
-        me.table = new JMSLib.HTMLTemplate($('#currentTable'), 'currentRow');
+        me.table = JMSLib.HTMLTemplate.dynamicCreate($('#currentTable'), 'currentRow');
 
         // Ereignisse anmelden
         CurrentInfo.guideDisplay = function showGuide(item, origin) {
@@ -3230,7 +3230,7 @@ var editPage = (function (_super) {
 
         // Die Informationen, die wir gerade verändern
         me.sourceSelections = new SourceSelectorLoader($('#selProfile'));
-        me.exceptionRowTemplate = new JMSLib.HTMLTemplate($('#exceptionRows'), 'exceptionRow');
+        me.exceptionRowTemplate = JMSLib.HTMLTemplate.dynamicCreate($('#exceptionRows'), 'exceptionRow');
 
         // Auslesen der Kennung
         var query = window.location.hash;
@@ -3487,7 +3487,7 @@ var guidePage = (function (_super) {
             return;
 
         // Liste mit den aktuellen Favoriten aufbauen
-        var table = new JMSLib.HTMLTemplate(view.find('#favoriteList'), 'favoriteRow');
+        var table = JMSLib.HTMLTemplate.dynamicCreate(view.find('#favoriteList'), 'favoriteRow');
         var queries = SavedGuideQueries.load();
 
         table.loadList(queries);
@@ -3645,7 +3645,7 @@ var guidePage = (function (_super) {
         var guideLoaded = me.registerAsyncCall();
 
         // Vorlagen verbinden
-        me.guideTable = new JMSLib.HTMLTemplate($('#guideTable'), 'guideRow');
+        me.guideTable = JMSLib.HTMLTemplate.dynamicCreate($('#guideTable'), 'guideRow');
         me.details = new JMSLib.DetailManager(2, 'guideDetails');
         me.favorites = new JMSLib.DetailManager(2, 'favorites');
 
@@ -3686,7 +3686,7 @@ var jobsPage = (function (_super) {
 
         // Aus der Vorlage erzeugen
         me.isActive = $('#selActive');
-        me.table = new JMSLib.HTMLTemplate($('#jobTable'), 'jobRow');
+        me.table = JMSLib.HTMLTemplate.dynamicCreate($('#jobTable'), 'jobRow');
         me.table.filter = function (row) {
             return row.isActive == me.isActive.is(':checked');
         };
@@ -3815,7 +3815,7 @@ var logPage = (function (_super) {
         });
 
         // Vorlagen vorbereiten
-        me.rowTemplate = new JMSLib.HTMLTemplate($('#logRows'), 'logRow');
+        me.rowTemplate = JMSLib.HTMLTemplate.dynamicCreate($('#logRows'), 'logRow');
         me.rowTemplate.filter = function (item) {
             return me.filter(item);
         };

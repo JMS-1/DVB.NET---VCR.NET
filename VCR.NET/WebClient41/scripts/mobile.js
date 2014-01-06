@@ -1,6 +1,7 @@
 ﻿/// <reference path='typings/jquery/jquery.d.ts' />
 /// <reference path='typings/jquerymobile/jquerymobile.d.ts' />
 /// <reference path='vcrserver.ts' />
+/// <reference path='jmslib.ts' />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -37,9 +38,6 @@ var VCRMobile;
 
                 // Ausführen
                 me.onCreate();
-
-                // Und in die Anzeige übernehmen
-                me.content.trigger('create');
             });
         };
         return Page;
@@ -51,6 +49,8 @@ var VCRMobile;
         // Erstellt eine neue Seite
         function devicePage() {
             _super.call(this);
+            // Die Vorlage für einen einzelnen Eintrag
+            this.rowTemplate = null;
         }
         // Meldet eine Seite an
         devicePage.register = function (templateName) {
@@ -61,18 +61,27 @@ var VCRMobile;
         devicePage.prototype.onCreate = function () {
             var me = this;
 
+            // Aktualisierung anmelden
+            me.content.find('.refreshLink').on('click', function (eventObject) {
+                me.refresh();
+            });
+
+            // Vorlage einmalig anlegen und Daten erstmalig anfordern
+            me.rowTemplate = JMSLib.HTMLTemplate.staticCreate(me.content.find('[data-role="collapsible-set"]'), $('#deviceRow'));
+            me.refresh();
+        };
+
+        // Fordert alle Daten (erneut) an
+        devicePage.prototype.refresh = function () {
+            var me = this;
+
             // Daten abrufen
             VCRServer.getPlanCurrentForMobile().done(function (data) {
-                // Container anlegen
-                var list = me.content.find('[data-role="collapsible-set"]');
+                // Daten aktualisieren
+                me.rowTemplate.loadList(data);
 
-                // Alle bisherige entfernen
-                list.children().remove();
-
-                // Elemente eintragen
-                $.each(data, function (index, plan) {
-                    list.append('<div data-role="collapsible"><H3>' + plan.device + '</H3>Stuff comes in here</div>');
-                });
+                // Und in die Anzeige übernehmen
+                me.content.trigger('create');
             });
         };
         return devicePage;

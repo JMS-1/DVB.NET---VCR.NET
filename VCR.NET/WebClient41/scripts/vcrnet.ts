@@ -3182,7 +3182,7 @@ class planPage extends Page implements IPage {
 
         // Vorlagen vorbereiten
         me.detailsManager = new JMSLib.DetailManager(2, 'planRowDetails', 'planRowException');
-        me.planRowTemplate = new JMSLib.HTMLTemplate($('#planRows'), 'planRow');
+        me.planRowTemplate = JMSLib.HTMLTemplate.dynamicCreate($('#planRows'), 'planRow');
 
         // Filter deaktivieren
         me.planRowTemplate.filter = function (item: PlanEntry): boolean { return false; };
@@ -3717,7 +3717,7 @@ class currentPage extends Page implements IPage {
 
         // Vorlagen laden
         me.detailsManager = new JMSLib.DetailManager(2, 'currentGuide', 'editCurrent');
-        me.table = new JMSLib.HTMLTemplate($('#currentTable'), 'currentRow');
+        me.table = JMSLib.HTMLTemplate.dynamicCreate($('#currentTable'), 'currentRow');
 
         // Ereignisse anmelden
         CurrentInfo.guideDisplay = function showGuide(item: CurrentInfo, origin: any): void { me.showGuide(item, origin); };
@@ -3803,7 +3803,7 @@ class editPage extends Page implements IPage {
 
         // Die Informationen, die wir gerade verändern
         me.sourceSelections = new SourceSelectorLoader($('#selProfile'));
-        me.exceptionRowTemplate = new JMSLib.HTMLTemplate($('#exceptionRows'), 'exceptionRow');
+        me.exceptionRowTemplate = JMSLib.HTMLTemplate.dynamicCreate($('#exceptionRows'), 'exceptionRow');
 
         // Auslesen der Kennung
         var query = window.location.hash;
@@ -4067,7 +4067,7 @@ class guidePage extends Page implements IPage {
             return;
 
         // Liste mit den aktuellen Favoriten aufbauen
-        var table = new JMSLib.HTMLTemplate(view.find('#favoriteList'), 'favoriteRow');
+        var table = JMSLib.HTMLTemplate.dynamicCreate(view.find('#favoriteList'), 'favoriteRow');
         var queries = SavedGuideQueries.load();
 
         table.loadList(queries);
@@ -4205,7 +4205,7 @@ class guidePage extends Page implements IPage {
         var guideLoaded = me.registerAsyncCall();
 
         // Vorlagen verbinden
-        me.guideTable = new JMSLib.HTMLTemplate($('#guideTable'), 'guideRow');
+        me.guideTable = JMSLib.HTMLTemplate.dynamicCreate($('#guideTable'), 'guideRow');
         me.details = new JMSLib.DetailManager(2, 'guideDetails');
         me.favorites = new JMSLib.DetailManager(2, 'favorites');
 
@@ -4246,7 +4246,7 @@ class jobsPage extends Page implements IPage {
 
         // Aus der Vorlage erzeugen
         me.isActive = $('#selActive');
-        me.table = new JMSLib.HTMLTemplate($('#jobTable'), 'jobRow');
+        me.table = JMSLib.HTMLTemplate.dynamicCreate($('#jobTable'), 'jobRow');
         me.table.filter = function (row: IInfoRow): boolean { return row.isActive == me.isActive.is(':checked'); };
 
         // Voreingestellte Auswahl setzen - das müssen wir machen, bevor wir die Darstellung umstellen
@@ -4372,7 +4372,7 @@ class logPage extends Page implements IPage {
         dayList.change(function (): void { me.reload(); });
 
         // Vorlagen vorbereiten
-        me.rowTemplate = new JMSLib.HTMLTemplate($('#logRows'), 'logRow');
+        me.rowTemplate = JMSLib.HTMLTemplate.dynamicCreate($('#logRows'), 'logRow');
         me.rowTemplate.filter = function (item: ProtocolEntry): boolean { return me.filter(item); };
         me.detailsManager = new JMSLib.DetailManager(2, 'logRowDetails');
 

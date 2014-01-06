@@ -243,15 +243,29 @@ module JMSLib {
         // Die XML Eigenschaft mit dem Namen der Modellmethode, die bei Aktivierung des Oberflächenelementes aufgerufen werden soll
         static clickAttribute = 'data-clickevent';
 
-        constructor(list: JQuery, templateName: string) {
-            var me = this;
-            me.list = list;
+        // Erstellt eine neue Vorlage
+        static dynamicCreate(list: JQuery, templateName: string): HTMLTemplate {
+            var newTemplate = new HTMLTemplate();
+
+            newTemplate.list = list;
 
             // Laden anstossen
             TemplateLoader.load(templateName).done(function (template: string): void {
-                me.template = $(template).find('#template');
-                me.refresh();
+                newTemplate.template = $(template).find('#template');
+                newTemplate.refresh();
             });
+
+            return newTemplate;
+        }
+
+        // Erstellt eine neue Vorlage
+        static staticCreate(list: JQuery, template: JQuery): HTMLTemplate {
+            var newTemplate = new HTMLTemplate();
+
+            newTemplate.list = list;
+            newTemplate.template = template;
+
+            return newTemplate;
         }
 
         // Der Filter ist für alle Elemente gesetzt, die angezeigt werden sollen
@@ -375,6 +389,7 @@ module JMSLib {
 
             // Erst anzeigen, nachdem alles ersetzt wurde
             element.removeClass(CSSClass.invisible);
+            element.removeAttr('id');
         }
 
         // Erzeugt eine Kopie einer Vorlage und erstzt dann in dieser Kopie alle Platzhalter.
