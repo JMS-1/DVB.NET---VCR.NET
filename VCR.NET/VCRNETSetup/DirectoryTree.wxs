@@ -83,7 +83,38 @@
               <Component Id="TypeScriptSource.VCRNET" Guid="*">
                 <File Id="TypeScript.VCRNET" Source="$(var.WebClient41.ProjectDir)scripts/vcrnet.ts" />
               </Component>
+              <Component Id="TypeScriptSource.Mobile" Guid="*">
+                <File Id="TypeScript.Mobile" Source="$(var.WebClient41.ProjectDir)scripts/mobile.ts" />
+              </Component>
+              <Directory Id="ThirtPartyScriptFiles" Name="typings">
+                <Directory Id="jQueryScriptFiles" Name="jquery">
+                  <Component Id="TypeScriptSource.jQuery" Guid="*">
+                    <File Id="TypeScript.jQuery" Source="$(var.WebClient41.ProjectDir)scripts/typings/jquery/jquery.d.ts" />
+                  </Component>
+                </Directory>
+                <Directory Id="jQueryUIScriptFiles" Name="jqueryui">
+                  <Component Id="TypeScriptSource.jQueryUI" Guid="*">
+                    <File Id="TypeScript.jQueryUI" Source="$(var.WebClient41.ProjectDir)scripts/typings/jqueryui/jqueryui.d.ts" />
+                  </Component>
+                </Directory>
+                <Directory Id="jQueryMobileScriptFiles" Name="jquerymobile">
+                  <Component Id="TypeScriptSource.jQueryMobile" Guid="*">
+                    <File Id="TypeScript.jQueryMobile" Source="$(var.WebClient41.ProjectDir)scripts/typings/jquerymobile/jquerymobile.d.ts" />
+                  </Component>
+                </Directory>
+              </Directory>
             </Directory>
+
+            <!-- Quellcode (optional) -->
+            <Directory Id="ContentFiles" Name="content">
+              <Component Id="StyleSheetSource.JMSLib" Guid="*">
+                <File Id="StyleSheet.JMSLib" Source="$(var.WebClient41.ProjectDir)content/jmslib.less" />
+              </Component>
+              <Component Id="StyleSheetSource.VCRNET" Guid="*">
+                <File Id="StyleSheet.VCRNET" Source="$(var.WebClient41.ProjectDir)content/vcrnet.less" />
+              </Component>
+            </Directory>
+
           </Directory>
         </Directory>
       </Directory>
@@ -102,6 +133,12 @@
       <ComponentRef Id="TypeScriptSource.JMSLib"/>
       <ComponentRef Id="TypeScriptSource.VCRServer"/>
       <ComponentRef Id="TypeScriptSource.VCRNET"/>
+      <ComponentRef Id="TypeScriptSource.Mobile"/>
+      <ComponentRef Id="TypeScriptSource.jQuery"/>
+      <ComponentRef Id="TypeScriptSource.jQueryUI"/>
+      <ComponentRef Id="TypeScriptSource.jQueryMobile"/>
+      <ComponentRef Id="StyleSheetSource.JMSLib"/>
+      <ComponentRef Id="StyleSheetSource.VCRNET"/>
     </ComponentGroup>
 
   </Fragment>

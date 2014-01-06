@@ -88,9 +88,9 @@
     <Content Include="content\jmslib.css">
       <DependentUpon>jmslib.less</DependentUpon>
     </Content>
-    <None Include="content\jmslib.min.css">
+    <Content Include="content\jmslib.min.css">
       <DependentUpon>jmslib.less</DependentUpon>
-    </None>
+    </Content>
     <Content Include="content\jquery.mobile-1.4.0.min.css" />
     <Content Include="content\themes\base\images\animated-overlay.gif" />
     <Content Include="content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -160,9 +160,9 @@
     <Content Include="scripts\jquery-2.0.3.min.js" />
     <Content Include="scripts\jquery-ui-1.10.3.min.js" />
     <Content Include="scripts\jquery.mobile-1.4.0.min.js" />
-    <Content Include="scripts\typings\jqueryui\jqueryui.d.ts" />
-    <Content Include="scripts\typings\jquery\jquery.d.ts" />
-    <Content Include="scripts\typings\jquerymobile\jquerymobile.d.ts" />
+    <None Include="scripts\typings\jqueryui\jqueryui.d.ts" />
+    <None Include="scripts\typings\jquery\jquery.d.ts" />
+    <None Include="scripts\typings\jquerymobile\jquerymobile.d.ts" />
     <Content Include="scripts\mobile.js">
       <DependentUpon>mobile.ts</DependentUpon>
     </Content>
@@ -227,10 +227,10 @@
       <DependentUpon>vcrnet.less</DependentUpon>
     </Content>
     <Content Include="default.html" />
-    <Content Include="content\jmslib.less" />
-    <None Include="content\vcrnet.min.css">
+    <None Include="content\jmslib.less" />
+    <Content Include="content\vcrnet.min.css">
       <DependentUpon>vcrnet.less</DependentUpon>
-    </None>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -245,7 +245,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="content\vcrnet.less" />
+    <None Include="content\vcrnet.less" />
     <Content Include="scripts\vcrnet.js.map">
       <DependentUpon>vcrnet.ts</DependentUpon>
     </Content>
