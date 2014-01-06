@@ -8,7 +8,7 @@
 <configuration>
   <appSettings>
     <!-- Core Operating Parameters -->
-    <add key="Profiles" value="Nexus (Dev)" />
+    <add key="Profiles" value="Test+Test" />
     <add key="LoggingLevel" value="Full" />
     <add key="TCPPort" value="81" />
     <add key="SSLPort" value="443" />

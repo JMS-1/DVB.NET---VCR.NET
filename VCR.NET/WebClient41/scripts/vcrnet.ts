@@ -3933,7 +3933,7 @@ class guidePage extends Page implements IPage {
 
         // Bei jeder Änderung der Auswahl des Auftrags wird das Ziel geeignet angepasst und so das normale Verhalten eines Verweises erreicht
         function jobChanged(): void {
-            createCommand.attr('href', '#edit;id=' + jobSelector.val() + ';epgid=' + guideItem.id);
+            createCommand.attr('href', '#edit;id=' + jobSelector.val() + ';epgid=' + encodeURIComponent(guideItem.id));
         }
 
         // Wird ein Auftrag ausgewählt muss der Verweis gesetzt werden
