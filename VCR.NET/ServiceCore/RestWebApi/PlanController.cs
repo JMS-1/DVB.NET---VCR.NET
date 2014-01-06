@@ -68,7 +68,14 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         public PlanCurrentMobile[] GetCurrent( string mobile )
         {
             // Forward
-            return GetCurrent().Select( PlanCurrentMobile.Create ).ToArray();
+            return
+                ServerRuntime
+                    .VCRServer
+                    .GetCurrentRecordings( PlanCurrent.Create )
+                    .Select( PlanCurrentMobile.Create )
+                    .OrderBy( current => current.StartTime )
+                    .ThenBy( current => current.Duration )
+                    .ToArray();
         }
 
         /// <summary>

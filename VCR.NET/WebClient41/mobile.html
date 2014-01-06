@@ -23,9 +23,9 @@
 
         <div data-role="content">
             <ul data-role="listview" data-inset="true">
-                <li><a href="#devicePage">Geräte</a></li>
-                <li><a href="#planPage">Aufzeichnung</a></li>
-                <li><a href="#guidePage">Neue Aufzeichnung</a></li>
+                <li><a href="#devicePage">Aktuell</a></li>
+                <li><a href="#planPage">Planung</a></li>
+                <li><a href="#guidePage">Neu</a></li>
             </ul>
         </div>
     </div>
@@ -36,7 +36,7 @@
         </div>
 
         <div data-role="content">
-            [Aufzeichnungsplan]
+            <div data-role="collapsible-set"></div>
 
             <a class="ui-btn ui-corner-all" href="#" data-rel="back">Zurück</a>
         </div>
@@ -44,10 +44,14 @@
 
     <div data-role="page" id="devicePage">
         <div data-role="header">
-            <h2 class="headline">VCR.NET Recording Service</h2>
+            <h2>Laufende Aufzeichnungen</h2>
         </div>
 
         <div data-role="content">
+            <div data-role="collapsible-set">
+                <div data-role="collapsible" data-collapsed-icon="info " data-expanded-icon="info "><h1>(Daten werden angefordert)</h1>Bitte etwas Geduld...</div>
+            </div>
+
             <a class="ui-btn ui-corner-all" href="#" data-rel="back">Zurück</a>
         </div>
 
@@ -59,7 +63,7 @@
         </div>
 
         <div data-role="content">
-            [Programmzeitschrift]
+            <div data-role="collapsible-set"></div>
 
             <a class="ui-btn ui-corner-all" href="#" data-rel="back">Zurück</a>
         </div>

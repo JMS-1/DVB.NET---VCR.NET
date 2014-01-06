@@ -169,13 +169,11 @@ namespace JMS.DVBVCR.RecordingService
         /// <param name="fromPlan">Erstellt eine einzelne Beschreibung zu einer Aufzeichnung aus dem Aufzeichnungsplan.</param>
         /// <param name="forIdle">Erstellt eine Beschreibung für ein Gerät, für das keine Aufzeichnungen geplant sind.</param>
         /// <returns>Die Liste aller Informationen.</returns>
-        public TInfo[] GetCurrentRecordings<TInfo>( Func<FullInfo, VCRServer, TInfo[]> fromActive, Func<IScheduleInformation, PlanContext, VCRServer, TInfo> fromPlan, Func<string, TInfo> forIdle )
+        public TInfo[] GetCurrentRecordings<TInfo>( Func<FullInfo, VCRServer, TInfo[]> fromActive, Func<IScheduleInformation, PlanContext, VCRServer, TInfo> fromPlan = null, Func<string, TInfo> forIdle = null )
         {
             // Validate
             if (fromActive == null)
                 throw new ArgumentNullException( "fromActive" );
-            if (fromPlan == null)
-                throw new ArgumentNullException( "fromPlan" );
 
             // All profile we know
             var idleProfiles = new HashSet<string>( Profiles.InspectProfiles( profile => profile.ProfileName ), ProfileManager.ProfileNameComparer );
@@ -191,40 +189,43 @@ namespace JMS.DVBVCR.RecordingService
             idleProfiles.ExceptWith( perProfile.Keys );
 
             // There are any
-            if (idleProfiles.Count > 0)
-            {
-                // Attach to plan - will be internally limited to some reasonable count
-                var context = Profiles.GetPlan();
-
-                // Parse plan
-                foreach (var schedule in context)
+            if ((fromPlan != null) || (forIdle != null))
+                if (idleProfiles.Count > 0)
                 {
-                    // Will not be executed
-                    var resource = schedule.Resource;
-                    if (resource == null)
-                        continue;
+                    // Attach to plan - will be internally limited to some reasonable count
+                    var context = Profiles.GetPlan();
 
-                    // Is not a regular recording
-                    if (!(schedule.Definition is IScheduleDefinition<VCRSchedule>))
-                        continue;
+                    // Parse plan
+                    foreach (var schedule in context)
+                    {
+                        // Will not be executed
+                        var resource = schedule.Resource;
+                        if (resource == null)
+                            continue;
 
-                    // See if this is one of our outstanding profiles
-                    var profileName = resource.Name;
-                    if (!idleProfiles.Remove( profileName ))
-                        continue;
+                        // Is not a regular recording
+                        if (!(schedule.Definition is IScheduleDefinition<VCRSchedule>))
+                            continue;
 
-                    // Add entry
-                    perProfile.Add( profileName, new[] { fromPlan( schedule, context, this ) } );
+                        // See if this is one of our outstanding profiles
+                        var profileName = resource.Name;
+                        if (!idleProfiles.Remove( profileName ))
+                            continue;
 
-                    // Did it
-                    if (idleProfiles.Count < 1)
-                        break;
+                        // Add entry
+                        if (fromPlan != null)
+                            perProfile.Add( profileName, new[] { fromPlan( schedule, context, this ) } );
+
+                        // Did it
+                        if (idleProfiles.Count < 1)
+                            break;
+                    }
+
+                    // Idle stuff
+                    if (forIdle != null)
+                        foreach (var idleProfile in idleProfiles)
+                            perProfile.Add( idleProfile, new[] { forIdle( idleProfile ) } );
                 }
-
-                // Idle stuff
-                foreach (var idleProfile in idleProfiles)
-                    perProfile.Add( idleProfile, new[] { forIdle( idleProfile ) } );
-            }
 
             // Report
             return perProfile.SelectMany( info => info.Value ).ToArray();
