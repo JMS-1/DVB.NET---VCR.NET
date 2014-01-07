@@ -6,7 +6,7 @@
 
   <Product
     Id="*"
-    Name="VCR.NET 4.2"
+    Name="VCR.NET Recording Service"
     Language="1031"
     Version="!(wix.SETUPVERSION)"
     Manufacturer="$(var.Manufacturer)"
