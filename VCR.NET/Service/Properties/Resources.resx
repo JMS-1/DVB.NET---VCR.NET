@@ -136,6 +136,6 @@
     <value>Der Dienst wurde beendet</value>
   </data>
   <data name="ShutdownHandlerFailed" xml:space="preserve">
-    <value>Die Überwachung des Herunterfahrends konnte nicht angemeldet werden</value>
+    <value>Die Überwachung des Herunterfahrens konnte nicht an- oder abgemeldet werden</value>
   </data>
 </root>
