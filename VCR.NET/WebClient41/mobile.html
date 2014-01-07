@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" href="content/jquery.mobile-1.4.0.min.css" />
     <link rel="stylesheet" href="content/jmslib.css" />
+    <link rel="stylesheet" href="content/mobile.css" />
 
     <script src="scripts/jquery-2.0.3.min.js"></script>
     <script src="scripts/jquery.mobile-1.4.0.min.js"></script>
@@ -20,7 +21,7 @@
 <body>
     <div data-role="page" id="homePage">
         <div data-role="header">
-            <h2 class="headline">VCR.NET Recording Service</h2>
+            <h1 class="headline">VCR.NET Recording Service</h1>
         </div>
 
         <div data-role="content">
@@ -75,7 +76,11 @@
 
     <div data-role="collapsible" id="deviceRow" class="invisible">
         <h3 data-property="name">*</h3>
-        <span data-property="start">*</span>-<span data-property="end">*</span> auf <span data-property="sourceName">*</span> über <span data-property="profileName">*</span>
+        <div class="breakContainer">
+            <span class="noBreak"><em>bis</em> <span data-property="end">*</span></span>
+            <span class="noBreak"><em>auf</em> <span data-property="sourceName">*</span></span>
+            <span class="noBreak"><em>über</em> <span data-property="profileName">*</span></span>
+        </div>
     </div>
 </body>
 

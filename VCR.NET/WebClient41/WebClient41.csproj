@@ -92,6 +92,12 @@
       <DependentUpon>jmslib.less</DependentUpon>
     </Content>
     <Content Include="content\jquery.mobile-1.4.0.min.css" />
+    <Content Include="content\mobile.css">
+      <DependentUpon>mobile.less</DependentUpon>
+    </Content>
+    <Content Include="content\mobile.min.css">
+      <DependentUpon>mobile.less</DependentUpon>
+    </Content>
     <Content Include="content\themes\base\images\animated-overlay.gif" />
     <Content Include="content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -160,6 +166,7 @@
     <Content Include="scripts\jquery-2.0.3.min.js" />
     <Content Include="scripts\jquery-ui-1.10.3.min.js" />
     <Content Include="scripts\jquery.mobile-1.4.0.min.js" />
+    <None Include="content\mobile.less" />
     <None Include="scripts\typings\jqueryui\jqueryui.d.ts" />
     <None Include="scripts\typings\jquery\jquery.d.ts" />
     <None Include="scripts\typings\jquerymobile\jquerymobile.d.ts" />

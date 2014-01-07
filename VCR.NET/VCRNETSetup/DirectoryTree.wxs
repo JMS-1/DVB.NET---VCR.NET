@@ -113,6 +113,9 @@
               <Component Id="StyleSheetSource.VCRNET" Guid="*">
                 <File Id="StyleSheet.VCRNET" Source="$(var.WebClient41.ProjectDir)content/vcrnet.less" />
               </Component>
+              <Component Id="StyleSheetSource.Mobile" Guid="*">
+                <File Id="StyleSheet.Mobile" Source="$(var.WebClient41.ProjectDir)content/mobile.less" />
+              </Component>
             </Directory>
 
           </Directory>
@@ -139,6 +142,7 @@
       <ComponentRef Id="TypeScriptSource.jQueryMobile"/>
       <ComponentRef Id="StyleSheetSource.JMSLib"/>
       <ComponentRef Id="StyleSheetSource.VCRNET"/>
+      <ComponentRef Id="StyleSheetSource.Mobile"/>
     </ComponentGroup>
 
   </Fragment>

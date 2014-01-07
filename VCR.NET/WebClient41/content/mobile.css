@@ -1,0 +1,12 @@
+﻿.headline {
+    margin-left: 5% !important;
+    margin-right: 5% !important;
+}
+
+.breakContainer {
+    overflow: hidden;
+}
+
+.noBreak {
+    white-space: nowrap;
+}
