@@ -27,12 +27,33 @@ var VCRMobile;
 
             // Einfache Übernahme
             item.start = JMSLib.DateFormatter.getShortDate(start) + '. ' + JMSLib.DateFormatter.getEndTime(start);
+            item.onShowDetails = function (event) {
+                item.showDetails($(event.target).parent());
+            };
+            item.hideDetails = serverItem.epg ? '' : JMSLib.CSSClass.invisible;
             item.end = JMSLib.DateFormatter.getEndTime(end);
             item.sourceName = serverItem.sourceName;
             item.profileName = serverItem.device;
+            item.source = serverItem.source;
             item.name = serverItem.name;
+            item.startTime = start;
+            item.endTime = end;
 
             return item;
+        };
+
+        // Zeigt die Detailinformationen an
+        CurrentItem.prototype.showDetails = function (container) {
+            var parent = container.parent();
+
+            // Schaltfläche entfernen
+            container.remove();
+
+            // Details anfordern
+            VCRServer.getGuideItem(this.profileName, this.source, this.startTime, this.endTime).done(function (item) {
+                if (item != null)
+                    parent.append(JMSLib.HTMLTemplate.cloneAndApplyTemplate(item, $('#guideDetails')));
+            });
         };
         return CurrentItem;
     })();

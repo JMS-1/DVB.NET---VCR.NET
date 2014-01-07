@@ -100,6 +100,9 @@ module VCRServer {
         // Der Name der Aktivität
         name: string;
 
+        // Die Kennung der Quelle
+        source: string;
+
         // Der Name der Quelle
         sourceName: string;
 
@@ -125,9 +128,6 @@ module VCRServer {
 
         // Zeigt an, dass dieser Eintrag nur ein Platzhalter für ein Gerät ist, für das keine Planungsdaten vorliegen.
         isIdle: boolean;
-
-        // Der Name der Quelle
-        source: string;
 
         // Hinweistext mit einer Größenangabe
         size: string;
@@ -720,7 +720,7 @@ module VCRServer {
         });
     }
 
-    export function getGuideItem(device: string, source: string, start: Date, end: Date): JQueryPromise<any> {
+    export function getGuideItem(device: string, source: string, start: Date, end: Date): JQueryPromise<VCRServer.GuideItemContract> {
         return $.ajax({
             url: restRoot + 'guide?profile=' + encodeURIComponent(device) + '&source=' + source + '&pattern=' + start.getTime() + '-' + end.getTime(),
             dataType: 'json',

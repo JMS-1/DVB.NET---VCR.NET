@@ -76,6 +76,12 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         public string SourceName { get; set; }
 
         /// <summary>
+        /// Die zugehörige Quelle, sofern bekannt.
+        /// </summary>
+        [DataMember( Name = "source" )]
+        public string Source { get; set; }
+
+        /// <summary>
         /// Erstellt eine reduzierte Version der Information zu einer Aktivität.
         /// </summary>
         /// <param name="full">Die volle Information.</param>
@@ -91,6 +97,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
                     SourceName = full.SourceName,
                     StartTime = full.StartTime,
                     Duration = full.Duration,
+                    Source = full.Source,
                     Name = full.Name,
                 };
         }
@@ -144,12 +151,6 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// </summary>
         [NonSerialized]
         private SourceSelection m_source;
-
-        /// <summary>
-        /// Die zugehörige Quelle, sofern bekannt.
-        /// </summary>
-        [DataMember( Name = "source" )]
-        public string Source { get; set; }
 
         /// <summary>
         /// Die laufende Nummer des Datenstroms, die zur Anzeige benötigt wird.

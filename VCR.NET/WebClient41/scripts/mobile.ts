@@ -21,8 +21,23 @@ module VCRMobile {
         // Das Ende der Aufzeichnung
         end: string;
 
+        // Der Startzeitpunkt der Aufzeichnung
+        private startTime: Date;
+
+        // Das Ende der Aufzeichnung
+        private endTime: Date;
+
+        // Der zugehörige Sender
+        private source: string;
+
         // Der zugehörige Sender
         sourceName: string;
+
+        // Gesetzt, wenn die Detailanzeige nicht möglich ist
+        hideDetails: string;
+
+        // Über diese Methode werden die Detailinformationen geladen
+        onShowDetails: (event: JQueryEventObject) => void;
 
         static create(serverItem: VCRServer.PlanCurrentContractMobile): CurrentItem {
             var item = new CurrentItem();
@@ -34,12 +49,31 @@ module VCRMobile {
 
             // Einfache Übernahme
             item.start = JMSLib.DateFormatter.getShortDate(start) + '. ' + JMSLib.DateFormatter.getEndTime(start);
+            item.onShowDetails = function (event: JQueryEventObject): void { item.showDetails($(event.target).parent()); };
+            item.hideDetails = serverItem.epg ? '' : JMSLib.CSSClass.invisible;
             item.end = JMSLib.DateFormatter.getEndTime(end);
             item.sourceName = serverItem.sourceName;
             item.profileName = serverItem.device;
+            item.source = serverItem.source;
             item.name = serverItem.name;
+            item.startTime = start;
+            item.endTime = end;
 
             return item;
+        }
+
+        // Zeigt die Detailinformationen an
+        private showDetails(container: JQuery): void {
+            var parent = container.parent();
+
+            // Schaltfläche entfernen
+            container.remove();
+
+            // Details anfordern
+            VCRServer.getGuideItem(this.profileName, this.source, this.startTime, this.endTime).done(function (item: VCRServer.GuideItemContract): void {
+                if (item != null)
+                    parent.append(JMSLib.HTMLTemplate.cloneAndApplyTemplate(item, $('#guideDetails')));
+            });
         }
     }
 

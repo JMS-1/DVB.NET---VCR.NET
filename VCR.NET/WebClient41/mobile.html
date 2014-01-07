@@ -80,8 +80,14 @@
             <span class="noBreak"><em>bis</em> <span data-property="end">*</span></span>
             <span class="noBreak"><em>auf</em> <span data-property="sourceName">*</span></span>
             <span class="noBreak"><em>über</em> <span data-property="profileName">*</span></span>
-            <div><a class="ui-btn ui-corner-all ui-btn-inline detailsLink" href="#">Details anzeigen</a></div>
+            <div data-property="hideDetails" data-attribute="class"><a class="ui-btn ui-corner-all ui-btn-inline detailsLink" href="javascript:void(0)" data-clickevent="onShowDetails">Details anzeigen</a></div>
         </div>
+    </div>
+
+    <div id="guideDetails" class="invisible">
+        <h2 data-property="name">*</h2>
+        <div data-property="shortDescription">*</div>
+        <div data-property="description" class="guideDescription">*</div>
     </div>
 </body>
 

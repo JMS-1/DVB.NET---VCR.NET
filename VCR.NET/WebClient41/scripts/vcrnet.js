@@ -3238,8 +3238,8 @@ var editPage = (function (_super) {
         me.sourceSelections = new SourceSelectorLoader($('#selProfile'));
         me.exceptionRowTemplate = JMSLib.HTMLTemplate.dynamicCreate($('#exceptionRows'), 'exceptionRow');
 
-        // Auslesen der Kennung
-        var query = window.location.hash;
+        // Auslesen der Kennung - für FireFox ist es nicht möglich, .hash direkt zu verwenden, da hierbei eine Decodierung durchgeführt wird
+        var query = window.location.href.split("#")[1];
         var idIndex = query.indexOf(';id=');
         var hasId = (idIndex >= 0);
         var jobScheduleId = hasId ? query.substr(idIndex + 4) : '';
