@@ -6,6 +6,10 @@
 	settings from within the Web Application.
 -->
 <configuration>
+  <runtime>
+    <legacyCorruptedStateExceptionsPolicy enabled="true" />
+  </runtime>
+
   <appSettings>
     <!-- Core Operating Parameters -->
     <add key="Profiles" value=""/>
@@ -36,7 +40,7 @@
     <add key="ScanDuration" value="120" />
     <add key="ScanInterval" value="0" />
     <add key="ScanHours" value="18" />
-    <add key="ScanJoinThreshold" value="" />    
+    <add key="ScanJoinThreshold" value="" />
     <!-- Program Guides -->
     <add key="EPGStations" value="ZDF [ZDFvision]" />
     <add key="EPGIncludeFreeSat" value="False" />
