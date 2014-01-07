@@ -175,11 +175,17 @@ namespace JMS.DVBVCR.RecordingService
         /// </summary>
         protected override void OnShutdown()
         {
+            // Special
+            Tools.ExtendedLogging( "Preparing for System Shutdown" );
+
             // Show event
             VCRServer.Log( LoggingLevel.Full, Properties.Resources.GotShutdown );
 
             // Forward
             OnStop();
+
+            // Special
+            Tools.ExtendedLogging( "Ready for System Shutdown" );
         }
 
         /// <summary>
