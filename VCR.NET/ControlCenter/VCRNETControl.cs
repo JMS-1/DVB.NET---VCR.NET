@@ -10,7 +10,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
-using System.Security;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
@@ -97,97 +96,6 @@ namespace VCRControlCenter
                 Profile = profile;
                 Index = index;
                 Port = port;
-            }
-        }
-
-        /// <summary>
-        /// Ermittelt die Netzwerkinformationen.
-        /// </summary>
-        /// <param name="table">Ein vorbereiteter Speicherbereich.</param>
-        /// <param name="size">Die Größe des Speicherbereiches.</param>
-        /// <param name="order">Gesetzt, wenn die Einträge sortiert werden sollen.</param>
-        /// <returns>Ein Fehlercode.</returns>
-        [DllImport( "Iphlpapi.dll" )]
-        [SuppressUnmanagedCodeSecurity]
-        private static extern UInt32 GetIpNetTable( IntPtr table, ref UInt32 size, bool order );
-
-        /// <summary>
-        /// Informationen über eine Adresse.
-        /// </summary>
-        [StructLayout( LayoutKind.Sequential, Pack = 1 )]
-        private struct IpNetRow
-        {
-            /// <summary>
-            /// Die Größe in Bytes.
-            /// </summary>
-            public static readonly int SizeOf = Marshal.SizeOf( typeof( IpNetRow ) );
-
-            /// <summary>
-            /// Die laufende Nummer des Eintrags.
-            /// </summary>
-            private UInt32 m_index;
-
-            /// <summary>
-            /// Die Anzahl der Adressbytes.
-            /// </summary>
-            private UInt32 m_physicalAddressBytes;
-
-            /// <summary>
-            /// Die physikalische Adresse.
-            /// </summary>
-            [MarshalAs( UnmanagedType.ByValArray, SizeConst = 8 )]
-            private byte[] m_physicalAddress;
-
-            /// <summary>
-            /// Die Netzwerkadresse.
-            /// </summary>
-            private UInt32 m_ip4Address;
-
-            /// <summary>
-            /// Die Art der Adresse.
-            /// </summary>
-            private UInt32 m_type;
-
-            /// <summary>
-            /// Prüft, ob dieser Eintrag zu einer Adresse passt.
-            /// </summary>
-            /// <param name="addresses">Eine Liste von Adressen.</param>
-            /// <returns>Gesetzt, wenn mindestens eine davon passt.</returns>
-            public bool Matches( IEnumerable<IPAddress> addresses )
-            {
-                // None
-                if (addresses == null)
-                    return false;
-                else
-                    return addresses.Any( new IPAddress( m_ip4Address ).Equals );
-            }
-
-            /// <summary>
-            /// Weckt den zugehörigen Rechner auf.
-            /// </summary>
-            /// <param name="subnet">Die Subnetzaddresse des Rechners.</param>
-            public void Wakeup( IPAddress subnet )
-            {
-                // Create a brand new socket
-                var socket = new Socket( AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp );
-
-                // Configure it
-                socket.SetSocketOption( SocketOptionLevel.Socket, SocketOptionName.Broadcast, true );
-                socket.Connect( subnet, 7 );
-
-                // Buffer
-                var buffer = new List<byte>( checked( (int) (6 + 16 * m_physicalAddressBytes) ) );
-
-                // Start with prefix
-                for (var i = 6; i-- > 0; )
-                    buffer.Add( 0xff );
-
-                // Add physical address
-                for (var i = 16; i-- > 0; )
-                    buffer.AddRange( m_physicalAddress.Take( checked( (int) m_physicalAddressBytes ) ) );
-
-                // Process
-                socket.Send( buffer.ToArray() );
             }
         }
 
@@ -1709,64 +1617,44 @@ namespace VCRControlCenter
             if (settings == null)
                 return;
 
+            // Get the server name
+            var name = settings.ServerName;
+            var mac = settings.MAC;
+            if (mac != null)
+                name = string.Format( "{0} ({1})", name, string.Join( ":", mac.Select( b => b.ToString( "x2" ) ) ) );
+
             // Ask user
-            if (MessageBox.Show( string.Format( Properties.Resources.WakeUp, settings.ServerName ), Properties.Resources.HibernateTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2 ) != DialogResult.Yes)
+            if (MessageBox.Show( string.Format( Properties.Resources.WakeUp, name ), Properties.Resources.HibernateTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2 ) != DialogResult.Yes)
                 return;
 
             // Be safe
             try
             {
-                // Resolve server
-                var server = Dns.GetHostEntry( settings.ServerName );
-                if (server == null)
-                    throw new ArgumentException( "IP" );
+                // Check MAC
+                if (mac == null)
+                    throw new InvalidOperationException( "No MAC" );
 
-                // Get size of address table
-                UInt32 size = 0;
-                if (GetIpNetTable( IntPtr.Zero, ref size, true ) != 122)
-                    throw new InvalidOperationException( "No ARP table" );
-                if (size < 4)
-                    throw new InvalidOperationException( "ARP table is empty" );
+                // Process
+                // Create a brand new socket
+                var socket = new Socket( AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp );
 
-                // Load address table
-                var table = Marshal.AllocHGlobal( checked( (int) size ) );
-                try
-                {
-                    // Get the table
-                    if (GetIpNetTable( table, ref size, true ) != 0)
-                        throw new InvalidOperationException( "Bad ARP table" );
+                // Configure it
+                socket.SetSocketOption( SocketOptionLevel.Socket, SocketOptionName.Broadcast, true );
+                socket.Connect( settings.SubNetAddress, 7 );
 
-                    // Get the number of entries in the table
-                    var count = checked( (UInt32) Marshal.ReadInt32( table, 0 ) );
+                // Buffer
+                var buffer = new List<byte>( checked( (int) (6 + 16 * mac.Length) ) );
 
-                    // Process entries
-                    for (int offset = 4; count-- > 0; offset += IpNetRow.SizeOf)
-                    {
-                        // Unmarshal from native representation
-                        var data = (IpNetRow) Marshal.PtrToStructure( table + offset, typeof( IpNetRow ) );
+                // Start with prefix
+                for (var i = 6; i-- > 0; )
+                    buffer.Add( 0xff );
 
-                        // See if this is it
-                        if (data.Matches( server.AddressList ))
-                        {
-                            // Process
-                            Log( "Sending Magic Packet on Sub-Net {0}", settings.SubNetAddress );
+                // Add physical address
+                for (var i = 16; i-- > 0; )
+                    buffer.AddRange( mac );
 
-                            // Send packet
-                            data.Wakeup( settings.SubNetAddress );
-
-                            // Done
-                            return;
-                        }
-                    }
-
-                    // Failed
-                    throw new ArgumentException( "MAC" );
-                }
-                finally
-                {
-                    // Cleanup
-                    Marshal.FreeHGlobal( table );
-                }
+                // Process
+                socket.Send( buffer.ToArray() );
             }
             catch (Exception ex)
             {

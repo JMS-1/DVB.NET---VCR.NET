@@ -52,6 +52,9 @@ namespace VCRControlCenter
                 // Report
                 VCRNETControl.Log( "Checking {0}:{1}", ServerName, ServerPort );
 
+                // Try to resolve MAC
+                View.Settings.DetectMAC();
+
                 // Read the server settings
                 settings = VCRNETRestProxy.GetInformation( EndPoint );
 
