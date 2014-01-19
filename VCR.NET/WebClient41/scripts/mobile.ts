@@ -88,8 +88,10 @@ module VCRMobile {
             var end = new Date(start.getTime() + duration);
 
             // Daten aus der Rohdarstellung in das Modell kopieren
+            item.onShowDetails = function (event: JQueryEventObject): void { item.showDetails($(event.target).parent()); };
             item.displayStart = JMSLib.DateFormatter.getShortDate(start) + '. ' + JMSLib.DateFormatter.getEndTime(start);
             item.station = (rawData.station == null) ? '(Aufzeichnung gelöscht)' : rawData.station;
+            item.hideDetails = rawData.epg ? '' : JMSLib.CSSClass.invisible;
             item.profile = (rawData.device == null) ? '' : rawData.device;
             item.displayEnd = JMSLib.DateFormatter.getEndTime(end);
             item.epgProfile = rawData.epgDevice;
@@ -101,17 +103,31 @@ module VCRMobile {
 
             // Aufzeichungsmodus ermitteln
             if (rawData.lost)
-                item.mode = 'lost';
+                item.modeIcon = 'delete';
             else if (rawData.late)
-                item.mode = 'late';
+                item.modeIcon = 'alert';
             else
-                item.mode = 'intime';
+                item.modeIcon = 'check';
 
             // Die Endzeit könnte nicht wie gewünscht sein
             if (rawData.suspectEndTime)
                 item.endTimeSuspect = CSSClass.badEndTime;
 
             return item;
+        }
+
+        // Zeigt die Detailinformationen an
+        private showDetails(container: JQuery): void {
+            var parent = container.parent();
+
+            // Schaltfläche entfernen
+            container.remove();
+
+            // Details anfordern
+            VCRServer.getGuideItem(this.profile, this.source, this.start, this.end).done(function (item: VCRServer.GuideItemContract): void {
+                if (item != null)
+                    parent.append(JMSLib.HTMLTemplate.cloneAndApplyTemplate(item, $('#guideDetails')));
+            });
         }
 
         // Der Name einer CSS Klasse zur Kennzeichnung von Aufzeichnungen über die Zeitumstellung hinweg
@@ -148,7 +164,13 @@ module VCRMobile {
         displayEnd: string;
 
         // Ein Kürzel für die Qualität der Aufzeichnung, etwa ob dieser verspätet beginnt.
-        mode: string;
+        modeIcon: string;
+
+        // Gesetzt, wenn die Detailanzeige nicht möglich ist
+        hideDetails: string;
+
+        // Über diese Methode werden die Detailinformationen geladen
+        onShowDetails: (event: JQueryEventObject) => void;
     }
 
     // Repräsentiert irgendeine Seite
@@ -164,7 +186,7 @@ module VCRMobile {
         content: JQuery;
 
         // Wird einmalig beim Erstellen der Seite aufgerufen
-        onCreate(): void { throw new Error("abstract"); }
+        onCreate(): void { throw new Error('abstract'); }
 
         // Meldet eine Seite an
         registerSelf(templateName: string): void {

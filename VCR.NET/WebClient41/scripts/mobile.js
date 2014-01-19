@@ -71,8 +71,12 @@ var VCRMobile;
             var end = new Date(start.getTime() + duration);
 
             // Daten aus der Rohdarstellung in das Modell kopieren
+            item.onShowDetails = function (event) {
+                item.showDetails($(event.target).parent());
+            };
             item.displayStart = JMSLib.DateFormatter.getShortDate(start) + '. ' + JMSLib.DateFormatter.getEndTime(start);
             item.station = (rawData.station == null) ? '(Aufzeichnung gelöscht)' : rawData.station;
+            item.hideDetails = rawData.epg ? '' : JMSLib.CSSClass.invisible;
             item.profile = (rawData.device == null) ? '' : rawData.device;
             item.displayEnd = JMSLib.DateFormatter.getEndTime(end);
             item.epgProfile = rawData.epgDevice;
@@ -84,17 +88,31 @@ var VCRMobile;
 
             // Aufzeichungsmodus ermitteln
             if (rawData.lost)
-                item.mode = 'lost';
+                item.modeIcon = 'delete';
             else if (rawData.late)
-                item.mode = 'late';
+                item.modeIcon = 'alert';
             else
-                item.mode = 'intime';
+                item.modeIcon = 'check';
 
             // Die Endzeit könnte nicht wie gewünscht sein
             if (rawData.suspectEndTime)
                 item.endTimeSuspect = CSSClass.badEndTime;
 
             return item;
+        };
+
+        // Zeigt die Detailinformationen an
+        PlanItem.prototype.showDetails = function (container) {
+            var parent = container.parent();
+
+            // Schaltfläche entfernen
+            container.remove();
+
+            // Details anfordern
+            VCRServer.getGuideItem(this.profile, this.source, this.start, this.end).done(function (item) {
+                if (item != null)
+                    parent.append(JMSLib.HTMLTemplate.cloneAndApplyTemplate(item, $('#guideDetails')));
+            });
         };
         return PlanItem;
     })();
@@ -107,7 +125,7 @@ var VCRMobile;
         }
         // Wird einmalig beim Erstellen der Seite aufgerufen
         Page.prototype.onCreate = function () {
-            throw new Error("abstract");
+            throw new Error('abstract');
         };
 
         // Meldet eine Seite an

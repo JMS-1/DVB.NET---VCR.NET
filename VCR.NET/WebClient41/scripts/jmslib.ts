@@ -330,12 +330,14 @@ module JMSLib {
         // Ersetzt alle Platzhalter in einem Oberflächenmodell und schaltet dieses dann sichtbar.
         static applyTemplate(model: any, element: JQuery): void {
             // Platzhalter zum Ersetzen durch Werte
-            element.find('[' + Bindings.propertyAttribute + ']').each(function (index: any, element: Element): void {
+            element.find('[' + Bindings.propertyAttribute + ']').addBack().each(function (index: any, element: Element): void {
                 // Rohdaten auslesen
                 var dataProperty = element.getAttribute(Bindings.propertyAttribute);
-                var dataValue = HTMLTemplate.retrieveProperty(model, dataProperty);
+                if (dataProperty == null)
+                    return;
 
                 // Eventuell ganz entfernen
+                var dataValue = HTMLTemplate.retrieveProperty(model, dataProperty);
                 if (dataValue == null)
                     if (element.getAttribute(HTMLTemplate.requiredAttribute)) {
                         element.parentNode.removeChild(element);
@@ -366,7 +368,9 @@ module JMSLib {
                     else
                         target.text(dataValue);
                 else
-                    target.attr(attributeTarget, dataValue);
+                    $.each(attributeTarget.split(','), function (i: number, oneAttributeTarget: string): void {
+                        target.attr(oneAttributeTarget, dataValue);
+                    });
             });
 
             // Platzhalter für Prüfergebnisse
