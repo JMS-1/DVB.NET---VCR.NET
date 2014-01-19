@@ -25,7 +25,20 @@ var VCRMobile;
             if (item == null)
                 return;
 
-            parent.append(JMSLib.HTMLTemplate.cloneAndApplyTemplate(item, $('#guideDetails')));
+            // Anzeigeelement anlegen
+            var guide = JMSLib.HTMLTemplate.cloneAndApplyTemplate(item, $('#guideDetails'));
+
+            // Eine kleine Hilfsklasse zum Aufbau der Überlappanzeige
+            var guideItem = {
+                overlapClass: JMSLib.CSSClass.partialRecord,
+                shortDescription: item.shortDescription,
+                duration: item.duration * 1000,
+                description: item.description,
+                start: new Date(item.start)
+            };
+
+            // Überlapp einblenden
+            parent.append(JMSLib.prepareGuideDisplay(guideItem, guide, start, end));
         });
     }
 

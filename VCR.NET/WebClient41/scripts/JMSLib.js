@@ -69,7 +69,7 @@ var JMSLib;
         if (fullTime > 0)
             if (epgEnd > epgStart) {
                 // Anzeigelement ermitteln
-                var container = html.find('#guideOverlap');
+                var container = html.find('.guideOverlapContainer');
 
                 // Grenzen korrigieren
                 if (epgStart < recStart)
