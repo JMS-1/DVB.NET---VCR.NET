@@ -737,61 +737,6 @@ fieldset {
     font-weight: bold;
 }
 
-// Die Farbe der Umrandung für den Aufzeichnungsbereich.
-@guidePlanBorderColor: #999999;
-
-// Die Rundung des Aufzeichnungsbereichs.
-@guidePlanBorderRadius: 4px;
-
-// Der Bereich, der in der Programmzeitschrift den Überlapp mit der Aufzeichnung anzeigt.
-.guideOverlap {
-    div:first-child {
-        border-bottom-left-radius: @guidePlanBorderRadius;
-        border-top-left-radius: @guidePlanBorderRadius;
-        border-left-width: 1px;
-    }
-
-    div:last-child {
-        border-bottom-right-radius: @guidePlanBorderRadius;
-        border-top-right-radius: @guidePlanBorderRadius;
-        border-right-width: 1px;
-    }
-
-    div {
-        box-shadow: 1px 1px 1px @guidePlanBorderColor;
-        border-color: @guidePlanBorderColor;
-        border-width: 1px 0px 1px;
-        border-style: solid;
-        display: inline;
-        float: left;
-    }
-}
-
-// Der Anfang der Überlappungsanzeige.
-.guideOutsidePlanLeft {
-    border-right-width: 1px !important;
-}
-
-// Das Ende der Überlappungsanzeige.
-.guideOutsidePlanRight {
-    border-left-width: 1px !important;
-}
-
-// Meldet, dass eine Aufzeichnung den Eintrag in der Programmzeitschrift überdeckt.
-.guideInsidePlan {
-    background-color: #89fc85;
-}
-
-// Meldet, dass eine Aufzeichnung den Eintrag in der Programmzeitschrift nicht vollständig erfasst.
-.guideOutsidePlan {
-    background-color: #f2f236;
-}
-
-// Der Bereich der Aufzeichnung, der anderes als die Sendung aufzeichnet.
-.planOutsideGuide {
-    background-color: #eeeeee;
-}
-
 // Der äußere Rahmen der Anwendung.
 .mainOuter {
     margin-top: 60px;
