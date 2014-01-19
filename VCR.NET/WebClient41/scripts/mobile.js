@@ -13,6 +13,22 @@ var VCRMobile;
     // Einfach nur einige Typwandlungen
     var jMobile = $;
 
+    // Zeigt einen Eintrag der Programmzeitschrift an
+    function displayGuide(container, profile, source, start, end) {
+        var parent = container.parent();
+
+        // Schaltfläche entfernen
+        container.remove();
+
+        // Details anfordern
+        VCRServer.getGuideItem(profile, source, start, end).done(function (item) {
+            if (item == null)
+                return;
+
+            parent.append(JMSLib.HTMLTemplate.cloneAndApplyTemplate(item, $('#guideDetails')));
+        });
+    }
+
     // Die Information zu einer einzelnen laufenden Aufzeichnung
     var CurrentItem = (function () {
         function CurrentItem() {
@@ -26,10 +42,10 @@ var VCRMobile;
             var end = new Date(start.getTime() + duration);
 
             // Einfache Übernahme
-            item.start = JMSLib.DateFormatter.getShortDate(start) + '. ' + JMSLib.DateFormatter.getEndTime(start);
             item.onShowDetails = function (event) {
-                item.showDetails($(event.target).parent());
+                displayGuide($(event.target).parent(), item.profileName, item.source, item.startTime, item.endTime);
             };
+            item.start = JMSLib.DateFormatter.getShortDate(start) + '. ' + JMSLib.DateFormatter.getEndTime(start);
             item.hideDetails = serverItem.epg ? '' : JMSLib.CSSClass.invisible;
             item.end = JMSLib.DateFormatter.getEndTime(end);
             item.sourceName = serverItem.sourceName;
@@ -40,20 +56,6 @@ var VCRMobile;
             item.endTime = end;
 
             return item;
-        };
-
-        // Zeigt die Detailinformationen an
-        CurrentItem.prototype.showDetails = function (container) {
-            var parent = container.parent();
-
-            // Schaltfläche entfernen
-            container.remove();
-
-            // Details anfordern
-            VCRServer.getGuideItem(this.profileName, this.source, this.startTime, this.endTime).done(function (item) {
-                if (item != null)
-                    parent.append(JMSLib.HTMLTemplate.cloneAndApplyTemplate(item, $('#guideDetails')));
-            });
         };
         return CurrentItem;
     })();
@@ -72,7 +74,7 @@ var VCRMobile;
 
             // Daten aus der Rohdarstellung in das Modell kopieren
             item.onShowDetails = function (event) {
-                item.showDetails($(event.target).parent());
+                displayGuide($(event.target).parent(), item.profile, item.source, item.start, item.end);
             };
             item.displayStart = JMSLib.DateFormatter.getShortDate(start) + '. ' + JMSLib.DateFormatter.getEndTime(start);
             item.station = (rawData.station == null) ? '(Aufzeichnung gelöscht)' : rawData.station;
@@ -99,20 +101,6 @@ var VCRMobile;
                 item.endTimeSuspect = CSSClass.badEndTime;
 
             return item;
-        };
-
-        // Zeigt die Detailinformationen an
-        PlanItem.prototype.showDetails = function (container) {
-            var parent = container.parent();
-
-            // Schaltfläche entfernen
-            container.remove();
-
-            // Details anfordern
-            VCRServer.getGuideItem(this.profile, this.source, this.start, this.end).done(function (item) {
-                if (item != null)
-                    parent.append(JMSLib.HTMLTemplate.cloneAndApplyTemplate(item, $('#guideDetails')));
-            });
         };
         return PlanItem;
     })();

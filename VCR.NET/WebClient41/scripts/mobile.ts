@@ -7,6 +7,22 @@ module VCRMobile {
     // Einfach nur einige Typwandlungen
     var jMobile = <JQueryMobile.JQueryStatic> <any> $;
 
+    // Zeigt einen Eintrag der Programmzeitschrift an
+    function displayGuide(container: JQuery, profile: string, source: string, start: Date, end: Date): void {
+        var parent = container.parent();
+
+        // Schaltfläche entfernen
+        container.remove();
+
+        // Details anfordern
+        VCRServer.getGuideItem(profile, source, start, end).done(function (item: VCRServer.GuideItemContract): void {
+            if (item == null)
+                return;
+
+            parent.append(JMSLib.HTMLTemplate.cloneAndApplyTemplate(item, $('#guideDetails')));
+        });
+    }
+
     // Die Information zu einer einzelnen laufenden Aufzeichnung
     class CurrentItem {
         // Das verwendete Gerät
@@ -48,8 +64,8 @@ module VCRMobile {
             var end = new Date(start.getTime() + duration);
 
             // Einfache Übernahme
+            item.onShowDetails = function (event: JQueryEventObject): void { displayGuide($(event.target).parent(), item.profileName, item.source, item.startTime, item.endTime); };
             item.start = JMSLib.DateFormatter.getShortDate(start) + '. ' + JMSLib.DateFormatter.getEndTime(start);
-            item.onShowDetails = function (event: JQueryEventObject): void { item.showDetails($(event.target).parent()); };
             item.hideDetails = serverItem.epg ? '' : JMSLib.CSSClass.invisible;
             item.end = JMSLib.DateFormatter.getEndTime(end);
             item.sourceName = serverItem.sourceName;
@@ -60,20 +76,6 @@ module VCRMobile {
             item.endTime = end;
 
             return item;
-        }
-
-        // Zeigt die Detailinformationen an
-        private showDetails(container: JQuery): void {
-            var parent = container.parent();
-
-            // Schaltfläche entfernen
-            container.remove();
-
-            // Details anfordern
-            VCRServer.getGuideItem(this.profileName, this.source, this.startTime, this.endTime).done(function (item: VCRServer.GuideItemContract): void {
-                if (item != null)
-                    parent.append(JMSLib.HTMLTemplate.cloneAndApplyTemplate(item, $('#guideDetails')));
-            });
         }
     }
 
@@ -88,7 +90,7 @@ module VCRMobile {
             var end = new Date(start.getTime() + duration);
 
             // Daten aus der Rohdarstellung in das Modell kopieren
-            item.onShowDetails = function (event: JQueryEventObject): void { item.showDetails($(event.target).parent()); };
+            item.onShowDetails = function (event: JQueryEventObject): void { displayGuide($(event.target).parent(), item.profile, item.source, item.start, item.end); };
             item.displayStart = JMSLib.DateFormatter.getShortDate(start) + '. ' + JMSLib.DateFormatter.getEndTime(start);
             item.station = (rawData.station == null) ? '(Aufzeichnung gelöscht)' : rawData.station;
             item.hideDetails = rawData.epg ? '' : JMSLib.CSSClass.invisible;
@@ -114,20 +116,6 @@ module VCRMobile {
                 item.endTimeSuspect = CSSClass.badEndTime;
 
             return item;
-        }
-
-        // Zeigt die Detailinformationen an
-        private showDetails(container: JQuery): void {
-            var parent = container.parent();
-
-            // Schaltfläche entfernen
-            container.remove();
-
-            // Details anfordern
-            VCRServer.getGuideItem(this.profile, this.source, this.start, this.end).done(function (item: VCRServer.GuideItemContract): void {
-                if (item != null)
-                    parent.append(JMSLib.HTMLTemplate.cloneAndApplyTemplate(item, $('#guideDetails')));
-            });
         }
 
         // Der Name einer CSS Klasse zur Kennzeichnung von Aufzeichnungen über die Zeitumstellung hinweg
