@@ -377,6 +377,14 @@ var VCRServer;
     }
     VCRServer.getPlan = getPlan;
 
+    function getPlanForMobile(limit) {
+        return $.ajax({
+            url: restRoot + 'plan?limit=' + limit + '&mobile',
+            dataType: 'json'
+        });
+    }
+    VCRServer.getPlanForMobile = getPlanForMobile;
+
     function updateSchedule(jobId, scheduleId, data) {
         // Die Einstellungen, wie sie für das Neuanlegen benötigt werden
         var sendOptions = {

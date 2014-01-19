@@ -806,6 +806,13 @@ module VCRServer {
         });
     }
 
+    export function getPlanForMobile(limit: number): JQueryPromise<any> {
+        return $.ajax({
+            url: restRoot + 'plan?limit=' + limit + '&mobile',
+            dataType: 'json',
+        });
+    }
+
     export function updateSchedule(jobId: string, scheduleId: string, data: JobScheduleDataContract): JQueryPromise<any> {
         // Die Einstellungen, wie sie für das Neuanlegen benötigt werden
         var sendOptions: JQueryAjaxSettings =

@@ -77,6 +77,80 @@ module VCRMobile {
         }
     }
 
+    // Beschreibt einen einzelnen Eintrag in Aufzeichnungsplan
+    class PlanItem {
+        static create(rawData: any): PlanItem {
+            var item = new PlanItem();
+
+            // Zeiten umrechnen
+            var duration = rawData.duration * 1000;
+            var start = new Date(rawData.start);
+            var end = new Date(start.getTime() + duration);
+
+            // Daten aus der Rohdarstellung in das Modell kopieren
+            item.displayStart = JMSLib.DateFormatter.getShortDate(start) + '. ' + JMSLib.DateFormatter.getEndTime(start);
+            item.station = (rawData.station == null) ? '(Aufzeichnung gelöscht)' : rawData.station;
+            item.profile = (rawData.device == null) ? '' : rawData.device;
+            item.displayEnd = JMSLib.DateFormatter.getEndTime(end);
+            item.epgProfile = rawData.epgDevice;
+            item.fullName = rawData.name;
+            item.source = rawData.source;
+            item.legacyId = rawData.id;
+            item.start = start;
+            item.end = end;
+
+            // Aufzeichungsmodus ermitteln
+            if (rawData.lost)
+                item.mode = 'lost';
+            else if (rawData.late)
+                item.mode = 'late';
+            else
+                item.mode = 'intime';
+
+            // Die Endzeit könnte nicht wie gewünscht sein
+            if (rawData.suspectEndTime)
+                item.endTimeSuspect = CSSClass.badEndTime;
+
+            return item;
+        }
+
+        // Der Name einer CSS Klasse zur Kennzeichnung von Aufzeichnungen über die Zeitumstellung hinweg
+        endTimeSuspect: string;
+
+        // Die Kennung der zugehörigen Quelle.
+        private source: string;
+
+        // Kennung einer Aufzeichnung, so wie sie in der ursprünglichen ASP.NET Anwendung verwendet wird.
+        private legacyId: string;
+
+        // Der volle Name des Senders.
+        station: string;
+
+        // Das DVB.NET Gerät, das die Aufzeichnung ausführen wird.
+        profile: string;
+
+        // Das DVB.NET Gerät, über das Sendungsinformationen nachgeschlagen werden können.
+        private epgProfile: string;
+
+        // Der volle Name der Aufzeichnung.
+        fullName: string;
+
+        // Der Zeitpunkt, an dem die Aufzeichnung beginnen wird.
+        start: Date;
+
+        // Der Zeitpunkt, an dem die Aufzeichnung enden wird.
+        end: Date;
+
+        // Der Startzeitpunkt formatiert für die Darstellung.
+        displayStart: string;
+
+        // Der Endzeitpunkt, formatiert für die Darstellung - es werden nur Stunden und Minuten angezeigt.
+        displayEnd: string;
+
+        // Ein Kürzel für die Qualität der Aufzeichnung, etwa ob dieser verspätet beginnt.
+        mode: string;
+    }
+
     // Repräsentiert irgendeine Seite
     interface IPage {
     }
@@ -154,8 +228,53 @@ module VCRMobile {
         }
     }
 
+    // Repräsentiert die Seite mit dem Aufzeichnungsplan
+    class planPage extends Page {
+        // Die Vorlage für einen einzelnen Eintrag
+        private rowTemplate: JMSLib.HTMLTemplate = null;
+
+        // Erstellt eine neue Seite
+        constructor() {
+            super();
+        }
+
+        // Meldet eine Seite an
+        static register(templateName: string): void {
+            new this().registerSelf(templateName);
+        }
+
+        // Wird einmalig beim Erstellen der Seite aufgerufen
+        onCreate(): void {
+            var me = this;
+
+            // Aktualisierung anmelden
+            me.content.find('.refreshLink').on('click', function (eventObject: JQueryEventObject): void {
+                me.refresh();
+            });
+
+            // Vorlage einmalig anlegen und Daten erstmalig anfordern
+            me.rowTemplate = JMSLib.HTMLTemplate.staticCreate(me.content.find('[data-role="collapsible-set"]'), $('#planRow'));
+            me.refresh();
+        }
+
+        // Fordert alle Daten (erneut) an
+        refresh(): void {
+            var me = this;
+
+            // Daten abrufen
+            VCRServer.getPlanForMobile(20).done(function (data: VCRServer.PlanCurrentContractMobile[]): void {
+                // Daten aktualisieren
+                me.rowTemplate.loadList($.map(data, PlanItem.create));
+
+                // Und in die Anzeige übernehmen
+                me.content.trigger('create');
+            });
+        }
+    }
+
     // Seitenbearbeitung anmelden
     devicePage.register('devicePage');
+    planPage.register('planPage');
 
     // Benutzereinstellungen einmalig anfordern
     VCRServer.UserProfile.global.refresh();

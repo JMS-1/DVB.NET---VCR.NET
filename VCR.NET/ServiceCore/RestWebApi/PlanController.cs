@@ -43,6 +43,29 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         }
 
         /// <summary>
+        /// Meldet den aktuellen Aufzeichnungsplan der nächsten 4 Wochen für mobile Geräte, wobei Aufgaben ausgeschlossen sind.
+        /// </summary>
+        /// <param name="limit">Die maximale Anzahl von Einträgen im Ergebnis.</param>
+        /// <param name="mobile">Schalter zum Umschalten auf die Liste für mobile Geräte.</param>
+        /// <returns>Alle Einträge des Aufzeichnungsplans.</returns>
+        [HttpGet]
+        public PlanActivityMobile[] GetPlanMobile( string limit, string mobile )
+        {
+            // Get the limit
+            int maximum;
+            if (!int.TryParse( limit, out maximum ) || (maximum <= 0))
+                maximum = 1000;
+
+            // Use helper
+            return
+                GetPlan( null, DateTime.UtcNow.AddDays( 28 ).ToString( "o" ) )
+                    .Where( plan => !string.IsNullOrEmpty( plan.Source ) )
+                    .Take( maximum )
+                    .Select( PlanActivityMobile.Create )
+                    .ToArray();
+        }
+
+        /// <summary>
         /// Ermittelt Informationen zu allen Geräteprofilen.
         /// </summary>
         /// <returns>Die gewünschte Liste.</returns>

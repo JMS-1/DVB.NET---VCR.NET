@@ -16,40 +16,8 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
     /// </summary>
     [DataContract]
     [Serializable]
-    public class PlanActivity
+    public class PlanActivityMobile
     {
-        /// <summary>
-        /// Vergleicht Planungen nach dem Startzeitpunkt.
-        /// </summary>
-        public static readonly IComparer<PlanActivity> ByStartComparer = new PlanActivityComparer();
-
-        /// <summary>
-        /// Vergleicht Planungen nach dem Startzeitpunkt.
-        /// </summary>
-        private class PlanActivityComparer : IComparer<PlanActivity>
-        {
-            /// <summary>
-            /// Vergleicht zwei Planungseinträge.
-            /// </summary>
-            /// <param name="left">Die erste Planung.</param>
-            /// <param name="right">Die zweite Planung.</param>
-            /// <returns>Die Anordnung der beiden Planungen.</returns>
-            public int Compare( PlanActivity left, PlanActivity right )
-            {
-                // One is not set
-                if (left == null)
-                    if (right == null)
-                        return 0;
-                    else
-                        return -1;
-                else if (right == null)
-                    return +1;
-
-                // Compare by start time
-                return left.StartTime.CompareTo( right.StartTime );
-            }
-        }
-
         /// <summary>
         /// Der Startzeitpunkt der Aufzeichnung.
         /// </summary>
@@ -99,36 +67,6 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         public string Station { get; set; }
 
         /// <summary>
-        /// Gesetzt, wenn alle Sprachen aufgezeichnet werden sollen.
-        /// </summary>
-        [DataMember( Name = "allAudio" )]
-        public bool AllLanguages { get; set; }
-
-        /// <summary>
-        /// Gesetzt, wenn auch die <i>AC3</i> Tonspur aufgezeichnet werden soll.
-        /// </summary>
-        [DataMember( Name = "ac3" )]
-        public bool Dolby { get; set; }
-
-        /// <summary>
-        /// Gesetzt, wenn auch der Videotext aufgezeichnet werden soll.
-        /// </summary>
-        [DataMember( Name = "ttx" )]
-        public bool VideoText { get; set; }
-
-        /// <summary>
-        /// Gesetzt, wenn auch DVB Untertitel aufgezeichnet werden sollen.
-        /// </summary>
-        [DataMember( Name = "dvbsub" )]
-        public bool SubTitles { get; set; }
-
-        /// <summary>
-        /// Gesetzt, wenn auch die Programmzeitschrift extrahiert wird.
-        /// </summary>
-        [DataMember( Name = "epgCurrent" )]
-        public bool CurrentProgramGuide { get; set; }
-
-        /// <summary>
         /// Gesetzt, wenn die Aufzeichnung verspätet beginnt.
         /// </summary>
         [DataMember( Name = "late" )]
@@ -159,16 +97,10 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         public string Source { get; set; }
 
         /// <summary>
-        /// Die Referenz einer Aufzeichnung, so wie sie
+        /// Die Referenz einer Aufzeichnung, so wie sie.
         /// </summary>
         [DataMember( Name = "id" )]
         public string LegacyReference { get; set; }
-
-        /// <summary>
-        /// Die zugehörige Ausnahmeregel.
-        /// </summary>
-        [DataMember( Name = "exception" )]
-        public PlanException ExceptionRule { get; set; }
 
         /// <summary>
         /// Gesetzt, wenn die Endzeit möglicherweise durch die Sommerzeit nicht wie
@@ -176,6 +108,108 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// </summary>
         [DataMember( Name = "suspectEndTime" )]
         public bool EndTimeCouldBeWrong { get; set; }
+
+        /// <summary>
+        /// Erstellt eine Repräsentation für mobile Endgeräte.
+        /// </summary>
+        /// <param name="full">Die vollständige Beschreibung.</param>
+        /// <returns>Eine reduzierte Beschreibung.</returns>
+        public static PlanActivityMobile Create( PlanActivity full )
+        {
+            // Create
+            return
+                new PlanActivityMobile
+                {
+                    EndTimeCouldBeWrong = full.EndTimeCouldBeWrong,
+                    GuideEntryDevice = full.GuideEntryDevice,
+                    LegacyReference = full.LegacyReference,
+                    HasGuideEntry = full.HasGuideEntry,
+                    StartTime = full.StartTime,
+                    FullName = full.FullName,
+                    IsHidden = full.IsHidden,
+                    Duration = full.Duration,
+                    Station = full.Station,
+                    IsLate = full.IsLate,
+                    Device = full.Device,
+                    Source = full.Source,
+                };
+        }
+    }
+
+    /// <summary>
+    /// Beschreibt eine geplante Aktivität.
+    /// </summary>
+    [DataContract]
+    [Serializable]
+    public class PlanActivity : PlanActivityMobile
+    {
+        /// <summary>
+        /// Vergleicht Planungen nach dem Startzeitpunkt.
+        /// </summary>
+        public static readonly IComparer<PlanActivity> ByStartComparer = new PlanActivityComparer();
+
+        /// <summary>
+        /// Vergleicht Planungen nach dem Startzeitpunkt.
+        /// </summary>
+        private class PlanActivityComparer : IComparer<PlanActivity>
+        {
+            /// <summary>
+            /// Vergleicht zwei Planungseinträge.
+            /// </summary>
+            /// <param name="left">Die erste Planung.</param>
+            /// <param name="right">Die zweite Planung.</param>
+            /// <returns>Die Anordnung der beiden Planungen.</returns>
+            public int Compare( PlanActivity left, PlanActivity right )
+            {
+                // One is not set
+                if (left == null)
+                    if (right == null)
+                        return 0;
+                    else
+                        return -1;
+                else if (right == null)
+                    return +1;
+
+                // Compare by start time
+                return left.StartTime.CompareTo( right.StartTime );
+            }
+        }
+
+        /// <summary>
+        /// Gesetzt, wenn alle Sprachen aufgezeichnet werden sollen.
+        /// </summary>
+        [DataMember( Name = "allAudio" )]
+        public bool AllLanguages { get; set; }
+
+        /// <summary>
+        /// Gesetzt, wenn auch die <i>AC3</i> Tonspur aufgezeichnet werden soll.
+        /// </summary>
+        [DataMember( Name = "ac3" )]
+        public bool Dolby { get; set; }
+
+        /// <summary>
+        /// Gesetzt, wenn auch der Videotext aufgezeichnet werden soll.
+        /// </summary>
+        [DataMember( Name = "ttx" )]
+        public bool VideoText { get; set; }
+
+        /// <summary>
+        /// Gesetzt, wenn auch DVB Untertitel aufgezeichnet werden sollen.
+        /// </summary>
+        [DataMember( Name = "dvbsub" )]
+        public bool SubTitles { get; set; }
+
+        /// <summary>
+        /// Gesetzt, wenn auch die Programmzeitschrift extrahiert wird.
+        /// </summary>
+        [DataMember( Name = "epgCurrent" )]
+        public bool CurrentProgramGuide { get; set; }
+
+        /// <summary>
+        /// Die zugehörige Ausnahmeregel.
+        /// </summary>
+        [DataMember( Name = "exception" )]
+        public PlanException ExceptionRule { get; set; }
 
         /// <summary>
         /// Prüft, ob die Aufzeichnung über eine Zeitumstellung erfolgt.
