@@ -6,6 +6,10 @@
 	settings from within the Web Application.
 -->
 <configuration>
+  <runtime>
+    <legacyCorruptedStateExceptionsPolicy enabled="true" />
+  </runtime>
+
   <appSettings>
     <!-- Core Operating Parameters -->
     <add key="Profiles" value="Nexus (Dev)" />

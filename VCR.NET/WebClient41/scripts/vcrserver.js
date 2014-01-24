@@ -270,7 +270,7 @@ var VCRServer;
 
     function getGuideItem(device, source, start, end) {
         return $.ajax({
-            url: restRoot + 'guide?profile=' + device + '&source=' + source + '&pattern=' + start.getTime() + '-' + end.getTime(),
+            url: restRoot + 'guide?profile=' + encodeURIComponent(device) + '&source=' + source + '&pattern=' + start.getTime() + '-' + end.getTime(),
             dataType: 'json'
         });
     }
@@ -296,7 +296,7 @@ var VCRServer;
 
     function browseDirectories(root, children) {
         return $.ajax({
-            url: restRoot + 'configuration?browse&toParent=' + !children + '&root=' + root,
+            url: restRoot + 'configuration?browse&toParent=' + !children + '&root=' + encodeURIComponent(root),
             dataType: 'json'
         });
     }
@@ -346,7 +346,7 @@ var VCRServer;
 
     function validateDirectory(path) {
         return $.ajax({
-            url: restRoot + 'configuration?validate&directory=' + path,
+            url: restRoot + 'configuration?validate&directory=' + encodeURIComponent(path),
             dataType: 'json'
         });
     }

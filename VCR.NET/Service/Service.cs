@@ -52,18 +52,6 @@ namespace JMS.DVBVCR.RecordingService
         #region Win32 API
 
         /// <summary>
-        /// Rückrufmethode für <see cref="SetConsoleCtrlHandler"/>.
-        /// </summary>
-        private delegate bool ConsoleHandler( UInt32 commandType );
-
-        /// <summary>
-        /// Die Win32 API Methode <see cref="SetConsoleCtrlHandler"/>.
-        /// </summary>
-        [DllImport( "kernel32.dll", EntryPoint = "SetConsoleCtrlHandler" )]
-        [SuppressUnmanagedCodeSecurity]
-        private static extern bool SetConsoleCtrlHandler( ConsoleHandler callback, bool add );
-
-        /// <summary>
         /// Die Win32 API Methode <see cref="AdjustTokenPrivileges"/>.
         /// </summary>
         [DllImport( "Advapi32.dll", EntryPoint = "AdjustTokenPrivileges" )]
@@ -168,21 +156,6 @@ namespace JMS.DVBVCR.RecordingService
             // Finally wait for the hibernation helper to terminate (at most five seconds)
             if (hibTest != null)
                 hibTest.Join();
-        }
-
-        /// <summary>
-        /// Nimmt ein Windows <i>Console</i> Ereignis entgegen.
-        /// </summary>
-        /// <param name="eventType">Vom Anwender ausgelöstes Ereignis.</param>
-        /// <returns>Beeiflußt die weitere Bearbeitung des Ereignisses.</returns>
-        private bool ConsoleEvent( UInt32 eventType )
-        {
-            // Only for shut down
-            if (eventType == 6)
-                Terminate();
-
-            // Continue
-            return false;
         }
 
         /// <summary>
@@ -348,13 +321,6 @@ namespace JMS.DVBVCR.RecordingService
                 m_WebServer = new WebServer.ServerHost( VCRServer );
 
                 // Report
-                Tools.ExtendedLogging( "Attaching Console Control Handler" );
-
-                // Register shutdown handler
-                if (!SetConsoleCtrlHandler( ConsoleEvent, true ))
-                    VCRServer.Log( LoggingLevel.Errors, Properties.Resources.ShutdownHandlerFailed );
-
-                // Report
                 Tools.ExtendedLogging( "Attaching Process" );
 
                 // Get a token for this process
@@ -393,22 +359,22 @@ namespace JMS.DVBVCR.RecordingService
 
                 // Create the web server on a separate thread
                 m_webStarter = new Thread( () =>
+                {
+                    // Be safe
+                    try
                     {
-                        // Be safe
-                        try
-                        {
-                            // Report
-                            Tools.ExtendedLogging( "Starting Web Server on Thread {0}", Thread.CurrentThread.ManagedThreadId );
+                        // Report
+                        Tools.ExtendedLogging( "Starting Web Server on Thread {0}", Thread.CurrentThread.ManagedThreadId );
 
-                            // Start Web Server
-                            m_WebServer.Start();
-                        }
-                        catch (Exception e)
-                        {
-                            // Report
-                            EventLog.WriteEntry( e.ToString(), EventLogEntryType.Error );
-                        }
-                    } );
+                        // Start Web Server
+                        m_WebServer.Start();
+                    }
+                    catch (Exception e)
+                    {
+                        // Report
+                        EventLog.WriteEntry( e.ToString(), EventLogEntryType.Error );
+                    }
+                } );
 
                 // Start it
                 m_webStarter.Start();

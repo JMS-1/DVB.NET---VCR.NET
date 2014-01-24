@@ -707,7 +707,7 @@ module VCRServer {
 
     export function getGuideItem(device: string, source: string, start: Date, end: Date): JQueryPromise<any> {
         return $.ajax({
-            url: restRoot + 'guide?profile=' + device + '&source=' + source + '&pattern=' + start.getTime() + '-' + end.getTime(),
+            url: restRoot + 'guide?profile=' + encodeURIComponent(device) + '&source=' + source + '&pattern=' + start.getTime() + '-' + end.getTime(),
             dataType: 'json',
         });
     }
@@ -730,7 +730,7 @@ module VCRServer {
 
     export function browseDirectories(root: string, children: boolean): JQueryPromise<any> {
         return $.ajax({
-            url: restRoot + 'configuration?browse&toParent=' + !children + '&root=' + root,
+            url: restRoot + 'configuration?browse&toParent=' + !children + '&root=' + encodeURIComponent(root),
             dataType: 'json',
         });
     }
@@ -772,7 +772,7 @@ module VCRServer {
 
     export function validateDirectory(path: string): JQueryPromise<any> {
         return $.ajax({
-            url: restRoot + 'configuration?validate&directory=' + path,
+            url: restRoot + 'configuration?validate&directory=' + encodeURIComponent(path),
             dataType: 'json',
         });
     }

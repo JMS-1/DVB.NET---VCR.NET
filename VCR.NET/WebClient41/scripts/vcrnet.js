@@ -3215,8 +3215,8 @@ var editPage = (function (_super) {
         me.sourceSelections = new SourceSelectorLoader($('#selProfile'));
         me.exceptionRowTemplate = new JMSLib.HTMLTemplate($('#exceptionRows'), 'exceptionRow');
 
-        // Auslesen der Kennung
-        var query = window.location.hash;
+        // Auslesen der Kennung - für FireFox ist es nicht möglich, .hash direkt zu verwenden, da hierbei eine Decodierung durchgeführt wird
+        var query = window.location.href.split("#")[1];
         var idIndex = query.indexOf(';id=');
         var hasId = (idIndex >= 0);
         var jobScheduleId = hasId ? query.substr(idIndex + 4) : '';
@@ -3330,7 +3330,7 @@ var guidePage = (function (_super) {
 
         // Bei jeder Änderung der Auswahl des Auftrags wird das Ziel geeignet angepasst und so das normale Verhalten eines Verweises erreicht
         function jobChanged() {
-            createCommand.attr('href', '#edit;id=' + jobSelector.val() + ';epgid=' + guideItem.id);
+            createCommand.attr('href', '#edit;id=' + jobSelector.val() + ';epgid=' + encodeURIComponent(guideItem.id));
         }
 
         // Wird ein Auftrag ausgewählt muss der Verweis gesetzt werden
