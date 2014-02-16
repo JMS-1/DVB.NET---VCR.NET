@@ -124,6 +124,8 @@ module VCRMobile {
             else
                 item.modeIcon = 'check';
 
+            item.iconClass = 'iconMerge ui-btn-icon-left ui-icon-' + item.modeIcon;
+
             // Die Endzeit könnte nicht wie gewünscht sein
             if (rawData.suspectEndTime)
                 item.endTimeSuspect = CSSClass.badEndTime;
@@ -166,6 +168,9 @@ module VCRMobile {
 
         // Ein Kürzel für die Qualität der Aufzeichnung, etwa ob dieser verspätet beginnt.
         modeIcon: string;
+
+        // Die CSS Klasse zu modeIcon.
+        iconClass: string;
 
         // Gesetzt, wenn die Detailanzeige nicht möglich ist
         hideDetails: string;
@@ -276,7 +281,7 @@ module VCRMobile {
             });
 
             // Vorlage einmalig anlegen und Daten erstmalig anfordern
-            me.rowTemplate = JMSLib.HTMLTemplate.staticCreate(me.content.find('[data-role="collapsible-set"]'), $('#planRow'));
+            me.rowTemplate = JMSLib.HTMLTemplate.staticCreate(me.content.find('[data-role="listview"]'), $('#planRow'));
             me.refresh();
         }
 

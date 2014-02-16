@@ -109,6 +109,8 @@ var VCRMobile;
             else
                 item.modeIcon = 'check';
 
+            item.iconClass = 'iconMerge ui-btn-icon-left ui-icon-' + item.modeIcon;
+
             // Die Endzeit könnte nicht wie gewünscht sein
             if (rawData.suspectEndTime)
                 item.endTimeSuspect = CSSClass.badEndTime;
@@ -216,7 +218,7 @@ var VCRMobile;
             });
 
             // Vorlage einmalig anlegen und Daten erstmalig anfordern
-            me.rowTemplate = JMSLib.HTMLTemplate.staticCreate(me.content.find('[data-role="collapsible-set"]'), $('#planRow'));
+            me.rowTemplate = JMSLib.HTMLTemplate.staticCreate(me.content.find('[data-role="listview"]'), $('#planRow'));
             me.refresh();
         };
 

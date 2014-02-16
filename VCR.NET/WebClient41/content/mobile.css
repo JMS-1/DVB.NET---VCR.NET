@@ -15,3 +15,6 @@
 .guideOverlapContainer .guideOverlapSeparator {
   clear: left;
 }
+.iconMerge {
+  padding-left: 25px;
+}

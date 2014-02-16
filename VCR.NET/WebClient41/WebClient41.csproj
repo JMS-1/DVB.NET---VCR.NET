@@ -96,7 +96,7 @@
       <DependentUpon>mobile.less</DependentUpon>
     </Content>
     <Content Include="content\mobile.min.css">
-      <DependentUpon>mobile.less</DependentUpon>
+      <DependentUpon>mobile.css</DependentUpon>
     </Content>
     <Content Include="content\themes\base\images\animated-overlay.gif" />
     <Content Include="content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
