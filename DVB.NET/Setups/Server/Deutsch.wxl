@@ -7,7 +7,7 @@
   <String Id="FEATUREINTELLISENSE">Intellisense Dateien</String>
   <String Id="FEATURETEST">Card Server Test Programm</String>
   <String Id="ALREADYINSTALLED">Vor der Installation muss die existierende Version des DVB.NET Card Servers deinstalliert werden.</String>
-  <String Id="DOTNETMISSING">Der DVB.NET Card Server setzt eine Installation des Microsoft .NET Frameworks in der Version 4.0 voraus.</String>
+  <String Id="DOTNETMISSING">Der DVB.NET Card Server setzt eine Installation des Microsoft .NET Frameworks in der Version 4.5.1 voraus.</String>
   <String Id="DVBNETMISSING">Zur Installation des DVB.NET Card Servers muss DVB.NET bereits installiert sein. Die aktuelle Version kann hier heruntergeladen werden:
 
     http://www.psimarron.net/DVBNET/html/download.html

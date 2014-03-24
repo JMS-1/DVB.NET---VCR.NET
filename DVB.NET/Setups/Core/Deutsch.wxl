@@ -6,7 +6,7 @@
   <String Id="FEATURESOURCE">Quellcode</String>
   <String Id="FEATUREINTELLISENSE">Intellisense Dateien</String>
   <String Id="ALREADYINSTALLED">Vor der Installation muss die existierende Version der DVB.NET Bibliothek deinstalliert werden.</String>
-  <String Id="DOTNETMISSING">Die DVB.NET Bibliothek setzt eine Installation des Microsoft .NET Frameworks in der Version 4.0 voraus.</String>
+  <String Id="DOTNETMISSING">Die DVB.NET Bibliothek setzt eine Installation des Microsoft .NET Frameworks in der Version 4.5.1 voraus.</String>
 
   <String Id="ADMINMENULOCAL">Administration &amp; Konfiguration</String>
   <String Id="ADMINMENULOCALDESCR">Startet die Administration und Konfiguration für die DVB.NET Geräteprofile.</String>

@@ -34,9 +34,9 @@
     <Icon Id="THEICON" SourceFile="$(var.CardServerTester.ProjectDir)CardServer.ico" />
 
     <!-- Ohne .NET in der richtigen Version geht gar nichts -->
-    <PropertyRef Id="NETFRAMEWORK40CLIENT"/>
+    <PropertyRef Id="NETFRAMEWORK45"/>
     <Condition Message="!(loc.DOTNETMISSING)">
-      <![CDATA[NETFRAMEWORK40CLIENT]]>
+      <![CDATA[NETFRAMEWORK45]]>
     </Condition>
 
     <!-- Eine vorherige Installation muss entfernt werden -->

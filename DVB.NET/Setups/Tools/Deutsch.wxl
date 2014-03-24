@@ -5,7 +5,7 @@
   <String Id="FEATUREBINARIES">DVB.NET Tools 4.2</String>
   <String Id="FEATURESOURCE">Quellcode</String>
   <String Id="FEATUREINTELLISENSE">Intellisense Dateien</String>
-  <String Id="DOTNETMISSING">Die DVB.NET Werkzeuge setzen eine Installation des Microsoft .NET Frameworks in der Version 4.0 voraus.</String>
+  <String Id="DOTNETMISSING">Die DVB.NET Werkzeuge setzen eine Installation des Microsoft .NET Frameworks in der Version 4.5.1 voraus.</String>
   <String Id="DVBNETMISSING">Zur Installation der DVB.NET Werkzeuge muss DVB.NET bereits installiert sein. Die aktuelle Version kann hier heruntergeladen werden:
 
     http://www.psimarron.net/DVBNET/html/download.html
