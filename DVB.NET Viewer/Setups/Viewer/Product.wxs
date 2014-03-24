@@ -40,9 +40,9 @@
     <!-- Sonderoptionen für die Installation -->
 
     <!-- Ohne .NET in der richtigen Version geht gar nichts -->
-    <PropertyRef Id="NETFRAMEWORK40FULL"/>
+    <PropertyRef Id="NETFRAMEWORK45"/>
     <Condition Message="!(loc.DOTNETMISSING)">
-      <![CDATA[NETFRAMEWORK40FULL]]>
+      <![CDATA[NETFRAMEWORK45]]>
     </Condition>
 
     <!-- Eine vorherige Installation muss entfernt werden -->
