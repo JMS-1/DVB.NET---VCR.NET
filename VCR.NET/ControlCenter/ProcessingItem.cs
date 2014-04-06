@@ -95,6 +95,8 @@ namespace VCRControlCenter
                         continue;
                     if (!next.start.HasValue)
                         continue;
+                    if (next.start.Value == DateTime.MinValue)
+                        continue;
 
                     // At least there are recordings
                     hasNext = true;
