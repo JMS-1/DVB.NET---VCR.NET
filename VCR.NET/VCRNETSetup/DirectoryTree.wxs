@@ -83,9 +83,6 @@
               <Component Id="TypeScriptSource.VCRNET" Guid="*">
                 <File Id="TypeScript.VCRNET" Source="$(var.WebClient41.ProjectDir)scripts/vcrnet.ts" />
               </Component>
-              <Component Id="TypeScriptSource.Mobile" Guid="*">
-                <File Id="TypeScript.Mobile" Source="$(var.WebClient41.ProjectDir)scripts/mobile.ts" />
-              </Component>
               <Directory Id="ThirtPartyScriptFiles" Name="typings">
                 <Directory Id="jQueryScriptFiles" Name="jquery">
                   <Component Id="TypeScriptSource.jQuery" Guid="*">
@@ -95,11 +92,6 @@
                 <Directory Id="jQueryUIScriptFiles" Name="jqueryui">
                   <Component Id="TypeScriptSource.jQueryUI" Guid="*">
                     <File Id="TypeScript.jQueryUI" Source="$(var.WebClient41.ProjectDir)scripts/typings/jqueryui/jqueryui.d.ts" />
-                  </Component>
-                </Directory>
-                <Directory Id="jQueryMobileScriptFiles" Name="jquerymobile">
-                  <Component Id="TypeScriptSource.jQueryMobile" Guid="*">
-                    <File Id="TypeScript.jQueryMobile" Source="$(var.WebClient41.ProjectDir)scripts/typings/jquerymobile/jquerymobile.d.ts" />
                   </Component>
                 </Directory>
               </Directory>
@@ -112,9 +104,6 @@
               </Component>
               <Component Id="StyleSheetSource.VCRNET" Guid="*">
                 <File Id="StyleSheet.VCRNET" Source="$(var.WebClient41.ProjectDir)content/vcrnet.less" />
-              </Component>
-              <Component Id="StyleSheetSource.Mobile" Guid="*">
-                <File Id="StyleSheet.Mobile" Source="$(var.WebClient41.ProjectDir)content/mobile.less" />
               </Component>
             </Directory>
 
@@ -136,13 +125,10 @@
       <ComponentRef Id="TypeScriptSource.JMSLib"/>
       <ComponentRef Id="TypeScriptSource.VCRServer"/>
       <ComponentRef Id="TypeScriptSource.VCRNET"/>
-      <ComponentRef Id="TypeScriptSource.Mobile"/>
       <ComponentRef Id="TypeScriptSource.jQuery"/>
       <ComponentRef Id="TypeScriptSource.jQueryUI"/>
-      <ComponentRef Id="TypeScriptSource.jQueryMobile"/>
       <ComponentRef Id="StyleSheetSource.JMSLib"/>
       <ComponentRef Id="StyleSheetSource.VCRNET"/>
-      <ComponentRef Id="StyleSheetSource.Mobile"/>
     </ComponentGroup>
 
   </Fragment>

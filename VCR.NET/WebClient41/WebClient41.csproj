@@ -93,13 +93,6 @@
     <Content Include="content\jmslib.min.css">
       <DependentUpon>jmslib.less</DependentUpon>
     </Content>
-    <Content Include="content\jquery.mobile-1.4.0.min.css" />
-    <Content Include="content\mobile.css">
-      <DependentUpon>mobile.less</DependentUpon>
-    </Content>
-    <Content Include="content\mobile.min.css">
-      <DependentUpon>mobile.css</DependentUpon>
-    </Content>
     <Content Include="content\themes\base\images\animated-overlay.gif" />
     <Content Include="content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -160,21 +153,14 @@
     <Content Include="FAQ\sources.png" />
     <Content Include="FAQ\streamoptions.png" />
     <Content Include="FAQ\streamprotection.png" />
-    <Content Include="mobile.html" />
     <Content Include="scripts\jmslib.js">
       <DependentUpon>jmslib.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="scripts\jmslib.ts" />
     <Content Include="scripts\jquery-2.0.3.min.js" />
     <Content Include="scripts\jquery-ui-1.10.3.min.js" />
-    <Content Include="scripts\jquery.mobile-1.4.0.min.js" />
-    <None Include="content\mobile.less" />
     <None Include="scripts\typings\jqueryui\jqueryui.d.ts" />
     <None Include="scripts\typings\jquery\jquery.d.ts" />
-    <None Include="scripts\typings\jquerymobile\jquerymobile.d.ts" />
-    <Content Include="scripts\mobile.js">
-      <DependentUpon>mobile.ts</DependentUpon>
-    </Content>
     <Content Include="scripts\vcrnet.js">
       <DependentUpon>vcrnet.ts</DependentUpon>
     </Content>
@@ -230,7 +216,6 @@
     <Content Include="ui\templates\sourceSelection.html" />
     <Content Include="ui\templates\planRow.html" />
     <Content Include="ui\templates\planRowException.html" />
-    <TypeScriptCompile Include="scripts\mobile.ts" />
     <TypeScriptCompile Include="scripts\vcrnet.ts" />
     <Content Include="content\vcrnet.css">
       <DependentUpon>vcrnet.less</DependentUpon>
@@ -257,9 +242,6 @@
     <None Include="content\vcrnet.less" />
     <Content Include="scripts\vcrnet.js.map">
       <DependentUpon>vcrnet.ts</DependentUpon>
-    </Content>
-    <Content Include="scripts\mobile.js.map">
-      <DependentUpon>mobile.ts</DependentUpon>
     </Content>
     <Content Include="scripts\jmslib.js.map">
       <DependentUpon>jmslib.ts</DependentUpon>
