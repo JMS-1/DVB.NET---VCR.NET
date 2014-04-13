@@ -311,6 +311,7 @@ var GuideFilter = (function () {
     };
 
     GuideFilter.prototype.changeQuery = function (newText, withContent) {
+        var _this = this;
         // Suchtext in Suchmuster umsetzen
         if (newText.length < 1)
             newText = null;
@@ -334,9 +335,8 @@ var GuideFilter = (function () {
             window.clearTimeout(this.timeout);
 
         // Verzögerte Aktualisierung aktiveren
-        var me = this;
-        me.timeout = window.setTimeout(function () {
-            me.fireChange();
+        this.timeout = window.setTimeout(function () {
+            return _this.fireChange();
         }, 200);
     };
 
@@ -416,14 +416,14 @@ var Page = (function () {
     }
     // Meldet eine asynchrone Initialisierung an
     Page.prototype.registerAsyncCall = function () {
-        var me = this;
-        var mask = me.nextPending;
+        var _this = this;
+        var mask = this.nextPending;
 
-        me.nextPending += mask;
-        me.pending |= mask;
+        this.nextPending += mask;
+        this.pending |= mask;
 
         return function () {
-            me.finishedAsyncCall(mask);
+            return _this.finishedAsyncCall(mask);
         };
     };
 
@@ -570,6 +570,7 @@ $(function () {
 // Verwaltet die Auswahl einer Quelle für die Aufzeichnung, einschließlich der Aufzeichnungsoptionen
 var SourceSelector = (function () {
     function SourceSelector(loader, sibling, pure) {
+        var _this = this;
         var me = this;
 
         // Erst einmal eine Kopie aus den HTML Vorlagen erstellen
@@ -593,7 +594,7 @@ var SourceSelector = (function () {
 
         // Kleine Hilfe
         var refresh = function () {
-            me.load();
+            return _this.load();
         };
 
         // Alle Änderungen überwachen
@@ -759,14 +760,12 @@ var SourceSelectorLoader = (function () {
     }
     // Fordert die HTML Vorlagen vom Server an.
     SourceSelectorLoader.prototype.loadTemplates = function (success) {
-        var me = this;
-
-        // Laden anstossen
+        var _this = this;
         JMSLib.TemplateLoader.load('sourceSelection').done(function (template) {
             var templateDom = $(template);
 
-            me.optionTemplate = templateDom.find('#options');
-            me.sourceTemplate = templateDom.find('#source');
+            _this.optionTemplate = templateDom.find('#options');
+            _this.sourceTemplate = templateDom.find('#source');
 
             success();
         });
@@ -801,21 +800,20 @@ var UserSettingsValidator = (function () {
     }
     // Prüft die Konsistenz von Eingabedaten
     UserSettingsValidator.prototype.validate = function () {
-        var me = this;
-        var profile = me.model;
+        var profile = this.model;
 
         // Prüfen
-        me.maximumRecentSources = JMSLib.Bindings.checkNumber(profile.maximumRecentSources, 1, 50);
-        me.planDaysToShow = JMSLib.Bindings.checkNumber(profile.planDaysToShow, 1, 50);
-        me.guidePostTime = JMSLib.Bindings.checkNumber(profile.guidePostTime, 0, 240);
-        me.guidePreTime = JMSLib.Bindings.checkNumber(profile.guidePreTime, 0, 240);
-        me.rowsInGuide = JMSLib.Bindings.checkNumber(profile.rowsInGuide, 10, 100);
+        this.maximumRecentSources = JMSLib.Bindings.checkNumber(profile.maximumRecentSources, 1, 50);
+        this.planDaysToShow = JMSLib.Bindings.checkNumber(profile.planDaysToShow, 1, 50);
+        this.guidePostTime = JMSLib.Bindings.checkNumber(profile.guidePostTime, 0, 240);
+        this.guidePreTime = JMSLib.Bindings.checkNumber(profile.guidePreTime, 0, 240);
+        this.rowsInGuide = JMSLib.Bindings.checkNumber(profile.rowsInGuide, 10, 100);
 
         // Ergebnis der Prüfung
-        var isValid = (me.planDaysToShow == null) && (me.maximumRecentSources == null) && (me.guidePreTime == null) && (me.guidePostTime == null) && (me.rowsInGuide == null);
+        var isValid = (this.planDaysToShow == null) && (this.maximumRecentSources == null) && (this.guidePreTime == null) && (this.guidePostTime == null) && (this.rowsInGuide == null);
 
         // Schaltfläche anpassen
-        me.sendButton.button('option', 'disabled', !isValid);
+        this.sendButton.button('option', 'disabled', !isValid);
     };
     return UserSettingsValidator;
 })();
@@ -823,57 +821,55 @@ var UserSettingsValidator = (function () {
 // Beschreibt einen einzelnen Eintrag der Programmzeitschrift, der zur Anzeige vorbereitet wurde
 var GuideItem = (function () {
     function GuideItem(rawData) {
+        var _this = this;
         // Wird aufgerufen, wenn der Anwender die Detailanzeige aktiviert hat
         this.onShowDetails = function (item, origin) {
         };
         // Eine CSS Klasse, die den Überlapp einer Aufzeichnung mit dem Eintrag ausdrückt.
         this.overlapClass = JMSLib.CSSClass.partialRecord;
-        // Referenz besorgen
-        var me = this;
-
         // Zeiten umrechnen
         var duration = rawData.duration * 1000;
         var start = new Date(rawData.start);
         var end = new Date(start.getTime() + duration);
 
         // Daten aus der Rohdarstellung in das Modell kopieren
-        me.displayDuration = JMSLib.DateFormatter.getDuration(new Date(duration));
-        me.inactiveClass = rawData.active ? '' : JMSLib.CSSClass.invisible;
-        me.displayStart = JMSLib.DateFormatter.getStartTime(start);
-        me.displayEnd = JMSLib.DateFormatter.getEndTime(end);
-        me.short = rawData.shortDescription;
-        me.language = rawData.language;
-        me.long = rawData.description;
-        me.station = rawData.station;
-        me.name = rawData.name;
-        me.duration = duration;
-        me.id = rawData.id;
-        me.start = start;
-        me.end = end;
+        this.displayDuration = JMSLib.DateFormatter.getDuration(new Date(duration));
+        this.inactiveClass = rawData.active ? '' : JMSLib.CSSClass.invisible;
+        this.displayStart = JMSLib.DateFormatter.getStartTime(start);
+        this.displayEnd = JMSLib.DateFormatter.getEndTime(end);
+        this.short = rawData.shortDescription;
+        this.language = rawData.language;
+        this.long = rawData.description;
+        this.station = rawData.station;
+        this.name = rawData.name;
+        this.duration = duration;
+        this.id = rawData.id;
+        this.start = start;
+        this.end = end;
 
         // Listen
         var categories = rawData.categories;
         var ratings = rawData.ratings;
 
-        me.categories = categories.join(' ');
-        me.ratings = ratings.join(' ');
+        this.categories = categories.join(' ');
+        this.ratings = ratings.join(' ');
 
         // Detailanzeige immer aktivieren
-        me.showDetails = function () {
-            me.onShowDetails(me, this);
+        this.showDetails = function (origin) {
+            return _this.onShowDetails(_this, origin.currentTarget);
         };
 
         // Suche immer aktivieren
-        me.findInGuide = function () {
+        this.findInGuide = function () {
             var filter = GuideFilter.global;
 
             // Ganz von vorne
             filter.reset();
 
             // Textsuche auf den Namen auf der selben Karte
-            filter.device = me.id.split(':')[1];
-            filter.title = '=' + me.name;
-            filter.station = me.station;
+            filter.device = _this.id.split(':')[1];
+            filter.title = '=' + _this.name;
+            filter.station = _this.station;
 
             // Aufrufen
             if (window.location.hash == '#guide')

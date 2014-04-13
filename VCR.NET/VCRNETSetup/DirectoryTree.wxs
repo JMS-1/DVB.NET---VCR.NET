@@ -13,7 +13,7 @@
         <Directory Id="ManufacturerFolder" Name="$(var.Manufacturer)">
 
           <Directory Id="INSTALLFOLDER" Name="VCR.NET">
-
+            
             <!-- Der Web Client -->
             <Directory Id="WebClient41.Content" />
             <Directory Id="WebClient41.Sources" />

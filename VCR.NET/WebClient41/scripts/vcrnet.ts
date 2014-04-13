@@ -360,8 +360,7 @@ class GuideFilter implements VCRServer.GuideFilterContract {
             window.clearTimeout(this.timeout);
 
         // Verzögerte Aktualisierung aktiveren
-        var me = this;
-        me.timeout = window.setTimeout(function () { me.fireChange(); }, 200);
+        this.timeout = window.setTimeout(() => this.fireChange(), 200);
     }
 
     // Ändert den Startzeitpunkt
@@ -461,13 +460,12 @@ class Page {
 
     // Meldet eine asynchrone Initialisierung an
     registerAsyncCall(): () => void {
-        var me = this;
-        var mask = me.nextPending;
+        var mask = this.nextPending;
 
-        me.nextPending += mask;
-        me.pending |= mask;
+        this.nextPending += mask;
+        this.pending |= mask;
 
-        return function (): void { me.finishedAsyncCall(mask); }
+        return () => this.finishedAsyncCall(mask);
     }
 
     // Wird aufgerufen, wenn eine asynchrone Initialisierung abgeschlossen wurde
@@ -633,7 +631,7 @@ class SourceSelector {
         me.typeMode = me.source.find('#filterType');
 
         // Kleine Hilfe
-        var refresh = function (): void { me.load(); };
+        var refresh = () => this.load();
 
         // Alle Änderungen überwachen
         me.sourceSelectionList.change(function (): void { me.sourceNameField.val(me.sourceSelectionList.val()); me.sourceNameField.change(); });
@@ -816,14 +814,11 @@ class SourceSelectorLoader {
 
     // Fordert die HTML Vorlagen vom Server an.
     loadTemplates(success: () => void): void {
-        var me = this;
-
-        // Laden anstossen
-        JMSLib.TemplateLoader.load('sourceSelection').done(function (template: string): void {
+        JMSLib.TemplateLoader.load('sourceSelection').done((template: string) => {
             var templateDom = $(template);
 
-            me.optionTemplate = templateDom.find('#options');
-            me.sourceTemplate = templateDom.find('#source');
+            this.optionTemplate = templateDom.find('#options');
+            this.sourceTemplate = templateDom.find('#source');
 
             success();
         });
@@ -881,76 +876,72 @@ class UserSettingsValidator implements JMSLib.IValidator {
 
     // Prüft die Konsistenz von Eingabedaten
     validate(): void {
-        var me = this;
-        var profile = me.model;
+        var profile = this.model;
 
         // Prüfen
-        me.maximumRecentSources = JMSLib.Bindings.checkNumber(profile.maximumRecentSources, 1, 50);
-        me.planDaysToShow = JMSLib.Bindings.checkNumber(profile.planDaysToShow, 1, 50);
-        me.guidePostTime = JMSLib.Bindings.checkNumber(profile.guidePostTime, 0, 240);
-        me.guidePreTime = JMSLib.Bindings.checkNumber(profile.guidePreTime, 0, 240);
-        me.rowsInGuide = JMSLib.Bindings.checkNumber(profile.rowsInGuide, 10, 100);
+        this.maximumRecentSources = JMSLib.Bindings.checkNumber(profile.maximumRecentSources, 1, 50);
+        this.planDaysToShow = JMSLib.Bindings.checkNumber(profile.planDaysToShow, 1, 50);
+        this.guidePostTime = JMSLib.Bindings.checkNumber(profile.guidePostTime, 0, 240);
+        this.guidePreTime = JMSLib.Bindings.checkNumber(profile.guidePreTime, 0, 240);
+        this.rowsInGuide = JMSLib.Bindings.checkNumber(profile.rowsInGuide, 10, 100);
 
         // Ergebnis der Prüfung
         var isValid =
-            (me.planDaysToShow == null) &&
-            (me.maximumRecentSources == null) &&
-            (me.guidePreTime == null) &&
-            (me.guidePostTime == null) &&
-            (me.rowsInGuide == null);
+            (this.planDaysToShow == null) &&
+            (this.maximumRecentSources == null) &&
+            (this.guidePreTime == null) &&
+            (this.guidePostTime == null) &&
+            (this.rowsInGuide == null);
 
         // Schaltfläche anpassen
-        me.sendButton.button('option', 'disabled', !isValid);
+        this.sendButton.button('option', 'disabled', !isValid);
     }
 }
 
 // Beschreibt einen einzelnen Eintrag der Programmzeitschrift, der zur Anzeige vorbereitet wurde
 class GuideItem implements JMSLib.IGuideItem {
     constructor(rawData: VCRServer.GuideItemContract) {
-        // Referenz besorgen
-        var me = this;
-
         // Zeiten umrechnen
         var duration = rawData.duration * 1000;
         var start = new Date(rawData.start);
         var end = new Date(start.getTime() + duration);
 
         // Daten aus der Rohdarstellung in das Modell kopieren
-        me.displayDuration = JMSLib.DateFormatter.getDuration(new Date(duration));
-        me.inactiveClass = rawData.active ? '' : JMSLib.CSSClass.invisible;
-        me.displayStart = JMSLib.DateFormatter.getStartTime(start);
-        me.displayEnd = JMSLib.DateFormatter.getEndTime(end);
-        me.short = rawData.shortDescription;
-        me.language = rawData.language;
-        me.long = rawData.description;
-        me.station = rawData.station;
-        me.name = rawData.name;
-        me.duration = duration;
-        me.id = rawData.id;
-        me.start = start;
-        me.end = end;
+        this.displayDuration = JMSLib.DateFormatter.getDuration(new Date(duration));
+        this.inactiveClass = rawData.active ? '' : JMSLib.CSSClass.invisible;
+        this.displayStart = JMSLib.DateFormatter.getStartTime(start);
+        this.displayEnd = JMSLib.DateFormatter.getEndTime(end);
+        this.short = rawData.shortDescription;
+        this.language = rawData.language;
+        this.long = rawData.description;
+        this.station = rawData.station;
+        this.name = rawData.name;
+        this.duration = duration;
+        this.id = rawData.id;
+        this.start = start;
+        this.end = end;
 
         // Listen
         var categories = rawData.categories;
         var ratings = rawData.ratings;
 
-        me.categories = categories.join(' ');
-        me.ratings = ratings.join(' ');
-
+        this.categories = categories.join(' ');
+        this.ratings = ratings.join(' ');
+        
         // Detailanzeige immer aktivieren
-        me.showDetails = function (): void { me.onShowDetails(me, this); };
+        this.showDetails = (origin: any) => this.onShowDetails(this, origin.currentTarget);
 
         // Suche immer aktivieren
-        me.findInGuide = function (): void {
+        this.findInGuide = () => {
             var filter = GuideFilter.global;
 
             // Ganz von vorne
             filter.reset();
 
             // Textsuche auf den Namen auf der selben Karte
-            filter.device = me.id.split(':')[1];
-            filter.title = '=' + me.name;
-            filter.station = me.station;
+            filter.device = this.id.split(':')[1];
+            filter.title = '=' + this.name;
+            filter.station = this.station;
 
             // Aufrufen
             if (window.location.hash == '#guide')
@@ -1009,7 +1000,7 @@ class GuideItem implements JMSLib.IGuideItem {
     inactiveClass: string;
 
     // Wird an eine Methode gebunden, die onShowDetails() aufruft
-    showDetails: () => void;
+    showDetails: (origin: any) => void;
 
     // Wird aufgerufen, um nach ähnlichen Sendungen in der Programmzeitschrift zu suchen
     findInGuide: () => void;
