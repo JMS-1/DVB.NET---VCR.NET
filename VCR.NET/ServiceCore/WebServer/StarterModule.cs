@@ -31,6 +31,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
                 ".gif",
                 ".jpg",
                 ".ico",
+                ".map",
             };
 
         #region IHttpModule Members
