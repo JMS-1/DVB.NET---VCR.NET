@@ -316,21 +316,20 @@ var JMSLib;
 
         // Baut die Darstellung gemäß der aktuellen Filterbedingung neu auf
         HTMLTemplate.prototype.refresh = function () {
-            var me = this;
-
+            var _this = this;
             // Die Daten stehen leider noch nicht zur Verfügung
-            if (me.template == null)
+            if (this.template == null)
                 return;
-            if (me.items == undefined)
+            if (this.items == undefined)
                 return;
 
             // Aktuelle Liste vollständig löschen
-            me.list.children().remove();
+            this.list.children().remove();
 
             // Muster für jedes einzelne Listenelement erzeugen
-            me.items.forEach(function (item, index) {
-                if (me.filter(item))
-                    HTMLTemplate.cloneAndApplyTemplate(item, me.template).appendTo(me.list);
+            this.items.forEach(function (item, index) {
+                if (_this.filter(item))
+                    HTMLTemplate.cloneAndApplyTemplate(item, _this.template).appendTo(_this.list);
             });
         };
 

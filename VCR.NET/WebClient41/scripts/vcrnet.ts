@@ -36,19 +36,17 @@ class CSSClass {
 // Beschreibt einen Favoritensuche in der Programmzeitschrift
 class SavedGuideQuery {
     constructor(rawQuery: SavedGuideQuery = null) {
-        var me = this;
-
         // Das deserialisierte Objekt sieht aus wie wir hat aber nur Eigenschaften
         if (rawQuery != null) {
-            me.titleOnly = rawQuery.titleOnly;
-            me.device = rawQuery.device;
-            me.source = rawQuery.source;
-            me.text = rawQuery.text;
+            this.titleOnly = rawQuery.titleOnly;
+            this.device = rawQuery.device;
+            this.source = rawQuery.source;
+            this.text = rawQuery.text;
         }
 
         // Der Einfachheit halber verwenden wir eine Umlenkung von Benutzeraktionen auf statische Methode
-        me.onDelete = function (): void { SavedGuideQuery.onDeleted(me); };
-        me.onExecute = function (): void { SavedGuideQuery.onClick(me); };
+        this.onDelete = () => SavedGuideQuery.onDeleted(this);
+        this.onExecute = () => SavedGuideQuery.onClick(this);
     }
 
     // Das zu berücksichtigende Gerät
@@ -387,17 +385,15 @@ class GuideFilter implements VCRServer.GuideFilterContract {
 
     // Fordert neue Daten an
     execute(whenLoaded: (items: GuideItem[]) => void): void {
-        var me = this;
+        this.cancelTimeout();
 
-        me.cancelTimeout();
-
-        VCRServer.queryProgramGuide(me, GuideFilter.filterProperties).done(function (data: VCRServer.GuideItemContract[]): void {
-            var items = $.map(data, function (rawData: VCRServer.GuideItemContract): GuideItem { return new GuideItem(rawData); });
+        VCRServer.queryProgramGuide(this, GuideFilter.filterProperties).done((data: VCRServer.GuideItemContract[]) => {
+            var items = $.map(data, (rawData: VCRServer.GuideItemContract) => new GuideItem(rawData));
 
             // Wir erhalten immer einen Eintrag mehr als angefordert, falls noch mehr Einträge existieren
-            me.moreAvailable = items.length > me.size;
+            this.moreAvailable = items.length > this.size;
 
-            whenLoaded(items.slice(0, me.size));
+            whenLoaded(items.slice(0, this.size));
         });
     }
 
@@ -427,7 +423,7 @@ class JobScheduleDataContract implements VCRServer.JobScheduleDataContract {
     update(jobId: string, scheduleId: string, finishHash: string, onError: (message: string) => void): void {
         VCRServer
             .updateSchedule(jobId, scheduleId, this)
-            .done(function (): void { VCRServer.UserProfile.global.refresh(); window.location.hash = finishHash; })
+            .done(() => { VCRServer.UserProfile.global.refresh(); window.location.hash = finishHash; })
             .fail(JMSLib.dispatchErrorMessage(onError));
     }
 }
@@ -519,14 +515,13 @@ class Page {
 
     // Lädt die Daten zu allen Geräten
     loadProfiles(target: JQuery): void {
-        var me = this;
-        var whenDone = me.registerAsyncCall();
+        var whenDone = this.registerAsyncCall();
 
-        VCRServer.ProfileCache.load().done(function (profiles: VCRServer.ProfileInfoContract[]): void {
-            $.each(profiles, function (index: number, profile: VCRServer.ProfileInfoContract): void {
+        VCRServer.ProfileCache.load().done((profiles: VCRServer.ProfileInfoContract[]) => {
+            $.each(profiles, (index: number, profile: VCRServer.ProfileInfoContract) => {
                 target.append(new Option(profile.name));
 
-                VCRServer.SourceEntryCollection.global.requestSources(profile.name, me.registerAsyncCall());
+                VCRServer.SourceEntryCollection.global.requestSources(profile.name, this.registerAsyncCall());
             });
 
             whenDone();
@@ -540,7 +535,7 @@ $(function (): void {
     VCRServer.UserProfile.global.refresh();
 
     // Informationsdaten ermitteln
-    VCRServer.getServerVersion().done(function (data: VCRServer.InfoServiceContract): void {
+    VCRServer.getServerVersion().done((data: VCRServer.InfoServiceContract) => {
         $('#masterTitle').text('VCR.NET Recording Service ' + data.version);
     });
 
@@ -609,41 +604,39 @@ $(function (): void {
 // Verwaltet die Auswahl einer Quelle für die Aufzeichnung, einschließlich der Aufzeichnungsoptionen
 class SourceSelector {
     constructor(loader: SourceSelectorLoader, sibling: JQuery, pure: boolean) {
-        var me = this;
-
         // Erst einmal eine Kopie aus den HTML Vorlagen erstellen
-        me.loader = loader;
-        me.options = loader.optionTemplate.clone();
-        me.source = loader.sourceTemplate.clone();
+        this.loader = loader;
+        this.options = loader.optionTemplate.clone();
+        this.source = loader.sourceTemplate.clone();
 
         // Diese Kopien an der gewünschten Stelle in der Oberfläche einblenden
         if (pure)
-            me.source.find('.' + CSSClass.editLabel + ', .' + CSSClass.editSpacing).remove();
+            this.source.find('.' + CSSClass.editLabel + ', .' + CSSClass.editSpacing).remove();
         else
-            me.options.insertAfter(sibling);
-        me.source.insertAfter(sibling);
+            this.options.insertAfter(sibling);
+        this.source.insertAfter(sibling);
 
         // Alles, was wir öfter brauchen werden, einmal nachschlagen
-        me.encryptionMode = me.source.find('#filterEncryption');
-        me.sourceSelectionList = me.source.find('#selSource');
-        me.sourceNameField = me.source.find('#sourceName');
-        me.nameMode = me.source.find('#filterName');
-        me.typeMode = me.source.find('#filterType');
+        this.encryptionMode = this.source.find('#filterEncryption');
+        this.sourceSelectionList = this.source.find('#selSource');
+        this.sourceNameField = this.source.find('#sourceName');
+        this.nameMode = this.source.find('#filterName');
+        this.typeMode = this.source.find('#filterType');
 
         // Kleine Hilfe
         var refresh = () => this.load();
 
         // Alle Änderungen überwachen
-        me.sourceSelectionList.change(function (): void { me.sourceNameField.val(me.sourceSelectionList.val()); me.sourceNameField.change(); });
-        me.sourceNameField.change(function (): void {
-            var selectedSource: string = me.sourceNameField.val();
+        this.sourceSelectionList.change(() => { this.sourceNameField.val(this.sourceSelectionList.val()); this.sourceNameField.change(); });
+        this.sourceNameField.change(() => {
+            var selectedSource: string = this.sourceNameField.val();
 
-            me.sourceSelectionList.val(selectedSource);
-            me.options.find('input').prop('disabled', selectedSource.length < 1);
+            this.sourceSelectionList.val(selectedSource);
+            this.options.find('input').prop('disabled', selectedSource.length < 1);
         });
-        me.encryptionMode.change(refresh);
-        me.typeMode.change(refresh);
-        me.nameMode.change(refresh);
+        this.encryptionMode.change(refresh);
+        this.typeMode.change(refresh);
+        this.nameMode.change(refresh);
     }
 
     // Die Arbeitsumgebung.
@@ -672,40 +665,36 @@ class SourceSelector {
 
     // Aktualisiert die Auswahlliste der Quellen.
     private load(firstCall: boolean = false): void {
-        var me = this;
-
         // Auswahllisten einblenden
-        me.typeMode.removeClass(JMSLib.CSSClass.invisible);
-        me.encryptionMode.removeClass(JMSLib.CSSClass.invisible);
+        this.typeMode.removeClass(JMSLib.CSSClass.invisible);
+        this.encryptionMode.removeClass(JMSLib.CSSClass.invisible);
 
         // Liste der Quellen ermitteln
-        var profile = me.loader.profileSelector.val();
+        var profile = this.loader.profileSelector.val();
         var sources = VCRServer.SourceEntryCollection.global.getSourcesForProfile(profile);
 
         // Aktuelle Quelle sichern - diese kommt unabhängig vom Filter immer in die Liste
-        var currentSource = me.sourceNameField.val();
+        var currentSource = this.sourceNameField.val();
 
         // Filter ermitteln
-        var nameFilterMode: string = me.nameMode.val();
+        var nameFilterMode: string = this.nameMode.val();
         var nameFilter: (source: VCRServer.SourceEntry) => boolean;
         var filterOutTelevision;
         var filterOutEncrypted;
 
-        switch (me.encryptionMode.val()) {
+        switch (this.encryptionMode.val()) {
             case 'P': filterOutEncrypted = false; break;
             case 'F': filterOutEncrypted = true; break;
         }
-        switch (me.typeMode.val()) {
+        switch (this.typeMode.val()) {
             case 'T': filterOutTelevision = false; break;
             case 'R': filterOutTelevision = true; break;
         }
 
         if (nameFilterMode == '*')
-            nameFilter = function (source: VCRServer.SourceEntry): boolean {
-                return true;
-            };
+            nameFilter = (source: VCRServer.SourceEntry) => true;
         else if (nameFilterMode == '!')
-            nameFilter = function (source: VCRServer.SourceEntry): boolean {
+            nameFilter = (source: VCRServer.SourceEntry) => {
                 var first = source.firstNameCharacter;
 
                 if (first < '0')
@@ -716,7 +705,7 @@ class SourceSelector {
                     return (first > '9') && (first < 'A');
             };
         else if (nameFilterMode.length == 2)
-            nameFilter = function (source: VCRServer.SourceEntry): boolean {
+            nameFilter = (source: VCRServer.SourceEntry) => {
                 var first = source.firstNameCharacter;
 
                 return (first >= nameFilterMode[0]) && (first <= nameFilterMode[1]);
@@ -727,20 +716,18 @@ class SourceSelector {
             filterOutEncrypted = undefined;
 
             // Zugehörige Auswahllisten ausblenden
-            me.typeMode.addClass(JMSLib.CSSClass.invisible);
-            me.encryptionMode.addClass(JMSLib.CSSClass.invisible);
+            this.typeMode.addClass(JMSLib.CSSClass.invisible);
+            this.encryptionMode.addClass(JMSLib.CSSClass.invisible);
 
-            nameFilter = function (source: VCRServer.SourceEntry): boolean {
-                return VCRServer.UserProfile.global.recentSources[source.name];
-            };
+            nameFilter = (source: VCRServer.SourceEntry) => VCRServer.UserProfile.global.recentSources[source.name];
         }
 
         // Zurück auf den Anfang der Liste
-        me.sourceSelectionList.children().remove();
-        me.sourceSelectionList.append(new Option('(Keine Quelle)', ''));
+        this.sourceSelectionList.children().remove();
+        this.sourceSelectionList.append(new Option('(Keine Quelle)', ''));
 
         // Liste der Quellen gemäß Filter füllen
-        $.each(sources, function (index: number, source: VCRServer.SourceEntry): void {
+        $.each(sources, (index: number, source: VCRServer.SourceEntry) => {
             if (source.name != currentSource) {
                 if (source.isEncrypted == filterOutEncrypted)
                     return;
@@ -750,25 +737,25 @@ class SourceSelector {
                     return;
             }
 
-            me.sourceSelectionList.append(new Option(source.name));
+            this.sourceSelectionList.append(new Option(source.name));
         });
 
         // Auswahl aktualisieren
-        me.sourceNameField.change();
-        me.sourceSelectionList.change();
+        this.sourceNameField.change();
+        this.sourceSelectionList.change();
 
         // Beim ersten Aufruf sind wir fertig
         if (firstCall)
             return;
 
         // Das Label zur Auswahl der Quellen
-        var label = me.source.children().first();
+        var label = this.source.children().first();
 
         // Etwas Feedback über die (eventuell nicht optisch sichtbare) Änderung der Auswahl geben
         label.addClass(CSSClass.blink);
 
         // Nach kurzer Zeit zurück auf den Normalzustand
-        setTimeout(function (): void { label.removeClass(CSSClass.blink); }, 250);
+        setTimeout(() => label.removeClass(CSSClass.blink), 250);
     }
 
     // Setzt die Auswahl der Quelle zurück.
@@ -778,22 +765,20 @@ class SourceSelector {
 
     // Bereitet die Nutzung der Auswahl einmalig vor, nachdem alle benötigten Elemente für die Anzeige der Oberfläche geladen wurden.
     initialize(): void {
-        var me = this;
-
         // Einstellung des Anwenders auslesen und in die Oberfläche übertragen
-        me.encryptionMode.val(VCRServer.UserProfile.global.defaultEncryption);
-        me.typeMode.val(VCRServer.UserProfile.global.defaultType);
+        this.encryptionMode.val(VCRServer.UserProfile.global.defaultEncryption);
+        this.typeMode.val(VCRServer.UserProfile.global.defaultType);
         if (!VCRServer.UserProfile.global.hasRecentSources) {
             // Es gibt gar keine Liste von zuletzt verwendeten Quellen
-            me.nameMode.children().first().remove();
-            me.nameMode.children().last().attr('selected', 'selected');
+            this.nameMode.children().first().remove();
+            this.nameMode.children().last().attr('selected', 'selected');
         }
 
         // Auswahl am Geräteprofil überwachen
-        me.loader.profileSelector.change(function (): void { me.load(); });
+        this.loader.profileSelector.change(() => this.load());
 
         // Erstmalig die Liste der Quellen laden
-        me.load(true);
+        this.load(true);
     }
 }
 
@@ -1014,18 +999,16 @@ class GuideItemCache {
     private guideItem: GuideItem;
 
     request(device: string, source: string, start: Date, end: Date, dataAvailable: (data: GuideItem) => void): void {
-        var me = this;
-
         // Haben wir schon
-        if (me.guideItem == undefined)
-            VCRServer.getGuideItem(device, source, start, end).done(function (rawData: VCRServer.GuideItemContract): void {
+        if (this.guideItem == undefined)
+            VCRServer.getGuideItem(device, source, start, end).done((rawData: VCRServer.GuideItemContract) => {
                 if (rawData == null)
-                    me.guideItem = null;
+                    this.guideItem = null;
                 else
-                    dataAvailable(me.guideItem = new GuideItem(rawData));
+                    dataAvailable(this.guideItem = new GuideItem(rawData));
             });
-        else if (me.guideItem != null)
-            dataAvailable(me.guideItem);
+        else if (this.guideItem != null)
+            dataAvailable(this.guideItem);
     }
 }
 
@@ -1101,13 +1084,13 @@ class PlanEntry {
     }
 
     // Wird aufgerufen, wenn der Anwender die Detailanzeige aktiviert hat.
-    onShowDetails: (item: PlanEntry, origin: any) => void = function (item: PlanEntry, origin: any): void { };
+    onShowDetails: (item: PlanEntry, origin: any) => void = (item: PlanEntry, origin: any) => {};
 
     // Wird aufgerufen, wenn der Anwender die erweiterten Informationen der Programmzeitschrift abruft.
-    onShowGuide: (item: PlanEntry, origin: any) => void = function (item: PlanEntry, origin: any): void { };
+    onShowGuide: (item: PlanEntry, origin: any) => void = (item: PlanEntry, origin: any) => {};
 
     // Wird aufgerufen, wenn der Anwender die Ausnahmen konfigurieren möchte.
-    onException: (item: PlanEntry, origin: any) => void = function (item: PlanEntry, origin: any): void { };
+    onException: (item: PlanEntry, origin: any) => void = (item: PlanEntry, origin: any) => {};
 
     // Der Name einer CSS Klasse zur Kennzeichnung von Aufzeichnungen über die Zeitumstellung hinweg
     endTimeSuspect: string;
@@ -1202,16 +1185,14 @@ class PlanEntry {
 // Beschreibt einen einzelne Ausnahmeregel
 class PlanException {
     constructor(rawData: VCRServer.PlanExceptionContract) {
-        var me = this;
-
         // Daten aus den Rohdaten übernehmen
-        me.referenceDayDisplay = parseInt(rawData.referenceDayDisplay, 10);
-        me.originalStart = new Date(rawData.originalStart);
-        me.originalDuration = rawData.originalDuration;
-        me.referenceDay = rawData.referenceDay;
-        me.durationDelta = rawData.timeDelta;
-        me.startDelta = rawData.startShift;
-        me.rawException = rawData;
+        this.referenceDayDisplay = parseInt(rawData.referenceDayDisplay, 10);
+        this.originalStart = new Date(rawData.originalStart);
+        this.originalDuration = rawData.originalDuration;
+        this.referenceDay = rawData.referenceDay;
+        this.durationDelta = rawData.timeDelta;
+        this.startDelta = rawData.startShift;
+        this.rawException = rawData;
     }
 
     // Die Ausnahme, so wie der Web Service sie uns gemeldet hat.
@@ -1295,7 +1276,6 @@ class PlanException {
         var zeroButton = $('#clearButton');
         var sendButton = $('#sendButton');
         var options = { min: -480, max: 480 };
-        var me = this;
 
         // Konfigurieren
         durationSlider.slider(options);
@@ -1305,43 +1285,43 @@ class PlanException {
         sendButton.button();
 
         // Initialwerte setzen
-        startSlider.slider('value', me.startDelta);
-        durationSlider.slider('value', me.durationDelta);
+        startSlider.slider('value', this.startDelta);
+        durationSlider.slider('value', this.durationDelta);
 
         // Aktualisierung
-        function refresh(): boolean { JMSLib.HTMLTemplate.applyTemplate(me, element); return true; }
+        var refresh = () => { JMSLib.HTMLTemplate.applyTemplate(this, element); return true; };
 
         // Anmelden
         startSlider.slider({
-            slide: function (slider: any, newValue: any): boolean {
-                me.startDelta = newValue.value;
+            slide: (slider: any, newValue: any) => {
+                this.startDelta = newValue.value;
                 return refresh();
             }
         });
         durationSlider.slider({
-            slide: function (slider: any, newValue: any): boolean {
+            slide: (slider: any, newValue: any) => {
                 // Das geht nicht
-                if (me.originalDuration + newValue.value < 0)
+                if (this.originalDuration + newValue.value < 0)
                     return false;
 
-                me.durationDelta = newValue.value;
+                this.durationDelta = newValue.value;
                 return refresh();
             }
         });
-        zeroButton.click(function (): void {
+        zeroButton.click(() => {
             // Ausnahme entfernen
-            durationSlider.slider('value', me.durationDelta = 0);
-            startSlider.slider('value', me.startDelta = 0);
+            durationSlider.slider('value', this.durationDelta = 0);
+            startSlider.slider('value', this.startDelta = 0);
 
             refresh();
         });
-        disableButton.click(function (): void {
+        disableButton.click(() => {
             // Ausnahme entfernen
-            durationSlider.slider('value', me.durationDelta = -me.originalDuration);
+            durationSlider.slider('value', this.durationDelta = -this.originalDuration);
 
             refresh();
         });
-        sendButton.click(function (): void {
+        sendButton.click(() => {
             // Das geht nur einmal
             sendButton.button('disable', true);
 
@@ -1354,8 +1334,6 @@ class PlanException {
 // Beschreibt die Daten einer Aufzeichnung
 class ScheduleData {
     constructor(existingData: VCRServer.JobScheduleInfoContract) {
-        var me = this;
-
         // Schauen wir mal, ob wir geladen wurden
         if (existingData != null) {
             // Aufzeichnungsdaten prüfen
@@ -1366,25 +1344,25 @@ class ScheduleData {
                 var end = new Date(start.getTime() + 60000 * rawData.duration);
 
                 // Übernehmen
-                me.exceptionInfos = $.map(rawData.exceptions, function (rawException: VCRServer.PlanExceptionContract): PlanException { return new PlanException(rawException); });
-                me.lastDay = (repeat == 0) ? ScheduleData.maximumDate : new Date(rawData.lastDay);
-                me.firstStart = new Date(start.getFullYear(), start.getMonth(), start.getDate());
-                me.repeatWednesday = (repeat & ScheduleData.flagWednesday) != 0;
-                me.repeatThursday = (repeat & ScheduleData.flagThursday) != 0;
-                me.repeatSaturday = (repeat & ScheduleData.flagSaturday) != 0;
-                me.repeatTuesday = (repeat & ScheduleData.flagTuesday) != 0;
-                me.repeatMonday = (repeat & ScheduleData.flagMonday) != 0;
-                me.repeatFriday = (repeat & ScheduleData.flagFriday) != 0;
-                me.repeatSunday = (repeat & ScheduleData.flagSunday) != 0;
-                me.startTime = JMSLib.DateFormatter.getEndTime(start);
-                me.endTime = JMSLib.DateFormatter.getEndTime(end);
-                me.withSubtitles = rawData.withSubtitles;
-                me.withVideotext = rawData.withVideotext;
-                me.allLanguages = rawData.allLanguages;
-                me.includeDolby = rawData.includeDolby;
-                me.sourceName = rawData.sourceName,
-                me.id = existingData.scheduleId;
-                me.name = rawData.name;
+                this.exceptionInfos = $.map(rawData.exceptions, (rawException: VCRServer.PlanExceptionContract) => new PlanException(rawException));
+                this.lastDay = (repeat == 0) ? ScheduleData.maximumDate : new Date(rawData.lastDay);
+                this.firstStart = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+                this.repeatWednesday = (repeat & ScheduleData.flagWednesday) != 0;
+                this.repeatThursday = (repeat & ScheduleData.flagThursday) != 0;
+                this.repeatSaturday = (repeat & ScheduleData.flagSaturday) != 0;
+                this.repeatTuesday = (repeat & ScheduleData.flagTuesday) != 0;
+                this.repeatMonday = (repeat & ScheduleData.flagMonday) != 0;
+                this.repeatFriday = (repeat & ScheduleData.flagFriday) != 0;
+                this.repeatSunday = (repeat & ScheduleData.flagSunday) != 0;
+                this.startTime = JMSLib.DateFormatter.getEndTime(start);
+                this.endTime = JMSLib.DateFormatter.getEndTime(end);
+                this.withSubtitles = rawData.withSubtitles;
+                this.withVideotext = rawData.withVideotext;
+                this.allLanguages = rawData.allLanguages;
+                this.includeDolby = rawData.includeDolby;
+                this.sourceName = rawData.sourceName,
+                this.id = existingData.scheduleId;
+                this.name = rawData.name;
 
                 // Fertig
                 return;
@@ -1395,23 +1373,23 @@ class ScheduleData {
         var nowDate = new Date(now);
 
         // Eine ganz neue Aufzeichnung.
-        me.firstStart = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate());
-        me.endTime = JMSLib.DateFormatter.getEndTime(new Date(now + 7200000));
-        me.withSubtitles = VCRServer.UserProfile.global.defaultDVBSubtitles;
-        me.allLanguages = VCRServer.UserProfile.global.defaultAllLanguages;
-        me.withVideotext = VCRServer.UserProfile.global.defaultVideotext;
-        me.includeDolby = VCRServer.UserProfile.global.defaultDolby;
-        me.startTime = JMSLib.DateFormatter.getEndTime(nowDate);
-        me.lastDay = ScheduleData.maximumDate;
-        me.repeatWednesday = false;
-        me.repeatThursday = false;
-        me.repeatSaturday = false;
-        me.repeatTuesday = false;
-        me.repeatMonday = false;
-        me.repeatFriday = false;
-        me.repeatSunday = false;
-        me.sourceName = '';
-        me.name = '';
+        this.firstStart = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate());
+        this.endTime = JMSLib.DateFormatter.getEndTime(new Date(now + 7200000));
+        this.withSubtitles = VCRServer.UserProfile.global.defaultDVBSubtitles;
+        this.allLanguages = VCRServer.UserProfile.global.defaultAllLanguages;
+        this.withVideotext = VCRServer.UserProfile.global.defaultVideotext;
+        this.includeDolby = VCRServer.UserProfile.global.defaultDolby;
+        this.startTime = JMSLib.DateFormatter.getEndTime(nowDate);
+        this.lastDay = ScheduleData.maximumDate;
+        this.repeatWednesday = false;
+        this.repeatThursday = false;
+        this.repeatSaturday = false;
+        this.repeatTuesday = false;
+        this.repeatMonday = false;
+        this.repeatFriday = false;
+        this.repeatSunday = false;
+        this.sourceName = '';
+        this.name = '';
     }
 
     // Der kleinste erlaubte Datumswert.
@@ -1538,7 +1516,7 @@ class ScheduleData {
         // Nun noch die verbleibenden Ausnahmen einrichten
         var exceptions = new Array();
 
-        $.each(this.exceptionInfos, function (index: number, info: PlanException): void {
+        $.each(this.exceptionInfos, (index: number, info: PlanException) => {
             if (info.isActive)
                 exceptions.push(info.rawException);
         });
@@ -1593,18 +1571,16 @@ class ScheduleDataValidator implements JMSLib.IValidator {
     endTime: string;
 
     validate(): void {
-        var me = this;
-
         // Das sollen wir prüfen
-        var schedule = me.model;
-        var job = me.job.model;
+        var schedule = this.model;
+        var job = this.job.model;
 
         // Alles zurücksetzen
-        me.firstStart = null;
-        me.startTime = null;
-        me.lastDay = null;
-        me.endTime = null;
-        me.name = null;
+        this.firstStart = null;
+        this.startTime = null;
+        this.lastDay = null;
+        this.endTime = null;
+        this.name = null;
 
         // Name
         schedule.name = schedule.name.trim();
@@ -1632,7 +1608,7 @@ class ScheduleDataValidator implements JMSLib.IValidator {
             this.firstStart = 'Das Datum für die erste Aufzeichnung ist ungültig';
 
         // Sichtbarkeit prüfen
-        var endDate = me.view.find('#endDateContainer');
+        var endDate = this.view.find('#endDateContainer');
         if (schedule.repeatPattern() == 0) {
             endDate.addClass(JMSLib.CSSClass.invisible);
         }
@@ -1648,57 +1624,55 @@ class ScheduleDataValidator implements JMSLib.IValidator {
         }
 
         // Der Auftrag muss auch geprüft werden
-        if (!JMSLib.Bindings.validate(me.job))
+        if (!JMSLib.Bindings.validate(this.job))
             return;
 
         // Ergebnis berechnen
-        var isValid = (me.firstStart == null) && (me.startTime == null) && (me.lastDay == null) && (me.endTime == null) && (me.name == null);
+        var isValid = (this.firstStart == null) && (this.startTime == null) && (this.lastDay == null) && (this.endTime == null) && (this.name == null);
 
         // Schaltfläche deaktivieren
         if (!isValid)
-            me.job.sendButton.button('option', 'disabled', true);
+            this.job.sendButton.button('option', 'disabled', true);
     }
 }
 
 // Beschreibt die Daten eines Auftrags
 class JobData {
     constructor(existingData: VCRServer.JobScheduleInfoContract, defaultProfile: string) {
-        var me = this;
-
         // Schauen wir mal, ob wir etwas ändern sollen
         if (existingData != null) {
             // Auftragsdaten müssen vorhanden sein
             var rawData = existingData.job;
             if (rawData != null) {
                 // Da gibt es schon etwas für uns vorbereitetes
-                me.lockedToDevice = rawData.lockedToDevice;
-                me.withSubtitles = rawData.withSubtitles;
-                me.withVideotext = rawData.withVideotext;
-                me.allLanguages = rawData.allLanguages;
-                me.includeDolby = rawData.includeDolby;
-                me.sourceName = rawData.sourceName;
-                me.directory = rawData.directory;
-                me.operationType = 'Übernehmen';
-                me.id = existingData.jobId;
-                me.device = rawData.device;
-                me.name = rawData.name;
+                this.lockedToDevice = rawData.lockedToDevice;
+                this.withSubtitles = rawData.withSubtitles;
+                this.withVideotext = rawData.withVideotext;
+                this.allLanguages = rawData.allLanguages;
+                this.includeDolby = rawData.includeDolby;
+                this.sourceName = rawData.sourceName;
+                this.directory = rawData.directory;
+                this.operationType = 'Übernehmen';
+                this.id = existingData.jobId;
+                this.device = rawData.device;
+                this.name = rawData.name;
 
                 return;
             }
         }
 
         // Ein ganz neuer Auftrag
-        me.withSubtitles = VCRServer.UserProfile.global.defaultDVBSubtitles;
-        me.allLanguages = VCRServer.UserProfile.global.defaultAllLanguages;
-        me.withVideotext = VCRServer.UserProfile.global.defaultVideotext;
-        me.includeDolby = VCRServer.UserProfile.global.defaultDolby;
-        me.operationType = 'Anlegen';
-        me.device = defaultProfile;
-        me.lockedToDevice = false;
-        me.sourceName = '';
-        me.directory = '';
-        me.name = '';
-        me.id = null;
+        this.withSubtitles = VCRServer.UserProfile.global.defaultDVBSubtitles;
+        this.allLanguages = VCRServer.UserProfile.global.defaultAllLanguages;
+        this.withVideotext = VCRServer.UserProfile.global.defaultVideotext;
+        this.includeDolby = VCRServer.UserProfile.global.defaultDolby;
+        this.operationType = 'Anlegen';
+        this.device = defaultProfile;
+        this.lockedToDevice = false;
+        this.sourceName = '';
+        this.directory = '';
+        this.name = '';
+        this.id = null;
     }
 
     // Die Kennung des Auftrags - leer bei neuen Aufträgen.
@@ -1773,22 +1747,20 @@ class JobData {
 // Algorithmen zur Prüfung der Eingaben eines Auftrags
 class JobDataValidator implements JMSLib.IValidator {
     constructor(existingData: VCRServer.JobScheduleInfoContract, updateButton: JQuery, defaultProfile: string) {
-        var me = this;
-
-        me.model = new JobData(existingData, defaultProfile);
-        me.sendButton = updateButton;
+        this.model = new JobData(existingData, defaultProfile);
+        this.sendButton = updateButton;
 
         // Schaltfläche aufbereiten
-        updateButton.text(me.model.operationType);
+        updateButton.text(this.model.operationType);
         updateButton.button({ disabled: true });
-        updateButton.click(function (): void {
+        updateButton.click(() => {
             updateButton.button('option', 'disabled', true);
 
             // Das ist die eigentliche Aktualisierung
-            me.model.createOrUpdate(me.schedules[0].model, function (error: string): void {
+            this.model.createOrUpdate(this.schedules[0].model, (error: string) => {
                 JMSLib.Bindings.setErrorIndicator(updateButton, error);
 
-                me.waiting = false;
+                this.waiting = false;
             });
         });
     }
@@ -1822,15 +1794,13 @@ class JobDataValidator implements JMSLib.IValidator {
     }
 
     validate(): void {
-        var me = this;
-
         // Das sollen wir prüfen
-        var job = me.model;
+        var job = this.model;
 
         // Alles zurücksetzen
-        JMSLib.Bindings.setErrorIndicator(me.sendButton, null);
-        me.sourceName = null;
-        me.name = null;
+        JMSLib.Bindings.setErrorIndicator(this.sendButton, null);
+        this.sourceName = null;
+        this.name = null;
 
         // Name
         job.name = job.name.trim();
@@ -1841,22 +1811,22 @@ class JobDataValidator implements JMSLib.IValidator {
 
         // Quelle
         if (job.sourceName.length < 1)
-            $.each(me.schedules, function (index: number, schedule: ScheduleDataValidator): boolean {
+            $.each(this.schedules, (index: number, schedule: ScheduleDataValidator) => {
                 var sourceName = schedule.model.sourceName;
                 if (sourceName != null)
                     if (sourceName.length > 0)
                         return true;
 
-                me.sourceName = 'Es muss immer eine Quelle angegeben werden (auf Wunsch auch bei der Aufzeichnung)';
+                this.sourceName = 'Es muss immer eine Quelle angegeben werden (auf Wunsch auch bei der Aufzeichnung)';
 
                 return false;
             });
 
         // Ergebnis berechnen
-        var isValid = (me.sourceName == null) && (me.name == null);
+        var isValid = (this.sourceName == null) && (this.name == null);
 
         // Schaltfläche entsprechend einstellen
-        me.sendButton.button('option', 'disabled', me.waiting || !isValid);
+        this.sendButton.button('option', 'disabled', this.waiting || !isValid);
     }
 
     // Bereitet das Löschen der Aufzeichnung vor - das Löschen der letzten Aufzeichnung eines Auftrags entfernt auch den Auftrag.
@@ -1868,13 +1838,13 @@ class JobDataValidator implements JMSLib.IValidator {
         deleteButton.addClass(CSSClass.danger);
         deleteButton.unbind('click');
 
-        deleteButton.click(function (): void {
+        deleteButton.click(() => {
             deleteButton.button('option', 'disabled', true);
 
             VCRServer
                 .deleteSchedule(job.id, schedule.id)
-                .done(function (): void { window.location.href = '#plan'; })
-                .fail(function (result: JQueryXHR): void {
+                .done(() => window.location.href = '#plan')
+                .fail((result: JQueryXHR) => {
                     var info: any = $.parseJSON(result.responseText);
 
                     deleteButton.addClass(JMSLib.CSSClass.invalid);
@@ -3576,12 +3546,9 @@ class currentPage extends Page implements IPage {
     private showGuide(item: CurrentInfo, origin: any): void {
         var detailsManager = this.detailsManager;
 
-        item.requestGuide(function (entry: GuideItem): void {
+        item.requestGuide((entry: GuideItem) => {
             // Anzeige vorbereiten
-            var view = detailsManager.toggle(entry, origin, 0, function (guideItem: GuideItem, template: JQuery): JQuery {
-                return JMSLib.prepareGuideDisplay(guideItem, template, item.start, item.end);
-            });
-
+            var view = detailsManager.toggle(entry, origin, 0, (guideItem: GuideItem, template: JQuery) => JMSLib.prepareGuideDisplay(guideItem, template, item.start, item.end));
             if (view != null)
                 view.find('#findInGuide').button();
         });
@@ -3589,23 +3556,21 @@ class currentPage extends Page implements IPage {
 
     // Eine laufende Aufzeichnung manipulieren
     private startAbort(item: CurrentInfo, origin: any): void {
-        var me = this;
-
         // Auswahlwerte zurücksetzen
         item.suppressHibernate = VCRServer.UserProfile.global.noHibernateOnAbort;
         item.remainingMinutes = item.originalRemainingMinutes;
 
-        var template = me.detailsManager.toggle(item, origin, 1);
+        var template = this.detailsManager.toggle(item, origin, 1);
         if (template == null)
             return;
 
         // Aktualisierung
-        function refresh(): void { JMSLib.HTMLTemplate.applyTemplate(item, template); }
+        var refresh = () => JMSLib.HTMLTemplate.applyTemplate(item, template);
 
         // Konfiguration der Einstellungen
         var options =
             {
-                slide: function (slider: any, newValue: any): void { item.remainingMinutes = newValue.value; refresh(); },
+                slide: (slider: any, newValue: any) => { item.remainingMinutes = newValue.value; refresh(); },
                 value: item.remainingMinutes,
                 max: 480,
                 min: 0,
@@ -3621,34 +3586,31 @@ class currentPage extends Page implements IPage {
         sendButton.button();
 
         // Aktionen definiert
-        sendButton.click(function () { sendButton.button('disable', true); item.updateEndTime(function (): void { me.reload(); }); });
-        disableButton.click(function () { slider.slider('value', item.remainingMinutes = 0); refresh(); });
+        sendButton.click(() => { sendButton.button('disable', true); item.updateEndTime(() => this.reload()); });
+        disableButton.click(() => { slider.slider('value', item.remainingMinutes = 0); refresh(); });
     }
 
     onShow(): void {
-        var me = this;
-
-        $('.refreshLink').click(function () { me.reload(); });
+        $('.refreshLink').click(() => this.reload());
     }
 
     onInitialize(): void {
-        var me = this;
-        var profileAvailable = me.registerAsyncCall();
-        var tableAvailable = me.registerAsyncCall();
+        var profileAvailable = this.registerAsyncCall();
+        var tableAvailable = this.registerAsyncCall();
 
         // Vorlagen laden
-        me.detailsManager = new JMSLib.DetailManager(2, 'currentGuide', 'editCurrent');
-        me.table = JMSLib.HTMLTemplate.dynamicCreate($('#currentTable'), 'currentRow');
+        this.detailsManager = new JMSLib.DetailManager(2, 'currentGuide', 'editCurrent');
+        this.table = JMSLib.HTMLTemplate.dynamicCreate($('#currentTable'), 'currentRow');
 
         // Ereignisse anmelden
-        CurrentInfo.guideDisplay = function showGuide(item: CurrentInfo, origin: any): void { me.showGuide(item, origin); };
-        CurrentInfo.startAbort = function startAbort(item: CurrentInfo, origin: any): void { me.startAbort(item, origin); };
+        CurrentInfo.guideDisplay = (item: CurrentInfo, origin: any) => this.showGuide(item, origin);
+        CurrentInfo.startAbort = (item: CurrentInfo, origin: any) => this.startAbort(item, origin);
 
         // Wir brauchen auch die Benutzereinstellungen
         VCRServer.UserProfile.global.register(profileAvailable);
 
         // Und natürlich die eigentlichen Daten
-        CurrentInfo.load(function (infos: CurrentInfo[]): void { me.table.loadList(infos); tableAvailable(); });
+        CurrentInfo.load((infos: CurrentInfo[]) => { this.table.loadList(infos); tableAvailable(); });
     }
 }
 
@@ -3677,14 +3639,12 @@ class editPage extends Page implements IPage {
     private fromGuide: boolean;
 
     onShow(): void {
-        var me = this;
-
         // Modelldaten erstellen
-        var job = new JobDataValidator(me.existingData, $('#update'), me.sourceSelections.profileSelector.val());
-        var schedule = new ScheduleDataValidator(job, me.existingData);
+        var job = new JobDataValidator(this.existingData, $('#update'), this.sourceSelections.profileSelector.val());
+        var schedule = new ScheduleDataValidator(job, this.existingData);
 
         // Rücksprung vorbereiten.
-        if (me.fromGuide)
+        if (this.fromGuide)
             job.model.guideAfterAdd = VCRServer.UserProfile.global.guideAfterAdd;
 
         // Datenübertragung vorbereiten
@@ -3692,27 +3652,27 @@ class editPage extends Page implements IPage {
         JMSLib.Bindings.bind(schedule, $('#scheduleData'));
 
         // Quellenauswahl vorbereiten
-        me.jobSources.initialize();
-        me.scheduleSources.initialize();
+        this.jobSources.initialize();
+        this.scheduleSources.initialize();
 
         // Überschrift setzen
         if (job.model.id == null)
-            me.title = 'Neuen Auftrag anlegen';
+            this.title = 'Neuen Auftrag anlegen';
         else if (schedule.model.id == null)
-            me.title = 'Neue Aufzeichnung anlegen';
+            this.title = 'Neue Aufzeichnung anlegen';
         else {
-            me.title = 'Aufzeichnung bearbeiten';
+            this.title = 'Aufzeichnung bearbeiten';
 
             var deleteButton = $('#delete');
             deleteButton.button();
-            deleteButton.click(function (scope: JQueryEventObject): void { job.prepareDelete(scope); });
+            deleteButton.click((scope: JQueryEventObject) => job.prepareDelete(scope));
             deleteButton.removeClass(JMSLib.CSSClass.invisible);
         }
 
         // Ausnahmen übernehmen
         var exceptions = schedule.model.exceptionInfos;
         if (exceptions.length > 0)
-            me.exceptionRowTemplate.loadList(exceptions);
+            this.exceptionRowTemplate.loadList(exceptions);
         else
             $('#exceptionArea').addClass(JMSLib.CSSClass.invisible);
     }
@@ -3891,18 +3851,21 @@ class guidePage extends Page implements IPage {
 
     // Wird aufgerufen, wenn der Anwender das Gerät verändert
     private deviceChanged(filterIsCurrent: boolean): void {
-        var me = this;
         var newDevice = $('#selDevice').val();
 
         // Liste leeren
-        me.jobs = new Array();
+        this.jobs = new Array();
 
         // Aufträge zum Gerät anfordern
-        VCRServer.getProfileJobInfos(newDevice).done(function (jobs: VCRServer.ProfileJobInfoContract[]): void {
-            me.jobs = jobs;
+        VCRServer.getProfileJobInfos(newDevice).done((jobs: VCRServer.ProfileJobInfoContract[]) => {
+            this.jobs = jobs;
 
             // Infomationen zum Gerät anfordern
-            VCRServer.GuideInfoCache.getInfo(newDevice).done(function (data: VCRServer.GuideInfoContract): void {
+            VCRServer.GuideInfoCache.getInfo(newDevice).done((data: VCRServer.GuideInfoContract) => {
+                // Eventuell gibt es das Gerät schon nicht mehr
+                if (data == null)
+                    return;
+
                 // Die aktuelle Quelle im Filter
                 var station = GuideFilter.global.station;
                 var info = new VCRServer.GuideInfo(data);
@@ -3911,9 +3874,7 @@ class guidePage extends Page implements IPage {
                 var selSource = $('#selSource');
                 selSource.children().remove();
                 selSource.append(new Option('(Alle Sender)', ''));
-                $.each(info.stations, function (index: number, station: string) {
-                    selSource.append(new Option(station));
-                });
+                $.each(info.stations, (index: number, station: string) => selSource.append(new Option(station)));
 
                 // Dann versuchen wir, den ursprünglich gewählten Wert zu reaktivieren
                 selSource.val(station);
@@ -3937,7 +3898,7 @@ class guidePage extends Page implements IPage {
                 // Änderungen an der Auswahl der Tage ab nun überwachen
                 var daySelectors = selDay.find('a');
                 daySelectors.button();
-                daySelectors.click(function (ev: JQueryEventObject): void { me.dayChanged(ev); });
+                daySelectors.click((ev: JQueryEventObject) => this.dayChanged(ev));
 
                 // Nun können wir eine Aktualisierung anfordern
                 if (!filterIsCurrent)
@@ -3979,11 +3940,9 @@ class guidePage extends Page implements IPage {
 
     // Aktiviert oder deaktiviert die Sicht auf die gespeicherten Suchen
     private toggleFavorites(origin: any): void {
-        var me = this;
-
         SavedGuideQuery.onDeleted = null;
 
-        var view = me.favorites.toggle({}, origin, 0);
+        var view = this.favorites.toggle({}, origin, 0);
         if (view == null)
             return;
 
@@ -3997,7 +3956,7 @@ class guidePage extends Page implements IPage {
         SavedGuideQuery.onCountLoaded = function (query: SavedGuideQuery): void { table.loadList(queries); };
 
         // Beim Löschen muss die Änderung gespeichert und die Anzeige aktualisiert werden
-        SavedGuideQuery.onDeleted = function (query: SavedGuideQuery): void {
+        SavedGuideQuery.onDeleted = (query: SavedGuideQuery) => {
             for (var i = 0; i < queries.length; i++)
                 if (queries[i] === query) {
                     queries.splice(i, 1);
@@ -4031,7 +3990,7 @@ class guidePage extends Page implements IPage {
         });
 
         // Auswahl übernehmen
-        SavedGuideQuery.onClick = function (query: SavedGuideQuery): void {
+        SavedGuideQuery.onClick = (query: SavedGuideQuery) => {
             $('#withContent').prop('checked', !query.titleOnly);
             $('#searchText').val(query.text.substr(1));
             $('#withContent').button('refresh');
@@ -4045,7 +4004,7 @@ class guidePage extends Page implements IPage {
 
             GuideFilter.global.changeStart(null);
 
-            me.deviceChanged(true);
+            this.deviceChanged(true);
         };
 
         // Wir bieten auch hier eine eingebettete Hilfe an

@@ -366,21 +366,19 @@ module JMSLib {
 
         // Baut die Darstellung gemäß der aktuellen Filterbedingung neu auf
         refresh(): void {
-            var me = this;
-
             // Die Daten stehen leider noch nicht zur Verfügung
-            if (me.template == null)
+            if (this.template == null)
                 return;
-            if (me.items == undefined)
+            if (this.items == undefined)
                 return;
 
             // Aktuelle Liste vollständig löschen
-            me.list.children().remove();
+            this.list.children().remove();
 
             // Muster für jedes einzelne Listenelement erzeugen
-            me.items.forEach(function (item: any, index: number): void {
-                if (me.filter(item))
-                    HTMLTemplate.cloneAndApplyTemplate(item, me.template).appendTo(me.list);
+            this.items.forEach((item: any, index: number) => {
+                if (this.filter(item))
+                    HTMLTemplate.cloneAndApplyTemplate(item, this.template).appendTo(this.list);
             });
         }
 

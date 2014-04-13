@@ -488,14 +488,12 @@ var VCRServer;
     // Beschreibt einen einzelne Quelle, so wie sie dem Anwender zur Auswahl angeboten wird
     var SourceEntry = (function () {
         function SourceEntry(rawData) {
-            var me = this;
-
-            me.isTelevision = rawData.tvNotRadio;
-            me.name = rawData.nameWithProvider;
-            me.isEncrypted = rawData.encrypted;
+            this.isTelevision = rawData.tvNotRadio;
+            this.name = rawData.nameWithProvider;
+            this.isEncrypted = rawData.encrypted;
 
             // Zum schnellen Auswählen nach dem Namen
-            me.firstNameCharacter = me.name.toUpperCase().charAt(0);
+            this.firstNameCharacter = this.name.toUpperCase().charAt(0);
         }
         return SourceEntry;
     })();
@@ -509,14 +507,13 @@ var VCRServer;
         }
         // Fordert die Quellen eines Geräteprofils an.
         SourceEntryCollection.prototype.requestSources = function (profileName, whenDone) {
-            var me = this;
-
+            var _this = this;
             // Eventuell haben wir das schon einmal gemacht
-            if (me.getSourcesForProfile(profileName) != undefined)
+            if (this.getSourcesForProfile(profileName) != undefined)
                 whenDone();
             else
                 getProfileSources(profileName).done(function (data) {
-                    me.profileSources[profileName] = $.map(data, function (rawData) {
+                    _this.profileSources[profileName] = $.map(data, function (rawData) {
                         return new SourceEntry(rawData);
                     });
 
@@ -588,45 +585,45 @@ var VCRServer;
 
         // Ruft eine aktuelle Konfiguration vom Web Service ab.
         UserProfile.prototype.refresh = function () {
-            var me = this;
-            me.isLoaded = false;
+            var _this = this;
+            this.isLoaded = false;
 
             getUserProfile().done(function (data) {
-                me.loadFrom(data);
+                return _this.loadFrom(data);
             });
         };
 
         // Übernimmt neue Daten.
         UserProfile.prototype.loadFrom = function (data) {
-            var me = this;
-            me.isLoaded = true;
+            var _this = this;
+            this.isLoaded = true;
 
             // Liste der Quelle in eine Nachschlagekarte umsetzen
-            me.recentSources = {};
+            this.recentSources = {};
             $.each(data.recentSources, function (index, sourceName) {
-                me.recentSources[sourceName] = true;
+                return _this.recentSources[sourceName] = true;
             });
 
             // Das meiste wird unverändert übernommen
-            me.hasRecentSources = data.recentSources.length > 0;
-            me.maximumRecentSources = data.recentSourceLimit;
-            me.noHibernateOnAbort = data.suppressHibernate;
-            me.defaultEncryption = data.encryptionFilter;
-            me.defaultAllLanguages = data.languages;
-            me.defaultDVBSubtitles = data.subtitles;
-            me.guidePreTime = data.guideAheadStart;
-            me.guidePostTime = data.guideBeyondEnd;
-            me.guideSearches = data.guideSearches;
-            me.defaultVideotext = data.videotext;
-            me.guideAfterAdd = data.backToGuide;
-            me.planDaysToShow = data.planDays;
-            me.defaultType = data.typeFilter;
-            me.rowsInGuide = data.guideRows;
-            me.defaultDolby = data.dolby;
+            this.hasRecentSources = data.recentSources.length > 0;
+            this.maximumRecentSources = data.recentSourceLimit;
+            this.noHibernateOnAbort = data.suppressHibernate;
+            this.defaultEncryption = data.encryptionFilter;
+            this.defaultAllLanguages = data.languages;
+            this.defaultDVBSubtitles = data.subtitles;
+            this.guidePreTime = data.guideAheadStart;
+            this.guidePostTime = data.guideBeyondEnd;
+            this.guideSearches = data.guideSearches;
+            this.defaultVideotext = data.videotext;
+            this.guideAfterAdd = data.backToGuide;
+            this.planDaysToShow = data.planDays;
+            this.defaultType = data.typeFilter;
+            this.rowsInGuide = data.guideRows;
+            this.defaultDolby = data.dolby;
 
             // Benachrichtigung auslösen
-            if (me.loaded != null)
-                me.loaded();
+            if (this.loaded != null)
+                this.loaded();
         };
 
         // Erstellt die Repräsentation, die auch an den Server geschickt werden kann.
