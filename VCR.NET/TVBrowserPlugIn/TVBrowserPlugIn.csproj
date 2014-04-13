@@ -56,7 +56,7 @@
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files\JSon.NET\6.0R2\Bin\Net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft ASP.NET\ASP.NET Web Stack 5\Packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
