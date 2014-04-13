@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="content\images\ajax-loader.gif" />
+    <Content Include="content\images\ajax-loader.png" />
     <Content Include="content\images\icons-18-black.png" />
     <Content Include="content\images\icons-18-white.png" />
     <Content Include="content\images\icons-36-black.png" />
@@ -157,10 +158,10 @@
       <DependentUpon>jmslib.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="scripts\jmslib.ts" />
-    <Content Include="scripts\jquery-2.0.3.min.js" />
-    <Content Include="scripts\jquery-ui-1.10.3.min.js" />
     <None Include="scripts\typings\jqueryui\jqueryui.d.ts" />
     <None Include="scripts\typings\jquery\jquery.d.ts" />
+    <Content Include="scripts\jquery-2.1.0.min.js" />
+    <Content Include="scripts\jquery-ui-1.10.4.min.js" />
     <Content Include="scripts\vcrnet.js">
       <DependentUpon>vcrnet.ts</DependentUpon>
     </Content>

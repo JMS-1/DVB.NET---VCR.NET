@@ -185,6 +185,8 @@ declare module JQueryUI {
         title?: string;
         width?: any; // number or string
         zIndex?: number;
+
+        close?: DialogEvent;
     }
 
     interface DialogUIParams {
@@ -561,9 +563,15 @@ declare module JQueryUI {
         heightStyle?: string;
         hide?: any; // boolean, number, string or object
         show?: any; // boolean, number, string or object
+
+        activate?: TabsEvent;
     }
 
     interface TabsUIParams {
+        newTab: JQuery;
+        oldTab: JQuery;
+        newPanel: JQuery;
+        oldPanel: JQuery;
     }
 
     interface TabsEvent {
@@ -706,7 +714,7 @@ declare module JQueryUI {
         distance?: number;
     }
 
-    interface keyCode {
+    interface KeyCode {
         BACKSPACE: number;
         COMMA: number;
         DELETE: number;
@@ -743,7 +751,7 @@ declare module JQueryUI {
         buttonset: Button;
         datepicker: Datepicker;
         dialog: Dialog;
-        keyCode: keyCode;
+        keyCode: KeyCode;
         menu: Menu;
         progressbar: Progressbar;
         slider: Slider;
@@ -968,6 +976,7 @@ interface JQuery {
     sortable(methodName: 'disable'): void;
     sortable(methodName: 'enable'): void;
     sortable(methodName: 'widget'): JQuery;
+    sortable(methodName: 'toArray'): string[];
     sortable(methodName: string): JQuery;
     sortable(options: JQueryUI.SortableOptions): JQuery;
     sortable(optionLiteral: string, optionName: string): any;
