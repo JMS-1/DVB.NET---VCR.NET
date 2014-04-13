@@ -3730,6 +3730,7 @@ var logPage = (function (_super) {
     };
 
     logPage.prototype.onInitialize = function () {
+        var _this = this;
         var me = this;
         var profilesLoaded = me.registerAsyncCall();
         var rawNow = new Date($.now());
@@ -3748,7 +3749,7 @@ var logPage = (function (_super) {
 
         // Auf Änderungen reagieren
         dayList.change(function () {
-            me.reload();
+            return _this.reload();
         });
 
         // Vorlagen vorbereiten
@@ -3767,6 +3768,7 @@ var logPage = (function (_super) {
 
         // Geräte ermitteln
         VCRServer.ProfileCache.load().done(function (profiles) {
+            var _this = this;
             var list = $('#selProfile');
 
             // Alle Namen eintragen
@@ -3776,7 +3778,7 @@ var logPage = (function (_super) {
 
             // Auf Änderungen der Liste reagieren
             list.change(function () {
-                me.reload();
+                return _this.reload();
             });
 
             // Und erstmalig laden - erst danach zeigen wir dem Anwender etwas

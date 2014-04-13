@@ -4299,7 +4299,7 @@ class logPage extends Page implements IPage {
         }
 
         // Auf Änderungen reagieren
-        dayList.change(function (): void { me.reload(); });
+        dayList.change(() => this.reload());
 
         // Vorlagen vorbereiten
         me.rowTemplate = JMSLib.HTMLTemplate.dynamicCreate($('#logRows'), 'logRow');
@@ -4321,7 +4321,7 @@ class logPage extends Page implements IPage {
             });
 
             // Auf Änderungen der Liste reagieren
-            list.change(function (): void { me.reload(); });
+            list.change(() => this.reload());
 
             // Und erstmalig laden - erst danach zeigen wir dem Anwender etwas
             me.reload(me.registerAsyncCall());
