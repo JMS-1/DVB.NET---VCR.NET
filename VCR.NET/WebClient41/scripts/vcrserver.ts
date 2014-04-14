@@ -775,7 +775,7 @@ module VCRServer {
 
     export function updateConfiguration(type: string, contract: SettingsContract, protocolFilter: (key: string, value: any) => any = null): JQueryPromise<any> {
         if (protocolFilter == null)
-            protocolFilter = function (key: string, value: any): any { return value; }
+            protocolFilter = (key: string, value: any) => value;
 
         return $.ajax({
             data: JSON.stringify(contract, protocolFilter),
@@ -855,7 +855,7 @@ module VCRServer {
             if (RecordingDirectoryCache.directories != null)
                 return $.Deferred().resolve(RecordingDirectoryCache.directories);
             else
-                return getRecordingDirectories().done(function (data: string[]): void { RecordingDirectoryCache.directories = data; });
+                return getRecordingDirectories().done((data: string[]) => RecordingDirectoryCache.directories = data);
         }
     }
 
@@ -869,7 +869,7 @@ module VCRServer {
             if (ProfileCache.profiles != null)
                 return $.Deferred().resolve(ProfileCache.profiles);
             else
-                return getProfileInfos().done(function (data: ProfileInfoContract[]): void { ProfileCache.profiles = data; });
+                return getProfileInfos().done((data: ProfileInfoContract[]) => ProfileCache.profiles = data);
         }
     }
 
@@ -903,9 +903,7 @@ module VCRServer {
             if (info != undefined)
                 return $.Deferred().resolve(info)
             else
-                return getGuideInfo(profileName).done(function (data: GuideInfoContract): void {
-                    GuideInfoCache.guideInfoCache[profileName] = data;
-                });
+                return getGuideInfo(profileName).done((data: GuideInfoContract) => GuideInfoCache.guideInfoCache[profileName] = data);
         }
     }
 
@@ -1101,7 +1099,7 @@ module VCRServer {
         // Sendet die aktuelle Konfiguration an den Web Service.
         update(onError: (message: string) => void): void {
             setUserProfile(this.toContract())
-                .done(function (data: UserProfileContract): void { UserProfile.global.loadFrom(data); window.location.hash = 'home'; })
+                .done((data: UserProfileContract) => { UserProfile.global.loadFrom(data); window.location.hash = 'home'; })
                 .fail(JMSLib.dispatchErrorMessage(onError));
         }
 

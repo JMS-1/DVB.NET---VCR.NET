@@ -427,7 +427,7 @@ var VCRServer;
                 return $.Deferred().resolve(RecordingDirectoryCache.directories);
             else
                 return getRecordingDirectories().done(function (data) {
-                    RecordingDirectoryCache.directories = data;
+                    return RecordingDirectoryCache.directories = data;
                 });
         };
         RecordingDirectoryCache.directories = null;
@@ -445,7 +445,7 @@ var VCRServer;
                 return $.Deferred().resolve(ProfileCache.profiles);
             else
                 return getProfileInfos().done(function (data) {
-                    ProfileCache.profiles = data;
+                    return ProfileCache.profiles = data;
                 });
         };
         ProfileCache.profiles = null;
@@ -477,7 +477,7 @@ var VCRServer;
                 return $.Deferred().resolve(info);
             else
                 return getGuideInfo(profileName).done(function (data) {
-                    GuideInfoCache.guideInfoCache[profileName] = data;
+                    return GuideInfoCache.guideInfoCache[profileName] = data;
                 });
         };
         GuideInfoCache.guideInfoCache = {};

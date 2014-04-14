@@ -129,7 +129,7 @@ var JMSLib;
 
             if (template == undefined)
                 return $.get(fullName).done(function (html) {
-                    TemplateLoader.loaded[fullName] = html;
+                    return TemplateLoader.loaded[fullName] = html;
                 });
 
             return $.Deferred().resolve(template);
@@ -396,13 +396,13 @@ var JMSLib;
 
                         if (element.getAttribute(HTMLTemplate.writebackAttribute) != null)
                             target.change(function () {
-                                model[dataProperty] = target.prop('checked');
+                                return model[dataProperty] = target.prop('checked');
                             });
                     } else
                         target.text(dataValue);
                 else
                     $.each(attributeTarget.split(','), function (i, oneAttributeTarget) {
-                        target.attr(oneAttributeTarget, dataValue);
+                        return target.attr(oneAttributeTarget, dataValue);
                     });
             });
 
@@ -479,8 +479,8 @@ var JMSLib;
             var templates = new Array();
 
             $.each(args, function (index, template) {
-                TemplateLoader.load(template).done(function (template) {
-                    templates[index] = $(template).find('#template');
+                return TemplateLoader.load(template).done(function (template) {
+                    return templates[index] = $(template).find('#template');
                 });
             });
 

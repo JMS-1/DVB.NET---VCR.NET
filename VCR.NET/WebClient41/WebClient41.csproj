@@ -161,6 +161,9 @@
     <Content Include="content\jmslib.css.map">
       <DependentUpon>jmslib.css</DependentUpon>
     </Content>
+    <Content Include="content\vcrnet.css.map">
+      <DependentUpon>vcrnet.css</DependentUpon>
+    </Content>
     <None Include="scripts\typings\jqueryui\jqueryui.d.ts" />
     <None Include="scripts\typings\jquery\jquery.d.ts" />
     <Content Include="scripts\jquery-2.1.0.min.js" />

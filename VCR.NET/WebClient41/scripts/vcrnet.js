@@ -898,6 +898,7 @@ var GuideItemCache = (function () {
 // Beschreibt einen einzelnen Eintrag in Aufzeichnungsplan
 var PlanEntry = (function () {
     function PlanEntry(rawData) {
+        var _this = this;
         // Wird aufgerufen, wenn der Anwender die Detailanzeige aktiviert hat.
         this.onShowDetails = function (item, origin) {
         };
@@ -909,78 +910,76 @@ var PlanEntry = (function () {
         };
         // Die zugehörigen Informationen der Programmzeitschrift.
         this.guideItem = new GuideItemCache();
-        var me = this;
-
         // Zeiten umrechnen
         var duration = rawData.duration * 1000;
         var start = new Date(rawData.start);
         var end = new Date(start.getTime() + duration);
 
         // Daten aus der Rohdarstellung in das Modell kopieren
-        me.station = (rawData.station == null) ? '(Aufzeichnung gelöscht)' : rawData.station;
-        me.profile = (rawData.device == null) ? '' : rawData.device;
-        me.displayStart = JMSLib.DateFormatter.getStartTime(start);
-        me.displayEnd = JMSLib.DateFormatter.getEndTime(end);
-        me.epgProfile = rawData.epgDevice;
-        me.fullName = rawData.name;
-        me.source = rawData.source;
-        me.legacyId = rawData.id;
-        me.start = start;
-        me.end = end;
+        this.station = (rawData.station == null) ? '(Aufzeichnung gelöscht)' : rawData.station;
+        this.profile = (rawData.device == null) ? '' : rawData.device;
+        this.displayStart = JMSLib.DateFormatter.getStartTime(start);
+        this.displayEnd = JMSLib.DateFormatter.getEndTime(end);
+        this.epgProfile = rawData.epgDevice;
+        this.fullName = rawData.name;
+        this.source = rawData.source;
+        this.legacyId = rawData.id;
+        this.start = start;
+        this.end = end;
 
         // Aufzeichnungsoptionen
-        me.currentGuide = rawData.epgCurrent ? '' : CSSClass.inactiveOptionClass;
-        me.allAudio = rawData.allAudio ? '' : CSSClass.inactiveOptionClass;
-        me.hasGuideEntry = rawData.epg ? '' : CSSClass.inactiveOptionClass;
-        me.subTitles = rawData.dvbsub ? '' : CSSClass.inactiveOptionClass;
-        me.videoText = rawData.ttx ? '' : CSSClass.inactiveOptionClass;
-        me.dolby = rawData.ac3 ? '' : CSSClass.inactiveOptionClass;
+        this.currentGuide = rawData.epgCurrent ? '' : CSSClass.inactiveOptionClass;
+        this.allAudio = rawData.allAudio ? '' : CSSClass.inactiveOptionClass;
+        this.hasGuideEntry = rawData.epg ? '' : CSSClass.inactiveOptionClass;
+        this.subTitles = rawData.dvbsub ? '' : CSSClass.inactiveOptionClass;
+        this.videoText = rawData.ttx ? '' : CSSClass.inactiveOptionClass;
+        this.dolby = rawData.ac3 ? '' : CSSClass.inactiveOptionClass;
 
         // Für Aufgaben konfigurieren wir keine Verweise
-        if (me.station == 'PSI')
+        if (this.station == 'PSI')
             return;
-        if (me.station == 'EPG')
+        if (this.station == 'EPG')
             return;
 
         // Aufzeichungsmodus ermitteln
         if (rawData.lost)
-            me.mode = 'lost';
+            this.mode = 'lost';
         else if (rawData.late)
-            me.mode = 'late';
+            this.mode = 'late';
         else
-            me.mode = 'intime';
+            this.mode = 'intime';
 
         // Detailanzeige immer aktivieren
-        me.showDetails = function () {
-            me.onShowDetails(me, this);
+        this.showDetails = function (origin) {
+            return _this.onShowDetails(_this, origin.currentTarget);
         };
-        me.detailsLink = 'javascript:void(0)';
+        this.detailsLink = 'javascript:void(0)';
 
         // Bearbeiten aktivieren
-        if (me.legacyId != null)
-            me.editLink = '#edit;id=' + me.legacyId;
+        if (this.legacyId != null)
+            this.editLink = '#edit;id=' + this.legacyId;
 
         // Abruf der Programmzeitschrift vorbereiten
         if (rawData.epg) {
-            me.showGuide = function () {
-                me.onShowGuide(me, this);
+            this.showGuide = function (origin) {
+                return _this.onShowGuide(_this, origin.currentTarget);
             };
-            me.guideLink = 'javascript:void(0)';
+            this.guideLink = 'javascript:void(0)';
         }
 
         // Ausnahmen auswerten
         if (rawData.exception != null) {
-            me.exceptionInfo = new PlanException(rawData.exception);
+            this.exceptionInfo = new PlanException(rawData.exception);
 
-            me.exceptionMode = me.exceptionInfo.isEmpty() ? 'exceptOff' : 'exceptOn';
-            me.showExceptions = function () {
-                me.onException(me, this);
+            this.exceptionMode = this.exceptionInfo.isEmpty() ? 'exceptOff' : 'exceptOn';
+            this.showExceptions = function (origin) {
+                return _this.onException(_this, origin.currentTarget);
             };
         }
 
         // Die Endzeit könnte nicht wie gewünscht sein
         if (rawData.suspectEndTime)
-            me.endTimeSuspect = CSSClass.badEndTime;
+            this.endTimeSuspect = CSSClass.badEndTime;
     }
     // Fordert die Informationen der Programmzeitschrift einmalig an und liefert das Ergebnis bei Folgeaufrufen.
     PlanEntry.prototype.requestGuide = function (dataAvailable) {
@@ -1398,9 +1397,9 @@ var JobData = (function () {
         // Wohin geht es nach dem Abschluss
         var whenFinished;
         if (this.guideAfterAdd)
-            whenFinished = 'guide';
+            whenFinished = '#guide';
         else
-            whenFinished = 'plan';
+            whenFinished = '#plan';
 
         var data = new JobScheduleDataContract(this.toWebService(), schedule.toWebService());
 
@@ -1733,13 +1732,12 @@ var ProfileSettingsValidator = (function () {
     }
     // Erzeugt die Präsentation für ein einzelnes Geräteprofil
     ProfileSettingsValidator.prototype.bindProfiles = function (deviceTable, deviceTemplate) {
-        var me = this;
-
+        var _this = this;
         $.each(this.model.profiles, function (index, profile) {
             var view = deviceTemplate.clone();
-            var validator = new ProfileValidator(profile, me);
+            var validator = new ProfileValidator(profile, _this);
 
-            me.profiles.push(validator);
+            _this.profiles.push(validator);
             deviceTable.append(view);
 
             JMSLib.Bindings.bind(validator, view);
@@ -1748,27 +1746,27 @@ var ProfileSettingsValidator = (function () {
 
     // Methode zur Durchführung einer Prüfung
     ProfileSettingsValidator.prototype.validate = function () {
-        var me = this;
-        var model = me.model;
+        var _this = this;
+        var model = this.model;
         var defaultProfile = model.defaultProfile;
         var isValid = true;
 
-        me.defaultProfile = null;
+        this.defaultProfile = null;
 
         // Alle Geräte individuell überprüfen
-        $.each(me.profiles, function (index, profile) {
+        $.each(this.profiles, function (index, profile) {
             if (profile.doValidate(defaultProfile))
                 return;
 
             isValid = false;
 
             if (profile.active != null)
-                me.defaultProfile = 'Dieses Gerät ist nicht für Aufzeichnungen vorgesehen';
+                _this.defaultProfile = 'Dieses Gerät ist nicht für Aufzeichnungen vorgesehen';
         });
 
         JMSLib.Bindings.synchronizeErrors(this);
 
-        me.sendButton.button('option', 'disabled', !isValid);
+        this.sendButton.button('option', 'disabled', !isValid);
     };
     return ProfileSettingsValidator;
 })();
@@ -1817,6 +1815,7 @@ var OtherSettingsValidator = (function () {
 // Das Modell zur Anzeige einer Aktivität auf einem Gerät
 var CurrentInfo = (function () {
     function CurrentInfo(rawData) {
+        var _this = this;
         // Der Anzeigetext für den Startzeitpunkt.
         this.displayStart = '';
         // Der Anzeigetext für das Ende.
@@ -1831,15 +1830,13 @@ var CurrentInfo = (function () {
         this.sourceName = '';
         // Die zugehörigen Informationen der Programmzeitschrift.
         this.guideItem = new GuideItemCache();
-        var me = this;
-
         // Sonderbehandlung für unbenutzte Geräte
         if (rawData.isIdle) {
             // Eigentlich zeigen wir nichts
-            me.hideTarget = JMSLib.CSSClass.invisible;
-            me.name = '(keine Aufzeichnung geplant)';
-            me.device = rawData.device;
-            me.mode = 'intime';
+            this.hideTarget = JMSLib.CSSClass.invisible;
+            this.name = '(keine Aufzeichnung geplant)';
+            this.device = rawData.device;
+            this.mode = 'intime';
 
             // Fertig
             return;
@@ -1852,63 +1849,63 @@ var CurrentInfo = (function () {
         var outdated = end.getTime() <= Date.now();
 
         // Übernehmen
-        me.sourceName = (rawData.sourceName == null) ? '' : rawData.sourceName;
-        me.displayStart = JMSLib.DateFormatter.getStartTime(start);
-        me.originalRemainingMinutes = rawData.remainingMinutes;
-        me.size = (rawData.size == null) ? '' : rawData.size;
-        me.displayEnd = JMSLib.DateFormatter.getEndTime(end);
-        me.scheduleIdentifier = rawData.referenceId;
-        me.streamTarget = rawData.streamTarget;
-        me.device = rawData.device;
-        me.source = rawData.source;
-        me.legacyId = rawData.id;
-        me.name = rawData.name;
-        me.start = start;
-        me.end = end;
+        this.sourceName = (rawData.sourceName == null) ? '' : rawData.sourceName;
+        this.displayStart = JMSLib.DateFormatter.getStartTime(start);
+        this.originalRemainingMinutes = rawData.remainingMinutes;
+        this.size = (rawData.size == null) ? '' : rawData.size;
+        this.displayEnd = JMSLib.DateFormatter.getEndTime(end);
+        this.scheduleIdentifier = rawData.referenceId;
+        this.streamTarget = rawData.streamTarget;
+        this.device = rawData.device;
+        this.source = rawData.source;
+        this.legacyId = rawData.id;
+        this.name = rawData.name;
+        this.start = start;
+        this.end = end;
 
         // Aufzeichungsmodus ermitteln
-        if (me.scheduleIdentifier != null)
+        if (this.scheduleIdentifier != null)
             if (outdated)
-                me.mode = 'null';
+                this.mode = 'null';
             else
-                me.mode = 'running';
+                this.mode = 'running';
         else if (rawData.late)
-            me.mode = 'late';
+            this.mode = 'late';
         else
-            me.mode = 'intime';
+            this.mode = 'intime';
 
         // Bearbeiten aktivieren
-        if (me.legacyId != null)
-            me.editLink = '#edit;id=' + me.legacyId;
+        if (this.legacyId != null)
+            this.editLink = '#edit;id=' + this.legacyId;
 
         // Abruf der Programmzeitschrift vorbereiten
         if (!outdated)
             if (rawData.epg) {
-                me.showGuide = function () {
-                    CurrentInfo.guideDisplay(me, this);
+                this.showGuide = function (origin) {
+                    return CurrentInfo.guideDisplay(_this, origin.currentTarget);
                 };
-                me.guideLink = 'javascript:void(0)';
+                this.guideLink = 'javascript:void(0)';
             }
 
         // Manipulation laufender Aufzeichnungen
-        if (me.scheduleIdentifier != null) {
-            me.editActive = function () {
-                CurrentInfo.startAbort(me, this);
+        if (this.scheduleIdentifier != null) {
+            this.editActive = function (origin) {
+                return CurrentInfo.startAbort(_this, origin.currentTarget);
             };
-            me.activeLink = 'javascript:void(0)';
+            this.activeLink = 'javascript:void(0)';
 
             if (rawData.streamIndex >= 0) {
-                var url = VCRServer.getDeviceRoot() + encodeURIComponent(me.device) + '/' + rawData.streamIndex + '/';
+                var url = VCRServer.getDeviceRoot() + encodeURIComponent(this.device) + '/' + rawData.streamIndex + '/';
 
-                me.viewShift = url + 'TimeShift';
-                me.viewLive = url + 'Live';
-                me.hideViewer = null;
+                this.viewShift = url + 'TimeShift';
+                this.viewLive = url + 'Live';
+                this.hideViewer = null;
             }
         }
 
         // Zieladresse ausblenden
-        if (me.streamTarget == null)
-            me.hideTarget = JMSLib.CSSClass.invisible;
+        if (this.streamTarget == null)
+            this.hideTarget = JMSLib.CSSClass.invisible;
     }
     // Der aktuelle Endzeitpunkt der Aufzeichnung, so wie vom Anwender korrigiert.
     CurrentInfo.prototype.currentEnd = function () {
@@ -1951,8 +1948,6 @@ var InfoSchedule = (function () {
         this.jobText = '';
         // Dargestellt wird der leere Name als weiße Fläche
         this.jobTextClass = CSSClass.noJobText;
-        var me = this;
-
         // Name von Aufzeichnung und Quelle ermitteln
         var name = (rawInfo.name == '') ? 'Aufzeichnung' : rawInfo.name;
         var source = rawInfo.sourceName;
@@ -1985,9 +1980,9 @@ var InfoSchedule = (function () {
             startAsString = merged + ' ' + JMSLib.DateFormatter.getEndTime(start);
         }
 
-        me.scheduleText = name + ': ' + startAsString + ' auf ' + source;
-        me.isActive = isActive;
-        me.link = rawInfo.id;
+        this.scheduleText = name + ': ' + startAsString + ' auf ' + source;
+        this.isActive = isActive;
+        this.link = rawInfo.id;
     }
     return InfoSchedule;
 })();
@@ -2016,11 +2011,9 @@ var InfoJob = (function () {
         this.scheduleText = '';
         // Der Auftrag bietet keinen Verweis zur Pflege an
         this.link = '';
-        var me = this;
-
-        me.isActive = rawInfo.active;
-        me.jobText = rawInfo.name;
-        me.legacyId = rawInfo.id;
+        this.isActive = rawInfo.active;
+        this.jobText = rawInfo.name;
+        this.legacyId = rawInfo.id;
     }
     // Aktualisiert die Liste der Aufträge
     InfoJob.load = function (whenLoaded) {
@@ -2121,8 +2114,8 @@ var faqPage = (function (_super) {
         this.visibleLinks = '.guideLink, .newLink, .planLink, .currentLink';
     }
     faqPage.prototype.onInitialize = function () {
-        var me = this;
-        var templateAvailable = me.registerAsyncCall();
+        var _this = this;
+        var templateAvailable = this.registerAsyncCall();
 
         // Name der gewünschten Hilfeseite ermitteln
         var hash = window.location.hash;
@@ -2140,7 +2133,7 @@ var faqPage = (function (_super) {
             target.addClass(CSSClass.faq);
 
             // Und dann nur noch die Überschrift merken
-            me.title = content.attr('data-title');
+            _this.title = content.attr('data-title');
 
             templateAvailable();
         });
@@ -2160,7 +2153,7 @@ var homePage = (function (_super) {
     homePage.prototype.showUpdate = function (button, index, method) {
         this.startUpdate = function () {
             VCRServer.triggerTask(method).done(function () {
-                window.location.hash = 'current';
+                return window.location.hash = '#current';
             });
         };
 
@@ -2212,22 +2205,22 @@ var homePage = (function (_super) {
     };
 
     homePage.prototype.onInitialize = function () {
-        var me = this;
-        var versionAvailable = me.registerAsyncCall();
+        var _this = this;
+        var versionAvailable = this.registerAsyncCall();
 
         // Vorlagen vorbereiten
-        me.detailsManager = new JMSLib.DetailManager(1, 'startGuide', 'startScan', 'checkUpdate');
+        this.detailsManager = new JMSLib.DetailManager(1, 'startGuide', 'startScan', 'checkUpdate');
 
         // Mehr als die Versionsinformationen brauchen wir gar nicht
         VCRServer.getServerVersion().done(function (data) {
-            me.serverInfo = data;
+            _this.serverInfo = data;
             versionAvailable();
         });
     };
 
     homePage.prototype.onShow = function () {
-        var me = this;
-        var serverInfo = me.serverInfo;
+        var _this = this;
+        var serverInfo = this.serverInfo;
 
         // Visualisieren, dass mindestens ein Gerät aktiv ist
         if (serverInfo.active)
@@ -2245,7 +2238,7 @@ var homePage = (function (_super) {
             startScan.removeAttr('href');
         else
             startScan.click(function () {
-                me.showUpdate(startScan, 1, 'sourceScan');
+                return _this.showUpdate(startScan, 1, 'sourceScan');
             });
 
         // Programmzeitschrift kann nur aktualisiert werden, wenn diese nicht über die Konfiguration deaktiviert wurde
@@ -2254,16 +2247,16 @@ var homePage = (function (_super) {
             startGuide.removeAttr('href');
         else
             startGuide.click(function () {
-                me.showUpdate(startGuide, 0, 'guideUpdate');
+                return _this.showUpdate(startGuide, 0, 'guideUpdate');
             });
 
         // Die Versionprüfung kann jeder Anwender aufrufen
         var checkUpdate = $('#checkUpdate');
         checkUpdate.click(function () {
-            me.checkUpdate(checkUpdate);
+            return _this.checkUpdate(checkUpdate);
         });
 
-        me.title = 'VCR.NET Recording Service ' + serverInfo.version + ' (' + serverInfo.msiVersion + ')';
+        this.title = 'VCR.NET Recording Service ' + serverInfo.version + ' (' + serverInfo.msiVersion + ')';
     };
     homePage.versionExtract = />VCRNET\.MSI<\/a>[^<]*\s([^\s]+)\s*</i;
     return homePage;
@@ -2337,18 +2330,17 @@ var planPage = (function (_super) {
 
     // Anzeige der Ausnahmeregelung
     planPage.prototype.editException = function (item, origin) {
+        var _this = this;
         var info = item.exceptionInfo;
-        var me = this;
 
-        info.startEdit(item, me.detailsManager.toggle(info, origin, 1), function () {
-            me.reload(null);
+        info.startEdit(item, this.detailsManager.toggle(info, origin, 1), function () {
+            return _this.reload(null);
         });
     };
 
     // Eintrag der Programmzeitschrift abrufen
     planPage.prototype.rowGuideEntry = function (item, origin) {
-        var me = this;
-
+        var _this = this;
         // Verweis deaktivieren
         origin.removeAttribute('href');
 
@@ -2366,7 +2358,7 @@ var planPage = (function (_super) {
         // Eintrag suchen
         item.requestGuide(function (entry) {
             // Daten binden
-            var html = JMSLib.prepareGuideDisplay(entry, me.guideTemplate, item.start, item.end);
+            var html = JMSLib.prepareGuideDisplay(entry, _this.guideTemplate, item.start, item.end);
 
             // Vorbereiten
             html.find('#findInGuide').button();
@@ -2379,8 +2371,7 @@ var planPage = (function (_super) {
 
     // Aktuellen Aufzeichnungsplan ermitten
     planPage.prototype.reload = function (whenLoaded) {
-        var me = this;
-
+        var _this = this;
         // Wir schauen maximal 13 Wochen in die Zukunft
         var endOfTime = new Date(Date.now() + 13 * 7 * 86400000);
 
@@ -2390,25 +2381,25 @@ var planPage = (function (_super) {
             var plan = $.map(data, function (rawData) {
                 var item = new PlanEntry(rawData);
 
-                item.onShowDetails = function (item, origin) {
-                    if (me.detailsManager.toggle(item, origin, 0))
-                        $(origin.parentNode.parentNode.nextSibling).find('#guideLink').click();
-                };
                 item.onException = function (item, origin) {
-                    me.editException(item, origin);
+                    return _this.editException(item, origin);
                 };
                 item.onShowGuide = function (item, origin) {
-                    me.rowGuideEntry(item, origin);
+                    return _this.rowGuideEntry(item, origin);
+                };
+                item.onShowDetails = function (item, origin) {
+                    if (_this.detailsManager.toggle(item, origin, 0))
+                        $(origin.parentNode.parentNode.nextSibling).find('#guideLink').click();
                 };
 
                 return item;
             });
 
             // Details deaktivieren
-            me.detailsManager.reset();
+            _this.detailsManager.reset();
 
             // Liste der Aufzeichnungen aktualisieren
-            me.planRowTemplate.loadList(plan);
+            _this.planRowTemplate.loadList(plan);
 
             // Abschluss melden
             if (whenLoaded != null)
@@ -2417,10 +2408,9 @@ var planPage = (function (_super) {
     };
 
     planPage.prototype.onShow = function () {
-        var me = this;
-
+        var _this = this;
         // Aktuelle Auswahl löschen
-        me.startChooser.children().remove();
+        this.startChooser.children().remove();
 
         // Mitternacht ermitteln
         var midnight = new Date(Date.now());
@@ -2433,7 +2423,7 @@ var planPage = (function (_super) {
         var rootChecker = (startIndex < 0) ? ' checked="checked"' : '';
 
         // Neue Auswahl ergänzen
-        me.startChooser.append('<input type="radio" id="startChoice0" name="startChoice"' + rootChecker + ' value="0"/><label for="startChoice0">Jetzt</label>');
+        this.startChooser.append('<input type="radio" id="startChoice0" name="startChoice"' + rootChecker + ' value="0"/><label for="startChoice0">Jetzt</label>');
 
         for (var i = 1; i < 7; i++) {
             // Werte berechnen
@@ -2445,64 +2435,64 @@ var planPage = (function (_super) {
             var checker = isSelected ? ' checked="checked"' : '';
 
             // Neue Auswahl ergänzen
-            me.startChooser.append('<input type="radio" id="startChoice' + i + '" name="startChoice"' + checker + ' value="' + daysAsString + '"/><label for="startChoice' + i + '">' + JMSLib.DateFormatter.getShortDate(startDate) + '</label>');
+            this.startChooser.append('<input type="radio" id="startChoice' + i + '" name="startChoice"' + checker + ' value="' + daysAsString + '"/><label for="startChoice' + i + '">' + JMSLib.DateFormatter.getShortDate(startDate) + '</label>');
         }
 
         // Anzeige aufbereiten
-        me.startChooser.buttonset();
-        me.startChooser.find('input').click(function () {
-            me.refresh();
+        this.startChooser.buttonset();
+        this.startChooser.find('input').click(function () {
+            return _this.refresh();
         });
 
         // Filter aktivieren
-        me.planRowTemplate.filter = function (item) {
-            return me.filter(item);
+        this.planRowTemplate.filter = function (item) {
+            return _this.filter(item);
         };
 
         // Und anzeigen
-        me.refresh();
+        this.refresh();
 
         // Aktualisierung aufsetzen
         $('.refreshLink').click(function () {
-            me.reload(null);
+            return _this.reload(null);
         });
-        me.ckGuide.click(function () {
-            me.refresh();
+        this.ckGuide.click(function () {
+            return _this.refresh();
         });
-        me.ckScan.click(function () {
-            me.refresh();
+        this.ckScan.click(function () {
+            return _this.refresh();
         });
 
-        me.title = 'Geplante Aufzeichnungen für ' + VCRServer.UserProfile.global.planDaysToShow + ' Tage';
+        this.title = 'Geplante Aufzeichnungen für ' + VCRServer.UserProfile.global.planDaysToShow + ' Tage';
     };
 
     planPage.prototype.onInitialize = function () {
-        var me = this;
-        var settingsLoaded = me.registerAsyncCall();
-        var guideLoaded = me.registerAsyncCall();
-        var planLoaded = me.registerAsyncCall();
+        var _this = this;
+        var settingsLoaded = this.registerAsyncCall();
+        var guideLoaded = this.registerAsyncCall();
+        var planLoaded = this.registerAsyncCall();
 
         // Elemente suchen
-        me.startChooser = $('#startChoice');
+        this.startChooser = $('#startChoice');
 
         // Darstellung der Auswahl konfigurieren
-        me.ckGuide = $('#showGuide');
-        me.ckGuide.button();
-        me.ckScan = $('#showScan');
-        me.ckScan.button();
+        this.ckGuide = $('#showGuide');
+        this.ckGuide.button();
+        this.ckScan = $('#showScan');
+        this.ckScan.button();
 
         // Vorlagen vorbereiten
-        me.detailsManager = new JMSLib.DetailManager(2, 'planRowDetails', 'planRowException');
-        me.planRowTemplate = JMSLib.HTMLTemplate.dynamicCreate($('#planRows'), 'planRow');
+        this.detailsManager = new JMSLib.DetailManager(2, 'planRowDetails', 'planRowException');
+        this.planRowTemplate = JMSLib.HTMLTemplate.dynamicCreate($('#planRows'), 'planRow');
 
         // Filter deaktivieren
-        me.planRowTemplate.filter = function (item) {
+        this.planRowTemplate.filter = function (item) {
             return false;
         };
 
         // Laden anstossen
         JMSLib.TemplateLoader.load('currentGuide').done(function (template) {
-            me.guideTemplate = $(template).find('#innerTemplate');
+            _this.guideTemplate = $(template).find('#innerTemplate');
 
             guideLoaded();
         });
@@ -2511,7 +2501,7 @@ var planPage = (function (_super) {
         VCRServer.UserProfile.global.register(settingsLoaded);
 
         // Laden anstossen
-        me.reload(planLoaded);
+        this.reload(planLoaded);
     };
     return planPage;
 })(Page);
@@ -2539,14 +2529,14 @@ var adminPage = (function (_super) {
     };
 
     adminPage.prototype.onInitialize = function () {
-        var me = this;
-        var loadFinished = me.registerAsyncCall();
+        var _this = this;
+        var loadFinished = this.registerAsyncCall();
 
-        me.directoryBrowser = $('#browseDirectory');
+        this.directoryBrowser = $('#browseDirectory');
 
         // Gruppen nur einmal laden
         if (adminPage.groups == null) {
-            var groupsLoaded = me.registerAsyncCall();
+            var groupsLoaded = this.registerAsyncCall();
 
             VCRServer.getWindowsGroups().done(function (data) {
                 adminPage.groups = data;
@@ -2556,32 +2546,32 @@ var adminPage = (function (_super) {
 
         // Alles nacheinander laden - die Zahl der gleichzeitig offenen Requests ist beschränkt!
         VCRServer.browseDirectories('', true).then(function (directories) {
-            me.fillDirectories(directories);
+            _this.fillDirectories(directories);
             return VCRServer.getSecuritySettings();
         }).then(function (data) {
-            me.security = data;
+            _this.security = data;
             return VCRServer.getDirectorySettings();
         }).then(function (data) {
-            me.directory = data;
+            _this.directory = data;
             return VCRServer.getGuideSettings();
         }).then(function (data) {
-            me.guide = data;
+            _this.guide = data;
             return VCRServer.getSourceScanSettings();
         }).then(function (data) {
-            me.scan = data;
+            _this.scan = data;
             return VCRServer.getProfileSettings();
         }).then(function (data) {
-            me.devices = data;
+            _this.devices = data;
             return JMSLib.TemplateLoader.load('adminDevices');
         }).then(function (template) {
             $('#devices').append($(template).find('#template').children());
 
             return VCRServer.getOtherSettings();
         }).then(function (data) {
-            me.other = data;
+            _this.other = data;
             return VCRServer.getSchedulerRules();
         }).then(function (data) {
-            me.rules = data;
+            _this.rules = data;
             return JMSLib.TemplateLoader.load('adminRules');
         }).then(function (template) {
             $('#rules').append($(template).find('#template').children());
@@ -2591,20 +2581,20 @@ var adminPage = (function (_super) {
 
         // Geräte laden
         var profiles = $('#profileForGuide');
-        var sourcesLoaded = me.registerAsyncCall();
+        var sourcesLoaded = this.registerAsyncCall();
 
-        me.loadProfiles(profiles);
-        me.sourceSelections = new SourceSelectorLoader(profiles);
-        me.sourceSelections.loadTemplates(function () {
-            me.sources = me.sourceSelections.appendAfter($('#guideSourceSelector').find('tbody').children().last(), true);
+        this.loadProfiles(profiles);
+        this.sourceSelections = new SourceSelectorLoader(profiles);
+        this.sourceSelections.loadTemplates(function () {
+            _this.sources = _this.sourceSelections.appendAfter($('#guideSourceSelector').find('tbody').children().last(), true);
 
             sourcesLoaded();
         });
 
         // Vorlagen laden
-        var templateLoaded = me.registerAsyncCall();
+        var templateLoaded = this.registerAsyncCall();
         JMSLib.TemplateLoader.load('profileRow').done(function (template) {
-            me.deviceTemplate = $(template).find('#template');
+            _this.deviceTemplate = $(template).find('#template');
 
             templateLoaded();
         });
@@ -2614,7 +2604,7 @@ var adminPage = (function (_super) {
         JMSLib.HourListSettings.createHourButtons($('.scanHours'), 'scanHour');
 
         // Und schließlich brauchen wir noch die Konfiguration des Anwenders
-        VCRServer.UserProfile.global.register(me.registerAsyncCall());
+        VCRServer.UserProfile.global.register(this.registerAsyncCall());
     };
 
     // Schaltet alle Oberflächen Elemnte ab und zeigt vor dem verzögerten Übergang auf die Startseite eine knappe Information an.
@@ -2642,7 +2632,7 @@ var adminPage = (function (_super) {
             else {
                 VCRServer.RecordingDirectoryCache.reset();
 
-                window.location.hash = 'home';
+                window.location.hash = '#home';
             }
         }).fail(JMSLib.dispatchErrorMessage(function (message) {
             // Fehler bearbeiten
@@ -2683,8 +2673,7 @@ var adminPage = (function (_super) {
 
     // Bereitet die Anzeige der Sicherheitseinstellungen vor
     adminPage.prototype.showSecurity = function () {
-        var me = this;
-
+        var _this = this;
         // Auswahllisten für Benutzer
         var selUser = $('#selUserGroup');
         var selAdmin = $('#selAdminGroup');
@@ -2698,14 +2687,13 @@ var adminPage = (function (_super) {
         // Speichern vorbereiten
         var securityUpdate = $('#updateSecurity');
         securityUpdate.click(function () {
-            me.update('security', me.security, securityUpdate);
+            _this.update('security', _this.security, securityUpdate);
         });
     };
 
     // Bereitet die Anzeige der Verzeichnisse vor
     adminPage.prototype.showDirectory = function () {
-        var me = this;
-
+        var _this = this;
         // Oberflächenelemente
         var directoryUpdate = $('#updateDirectory');
         var recording = $('#recordingDirectories');
@@ -2714,44 +2702,44 @@ var adminPage = (function (_super) {
         var accept = $('#acceptDir');
 
         // Aktuelle Auswahl
-        $.each(me.directory.directories, function (index, directory) {
-            recording.append(new Option(directory));
+        $.each(this.directory.directories, function (index, directory) {
+            return recording.append(new Option(directory));
         });
 
         discard.click(function () {
-            recording.find(':checked').remove();
+            return recording.find(':checked').remove();
         });
         accept.click(function () {
-            me.addDirectory();
+            return _this.addDirectory();
         });
 
         // Navigation
         toParent.click(function () {
-            var root = me.directoryBrowser.children().first().val();
+            var root = _this.directoryBrowser.children().first().val();
 
             VCRServer.browseDirectories(root, false).done(function (directories) {
-                me.fillDirectories(directories);
+                return _this.fillDirectories(directories);
             });
         });
-        me.directoryBrowser.change(function () {
-            var dir = me.directoryBrowser.val();
+        this.directoryBrowser.change(function () {
+            var dir = _this.directoryBrowser.val();
             if (dir == null)
                 return;
             if (dir.length < 1)
                 return;
 
             VCRServer.browseDirectories(dir, true).done(function (directories) {
-                me.fillDirectories(directories);
+                return _this.fillDirectories(directories);
             });
         });
 
         // Speichern
         directoryUpdate.click(function () {
-            me.directory.directories = $.map($('#recordingDirectories option'), function (option) {
+            _this.directory.directories = $.map($('#recordingDirectories option'), function (option) {
                 return option.value;
             });
 
-            me.update('directory', me.directory, directoryUpdate);
+            _this.update('directory', _this.directory, directoryUpdate);
         });
     };
 
@@ -2931,7 +2919,7 @@ var adminPage = (function (_super) {
         // Oberfläche vorbereiten
         navigator.tabs(options).addClass('ui-tabs-vertical ui-helper-clearfix');
         navigator.on('tabsactivate', function (ev) {
-            window.location.hash = 'admin;' + arguments[1].newPanel.selector.substr(1);
+            window.location.hash = '#admin;' + arguments[1].newPanel.selector.substr(1);
         });
 
         // Oberfläche vorbereiten

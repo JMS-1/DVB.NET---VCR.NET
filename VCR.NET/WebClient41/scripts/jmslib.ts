@@ -31,8 +31,7 @@ module JMSLib {
     }
 
     // Bietet die Eckdaten eines Eintrags aus der Programmzeitschrift an
-    export interface IGuideItem
-    {
+    export interface IGuideItem {
         // Der Zeitpunkt, an dem die Sendung beginnt
         start: Date;
 
@@ -45,7 +44,7 @@ module JMSLib {
 
     // Wertet eine Fehlermeldung von einem Web Dienst aus
     export function dispatchErrorMessage(onError: (message: string) => void): (result: JQueryXHR) => void {
-        return function (result: JQueryXHR): void {
+        return (result: JQueryXHR) => {
             var info: any = $.parseJSON(result.responseText);
 
             onError(info.ExceptionMessage);
@@ -145,7 +144,7 @@ module JMSLib {
             var template: string = TemplateLoader.loaded[fullName];
 
             if (template == undefined)
-                return $.get(fullName).done(function (html: string): void { TemplateLoader.loaded[fullName] = html; });
+                return $.get(fullName).done((html: string) => TemplateLoader.loaded[fullName] = html);
 
             return $.Deferred().resolve(template);
         }
@@ -179,7 +178,7 @@ module JMSLib {
             var model = validator.model;
 
             // Alle Oberflächenelement über data-property an Eigenschaften des Modells binden
-            form.find('[' + Bindings.propertyAttribute + ']').each(function (index: any, element: Element): void {
+            form.find('[' + Bindings.propertyAttribute + ']').each((index: any, element: Element) => {
                 var targetProperty = element.getAttribute(Bindings.propertyAttribute);
                 var target = $(element);
 
@@ -234,7 +233,7 @@ module JMSLib {
         // Aktualisiert die Darstellung der Fehlermeldungen
         static synchronizeErrors(validator: IValidator): void {
             // Über die Namenskonvention die Fehlermeldungen aus der prüfbaren Klasse auslesen - nicht die tatsächlichen Werte aus den Modelleigenschaften!
-            validator.view.find('[' + Bindings.propertyAttribute + ']').each(function (index: any, element: Element): void {
+            validator.view.find('[' + Bindings.propertyAttribute + ']').each((index: any, element: Element) => {
                 var targetProperty = element.getAttribute(Bindings.propertyAttribute);
                 var errorMessage = validator[targetProperty];
 
@@ -254,7 +253,7 @@ module JMSLib {
 
         // Alle Daten aus dem Modell in die Oberflächenelemente übertragen.
         private static fromModelToForm(model: any, form: JQuery): void {
-            form.find('[' + Bindings.propertyAttribute + ']').each(function (index: any, element: Element): void {
+            form.find('[' + Bindings.propertyAttribute + ']').each((index: any, element: Element) => {
                 var targetProperty = element.getAttribute(Bindings.propertyAttribute);
                 var data = model[targetProperty];
                 var target = $(element);
@@ -334,7 +333,7 @@ module JMSLib {
             newTemplate.list = list;
 
             // Laden anstossen
-            TemplateLoader.load(templateName).done(function (template: string): void {
+            TemplateLoader.load(templateName).done((template: string) => {
                 newTemplate.template = $(template).find('#template');
                 newTemplate.refresh();
             });
@@ -353,7 +352,7 @@ module JMSLib {
         }
 
         // Der Filter ist für alle Elemente gesetzt, die angezeigt werden sollen
-        filter: (item: any) => boolean = function (item: any) { return true; };
+        filter: (item: any) => boolean = (item: any) => true;
 
         // Die aktuellen Daten
         private items: Array<any>;
@@ -412,7 +411,7 @@ module JMSLib {
         // Ersetzt alle Platzhalter in einem Oberflächenmodell und schaltet dieses dann sichtbar.
         static applyTemplate(model: any, element: JQuery): void {
             // Platzhalter zum Ersetzen durch Werte
-            element.find('[' + Bindings.propertyAttribute + ']').addBack().each(function (index: any, element: Element): void {
+            element.find('[' + Bindings.propertyAttribute + ']').addBack().each((index: any, element: Element) => {
                 // Rohdaten auslesen
                 var dataProperty = element.getAttribute(Bindings.propertyAttribute);
                 if (dataProperty == null)
@@ -445,18 +444,16 @@ module JMSLib {
                         target.prop('checked', dataValue);
 
                         if (element.getAttribute(HTMLTemplate.writebackAttribute) != null)
-                            target.change(function (): void { model[dataProperty] = target.prop('checked'); });
+                            target.change(() => model[dataProperty] = target.prop('checked'));
                     }
                     else
                         target.text(dataValue);
                 else
-                    $.each(attributeTarget.split(','), function (i: number, oneAttributeTarget: string): void {
-                        target.attr(oneAttributeTarget, dataValue);
-                    });
+                    $.each(attributeTarget.split(','), (i: number, oneAttributeTarget: string) => target.attr(oneAttributeTarget, dataValue));
             });
 
             // Platzhalter für Prüfergebnisse
-            element.find('[' + HTMLTemplate.validationResultAttribute + ']').each(function (index: any, element: Element): void {
+            element.find('[' + HTMLTemplate.validationResultAttribute + ']').each((index: any, element: Element) => {
                 var target = $(element);
                 var validationPath = element.getAttribute(HTMLTemplate.validationResultAttribute);
                 if (HTMLTemplate.retrieveProperty(model, validationPath))
@@ -466,7 +463,7 @@ module JMSLib {
             });
 
             // Platzhalte für Raktion auf das Betätigen von Verweisen
-            element.find('[' + HTMLTemplate.clickAttribute + ']').each(function (index: any, elem: Element): void {
+            element.find('[' + HTMLTemplate.clickAttribute + ']').each((index: any, elem: Element) => {
                 var dataProperty = elem.getAttribute(HTMLTemplate.clickAttribute);
                 var dataValue = model[dataProperty];
 
@@ -502,9 +499,9 @@ module JMSLib {
         constructor(nodesUp: number, ...args: string[]) {
             var templates: JQuery[] = new Array();
 
-            $.each(args, function (index: number, template: string): void {
-                TemplateLoader.load(template).done(function (template: string): void { templates[index] = $(template).find('#template'); });
-            });
+            $.each(args, (index: number, template: string) =>
+                TemplateLoader.load(template).done((template: string) =>
+                    templates[index] = $(template).find('#template')));
 
             this.nodesToMoveUp = nodesUp;
             this.templates = templates;
@@ -668,7 +665,7 @@ module JMSLib {
             for (var i = 0; i < 24; i++)
                 settings['hour' + DateFormatter.formatNumber(i)] = false;
 
-            $.each(hours, function (index: number, hour: number): void {
+            $.each(hours, (index: number, hour: number) => {
                 if (hour >= 0)
                     if (hour <= 23)
                         settings['hour' + DateFormatter.formatNumber(hour)] = true;
