@@ -500,7 +500,7 @@ $(function () {
 
     // Informationsdaten ermitteln
     VCRServer.getServerVersion().done(function (data) {
-        $('#masterTitle').text('VCR.NET Recording Service ' + data.version);
+        return $('#masterTitle').text('VCR.NET Recording Service ' + data.version);
     });
 
     // Hier kommt der Inhalt hin
@@ -788,7 +788,7 @@ var UserSettingsValidator = (function () {
             send.button('option', 'disabled', true);
 
             clone.update(function (error) {
-                JMSLib.Bindings.setErrorIndicator(send, error);
+                return JMSLib.Bindings.setErrorIndicator(send, error);
             });
         });
     }
@@ -1925,7 +1925,7 @@ var CurrentInfo = (function () {
     // Ruft die aktuelle Liste der Aufzeichnungen vom Web Dienst ab.
     CurrentInfo.load = function (whenLoaded) {
         VCRServer.getPlanCurrent().done(function (data) {
-            whenLoaded($.map(data, function (rawData) {
+            return whenLoaded($.map(data, function (rawData) {
                 return new CurrentInfo(rawData);
             }));
         });
@@ -2031,7 +2031,7 @@ var InfoJob = (function () {
 
                 // Für jede existierende Aufzeichnung einen Eintrag anlegen
                 $.map(rawInfo.schedules, function (schedule) {
-                    rows.push(new InfoSchedule(schedule, job.isActive));
+                    return rows.push(new InfoSchedule(schedule, job.isActive));
                 });
             });
 
@@ -2152,7 +2152,7 @@ var homePage = (function (_super) {
     // Aktiviert eine Anzeige zur Aktualisierung
     homePage.prototype.showUpdate = function (button, index, method) {
         this.startUpdate = function () {
-            VCRServer.triggerTask(method).done(function () {
+            return VCRServer.triggerTask(method).done(function () {
                 return window.location.hash = '#current';
             });
         };
@@ -2565,7 +2565,6 @@ var adminPage = (function (_super) {
             return JMSLib.TemplateLoader.load('adminDevices');
         }).then(function (template) {
             $('#devices').append($(template).find('#template').children());
-
             return VCRServer.getOtherSettings();
         }).then(function (data) {
             _this.other = data;
@@ -2575,7 +2574,6 @@ var adminPage = (function (_super) {
             return JMSLib.TemplateLoader.load('adminRules');
         }).then(function (template) {
             $('#rules').append($(template).find('#template').children());
-
             loadFinished();
         });
 
@@ -2614,7 +2612,7 @@ var adminPage = (function (_super) {
         $('.serverRestart').removeClass(JMSLib.CSSClass.invisible);
 
         window.setTimeout(function () {
-            window.location.reload();
+            return window.location.reload();
         }, 10000);
     };
 
@@ -2687,7 +2685,7 @@ var adminPage = (function (_super) {
         // Speichern vorbereiten
         var securityUpdate = $('#updateSecurity');
         securityUpdate.click(function () {
-            _this.update('security', _this.security, securityUpdate);
+            return _this.update('security', _this.security, securityUpdate);
         });
     };
 
@@ -2745,10 +2743,9 @@ var adminPage = (function (_super) {
 
     // Bereitet die Konfiguration der Programmzeitschrift vor
     adminPage.prototype.showGuide = function () {
-        var me = this;
-
+        var _this = this;
         // Auswahl neuer Quellen vorbereiten
-        me.sources.initialize();
+        this.sources.initialize();
 
         // Oberflächenelemente
         var guideUpdate = $('#updateGuide');
@@ -2758,15 +2755,15 @@ var adminPage = (function (_super) {
         var accept = $('#addToGuide');
 
         // Aktuelle Auswahl
-        $.each(me.guide.sources, function (index, source) {
-            selSource.append(new Option(source));
+        $.each(this.guide.sources, function (index, source) {
+            return selSource.append(new Option(source));
         });
 
         discard.click(function () {
-            selSource.find(':checked').remove();
+            return selSource.find(':checked').remove();
         });
         accept.click(function () {
-            var source = me.guide['sourceName'];
+            var source = _this.guide['sourceName'];
             if (source == null)
                 return;
             if (source.length < 1)
@@ -2782,74 +2779,71 @@ var adminPage = (function (_super) {
 
             selector.selectedIndex = count;
 
-            me.sources.reset();
+            _this.sources.reset();
         });
 
         // Speichern
         guideUpdate.click(function () {
-            if (GuideSettingsValidator.activated(me.guide))
-                me.guide.sources = $.map($('#guideSources option'), function (option) {
+            if (GuideSettingsValidator.activated(_this.guide))
+                _this.guide.sources = $.map($('#guideSources option'), function (option) {
                     return option.value;
                 });
             else
-                me.guide.duration = 0;
+                _this.guide.duration = 0;
 
-            me.update('guide', me.guide, guideUpdate, GuideSettingsValidator.filterPropertiesOnSend);
+            _this.update('guide', _this.guide, guideUpdate, GuideSettingsValidator.filterPropertiesOnSend);
         });
     };
 
     // Bereitet die Konfiguration für die Aktualisierung der Quellen vor
     adminPage.prototype.showScan = function () {
-        var me = this;
-
+        var _this = this;
         // Oberflächenelemente
         var scanUpdate = $('#updateScan');
 
         // Speichern
         scanUpdate.click(function () {
-            switch (SourceScanSettingsValidator.mode(me.scan)) {
+            switch (SourceScanSettingsValidator.mode(_this.scan)) {
                 case 'D':
-                    me.scan.interval = 0;
+                    _this.scan.interval = 0;
                     break;
                 case 'M':
-                    me.scan.interval = -1;
+                    _this.scan.interval = -1;
                     break;
                 case 'P':
                     break;
             }
 
-            me.update('scan', me.scan, scanUpdate, SourceScanSettingsValidator.filterPropertiesOnSend);
+            _this.update('scan', _this.scan, scanUpdate, SourceScanSettingsValidator.filterPropertiesOnSend);
         });
     };
 
     // Bereitet die Konfiguration für die Nutzung der Geräteprofile vor
     adminPage.prototype.showDevices = function () {
-        var me = this;
-
+        var _this = this;
         // Oberflächenelemente
         var deviceUpdate = $('#updateDevices');
         var devices = $('#selDefaultProfile');
 
-        $.each(me.devices.profiles, function (index, profile) {
-            devices.append(new Option(profile.name));
+        $.each(this.devices.profiles, function (index, profile) {
+            return devices.append(new Option(profile.name));
         });
 
         // Speichern
         deviceUpdate.click(function () {
-            me.update('devices', me.devices, deviceUpdate);
+            return _this.update('devices', _this.devices, deviceUpdate);
         });
     };
 
     // Bereitet die Konfiguration sonstiger Einstellungen vor
     adminPage.prototype.showOther = function () {
-        var me = this;
-
+        var _this = this;
         // Oberflächenelemente
         var otherUpdate = $('#updateOther');
 
         // Speichern
         otherUpdate.click(function () {
-            var settings = me.other;
+            var settings = _this.other;
 
             switch (OtherSettingsValidator.hibernationMode(settings)) {
                 case 'OFF':
@@ -2865,26 +2859,23 @@ var adminPage = (function (_super) {
                     break;
             }
 
-            me.update('other', settings, otherUpdate);
+            _this.update('other', settings, otherUpdate);
         });
     };
 
     // Bereitet die Eingabe der Planungsregeln vor
     adminPage.prototype.showRules = function () {
-        var me = this;
-
+        var _this = this;
         // Oberflächenelemente
         var rulesUpdate = $('#updateRules');
 
         // Speichern
         rulesUpdate.click(function () {
-            me.update('rules', me.rules, rulesUpdate);
+            return _this.update('rules', _this.rules, rulesUpdate);
         });
     };
 
     adminPage.prototype.onShow = function () {
-        var me = this;
-
         var navigator = $('#adminTabs');
         var options = {};
 
@@ -2919,35 +2910,35 @@ var adminPage = (function (_super) {
         // Oberfläche vorbereiten
         navigator.tabs(options).addClass('ui-tabs-vertical ui-helper-clearfix');
         navigator.on('tabsactivate', function (ev) {
-            window.location.hash = '#admin;' + arguments[1].newPanel.selector.substr(1);
+            return window.location.hash = '#admin;' + arguments[1].newPanel.selector.substr(1);
         });
 
         // Oberfläche vorbereiten
         $('.editButtons').button();
 
         // Alle Bereiche vorbereiten
-        me.showDirectory();
-        me.showSecurity();
-        me.showDevices();
-        me.showOther();
-        me.showGuide();
-        me.showRules();
-        me.showScan();
+        this.showDirectory();
+        this.showSecurity();
+        this.showDevices();
+        this.showOther();
+        this.showGuide();
+        this.showRules();
+        this.showScan();
 
         // Besondere Teilaspekte
-        var profileValidator = new ProfileSettingsValidator(me.devices, $('#updateDevices'));
+        var profileValidator = new ProfileSettingsValidator(this.devices, $('#updateDevices'));
 
         // An die Oberfläche binden
-        JMSLib.Bindings.bind(new DirectorySettingsValidator(me.directory, $('#updateDirectory')), $('#directories'));
-        JMSLib.Bindings.bind(new GuideSettingsValidator(me.guide, $('#updateGuide'), $('#guideForm')), $('#guide'));
-        JMSLib.Bindings.bind(new SourceScanSettingsValidator(me.scan, $('#updateScan')), $('#sources'));
-        JMSLib.Bindings.bind(new OtherSettingsValidator(me.other, $('#updateOther')), $('#other'));
-        JMSLib.Bindings.bind(new SecuritySettingsValidator(me.security), $('#security'));
-        JMSLib.Bindings.bind(new ScheduleRulesValidator(me.rules), $('#rules'));
+        JMSLib.Bindings.bind(new DirectorySettingsValidator(this.directory, $('#updateDirectory')), $('#directories'));
+        JMSLib.Bindings.bind(new GuideSettingsValidator(this.guide, $('#updateGuide'), $('#guideForm')), $('#guide'));
+        JMSLib.Bindings.bind(new SourceScanSettingsValidator(this.scan, $('#updateScan')), $('#sources'));
+        JMSLib.Bindings.bind(new OtherSettingsValidator(this.other, $('#updateOther')), $('#other'));
+        JMSLib.Bindings.bind(new SecuritySettingsValidator(this.security), $('#security'));
+        JMSLib.Bindings.bind(new ScheduleRulesValidator(this.rules), $('#rules'));
         JMSLib.Bindings.bind(profileValidator, $('#devices'));
 
         // Besondere Teilaspekte
-        profileValidator.bindProfiles($('#deviceList'), me.deviceTemplate);
+        profileValidator.bindProfiles($('#deviceList'), this.deviceTemplate);
 
         // Oberfläche vorbereiten
         $('.' + JMSLib.CSSClass.hourSetting).button();
@@ -2966,11 +2957,10 @@ var currentPage = (function (_super) {
     }
     // Führt eine vollständige Aktualisierung aus
     currentPage.prototype.reload = function () {
-        var me = this;
-
+        var _this = this;
         CurrentInfo.load(function (infos) {
-            me.detailsManager.reset();
-            me.table.loadList(infos);
+            _this.detailsManager.reset();
+            _this.table.loadList(infos);
         });
     };
 
@@ -3123,13 +3113,13 @@ var editPage = (function (_super) {
     };
 
     editPage.prototype.onInitialize = function () {
-        var me = this;
-        var templatesLoaded = me.registerAsyncCall();
-        var directoriesLoaded = me.registerAsyncCall();
+        var _this = this;
+        var templatesLoaded = this.registerAsyncCall();
+        var directoriesLoaded = this.registerAsyncCall();
 
         // Die Informationen, die wir gerade verändern
-        me.sourceSelections = new SourceSelectorLoader($('#selProfile'));
-        me.exceptionRowTemplate = JMSLib.HTMLTemplate.dynamicCreate($('#exceptionRows'), 'exceptionRow');
+        this.sourceSelections = new SourceSelectorLoader($('#selProfile'));
+        this.exceptionRowTemplate = JMSLib.HTMLTemplate.dynamicCreate($('#exceptionRows'), 'exceptionRow');
 
         // Auslesen der Kennung - für FireFox ist es nicht möglich, .hash direkt zu verwenden, da hierbei eine Decodierung durchgeführt wird
         var query = window.location.href.split("#")[1];
@@ -3139,7 +3129,7 @@ var editPage = (function (_super) {
         var epgIndex = jobScheduleId.indexOf(';epgid=');
         var epgId = '';
 
-        if (me.fromGuide = (epgIndex >= 0)) {
+        if (this.fromGuide = (epgIndex >= 0)) {
             epgId = '?epg=' + jobScheduleId.substr(epgIndex + 7);
             jobScheduleId = jobScheduleId.substr(0, epgIndex);
         }
@@ -3169,39 +3159,39 @@ var editPage = (function (_super) {
 
         // Daten zur Aufzeichnung laden
         if (hasId) {
-            var epgLoaded = me.registerAsyncCall();
+            var epgLoaded = this.registerAsyncCall();
 
             VCRServer.createScheduleFromGuide(jobScheduleId, epgId).done(function (data) {
-                me.existingData = data;
+                _this.existingData = data;
                 epgLoaded();
             });
         }
 
         // Liste der Geräteprofile laden
-        me.loadProfiles($('#selProfile'));
+        this.loadProfiles($('#selProfile'));
 
         // Liste der Verzeichnisse wählen
         VCRServer.RecordingDirectoryCache.load().done(function (directories) {
             var directoryList = $('#selDirectory');
 
             $.each(directories, function (index, directory) {
-                directoryList.append(new Option(directory));
+                return directoryList.append(new Option(directory));
             });
 
             directoriesLoaded();
         });
 
         // Vorlage für die Auswahl der Quellen laden
-        me.sourceSelections.loadTemplates(function () {
+        this.sourceSelections.loadTemplates(function () {
             // In die Oberfläche einbinden
-            me.jobSources = me.sourceSelections.appendAfter($('#jobData').find('tbody').children().last());
-            me.scheduleSources = me.sourceSelections.appendAfter($('#scheduleData').find('tbody').children().first());
+            _this.jobSources = _this.sourceSelections.appendAfter($('#jobData').find('tbody').children().last());
+            _this.scheduleSources = _this.sourceSelections.appendAfter($('#scheduleData').find('tbody').children().first());
 
             templatesLoaded();
         });
 
         // Besondere Aktionen sobald die Benutzerkonfiguration verändert wurde
-        VCRServer.UserProfile.global.register(me.registerAsyncCall());
+        VCRServer.UserProfile.global.register(this.registerAsyncCall());
     };
     return editPage;
 })(Page);
@@ -3216,9 +3206,7 @@ var guidePage = (function (_super) {
     }
     // Klappt die Detailansicht auf oder zu
     guidePage.prototype.showDetails = function (guideItem, origin) {
-        var me = this;
-
-        var view = me.details.toggle(guideItem, origin, 0);
+        var view = this.details.toggle(guideItem, origin, 0);
         if (view == null)
             return;
 
@@ -3227,14 +3215,14 @@ var guidePage = (function (_super) {
         var guideElement = view.find('#planRowProgramGuide');
 
         // Anzeigen
-        var details = JMSLib.HTMLTemplate.cloneAndApplyTemplate(guideItem, me.guideTemplate);
+        var details = JMSLib.HTMLTemplate.cloneAndApplyTemplate(guideItem, this.guideTemplate);
         details.find('#guideHeadline').addClass(JMSLib.CSSClass.invisible);
         details.find('#findInGuide').button();
 
         // Auswahlliste mit den Aufträgen füllen
         var jobSelector = view.find('#selJob');
-        $.each(me.jobs, function (index, job) {
-            jobSelector.append(new Option(job.name, '*' + job.id));
+        $.each(this.jobs, function (index, job) {
+            return jobSelector.append(new Option(job.name, '*' + job.id));
         });
 
         // Fertig aufbereitetes Element einsetzen
@@ -3258,19 +3246,18 @@ var guidePage = (function (_super) {
 
     // Aktualisiert die Liste der Sendungen
     guidePage.prototype.refresh = function () {
-        var me = this;
-
+        var _this = this;
         $('#addFavorite').button('option', 'disabled', GuideFilter.global.title == null);
 
         GuideFilter.global.execute(function (items) {
             $.each(items, function (index, item) {
-                item.onShowDetails = function (target, origin) {
-                    me.showDetails(target, origin);
+                return item.onShowDetails = function (target, origin) {
+                    return _this.showDetails(target, origin);
                 };
             });
 
-            me.details.reset();
-            me.guideTable.loadList(items);
+            _this.details.reset();
+            _this.guideTable.loadList(items);
 
             // Schauen wir mal, ob wir blättern können
             $('.firstButton').button('option', 'disabled', GuideFilter.global.index < 1);
@@ -3396,7 +3383,7 @@ var guidePage = (function (_super) {
 
         // Sobald die Zähler zur Verfügung stehen zweigen wir nur neu an
         SavedGuideQuery.onCountLoaded = function (query) {
-            table.loadList(queries);
+            return table.loadList(queries);
         };
 
         // Beim Löschen muss die Änderung gespeichert und die Anzeige aktualisiert werden
@@ -3456,6 +3443,7 @@ var guidePage = (function (_super) {
     };
 
     guidePage.prototype.onShow = function () {
+        var _this = this;
         $('.firstButton, .prevButton, .nextButton, .guideHours a, .scanHours a, #resetAll, #favorites').button();
 
         // Wenn wir Geräteprofile haben, müssen wir etwas mehr tun
@@ -3463,7 +3451,7 @@ var guidePage = (function (_super) {
             // Die Auswahlliste der Geräte füllen
             var selDevice = $('#selDevice');
             $.each(this.profiles, function (index, profile) {
-                selDevice.append(new Option(profile.name));
+                return selDevice.append(new Option(profile.name));
             });
 
             // Vorauswahl aus dem Filter übernehmen
@@ -3472,9 +3460,8 @@ var guidePage = (function (_super) {
                 selDevice.val(device);
 
             // Von nun an auf Änderungen überwachen
-            var me = this;
             selDevice.change(function () {
-                me.deviceChanged(false);
+                return _this.deviceChanged(false);
             });
 
             // Und eventuell verändert zurück übertragen
@@ -3504,22 +3491,22 @@ var guidePage = (function (_super) {
             // Sonstige Änderungen überwachen
             var selSource = $('#selSource');
             selSource.change(function (ev) {
-                GuideFilter.global.changeStation(selSource.val());
+                return GuideFilter.global.changeStation(selSource.val());
             });
             $('.guideHours a').click(function (ev) {
-                me.hourChanged(ev);
+                return _this.hourChanged(ev);
             });
             $('.firstButton').click(function () {
-                GuideFilter.global.firstPage();
+                return GuideFilter.global.firstPage();
             });
             $('.prevButton').click(function () {
-                GuideFilter.global.prevPage();
+                return GuideFilter.global.prevPage();
             });
             $('.nextButton').click(function () {
-                GuideFilter.global.nextPage();
+                return GuideFilter.global.nextPage();
             });
-            $('#favorites').click(function () {
-                me.toggleFavorites(this);
+            $('#favorites').click(function (origin) {
+                return _this.toggleFavorites(origin.currentTarget);
             });
             $('#resetAll').click(function () {
                 $('#withContent').prop('checked', true);
@@ -3532,35 +3519,35 @@ var guidePage = (function (_super) {
 
             // Von nun an auf den Filter reagieren
             GuideFilter.global.onChange = function () {
-                me.refresh();
+                return _this.refresh();
             };
 
             // Erste Aktualisierung
-            me.deviceChanged(false);
+            this.deviceChanged(false);
         }
     };
 
     guidePage.prototype.onInitialize = function () {
-        var me = this;
-        var profilesLoaded = me.registerAsyncCall();
-        var settingsLoaded = me.registerAsyncCall();
-        var guideLoaded = me.registerAsyncCall();
+        var _this = this;
+        var profilesLoaded = this.registerAsyncCall();
+        var settingsLoaded = this.registerAsyncCall();
+        var guideLoaded = this.registerAsyncCall();
 
         // Vorlagen verbinden
-        me.guideTable = JMSLib.HTMLTemplate.dynamicCreate($('#guideTable'), 'guideRow');
-        me.details = new JMSLib.DetailManager(2, 'guideDetails');
-        me.favorites = new JMSLib.DetailManager(2, 'favorites');
+        this.guideTable = JMSLib.HTMLTemplate.dynamicCreate($('#guideTable'), 'guideRow');
+        this.details = new JMSLib.DetailManager(2, 'guideDetails');
+        this.favorites = new JMSLib.DetailManager(2, 'favorites');
 
         // Liste der Geräteprofile laden
         VCRServer.ProfileCache.load().done(function (data) {
-            me.profiles = data;
+            _this.profiles = data;
 
             profilesLoaded();
         });
 
         // Zusätzliche Vorlagen laden
         JMSLib.TemplateLoader.load('currentGuide').done(function (template) {
-            me.guideTemplate = $(template).find('#innerTemplate');
+            _this.guideTemplate = $(template).find('#innerTemplate');
 
             guideLoaded();
         });
@@ -3583,14 +3570,14 @@ var jobsPage = (function (_super) {
         this.visibleLinks = '.guideLink, .newLink, .planLink, .currentLink';
     }
     jobsPage.prototype.onInitialize = function () {
-        var me = this;
-        var loaded = me.registerAsyncCall();
+        var _this = this;
+        var loaded = this.registerAsyncCall();
 
         // Aus der Vorlage erzeugen
-        me.isActive = $('#selActive');
-        me.table = JMSLib.HTMLTemplate.dynamicCreate($('#jobTable'), 'jobRow');
-        me.table.filter = function (row) {
-            return row.isActive == me.isActive.is(':checked');
+        this.isActive = $('#selActive');
+        this.table = JMSLib.HTMLTemplate.dynamicCreate($('#jobTable'), 'jobRow');
+        this.table.filter = function (row) {
+            return row.isActive == _this.isActive.is(':checked');
         };
 
         // Voreingestellte Auswahl setzen - das müssen wir machen, bevor wir die Darstellung umstellen
@@ -3598,18 +3585,18 @@ var jobsPage = (function (_super) {
         if (showArchive)
             $('#selArchive').prop('checked', true);
         else
-            me.isActive.prop('checked', true);
+            this.isActive.prop('checked', true);
 
         // Auswahl aufbereiten
         var filter = $('#filter');
         filter.buttonset();
         filter.change(function () {
-            me.table.refresh();
+            return _this.table.refresh();
         });
 
         // Ladevorgang ausführen
         InfoJob.load(function (rows) {
-            me.table.loadList(rows);
+            _this.table.loadList(rows);
             loaded();
         });
     };
@@ -3644,8 +3631,8 @@ var logPage = (function (_super) {
 
     // Fordert neue Protokolleinträge an
     logPage.prototype.reload = function (whenLoaded) {
+        var _this = this;
         if (typeof whenLoaded === "undefined") { whenLoaded = null; }
-        var me = this;
         var profile = $('#selProfile').val();
         var endDay = new Date($('#selDate').val());
         var startDay = new Date(endDay.getTime() - 7 * 86400000);
@@ -3658,9 +3645,9 @@ var logPage = (function (_super) {
                 var model = new ProtocolEntry(entry);
 
                 // Detailanzeige vorbereiten
-                model.showDetails = function () {
+                model.showDetails = function (origin) {
                     // Das war ein Ausblenden der Detailanzeige
-                    var view = me.detailsManager.toggle(model, this, 0);
+                    var view = _this.detailsManager.toggle(model, origin.currentTarget, 0);
                     if (view == null)
                         return;
 
@@ -3673,7 +3660,7 @@ var logPage = (function (_super) {
                         fileUI.parent().remove();
                     else
                         $.each(files, function (index, url) {
-                            fileUI.append('<a href="' + url + '"><img src="ui/images/recording.png" class="linkImage"/></img>');
+                            return fileUI.append('<a href="' + url + '"><img src="ui/images/recording.png" class="linkImage"/></img>');
                         });
 
                     // Es gibt keine Primärdatei, deren Namen wir anzeigen könnten
@@ -3685,8 +3672,8 @@ var logPage = (function (_super) {
             });
 
             // Neu laden
-            me.detailsManager.reset();
-            me.rowTemplate.loadList(models);
+            _this.detailsManager.reset();
+            _this.rowTemplate.loadList(models);
 
             // Fertig - beim Starten wartet jemand auf uns
             if (whenLoaded != null)
@@ -3696,16 +3683,15 @@ var logPage = (function (_super) {
 
     logPage.prototype.onInitialize = function () {
         var _this = this;
-        var me = this;
-        var profilesLoaded = me.registerAsyncCall();
+        var profilesLoaded = this.registerAsyncCall();
         var rawNow = new Date($.now());
         var dayList = $('#selDate');
 
         // Referenz setzen
-        me.referenceDay = new Date(Date.UTC(rawNow.getFullYear(), rawNow.getMonth(), rawNow.getDate()));
+        this.referenceDay = new Date(Date.UTC(rawNow.getFullYear(), rawNow.getMonth(), rawNow.getDate()));
 
         for (var i = 0; i < 10; i++) {
-            var curDay = new Date(me.referenceDay.getTime() - 7 * i * 86400000);
+            var curDay = new Date(this.referenceDay.getTime() - 7 * i * 86400000);
             var curMonth = 1 + curDay.getUTCMonth();
             var curDate = curDay.getUTCDate();
 
@@ -3718,27 +3704,26 @@ var logPage = (function (_super) {
         });
 
         // Vorlagen vorbereiten
-        me.rowTemplate = JMSLib.HTMLTemplate.dynamicCreate($('#logRows'), 'logRow');
-        me.rowTemplate.filter = function (item) {
-            return me.filter(item);
+        this.rowTemplate = JMSLib.HTMLTemplate.dynamicCreate($('#logRows'), 'logRow');
+        this.rowTemplate.filter = function (item) {
+            return _this.filter(item);
         };
-        me.detailsManager = new JMSLib.DetailManager(2, 'logRowDetails');
+        this.detailsManager = new JMSLib.DetailManager(2, 'logRowDetails');
 
         // Auswahl vorbereiten
         var filter = $('input[type="checkbox"]');
         filter.button();
         filter.click(function () {
-            me.refresh();
+            return _this.refresh();
         });
 
         // Geräte ermitteln
         VCRServer.ProfileCache.load().done(function (profiles) {
-            var _this = this;
             var list = $('#selProfile');
 
             // Alle Namen eintragen
             $.each(profiles, function (index, profile) {
-                list.append(new Option(profile.name));
+                return list.append(new Option(profile.name));
             });
 
             // Auf Änderungen der Liste reagieren
@@ -3747,7 +3732,7 @@ var logPage = (function (_super) {
             });
 
             // Und erstmalig laden - erst danach zeigen wir dem Anwender etwas
-            me.reload(me.registerAsyncCall());
+            _this.reload(_this.registerAsyncCall());
 
             profilesLoaded();
         });

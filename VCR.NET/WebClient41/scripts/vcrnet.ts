@@ -95,7 +95,7 @@ class SavedGuideQuery {
         SavedGuideQuery.loading = true;
 
         // Ergebnis ermitteln
-        filter.count(function (count: number): void {
+        filter.count((count: number) => {
             // Nächsten Eintrag der Warteschlange anwerfen
             SavedGuideQuery.loading = false;
 
@@ -217,7 +217,7 @@ class SavedGuideQueries {
             cache = JSON.parse(fromStore);
 
         // In echte Objekte mit Methoden wandeln
-        SavedGuideQueries.queries = $.map(cache, function (rawQuery: SavedGuideQuery): SavedGuideQuery { return new SavedGuideQuery(rawQuery); });
+        SavedGuideQueries.queries = $.map(cache, (rawQuery: SavedGuideQuery) => new SavedGuideQuery(rawQuery));
 
         return SavedGuideQueries.queries;
     }
@@ -530,14 +530,12 @@ class Page {
 }
 
 // Globale Initialisierungen
-$(function (): void {
+$(() => {
     // Benutzereinstellungen einmalig anfordern
     VCRServer.UserProfile.global.refresh();
 
     // Informationsdaten ermitteln
-    VCRServer.getServerVersion().done((data: VCRServer.InfoServiceContract) => {
-        $('#masterTitle').text('VCR.NET Recording Service ' + data.version);
-    });
+    VCRServer.getServerVersion().done((data: VCRServer.InfoServiceContract) => $('#masterTitle').text('VCR.NET Recording Service ' + data.version));
 
     // Hier kommt der Inhalt hin
     var mainContent = $('#mainArea');
@@ -558,7 +556,7 @@ $(function (): void {
         // Anwender informieren und Seite anfordern
         $('#headline').text('(bitte einen Moment Geduld)');
 
-        JMSLib.TemplateLoader.loadAbsolute('ui/' + template + '.html').done(function (wholeFile: string): void {
+        JMSLib.TemplateLoader.loadAbsolute('ui/' + template + '.html').done((wholeFile: string) => {
             var content = $(wholeFile).find('#mainContent');
             var starterClass = template + 'Page';
             var starter: Page = new window[starterClass];
@@ -579,7 +577,7 @@ $(function (): void {
     var currentHash = '';
 
     // Aktuelle Teilanwendung ermitteln und laden
-    window.onhashchange = function (ev: Event): void {
+    window.onhashchange = (ev: Event) => {
         var hash = window.location.hash;
         if (hash.indexOf('#') != 0)
             hash = '#home';
@@ -826,12 +824,10 @@ class UserSettingsValidator implements JMSLib.IValidator {
 
         // Overfläche vorbereiten
         send.button();
-        send.click(function (): void {
+        send.click(() => {
             send.button('option', 'disabled', true);
 
-            clone.update(function (error: string): void {
-                JMSLib.Bindings.setErrorIndicator(send, error);
-            });
+            clone.update((error: string) => JMSLib.Bindings.setErrorIndicator(send, error));
         });
     }
 
@@ -937,7 +933,7 @@ class GuideItem implements JMSLib.IGuideItem {
     }
 
     // Wird aufgerufen, wenn der Anwender die Detailanzeige aktiviert hat
-    onShowDetails: (item: GuideItem, origin: any) => void = function (item: GuideItem, origin: any) { };
+    onShowDetails: (item: GuideItem, origin: any) => void = (item: GuideItem, origin: any) => {};
 
     // Die eindeutige Kennung des Eintrags
     id: string;
@@ -2453,9 +2449,9 @@ class CurrentInfo {
 
     // Ruft die aktuelle Liste der Aufzeichnungen vom Web Dienst ab.
     static load(whenLoaded: (infos: CurrentInfo[]) => void): void {
-        VCRServer.getPlanCurrent().done(function (data: VCRServer.PlanCurrentContract[]): void {
-            whenLoaded($.map(data, function (rawData: any): CurrentInfo { return new CurrentInfo(rawData); }));
-        });
+        VCRServer.getPlanCurrent().done((data: VCRServer.PlanCurrentContract[]) =>
+            whenLoaded($.map(data, (rawData: any) =>
+                new CurrentInfo(rawData))));
     }
 
     // Aktualisiert den Endzeitpunkt dieser laufenden Aufzeichnung.
@@ -2591,12 +2587,12 @@ class InfoJob implements IInfoRow {
 
     // Aktualisiert die Liste der Aufträge
     static load(whenLoaded: (rows: IInfoRow[]) => void): void {
-        VCRServer.getInfoJobs().done(function (data: VCRServer.InfoJobContract[]): void {
+        VCRServer.getInfoJobs().done((data: VCRServer.InfoJobContract[]) => {
             // Wandeln
             var rows: IInfoRow[] = new Array();
 
             // Alles auslesen
-            $.each(data, function (index: number, rawInfo: VCRServer.InfoJobContract): void {
+            $.each(data, (index: number, rawInfo: VCRServer.InfoJobContract) => {
                 var job = new InfoJob(rawInfo);
 
                 // Einträge für den Auftrag als Knoten und das Erzeugen einer neuen Aufzeichnung zum Auftrag anlegen
@@ -2604,7 +2600,7 @@ class InfoJob implements IInfoRow {
                 rows.push(new InfoNew(job.legacyId, job.isActive));
 
                 // Für jede existierende Aufzeichnung einen Eintrag anlegen
-                $.map(rawInfo.schedules, function (schedule: VCRServer.InfoScheduleContract): void { rows.push(new InfoSchedule(schedule, job.isActive)); });
+                $.map(rawInfo.schedules, (schedule: VCRServer.InfoScheduleContract) => rows.push(new InfoSchedule(schedule, job.isActive)));
             });
 
             // Aktivieren
@@ -2636,9 +2632,7 @@ class ProtocolEntry {
             default: this.displaySource = this.source; break;
         }
 
-        this.files = $.map(rawEntry.files, function (file: string): string {
-            return VCRServer.getFileRoot() + encodeURIComponent(file);
-        });
+        this.files = $.map(rawEntry.files, (file: string) => VCRServer.getFileRoot() + encodeURIComponent(file));
     }
 
     // Der Startzeitpunkt in der üblichen Kurzanzeige
@@ -2657,7 +2651,7 @@ class ProtocolEntry {
     displaySource: string;
 
     // Zeigt Detailinformationen an
-    showDetails: () => void;
+    showDetails: (origin: Event) => void;
 
     // Ein Hinweis zur Größe
     sizeHint: string;
@@ -2738,9 +2732,7 @@ class homePage extends Page implements IPage {
 
     // Aktiviert eine Anzeige zur Aktualisierung
     private showUpdate(button: JQuery, index: number, method: string): void {
-        this.startUpdate = function (): void {
-            VCRServer.triggerTask(method).done(() => window.location.hash = '#current')
-        };
+        this.startUpdate = () => VCRServer.triggerTask(method).done(() => window.location.hash = '#current');
 
         // Anzeigen oder ausblenden
         var view = this.detailsManager.toggle(this, button[0], index);
@@ -2766,7 +2758,7 @@ class homePage extends Page implements IPage {
         // Und vom Server abfragen
         var xhr = new XMLHttpRequest();
         xhr.open('GET', 'http://downloads.psimarron.net');
-        xhr.onreadystatechange = function (): void {
+        xhr.onreadystatechange = () => {
             if (xhr.readyState != 4)
                 return;
             if (xhr.status != 200)
@@ -3122,7 +3114,7 @@ class adminPage extends Page implements IPage {
 
         selDir.children().remove();
 
-        $.each(directories, function (index: number, directory: string): void {
+        $.each(directories, (index: number, directory: string) => {
             if (directory == null)
                 selDir.append(new Option('<Bitte auswählen>', ''));
             else
@@ -3151,18 +3143,10 @@ class adminPage extends Page implements IPage {
             .then<any>((data: VCRServer.GuideSettingsContract) => { this.guide = data; return VCRServer.getSourceScanSettings(); })
             .then<any>((data: VCRServer.SourceScanSettingsContract) => { this.scan = data; return VCRServer.getProfileSettings(); })
             .then<any>((data: VCRServer.ProfileSettingsContract) => { this.devices = data; return JMSLib.TemplateLoader.load('adminDevices'); })
-            .then<any>((template: string) => {
-                $('#devices').append($(template).find('#template').children());
-
-                return VCRServer.getOtherSettings();
-            })
+            .then<any>((template: string) => { $('#devices').append($(template).find('#template').children()); return VCRServer.getOtherSettings(); })
             .then<any>((data: VCRServer.OtherSettingsContract) => { this.other = data; return VCRServer.getSchedulerRules(); })
             .then<any>((data: VCRServer.SchedulerRulesContract) => { this.rules = data; return JMSLib.TemplateLoader.load('adminRules'); })
-            .then<any>((template: string) => {
-                $('#rules').append($(template).find('#template').children());
-
-                loadFinished();
-            });
+            .then<any>((template: string) => { $('#rules').append($(template).find('#template').children()); loadFinished(); });
 
         // Geräte laden
         var profiles = $('#profileForGuide');
@@ -3198,7 +3182,7 @@ class adminPage extends Page implements IPage {
         $('.linkArea').addClass(JMSLib.CSSClass.invisible);
         $('.serverRestart').removeClass(JMSLib.CSSClass.invisible);
 
-        window.setTimeout(function (): void { window.location.reload(); }, 10000);
+        window.setTimeout(() => window.location.reload(), 10000);
     }
 
     // Aktualisiert Konfigurationsdaten und kehrt dann im Allgemeinen auf die Startseite zurück.
@@ -3219,7 +3203,7 @@ class adminPage extends Page implements IPage {
                     window.location.hash = '#home';
                 }
             })
-            .fail(JMSLib.dispatchErrorMessage(function (message: string): void {
+            .fail(JMSLib.dispatchErrorMessage((message: string) => {
                 // Fehler bearbeiten
                 button.attr('title', message);
                 button.addClass(CSSClass.danger);
@@ -3234,7 +3218,7 @@ class adminPage extends Page implements IPage {
         var share: string = shareInput.val();
         if (share != null)
             if (share.length > 0) {
-                VCRServer.validateDirectory(share).done(function (ok: boolean): void {
+                VCRServer.validateDirectory(share).done((ok: boolean) => {
                     JMSLib.Bindings.setErrorIndicator(shareInput, ok ? null : 'Ungültiges Verzeichnis.');
 
                     if (!ok)
@@ -3270,7 +3254,7 @@ class adminPage extends Page implements IPage {
 
         // Speichern vorbereiten
         var securityUpdate = $('#updateSecurity');
-        securityUpdate.click(() => { this.update('security', this.security, securityUpdate); });
+        securityUpdate.click(() => this.update('security', this.security, securityUpdate));
     }
 
     // Bereitet die Anzeige der Verzeichnisse vor
@@ -3318,10 +3302,8 @@ class adminPage extends Page implements IPage {
 
     // Bereitet die Konfiguration der Programmzeitschrift vor
     private showGuide(): void {
-        var me = this;
-
         // Auswahl neuer Quellen vorbereiten
-        me.sources.initialize();
+        this.sources.initialize();
 
         // Oberflächenelemente
         var guideUpdate = $('#updateGuide');
@@ -3331,13 +3313,11 @@ class adminPage extends Page implements IPage {
         var accept = $('#addToGuide');
 
         // Aktuelle Auswahl
-        $.each(me.guide.sources, function (index: number, source: string): void {
-            selSource.append(new Option(source));
-        });
+        $.each(this.guide.sources, (index: number, source: string) => selSource.append(new Option(source)));
 
-        discard.click(function (): void { selSource.find(':checked').remove(); });
-        accept.click(function (): void {
-            var source = me.guide['sourceName'];
+        discard.click(() => selSource.find(':checked').remove());
+        accept.click(() => {
+            var source = this.guide['sourceName'];
             if (source == null)
                 return;
             if (source.length < 1)
@@ -3353,65 +3333,57 @@ class adminPage extends Page implements IPage {
 
             selector.selectedIndex = count;
 
-            me.sources.reset();
+            this.sources.reset();
         });
 
         // Speichern
-        guideUpdate.click(function (): void {
-            if (GuideSettingsValidator.activated(me.guide))
-                me.guide.sources = $.map($('#guideSources option'), function (option: any): string { return option.value; });
+        guideUpdate.click(() => {
+            if (GuideSettingsValidator.activated(this.guide))
+                this.guide.sources = $.map($('#guideSources option'), (option: any): string => option.value);
             else
-                me.guide.duration = 0;
+                this.guide.duration = 0;
 
-            me.update('guide', me.guide, guideUpdate, GuideSettingsValidator.filterPropertiesOnSend);
+            this.update('guide', this.guide, guideUpdate, GuideSettingsValidator.filterPropertiesOnSend);
         });
     }
 
     // Bereitet die Konfiguration für die Aktualisierung der Quellen vor
     private showScan(): void {
-        var me = this;
-
         // Oberflächenelemente
         var scanUpdate = $('#updateScan');
 
         // Speichern
-        scanUpdate.click(function (): void {
-            switch (SourceScanSettingsValidator.mode(me.scan)) {
-                case 'D': me.scan.interval = 0; break;
-                case 'M': me.scan.interval = -1; break;
+        scanUpdate.click(() => {
+            switch (SourceScanSettingsValidator.mode(this.scan)) {
+                case 'D': this.scan.interval = 0; break;
+                case 'M': this.scan.interval = -1; break;
                 case 'P': break;
             }
 
-            me.update('scan', me.scan, scanUpdate, SourceScanSettingsValidator.filterPropertiesOnSend);
+            this.update('scan', this.scan, scanUpdate, SourceScanSettingsValidator.filterPropertiesOnSend);
         });
     }
 
     // Bereitet die Konfiguration für die Nutzung der Geräteprofile vor
     private showDevices(): void {
-        var me = this;
-
         // Oberflächenelemente
         var deviceUpdate = $('#updateDevices');
         var devices = $('#selDefaultProfile');
 
-        $.each(me.devices.profiles, function (index: number, profile: VCRServer.ProfileContract): void {
-            devices.append(new Option(profile.name));
-        });
+        $.each(this.devices.profiles, (index: number, profile: VCRServer.ProfileContract) => devices.append(new Option(profile.name)));
 
         // Speichern
-        deviceUpdate.click(function (): void { me.update('devices', me.devices, deviceUpdate); });
+        deviceUpdate.click(() => this.update('devices', this.devices, deviceUpdate));
     }
 
     // Bereitet die Konfiguration sonstiger Einstellungen vor
     private showOther(): void {
-        var me = this;
-
         // Oberflächenelemente
         var otherUpdate = $('#updateOther');
 
         // Speichern
-        otherUpdate.click(function (): void {
-            var settings = me.other;
+        otherUpdate.click(() => {
+            var settings = this.other;
 
             switch (OtherSettingsValidator.hibernationMode(settings)) {
                 case 'OFF': settings.mayHibernate = false; break;
@@ -3419,26 +3391,20 @@ class adminPage extends Page implements IPage {
                 case 'S4': settings.mayHibernate = true; settings.useStandBy = false; break;
             }
 
-            me.update('other', settings, otherUpdate);
+            this.update('other', settings, otherUpdate);
         });
     }
 
     // Bereitet die Eingabe der Planungsregeln vor
     private showRules(): void {
-        var me = this;
-
         // Oberflächenelemente
         var rulesUpdate = $('#updateRules');
 
         // Speichern
-        rulesUpdate.click(function (): void {
-            me.update('rules', me.rules, rulesUpdate);
-        });
+        rulesUpdate.click(() => this.update('rules', this.rules, rulesUpdate));
     }
 
     onShow(): void {
-        var me = this;
-
         var navigator = $('#adminTabs');
         var options: JQueryUI.TabsOptions = {};
 
@@ -3458,36 +3424,34 @@ class adminPage extends Page implements IPage {
 
         // Oberfläche vorbereiten
         navigator.tabs(options).addClass('ui-tabs-vertical ui-helper-clearfix');
-        navigator.on('tabsactivate', (ev: JQueryEventObject) => {
-            window.location.hash = '#admin;' + arguments[1].newPanel.selector.substr(1);
-        });
+        navigator.on('tabsactivate', (ev: JQueryEventObject) => window.location.hash = '#admin;' + arguments[1].newPanel.selector.substr(1));
 
         // Oberfläche vorbereiten
         $('.editButtons').button();
 
         // Alle Bereiche vorbereiten
-        me.showDirectory();
-        me.showSecurity();
-        me.showDevices();
-        me.showOther();
-        me.showGuide();
-        me.showRules();
-        me.showScan();
+        this.showDirectory();
+        this.showSecurity();
+        this.showDevices();
+        this.showOther();
+        this.showGuide();
+        this.showRules();
+        this.showScan();
 
         // Besondere Teilaspekte
-        var profileValidator = new ProfileSettingsValidator(me.devices, $('#updateDevices'));
+        var profileValidator = new ProfileSettingsValidator(this.devices, $('#updateDevices'));
 
         // An die Oberfläche binden
-        JMSLib.Bindings.bind(new DirectorySettingsValidator(me.directory, $('#updateDirectory')), $('#directories'));
-        JMSLib.Bindings.bind(new GuideSettingsValidator(me.guide, $('#updateGuide'), $('#guideForm')), $('#guide'));
-        JMSLib.Bindings.bind(new SourceScanSettingsValidator(me.scan, $('#updateScan')), $('#sources'));
-        JMSLib.Bindings.bind(new OtherSettingsValidator(me.other, $('#updateOther')), $('#other'));
-        JMSLib.Bindings.bind(new SecuritySettingsValidator(me.security), $('#security'));
-        JMSLib.Bindings.bind(new ScheduleRulesValidator(me.rules), $('#rules'));
+        JMSLib.Bindings.bind(new DirectorySettingsValidator(this.directory, $('#updateDirectory')), $('#directories'));
+        JMSLib.Bindings.bind(new GuideSettingsValidator(this.guide, $('#updateGuide'), $('#guideForm')), $('#guide'));
+        JMSLib.Bindings.bind(new SourceScanSettingsValidator(this.scan, $('#updateScan')), $('#sources'));
+        JMSLib.Bindings.bind(new OtherSettingsValidator(this.other, $('#updateOther')), $('#other'));
+        JMSLib.Bindings.bind(new SecuritySettingsValidator(this.security), $('#security'));
+        JMSLib.Bindings.bind(new ScheduleRulesValidator(this.rules), $('#rules'));
         JMSLib.Bindings.bind(profileValidator, $('#devices'));
 
         // Besondere Teilaspekte
-        profileValidator.bindProfiles($('#deviceList'), me.deviceTemplate);
+        profileValidator.bindProfiles($('#deviceList'), this.deviceTemplate);
 
         // Oberfläche vorbereiten
         $('.' + JMSLib.CSSClass.hourSetting).button();
@@ -3508,11 +3472,9 @@ class currentPage extends Page implements IPage {
 
     // Führt eine vollständige Aktualisierung aus
     private reload(): void {
-        var me = this;
-
-        CurrentInfo.load(function (infos: CurrentInfo[]): void {
-            me.detailsManager.reset();
-            me.table.loadList(infos);
+        CurrentInfo.load((infos: CurrentInfo[]) => {
+            this.detailsManager.reset();
+            this.table.loadList(infos);
         })
     }
 
@@ -3652,13 +3614,12 @@ class editPage extends Page implements IPage {
     }
 
     onInitialize(): void {
-        var me = this;
-        var templatesLoaded = me.registerAsyncCall();
-        var directoriesLoaded = me.registerAsyncCall();
+        var templatesLoaded = this.registerAsyncCall();
+        var directoriesLoaded = this.registerAsyncCall();
 
         // Die Informationen, die wir gerade verändern
-        me.sourceSelections = new SourceSelectorLoader($('#selProfile'));
-        me.exceptionRowTemplate = JMSLib.HTMLTemplate.dynamicCreate($('#exceptionRows'), 'exceptionRow');
+        this.sourceSelections = new SourceSelectorLoader($('#selProfile'));
+        this.exceptionRowTemplate = JMSLib.HTMLTemplate.dynamicCreate($('#exceptionRows'), 'exceptionRow');
 
         // Auslesen der Kennung - für FireFox ist es nicht möglich, .hash direkt zu verwenden, da hierbei eine Decodierung durchgeführt wird
         var query = window.location.href.split("#")[1];
@@ -3668,7 +3629,7 @@ class editPage extends Page implements IPage {
         var epgIndex = jobScheduleId.indexOf(';epgid=');
         var epgId: string = '';
 
-        if (me.fromGuide = (epgIndex >= 0)) {
+        if (this.fromGuide = (epgIndex >= 0)) {
             epgId = '?epg=' + jobScheduleId.substr(epgIndex + 7);
             jobScheduleId = jobScheduleId.substr(0, epgIndex);
         }
@@ -3698,36 +3659,34 @@ class editPage extends Page implements IPage {
 
         // Daten zur Aufzeichnung laden
         if (hasId) {
-            var epgLoaded = me.registerAsyncCall();
+            var epgLoaded = this.registerAsyncCall();
 
-            VCRServer.createScheduleFromGuide(jobScheduleId, epgId).done(function (data: VCRServer.JobScheduleInfoContract): void { me.existingData = data; epgLoaded(); });
+            VCRServer.createScheduleFromGuide(jobScheduleId, epgId).done((data: VCRServer.JobScheduleInfoContract) => { this.existingData = data; epgLoaded(); });
         }
 
         // Liste der Geräteprofile laden
-        me.loadProfiles($('#selProfile'));
+        this.loadProfiles($('#selProfile'));
 
         // Liste der Verzeichnisse wählen
-        VCRServer.RecordingDirectoryCache.load().done(function (directories: string[]): void {
+        VCRServer.RecordingDirectoryCache.load().done((directories: string[]) => {
             var directoryList = $('#selDirectory');
 
-            $.each(directories, function (index: number, directory: string): void {
-                directoryList.append(new Option(directory));
-            });
+            $.each(directories, (index: number, directory: string) => directoryList.append(new Option(directory)));
 
             directoriesLoaded();
         });
 
         // Vorlage für die Auswahl der Quellen laden
-        me.sourceSelections.loadTemplates(function (): void {
+        this.sourceSelections.loadTemplates(() => {
             // In die Oberfläche einbinden
-            me.jobSources = me.sourceSelections.appendAfter($('#jobData').find('tbody').children().last());
-            me.scheduleSources = me.sourceSelections.appendAfter($('#scheduleData').find('tbody').children().first());
+            this.jobSources = this.sourceSelections.appendAfter($('#jobData').find('tbody').children().last());
+            this.scheduleSources = this.sourceSelections.appendAfter($('#scheduleData').find('tbody').children().first());
 
             templatesLoaded();
         });
 
         // Besondere Aktionen sobald die Benutzerkonfiguration verändert wurde
-        VCRServer.UserProfile.global.register(me.registerAsyncCall());
+        VCRServer.UserProfile.global.register(this.registerAsyncCall());
     }
 }
 
@@ -3757,9 +3716,7 @@ class guidePage extends Page implements IPage {
 
     // Klappt die Detailansicht auf oder zu
     private showDetails(guideItem: GuideItem, origin: any): void {
-        var me = this;
-
-        var view = me.details.toggle(guideItem, origin, 0);
+        var view = this.details.toggle(guideItem, origin, 0);
         if (view == null)
             return;
 
@@ -3768,15 +3725,13 @@ class guidePage extends Page implements IPage {
         var guideElement = view.find('#planRowProgramGuide');
 
         // Anzeigen
-        var details = JMSLib.HTMLTemplate.cloneAndApplyTemplate(guideItem, me.guideTemplate);
+        var details = JMSLib.HTMLTemplate.cloneAndApplyTemplate(guideItem, this.guideTemplate);
         details.find('#guideHeadline').addClass(JMSLib.CSSClass.invisible);
         details.find('#findInGuide').button();
 
         // Auswahlliste mit den Aufträgen füllen
         var jobSelector = view.find('#selJob');
-        $.each(me.jobs, function (index: number, job: VCRServer.ProfileJobInfoContract): void {
-            jobSelector.append(new Option(job.name, '*' + job.id));
-        });
+        $.each(this.jobs, (index: number, job: VCRServer.ProfileJobInfoContract) => jobSelector.append(new Option(job.name, '*' + job.id)));
 
         // Fertig aufbereitetes Element einsetzen
         guideElement.replaceWith(details);
@@ -3799,15 +3754,13 @@ class guidePage extends Page implements IPage {
 
     // Aktualisiert die Liste der Sendungen
     private refresh(): void {
-        var me = this;
-
         $('#addFavorite').button('option', 'disabled', GuideFilter.global.title == null);
 
-        GuideFilter.global.execute(function (items: GuideItem[]): void {
-            $.each(items, function (index: number, item: GuideItem): void { item.onShowDetails = function (target: GuideItem, origin: any): void { me.showDetails(target, origin); } });
+        GuideFilter.global.execute((items: GuideItem[]) => {
+            $.each(items, (index: number, item: GuideItem) => item.onShowDetails = (target: GuideItem, origin: any) => this.showDetails(target, origin));
 
-            me.details.reset();
-            me.guideTable.loadList(items);
+            this.details.reset();
+            this.guideTable.loadList(items);
 
             // Schauen wir mal, ob wir blättern können
             $('.firstButton').button('option', 'disabled', GuideFilter.global.index < 1);
@@ -3927,7 +3880,7 @@ class guidePage extends Page implements IPage {
         table.loadList(queries);
 
         // Sobald die Zähler zur Verfügung stehen zweigen wir nur neu an
-        SavedGuideQuery.onCountLoaded = function (query: SavedGuideQuery): void { table.loadList(queries); };
+        SavedGuideQuery.onCountLoaded = (query: SavedGuideQuery) => table.loadList(queries);
 
         // Beim Löschen muss die Änderung gespeichert und die Anzeige aktualisiert werden
         SavedGuideQuery.onDeleted = (query: SavedGuideQuery) => {
@@ -3946,7 +3899,7 @@ class guidePage extends Page implements IPage {
         // Zum Hinzufügen
         var add = $('#addFavorite');
         add.button({ disabled: GuideFilter.global.title == null });
-        add.click(function (): void {
+        add.click(() => {
             if (GuideFilter.global.title == null)
                 return;
 
@@ -3992,9 +3945,7 @@ class guidePage extends Page implements IPage {
         if (this.profiles.length > 0) {
             // Die Auswahlliste der Geräte füllen
             var selDevice = $('#selDevice');
-            $.each(this.profiles, function (index: number, profile: VCRServer.ProfileInfoContract) {
-                selDevice.append(new Option(profile.name));
-            });
+            $.each(this.profiles, (index: number, profile: VCRServer.ProfileInfoContract) => selDevice.append(new Option(profile.name)));
 
             // Vorauswahl aus dem Filter übernehmen
             var device = GuideFilter.global.device;
@@ -4002,8 +3953,7 @@ class guidePage extends Page implements IPage {
                 selDevice.val(device);
 
             // Von nun an auf Änderungen überwachen
-            var me = this;
-            selDevice.change(function () { me.deviceChanged(false); });
+            selDevice.change(() => this.deviceChanged(false));
 
             // Und eventuell verändert zurück übertragen
             GuideFilter.global.changeDevice(selDevice.val());
@@ -4029,13 +3979,13 @@ class guidePage extends Page implements IPage {
 
             // Sonstige Änderungen überwachen
             var selSource = $('#selSource');
-            selSource.change(function (ev: JQueryEventObject): void { GuideFilter.global.changeStation(selSource.val()); });
-            $('.guideHours a').click(function (ev: JQueryEventObject): void { me.hourChanged(ev); });
-            $('.firstButton').click(function (): void { GuideFilter.global.firstPage(); });
-            $('.prevButton').click(function (): void { GuideFilter.global.prevPage(); });
-            $('.nextButton').click(function (): void { GuideFilter.global.nextPage(); });
-            $('#favorites').click(function (): void { me.toggleFavorites(this); });
-            $('#resetAll').click(function (): void {
+            selSource.change((ev: JQueryEventObject) => GuideFilter.global.changeStation(selSource.val()));
+            $('.guideHours a').click((ev: JQueryEventObject) => this.hourChanged(ev));
+            $('.firstButton').click(() => GuideFilter.global.firstPage());
+            $('.prevButton').click(() => GuideFilter.global.prevPage());
+            $('.nextButton').click(() => GuideFilter.global.nextPage());
+            $('#favorites').click((origin: Event) => this.toggleFavorites(origin.currentTarget));
+            $('#resetAll').click(() => {
                 $('#withContent').prop('checked', true);
                 $('#withContent').button('refresh');
                 searchText.val(null);
@@ -4045,40 +3995,39 @@ class guidePage extends Page implements IPage {
             });
 
             // Von nun an auf den Filter reagieren
-            GuideFilter.global.onChange = function (): void { me.refresh(); };
+            GuideFilter.global.onChange = () => this.refresh();
 
             // Erste Aktualisierung
-            me.deviceChanged(false);
+            this.deviceChanged(false);
         }
     }
 
     onInitialize() {
-        var me = this;
-        var profilesLoaded = me.registerAsyncCall();
-        var settingsLoaded = me.registerAsyncCall();
-        var guideLoaded = me.registerAsyncCall();
+        var profilesLoaded = this.registerAsyncCall();
+        var settingsLoaded = this.registerAsyncCall();
+        var guideLoaded = this.registerAsyncCall();
 
         // Vorlagen verbinden
-        me.guideTable = JMSLib.HTMLTemplate.dynamicCreate($('#guideTable'), 'guideRow');
-        me.details = new JMSLib.DetailManager(2, 'guideDetails');
-        me.favorites = new JMSLib.DetailManager(2, 'favorites');
+        this.guideTable = JMSLib.HTMLTemplate.dynamicCreate($('#guideTable'), 'guideRow');
+        this.details = new JMSLib.DetailManager(2, 'guideDetails');
+        this.favorites = new JMSLib.DetailManager(2, 'favorites');
 
         // Liste der Geräteprofile laden
-        VCRServer.ProfileCache.load().done(function (data: VCRServer.ProfileInfoContract[]): void {
-            me.profiles = data;
+        VCRServer.ProfileCache.load().done((data: VCRServer.ProfileInfoContract[]) => {
+            this.profiles = data;
 
             profilesLoaded();
         });
 
         // Zusätzliche Vorlagen laden
-        JMSLib.TemplateLoader.load('currentGuide').done(function (template: string): void {
-            me.guideTemplate = $(template).find('#innerTemplate');
+        JMSLib.TemplateLoader.load('currentGuide').done((template: string) => {
+            this.guideTemplate = $(template).find('#innerTemplate');
 
             guideLoaded();
         });
 
         // Benutzereinstellungen abwarten
-        VCRServer.UserProfile.global.register(function (): void { GuideFilter.global.userProfileChanged(); settingsLoaded(); });
+        VCRServer.UserProfile.global.register(() => { GuideFilter.global.userProfileChanged(); settingsLoaded(); });
     }
 }
 
@@ -4095,28 +4044,27 @@ class jobsPage extends Page implements IPage {
     private isActive: JQuery;
 
     onInitialize() {
-        var me = this;
-        var loaded = me.registerAsyncCall();
+        var loaded = this.registerAsyncCall();
 
         // Aus der Vorlage erzeugen
-        me.isActive = $('#selActive');
-        me.table = JMSLib.HTMLTemplate.dynamicCreate($('#jobTable'), 'jobRow');
-        me.table.filter = function (row: IInfoRow): boolean { return row.isActive == me.isActive.is(':checked'); };
+        this.isActive = $('#selActive');
+        this.table = JMSLib.HTMLTemplate.dynamicCreate($('#jobTable'), 'jobRow');
+        this.table.filter = (row: IInfoRow) => row.isActive == this.isActive.is(':checked');
 
         // Voreingestellte Auswahl setzen - das müssen wir machen, bevor wir die Darstellung umstellen
         var showArchive = (window.location.hash.indexOf(';archive') >= 0);
         if (showArchive)
             $('#selArchive').prop('checked', true);
         else
-            me.isActive.prop('checked', true);
+            this.isActive.prop('checked', true);
 
         // Auswahl aufbereiten
         var filter = $('#filter');
         filter.buttonset();
-        filter.change(function (): void { me.table.refresh(); });
+        filter.change(() => this.table.refresh());
 
         // Ladevorgang ausführen
-        InfoJob.load(function (rows: IInfoRow[]): void { me.table.loadList(rows); loaded(); });
+        InfoJob.load((rows: IInfoRow[]) => { this.table.loadList(rows); loaded(); });
     }
 }
 
@@ -4155,22 +4103,21 @@ class logPage extends Page implements IPage {
 
     // Fordert neue Protokolleinträge an
     private reload(whenLoaded: () => void = null): void {
-        var me = this;
         var profile = $('#selProfile').val();
         var endDay = new Date($('#selDate').val());
         var startDay = new Date(endDay.getTime() - 7 * 86400000);
 
-        VCRServer.getProtocolEntries(profile, startDay, endDay).done(function (entries: VCRServer.ProtocolEntryContract[]): void {
+        VCRServer.getProtocolEntries(profile, startDay, endDay).done((entries: VCRServer.ProtocolEntryContract[]) => {
             // Wir zeigen den neuesten oben 
             entries.reverse();
 
-            var models = $.map(entries, function (entry: VCRServer.ProtocolEntryContract): ProtocolEntry {
+            var models = $.map(entries, (entry: VCRServer.ProtocolEntryContract) => {
                 var model = new ProtocolEntry(entry);
 
                 // Detailanzeige vorbereiten
-                model.showDetails = function (): void {
+                model.showDetails = (origin: Event) => {
                     // Das war ein Ausblenden der Detailanzeige
-                    var view = me.detailsManager.toggle(model, this, 0);
+                    var view = this.detailsManager.toggle(model, origin.currentTarget, 0);
                     if (view == null)
                         return;
 
@@ -4182,9 +4129,7 @@ class logPage extends Page implements IPage {
                     if (files.length < 1)
                         fileUI.parent().remove();
                     else
-                        $.each(files, function (index: number, url: string): void {
-                            fileUI.append('<a href="' + url + '"><img src="ui/images/recording.png" class="linkImage"/></img>');
-                        });
+                        $.each(files, (index: number, url: string) => fileUI.append('<a href="' + url + '"><img src="ui/images/recording.png" class="linkImage"/></img>'));
 
                     // Es gibt keine Primärdatei, deren Namen wir anzeigen könnten
                     if ((model.primaryFile == null) || (model.primaryFile.length < 1))
@@ -4195,8 +4140,8 @@ class logPage extends Page implements IPage {
             });
 
             // Neu laden
-            me.detailsManager.reset();
-            me.rowTemplate.loadList(models);
+            this.detailsManager.reset();
+            this.rowTemplate.loadList(models);
 
             // Fertig - beim Starten wartet jemand auf uns
             if (whenLoaded != null)
@@ -4205,17 +4150,16 @@ class logPage extends Page implements IPage {
     }
 
     onInitialize(): void {
-        var me = this;
-        var profilesLoaded = me.registerAsyncCall();
+        var profilesLoaded = this.registerAsyncCall();
         var rawNow = new Date($.now());
         var dayList = $('#selDate');
 
         // Referenz setzen
-        me.referenceDay = new Date(Date.UTC(rawNow.getFullYear(), rawNow.getMonth(), rawNow.getDate()));
+        this.referenceDay = new Date(Date.UTC(rawNow.getFullYear(), rawNow.getMonth(), rawNow.getDate()));
 
         // Auswahlliste füllen
         for (var i = 0; i < 10; i++) {
-            var curDay = new Date(me.referenceDay.getTime() - 7 * i * 86400000);
+            var curDay = new Date(this.referenceDay.getTime() - 7 * i * 86400000);
             var curMonth = 1 + curDay.getUTCMonth();
             var curDate = curDay.getUTCDate();
 
@@ -4226,29 +4170,27 @@ class logPage extends Page implements IPage {
         dayList.change(() => this.reload());
 
         // Vorlagen vorbereiten
-        me.rowTemplate = JMSLib.HTMLTemplate.dynamicCreate($('#logRows'), 'logRow');
-        me.rowTemplate.filter = function (item: ProtocolEntry): boolean { return me.filter(item); };
-        me.detailsManager = new JMSLib.DetailManager(2, 'logRowDetails');
+        this.rowTemplate = JMSLib.HTMLTemplate.dynamicCreate($('#logRows'), 'logRow');
+        this.rowTemplate.filter = (item: ProtocolEntry) => this.filter(item);
+        this.detailsManager = new JMSLib.DetailManager(2, 'logRowDetails');
 
         // Auswahl vorbereiten
         var filter = $('input[type="checkbox"]');
         filter.button();
-        filter.click(function (): void { me.refresh() });
+        filter.click(() => this.refresh());
 
         // Geräte ermitteln
-        VCRServer.ProfileCache.load().done(function (profiles: VCRServer.ProfileInfoContract[]): void {
+        VCRServer.ProfileCache.load().done((profiles: VCRServer.ProfileInfoContract[]) => {
             var list = $('#selProfile');
 
             // Alle Namen eintragen
-            $.each(profiles, function (index: number, profile: VCRServer.ProfileInfoContract): void {
-                list.append(new Option(profile.name));
-            });
+            $.each(profiles, (index: number, profile: VCRServer.ProfileInfoContract) => list.append(new Option(profile.name)));
 
             // Auf Änderungen der Liste reagieren
             list.change(() => this.reload());
 
             // Und erstmalig laden - erst danach zeigen wir dem Anwender etwas
-            me.reload(me.registerAsyncCall());
+            this.reload(this.registerAsyncCall());
 
             profilesLoaded();
         });
