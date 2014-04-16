@@ -55,6 +55,8 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ControllerUnitTests.cs" />
+    <Compile Include="FeedProviderMock.cs" />
+    <Compile Include="FeedSetUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Feed.cs" />
+    <Compile Include="FeedSet.cs" />
+    <Compile Include="IFeedProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TvController.cs" />
   </ItemGroup>
