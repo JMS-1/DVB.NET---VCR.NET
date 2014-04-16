@@ -29,10 +29,22 @@ namespace JMS.TV.Core
     internal class Feed<TSourceType> : Feed
     {
         /// <summary>
+        /// Die zugehörige Quelle.
+        /// </summary>
+        public TSourceType Source { get; private set; }
+
+        /// <summary>
+        /// Beschreibt, wie viele Verbraucher es für diesen Sender gibt.
+        /// </summary>
+        public int UsageCounter { get; set; }
+
+        /// <summary>
         /// Erstellt eine neue Beschreibung.
         /// </summary>
-        public Feed()
+        /// <param name="source">Die zugehörige Quelle.</param>
+        public Feed( TSourceType source )
         {
+            Source = source;
         }
     }
 }

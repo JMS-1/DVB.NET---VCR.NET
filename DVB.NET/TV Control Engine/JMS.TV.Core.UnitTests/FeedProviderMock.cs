@@ -31,7 +31,26 @@ namespace JMS.TV.Core.UnitTests
         /// <summary>
         /// Meldet die maximale Anzahl von gleichzeitig empfangbaren Quellgruppen.
         /// </summary>
-        public int SourceGroupLimit { get; set; }
+        public int NumberOfDevices { get; set; }
+
+        /// <summary>
+        /// Ein Gerät wird nicht mehr benötigt.
+        /// </summary>
+        /// <param name="device">Die 0-basierte laufenden Nummer des Gerätes.</param>
+        public void Stop( int device )
+        {
+        }
+
+
+        /// <summary>
+        /// Aktiviert ein Gerät.
+        /// </summary>
+        /// <param name="device">Die 0-basierte laufende Nummer des Gerätes.</param>
+        /// <param name="source">Die Quelle, die angesteuert werden soll.</param>
+        public string[] Start( int device, string source )
+        {
+            return (m_sources.SingleOrDefault( group => group.Contains( source ) ) ?? Enumerable.Empty<string>()).ToArray();
+        }
 
         /// <summary>
         /// Erstellt eine neue Zugriffssimulation.
