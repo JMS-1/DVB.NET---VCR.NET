@@ -18,7 +18,7 @@ namespace JMS.TV.Core.UnitTests
         public void FeedSetCanNotBeCreatedWithoutAProvider()
         {
             // Create will fail
-            FeedSet.Create( null );
+            FeedSet.Create( default( FeedProviderMock ) );
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace JMS.TV.Core.UnitTests
             var cut = FeedSet.Create( FeedProviderMock.Default );
 
             // Check it
-            Assert.IsNotNull( cut.Primary, "primary already set" );
+            Assert.IsNull( cut.Primary, "primary already set" );
         }
     }
 }

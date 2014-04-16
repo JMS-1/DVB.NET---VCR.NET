@@ -10,12 +10,14 @@ namespace JMS.TV.Core
     /// <summary>
     /// Beschreibt alle Sender, die zurzeit empfangen werden. 
     /// </summary>
-    public class FeedSet
+    public abstract class FeedSet
     {
         /// <summary>
-        /// Verwaltete alle verfügbaren Sender.
+        /// Initialisiert eine Senderverwaltung.
         /// </summary>
-        private readonly IFeedProvider m_provider;
+        internal FeedSet()
+        {
+        }
 
         /// <summary>
         /// Meldet den primären Sender, zu dem zum Beispiel auch Ton und Videotext
@@ -27,23 +29,36 @@ namespace JMS.TV.Core
         /// Erstellt eine neue Beschreibung.
         /// </summary>
         /// <param name="provider">Die Verwaltung aller Sender.</param>
-        private FeedSet( IFeedProvider provider )
-        {
-            m_provider = provider;
-        }
-
-        /// <summary>
-        /// Erstellt eine neue Beschreibung.
-        /// </summary>
-        /// <param name="provider">Die Verwaltung aller Sender.</param>
-        public static FeedSet Create( IFeedProvider provider )
+        /// <typeparam name="TSourceType">Die Art der Quellen.</typeparam>
+        public static FeedSet Create<TSourceType>( IFeedProvider<TSourceType> provider )
         {
             // Validate
             if (ReferenceEquals( provider, null ))
                 throw new ArgumentException( "keine Senderverwaltung angegeben", "provider" );
 
             // Forward
-            return new FeedSet( provider );
+            return new FeedSet<TSourceType>( provider );
+        }
+    }
+
+    /// <summary>
+    /// Beschreibt alle Sender, die zurzeit empfangen werden. 
+    /// </summary>
+    /// <typeparam name="TSourceType">Die Art der Quellen.</typeparam>
+    public class FeedSet<TSourceType> : FeedSet
+    {
+        /// <summary>
+        /// Verwaltete alle verfügbaren Sender.
+        /// </summary>
+        private readonly IFeedProvider<TSourceType> m_provider;
+
+        /// <summary>
+        /// Erstellt eine neue Beschreibung.
+        /// </summary>
+        /// <param name="provider">Die Verwaltung aller Sender.</param>
+        internal FeedSet( IFeedProvider<TSourceType> provider )
+        {
+            m_provider = provider;
         }
     }
 }

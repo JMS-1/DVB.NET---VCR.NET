@@ -9,12 +9,12 @@ namespace JMS.TV.Core.UnitTests
     /// <summary>
     /// Simuliert den Zugriff auf Quellen.
     /// </summary>
-    public class FeedProviderMock : IFeedProvider, IEnumerable<string>
+    public class FeedProviderMock : IFeedProvider<string>, IEnumerable<string>
     {
         /// <summary>
         /// Meldet die für die meisten Tests geeignete Standardverwaltung.
         /// </summary>
-        public static IFeedProvider Default =
+        public static IFeedProvider<string> Default =
             new FeedProviderMock 
             { 
                 { "ARD", "WDR", "MDR" },
