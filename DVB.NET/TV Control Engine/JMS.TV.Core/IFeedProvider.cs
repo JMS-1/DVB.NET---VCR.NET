@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 
 namespace JMS.TV.Core
 {
@@ -13,5 +8,9 @@ namespace JMS.TV.Core
     /// <typeparam name="TSourceType">Die Art der Quellen.</typeparam>
     public interface IFeedProvider<TSourceType>
     {
+        /// <summary>
+        /// Meldet die maximale Anzahl von gleichzeitig empfangbaren Quellgruppen.
+        /// </summary>
+        int SourceGroupLimit { get; }
     }
 }

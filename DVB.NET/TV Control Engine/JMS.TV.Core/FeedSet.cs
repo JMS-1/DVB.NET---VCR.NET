@@ -58,14 +58,51 @@ namespace JMS.TV.Core
     internal class FeedSet<TSourceType> : FeedSet
     {
         /// <summary>
+        /// Verwaltete ein einzelnes Gerät.
+        /// </summary>
+        private class Device
+        {
+            /// <summary>
+            /// Verwaltet alle verfügbaren Sender.
+            /// </summary>
+            private readonly IFeedProvider<TSourceType> m_provider;
+
+            /// <summary>
+            /// Die laufende Nummer des Geräte.
+            /// </summary>
+            private readonly int m_index;
+
+            /// <summary>
+            /// Alle gerade verfügbaren Sender.
+            /// </summary>
+            private volatile List<Feed<TSourceType>> m_feeds = null;
+
+            /// <summary>
+            /// Erstellt ein neues Gerät.
+            /// </summary>
+            /// <param name="index">Die laufende Nummer des Gerätes.</param>
+            /// <param name="provider">Die Verwaltung aller Quellen.</param>
+            public Device( int index, IFeedProvider<TSourceType> provider )
+            {
+                m_provider = provider;
+                m_index = index;
+            }
+
+            /// <summary>
+            /// Meldet alle gerade verfügbaren Sender.
+            /// </summary>
+            public IEnumerable<Feed<TSourceType>> Feeds { get { return m_feeds ?? Enumerable.Empty<Feed<TSourceType>>(); } }
+        }
+
+        /// <summary>
         /// Verwaltet alle verfügbaren Sender.
         /// </summary>
         private readonly IFeedProvider<TSourceType> m_provider;
 
         /// <summary>
-        /// Alle in dieser Verwaltung bekannten Sender.
+        /// Alle zur Verfügung stehenden Geräte.
         /// </summary>
-        private readonly List<Feed<TSourceType>> m_feeds = new List<Feed<TSourceType>>();
+        private readonly Device[] m_devices;
 
         /// <summary>
         /// Erstellt eine neue Beschreibung.
@@ -73,6 +110,7 @@ namespace JMS.TV.Core
         /// <param name="provider">Die Verwaltung aller Sender.</param>
         public FeedSet( IFeedProvider<TSourceType> provider )
         {
+            m_devices = Enumerable.Range( 0, provider.SourceGroupLimit ).Select( i => new Device( i, provider ) ).ToArray();
             m_provider = provider;
         }
 
@@ -82,7 +120,7 @@ namespace JMS.TV.Core
         /// <returns>Die Liste der Sender.</returns>
         public override IEnumerator<Feed> GetEnumerator()
         {
-            return m_feeds.GetEnumerator();
+            return m_devices.SelectMany( device => device.Feeds ).GetEnumerator();
         }
     }
 }

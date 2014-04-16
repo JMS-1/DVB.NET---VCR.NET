@@ -29,6 +29,11 @@ namespace JMS.TV.Core.UnitTests
         private readonly List<HashSet<string>> m_sources = new List<HashSet<string>>();
 
         /// <summary>
+        /// Meldet die maximale Anzahl von gleichzeitig empfangbaren Quellgruppen.
+        /// </summary>
+        public int SourceGroupLimit { get; set; }
+
+        /// <summary>
         /// Erstellt eine neue Zugriffssimulation.
         /// </summary>
         private FeedProviderMock()
