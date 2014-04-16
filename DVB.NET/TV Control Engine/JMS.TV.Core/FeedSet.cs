@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace JMS.TV.Core
     /// <summary>
     /// Beschreibt alle Sender, die zurzeit empfangen werden. 
     /// </summary>
-    public abstract class FeedSet
+    public abstract class FeedSet : IEnumerable<Feed>
     {
         /// <summary>
         /// Initialisiert eine Senderverwaltung.
@@ -18,12 +19,6 @@ namespace JMS.TV.Core
         internal FeedSet()
         {
         }
-
-        /// <summary>
-        /// Meldet den primären Sender, zu dem zum Beispiel auch Ton und Videotext
-        /// verfügbar sind.
-        /// </summary>
-        public Feed Primary { get; private set; }
 
         /// <summary>
         /// Erstellt eine neue Beschreibung.
@@ -39,26 +34,55 @@ namespace JMS.TV.Core
             // Forward
             return new FeedSet<TSourceType>( provider );
         }
+
+        /// <summary>
+        /// Meldet alle über diese Verwaltung verfügbaren Sender.
+        /// </summary>
+        /// <returns>Die Liste der Sender.</returns>
+        public abstract IEnumerator<Feed> GetEnumerator();
+
+        /// <summary>
+        /// Meldet alle über diese Verwaltung verfügbaren Sender.
+        /// </summary>
+        /// <returns>Die Liste der Sender.</returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 
     /// <summary>
     /// Beschreibt alle Sender, die zurzeit empfangen werden. 
     /// </summary>
     /// <typeparam name="TSourceType">Die Art der Quellen.</typeparam>
-    public class FeedSet<TSourceType> : FeedSet
+    internal class FeedSet<TSourceType> : FeedSet
     {
         /// <summary>
-        /// Verwaltete alle verfügbaren Sender.
+        /// Verwaltet alle verfügbaren Sender.
         /// </summary>
         private readonly IFeedProvider<TSourceType> m_provider;
+
+        /// <summary>
+        /// Alle in dieser Verwaltung bekannten Sender.
+        /// </summary>
+        private readonly List<Feed<TSourceType>> m_feeds = new List<Feed<TSourceType>>();
 
         /// <summary>
         /// Erstellt eine neue Beschreibung.
         /// </summary>
         /// <param name="provider">Die Verwaltung aller Sender.</param>
-        internal FeedSet( IFeedProvider<TSourceType> provider )
+        public FeedSet( IFeedProvider<TSourceType> provider )
         {
             m_provider = provider;
+        }
+
+        /// <summary>
+        /// Meldet alle über diese Verwaltung verfügbaren Sender.
+        /// </summary>
+        /// <returns>Die Liste der Sender.</returns>
+        public override IEnumerator<Feed> GetEnumerator()
+        {
+            return m_feeds.GetEnumerator();
         }
     }
 }

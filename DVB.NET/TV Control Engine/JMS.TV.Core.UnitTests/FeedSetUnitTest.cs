@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 
@@ -31,7 +32,7 @@ namespace JMS.TV.Core.UnitTests
             var cut = FeedSet.Create( FeedProviderMock.Default );
 
             // Check it
-            Assert.IsNull( cut.Primary, "primary already set" );
+            Assert.IsFalse( cut.Any(), "feeds found" );
         }
     }
 }
