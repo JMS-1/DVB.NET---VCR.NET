@@ -14,6 +14,11 @@ namespace JMS.TV.Core
     public abstract class Feed
     {
         /// <summary>
+        /// Gesetzt, wenn dieser Sender gerade vollständig angezeigt wird - Bild, Ton und Videotext.
+        /// </summary>
+        public bool IsPrimaryView { get; set; }
+
+        /// <summary>
         /// Erstellt die Beschreibung eines Senders.
         /// </summary>
         internal Feed()
@@ -32,11 +37,6 @@ namespace JMS.TV.Core
         /// Die zugehörige Quelle.
         /// </summary>
         public TSourceType Source { get; private set; }
-
-        /// <summary>
-        /// Beschreibt, wie viele Verbraucher es für diesen Sender gibt.
-        /// </summary>
-        public int UsageCounter { get; set; }
 
         /// <summary>
         /// Erstellt eine neue Beschreibung.

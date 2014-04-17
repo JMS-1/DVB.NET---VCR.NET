@@ -49,6 +49,31 @@ namespace JMS.TV.Core
         {
             return GetEnumerator();
         }
+
+        /// <summary>
+        /// Verändert die primäre Anzeige.
+        /// </summary>
+        /// <param name="feed">Die neue primäre Anzeige.</param>
+        /// <returns>Gesetzt, wenn die Änderung erfolgreich war.</returns>
+        public bool TryChangePrimaryView( Feed feed )
+        {
+            // Already the one
+            if (feed.IsPrimaryView)
+                return true;
+
+            // Prepare the change
+            using (var tx = new FeedTransaction())
+            {
+                // Locate the current primary view
+                var primary = this.SingleOrDefault( f => f.IsPrimaryView );
+                if (primary != null)
+                    tx.ChangePrimary( primary, false );
+
+
+                // Failed
+                return false;
+            }
+        }
     }
 
     /// <summary>
