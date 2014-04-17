@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 
 namespace JMS.TV.Core.UnitTests
@@ -14,14 +15,20 @@ namespace JMS.TV.Core.UnitTests
         /// <summary>
         /// Meldet die für die meisten Tests geeignete Standardverwaltung.
         /// </summary>
-        public static IFeedProvider<string> Default =
-            new FeedProviderMock 
-            { 
-                { "ARD", "WDR", "MDR" },
-                { "ZDF", "KIKA" },
-                { "RTL", "VOX" },
-                { "Pro7", "SAT1" },
-            };
+        public static IFeedProvider<string> Default
+        {
+            get
+            {
+                return
+                    new FeedProviderMock( 1 )
+                    { 
+                        { "ARD", "WDR", "MDR" },
+                        { "ZDF", "KIKA" },
+                        { "RTL", "VOX" },
+                        { "Pro7", "SAT1" },
+                    };
+            }
+        }
 
         /// <summary>
         /// Alle Quellen.
@@ -29,34 +36,80 @@ namespace JMS.TV.Core.UnitTests
         private readonly List<HashSet<string>> m_sources = new List<HashSet<string>>();
 
         /// <summary>
-        /// Meldet die maximale Anzahl von gleichzeitig empfangbaren Quellgruppen.
+        /// Alle Geräte samt deren Belegung.
         /// </summary>
-        public int NumberOfDevices { get; set; }
+        private HashSet<string>[] m_devices = { };
 
         /// <summary>
-        /// Ein Gerät wird nicht mehr benötigt.
+        /// Meldet alle Geräte.
         /// </summary>
-        /// <param name="device">Die 0-basierte laufenden Nummer des Gerätes.</param>
-        public void Stop( int device )
+        public ICollection<IEnumerable<string>> Devices { get { return m_devices; } }
+
+        /// <summary>
+        /// Meldet die Anzahl der Geräte.
+        /// </summary>
+        int IFeedProvider<string>.NumberOfDevices { get { return m_devices.Length; } }
+
+        /// <summary>
+        /// Reserviert ein Gerät.
+        /// </summary>
+        /// <param name="index">Die 0-basierte laufende Nummer des gewünschten Gerätes.</param>
+        void IFeedProvider<string>.AllocateDevice( int index )
         {
+            // Validate
+            Assert.IsTrue( (index >= 0) && (index < m_devices.Length), "out of range" );
+            Assert.IsNull( m_devices[index], "already allocated" );
+
+            // Allocate
+            m_devices[index] = new HashSet<string>( StringComparer.InvariantCultureIgnoreCase );
         }
 
+        /// <summary>
+        /// Gibt ein Gerät wieder frei.
+        /// </summary>
+        /// <param name="index">Die 0-basierte laufende Nummer des gewünschten Gerätes.</param>
+        void IFeedProvider<string>.ReleaseDevice( int index )
+        {
+            // Validate
+            Assert.IsTrue( (index >= 0) && (index < m_devices.Length), "out of range" );
+            Assert.IsNotNull( m_devices[index], "not allocated" );
+
+            // Deallocate
+            m_devices[index] = null;
+        }
 
         /// <summary>
-        /// Aktiviert ein Gerät.
+        /// Stellt sicher, dass ein Geräte eine bestimmte Quelle empfängt.
         /// </summary>
-        /// <param name="device">Die 0-basierte laufende Nummer des Gerätes.</param>
-        /// <param name="source">Die Quelle, die angesteuert werden soll.</param>
-        public string[] Start( int device, string source )
+        /// <param name="index">Die laufende Nummer des Gerätes.</param>
+        /// <param name="source">Die geforderte Quelle.</param>
+        /// <returns>Alle Quellen, die nun ohne Umschaltung von diesem gerät empfangen werden können.</returns>
+        string[] IFeedProvider<string>.Activate( int index, string source )
         {
-            return (m_sources.SingleOrDefault( group => group.Contains( source ) ) ?? Enumerable.Empty<string>()).ToArray();
+            // Validate
+            Assert.IsTrue( (index >= 0) && (index < m_devices.Length), "out of range" );
+            Assert.IsNotNull( m_devices[index], "not allocated" );
+
+            // Find the source map
+            var group = m_sources.SingleOrDefault( g => g.Contains( source ) );
+
+            // Validate
+            Assert.IsNotNull( group, "no such source" );
+
+            // Remember
+            m_devices[index] = group;
+
+            // Report
+            return group.ToArray();
         }
 
         /// <summary>
         /// Erstellt eine neue Zugriffssimulation.
         /// </summary>
-        private FeedProviderMock()
+        /// <param name="numberOfDevices">Die Anzahl der unterstützten Geräte.</param>
+        private FeedProviderMock( int numberOfDevices )
         {
+            m_devices = new HashSet<string>[numberOfDevices];
         }
 
         /// <summary>

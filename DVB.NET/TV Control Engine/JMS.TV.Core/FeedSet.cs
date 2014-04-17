@@ -92,67 +92,6 @@ namespace JMS.TV.Core
             /// Meldet alle gerade verfügbaren Sender.
             /// </summary>
             public IEnumerable<Feed<TSourceType>> Feeds { get { return m_feeds ?? Enumerable.Empty<Feed<TSourceType>>(); } }
-
-            /// <summary>
-            /// Gesetzt, wenn das Gerät nicht in Benutzung ist.
-            /// </summary>
-            public bool IsIdle { get { return Feeds.All( feed => feed.UsageCounter < 1 ); } }
-
-            /// <summary>
-            /// Ermittelt eine einzelne Quelle.
-            /// </summary>
-            /// <param name="source">Die gewünschte Quelle.</param>
-            /// <returns>Der zugehörige Sender.</returns>
-            private Feed<TSourceType> GetFeed( TSourceType source )
-            {
-                return Feeds.SingleOrDefault( feed => ReferenceEquals( feed.Source, source ) );
-            }
-
-            /// <summary>
-            /// Beginnt die Nutzung einer Quelle.
-            /// </summary>
-            /// <param name="source">Die gewünschte Quelle.</param>
-            public void Start( TSourceType source )
-            {
-                // Must start
-                if (m_feeds == null)
-                {
-                    // Attach hardware
-                    var sources = m_provider.Start( m_index, source );
-
-                    // Remember all
-                    m_feeds = sources.Select( s => new Feed<TSourceType>( s ) ).ToArray();
-                }
-
-                // Remember
-                GetFeed( source ).UsageCounter += 1;
-            }
-
-            /// <summary>
-            /// Beendet die Nutzung einer Quelle.
-            /// </summary>
-            /// <param name="source">Die betroffene Quelle.</param>
-            public void Stop( TSourceType source )
-            {
-                // Count self
-                GetFeed( source ).UsageCounter -= 1;
-            }
-
-            /// <summary>
-            /// Prüft, ob das zugehörige Gerät beendet werden kann.
-            /// </summary>
-            public void TestIdle()
-            {
-                // Check all
-                if (!IsIdle)
-                    return;
-
-                // Forget all
-                m_feeds = null;
-
-                // Release hardware
-                m_provider.Stop( m_index );
-            }
         }
 
         /// <summary>

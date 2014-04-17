@@ -14,16 +14,23 @@ namespace JMS.TV.Core
         int NumberOfDevices { get; }
 
         /// <summary>
-        /// Ein Gerät wird nicht mehr benötigt.
+        /// Reserviert ein Gerät.
         /// </summary>
-        /// <param name="device">Die 0-basierte laufenden Nummer des Gerätes.</param>
-        void Stop( int device );
+        /// <param name="index">Die 0-basierte laufende Nummer des gewünschten Gerätes.</param>
+        void AllocateDevice( int index );
 
         /// <summary>
-        /// Aktiviert ein Gerät.
+        /// Gibt ein Gerät wieder frei.
         /// </summary>
-        /// <param name="device">Die 0-basierte laufende Nummer des Gerätes.</param>
-        /// <param name="source">Die Quelle, die angesteuert werden soll.</param>
-        TSourceType[] Start( int device, TSourceType source );
+        /// <param name="index">Die 0-basierte laufende Nummer des gewünschten Gerätes.</param>
+        void ReleaseDevice( int index );
+
+        /// <summary>
+        /// Stellt sicher, dass ein Geräte eine bestimmte Quelle empfängt.
+        /// </summary>
+        /// <param name="index">Die laufende Nummer des Gerätes.</param>
+        /// <param name="source">Die geforderte Quelle.</param>
+        /// <returns>Alle Quellen, die nun ohne Umschaltung von diesem gerät empfangen werden können.</returns>
+        TSourceType[] Activate( int index, TSourceType source );
     }
 }
