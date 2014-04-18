@@ -223,5 +223,23 @@ namespace JMS.TV.Core.UnitTests
             Assert.AreSame( cut.FindFeed( "VOX" ), cut.PrimaryView, "primary" );
             Assert.AreSame( cut.FindFeed( "RTL" ), cut.SecondaryViews.Single(), "secondary" );
         }
+
+        /// <summary>
+        /// Ein Gerät, das nicht mehr in Benutzung ist, wird freigegeben.
+        /// </summary>
+        [TestMethod]
+        public void WillReleaseDeviceWhenNoLongerUsed()
+        {
+            // Create component under test
+            var provider = FeedProviderMock.CreateDefault();
+            var cut = FeedSet.Create( provider );
+
+            // Process
+            Assert.IsTrue( cut.TryChangeSecondaryView( "VOX", true ), "secondary on" );
+            Assert.IsTrue( cut.TryChangeSecondaryView( "VOX", false ), "secondary off" );
+
+            // Test
+            provider.AssertIdle( 0, 1, 2, 3 );
+        }
     }
 }
