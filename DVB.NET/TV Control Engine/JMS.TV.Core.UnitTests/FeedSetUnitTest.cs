@@ -19,7 +19,7 @@ namespace JMS.TV.Core.UnitTests
         public void FeedSetCanNotBeCreatedWithoutAProvider()
         {
             // Create will fail
-            FeedSet.Create<object, bool>( null );
+            TvController.CreateFeedSet<object, bool>( null );
         }
 
         /// <summary>
@@ -323,6 +323,60 @@ namespace JMS.TV.Core.UnitTests
             Assert.IsNotNull( cut.PrimaryView, "primary" );
             Assert.AreSame( cut.FindFeed( "VOX" ), cut.PrimaryView, "new primary" );
             Assert.AreSame( cut.PrimaryView, cut.Recordings.Single(), "#recordings" );
+        }
+
+        /// <summary>
+        /// Eine Aufzeichnung kann eine andere nicht stoppen.
+        /// </summary>
+        [TestMethod]
+        public void NewRecordingWillNotStopAnotherRecording()
+        {
+            // Create component under test
+            var provider = FeedProviderMock.CreateDefault( 1 );
+            var cut = provider.CreateFeedSet();
+
+            // Start recording
+            Assert.IsTrue( cut.TryStartRecordingFeed( "VOX", 0 ), "record 1" );
+            Assert.IsFalse( cut.TryStartRecordingFeed( "MDR", 1 ), "record 2" );
+        }
+
+        /// <summary>
+        /// Eine Aufzeichnung wird ein sekundäres Betrachten beenden.
+        /// </summary>
+        [TestMethod]
+        public void NewRecordingWillNotStopSecondary()
+        {
+            // Create component under test
+            var provider = FeedProviderMock.CreateDefault( 1 );
+            var cut = provider.CreateFeedSet();
+
+            // Start recording
+            Assert.IsTrue( cut.TryStartSecondaryFeed( "MDR" ), "secondary" );
+            Assert.IsTrue( cut.TryStartRecordingFeed( "VOX", 0 ), "record" );
+
+            // Test
+            Assert.IsFalse( cut.SecondaryViews.Any(), "#secondaries" );
+        }
+
+        /// <summary>
+        /// Eine Senderauswahl kann durch eine laufende Aufzeichnung unterdrückt werden.
+        /// </summary>
+        [TestMethod]
+        public void CanNotStartPrimaryViewWhileRecording()
+        {
+            // Create component under test
+            var provider = FeedProviderMock.CreateDefault( 1 );
+            var cut = provider.CreateFeedSet();
+
+            // Start recording
+            Assert.IsTrue( cut.TryStartRecordingFeed( "VOX", 0 ), "record" );
+            Assert.IsFalse( cut.TryStartPrimaryFeed( "MDR" ), "primary" );
+            Assert.IsFalse( cut.TryStartSecondaryFeed( "Pro7" ), "secondary" );
+
+            // Validate
+            Assert.AreSame( cut.FindFeed( "VOX" ), cut.PrimaryView, "primary" );
+            Assert.AreSame( cut.PrimaryView, cut.Recordings.Single(), "recording" );
+            Assert.IsFalse( cut.SecondaryViews.Any(), "#secondaries" );
         }
     }
 }

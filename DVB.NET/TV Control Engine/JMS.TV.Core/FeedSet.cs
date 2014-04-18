@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,175 +8,9 @@ namespace JMS.TV.Core
     /// <summary>
     /// Beschreibt alle Sender, die zurzeit empfangen werden. 
     /// </summary>
-    public abstract class FeedSet
-    {
-        /// <summary>
-        /// Initialisiert eine Senderverwaltung.
-        /// </summary>
-        internal FeedSet()
-        {
-        }
-
-        /// <summary>
-        /// Erstellt eine neue Beschreibung.
-        /// </summary>
-        /// <param name="provider">Die Verwaltung aller Sender.</param>
-        /// <typeparam name="TSourceType">Die Art der Quellen.</typeparam>
-        /// <typeparam name="TRecordingType">Die Art der Identifikation von Aufzeichnungen.</typeparam>
-        public static FeedSet<TRecordingType> Create<TSourceType, TRecordingType>( IFeedProvider<TSourceType> provider ) where TSourceType : class
-        {
-            // Validate
-            if (ReferenceEquals( provider, null ))
-                throw new ArgumentException( "keine Senderverwaltung angegeben", "provider" );
-            else
-                return new FeedSet<TSourceType, TRecordingType>( provider );
-        }
-
-        /// <summary>
-        /// Meldet alle über diese Verwaltung verfügbaren Sender.
-        /// </summary>
-        /// <returns>Die Liste der Sender.</returns>
-        public IEnumerable<Feed> Feeds { get { return EnumerateFeeds(); } }
-
-        /// <summary>
-        /// Meldet alle über diese Verwaltung verfügbaren Sender.
-        /// </summary>
-        /// <returns>Die Liste der Sender.</returns>
-        protected abstract IEnumerable<Feed> EnumerateFeeds();
-
-        /// <summary>
-        /// Ermittelt einen Sender.
-        /// </summary>
-        /// <param name="sourceName">Der Name des Senders.</param>
-        /// <returns>Der gesuchte Sender.</returns>
-        public Feed FindFeed( string sourceName )
-        {
-            return OnFindFeed( sourceName );
-        }
-
-        /// <summary>
-        /// Ermittelt einen Sender.
-        /// </summary>
-        /// <param name="sourceName">Der Name des Senders.</param>
-        /// <returns>Der gesuchte Sender.</returns>
-        protected abstract Feed OnFindFeed( string sourceName );
-
-        /// <summary>
-        /// Verändert die primäre Anzeige.
-        /// </summary>
-        /// <param name="sourceName">Der Name des Senders.</param>
-        /// <returns>Gesetzt, wenn die Änderung erfolgreich war.</returns>
-        public abstract bool TryStartPrimaryFeed( string sourceName );
-
-        /// <summary>
-        /// Aktiviert eine sekundäre Anzeige.
-        /// </summary>
-        /// <param name="sourceName">Der Name des Senders.</param>
-        /// <returns>Gesetzt, wenn die Änderung erfolgreich war.</returns>
-        public abstract bool TryStartSecondaryFeed( string sourceName );
-
-        /// <summary>
-        /// Beendet eine sekundäre Anzeige.
-        /// </summary>
-        /// <param name="sourceName">Der Name des Senders.</param>
-        public abstract void StopSecondaryFeed( string sourceName );
-
-        /// <summary>
-        /// Meldet den primären Sender.
-        /// </summary>
-        public Feed PrimaryView { get { return Feeds.SingleOrDefault( feed => feed.IsPrimaryView ); } }
-
-        /// <summary>
-        /// Meldet alle sekundären Sender.
-        /// </summary>
-        public IEnumerable<Feed> SecondaryViews { get { return Feeds.Where( feed => feed.IsSecondaryView ); } }
-    }
-
-    /// <summary>
-    /// Beschreibt alle Sender, die zurzeit empfangen werden. 
-    /// </summary>
-    /// <typeparam name="TRecordingType">Die Art der Identifikation von Aufzeichnungen.</typeparam>
-    public abstract class FeedSet<TRecordingType> : FeedSet
-    {
-        /// <summary>
-        /// Initialisiert eine Senderverwaltung.
-        /// </summary>
-        internal FeedSet()
-        {
-        }
-
-        /// <summary>
-        /// Ermittelt einen Sender.
-        /// </summary>
-        /// <param name="sourceName">Der Name des Senders.</param>
-        /// <returns>Der gesuchte Sender.</returns>
-        protected sealed override Feed OnFindFeed( string sourceName )
-        {
-            return FindFeed( sourceName );
-        }
-
-        /// <summary>
-        /// Ermittelt einen Sender.
-        /// </summary>
-        /// <param name="sourceName">Der Name des Senders.</param>
-        /// <returns>Der gesuchte Sender.</returns>
-        public abstract new Feed<TRecordingType> FindFeed( string sourceName );
-
-        /// <summary>
-        /// Meldet alle über diese Verwaltung verfügbaren Sender.
-        /// </summary>
-        /// <returns>Die Liste der Sender.</returns>
-        public new IEnumerable<Feed<TRecordingType>> Feeds { get { return RecordingFeeds; } }
-
-        /// <summary>
-        /// Meldet alle über diese Verwaltung verfügbaren Sender.
-        /// </summary>
-        /// <returns>Die Liste der Sender.</returns>
-        protected override IEnumerable<Feed> EnumerateFeeds() { return RecordingFeeds; }
-
-        /// <summary>
-        /// Meldet alle über diese Verwaltung verfügbaren Sender.
-        /// </summary>
-        /// <returns>Die Liste der Sender.</returns>
-        protected abstract IEnumerable<Feed<TRecordingType>> RecordingFeeds { get; }
-
-        /// <summary>
-        /// Meldet den primären Sender.
-        /// </summary>
-        public new Feed<TRecordingType> PrimaryView { get { return RecordingFeeds.SingleOrDefault( feed => feed.IsPrimaryView ); } }
-
-        /// <summary>
-        /// Meldet alle sekundären Sender.
-        /// </summary>
-        public new IEnumerable<Feed<TRecordingType>> SecondaryViews { get { return RecordingFeeds.Where( feed => feed.IsSecondaryView ); } }
-
-        /// <summary>
-        /// Beginnt eine Aufzeichnung.
-        /// </summary>
-        /// <param name="sourceName">Der Name des Senders.</param>
-        /// <param name="key">Die Identifikation der Aufzeichnung.</param>
-        /// <returns>Gesetzt, wenn der Start erfolgreich war.</returns>
-        public abstract bool TryStartRecordingFeed( string sourceName, TRecordingType key );
-
-        /// <summary>
-        /// Beendet eine Aufzeichnung.
-        /// </summary>
-        /// <param name="sourceName">Der Name des Senders.</param>
-        /// <param name="key">Die Identifikation der Aufzeichnung.</param>
-        public abstract void StopRecordingFeed( string sourceName, TRecordingType key );
-
-        /// <summary>
-        /// Meldet alle Sender, auf denen Aufzeichnungen aktiv sind.
-        /// </summary>
-        public IEnumerable<Feed<TRecordingType>> Recordings { get { return RecordingFeeds.Where( feed => feed.Recordings.Any() ); } }
-    }
-
-    /// <summary>
-    /// Beschreibt alle Sender, die zurzeit empfangen werden. 
-    /// </summary>
     /// <typeparam name="TSourceType">Die Art der Quellen.</typeparam>
     /// <typeparam name="TRecordingType">Die Art der Identifikation von Aufzeichnungen.</typeparam>
-    internal class FeedSet<TSourceType, TRecordingType> : FeedSet<TRecordingType> where TSourceType : class
+    internal class FeedSet<TSourceType, TRecordingType> : IFeedSet<TRecordingType> where TSourceType : class
     {
         /// <summary>
         /// Verwaltete ein einzelnes Gerät.
@@ -287,17 +120,11 @@ namespace JMS.TV.Core
         }
 
         /// <summary>
-        /// Meldet alle über diese Verwaltung verfügbaren Sender.
-        /// </summary>
-        /// <returns>Die Liste der Sender.</returns>
-        protected override IEnumerable<Feed<TRecordingType>> RecordingFeeds { get { return m_devices.SelectMany( device => device.Feeds ); } }
-
-        /// <summary>
         /// Ermittelt einen Sender.
         /// </summary>
         /// <param name="source">Die zugehörige Quelle.</param>
         /// <returns>Der Sender, sofern dieser verfügbar ist.</returns>
-        private Feed<TSourceType, TRecordingType> FindFeed( TSourceType source )
+        public Feed<TSourceType, TRecordingType> FindFeed( TSourceType source )
         {
             return m_devices.SelectMany( device => device.Feeds ).SingleOrDefault( feed => ReferenceEquals( feed.Source, source ) );
         }
@@ -308,7 +135,7 @@ namespace JMS.TV.Core
         /// <param name="source">Der gewünschte Sender.</param>
         /// <param name="tx">Die aktuelle Änderungsumgebung.</param>
         /// <returns>Gesetzt, wenn die Aufzeichnung möglich war.</returns>
-        private bool EnsureRecordingFeed( TSourceType source, FeedTransaction tx )
+        private bool EnsureRecordingFeed( TSourceType source, FeedTransaction<TSourceType, TRecordingType> tx )
         {
             // Make sure we can receive it
             if (EnsurePrimaryFeed( source, tx ))
@@ -332,7 +159,7 @@ namespace JMS.TV.Core
         /// <param name="source">Der gewünschte Sender.</param>
         /// <param name="tx">Die aktuelle Änderungsumgebung.</param>
         /// <returns>Gesetzt, wenn die Aktivierung erfolgreich war.</returns>
-        private bool EnsurePrimaryFeed( TSourceType source, FeedTransaction tx )
+        private bool EnsurePrimaryFeed( TSourceType source, FeedTransaction<TSourceType, TRecordingType> tx )
         {
             // Make sure we can receive it
             if (EnsureFeed( source ))
@@ -397,18 +224,36 @@ namespace JMS.TV.Core
         /// <summary>
         /// Beendet den Zugriff auf nicht mehr benötigte Geräte.
         /// </summary>
-        private void TestIdle()
+        public void TestIdle()
         {
             foreach (var device in m_devices)
                 device.TestIdle();
         }
+
+        #region IFeedSet
+
+        /// <summary>
+        /// Meldet alle über diese Verwaltung verfügbaren Sender.
+        /// </summary>
+        /// <returns>Die Liste der Sender.</returns>
+        private IEnumerable<Feed<TSourceType, TRecordingType>> Feeds { get { return m_devices.SelectMany( device => device.Feeds ); } }
+
+        /// <summary>
+        /// Meldet den primären Sender.
+        /// </summary>
+        private Feed<TSourceType, TRecordingType> PrimaryView { get { return Feeds.SingleOrDefault( feed => feed.IsPrimaryView ); } }
+
+        /// <summary>
+        /// Meldet alle sekundären Sender.
+        /// </summary>
+        private IEnumerable<Feed<TSourceType, TRecordingType>> SecondaryViews { get { return Feeds.Where( feed => feed.IsSecondaryView ); } }
 
         /// <summary>
         /// Ermittelt einen Sender.
         /// </summary>
         /// <param name="sourceName">Der Name des Senders.</param>
         /// <returns>Der gesuchte Sender.</returns>
-        public override Feed<TRecordingType> FindFeed( string sourceName )
+        private Feed<TSourceType, TRecordingType> FindFeed( string sourceName )
         {
             // Look it up
             var source = m_provider.Translate( sourceName );
@@ -423,7 +268,7 @@ namespace JMS.TV.Core
         /// </summary>
         /// <param name="sourceName">Die neue primäre Anzeige.</param>
         /// <returns>Gesetzt, wenn die Änderung erfolgreich war.</returns>
-        public override bool TryStartPrimaryFeed( string sourceName )
+        public bool TryStartPrimaryFeed( string sourceName )
         {
             // Look it up
             var source = m_provider.Translate( sourceName );
@@ -437,7 +282,7 @@ namespace JMS.TV.Core
                     return true;
 
             // Prepare the change
-            using (var tx = new FeedTransaction( TestIdle ))
+            using (var tx = BeginChange())
             {
                 // See if we are secondary
                 var wasSecondary = (feed != null) && feed.IsSecondaryView;
@@ -461,7 +306,7 @@ namespace JMS.TV.Core
                     return false;
 
                 // Mark as active
-                tx.ChangePrimaryView( FindFeed( source ), true );
+                tx.ChangePrimaryView( source , true );
 
                 // Avoid cleanup
                 tx.Commit();
@@ -476,7 +321,7 @@ namespace JMS.TV.Core
         /// </summary>
         /// <param name="sourceName">Der Name des Senders.</param>
         /// <returns>Gesetzt, wenn die Änderung erfolgreich war.</returns>
-        public override bool TryStartSecondaryFeed( string sourceName )
+        public bool TryStartSecondaryFeed( string sourceName )
         {
             // Look it up
             var source = m_provider.Translate( sourceName );
@@ -492,14 +337,14 @@ namespace JMS.TV.Core
                     return false;
 
             // Prepare the change
-            using (var tx = new FeedTransaction( TestIdle ))
+            using (var tx = BeginChange())
             {
                 // Make sure we can receive it
                 if (!EnsureFeed( source ))
                     return false;
 
                 // Mark as active
-                tx.ChangeSecondaryView( FindFeed( source ), true );
+                tx.ChangeSecondaryView( source, true );
 
                 // Avoid cleanup
                 tx.Commit();
@@ -513,7 +358,7 @@ namespace JMS.TV.Core
         /// Verändert eine sekundäre Anzeige.
         /// </summary>
         /// <param name="sourceName">Der Name des Senders.</param>
-        public override void StopSecondaryFeed( string sourceName )
+        public void StopSecondaryFeed( string sourceName )
         {
             // Look it up
             var source = m_provider.Translate( sourceName );
@@ -528,7 +373,7 @@ namespace JMS.TV.Core
                 return;
 
             // Prepare the change
-            using (var tx = new FeedTransaction( TestIdle ))
+            using (var tx = BeginChange())
             {
                 // Mark as active
                 tx.ChangeSecondaryView( feed, false );
@@ -539,12 +384,87 @@ namespace JMS.TV.Core
         }
 
         /// <summary>
+        /// Ermittelt einen Sender.
+        /// </summary>
+        /// <param name="sourceName">Der Name des Senders.</param>
+        /// <returns>Der gesuchte Sender.</returns>
+        IFeed IFeedSet.FindFeed( string sourceName )
+        {
+            return FindFeed( sourceName );
+        }
+
+        /// <summary>
+        /// Meldet alle über diese Verwaltung verfügbaren Sender.
+        /// </summary>
+        /// <returns>Die Liste der Sender.</returns>
+        IEnumerable<IFeed> IFeedSet.Feeds { get { return Feeds; } }
+
+        /// <summary>
+        /// Meldet den primären Sender.
+        /// </summary>
+        IFeed IFeedSet.PrimaryView { get { return PrimaryView; } }
+
+        /// <summary>
+        /// Meldet alle sekundären Sender.
+        /// </summary>
+        IEnumerable<IFeed> IFeedSet.SecondaryViews { get { return SecondaryViews; } }
+
+        /// <summary>
+        /// Meldet alle Sender, auf denen Aufzeichnungen aktiv sind.
+        /// </summary>
+        IEnumerable<IFeed<TRecordingType>> IFeedSet<TRecordingType>.Recordings { get { return Recordings; } }
+
+        #endregion
+
+        #region IFeedSet<TRecordingType>
+
+        /// <summary>
+        /// Meldet alle Sender, auf denen Aufzeichnungen aktiv sind.
+        /// </summary>
+        private IEnumerable<Feed<TSourceType, TRecordingType>> Recordings { get { return Feeds.Where( feed => feed.Recordings.Any() ); } }
+
+        /// <summary>
+        /// Ermittelt einen Sender.
+        /// </summary>
+        /// <param name="sourceName">Der Name des Senders.</param>
+        /// <returns>Der gesuchte Sender.</returns>
+        IFeed<TRecordingType> IFeedSet<TRecordingType>.FindFeed( string sourceName )
+        {
+            return FindFeed( sourceName );
+        }
+
+        /// <summary>
+        /// Meldet alle über diese Verwaltung verfügbaren Sender.
+        /// </summary>
+        /// <returns>Die Liste der Sender.</returns>
+        IEnumerable<IFeed<TRecordingType>> IFeedSet<TRecordingType>.Feeds { get { return Feeds; } }
+
+        /// <summary>
+        /// Meldet den primären Sender.
+        /// </summary>
+        IFeed<TRecordingType> IFeedSet<TRecordingType>.PrimaryView { get { return PrimaryView; } }
+
+        /// <summary>
+        /// Meldet alle sekundären Sender.
+        /// </summary>
+        IEnumerable<IFeed<TRecordingType>> IFeedSet<TRecordingType>.SecondaryViews { get { return SecondaryViews; } }
+
+        /// <summary>
+        /// Erstellt eine neue Änderungsumgebung.
+        /// </summary>
+        /// <returns>Die angeforderte Umgebung.</returns>
+        private FeedTransaction<TSourceType, TRecordingType> BeginChange()
+        {
+            return new FeedTransaction<TSourceType, TRecordingType>( this );
+        }
+
+        /// <summary>
         /// Beginnt eine Aufzeichnung.
         /// </summary>
         /// <param name="sourceName">Der Name des Senders.</param>
         /// <param name="key">Die Identifikation der Aufzeichnung.</param>
         /// <returns>Gesetzt, wenn der Start erfolgreich war.</returns>
-        public override bool TryStartRecordingFeed( string sourceName, TRecordingType key )
+        public bool TryStartRecordingFeed( string sourceName, TRecordingType key )
         {
             // Look it up
             var source = m_provider.Translate( sourceName );
@@ -558,7 +478,7 @@ namespace JMS.TV.Core
                     return false;
 
             // Prepare the change
-            using (var tx = new FeedTransaction( TestIdle ))
+            using (var tx = BeginChange())
             {
                 // Make sure we can receive it
                 if (!EnsureRecordingFeed( source, tx ))
@@ -587,7 +507,7 @@ namespace JMS.TV.Core
         /// </summary>
         /// <param name="sourceName">Der Name des Senders.</param>
         /// <param name="key">Die Identifikation der Aufzeichnung.</param>
-        public override void StopRecordingFeed( string sourceName, TRecordingType key )
+        public void StopRecordingFeed( string sourceName, TRecordingType key )
         {
             // Look it up
             var source = m_provider.Translate( sourceName );
@@ -602,7 +522,7 @@ namespace JMS.TV.Core
                 return;
 
             // Prepare the change
-            using (var tx = new FeedTransaction( TestIdle ))
+            using (var tx = BeginChange())
             {
                 // Mark as active
                 tx.ChangeRecording( feed, key, false );
@@ -611,5 +531,7 @@ namespace JMS.TV.Core
                 tx.Commit();
             }
         }
+
+        #endregion
     }
 }

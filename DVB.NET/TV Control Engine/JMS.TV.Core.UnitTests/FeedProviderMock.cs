@@ -253,9 +253,9 @@ namespace JMS.TV.Core.UnitTests
         /// Erstellt eine passende Senderverwaltung.
         /// </summary>
         /// <returns>Die angeforderte Verwaltung.</returns>
-        public FeedSet<int> CreateFeedSet()
+        public IFeedSet<int> CreateFeedSet()
         {
-            return FeedSet.Create<Source, int>( this );
+            return TvController.CreateFeedSet<Source, int>( this );
         }
     }
 }

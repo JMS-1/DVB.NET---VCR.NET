@@ -43,7 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IFeed.cs" />
     <Compile Include="Feed.cs" />
+    <Compile Include="IFeedSet.cs" />
     <Compile Include="FeedSet.cs" />
     <Compile Include="FeedTransaction.cs" />
     <Compile Include="IFeedProvider.cs" />

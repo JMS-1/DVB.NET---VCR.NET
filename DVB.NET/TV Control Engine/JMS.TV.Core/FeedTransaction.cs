@@ -7,7 +7,9 @@ namespace JMS.TV.Core
     /// <summary>
     /// Beschreibt eine Änderung am Empfang.
     /// </summary>
-    internal class FeedTransaction : IDisposable
+    /// <typeparam name="TSourceType">Die Art der Quellen.</typeparam>
+    /// <typeparam name="TRecordingType">Die Art der Identifikation von Aufzeichnungen.</typeparam>
+    internal class FeedTransaction<TSourceType, TRecordingType> : IDisposable where TSourceType : class
     {
         /// <summary>
         /// Alle Aktionen, die zur Korrektur ausgeführt werden müssen.
@@ -15,17 +17,27 @@ namespace JMS.TV.Core
         private readonly List<Action> m_rollbackActions = new List<Action>();
 
         /// <summary>
-        /// Wird einmalig zum Beenden aufgerufen.
+        /// Die zugehörige Senderverwaltung.
         /// </summary>
-        private readonly Action m_termination;
+        private readonly FeedSet<TSourceType, TRecordingType> m_feedSet;
 
         /// <summary>
         /// Erstellt eine neue Änderungsumgebung.
         /// </summary>
-        /// <param name="termination">Methode zum Abschluss.</param>
-        public FeedTransaction( Action termination )
+        /// <param name="feedSet">Die zugehörige Senderverwaltung.</param>
+        public FeedTransaction( FeedSet<TSourceType, TRecordingType> feedSet )
         {
-            m_termination = termination;
+            m_feedSet = feedSet;
+        }
+
+        /// <summary>
+        /// Verändert den primären Sender.
+        /// </summary>
+        /// <param name="source">Der betroffenen Sender.</param>
+        /// <param name="newState">Der gewünschte neue Zustand.</param>
+        public void ChangePrimaryView( TSourceType source, bool newState )
+        {
+            ChangePrimaryView( m_feedSet.FindFeed( source ), newState );
         }
 
         /// <summary>
@@ -33,7 +45,7 @@ namespace JMS.TV.Core
         /// </summary>
         /// <param name="feed">Der betroffenen Sender.</param>
         /// <param name="newState">Der gewünschte neue Zustand.</param>
-        public void ChangePrimaryView( Feed feed, bool newState )
+        public void ChangePrimaryView( Feed<TSourceType, TRecordingType> feed, bool newState )
         {
             // Validate
             if (feed.IsPrimaryView == newState)
@@ -49,9 +61,19 @@ namespace JMS.TV.Core
         /// <summary>
         /// Verändert einen sekundären Sender.
         /// </summary>
+        /// <param name="source">Der betroffenen Sender.</param>
+        /// <param name="newState">Der gewünschte neue Zustand.</param>
+        public void ChangeSecondaryView( TSourceType source, bool newState )
+        {
+            ChangeSecondaryView( m_feedSet.FindFeed( source ), newState );
+        }
+
+        /// <summary>
+        /// Verändert einen sekundären Sender.
+        /// </summary>
         /// <param name="feed">Der betroffenen Sender.</param>
         /// <param name="newState">Der gewünschte neue Zustand.</param>
-        public void ChangeSecondaryView( Feed feed, bool newState )
+        public void ChangeSecondaryView( Feed<TSourceType, TRecordingType> feed, bool newState )
         {
             // Validate
             if (feed.IsSecondaryView == newState)
@@ -67,11 +89,10 @@ namespace JMS.TV.Core
         /// <summary>
         /// Verändert die Aufzeichnung eines Senders.
         /// </summary>
-        /// <typeparam name="TRecordingType">Die Art der Identifikation von Aufzeichnungen.</typeparam>
         /// <param name="feed">Der Sender.</param>
         /// <param name="key">Die Identifikation der Aufzeichung.</param>
-        /// <param name="newState">Gesetzt, wenn die Aufzeichnung begonnen werden soll.</param>
-        public void ChangeRecording<TRecordingType>( Feed<TRecordingType> feed, TRecordingType key, bool newState )
+        /// <param name="newState">Der gewünschte Aufzeichnungsstand.</param>
+        public void ChangeRecording( Feed<TSourceType, TRecordingType> feed, TRecordingType key, bool newState )
         {
             // Validate
             if (feed.IsRecording( key ) == newState)
@@ -112,7 +133,7 @@ namespace JMS.TV.Core
             m_rollbackActions.ForEach( rollback => rollback() );
 
             // Final
-            m_termination();
+            m_feedSet.TestIdle();
         }
     }
 }
