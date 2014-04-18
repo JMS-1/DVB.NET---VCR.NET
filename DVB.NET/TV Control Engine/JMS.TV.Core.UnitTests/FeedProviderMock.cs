@@ -248,5 +248,14 @@ namespace JMS.TV.Core.UnitTests
             foreach (var index in indexes)
                 Assert.IsNull( m_devices[index], "device {0} is in use", index );
         }
+
+        /// <summary>
+        /// Erstellt eine passende Senderverwaltung.
+        /// </summary>
+        /// <returns>Die angeforderte Verwaltung.</returns>
+        public FeedSet<int> CreateFeedSet()
+        {
+            return FeedSet.Create<Source, int>( this );
+        }
     }
 }

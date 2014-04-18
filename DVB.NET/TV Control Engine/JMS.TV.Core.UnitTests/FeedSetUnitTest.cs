@@ -19,7 +19,7 @@ namespace JMS.TV.Core.UnitTests
         public void FeedSetCanNotBeCreatedWithoutAProvider()
         {
             // Create will fail
-            FeedSet.Create( default( FeedProviderMock ) );
+            FeedSet.Create<object, bool>( null );
         }
 
         /// <summary>
@@ -29,10 +29,10 @@ namespace JMS.TV.Core.UnitTests
         public void FeedSetInitiallyDoesNotProvideAPrimaryFeed()
         {
             // Create component under test
-            var cut = FeedSet.Create( FeedProviderMock.CreateDefault() );
+            var cut = FeedProviderMock.CreateDefault().CreateFeedSet();
 
             // Check it
-            Assert.IsFalse( cut.Any(), "feeds found" );
+            Assert.IsFalse( cut.Feeds.Any(), "feeds found" );
             Assert.IsNull( cut.PrimaryView, "primary found" );
             Assert.IsFalse( cut.SecondaryViews.Any(), "secondaries found" );
         }
@@ -44,7 +44,7 @@ namespace JMS.TV.Core.UnitTests
         public void InvalidSourceForPrimaryViewWillThrowException()
         {
             // Create component under test
-            var cut = FeedSet.Create( FeedProviderMock.CreateDefault() );
+            var cut = FeedProviderMock.CreateDefault().CreateFeedSet();
 
             // Check it
             cut.TryStartPrimaryFeed( "BBC 12" );
@@ -58,7 +58,7 @@ namespace JMS.TV.Core.UnitTests
         {
             // Create component under test
             var provider = FeedProviderMock.CreateDefault();
-            var cut = FeedSet.Create( provider );
+            var cut = provider.CreateFeedSet();
 
             // Process
             Assert.IsTrue( cut.TryStartPrimaryFeed( "WDR" ), "choose" );
@@ -80,7 +80,7 @@ namespace JMS.TV.Core.UnitTests
         {
             // Create component under test
             var provider = FeedProviderMock.CreateDefault();
-            var cut = FeedSet.Create( provider );
+            var cut = provider.CreateFeedSet();
 
             // Process
             Assert.IsTrue( cut.TryStartPrimaryFeed( "WDR" ), "choose 1" );
@@ -104,7 +104,7 @@ namespace JMS.TV.Core.UnitTests
         {
             // Create component under test
             var provider = FeedProviderMock.CreateDefault();
-            var cut = FeedSet.Create( provider );
+            var cut = provider.CreateFeedSet();
 
             // Process
             Assert.IsTrue( cut.TryStartPrimaryFeed( "WDR" ), "primary" );
@@ -127,7 +127,7 @@ namespace JMS.TV.Core.UnitTests
         {
             // Create component under test
             var provider = FeedProviderMock.CreateDefault();
-            var cut = FeedSet.Create( provider );
+            var cut = provider.CreateFeedSet();
 
             // Process
             Assert.IsTrue( cut.TryStartPrimaryFeed( "WDR" ), "primary" );
@@ -151,7 +151,7 @@ namespace JMS.TV.Core.UnitTests
         {
             // Create component under test
             var provider = FeedProviderMock.CreateDefault( 1 );
-            var cut = FeedSet.Create( provider );
+            var cut = provider.CreateFeedSet();
 
             // Process
             Assert.IsTrue( cut.TryStartPrimaryFeed( "WDR" ), "primary" );
@@ -174,7 +174,7 @@ namespace JMS.TV.Core.UnitTests
         {
             // Create component under test
             var provider = FeedProviderMock.CreateDefault( 2 );
-            var cut = FeedSet.Create( provider );
+            var cut = provider.CreateFeedSet();
 
             // Process
             Assert.IsTrue( cut.TryStartSecondaryFeed( "RTL" ), "secondary 1" );
@@ -212,7 +212,7 @@ namespace JMS.TV.Core.UnitTests
         {
             // Create component under test
             var provider = FeedProviderMock.CreateDefault();
-            var cut = FeedSet.Create( provider );
+            var cut = provider.CreateFeedSet();
 
             // Process
             Assert.IsTrue( cut.TryStartPrimaryFeed( "RTL" ), "primary 1" );
@@ -232,7 +232,7 @@ namespace JMS.TV.Core.UnitTests
         {
             // Create component under test
             var provider = FeedProviderMock.CreateDefault();
-            var cut = FeedSet.Create( provider );
+            var cut = provider.CreateFeedSet();
 
             // Process
             Assert.IsTrue( cut.TryStartSecondaryFeed( "VOX" ), "secondary on" );

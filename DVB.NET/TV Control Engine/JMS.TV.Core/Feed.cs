@@ -1,6 +1,7 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
 
-using System;
+
 namespace JMS.TV.Core
 {
     /// <summary>
@@ -12,7 +13,7 @@ namespace JMS.TV.Core
         /// <summary>
         /// Gesetzt, wenn dieser Sender gerade vollständig angezeigt wird - Bild, Ton und Videotext.
         /// </summary>
-        public bool m_primaryView;
+        private bool m_primaryView;
 
         /// <summary>
         /// Gesetzt, wenn dieser Sender gerade vollständig angezeigt wird - Bild, Ton und Videotext.
@@ -20,7 +21,7 @@ namespace JMS.TV.Core
         public bool IsPrimaryView
         {
             get { return m_primaryView; }
-            set
+            internal set
             {
                 // Must validate
                 if (value && m_secondaryView)
@@ -33,7 +34,7 @@ namespace JMS.TV.Core
         /// <summary>
         /// Gesetzt, wenn dieser Sender gerade als Bild-In-Bild (PiP) angezeigt wird.
         /// </summary>
-        public bool m_secondaryView;
+        private bool m_secondaryView;
 
         /// <summary>
         /// Gesetzt, wenn dieser Sender gerade als Bild-In-Bild (PiP) angezeigt wird.
@@ -41,7 +42,7 @@ namespace JMS.TV.Core
         public bool IsSecondaryView
         {
             get { return m_secondaryView; }
-            set
+            internal set
             {
                 // Must validate
                 if (value && m_primaryView)
@@ -54,12 +55,42 @@ namespace JMS.TV.Core
         /// <summary>
         /// Gesetzt, wenn dieser Sender benutzt wird.
         /// </summary>
-        public bool IsActive { get { return m_primaryView || m_secondaryView; } }
+        internal virtual bool IsActive { get { return m_primaryView || m_secondaryView; } }
 
         /// <summary>
         /// Gesetzt, wenn dieser Sender bei Bedarf abgeschaltet werden darf.
         /// </summary>
-        public bool ReusePossible { get { return !m_primaryView; } }
+        internal virtual bool ReusePossible { get { return !m_primaryView; } }
+
+        /// <summary>
+        /// Erstellt die Beschreibung eines Senders.
+        /// </summary>
+        internal Feed()
+        {
+        }
+    }
+
+    /// <summary>
+    /// Beschreibt einen einzelnen Sender - in der ersten Version wird es nur Fernsehsender
+    /// geben.
+    /// </summary>
+    /// <typeparam name="TRecordingType">Die Art der Identifikation für Aufzeichnungen.</typeparam>
+    public abstract class Feed<TRecordingType> : Feed
+    {
+        /// <summary>
+        /// Alle Aufzeichnungen auf diesem Sender.
+        /// </summary>
+        private readonly HashSet<TRecordingType> m_activeRecordings = new HashSet<TRecordingType>();
+
+        /// <summary>
+        /// Gesetzt, wenn dieser Sender benutzt wird.
+        /// </summary>
+        internal override bool IsActive { get { return base.IsActive || (m_activeRecordings.Count > 0); } }
+
+        /// <summary>
+        /// Gesetzt, wenn dieser Sender bei Bedarf abgeschaltet werden darf.
+        /// </summary>
+        internal override bool ReusePossible { get { return base.ReusePossible && (m_activeRecordings.Count < 1); } }
 
         /// <summary>
         /// Erstellt die Beschreibung eines Senders.
@@ -74,7 +105,8 @@ namespace JMS.TV.Core
     /// geben.
     /// </summary>
     /// <typeparam name="TSourceType">Die Art der Quellen.</typeparam>
-    internal class Feed<TSourceType> : Feed
+    /// <typeparam name="TRecordingType">Die Art der Identifikation für Aufzeichnungen.</typeparam>
+    internal class Feed<TSourceType, TRecordingType> : Feed<TRecordingType>
     {
         /// <summary>
         /// Die zugehörige Quelle.
