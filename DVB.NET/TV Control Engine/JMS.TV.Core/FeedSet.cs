@@ -75,13 +75,17 @@ namespace JMS.TV.Core
             /// <param name="source">Die gewünschte Quelle.</param>
             public void EnsureFeed( TSourceType source )
             {
-                m_feeds = m_provider.Activate( m_index, source ).Select( s => new Feed<TSourceType, TRecordingType>( s ) ).ToArray();
+                m_feeds = 
+                    m_provider
+                        .Activate( m_index, source )
+                        .Select( sourceOnGroup => new Feed<TSourceType, TRecordingType>( sourceOnGroup ) )
+                        .ToArray();
             }
 
             /// <summary>
             /// Aktiviert das Gerät.
             /// </summary>
-            public void EnsurceDevice()
+            public void EnsureDevice()
             {
                 m_provider.AllocateDevice( m_index );
             }
@@ -126,7 +130,7 @@ namespace JMS.TV.Core
         /// <returns>Der Sender, sofern dieser verfügbar ist.</returns>
         public Feed<TSourceType, TRecordingType> FindFeed( TSourceType source )
         {
-            return m_devices.SelectMany( device => device.Feeds ).SingleOrDefault( feed => ReferenceEquals( feed.Source, source ) );
+            return Feeds.SingleOrDefault( feed => ReferenceEquals( feed.Source, source ) );
         }
 
         /// <summary>
@@ -149,7 +153,7 @@ namespace JMS.TV.Core
             // Switch off primary
             tx.ChangePrimaryView( primary, false );
 
-            // Try again
+            // Try again - may fail
             return EnsurePrimaryFeed( source, tx );
         }
 
@@ -179,7 +183,7 @@ namespace JMS.TV.Core
             foreach (var secondaryFeed in availableDevice.SecondaryFeeds)
                 tx.ChangeSecondaryView( secondaryFeed, false );
 
-            // Run test again
+            // Run test again - can not fail
             return EnsureFeed( source );
         }
 
@@ -194,7 +198,7 @@ namespace JMS.TV.Core
             if (FindFeed( source ) != null)
                 return true;
 
-            // See if the is any active device idle
+            // See if there is any device activated but idle and then reuse it - better than starting a brand new device
             foreach (var device in m_devices)
                 if (device.IsIdle)
                 {
@@ -205,19 +209,19 @@ namespace JMS.TV.Core
                     return true;
                 }
 
-            // See if the is any active not in use
+            // See if there is any device not yet activated
             foreach (var device in m_devices)
                 if (!device.IsAllocated)
                 {
                     // Tune it
-                    device.EnsurceDevice();
+                    device.EnsureDevice();
                     device.EnsureFeed( source );
 
                     // Report success
                     return true;
                 }
 
-            // Not found
+            // All devices are in use
             return false;
         }
 
@@ -264,6 +268,15 @@ namespace JMS.TV.Core
         }
 
         /// <summary>
+        /// Erstellt eine neue Änderungsumgebung.
+        /// </summary>
+        /// <returns>Die angeforderte Umgebung.</returns>
+        private FeedTransaction<TSourceType, TRecordingType> BeginChange()
+        {
+            return new FeedTransaction<TSourceType, TRecordingType>( this );
+        }
+
+        /// <summary>
         /// Verändert die primäre Anzeige.
         /// </summary>
         /// <param name="sourceName">Die neue primäre Anzeige.</param>
@@ -290,15 +303,15 @@ namespace JMS.TV.Core
                     tx.ChangeSecondaryView( feed, false );
 
                 // Locate the current primary view
-                var primary = PrimaryView;
-                if (primary != null)
+                var previous = PrimaryView;
+                if (previous != null)
                 {
                     // Primary operation                
-                    tx.ChangePrimaryView( primary, false );
+                    tx.ChangePrimaryView( previous, false );
 
                     // May want to swap views
                     if (wasSecondary)
-                        tx.ChangeSecondaryView( primary, true );
+                        tx.ChangeSecondaryView( previous, true );
                 }
 
                 // Make sure we can receive it
@@ -448,15 +461,6 @@ namespace JMS.TV.Core
         /// Meldet alle sekundären Sender.
         /// </summary>
         IEnumerable<IFeed<TRecordingType>> IFeedSet<TRecordingType>.SecondaryViews { get { return SecondaryViews; } }
-
-        /// <summary>
-        /// Erstellt eine neue Änderungsumgebung.
-        /// </summary>
-        /// <returns>Die angeforderte Umgebung.</returns>
-        private FeedTransaction<TSourceType, TRecordingType> BeginChange()
-        {
-            return new FeedTransaction<TSourceType, TRecordingType>( this );
-        }
 
         /// <summary>
         /// Beginnt eine Aufzeichnung.
