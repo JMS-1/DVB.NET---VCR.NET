@@ -51,6 +51,13 @@ namespace JMS.TV.Core
         }
 
         /// <summary>
+        /// Ermittelt einen Sender.
+        /// </summary>
+        /// <param name="sourceName">Der Name des Senders.</param>
+        /// <returns>Der gesuchte Sender.</returns>
+        public abstract Feed FindFeed( string sourceName );
+
+        /// <summary>
         /// Verändert die primäre Anzeige.
         /// </summary>
         /// <param name="source">Der Name des Senders.</param>
@@ -64,6 +71,16 @@ namespace JMS.TV.Core
         /// <param name="activate">Gesetzt, wenn die Anzeige aktiviert werden soll.</param>
         /// <returns>Gesetzt, wenn die Änderung erfolgreich war.</returns>
         public abstract bool TryChangeSecondaryView( string source, bool activate );
+
+        /// <summary>
+        /// Meldet den primären Sender.
+        /// </summary>
+        public Feed PrimaryView { get { return this.SingleOrDefault( feed => feed.IsPrimaryView ); } }
+
+        /// <summary>
+        /// Meldet alle sekundären Sender.
+        /// </summary>
+        public IEnumerable<Feed> SecondaryViews { get { return this.Where( feed => feed.IsSecondaryView ); } }
     }
 
     /// <summary>
@@ -109,6 +126,27 @@ namespace JMS.TV.Core
             public IEnumerable<Feed<TSourceType>> Feeds { get { return m_feeds ?? Enumerable.Empty<Feed<TSourceType>>(); } }
 
             /// <summary>
+            /// Gesetzt, wenn das zugehörige Gerät zugewiesen wurde.
+            /// </summary>
+            public bool IsAllocated { get { return (m_feeds != null); } }
+
+            /// <summary>
+            /// Gesetzt, wenn das Gerät zugewiesen wurde aber gerade nicht in Benutzung ist.
+            /// </summary>
+            public bool IsIdle { get { return IsAllocated && m_feeds.All( feed => !feed.IsPrimaryView && !feed.IsSecondaryView ); } }
+
+            /// <summary>
+            /// Gesetzt, wenn dieses Gerät nur für sekundäre Sender verwendet wird und daher eine Wiederbenutzung für
+            /// wichtigere Aufgaben möglich ist.
+            /// </summary>
+            public bool ReusePossible { get { return IsAllocated && m_feeds.All( feed => !feed.IsPrimaryView ); } }
+
+            /// <summary>
+            /// Ermittelt alle sekundären Sender, die gerade in Benutzung sind.
+            /// </summary>
+            public IEnumerable<Feed<TSourceType>> SecondaryFeeds { get { return Feeds.Where( feed => feed.IsSecondaryView ); } }
+
+            /// <summary>
             /// Stellt den Empfang einer Quelle sicher.
             /// </summary>
             /// <param name="source">Die gewünschte Quelle.</param>
@@ -130,9 +168,7 @@ namespace JMS.TV.Core
             /// </summary>
             public void TestIdle()
             {
-                if (m_feeds == null)
-                    return;
-                if (m_feeds.Any( feed => feed.IsPrimaryView || feed.IsSecondaryView ))
+                if (!IsIdle)
                     return;
 
                 m_provider.ReleaseDevice( m_index );
@@ -202,19 +238,18 @@ namespace JMS.TV.Core
 
             // See if the is any active device idle
             foreach (var device in m_devices)
-                if (device.Feeds.Any())
-                    if (device.Feeds.All( feed => !feed.IsPrimaryView ))
-                    {
-                        // Tune it
-                        device.EnsureFeed( source );
+                if (device.IsIdle)
+                {
+                    // Tune it
+                    device.EnsureFeed( source );
 
-                        // Report success
-                        return true;
-                    }
+                    // Report success
+                    return true;
+                }
 
             // See if the is any active not in use
             foreach (var device in m_devices)
-                if (!device.Feeds.Any())
+                if (!device.IsAllocated)
                 {
                     // Tune it
                     device.EnsurceDevice();
@@ -235,6 +270,21 @@ namespace JMS.TV.Core
         {
             foreach (var device in m_devices)
                 device.TestIdle();
+        }
+
+        /// <summary>
+        /// Ermittelt einen Sender.
+        /// </summary>
+        /// <param name="sourceName">Der Name des Senders.</param>
+        /// <returns>Der gesuchte Sender.</returns>
+        public override Feed FindFeed( string sourceName )
+        {
+            // Look it up
+            var source = m_provider.Translate( sourceName );
+            if (source == null)
+                throw new ArgumentException( "unbekannter sender", "sourceName" );
+            else
+                return FindFeed( source );
         }
 
         /// <summary>
@@ -277,7 +327,25 @@ namespace JMS.TV.Core
 
                 // Make sure we can receive it
                 if (!EnsureFeed( source ))
-                    return false;
+                {
+                    // See if there is any device we can free
+                    var availableDevice =
+                        m_devices
+                            .Where( device => device.ReusePossible )
+                            .Aggregate( default( Device ), ( best, test ) => ((best != null) && (best.SecondaryFeeds.Count() <= test.SecondaryFeeds.Count())) ? best : test );
+
+                    // None
+                    if (availableDevice == null)
+                        return false;
+
+                    // Stop all secondaries
+                    foreach (var secondaryFeed in availableDevice.SecondaryFeeds)
+                        tx.ChangeSecondaryView( secondaryFeed, false );
+
+                    // Run test again
+                    if (!EnsureFeed( source ))
+                        return false;
+                }
 
                 // Mark as active
                 tx.ChangePrimaryView( FindFeed( source ), true );
