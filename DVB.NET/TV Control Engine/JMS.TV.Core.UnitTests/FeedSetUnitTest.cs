@@ -47,7 +47,7 @@ namespace JMS.TV.Core.UnitTests
             var cut = FeedSet.Create( FeedProviderMock.CreateDefault() );
 
             // Check it
-            cut.TryChangePrimaryView( "BBC 12" );
+            cut.TryStartPrimaryFeed( "BBC 12" );
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace JMS.TV.Core.UnitTests
             var cut = FeedSet.Create( provider );
 
             // Process
-            Assert.IsTrue( cut.TryChangePrimaryView( "WDR" ), "choose" );
+            Assert.IsTrue( cut.TryStartPrimaryFeed( "WDR" ), "choose" );
 
             // Ask for validation
             provider.AssertDevice( 0, "WDR" );
@@ -83,9 +83,9 @@ namespace JMS.TV.Core.UnitTests
             var cut = FeedSet.Create( provider );
 
             // Process
-            Assert.IsTrue( cut.TryChangePrimaryView( "WDR" ), "choose 1" );
-            Assert.IsTrue( cut.TryChangePrimaryView( "ARD" ), "choose 2" );
-            Assert.IsTrue( cut.TryChangePrimaryView( "VOX" ), "choose 3" );
+            Assert.IsTrue( cut.TryStartPrimaryFeed( "WDR" ), "choose 1" );
+            Assert.IsTrue( cut.TryStartPrimaryFeed( "ARD" ), "choose 2" );
+            Assert.IsTrue( cut.TryStartPrimaryFeed( "VOX" ), "choose 3" );
 
             // Ask for validation
             provider.AssertDevice( 0, "VOX" );
@@ -107,8 +107,8 @@ namespace JMS.TV.Core.UnitTests
             var cut = FeedSet.Create( provider );
 
             // Process
-            Assert.IsTrue( cut.TryChangePrimaryView( "WDR" ), "primary" );
-            Assert.IsTrue( cut.TryChangeSecondaryView( "ARD", true ), "secondary" );
+            Assert.IsTrue( cut.TryStartPrimaryFeed( "WDR" ), "primary" );
+            Assert.IsTrue( cut.TryStartSecondaryFeed( "ARD" ), "secondary" );
 
             // Ask for validation
             provider.AssertDevice( 0, "ARD", "WDR" );
@@ -130,8 +130,8 @@ namespace JMS.TV.Core.UnitTests
             var cut = FeedSet.Create( provider );
 
             // Process
-            Assert.IsTrue( cut.TryChangePrimaryView( "WDR" ), "primary" );
-            Assert.IsTrue( cut.TryChangeSecondaryView( "VOX", true ), "secondary" );
+            Assert.IsTrue( cut.TryStartPrimaryFeed( "WDR" ), "primary" );
+            Assert.IsTrue( cut.TryStartSecondaryFeed( "VOX" ), "secondary" );
 
             // Ask for validation
             provider.AssertDevice( 0, "WDR" );
@@ -154,8 +154,8 @@ namespace JMS.TV.Core.UnitTests
             var cut = FeedSet.Create( provider );
 
             // Process
-            Assert.IsTrue( cut.TryChangePrimaryView( "WDR" ), "primary" );
-            Assert.IsFalse( cut.TryChangeSecondaryView( "VOX", true ), "secondary" );
+            Assert.IsTrue( cut.TryStartPrimaryFeed( "WDR" ), "primary" );
+            Assert.IsFalse( cut.TryStartSecondaryFeed( "VOX" ), "secondary" );
 
             // Ask for validation
             provider.AssertDevice( 0, "WDR" );
@@ -177,23 +177,23 @@ namespace JMS.TV.Core.UnitTests
             var cut = FeedSet.Create( provider );
 
             // Process
-            Assert.IsTrue( cut.TryChangeSecondaryView( "RTL", true ), "secondary 1" );
-            Assert.IsTrue( cut.TryChangeSecondaryView( "Pro7", true ), "secondary 2" );
+            Assert.IsTrue( cut.TryStartSecondaryFeed( "RTL" ), "secondary 1" );
+            Assert.IsTrue( cut.TryStartSecondaryFeed( "Pro7" ), "secondary 2" );
 
             // Ask for validation
             provider.AssertDevice( 0, "RTL" );
             provider.AssertDevice( 1, "Pro7" );
 
             // Process
-            Assert.IsTrue( cut.TryChangePrimaryView( "Sat1" ), "primary 1" );
+            Assert.IsTrue( cut.TryStartPrimaryFeed( "Sat1" ), "primary 1" );
 
             // Ask for validation
             provider.AssertDevice( 0, "RTL" );
             provider.AssertDevice( 1, "Pro7", "Sat1" );
 
             // Process
-            Assert.IsTrue( cut.TryChangeSecondaryView( "VOX", true ), "secondary 3" );
-            Assert.IsTrue( cut.TryChangePrimaryView( "ARD" ), "primary 2" );
+            Assert.IsTrue( cut.TryStartSecondaryFeed( "VOX" ), "secondary 3" );
+            Assert.IsTrue( cut.TryStartPrimaryFeed( "ARD" ), "primary 2" );
 
             // Ask for validation
             provider.AssertDevice( 0, "RTL", "VOX" );
@@ -215,9 +215,9 @@ namespace JMS.TV.Core.UnitTests
             var cut = FeedSet.Create( provider );
 
             // Process
-            Assert.IsTrue( cut.TryChangePrimaryView( "RTL" ), "primary 1" );
-            Assert.IsTrue( cut.TryChangeSecondaryView( "VOX", true ), "secondary" );
-            Assert.IsTrue( cut.TryChangePrimaryView( "VOX" ), "primary 2" );
+            Assert.IsTrue( cut.TryStartPrimaryFeed( "RTL" ), "primary 1" );
+            Assert.IsTrue( cut.TryStartSecondaryFeed( "VOX" ), "secondary" );
+            Assert.IsTrue( cut.TryStartPrimaryFeed( "VOX" ), "primary 2" );
 
             // Validate
             Assert.AreSame( cut.FindFeed( "VOX" ), cut.PrimaryView, "primary" );
@@ -235,8 +235,8 @@ namespace JMS.TV.Core.UnitTests
             var cut = FeedSet.Create( provider );
 
             // Process
-            Assert.IsTrue( cut.TryChangeSecondaryView( "VOX", true ), "secondary on" );
-            Assert.IsTrue( cut.TryChangeSecondaryView( "VOX", false ), "secondary off" );
+            Assert.IsTrue( cut.TryStartSecondaryFeed( "VOX" ), "secondary on" );
+            Assert.IsTrue( cut.TryStopSecondaryFeed( "VOX" ), "secondary off" );
 
             // Test
             provider.AssertIdle( 0, 1, 2, 3 );

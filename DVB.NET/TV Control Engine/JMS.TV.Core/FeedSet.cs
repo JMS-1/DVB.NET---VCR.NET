@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace JMS.TV.Core
@@ -60,17 +58,37 @@ namespace JMS.TV.Core
         /// <summary>
         /// Verändert die primäre Anzeige.
         /// </summary>
-        /// <param name="source">Der Name des Senders.</param>
+        /// <param name="sourceName">Der Name des Senders.</param>
         /// <returns>Gesetzt, wenn die Änderung erfolgreich war.</returns>
-        public abstract bool TryChangePrimaryView( string source );
+        public abstract bool TryStartPrimaryFeed( string sourceName );
 
         /// <summary>
         /// Verändert eine sekundäre Anzeige.
         /// </summary>
-        /// <param name="source">Der Name des Senders.</param>
+        /// <param name="sourceName">Der Name des Senders.</param>
+        /// <returns>Gesetzt, wenn die Änderung erfolgreich war.</returns>
+        public bool TryStartSecondaryFeed( string sourceName )
+        {
+            return TryChangeSecondaryView( sourceName, true );
+        }
+
+        /// <summary>
+        /// Verändert eine sekundäre Anzeige.
+        /// </summary>
+        /// <param name="sourceName">Der Name des Senders.</param>
+        /// <returns>Gesetzt, wenn die Änderung erfolgreich war.</returns>
+        public bool TryStopSecondaryFeed( string sourceName )
+        {
+            return TryChangeSecondaryView( sourceName, false );
+        }
+
+        /// <summary>
+        /// Verändert eine sekundäre Anzeige.
+        /// </summary>
+        /// <param name="sourceName">Der Name des Senders.</param>
         /// <param name="activate">Gesetzt, wenn die Anzeige aktiviert werden soll.</param>
         /// <returns>Gesetzt, wenn die Änderung erfolgreich war.</returns>
-        public abstract bool TryChangeSecondaryView( string source, bool activate );
+        protected abstract bool TryChangeSecondaryView( string sourceName, bool activate );
 
         /// <summary>
         /// Meldet den primären Sender.
@@ -123,7 +141,7 @@ namespace JMS.TV.Core
             /// <summary>
             /// Meldet alle gerade verfügbaren Sender.
             /// </summary>
-            public IEnumerable<Feed<TSourceType>> Feeds { get { return m_feeds ?? Enumerable.Empty<Feed<TSourceType>>(); } }
+            public IEnumerable<Feed<TSourceType>> Feeds { get { return IsAllocated ? m_feeds : Enumerable.Empty<Feed<TSourceType>>(); } }
 
             /// <summary>
             /// Gesetzt, wenn das zugehörige Gerät zugewiesen wurde.
@@ -133,13 +151,13 @@ namespace JMS.TV.Core
             /// <summary>
             /// Gesetzt, wenn das Gerät zugewiesen wurde aber gerade nicht in Benutzung ist.
             /// </summary>
-            public bool IsIdle { get { return IsAllocated && m_feeds.All( feed => !feed.IsPrimaryView && !feed.IsSecondaryView ); } }
+            public bool IsIdle { get { return IsAllocated && m_feeds.All( feed => !feed.IsActive ); } }
 
             /// <summary>
             /// Gesetzt, wenn dieses Gerät nur für sekundäre Sender verwendet wird und daher eine Wiederbenutzung für
             /// wichtigere Aufgaben möglich ist.
             /// </summary>
-            public bool ReusePossible { get { return IsAllocated && m_feeds.All( feed => !feed.IsPrimaryView ); } }
+            public bool ReusePossible { get { return IsAllocated && m_feeds.All( feed => feed.ReusePossible ); } }
 
             /// <summary>
             /// Ermittelt alle sekundären Sender, die gerade in Benutzung sind.
@@ -292,7 +310,7 @@ namespace JMS.TV.Core
         /// </summary>
         /// <param name="sourceName">Die neue primäre Anzeige.</param>
         /// <returns>Gesetzt, wenn die Änderung erfolgreich war.</returns>
-        public override bool TryChangePrimaryView( string sourceName )
+        public override bool TryStartPrimaryFeed( string sourceName )
         {
             // Look it up
             var source = m_provider.Translate( sourceName );
@@ -364,7 +382,7 @@ namespace JMS.TV.Core
         /// <param name="sourceName">Der Name des Senders.</param>
         /// <param name="activate">Gesetzt, wenn die Anzeige aktiviert werden soll.</param>
         /// <returns>Gesetzt, wenn die Änderung erfolgreich war.</returns>
-        public override bool TryChangeSecondaryView( string sourceName, bool activate )
+        protected override bool TryChangeSecondaryView( string sourceName, bool activate )
         {
             // Look it up
             var source = m_provider.Translate( sourceName );
