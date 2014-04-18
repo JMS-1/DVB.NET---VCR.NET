@@ -32,5 +32,12 @@ namespace JMS.TV.Core
         /// <param name="source">Die geforderte Quelle.</param>
         /// <returns>Alle Quellen, die nun ohne Umschaltung von diesem gerät empfangen werden können.</returns>
         TSourceType[] Activate( int index, TSourceType source );
+
+        /// <summary>
+        /// Ermittelt zu einem Namen die zugehörige Quelle.
+        /// </summary>
+        /// <param name="sourceName">Der Name der Quelle.</param>
+        /// <returns>Die Quelle.</returns>
+        TSourceType Translate( string sourceName );
     }
 }

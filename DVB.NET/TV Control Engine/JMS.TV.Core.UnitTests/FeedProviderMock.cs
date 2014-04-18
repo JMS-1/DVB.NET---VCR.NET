@@ -88,7 +88,7 @@ namespace JMS.TV.Core.UnitTests
         /// <summary>
         /// Meldet die für die meisten Tests geeignete Standardverwaltung.
         /// </summary>
-        public static IFeedProvider<Source> Default
+        public static FeedProviderMock Default
         {
             get
             {
@@ -201,7 +201,7 @@ namespace JMS.TV.Core.UnitTests
         /// <returns>Die Liste aller Sender.</returns>
         public IEnumerator<Source> GetEnumerator()
         {
-            return m_sources.SelectMany( group => group ).OrderBy( name => name ).GetEnumerator();
+            return m_sources.SelectMany( group => group ).OrderBy( source => source.ToString() ).GetEnumerator();
         }
 
         /// <summary>
@@ -211,6 +211,33 @@ namespace JMS.TV.Core.UnitTests
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        /// <summary>
+        /// Ermittelt zu einem Namen die zugehörige Quelle.
+        /// </summary>
+        /// <param name="sourceName">Der Name der Quelle.</param>
+        /// <returns>Die Quelle.</returns>
+        Source IFeedProvider<Source>.Translate( string sourceName )
+        {
+            Source asKey = sourceName;
+
+            return this.SingleOrDefault( asKey.Equals );
+        }
+
+        /// <summary>
+        /// Prüft, ob ein bestimmtes Gerät einen bestimmten Sender empfängt.
+        /// </summary>
+        /// <param name="index">Die 0-basierte laufende Nummer des Gerätes.</param>
+        /// <param name="source">Die gewünschte Quelle.</param>
+        public void AssertDevice( int index, string source )
+        {
+            // Load map 
+            var group = m_devices[index];
+
+            // Test
+            Assert.IsNotNull( group, "device {0} not in use", index );
+            Assert.IsTrue( group.Contains( source ), "device {0} not receiving source {1}", index, source );
         }
     }
 }
