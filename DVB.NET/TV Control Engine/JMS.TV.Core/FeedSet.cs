@@ -25,7 +25,7 @@ namespace JMS.TV.Core
         /// </summary>
         /// <param name="provider">Die Verwaltung aller Sender.</param>
         /// <typeparam name="TSourceType">Die Art der Quellen.</typeparam>
-        public static FeedSet Create<TSourceType>( IFeedProvider<TSourceType> provider )
+        public static FeedSet Create<TSourceType>( IFeedProvider<TSourceType> provider ) where TSourceType : class
         {
             // Validate
             if (ReferenceEquals( provider, null ))
@@ -80,7 +80,7 @@ namespace JMS.TV.Core
     /// Beschreibt alle Sender, die zurzeit empfangen werden. 
     /// </summary>
     /// <typeparam name="TSourceType">Die Art der Quellen.</typeparam>
-    internal class FeedSet<TSourceType> : FeedSet
+    internal class FeedSet<TSourceType> : FeedSet where TSourceType : class
     {
         /// <summary>
         /// Verwaltete ein einzelnes Gerät.

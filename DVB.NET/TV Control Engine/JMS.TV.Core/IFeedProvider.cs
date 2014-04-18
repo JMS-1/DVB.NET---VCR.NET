@@ -6,7 +6,7 @@ namespace JMS.TV.Core
     /// Wird von einer Komponente angeboten, die Sender zur Verfügung stellt
     /// </summary>
     /// <typeparam name="TSourceType">Die Art der Quellen.</typeparam>
-    public interface IFeedProvider<TSourceType>
+    public interface IFeedProvider<TSourceType> where TSourceType : class
     {
         /// <summary>
         /// Meldet die maximale Anzahl von gleichzeitig empfangbaren Quellgruppen.
