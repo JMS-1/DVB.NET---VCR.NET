@@ -93,6 +93,31 @@ namespace JMS.TV.Core
         internal override bool ReusePossible { get { return base.ReusePossible && (m_activeRecordings.Count < 1); } }
 
         /// <summary>
+        /// Meldet alle aktiven Aufzeichnungen für diesen Sender.
+        /// </summary>
+        public IEnumerable<TRecordingType> Recordings { get { return m_activeRecordings; } }
+
+        /// <summary>
+        /// Prüft, ob eine bestimmte Aufzeichnung bereits aktiv ist.
+        /// </summary>
+        /// <param name="key">Die Identifikation der Aufzeichnung.</param>
+        /// <returns>Gesetzt, wenn die angegebene Aufzeichnung aktiv ist.</returns>
+        public bool IsRecording( TRecordingType key ) { return m_activeRecordings.Contains( key ); }
+
+        /// <summary>
+        /// Beendet eine Aufzeichnung.
+        /// </summary>
+        /// <param name="key">Die Identifikation der Aufzeichnung.</param>
+        /// <returns>Gesetzt, wenn die Aufzeichnung beendet wurde.</returns>
+        internal bool StopRecording( TRecordingType key ) { return m_activeRecordings.Remove( key ); }
+
+        /// <summary>
+        /// Beginnt eine Aufzeichnung.
+        /// </summary>
+        /// <param name="key">Die Identifikation der Aufzeichnung.</param>
+        internal void StartRecording( TRecordingType key ) { m_activeRecordings.Add( key ); }
+
+        /// <summary>
         /// Erstellt die Beschreibung eines Senders.
         /// </summary>
         internal Feed()

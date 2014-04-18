@@ -236,10 +236,93 @@ namespace JMS.TV.Core.UnitTests
 
             // Process
             Assert.IsTrue( cut.TryStartSecondaryFeed( "VOX" ), "secondary on" );
-            Assert.IsTrue( cut.TryStopSecondaryFeed( "VOX" ), "secondary off" );
+            cut.StopSecondaryFeed( "VOX" );
 
             // Test
             provider.AssertIdle( 0, 1, 2, 3 );
+        }
+
+        /// <summary>
+        /// Es kann eine einzelne Aufzeichnung gestartet werden.
+        /// </summary>
+        [TestMethod]
+        public void CanStartStandAloneRecording()
+        {
+            // Create component under test
+            var provider = FeedProviderMock.CreateDefault();
+            var cut = provider.CreateFeedSet();
+
+            // Start recording
+            Assert.IsTrue( cut.TryStartRecordingFeed( "ARD", 0 ), "record" );
+
+            // Test
+            Assert.IsNotNull( cut.PrimaryView, "primary" );
+            Assert.AreSame( cut.PrimaryView, cut.Recordings.Single(), "#recordings" );
+
+            // Stop it
+            cut.StopRecordingFeed( "ARD", 0 );
+
+            // Test
+            Assert.IsNotNull( cut.PrimaryView, "primary" );
+            Assert.IsFalse( cut.Recordings.Any(), "#recordings" );
+        }
+
+        /// <summary>
+        /// Es ist möglich, den gerade angezeigten Sender aufzuzeichnen.
+        /// </summary>
+        [TestMethod]
+        public void CanRecordPrimaryView()
+        {
+            // Create component under test
+            var provider = FeedProviderMock.CreateDefault( 1 );
+            var cut = provider.CreateFeedSet();
+
+            // Start recording
+            Assert.IsTrue( cut.TryStartPrimaryFeed( "ARD" ), "primary" );
+            Assert.IsTrue( cut.TryStartRecordingFeed( "ARD", 0 ), "record" );
+
+            // Test
+            Assert.IsNotNull( cut.PrimaryView, "primary" );
+            Assert.AreSame( cut.PrimaryView, cut.Recordings.Single(), "#recordings" );
+        }
+
+        /// <summary>
+        /// Es kann eine parallele Aufzeichnung gestartet werden.
+        /// </summary>
+        [TestMethod]
+        public void CanRecordParallelToPrimaryView()
+        {
+            // Create component under test
+            var provider = FeedProviderMock.CreateDefault( 1 );
+            var cut = provider.CreateFeedSet();
+
+            // Start recording
+            Assert.IsTrue( cut.TryStartPrimaryFeed( "ARD" ), "primary" );
+            Assert.IsTrue( cut.TryStartRecordingFeed( "WDR", 0 ), "record" );
+
+            // Test
+            Assert.IsNotNull( cut.PrimaryView, "primary" );
+            Assert.AreNotSame( cut.PrimaryView, cut.Recordings.Single(), "#recordings" );
+        }
+
+        /// <summary>
+        /// Eine Aufzeichnung kann den aktuellen Sender deaktivieren.
+        /// </summary>
+        [TestMethod]
+        public void RecordMayTerminatePrimaryView()
+        {
+            // Create component under test
+            var provider = FeedProviderMock.CreateDefault( 1 );
+            var cut = provider.CreateFeedSet();
+
+            // Start recording
+            Assert.IsTrue( cut.TryStartPrimaryFeed( "ARD" ), "primary" );
+            Assert.IsTrue( cut.TryStartRecordingFeed( "VOX", 0 ), "record" );
+
+            // Test
+            Assert.IsNotNull( cut.PrimaryView, "primary" );
+            Assert.AreSame( cut.FindFeed( "VOX" ), cut.PrimaryView, "new primary" );
+            Assert.AreSame( cut.PrimaryView, cut.Recordings.Single(), "#recordings" );
         }
     }
 }

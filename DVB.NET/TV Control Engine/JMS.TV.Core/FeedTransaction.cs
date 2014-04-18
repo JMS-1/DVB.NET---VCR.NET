@@ -65,6 +65,36 @@ namespace JMS.TV.Core
         }
 
         /// <summary>
+        /// Verändert die Aufzeichnung eines Senders.
+        /// </summary>
+        /// <typeparam name="TRecordingType">Die Art der Identifikation von Aufzeichnungen.</typeparam>
+        /// <param name="feed">Der Sender.</param>
+        /// <param name="key">Die Identifikation der Aufzeichung.</param>
+        /// <param name="newState">Gesetzt, wenn die Aufzeichnung begonnen werden soll.</param>
+        public void ChangeRecording<TRecordingType>( Feed<TRecordingType> feed, TRecordingType key, bool newState )
+        {
+            // Validate
+            if (feed.IsRecording( key ) == newState)
+                throw new ArgumentException( "Aufzeichnung des Senders unmöglich", "newState" );
+
+            // Change
+            if (newState)
+                feed.StartRecording( key );
+            else
+                feed.StopRecording( key );
+
+            // Create rollback action
+            m_rollbackActions.Add( () =>
+            {
+                // Reverse change
+                if (newState)
+                    feed.StopRecording( key );
+                else
+                    feed.StartRecording( key );
+            } );
+        }
+
+        /// <summary>
         /// Stellt sicher, dass alle Änderungen übernommen werden.
         /// </summary>
         public void Commit()
