@@ -124,7 +124,7 @@ namespace JMS.TV.Core
             {
                 if (m_feeds == null)
                     return;
-                if (m_feeds.Any( feed => feed.IsPrimaryView ))
+                if (m_feeds.Any( feed => feed.IsPrimaryView || feed.IsSecondaryView ))
                     return;
 
                 m_provider.ReleaseDevice( m_index );
@@ -249,26 +249,35 @@ namespace JMS.TV.Core
             // Prepare the change
             using (var tx = new FeedTransaction( TestIdle ))
             {
+                // See if we are secondary
+                var wasSecondary = (feed != null) && feed.IsSecondaryView;
+                if (wasSecondary)
+                    tx.ChangeSecondaryView( feed, false );
+
                 // Locate the current primary view
                 var primary = FindFeed( f => f.IsPrimaryView );
                 if (primary != null)
-                    tx.DiscardPrimary( primary );
-
-                // Make sure we can receive it
-                if (EnsureFeed( source ))
                 {
-                    // Mark as active
-                    FindFeed( source ).IsPrimaryView = true;
+                    // Primary operation                
+                    tx.ChangePrimaryView( primary, false );
 
-                    // Avoid cleanup
-                    tx.Commit();
-
-                    // Report success
-                    return true;
+                    // May want to swap views
+                    if (wasSecondary)
+                        tx.ChangeSecondaryView( primary, true );
                 }
 
-                // Failed
-                return false;
+                // Make sure we can receive it
+                if (!EnsureFeed( source ))
+                    return false;
+
+                // Mark as active
+                tx.ChangePrimaryView( FindFeed( source ), true );
+
+                // Avoid cleanup
+                tx.Commit();
+
+                // Report success
+                return true;
             }
         }
     }

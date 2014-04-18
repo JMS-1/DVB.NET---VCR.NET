@@ -88,19 +88,17 @@ namespace JMS.TV.Core.UnitTests
         /// <summary>
         /// Meldet die für die meisten Tests geeignete Standardverwaltung.
         /// </summary>
-        public static FeedProviderMock Default
+        /// <param name="numberOfDevices">Die Anzahl der zu verwendenden Geräte.</param>
+        public static FeedProviderMock CreateDefault( int numberOfDevices = 4 )
         {
-            get
-            {
-                return
-                    new FeedProviderMock( 1 )
+            return
+                new FeedProviderMock( numberOfDevices )
                     { 
                         { "ARD", "WDR", "MDR" },
                         { "ZDF", "KIKA" },
                         { "RTL", "VOX" },
                         { "Pro7", "SAT1" },
                     };
-            }
         }
 
         /// <summary>
@@ -238,6 +236,16 @@ namespace JMS.TV.Core.UnitTests
             // Test
             Assert.IsNotNull( group, "device {0} not in use", index );
             Assert.IsTrue( group.Contains( source ), "device {0} not receiving source {1}", index, source );
+        }
+
+        /// <summary>
+        /// Prüft, ob ein Geräte in Benutzung sind.
+        /// </summary>
+        /// <param name="indexes">Die Nummern der Geräte</param>
+        public void AssertIdle( params int[] indexes )
+        {
+            foreach (var index in indexes)
+                Assert.IsNull( m_devices[index], "device {0} is in use", index );
         }
     }
 }

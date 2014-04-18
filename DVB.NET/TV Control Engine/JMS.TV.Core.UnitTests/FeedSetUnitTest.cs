@@ -29,7 +29,7 @@ namespace JMS.TV.Core.UnitTests
         public void FeedSetInitiallyDoesNotProvideAPrimaryFeed()
         {
             // Create component under test
-            var cut = FeedSet.Create( FeedProviderMock.Default );
+            var cut = FeedSet.Create( FeedProviderMock.CreateDefault() );
 
             // Check it
             Assert.IsFalse( cut.Any(), "feeds found" );
@@ -42,7 +42,7 @@ namespace JMS.TV.Core.UnitTests
         public void InvalidSourceForPrimaryViewWillThrowException()
         {
             // Create component under test
-            var cut = FeedSet.Create( FeedProviderMock.Default );
+            var cut = FeedSet.Create( FeedProviderMock.CreateDefault() );
 
             // Check it
             cut.TryChangePrimaryView( "BBC 12" );
@@ -55,7 +55,7 @@ namespace JMS.TV.Core.UnitTests
         public void CanSetInitialPrimaryView()
         {
             // Create component under test
-            var provider = FeedProviderMock.Default;
+            var provider = FeedProviderMock.CreateDefault();
             var cut = FeedSet.Create( provider );
 
             // Process
@@ -63,6 +63,7 @@ namespace JMS.TV.Core.UnitTests
 
             // Ask for validation
             provider.AssertDevice( 0, "WDR" );
+            provider.AssertIdle( 1, 2, 3 );
         }
 
         /// <summary>
@@ -72,7 +73,7 @@ namespace JMS.TV.Core.UnitTests
         public void CanChangeInitialPrimaryView()
         {
             // Create component under test
-            var provider = FeedProviderMock.Default;
+            var provider = FeedProviderMock.CreateDefault();
             var cut = FeedSet.Create( provider );
 
             // Process
@@ -82,6 +83,7 @@ namespace JMS.TV.Core.UnitTests
 
             // Ask for validation
             provider.AssertDevice( 0, "VOX" );
+            provider.AssertIdle( 1, 2, 3 );
         }
     }
 }

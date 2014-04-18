@@ -19,6 +19,11 @@ namespace JMS.TV.Core
         public bool IsPrimaryView { get; set; }
 
         /// <summary>
+        /// Gesetzt, wenn dieser Sender gerade als Bild-In-Bild (PiP) angezeigt wird.
+        /// </summary>
+        public bool IsSecondaryView { get; set; }
+
+        /// <summary>
         /// Erstellt die Beschreibung eines Senders.
         /// </summary>
         internal Feed()

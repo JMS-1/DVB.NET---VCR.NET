@@ -32,17 +32,36 @@ namespace JMS.TV.Core
         /// Verändert den primären Sender.
         /// </summary>
         /// <param name="feed">Der betroffenen Sender.</param>
-        public void DiscardPrimary( Feed feed )
+        /// <param name="newState">Der gewünschte neue Zustand.</param>
+        public void ChangePrimaryView( Feed feed, bool newState )
         {
             // Validate
-            if (!feed.IsPrimaryView)
-                throw new ArgumentException( "Umschaltung des primären Senders unmöglich", "isPrimary" );
+            if (feed.IsPrimaryView == newState)
+                throw new ArgumentException( "Umschaltung des primären Senders unmöglich", "newState" );
 
             // Change
-            feed.IsPrimaryView = false;
+            feed.IsPrimaryView = newState;
 
             // Create rollback action
-            m_rollbackActions.Add( () => feed.IsPrimaryView = true );
+            m_rollbackActions.Add( () => feed.IsPrimaryView = !newState );
+        }
+
+        /// <summary>
+        /// Verändert einen sekundären Sender.
+        /// </summary>
+        /// <param name="feed">Der betroffenen Sender.</param>
+        /// <param name="newState">Der gewünschte neue Zustand.</param>
+        public void ChangeSecondaryView( Feed feed, bool newState )
+        {
+            // Validate
+            if (feed.IsSecondaryView == newState)
+                throw new ArgumentException( "Umschaltung des sekundären Senders unmöglich", "newState" );
+
+            // Change
+            feed.IsSecondaryView = newState;
+
+            // Create rollback action
+            m_rollbackActions.Add( () => feed.IsSecondaryView = !newState );
         }
 
         /// <summary>
