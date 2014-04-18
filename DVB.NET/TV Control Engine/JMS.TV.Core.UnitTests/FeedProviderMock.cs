@@ -227,15 +227,16 @@ namespace JMS.TV.Core.UnitTests
         /// Prüft, ob ein bestimmtes Gerät einen bestimmten Sender empfängt.
         /// </summary>
         /// <param name="index">Die 0-basierte laufende Nummer des Gerätes.</param>
-        /// <param name="source">Die gewünschte Quelle.</param>
-        public void AssertDevice( int index, string source )
+        /// <param name="sources">Die gewünschte Quelle.</param>
+        public void AssertDevice( int index, params string[] sources )
         {
             // Load map 
             var group = m_devices[index];
 
             // Test
             Assert.IsNotNull( group, "device {0} not in use", index );
-            Assert.IsTrue( group.Contains( source ), "device {0} not receiving source {1}", index, source );
+            foreach (var source in sources)
+                Assert.IsTrue( group.Contains( source ), "device {0} not receiving source {1}", index, source );
         }
 
         /// <summary>

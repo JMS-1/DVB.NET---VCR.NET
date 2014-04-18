@@ -85,5 +85,62 @@ namespace JMS.TV.Core.UnitTests
             provider.AssertDevice( 0, "VOX" );
             provider.AssertIdle( 1, 2, 3 );
         }
+
+        /// <summary>
+        /// Ein PiP kann ein Gerät mitbenutzen.
+        /// </summary>
+        [TestMethod]
+        public void CanActivateSecondaryOnSameDevice()
+        {
+            // Create component under test
+            var provider = FeedProviderMock.CreateDefault();
+            var cut = FeedSet.Create( provider );
+
+            // Process
+            Assert.IsTrue( cut.TryChangePrimaryView( "WDR" ), "primary" );
+            Assert.IsTrue( cut.TryChangeSecondaryView( "ARD", true ), "secondary" );
+
+            // Ask for validation
+            provider.AssertDevice( 0, "ARD", "WDR" );
+            provider.AssertIdle( 1, 2, 3 );
+        }
+
+        /// <summary>
+        /// Ein PiP kann ein neues Gerät verwenden.
+        /// </summary>
+        [TestMethod]
+        public void CanActivateSecondaryOnSecondDevice()
+        {
+            // Create component under test
+            var provider = FeedProviderMock.CreateDefault();
+            var cut = FeedSet.Create( provider );
+
+            // Process
+            Assert.IsTrue( cut.TryChangePrimaryView( "WDR" ), "primary" );
+            Assert.IsTrue( cut.TryChangeSecondaryView( "VOX", true ), "secondary" );
+
+            // Ask for validation
+            provider.AssertDevice( 0, "WDR" );
+            provider.AssertDevice( 1, "VOX" );
+            provider.AssertIdle( 2, 3 );
+        }
+
+        /// <summary>
+        /// Ein PiP kann eine primäre Anzeige nicht deaktivieren.
+        /// </summary>
+        [TestMethod]
+        public void SecondaryWillNotDeactivatePrimary()
+        {
+            // Create component under test
+            var provider = FeedProviderMock.CreateDefault( 1 );
+            var cut = FeedSet.Create( provider );
+
+            // Process
+            Assert.IsTrue( cut.TryChangePrimaryView( "WDR" ), "primary" );
+            Assert.IsFalse( cut.TryChangeSecondaryView( "VOX", true ), "secondary" );
+
+            // Ask for validation
+            provider.AssertDevice( 0, "WDR" );
+        }
     }
 }

@@ -56,6 +56,14 @@ namespace JMS.TV.Core
         /// <param name="source">Der Name des Senders.</param>
         /// <returns>Gesetzt, wenn die Änderung erfolgreich war.</returns>
         public abstract bool TryChangePrimaryView( string source );
+
+        /// <summary>
+        /// Verändert eine sekundäre Anzeige.
+        /// </summary>
+        /// <param name="source">Der Name des Senders.</param>
+        /// <param name="activate">Gesetzt, wenn die Anzeige aktiviert werden soll.</param>
+        /// <returns>Gesetzt, wenn die Änderung erfolgreich war.</returns>
+        public abstract bool TryChangeSecondaryView( string source, bool activate );
     }
 
     /// <summary>
@@ -195,13 +203,14 @@ namespace JMS.TV.Core
             // See if the is any active device idle
             foreach (var device in m_devices)
                 if (device.Feeds.Any())
-                {
-                    // Tune it
-                    device.EnsureFeed( source );
+                    if (device.Feeds.All( feed => !feed.IsPrimaryView ))
+                    {
+                        // Tune it
+                        device.EnsureFeed( source );
 
-                    // Report success
-                    return true;
-                }
+                        // Report success
+                        return true;
+                    }
 
             // See if the is any active not in use
             foreach (var device in m_devices)
@@ -272,6 +281,51 @@ namespace JMS.TV.Core
 
                 // Mark as active
                 tx.ChangePrimaryView( FindFeed( source ), true );
+
+                // Avoid cleanup
+                tx.Commit();
+
+                // Report success
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Verändert eine sekundäre Anzeige.
+        /// </summary>
+        /// <param name="sourceName">Der Name des Senders.</param>
+        /// <param name="activate">Gesetzt, wenn die Anzeige aktiviert werden soll.</param>
+        /// <returns>Gesetzt, wenn die Änderung erfolgreich war.</returns>
+        public override bool TryChangeSecondaryView( string sourceName, bool activate )
+        {
+            // Look it up
+            var source = m_provider.Translate( sourceName );
+            if (source == null)
+                throw new ArgumentException( "unbekannter sender", "sourceName" );
+
+            // Find the feed
+            var feed = FindFeed( source );
+            if (feed == null)
+            {
+                // If it's not there it's definitly inactive
+                if (!activate)
+                    return true;
+            }
+            else if (feed.IsSecondaryView == activate)
+                return true;
+            else if (feed.IsPrimaryView)
+                return false;
+
+            // Prepare the change
+            using (var tx = new FeedTransaction( TestIdle ))
+            {
+                // Make sure we can receive it
+                if (activate)
+                    if (!EnsureFeed( source ))
+                        return false;
+
+                // Mark as active
+                tx.ChangeSecondaryView( FindFeed( source ), activate );
 
                 // Avoid cleanup
                 tx.Commit();
