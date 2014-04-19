@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Device.cs" />
     <Compile Include="IFeed.cs" />
     <Compile Include="Feed.cs" />
     <Compile Include="IFeedSet.cs" />

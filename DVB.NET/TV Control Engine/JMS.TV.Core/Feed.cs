@@ -106,11 +106,18 @@ namespace JMS.TV.Core
         public void StartRecording( TRecordingType key ) { m_activeRecordings.Add( key ); }
 
         /// <summary>
+        /// Das zugehörige Gerät.
+        /// </summary>
+        private readonly Device<TSourceType, TRecordingType> m_device;
+
+        /// <summary>
         /// Erstellt eine neue Beschreibung.
         /// </summary>
         /// <param name="source">Die zugehörige Quelle.</param>
-        public Feed( TSourceType source )
+        /// <param name="device">Das zugehörige Gerät.</param>
+        public Feed( TSourceType source, Device<TSourceType, TRecordingType> device )
         {
+            m_device = device;
             Source = source;
         }
 

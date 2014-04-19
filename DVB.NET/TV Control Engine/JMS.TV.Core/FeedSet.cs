@@ -13,97 +13,6 @@ namespace JMS.TV.Core
     internal class FeedSet<TSourceType, TRecordingType> : IFeedSet<TRecordingType> where TSourceType : class
     {
         /// <summary>
-        /// Verwaltete ein einzelnes Gerät.
-        /// </summary>
-        private class Device
-        {
-            /// <summary>
-            /// Verwaltet alle verfügbaren Sender.
-            /// </summary>
-            private readonly IFeedProvider<TSourceType> m_provider;
-
-            /// <summary>
-            /// Die laufende Nummer des Geräte.
-            /// </summary>
-            private readonly int m_index;
-
-            /// <summary>
-            /// Alle gerade verfügbaren Sender.
-            /// </summary>
-            private volatile Feed<TSourceType, TRecordingType>[] m_feeds = null;
-
-            /// <summary>
-            /// Erstellt ein neues Gerät.
-            /// </summary>
-            /// <param name="index">Die laufende Nummer des Gerätes.</param>
-            /// <param name="provider">Die Verwaltung aller Quellen.</param>
-            public Device( int index, IFeedProvider<TSourceType> provider )
-            {
-                m_provider = provider;
-                m_index = index;
-            }
-
-            /// <summary>
-            /// Meldet alle gerade verfügbaren Sender.
-            /// </summary>
-            public IEnumerable<Feed<TSourceType, TRecordingType>> Feeds { get { return IsAllocated ? m_feeds : Enumerable.Empty<Feed<TSourceType, TRecordingType>>(); } }
-
-            /// <summary>
-            /// Gesetzt, wenn das zugehörige Gerät zugewiesen wurde.
-            /// </summary>
-            public bool IsAllocated { get { return (m_feeds != null); } }
-
-            /// <summary>
-            /// Gesetzt, wenn das Gerät zugewiesen wurde aber gerade nicht in Benutzung ist.
-            /// </summary>
-            public bool IsIdle { get { return IsAllocated && m_feeds.All( feed => !feed.IsActive ); } }
-
-            /// <summary>
-            /// Gesetzt, wenn dieses Gerät nur für sekundäre Sender verwendet wird und daher eine Wiederbenutzung für
-            /// wichtigere Aufgaben möglich ist.
-            /// </summary>
-            public bool ReusePossible { get { return IsAllocated && m_feeds.All( feed => feed.ReusePossible ); } }
-
-            /// <summary>
-            /// Ermittelt alle sekundären Sender, die gerade in Benutzung sind.
-            /// </summary>
-            public IEnumerable<Feed<TSourceType, TRecordingType>> SecondaryFeeds { get { return Feeds.Where( feed => feed.IsSecondaryView ); } }
-
-            /// <summary>
-            /// Stellt den Empfang einer Quelle sicher.
-            /// </summary>
-            /// <param name="source">Die gewünschte Quelle.</param>
-            public void EnsureFeed( TSourceType source )
-            {
-                m_feeds =
-                    m_provider
-                        .Activate( m_index, source )
-                        .Select( sourceOnGroup => new Feed<TSourceType, TRecordingType>( sourceOnGroup ) )
-                        .ToArray();
-            }
-
-            /// <summary>
-            /// Aktiviert das Gerät.
-            /// </summary>
-            public void EnsureDevice()
-            {
-                m_provider.AllocateDevice( m_index );
-            }
-
-            /// <summary>
-            /// Deaktiviert das Gerät, wenn es nicht mehr benötigt wird.
-            /// </summary>
-            public void TestIdle()
-            {
-                if (!IsIdle)
-                    return;
-
-                m_provider.ReleaseDevice( m_index );
-                m_feeds = null;
-            }
-        }
-
-        /// <summary>
         /// Verwaltet alle verfügbaren Sender.
         /// </summary>
         private readonly IFeedProvider<TSourceType> m_provider;
@@ -111,7 +20,7 @@ namespace JMS.TV.Core
         /// <summary>
         /// Alle zur Verfügung stehenden Geräte.
         /// </summary>
-        private readonly Device[] m_devices;
+        private readonly Device<TSourceType, TRecordingType>[] m_devices;
 
         /// <summary>
         /// Erstellt eine neue Beschreibung.
@@ -119,7 +28,7 @@ namespace JMS.TV.Core
         /// <param name="provider">Die Verwaltung aller Sender.</param>
         public FeedSet( IFeedProvider<TSourceType> provider )
         {
-            m_devices = Enumerable.Range( 0, provider.NumberOfDevices ).Select( i => new Device( i, provider ) ).ToArray();
+            m_devices = Enumerable.Range( 0, provider.NumberOfDevices ).Select( i => new Device<TSourceType, TRecordingType>( i, provider ) ).ToArray();
             m_provider = provider;
         }
 
@@ -173,7 +82,7 @@ namespace JMS.TV.Core
             var availableDevice =
                 m_devices
                     .Where( device => device.ReusePossible )
-                    .Aggregate( default( Device ), ( best, test ) => ((best != null) && (best.SecondaryFeeds.Count() <= test.SecondaryFeeds.Count())) ? best : test );
+                    .Aggregate( default( Device<TSourceType, TRecordingType> ), ( best, test ) => ((best != null) && (best.SecondaryFeeds.Count() <= test.SecondaryFeeds.Count())) ? best : test );
 
             // None
             if (availableDevice == null)
