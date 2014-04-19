@@ -4,8 +4,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 12.0.30324.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JMS.TV.Core", "JMS.TV.Core\JMS.TV.Core.csproj", "{8911CA26-C985-40B2-B8AF-3DF851F07569}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6662DE38-74C1-4432-9512-C7E94C2EFDFA} = {6662DE38-74C1-4432-9512-C7E94C2EFDFA}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JMS.TV.Core.UnitTests", "JMS.TV.Core.UnitTests\JMS.TV.Core.UnitTests.csproj", "{9F2A6B0C-4825-4E7B-9225-2F9F34175B99}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6662DE38-74C1-4432-9512-C7E94C2EFDFA} = {6662DE38-74C1-4432-9512-C7E94C2EFDFA}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JMS.DVB.SourceManagement", "..\SourceManagement\JMS.DVB.SourceManagement.csproj", "{6662DE38-74C1-4432-9512-C7E94C2EFDFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JMS.DVB.HardwareAbstraction", "..\HardwareAbstraction\JMS.DVB.HardwareAbstraction.csproj", "{76D4B1A1-14FF-4265-8351-06DFD98F2DC3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6662DE38-74C1-4432-9512-C7E94C2EFDFA} = {6662DE38-74C1-4432-9512-C7E94C2EFDFA}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +34,14 @@ Global
 		{9F2A6B0C-4825-4E7B-9225-2F9F34175B99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F2A6B0C-4825-4E7B-9225-2F9F34175B99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F2A6B0C-4825-4E7B-9225-2F9F34175B99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6662DE38-74C1-4432-9512-C7E94C2EFDFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6662DE38-74C1-4432-9512-C7E94C2EFDFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6662DE38-74C1-4432-9512-C7E94C2EFDFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6662DE38-74C1-4432-9512-C7E94C2EFDFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76D4B1A1-14FF-4265-8351-06DFD98F2DC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76D4B1A1-14FF-4265-8351-06DFD98F2DC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76D4B1A1-14FF-4265-8351-06DFD98F2DC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76D4B1A1-14FF-4265-8351-06DFD98F2DC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
