@@ -113,5 +113,32 @@ namespace JMS.TV.Core
         {
             Source = source;
         }
+
+        /// <summary>
+        /// Meldet einen Anzeigenamen zu Testzwecken.
+        /// </summary>
+        /// <returns>Der gewünschte Anzeigename.</returns>
+        public override string ToString()
+        {
+            // Operations
+            var op = string.Empty;
+
+            // Views
+            if (IsPrimaryView)
+                op = " primary";
+            else if (IsSecondaryView)
+                op = " secondary";
+
+            // Recordings
+            foreach (var recording in m_activeRecordings)
+                op = string.Format( "{0} record({1})", op, recording );
+
+            // Idle
+            if (string.IsNullOrEmpty( op ))
+                op = " (idle)";
+
+            // Report
+            return string.Format( "{0}{1}", Source, op );
+        }
     }
 }

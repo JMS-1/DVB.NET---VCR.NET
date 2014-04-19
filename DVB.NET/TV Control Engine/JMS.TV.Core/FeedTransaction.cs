@@ -17,6 +17,11 @@ namespace JMS.TV.Core
         private readonly List<Action> m_rollbackActions = new List<Action>();
 
         /// <summary>
+        /// Alle Aktionen die bei einem sauberen Abschluss der Änderungen ausgeführt werden müssen.
+        /// </summary>
+        private readonly List<Action> m_commitActions = new List<Action>();
+
+        /// <summary>
         /// Die zugehörige Senderverwaltung.
         /// </summary>
         private readonly FeedSet<TSourceType, TRecordingType> m_feedSet;
@@ -55,6 +60,7 @@ namespace JMS.TV.Core
             feed.IsPrimaryView = newState;
 
             // Create rollback action
+            m_commitActions.Add( () => m_feedSet.OnPrimaryViewChanged( feed, newState ) );
             m_rollbackActions.Add( () => feed.IsPrimaryView = !newState );
         }
 
@@ -83,6 +89,7 @@ namespace JMS.TV.Core
             feed.IsSecondaryView = newState;
 
             // Create rollback action
+            m_commitActions.Add( () => m_feedSet.OnSecondaryViewChanged( feed, newState ) );
             m_rollbackActions.Add( () => feed.IsSecondaryView = !newState );
         }
 
@@ -105,6 +112,7 @@ namespace JMS.TV.Core
                 feed.StopRecording( key );
 
             // Create rollback action
+            m_commitActions.Add( () => m_feedSet.OnRecordingChanged( feed, key, newState ) );
             m_rollbackActions.Add( () =>
             {
                 // Reverse change
@@ -121,6 +129,7 @@ namespace JMS.TV.Core
         public void Commit()
         {
             m_rollbackActions.Clear();
+            m_commitActions.ForEach( commit => commit() );
         }
 
         /// <summary>

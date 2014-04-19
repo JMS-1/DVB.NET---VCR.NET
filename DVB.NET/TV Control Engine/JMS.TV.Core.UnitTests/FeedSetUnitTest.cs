@@ -205,10 +205,10 @@ namespace JMS.TV.Core.UnitTests
         }
 
         /// <summary>
-        /// Wird ein sekundärer Sender zum primären, so wird der vorher primäre zum sekundären.
+        /// Wird ein sekundärer Sender zum primären, so wird der vorher sekundären deaktiviert.
         /// </summary>
         [TestMethod]
-        public void PrimaryViewRequestMaySwapWithActiveSecondary()
+        public void PrimaryViewRequestWillDeactiveSecondary()
         {
             // Create component under test
             var provider = FeedProviderMock.CreateDefault();
@@ -221,7 +221,7 @@ namespace JMS.TV.Core.UnitTests
 
             // Validate
             Assert.AreSame( cut.FindFeed( "VOX" ), cut.PrimaryView, "primary" );
-            Assert.AreSame( cut.FindFeed( "RTL" ), cut.SecondaryViews.Single(), "secondary" );
+            Assert.IsFalse( cut.SecondaryViews.Any(), "#secondary" );
         }
 
         /// <summary>
@@ -338,13 +338,20 @@ namespace JMS.TV.Core.UnitTests
             // Start recording
             Assert.IsTrue( cut.TryStartRecordingFeed( "VOX", 0 ), "record 1" );
             Assert.IsFalse( cut.TryStartRecordingFeed( "MDR", 1 ), "record 2" );
+
+            // Test
+            Assert.IsNotNull( cut.PrimaryView, "primary" );
+            Assert.AreSame( cut.FindFeed( "VOX" ), cut.PrimaryView, "primary" );
+            Assert.AreSame( cut.PrimaryView, cut.Recordings.Single(), "#recordings" );
+
+            provider.AssertDevice( 0, "VOX" );
         }
 
         /// <summary>
         /// Eine Aufzeichnung wird ein sekundäres Betrachten beenden.
         /// </summary>
         [TestMethod]
-        public void NewRecordingWillNotStopSecondary()
+        public void NewRecordingWillStopSecondary()
         {
             // Create component under test
             var provider = FeedProviderMock.CreateDefault( 1 );
@@ -377,6 +384,35 @@ namespace JMS.TV.Core.UnitTests
             Assert.AreSame( cut.FindFeed( "VOX" ), cut.PrimaryView, "primary" );
             Assert.AreSame( cut.PrimaryView, cut.Recordings.Single(), "recording" );
             Assert.IsFalse( cut.SecondaryViews.Any(), "#secondaries" );
+        }
+
+        /// <summary>
+        /// Es ist möglich, die Senderverwaltung zu beenden.
+        /// </summary>
+        [TestMethod]
+        public void CanTerminate()
+        {
+            // Create component under test
+            var provider = FeedProviderMock.CreateDefault();
+            var cut = provider.CreateFeedSet();
+
+            // Start all
+            Assert.IsTrue( cut.TryStartPrimaryFeed( "MDR" ), "primary" );
+            Assert.IsTrue( cut.TryStartSecondaryFeed( "Pro7" ), "secondary" );
+            Assert.IsTrue( cut.TryStartRecordingFeed( "VOX", 0 ), "record 1" );
+            Assert.IsTrue( cut.TryStartRecordingFeed( "RTL", 1 ), "record 2" );
+
+            // Validate
+            provider.AssertDevice( 0, "MDR" );
+            provider.AssertDevice( 1, "Pro7" );
+            provider.AssertDevice( 2, "VOX", "RTL" );
+            provider.AssertIdle( 3 );
+
+            // Request termination
+            cut.Shutdown();
+
+            // Validate
+            provider.AssertIdle( 0, 1, 2, 3 );
         }
     }
 }

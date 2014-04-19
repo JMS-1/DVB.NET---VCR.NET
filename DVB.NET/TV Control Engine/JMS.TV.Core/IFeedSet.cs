@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 
 namespace JMS.TV.Core
@@ -50,6 +51,21 @@ namespace JMS.TV.Core
         /// </summary>
         /// <param name="sourceName">Der Name des Senders.</param>
         void StopSecondaryFeed( string sourceName );
+
+        /// <summary>
+        /// Beendet alle Aufträge.
+        /// </summary>
+        void Shutdown();
+
+        /// <summary>
+        /// Wird ausgelöst, wenn sich die Sichtbarkeit des primären Senders tatsächlich verändert hat.
+        /// </summary>
+        event Action<IFeed, bool> PrimaryViewVisibilityChanged;
+
+        /// <summary>
+        /// Wird ausgelöst, wenn sich die Sichtbarkeit eines sekundären Senders tatsächlich verändert hat.
+        /// </summary>
+        event Action<IFeed, bool> SecondaryViewVisibilityChanged;
     }
 
     /// <summary>
@@ -100,5 +116,10 @@ namespace JMS.TV.Core
         /// <param name="sourceName">Der Name des Senders.</param>
         /// <param name="key">Die Identifikation der Aufzeichnung.</param>
         void StopRecordingFeed( string sourceName, TRecordingType key );
+
+        /// <summary>
+        /// Wird ausgelöst, wenn sich eine Aufzeichnung verändert hat.
+        /// </summary>
+        event Action<IFeed<TRecordingType>, TRecordingType, bool> RecordingStateChanged;
     }
 }

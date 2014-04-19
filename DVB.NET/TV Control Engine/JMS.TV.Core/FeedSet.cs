@@ -75,7 +75,7 @@ namespace JMS.TV.Core
             /// <param name="source">Die gewünschte Quelle.</param>
             public void EnsureFeed( TSourceType source )
             {
-                m_feeds = 
+                m_feeds =
                     m_provider
                         .Activate( m_index, source )
                         .Select( sourceOnGroup => new Feed<TSourceType, TRecordingType>( sourceOnGroup ) )
@@ -298,28 +298,21 @@ namespace JMS.TV.Core
             using (var tx = BeginChange())
             {
                 // See if we are secondary
-                var wasSecondary = (feed != null) && feed.IsSecondaryView;
-                if (wasSecondary)
-                    tx.ChangeSecondaryView( feed, false );
+                if (feed != null)
+                    if (feed.IsSecondaryView)
+                        tx.ChangeSecondaryView( feed, false );
 
                 // Locate the current primary view
                 var previous = PrimaryView;
                 if (previous != null)
-                {
-                    // Primary operation                
                     tx.ChangePrimaryView( previous, false );
-
-                    // May want to swap views
-                    if (wasSecondary)
-                        tx.ChangeSecondaryView( previous, true );
-                }
 
                 // Make sure we can receive it
                 if (!EnsurePrimaryFeed( source, tx ))
                     return false;
 
                 // Mark as active
-                tx.ChangePrimaryView( source , true );
+                tx.ChangePrimaryView( source, true );
 
                 // Avoid cleanup
                 tx.Commit();
@@ -426,6 +419,69 @@ namespace JMS.TV.Core
         /// Meldet alle Sender, auf denen Aufzeichnungen aktiv sind.
         /// </summary>
         IEnumerable<IFeed<TRecordingType>> IFeedSet<TRecordingType>.Recordings { get { return Recordings; } }
+
+        /// <summary>
+        /// Beendet alle Aufträge.
+        /// </summary>
+        public void Shutdown()
+        {
+            // Prepare the change
+            using (var tx = BeginChange())
+            {
+                // All feeds
+                foreach (var feed in Feeds)
+                {
+                    // Primary
+                    if (feed.IsPrimaryView)
+                        tx.ChangePrimaryView( feed, false );
+
+                    // Secondary
+                    if (feed.IsSecondaryView)
+                        tx.ChangeSecondaryView( feed, false );
+
+                    // Recording
+                    foreach (var recording in feed.Recordings.ToArray())
+                        tx.ChangeRecording( feed, recording, false );
+                }
+
+                // Process all
+                tx.Commit();
+            }
+        }
+
+        /// <summary>
+        /// Wird ausgelöst, wenn sich die Sichtbarkeit des primären Senders tatsächlich verändert hat.
+        /// </summary>
+        public event Action<IFeed, bool> PrimaryViewVisibilityChanged;
+
+        /// <summary>
+        /// Wird ausgelöst, wenn sich die Sichtbarkeit eines sekundären Senders tatsächlich verändert hat.
+        /// </summary>
+        public event Action<IFeed, bool> SecondaryViewVisibilityChanged;
+
+        /// <summary>
+        /// Meldet, dass sich die Sichtbarkeit des primären Senders verändert hat.
+        /// </summary>
+        /// <param name="feed">Der betroffene Sender.</param>
+        /// <param name="show">Gesetzt, wenn der Sender angezeigt werden soll.</param>
+        public void OnPrimaryViewChanged( Feed<TSourceType, TRecordingType> feed, bool show )
+        {
+            var sink = PrimaryViewVisibilityChanged;
+            if (sink != null)
+                sink( feed, show );
+        }
+
+        /// <summary>
+        /// Meldet, dass sich die Sichtbarkeit eines sekundären Senders verändert hat.
+        /// </summary>
+        /// <param name="feed">Der betroffene Sender.</param>
+        /// <param name="show">Gesetzt, wenn der Sender angezeigt werden soll.</param>
+        public void OnSecondaryViewChanged( Feed<TSourceType, TRecordingType> feed, bool show )
+        {
+            var sink = SecondaryViewVisibilityChanged;
+            if (sink != null)
+                sink( feed, show );
+        }
 
         #endregion
 
@@ -534,6 +590,24 @@ namespace JMS.TV.Core
                 // Avoid cleanup
                 tx.Commit();
             }
+        }
+
+        /// <summary>
+        /// Wird ausgelöst, wenn sich eine Aufzeichnung verändert hat.
+        /// </summary>
+        public event Action<IFeed<TRecordingType>, TRecordingType, bool> RecordingStateChanged;
+
+        /// <summary>
+        /// Wird ausgelöst, wenn sich der Zustand eine Aufzeichnung verändert hat.
+        /// </summary>
+        /// <param name="feed">Der betroffene Sender.</param>
+        /// <param name="key">Die betroffene Aufzeichnung.</param>
+        /// <param name="start">Gesetzt, wenn die Aufzeichnung begonnen werden soll.</param>
+        public void OnRecordingChanged( Feed<TSourceType, TRecordingType> feed, TRecordingType key, bool start )
+        {
+            var sink = RecordingStateChanged;
+            if (sink != null)
+                sink( feed, key, start );
         }
 
         #endregion

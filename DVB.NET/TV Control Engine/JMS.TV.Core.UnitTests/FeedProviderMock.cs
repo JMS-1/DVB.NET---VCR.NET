@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -255,7 +256,16 @@ namespace JMS.TV.Core.UnitTests
         /// <returns>Die angeforderte Verwaltung.</returns>
         public IFeedSet<int> CreateFeedSet()
         {
-            return TvController.CreateFeedSet<Source, int>( this );
+            // Create
+            var feedSet = TvController.CreateFeedSet<Source, int>( this );
+
+            // Configure
+            feedSet.PrimaryViewVisibilityChanged += ( f, v ) => Trace.TraceInformation( "Primary {0}: {1}", v ? "on" : "off", f );
+            feedSet.SecondaryViewVisibilityChanged += ( f, v ) => Trace.TraceInformation( "Secondary {0}: {1}", v ? "on" : "off", f );
+            feedSet.RecordingStateChanged += ( f, r, v ) => Trace.TraceInformation( "Recording {0} now {1}: {2}", r, v ? "on" : "off", f );
+
+            // Report
+            return feedSet;
         }
     }
 }
