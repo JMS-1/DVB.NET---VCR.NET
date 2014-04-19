@@ -66,41 +66,11 @@ namespace JMS.TV.Core
         /// Wird ausgelöst, wenn sich die Sichtbarkeit eines sekundären Senders tatsächlich verändert hat.
         /// </summary>
         event Action<IFeed, bool> SecondaryViewVisibilityChanged;
-    }
-
-    /// <summary>
-    /// Beschreibt alle Sender, die zurzeit empfangen werden. 
-    /// </summary>
-    /// <typeparam name="TRecordingType">Die Art der Identifikation von Aufzeichnungen.</typeparam>
-    public interface IFeedSet<TRecordingType> : IFeedSet
-    {
-        /// <summary>
-        /// Meldet alle über diese Verwaltung verfügbaren Sender.
-        /// </summary>
-        /// <returns>Die Liste der Sender.</returns>
-        new IEnumerable<IFeed<TRecordingType>> Feeds { get; }
-
-        /// <summary>
-        /// Meldet den primären Sender.
-        /// </summary>
-        new IFeed<TRecordingType> PrimaryView { get; }
-
-        /// <summary>
-        /// Meldet alle sekundären Sender.
-        /// </summary>
-        new IEnumerable<IFeed<TRecordingType>> SecondaryViews { get; }
 
         /// <summary>
         /// Meldet alle Sender, auf denen Aufzeichnungen aktiv sind.
         /// </summary>
-        IEnumerable<IFeed<TRecordingType>> Recordings { get; }
-
-        /// <summary>
-        /// Ermittelt einen Sender.
-        /// </summary>
-        /// <param name="sourceName">Der Name des Senders.</param>
-        /// <returns>Der gesuchte Sender.</returns>
-        new IFeed<TRecordingType> FindFeed( string sourceName );
+        IEnumerable<IFeed> Recordings { get; }
 
         /// <summary>
         /// Beginnt eine Aufzeichnung.
@@ -108,18 +78,18 @@ namespace JMS.TV.Core
         /// <param name="sourceName">Der Name des Senders.</param>
         /// <param name="key">Die Identifikation der Aufzeichnung.</param>
         /// <returns>Gesetzt, wenn der Start erfolgreich war.</returns>
-        bool TryStartRecordingFeed( string sourceName, TRecordingType key );
+        bool TryStartRecordingFeed( string sourceName, string key );
 
         /// <summary>
         /// Beendet eine Aufzeichnung.
         /// </summary>
         /// <param name="sourceName">Der Name des Senders.</param>
         /// <param name="key">Die Identifikation der Aufzeichnung.</param>
-        void StopRecordingFeed( string sourceName, TRecordingType key );
+        void StopRecordingFeed( string sourceName, string key );
 
         /// <summary>
         /// Wird ausgelöst, wenn sich eine Aufzeichnung verändert hat.
         /// </summary>
-        event Action<IFeed<TRecordingType>, TRecordingType, bool> RecordingStateChanged;
+        event Action<IFeed, string, bool> RecordingStateChanged;
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using JMS.DVB;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 
@@ -11,81 +12,8 @@ namespace JMS.TV.Core.UnitTests
     /// <summary>
     /// Simuliert den Zugriff auf Quellen.
     /// </summary>
-    public class FeedProviderMock : IFeedProvider<FeedProviderMock.Source>, IEnumerable<FeedProviderMock.Source>
+    public class FeedProviderMock : IFeedProvider, IEnumerable<SourceSelection>
     {
-        /// <summary>
-        /// Repräsentiert eine einzelne Quelle.
-        /// </summary>
-        public sealed class Source : IEquatable<Source>
-        {
-            /// <summary>
-            /// Der Algorithmus zum Vergleich von Namen.
-            /// </summary>
-            private static readonly StringComparer _Comparer = StringComparer.InvariantCultureIgnoreCase;
-
-            /// <summary>
-            /// Der Name der Quelle.
-            /// </summary>
-            private readonly string m_name;
-
-            /// <summary>
-            /// Erstellt eine neue Quelle.
-            /// </summary>
-            /// <param name="name">Der Name der Quelle.</param>
-            private Source( string name )
-            {
-                m_name = name ?? string.Empty;
-            }
-
-            /// <summary>
-            /// Erstellt eine neue Quelle.
-            /// </summary>
-            /// <param name="name">Der Name der Quelle.</param>
-            /// <returns>Die gewünschte Quelle.</returns>
-            public static implicit operator Source( string name ) { return new Source( name ); }
-
-            /// <summary>
-            /// Vergleicht eine Quelle mit einer anderen.
-            /// </summary>
-            /// <param name="other">Irgendeine Quelle.</param>
-            /// <returns>Gesetzt, wenn es sich eine Quelle mit dem selben Namen handelt.</returns>
-            public bool Equals( Source other )
-            {
-                if (ReferenceEquals( other, null ))
-                    return false;
-                else
-                    return _Comparer.Equals( m_name, other.m_name );
-            }
-
-            /// <summary>
-            /// Vergleicht eine Quelle mit einem beliebigen Objekt.
-            /// </summary>
-            /// <param name="obj">Irgendein Objekt.</param>
-            /// <returns>Gesetzt, wenn das Objekt eine Quelle mit dem selben Namen ist.</returns>
-            public override bool Equals( object obj )
-            {
-                return Equals( obj as Source );
-            }
-
-            /// <summary>
-            /// Meldet ein Kürzel für die Quelle.
-            /// </summary>
-            /// <returns>Das gewünschte Kürzel.</returns>
-            public override int GetHashCode()
-            {
-                return _Comparer.GetHashCode( m_name );
-            }
-
-            /// <summary>
-            /// Meldet den Namen der Quelle.
-            /// </summary>
-            /// <returns>Der Name der Quelle.</returns>
-            public override string ToString()
-            {
-                return m_name;
-            }
-        }
-
         /// <summary>
         /// Meldet die für die meisten Tests geeignete Standardverwaltung.
         /// </summary>
@@ -103,44 +31,49 @@ namespace JMS.TV.Core.UnitTests
         }
 
         /// <summary>
+        /// Hilft bei dem Erstellen von Quellbeschreibungen.
+        /// </summary>
+        private readonly Dictionary<string, SourceSelection> m_mockedSources = new Dictionary<string, SourceSelection>( StringComparer.InvariantCultureIgnoreCase );
+
+        /// <summary>
         /// Alle Quellen.
         /// </summary>
-        private readonly List<HashSet<Source>> m_sources = new List<HashSet<Source>>();
+        private readonly List<HashSet<SourceSelection>> m_sources = new List<HashSet<SourceSelection>>();
 
         /// <summary>
         /// Alle Geräte samt deren Belegung.
         /// </summary>
-        private HashSet<Source>[] m_devices = { };
+        private HashSet<SourceSelection>[] m_devices = { };
 
         /// <summary>
         /// Meldet alle Geräte.
         /// </summary>
-        public ICollection<IEnumerable<Source>> Devices { get { return m_devices; } }
+        public ICollection<IEnumerable<SourceSelection>> Devices { get { return m_devices; } }
 
         /// <summary>
         /// Meldet die Anzahl der Geräte.
         /// </summary>
-        int IFeedProvider<Source>.NumberOfDevices { get { return m_devices.Length; } }
+        int IFeedProvider.NumberOfDevices { get { return m_devices.Length; } }
 
         /// <summary>
         /// Reserviert ein Gerät.
         /// </summary>
         /// <param name="index">Die 0-basierte laufende Nummer des gewünschten Gerätes.</param>
-        void IFeedProvider<Source>.AllocateDevice( int index )
+        void IFeedProvider.AllocateDevice( int index )
         {
             // Validate
             Assert.IsTrue( (index >= 0) && (index < m_devices.Length), "out of range" );
             Assert.IsNull( m_devices[index], "already allocated" );
 
             // Allocate
-            m_devices[index] = new HashSet<Source>();
+            m_devices[index] = new HashSet<SourceSelection>();
         }
 
         /// <summary>
         /// Gibt ein Gerät wieder frei.
         /// </summary>
         /// <param name="index">Die 0-basierte laufende Nummer des gewünschten Gerätes.</param>
-        void IFeedProvider<Source>.ReleaseDevice( int index )
+        void IFeedProvider.ReleaseDevice( int index )
         {
             // Validate
             Assert.IsTrue( (index >= 0) && (index < m_devices.Length), "out of range" );
@@ -156,7 +89,7 @@ namespace JMS.TV.Core.UnitTests
         /// <param name="index">Die laufende Nummer des Gerätes.</param>
         /// <param name="source">Die geforderte Quelle.</param>
         /// <returns>Alle Quellen, die nun ohne Umschaltung von diesem gerät empfangen werden können.</returns>
-        Source[] IFeedProvider<Source>.Activate( int index, Source source )
+        SourceSelection[] IFeedProvider.Activate( int index, SourceSelection source )
         {
             // Validate
             Assert.IsTrue( (index >= 0) && (index < m_devices.Length), "out of range" );
@@ -181,7 +114,7 @@ namespace JMS.TV.Core.UnitTests
         /// <param name="numberOfDevices">Die Anzahl der unterstützten Geräte.</param>
         private FeedProviderMock( int numberOfDevices )
         {
-            m_devices = new HashSet<Source>[numberOfDevices];
+            m_devices = new HashSet<SourceSelection>[numberOfDevices];
         }
 
         /// <summary>
@@ -189,16 +122,16 @@ namespace JMS.TV.Core.UnitTests
         /// so stehen alle anderen Quellen dieser Gruppe auch zur Verfügung.
         /// </summary>
         /// <param name="sourcesInGroup">Die Liste der Quellen der Gruppe.</param>
-        public void Add( params Source[] sourcesInGroup )
+        public void Add( params string[] sourcesInGroup )
         {
-            m_sources.Add( new HashSet<Source>( sourcesInGroup ?? Enumerable.Empty<Source>() ) );
+            m_sources.Add( new HashSet<SourceSelection>( sourcesInGroup.Select( CreateSourceSelection ) ?? Enumerable.Empty<SourceSelection>() ) );
         }
 
         /// <summary>
         /// Meldet alle verfügbaren Quellen.
         /// </summary>
         /// <returns>Die Liste aller Sender.</returns>
-        public IEnumerator<Source> GetEnumerator()
+        public IEnumerator<SourceSelection> GetEnumerator()
         {
             return m_sources.SelectMany( group => group ).OrderBy( source => source.ToString() ).GetEnumerator();
         }
@@ -217,11 +150,9 @@ namespace JMS.TV.Core.UnitTests
         /// </summary>
         /// <param name="sourceName">Der Name der Quelle.</param>
         /// <returns>Die Quelle.</returns>
-        Source IFeedProvider<Source>.Translate( string sourceName )
+        SourceSelection IFeedProvider.Translate( string sourceName )
         {
-            Source asKey = sourceName;
-
-            return this.SingleOrDefault( asKey.Equals );
+            return this.SingleOrDefault( CreateSourceSelection( sourceName ).Equals );
         }
 
         /// <summary>
@@ -237,7 +168,7 @@ namespace JMS.TV.Core.UnitTests
             // Test
             Assert.IsNotNull( group, "device {0} not in use", index );
             foreach (var source in sources)
-                Assert.IsTrue( group.Contains( source ), "device {0} not receiving source {1}", index, source );
+                Assert.IsTrue( group.Contains( CreateSourceSelection( source ) ), "device {0} not receiving source {1}", index, source );
         }
 
         /// <summary>
@@ -254,10 +185,10 @@ namespace JMS.TV.Core.UnitTests
         /// Erstellt eine passende Senderverwaltung.
         /// </summary>
         /// <returns>Die angeforderte Verwaltung.</returns>
-        public IFeedSet<int> CreateFeedSet()
+        public IFeedSet CreateFeedSet()
         {
             // Create
-            var feedSet = TvController.CreateFeedSet<Source, int>( this );
+            var feedSet = TvController.CreateFeedSet( this );
 
             // Configure
             feedSet.PrimaryViewVisibilityChanged += ( f, v ) => Trace.TraceInformation( "Primary {0}: {1}", v ? "on" : "off", f );
@@ -266,6 +197,45 @@ namespace JMS.TV.Core.UnitTests
 
             // Report
             return feedSet;
+        }
+
+        /// <summary>
+        /// Erstellt eine neue Quellinformation.
+        /// </summary>
+        /// <param name="sourceName">Der Name der Quelle.</param>
+        /// <returns>Die Beschreibung der Quelle.</returns>
+        private SourceSelection CreateSourceSelection( string sourceName )
+        {
+            // Already knowing it
+            SourceSelection source;
+            if (!m_mockedSources.TryGetValue( sourceName, out source ))
+            {
+                // Create new
+                source =
+                    new SourceSelection
+                    {
+                        Location = new TerrestrialLocation(),
+                        Group = new TerrestrialGroup(),
+                        DisplayName = sourceName,
+                        ProfileName = "mocked",
+                        Source =
+                            new Station
+                            {
+                                Service = (ushort) (m_mockedSources.Count + 1),
+                                SourceType = SourceTypes.TV,
+                                TransportStream = 1,
+                                Name = sourceName,
+                                Provider = "mock",
+                                Network = 1,
+                            },
+                    };
+
+                // Remember it
+                m_mockedSources.Add( sourceName, source );
+            }
+
+            // Report
+            return source;
         }
     }
 }

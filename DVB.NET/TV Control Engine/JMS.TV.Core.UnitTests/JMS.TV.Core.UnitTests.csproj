@@ -39,6 +39,9 @@
     <DocumentationFile>bin\JMS.TV.Core.UnitTests.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JMS.DVB.SourceManagement">
+      <HintPath>..\..\Assemblies\RunTime\JMS.DVB.SourceManagement.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>

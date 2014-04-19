@@ -19,7 +19,7 @@ namespace JMS.TV.Core.UnitTests
         public void FeedSetCanNotBeCreatedWithoutAProvider()
         {
             // Create will fail
-            TvController.CreateFeedSet<object, bool>( null );
+            TvController.CreateFeedSet( null );
         }
 
         /// <summary>
@@ -253,14 +253,14 @@ namespace JMS.TV.Core.UnitTests
             var cut = provider.CreateFeedSet();
 
             // Start recording
-            Assert.IsTrue( cut.TryStartRecordingFeed( "ARD", 0 ), "record" );
+            Assert.IsTrue( cut.TryStartRecordingFeed( "ARD", "0"), "record" );
 
             // Test
             Assert.IsNotNull( cut.PrimaryView, "primary" );
             Assert.AreSame( cut.PrimaryView, cut.Recordings.Single(), "#recordings" );
 
             // Stop it
-            cut.StopRecordingFeed( "ARD", 0 );
+            cut.StopRecordingFeed( "ARD", "0" );
 
             // Test
             Assert.IsNotNull( cut.PrimaryView, "primary" );
@@ -279,7 +279,7 @@ namespace JMS.TV.Core.UnitTests
 
             // Start recording
             Assert.IsTrue( cut.TryStartPrimaryFeed( "ARD" ), "primary" );
-            Assert.IsTrue( cut.TryStartRecordingFeed( "ARD", 0 ), "record" );
+            Assert.IsTrue( cut.TryStartRecordingFeed( "ARD", "0" ), "record" );
 
             // Test
             Assert.IsNotNull( cut.PrimaryView, "primary" );
@@ -298,7 +298,7 @@ namespace JMS.TV.Core.UnitTests
 
             // Start recording
             Assert.IsTrue( cut.TryStartPrimaryFeed( "ARD" ), "primary" );
-            Assert.IsTrue( cut.TryStartRecordingFeed( "WDR", 0 ), "record" );
+            Assert.IsTrue( cut.TryStartRecordingFeed( "WDR", "0" ), "record" );
 
             // Test
             Assert.IsNotNull( cut.PrimaryView, "primary" );
@@ -317,7 +317,7 @@ namespace JMS.TV.Core.UnitTests
 
             // Start recording
             Assert.IsTrue( cut.TryStartPrimaryFeed( "ARD" ), "primary" );
-            Assert.IsTrue( cut.TryStartRecordingFeed( "VOX", 0 ), "record" );
+            Assert.IsTrue( cut.TryStartRecordingFeed( "VOX", "0" ), "record" );
 
             // Test
             Assert.IsNotNull( cut.PrimaryView, "primary" );
@@ -336,8 +336,8 @@ namespace JMS.TV.Core.UnitTests
             var cut = provider.CreateFeedSet();
 
             // Start recording
-            Assert.IsTrue( cut.TryStartRecordingFeed( "VOX", 0 ), "record 1" );
-            Assert.IsFalse( cut.TryStartRecordingFeed( "MDR", 1 ), "record 2" );
+            Assert.IsTrue( cut.TryStartRecordingFeed( "VOX", "0" ), "record 1" );
+            Assert.IsFalse( cut.TryStartRecordingFeed( "MDR", "1" ), "record 2" );
 
             // Test
             Assert.IsNotNull( cut.PrimaryView, "primary" );
@@ -359,7 +359,7 @@ namespace JMS.TV.Core.UnitTests
 
             // Start recording
             Assert.IsTrue( cut.TryStartSecondaryFeed( "MDR" ), "secondary" );
-            Assert.IsTrue( cut.TryStartRecordingFeed( "VOX", 0 ), "record" );
+            Assert.IsTrue( cut.TryStartRecordingFeed( "VOX", "0" ), "record" );
 
             // Test
             Assert.IsFalse( cut.SecondaryViews.Any(), "#secondaries" );
@@ -376,7 +376,7 @@ namespace JMS.TV.Core.UnitTests
             var cut = provider.CreateFeedSet();
 
             // Start recording
-            Assert.IsTrue( cut.TryStartRecordingFeed( "VOX", 0 ), "record" );
+            Assert.IsTrue( cut.TryStartRecordingFeed( "VOX", "0" ), "record" );
             Assert.IsFalse( cut.TryStartPrimaryFeed( "MDR" ), "primary" );
             Assert.IsFalse( cut.TryStartSecondaryFeed( "Pro7" ), "secondary" );
 
@@ -399,8 +399,8 @@ namespace JMS.TV.Core.UnitTests
             // Start all
             Assert.IsTrue( cut.TryStartPrimaryFeed( "MDR" ), "primary" );
             Assert.IsTrue( cut.TryStartSecondaryFeed( "Pro7" ), "secondary" );
-            Assert.IsTrue( cut.TryStartRecordingFeed( "VOX", 0 ), "record 1" );
-            Assert.IsTrue( cut.TryStartRecordingFeed( "RTL", 1 ), "record 2" );
+            Assert.IsTrue( cut.TryStartRecordingFeed( "VOX", "0" ), "record 1" );
+            Assert.IsTrue( cut.TryStartRecordingFeed( "RTL", "1" ), "record 2" );
 
             // Validate
             provider.AssertDevice( 0, "MDR" );

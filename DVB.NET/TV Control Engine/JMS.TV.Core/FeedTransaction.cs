@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using JMS.DVB;
 
 
 namespace JMS.TV.Core
@@ -7,9 +8,7 @@ namespace JMS.TV.Core
     /// <summary>
     /// Beschreibt eine Änderung am Empfang.
     /// </summary>
-    /// <typeparam name="TSourceType">Die Art der Quellen.</typeparam>
-    /// <typeparam name="TRecordingType">Die Art der Identifikation von Aufzeichnungen.</typeparam>
-    internal class FeedTransaction<TSourceType, TRecordingType> : IDisposable where TSourceType : class
+    internal class FeedTransaction : IDisposable
     {
         /// <summary>
         /// Alle Aktionen, die zur Korrektur ausgeführt werden müssen.
@@ -24,13 +23,13 @@ namespace JMS.TV.Core
         /// <summary>
         /// Die zugehörige Senderverwaltung.
         /// </summary>
-        private readonly FeedSet<TSourceType, TRecordingType> m_feedSet;
+        private readonly FeedSet m_feedSet;
 
         /// <summary>
         /// Erstellt eine neue Änderungsumgebung.
         /// </summary>
         /// <param name="feedSet">Die zugehörige Senderverwaltung.</param>
-        public FeedTransaction( FeedSet<TSourceType, TRecordingType> feedSet )
+        public FeedTransaction( FeedSet feedSet )
         {
             m_feedSet = feedSet;
         }
@@ -40,7 +39,7 @@ namespace JMS.TV.Core
         /// </summary>
         /// <param name="source">Der betroffenen Sender.</param>
         /// <param name="newState">Der gewünschte neue Zustand.</param>
-        public void ChangePrimaryView( TSourceType source, bool newState )
+        public void ChangePrimaryView( SourceSelection source, bool newState )
         {
             ChangePrimaryView( m_feedSet.FindFeed( source ), newState );
         }
@@ -50,7 +49,7 @@ namespace JMS.TV.Core
         /// </summary>
         /// <param name="feed">Der betroffenen Sender.</param>
         /// <param name="newState">Der gewünschte neue Zustand.</param>
-        public void ChangePrimaryView( Feed<TSourceType, TRecordingType> feed, bool newState )
+        public void ChangePrimaryView( Feed feed, bool newState )
         {
             // Validate
             if (feed.IsPrimaryView == newState)
@@ -69,7 +68,7 @@ namespace JMS.TV.Core
         /// </summary>
         /// <param name="source">Der betroffenen Sender.</param>
         /// <param name="newState">Der gewünschte neue Zustand.</param>
-        public void ChangeSecondaryView( TSourceType source, bool newState )
+        public void ChangeSecondaryView( SourceSelection source, bool newState )
         {
             ChangeSecondaryView( m_feedSet.FindFeed( source ), newState );
         }
@@ -79,7 +78,7 @@ namespace JMS.TV.Core
         /// </summary>
         /// <param name="feed">Der betroffenen Sender.</param>
         /// <param name="newState">Der gewünschte neue Zustand.</param>
-        public void ChangeSecondaryView( Feed<TSourceType, TRecordingType> feed, bool newState )
+        public void ChangeSecondaryView( Feed feed, bool newState )
         {
             // Validate
             if (feed.IsSecondaryView == newState)
@@ -99,7 +98,7 @@ namespace JMS.TV.Core
         /// <param name="feed">Der Sender.</param>
         /// <param name="key">Die Identifikation der Aufzeichung.</param>
         /// <param name="newState">Der gewünschte Aufzeichnungsstand.</param>
-        public void ChangeRecording( Feed<TSourceType, TRecordingType> feed, TRecordingType key, bool newState )
+        public void ChangeRecording( Feed feed, string key, bool newState )
         {
             // Validate
             if (feed.IsRecording( key ) == newState)

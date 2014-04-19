@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using JMS.DVB;
 
 
 namespace JMS.TV.Core
@@ -7,14 +8,12 @@ namespace JMS.TV.Core
     /// <summary>
     /// Verwaltete ein einzelnes Gerät.
     /// </summary>
-    /// <typeparam name="TSourceType">Die Art der Quellen.</typeparam>
-    /// <typeparam name="TRecordingType">Die Art der Identifikation von Aufzeichnungen.</typeparam>
-    internal class Device<TSourceType, TRecordingType> where TSourceType : class
+    internal class Device
     {
         /// <summary>
         /// Verwaltet alle verfügbaren Sender.
         /// </summary>
-        private readonly IFeedProvider<TSourceType> m_provider;
+        private readonly IFeedProvider m_provider;
 
         /// <summary>
         /// Die laufende Nummer des Geräte.
@@ -24,14 +23,14 @@ namespace JMS.TV.Core
         /// <summary>
         /// Alle gerade verfügbaren Sender.
         /// </summary>
-        private volatile Feed<TSourceType, TRecordingType>[] m_feeds = null;
+        private volatile Feed[] m_feeds = null;
 
         /// <summary>
         /// Erstellt ein neues Gerät.
         /// </summary>
         /// <param name="index">Die laufende Nummer des Gerätes.</param>
         /// <param name="provider">Die Verwaltung aller Quellen.</param>
-        public Device( int index, IFeedProvider<TSourceType> provider )
+        public Device( int index, IFeedProvider provider )
         {
             m_provider = provider;
             m_index = index;
@@ -40,7 +39,7 @@ namespace JMS.TV.Core
         /// <summary>
         /// Meldet alle gerade verfügbaren Sender.
         /// </summary>
-        public IEnumerable<Feed<TSourceType, TRecordingType>> Feeds { get { return IsAllocated ? m_feeds : Enumerable.Empty<Feed<TSourceType, TRecordingType>>(); } }
+        public IEnumerable<Feed> Feeds { get { return IsAllocated ? m_feeds : Enumerable.Empty<Feed>(); } }
 
         /// <summary>
         /// Gesetzt, wenn das zugehörige Gerät zugewiesen wurde.
@@ -61,18 +60,18 @@ namespace JMS.TV.Core
         /// <summary>
         /// Ermittelt alle sekundären Sender, die gerade in Benutzung sind.
         /// </summary>
-        public IEnumerable<Feed<TSourceType, TRecordingType>> SecondaryFeeds { get { return Feeds.Where( feed => feed.IsSecondaryView ); } }
+        public IEnumerable<Feed> SecondaryFeeds { get { return Feeds.Where( feed => feed.IsSecondaryView ); } }
 
         /// <summary>
         /// Stellt den Empfang einer Quelle sicher.
         /// </summary>
         /// <param name="source">Die gewünschte Quelle.</param>
-        public void EnsureFeed( TSourceType source )
+        public void EnsureFeed( SourceSelection source )
         {
             m_feeds =
                 m_provider
                     .Activate( m_index, source )
-                    .Select( sourceOnGroup => new Feed<TSourceType, TRecordingType>( sourceOnGroup, this ) )
+                    .Select( sourceOnGroup => new Feed( sourceOnGroup, this ) )
                     .ToArray();
         }
 

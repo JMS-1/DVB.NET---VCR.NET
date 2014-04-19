@@ -1,12 +1,12 @@
-﻿
+﻿using JMS.DVB;
+
 
 namespace JMS.TV.Core
 {
     /// <summary>
     /// Wird von einer Komponente angeboten, die Sender zur Verfügung stellt
     /// </summary>
-    /// <typeparam name="TSourceType">Die Art der Quellen.</typeparam>
-    public interface IFeedProvider<TSourceType> where TSourceType : class
+    public interface IFeedProvider
     {
         /// <summary>
         /// Meldet die maximale Anzahl von gleichzeitig empfangbaren Quellgruppen.
@@ -31,13 +31,13 @@ namespace JMS.TV.Core
         /// <param name="index">Die laufende Nummer des Gerätes.</param>
         /// <param name="source">Die geforderte Quelle.</param>
         /// <returns>Alle Quellen, die nun ohne Umschaltung von diesem gerät empfangen werden können.</returns>
-        TSourceType[] Activate( int index, TSourceType source );
+        SourceSelection[] Activate( int index, SourceSelection source );
 
         /// <summary>
         /// Ermittelt zu einem Namen die zugehörige Quelle.
         /// </summary>
         /// <param name="sourceName">Der Name der Quelle.</param>
         /// <returns>Die Quelle.</returns>
-        TSourceType Translate( string sourceName );
+        SourceSelection Translate( string sourceName );
     }
 }

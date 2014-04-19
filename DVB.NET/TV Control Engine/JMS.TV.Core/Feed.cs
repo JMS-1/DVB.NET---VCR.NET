@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using JMS.DVB;
 
 
 namespace JMS.TV.Core
@@ -8,9 +9,7 @@ namespace JMS.TV.Core
     /// Beschreibt einen einzelnen Sender - in der ersten Version wird es nur Fernsehsender
     /// geben.
     /// </summary>
-    /// <typeparam name="TSourceType">Die Art der Quellen.</typeparam>
-    /// <typeparam name="TRecordingType">Die Art der Identifikation für Aufzeichnungen.</typeparam>
-    internal class Feed<TSourceType, TRecordingType> : IFeed<TRecordingType> where TSourceType : class
+    internal class Feed : IFeed
     {
         /// <summary>
         /// Gesetzt, wenn dieser Sender gerade vollständig angezeigt wird - Bild, Ton und Videotext.
@@ -63,12 +62,12 @@ namespace JMS.TV.Core
         /// <summary>
         /// Die zugehörige Quelle.
         /// </summary>
-        public TSourceType Source { get; private set; }
+        public SourceSelection Source { get; private set; }
 
         /// <summary>
         /// Alle Aufzeichnungen auf diesem Sender.
         /// </summary>
-        private readonly HashSet<TRecordingType> m_activeRecordings = new HashSet<TRecordingType>();
+        private readonly HashSet<string> m_activeRecordings = new HashSet<string>( StringComparer.InvariantCultureIgnoreCase );
 
         /// <summary>
         /// Gesetzt, wenn dieser Sender benutzt wird.
@@ -83,39 +82,39 @@ namespace JMS.TV.Core
         /// <summary>
         /// Meldet alle aktiven Aufzeichnungen für diesen Sender.
         /// </summary>
-        public IEnumerable<TRecordingType> Recordings { get { return m_activeRecordings; } }
+        public IEnumerable<string> Recordings { get { return m_activeRecordings; } }
 
         /// <summary>
         /// Prüft, ob eine bestimmte Aufzeichnung bereits aktiv ist.
         /// </summary>
         /// <param name="key">Die Identifikation der Aufzeichnung.</param>
         /// <returns>Gesetzt, wenn die angegebene Aufzeichnung aktiv ist.</returns>
-        public bool IsRecording( TRecordingType key ) { return m_activeRecordings.Contains( key ); }
+        public bool IsRecording( string key ) { return m_activeRecordings.Contains( key ); }
 
         /// <summary>
         /// Beendet eine Aufzeichnung.
         /// </summary>
         /// <param name="key">Die Identifikation der Aufzeichnung.</param>
         /// <returns>Gesetzt, wenn die Aufzeichnung beendet wurde.</returns>
-        public bool StopRecording( TRecordingType key ) { return m_activeRecordings.Remove( key ); }
+        public bool StopRecording( string key ) { return m_activeRecordings.Remove( key ); }
 
         /// <summary>
         /// Beginnt eine Aufzeichnung.
         /// </summary>
         /// <param name="key">Die Identifikation der Aufzeichnung.</param>
-        public void StartRecording( TRecordingType key ) { m_activeRecordings.Add( key ); }
+        public void StartRecording( string key ) { m_activeRecordings.Add( key ); }
 
         /// <summary>
         /// Das zugehörige Gerät.
         /// </summary>
-        private readonly Device<TSourceType, TRecordingType> m_device;
+        private readonly Device m_device;
 
         /// <summary>
         /// Erstellt eine neue Beschreibung.
         /// </summary>
         /// <param name="source">Die zugehörige Quelle.</param>
         /// <param name="device">Das zugehörige Gerät.</param>
-        public Feed( TSourceType source, Device<TSourceType, TRecordingType> device )
+        public Feed( SourceSelection source, Device device )
         {
             m_device = device;
             Source = source;
