@@ -144,7 +144,7 @@ namespace JMS.TV.Core
                 op = " (idle)";
 
             // Report
-            return string.Format( "{0}{1}", Source, op );
+            return string.Format( "{0}{1}", Source.Source, op );
         }
     }
 }
