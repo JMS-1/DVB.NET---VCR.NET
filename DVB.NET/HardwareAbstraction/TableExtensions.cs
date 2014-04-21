@@ -157,17 +157,10 @@ namespace JMS.DVB
         /// <typeparam name="TTableType">Die Art der Tabelle.</typeparam>
         /// <param name="device">Das zu verwendende, bereits aktivierte Gerät.</param>
         /// <param name="stream">Die Datenstromkennung der Tabelle.</param>
-        /// <param name="timeout">Die maximale Wartezeit in Millisekunden.</param>
         /// <returns>Die Steuerung des Auslesevorgangs.</returns>
-        public static Task<TTableType[]> GetTableAsync<TTableType>( this Hardware device, ushort stream, int timeout ) where TTableType : Table
+        public static AsyncTableReader<TTableType> GetTableAsync<TTableType>( this Hardware device, ushort stream ) where TTableType : Table
         {
-            return Task.Run( () =>
-                {
-                    // Start the reader
-                    using (var reader = new AsyncTableReader<TTableType>( device, stream ))
-                    using (var cancel = new CancellationTokenSource( timeout ))
-                        return reader.WaitForTables( cancel.Token );
-                } );
+            return AsyncTableReader<TTableType>.Create( device, stream );
         }
 
         /// <summary>
@@ -175,41 +168,10 @@ namespace JMS.DVB
         /// </summary>
         /// <typeparam name="TTableType">Die Art der Tabelle.</typeparam>
         /// <param name="device">Das zu verwendende, bereits aktivierte Gerät.</param>
-        /// <param name="stream">Die Datenstromkennung der Tabelle.</param>
-        /// <param name="cancel">Erlaubt den vorzeitigen Abbruch der Operation.</param>
         /// <returns>Die Steuerung des Auslesevorgangs.</returns>
-        public static Task<TTableType[]> GetTableAsync<TTableType>( this Hardware device, ushort stream, CancellationToken cancel ) where TTableType : Table
+        public static AsyncTableReader<TTableType> GetTableAsync<TTableType>( this Hardware device ) where TTableType : WellKnownTable
         {
-            return Task.Run( () =>
-                {
-                    // Start the reader
-                    using (var reader = new AsyncTableReader<TTableType>( device, stream ))
-                        return reader.WaitForTables( cancel );
-                } );
-        }
-
-        /// <summary>
-        /// Startet das Auslesen einer SI-Tabelle.
-        /// </summary>
-        /// <typeparam name="TTableType">Die Art der Tabelle.</typeparam>
-        /// <param name="device">Das zu verwendende, bereits aktivierte Gerät.</param>
-        /// <param name="timeout">Die maximale Wartezeit in Millisekunden.</param>
-        /// <returns>Die Steuerung des Auslesevorgangs.</returns>
-        public static Task<TTableType[]> GetTableAsync<TTableType>( this Hardware device, int timeout ) where TTableType : WellKnownTable
-        {
-            return GetTableAsync<TTableType>( device, WellKnownTable.GetWellKnownStream<TTableType>(), timeout );
-        }
-
-        /// <summary>
-        /// Startet das Auslesen einer SI-Tabelle.
-        /// </summary>
-        /// <typeparam name="TTableType">Die Art der Tabelle.</typeparam>
-        /// <param name="device">Das zu verwendende, bereits aktivierte Gerät.</param>
-        /// <param name="cancel">Erlaubt den vorzeitigen Abbruch der Operation.</param>
-        /// <returns>Die Steuerung des Auslesevorgangs.</returns>
-        public static Task<TTableType[]> GetTableAsync<TTableType>( this Hardware device, CancellationToken cancel ) where TTableType : WellKnownTable
-        {
-            return GetTableAsync<TTableType>( device, WellKnownTable.GetWellKnownStream<TTableType>(), cancel );
+            return GetTableAsync<TTableType>( device, WellKnownTable.GetWellKnownStream<TTableType>() );
         }
 
         /// <summary>

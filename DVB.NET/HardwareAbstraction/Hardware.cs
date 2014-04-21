@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using JMS.DVB.DeviceAccess;
 using JMS.DVB.SI;
 
@@ -578,8 +579,8 @@ namespace JMS.DVB
                 bool allStopped = OnStopAll();
 
                 // Stop all table readers
-                using (m_NITReader)
-                    m_NITReader = null;
+                if (m_NITReader != null)
+                    m_NITReader.Cancel();
                 if (null != m_SDTReader)
                     m_SDTReader.Cancel();
                 if (null != m_PATReader)
@@ -660,11 +661,11 @@ namespace JMS.DVB
             if (includeNetworkInformation)
             {
                 // Discard
-                using (m_NITReader)
-                    m_NITReader = null;
+                if (m_NITReader != null)
+                    m_NITReader.Cancel();
 
                 // Reload
-                m_NITReader = new AsyncTableReader<NIT>( this, WellKnownTable.GetWellKnownStream<NIT>() );
+                m_NITReader = this.GetTableAsync<NIT>();
             }
 
             // Discard all
@@ -700,11 +701,21 @@ namespace JMS.DVB
         public LocationInformation GetLocationInformation( int timeout )
         {
             // Just forward
-            if (m_NITReader == null)
-                return null;
+            var reader = GetLocationInformationReader();
+            if (reader.Wait( timeout ))
+                return reader.Result.ToLocationInformation( this );
             else
-                using (var cancel = new CancellationTokenSource( timeout ))
-                    return m_NITReader.WaitForTables( cancel.Token ).ToLocationInformation( this );
+                return null;
+        }
+
+        /// <summary>
+        /// Meldet die Hintergrundaufgabe, mit der die <i>NIT</i> ausgelesen wird.
+        /// </summary>
+        /// <returns>Die gewünschte Hintergrundaufgabe.</returns>
+        public Task<NIT[]> GetLocationInformationReader()
+        {
+            // If not configures response with empty array
+            return m_NITReader ?? Task<NIT[]>.FromResult( new NIT[0] );
         }
 
         /// <summary>
@@ -1110,8 +1121,8 @@ namespace JMS.DVB
                     m_IsDisposing = true;
 
                     // All readers
-                    using (m_NITReader)
-                        m_NITReader = null;
+                    if (m_NITReader != null)
+                        m_NITReader.Cancel();
                     using (m_PATReader)
                         m_PATReader = null;
                     using (m_SDTReader)

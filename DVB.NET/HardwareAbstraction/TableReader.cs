@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using JMS.DVB.SI;
 
 
@@ -299,22 +300,12 @@ namespace JMS.DVB
     /// sein kann.
     /// </summary>
     /// <typeparam name="TTableType">Die Art der angeforderten Tabelle.</typeparam>
-    public class AsyncTableReader<TTableType> : IDisposable where TTableType : Table
+    public sealed class AsyncTableReader<TTableType> : Task<TTableType[]> where TTableType : Table
     {
         /// <summary>
         /// Ein leeres Feld von Tabellen.
         /// </summary>
         private static readonly TTableType[] _NoTables = { };
-
-        /// <summary>
-        /// Die Analyseeinheit für die Tabellen.
-        /// </summary>
-        private readonly TableParser m_parser;
-
-        /// <summary>
-        /// Die Geräteabstraktion, über die der Datenstrom empfangen wird.
-        /// </summary>
-        private readonly Hardware m_device;
 
         /// <summary>
         /// Die bisher rekonstruierten Tabellenteile.
@@ -332,11 +323,6 @@ namespace JMS.DVB
         private int m_collectedParts;
 
         /// <summary>
-        /// Die eindeutige Kennung des zugehörigen Verbrauchers.
-        /// </summary>
-        private object m_registration;
-
-        /// <summary>
         /// Synchronisiert den Lesevorgang.
         /// </summary>
         private readonly object m_sync = new object();
@@ -347,21 +333,129 @@ namespace JMS.DVB
         private volatile bool m_done;
 
         /// <summary>
+        /// Steuert das vorzeitige Beenden.
+        /// </summary>
+        private volatile CancellationTokenSource m_cancel;
+
+        /// <summary>
         /// Erzeugt eine neue Instanz.
         /// </summary>
-        /// <param name="provider">Die zu aktuelle Hardware Abstraktion.</param>
-        /// <param name="stream">Die eindeutige Nummer (PID) des Datenstroms in der aktuellen <see cref="SourceGroup"/>.</param>
-        public AsyncTableReader( Hardware provider, ushort stream )
+        /// <param name="taskMethod">Die Methode, die zur Ausführung der Aufgabe aufgerufen werden soll.</param>
+        private AsyncTableReader( Func<TTableType[]> taskMethod )
+            : base( taskMethod )
         {
-            // Remember
-            m_parser = TableParser.Create<TTableType>( ProcessTable );
-            m_device = provider;
+            // Finish
+            m_cancel = new CancellationTokenSource();
+        }
 
-            // Register
-            m_registration = m_device.AddConsumer( stream, m_parser, Table.GetIsExtendedTable<TTableType>() ? StreamTypes.ExtendedTable : StreamTypes.StandardTable );
+        /// <summary>
+        /// Bricht den Wartevorgang ab.
+        /// </summary>
+        public void Cancel()
+        {
+            var cancel = m_cancel;
+            if (cancel != null)
+                try
+                {
+                    cancel.Cancel();
+                }
+                catch (ObjectDisposedException)
+                {
+                }
+        }
 
-            // Start receiving data immediately
-            m_device.SetConsumerState( (Guid) m_registration, true );
+        /// <summary>
+        /// Bricht den Wartevorgang nach einer bestimmten Zeit automatisch ab.
+        /// </summary>
+        /// <param name="timeout">Die gewünschte Zeit in Millisekunden.</param>
+        public void CancelAfter( int timeout )
+        {
+            var cancel = m_cancel;
+            if (cancel != null)
+                try
+                {
+                    cancel.CancelAfter( timeout );
+                }
+                catch (ObjectDisposedException)
+                {
+                }
+        }
+
+        /// <summary>
+        /// Erzeugt eine neue Hintergrundaufgabe zum Auslesen von SI Tabellen.
+        /// </summary>
+        /// <param name="device">Das zu verwendende Gerät.</param>
+        /// <param name="stream">Die Datenstromkennung, die überwacht werden soll.</param>
+        /// <returns>Die neue Aufgabe.</returns>
+        public static AsyncTableReader<TTableType> Create( Hardware device, ushort stream )
+        {
+            // Allow self reference to new instance
+            AsyncTableReader<TTableType> reader = null;
+
+            // Create instance
+            reader =
+                new AsyncTableReader<TTableType>( () =>
+                {
+                    using (var controller = reader.m_cancel)
+                        try
+                        {
+                            // Prepare
+                            var tableType = Table.GetIsExtendedTable<TTableType>() ? StreamTypes.ExtendedTable : StreamTypes.StandardTable;
+                            var parser = TableParser.Create<TTableType>( reader.ProcessTable );
+                            var cancel = controller.Token;
+
+                            // Register with cleanup
+                            var registration = device.AddConsumer( stream, parser, tableType );
+                            try
+                            {
+                                // Start receiving data
+                                device.SetConsumerState( registration, true );
+
+                                // Wait for either cancel or proper termination
+                                using (cancel.Register( reader.Wakeup ))
+                                    lock (reader.m_sync)
+                                        while (!reader.m_done)
+                                            if (cancel.IsCancellationRequested)
+                                                return _NoTables;
+                                            else
+                                                Monitor.Wait( reader.m_sync );
+
+                                // Report
+                                return reader.m_tables ?? _NoTables;
+                            }
+                            finally
+                            {
+                                // Reset
+                                device.SetConsumerState( registration, null );
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            // None
+                            return _NoTables;
+                        }
+                        finally
+                        {
+                            // Disallow cancel
+                            reader.m_cancel = null;
+                        }
+                } );
+
+            // Start it
+            try
+            {
+                // Request start
+                reader.Start();
+
+                // Report
+                return reader;
+            }
+            catch (Exception)
+            {
+                // With cleanup
+                using (reader.m_cancel)
+                    throw;
+            }
         }
 
         /// <summary>
@@ -419,43 +513,12 @@ namespace JMS.DVB
         }
 
         /// <summary>
-        /// Bricht den Zugriff ab.
-        /// </summary>
-        public void Dispose()
-        {
-            // Stop receiving this SI stream
-            var registration = Interlocked.Exchange( ref m_registration, null );
-            if (registration != null)
-                m_device.SetConsumerState( (Guid) registration, null );
-        }
-
-        /// <summary>
         /// Signalisiert einen neuen Zustand.
         /// </summary>
         private void Wakeup()
         {
             lock (m_sync)
                 Monitor.PulseAll( m_sync );
-        }
-
-        /// <summary>
-        /// Wartet, bis die Tabellen bereit stehen.
-        /// </summary>
-        /// <param name="cancel">Wird bei einem vorzeitigen Abbruch ausgelöst.</param>
-        /// <returns>Die gewünschten Tabellen.</returns>
-        public TTableType[] WaitForTables( CancellationToken cancel )
-        {
-            // Wait for either cancel or proper termination
-            using (cancel.Register( Wakeup ))
-                lock (m_sync)
-                    while (!m_done)
-                        if (cancel.IsCancellationRequested)
-                            return _NoTables;
-                        else
-                            Monitor.Wait( m_sync );
-
-            // Report
-            return m_tables ?? _NoTables;
         }
     }
 }
