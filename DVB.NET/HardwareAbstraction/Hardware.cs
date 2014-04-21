@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using JMS.DVB.DeviceAccess;
 using JMS.DVB.SI;
@@ -374,12 +373,12 @@ namespace JMS.DVB
         /// <summary>
         /// Ermittelt die aktuelle <i>Program Association Table</i>.
         /// </summary>
-        private IAsynchronousTableReader<PAT> m_PATReader = null;
+        private AsyncTableReader<PAT> m_PATReader = null;
 
         /// <summary>
         /// Ermittelt die aktuelle <i>Service Description Table</i>.
         /// </summary>
-        private IAsynchronousTableReader<SDT> m_SDTReader = null;
+        private AsyncTableReader<SDT> m_SDTReader = null;
 
         /// <summary>
         /// Die zuletzt ermittelten Daten zur aktuellen Quellgruppe (Transponder).
@@ -581,9 +580,9 @@ namespace JMS.DVB
                 // Stop all table readers
                 if (m_NITReader != null)
                     m_NITReader.Cancel();
-                if (null != m_SDTReader)
+                if (m_SDTReader != null)
                     m_SDTReader.Cancel();
-                if (null != m_PATReader)
+                if (m_PATReader != null)
                     m_PATReader.Cancel();
 
                 // Erase list of EPG receivers
@@ -608,7 +607,7 @@ namespace JMS.DVB
 
                 // Forward to all streams
                 if (!allStopped)
-                    foreach (StreamInformation consumer in consumers)
+                    foreach (var consumer in consumers)
                         if (consumer.ActiveConsumerCount > 0)
                             OnStop( consumer );
             }
@@ -669,14 +668,14 @@ namespace JMS.DVB
             }
 
             // Discard all
-            using (m_PATReader)
-                m_PATReader = null;
-            using (m_SDTReader)
-                m_SDTReader = null;
+            if (m_PATReader != null)
+                m_PATReader.Cancel();
+            if (m_SDTReader != null)
+                m_SDTReader.Cancel();
 
             // Restart all
-            m_PATReader = this.BeginGetTable<PAT>();
-            m_SDTReader = this.BeginGetTable<SDT>();
+            m_PATReader = this.GetTableAsync<PAT>();
+            m_SDTReader = this.GetTableAsync<SDT>();
 
             // Forget about group information
             m_PATInfo = null;
@@ -701,21 +700,13 @@ namespace JMS.DVB
         public LocationInformation GetLocationInformation( int timeout )
         {
             // Just forward
-            var reader = GetLocationInformationReader();
-            if (reader.Wait( timeout ))
+            var reader = m_NITReader;
+            if (reader == null)
+                return null;
+            else if (reader.Wait( timeout ))
                 return reader.Result.ToLocationInformation( this );
             else
                 return null;
-        }
-
-        /// <summary>
-        /// Meldet die Hintergrundaufgabe, mit der die <i>NIT</i> ausgelesen wird.
-        /// </summary>
-        /// <returns>Die gewünschte Hintergrundaufgabe.</returns>
-        public Task<NIT[]> GetLocationInformationReader()
-        {
-            // If not configures response with empty array
-            return m_NITReader ?? Task<NIT[]>.FromResult( new NIT[0] );
         }
 
         /// <summary>
@@ -730,29 +721,22 @@ namespace JMS.DVB
             if (m_PATInfo != null)
                 return m_PATInfo;
 
-            // No PAT reader
-            if (m_PATReader == null)
-                return null;
-
-            // No SDT reader
-            if (m_SDTReader == null)
-                return null;
-
             // Requires PAT
-            var associations = m_PATReader.WaitForTables( timeout );
-            if (associations == null)
+            var patReader = m_PATReader;
+            if (patReader == null)
+                return null;
+            else if (!patReader.Wait( timeout ))
                 return null;
 
-            // And SDT
-            var services = m_SDTReader.WaitForTables( timeout );
-            if (services == null)
+            // And SDT reader
+            var sdtReader = m_SDTReader;
+            if (sdtReader == null)
+                return null;
+            else if (!sdtReader.Wait( timeout ))
                 return null;
 
             // Create information instance
-            m_PATInfo = services.ToGroupInformation( associations );
-
-            // Report
-            return m_PATInfo;
+            return (m_PATInfo = sdtReader.Result.ToGroupInformation( patReader.Result ));
         }
 
         /// <summary>
@@ -776,8 +760,13 @@ namespace JMS.DVB
             // See if group exists
             if (groupInfo.Sources.Find( s => source.Equals( s ) ) == null)
                 return null;
+
+            // Direct read of result is possible - we already have the group information available
+            var patReader = m_PATReader;
+            if (patReader == null)
+                return null;
             else
-                return m_PATReader.WaitForTables( 0 ).FindService( source.Service );
+                return patReader.Result.FindService( source.Service );
         }
 
         /// <summary>
@@ -1123,10 +1112,10 @@ namespace JMS.DVB
                     // All readers
                     if (m_NITReader != null)
                         m_NITReader.Cancel();
-                    using (m_PATReader)
-                        m_PATReader = null;
-                    using (m_SDTReader)
-                        m_SDTReader = null;
+                    if (m_PATReader != null)
+                        m_PATReader.Cancel();
+                    if (m_SDTReader != null)
+                        m_SDTReader.Cancel();
 
                     // Forward
                     OnDispose();
