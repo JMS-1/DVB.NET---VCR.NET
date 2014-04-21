@@ -1,9 +1,7 @@
 ﻿using System;
-using JMS.DVB.SI;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Collections.Generic;
+using JMS.DVB.SI;
+
 
 namespace JMS.DVB
 {
@@ -291,15 +289,173 @@ namespace JMS.DVB
         /// <summary>
         /// Meldet die Synchronisationsinstanz zu diesem asynchronen Aufruf.
         /// </summary>
-        public WaitHandle WaitHandle
-        {
-            get
-            {
-                // Report
-                return m_Done;
-            }
-        }
+        public WaitHandle WaitHandle { get { return m_Done; } }
 
         #endregion
+    }
+
+    /// <summary>
+    /// Hilfsklasse zum Einlesen einer einzelnen Tabelle, die auf mehrere SI Bereiche verteilt
+    /// sein kann.
+    /// </summary>
+    /// <typeparam name="TTableType">Die Art der angeforderten Tabelle.</typeparam>
+    public class AsyncTableReader<TTableType> : IDisposable where TTableType : Table
+    {
+        /// <summary>
+        /// Ein leeres Feld von Tabellen.
+        /// </summary>
+        private static readonly TTableType[] _NoTables = { };
+
+        /// <summary>
+        /// Die Analyseeinheit für die Tabellen.
+        /// </summary>
+        private readonly TableParser m_parser;
+
+        /// <summary>
+        /// Die Geräteabstraktion, über die der Datenstrom empfangen wird.
+        /// </summary>
+        private readonly Hardware m_device;
+
+        /// <summary>
+        /// Die bisher rekonstruierten Tabellenteile.
+        /// </summary>
+        private volatile TTableType[] m_tables;
+
+        /// <summary>
+        /// Die Versionsnummer für die Rekonstruktion der Tabellenteile.
+        /// </summary>
+        private int m_expectedVersion;
+
+        /// <summary>
+        /// Bisher gefundene Tabellenfragmente.
+        /// </summary>
+        private int m_collectedParts;
+
+        /// <summary>
+        /// Die eindeutige Kennung des zugehörigen Verbrauchers.
+        /// </summary>
+        private object m_registration;
+
+        /// <summary>
+        /// Synchronisiert den Lesevorgang.
+        /// </summary>
+        private readonly object m_sync = new object();
+
+        /// <summary>
+        /// Gesetzt, wenn der Lesevorgang abgeschlossen ist.
+        /// </summary>
+        private volatile bool m_done;
+
+        /// <summary>
+        /// Erzeugt eine neue Instanz.
+        /// </summary>
+        /// <param name="provider">Die zu aktuelle Hardware Abstraktion.</param>
+        /// <param name="stream">Die eindeutige Nummer (PID) des Datenstroms in der aktuellen <see cref="SourceGroup"/>.</param>
+        public AsyncTableReader( Hardware provider, ushort stream )
+        {
+            // Remember
+            m_parser = TableParser.Create<TTableType>( ProcessTable );
+            m_device = provider;
+
+            // Register
+            m_registration = m_device.AddConsumer( stream, m_parser, Table.GetIsExtendedTable<TTableType>() ? StreamTypes.ExtendedTable : StreamTypes.StandardTable );
+
+            // Start receiving data immediately
+            m_device.SetConsumerState( (Guid) m_registration, true );
+        }
+
+        /// <summary>
+        /// Nimmt eine Tabelle entgegen.
+        /// </summary>
+        /// <param name="table">Eine Tabelle, eventuell nur ein Teil einer auf mehrere SI
+        /// Bereiche verteilte Gesamttabelle.</param>
+        private void ProcessTable( TTableType table )
+        {
+            // Disabled
+            if (m_done)
+                return;
+
+            // Check version
+            if (m_tables != null)
+                if (table.Version != m_expectedVersion)
+                    m_tables = null;
+
+            // Discard on count mismatch
+            if (m_tables != null)
+                if (m_tables.Length != (table.LastSection + 1))
+                    m_tables = null;
+
+            // Discard on overrun
+            if (m_tables != null)
+                if (table.CurrentSection >= m_tables.Length)
+                    m_tables = null;
+
+            // Discard on duplicates
+            if (m_tables != null)
+                if (m_tables[table.CurrentSection] != null)
+                    m_tables = null;
+
+            // Create once
+            if (m_tables == null)
+            {
+                // Create in full size
+                m_tables = new TTableType[table.LastSection + 1];
+                m_expectedVersion = table.Version;
+                m_collectedParts = 0;
+            }
+
+            // Add it
+            m_tables[table.CurrentSection] = table;
+
+            // Count it
+            if (++m_collectedParts < m_tables.Length)
+                return;
+
+            // Mark as done
+            m_done = true;
+
+            // Notify asynchronous client
+            Wakeup();
+        }
+
+        /// <summary>
+        /// Bricht den Zugriff ab.
+        /// </summary>
+        public void Dispose()
+        {
+            // Stop receiving this SI stream
+            var registration = Interlocked.Exchange( ref m_registration, null );
+            if (registration != null)
+                m_device.SetConsumerState( (Guid) registration, null );
+        }
+
+        /// <summary>
+        /// Signalisiert einen neuen Zustand.
+        /// </summary>
+        private void Wakeup()
+        {
+            lock (m_sync)
+                Monitor.PulseAll( m_sync );
+        }
+
+        /// <summary>
+        /// Wartet, bis die Tabellen bereit stehen.
+        /// </summary>
+        /// <param name="cancel">Wird bei einem vorzeitigen Abbruch ausgelöst.</param>
+        /// <returns>Die gewünschten Tabellen.</returns>
+        public TTableType[] WaitForTables( CancellationToken cancel )
+        {
+            // Wait for either cancel or proper termination
+            using (cancel.Register( Wakeup ))
+                lock (m_sync)
+                    while (!m_done)
+                        if (cancel.IsCancellationRequested)
+                            return _NoTables;
+                        else
+                            Monitor.Wait( m_sync );
+
+            // Report
+            return m_tables ?? _NoTables;
+        }
     }
 }

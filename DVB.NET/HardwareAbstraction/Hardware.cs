@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Linq;
-using System.Diagnostics;
 using System.Collections.Generic;
-
-using JMS.DVB.SI;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading;
 using JMS.DVB.DeviceAccess;
+using JMS.DVB.SI;
 
 
 namespace JMS.DVB
@@ -368,7 +368,7 @@ namespace JMS.DVB
         /// <summary>
         /// Ermittelt die aktuelle <i>Network Information Table</i>.
         /// </summary>
-        private IAsynchronousTableReader<NIT> m_NITReader = null;
+        private AsyncTableReader<NIT> m_NITReader;
 
         /// <summary>
         /// Ermittelt die aktuelle <i>Program Association Table</i>.
@@ -578,8 +578,8 @@ namespace JMS.DVB
                 bool allStopped = OnStopAll();
 
                 // Stop all table readers
-                if (null != m_NITReader)
-                    m_NITReader.Cancel();
+                using (m_NITReader)
+                    m_NITReader = null;
                 if (null != m_SDTReader)
                     m_SDTReader.Cancel();
                 if (null != m_PATReader)
@@ -664,7 +664,7 @@ namespace JMS.DVB
                     m_NITReader = null;
 
                 // Reload
-                m_NITReader = this.BeginGetTable<NIT>();
+                m_NITReader = new AsyncTableReader<NIT>( this, WellKnownTable.GetWellKnownStream<NIT>() );
             }
 
             // Discard all
@@ -703,7 +703,8 @@ namespace JMS.DVB
             if (m_NITReader == null)
                 return null;
             else
-                return m_NITReader.WaitForTables( timeout ).ToLocationInformation( this );
+                using (var cancel = new CancellationTokenSource( timeout ))
+                    return m_NITReader.WaitForTables( cancel.Token ).ToLocationInformation( this );
         }
 
         /// <summary>
