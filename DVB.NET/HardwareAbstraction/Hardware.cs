@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Threading;
 using JMS.DVB.DeviceAccess;
 using JMS.DVB.SI;
 
@@ -373,12 +373,12 @@ namespace JMS.DVB
         /// <summary>
         /// Ermittelt die aktuelle <i>Program Association Table</i>.
         /// </summary>
-        private CancellableTask<PAT[]> m_PATReader = null;
+        private CancellableTask<PAT[]> m_PATReader;
 
         /// <summary>
         /// Ermittelt die aktuelle <i>Service Description Table</i>.
         /// </summary>
-        private CancellableTask<SDT[]> m_SDTReader = null;
+        private CancellableTask<SDT[]> m_SDTReader;
 
         /// <summary>
         /// Die zuletzt ermittelten Daten zur aktuellen Quellgruppe (Transponder).
@@ -578,12 +578,9 @@ namespace JMS.DVB
                 bool allStopped = OnStopAll();
 
                 // Stop all table readers
-                if (m_NITReader != null)
-                    m_NITReader.Cancel();
-                if (m_SDTReader != null)
-                    m_SDTReader.Cancel();
-                if (m_PATReader != null)
-                    m_PATReader.Cancel();
+                ResetReader( ref m_NITReader );
+                ResetReader( ref m_SDTReader );
+                ResetReader( ref m_PATReader );
 
                 // Erase list of EPG receivers
                 m_ProgramGuideConsumers = new Action<EIT>[0];
@@ -658,24 +655,11 @@ namespace JMS.DVB
 
             // Restart network information reader
             if (includeNetworkInformation)
-            {
-                // Discard
-                if (m_NITReader != null)
-                    m_NITReader.Cancel();
-
-                // Reload
-                m_NITReader = this.GetTableAsync<NIT>();
-            }
+                ResetReader( ref m_NITReader, true );
 
             // Discard all
-            if (m_PATReader != null)
-                m_PATReader.Cancel();
-            if (m_SDTReader != null)
-                m_SDTReader.Cancel();
-
-            // Restart all
-            m_PATReader = this.GetTableAsync<PAT>();
-            m_SDTReader = this.GetTableAsync<SDT>();
+            ResetReader( ref m_PATReader, true );
+            ResetReader( ref m_SDTReader, true );
 
             // Forget about group information
             m_PATInfo = null;
@@ -1098,6 +1082,26 @@ namespace JMS.DVB
         protected abstract void OnDispose();
 
         /// <summary>
+        /// Initialisiert das Auslesen einer Tabellenart.
+        /// </summary>
+        /// <typeparam name="TTableType">Die Art der Tabelle.</typeparam>
+        /// <param name="reader">Die aktuelle Hintergrundaufgabe.</param>
+        /// <param name="restart">Gesetzt, wenn die Aufgabe neu gestartet werden soll.</param>
+        private void ResetReader<TTableType>( ref CancellableTask<TTableType[]> reader, bool restart = false ) where TTableType : WellKnownTable
+        {
+            // Wipe out
+            var previous = Interlocked.Exchange( ref reader, null );
+
+            // Stop it
+            if (previous != null)
+                previous.Cancel();
+
+            // New one
+            if (restart)
+                reader = this.GetTableAsync<TTableType>();
+        }
+
+        /// <summary>
         /// Gibt alle mit dieser Instanz verbundenen Ressourcen frei.
         /// </summary>
         public void Dispose()
@@ -1110,12 +1114,9 @@ namespace JMS.DVB
                     m_IsDisposing = true;
 
                     // All readers
-                    if (m_NITReader != null)
-                        m_NITReader.Cancel();
-                    if (m_PATReader != null)
-                        m_PATReader.Cancel();
-                    if (m_SDTReader != null)
-                        m_SDTReader.Cancel();
+                    ResetReader( ref m_NITReader );
+                    ResetReader( ref m_PATReader );
+                    ResetReader( ref m_SDTReader );
 
                     // Forward
                     OnDispose();

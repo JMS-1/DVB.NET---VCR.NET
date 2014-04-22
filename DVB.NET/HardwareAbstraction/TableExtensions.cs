@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Linq;
 using JMS.DVB.SI;
 
 
@@ -160,7 +159,7 @@ namespace JMS.DVB
         /// <returns>Die Steuerung des Auslesevorgangs.</returns>
         public static CancellableTask<TTableType[]> GetTableAsync<TTableType>( this Hardware device, ushort stream ) where TTableType : Table
         {
-            return TableReaderTask<TTableType>.Create( device, stream );
+            return TableReader.Start<TTableType>( device, stream );
         }
 
         /// <summary>
@@ -537,33 +536,33 @@ namespace JMS.DVB
         public static GroupInformation ToGroupInformation( this SDT[] services, PAT[] associations )
         {
             // Create new
-            GroupInformation info = new GroupInformation();
+            var info = new GroupInformation();
 
             // See what we need
-            if (null == services)
+            if (services == null)
                 return info;
             if (services.Length < 1)
                 return info;
-            if (null == associations)
+            if (associations == null)
                 return info;
             if (associations.Length < 1)
                 return info;
 
             // All services we processed
-            Dictionary<ushort, bool> processed = new Dictionary<ushort, bool>();
+            var processed = new HashSet<ushort>();
 
             // Get the first (and normally only) PAT as a reference
             PAT pat = associations[0];
 
             // Process all service tables
-            foreach (SDT service in services)
+            foreach (var service in services)
                 if (service.TransportStream == pat.TransportStream)
                     foreach (var entry in service.Table.Services)
                         if (associations[0][entry.ServiceIdentifier].HasValue)
                         {
                             // Find the description
                             var descr = EPG.DescriptorExtensions.Find<EPG.Descriptors.Service>( entry.Descriptors );
-                            if (null == descr)
+                            if (descr == null)
                                 continue;
 
                             // Get the type
@@ -589,35 +588,35 @@ namespace JMS.DVB
                             info.Sources.Add(
                                 new Station
                                     {
+                                        TransportStream = service.TransportStream,
+                                        Service = entry.ServiceIdentifier,
                                         Provider = descr.ProviderName,
-                                        Name = descr.ServiceName,
-                                        SourceType = type,
                                         IsEncrypted = entry.Scrambled,
                                         Network = service.Network,
-                                        TransportStream = service.TransportStream,
-                                        Service = entry.ServiceIdentifier
+                                        Name = descr.ServiceName,
+                                        SourceType = type,
                                     } );
 
                             // Mark as done
-                            processed[entry.ServiceIdentifier] = true;
+                            processed.Add( entry.ServiceIdentifier );
                         }
 
             // Get the first SDT as a reference
-            SDT sdt = services[0];
+            var sdt = services[0];
 
             // No check all services
-            foreach (ushort serviceIdentifier in associations[0].Services)
-                if (!processed.ContainsKey( serviceIdentifier ))
+            foreach (var serviceIdentifier in associations[0].Services)
+                if (!processed.Contains( serviceIdentifier ))
                     info.Sources.Add(
                         new Station
                         {
-                            Provider = "Service",
                             Name = string.Format( "Service {0}", serviceIdentifier ),
-                            SourceType = SourceTypes.Unknown,
-                            Network = sdt.Network,
                             TransportStream = sdt.TransportStream,
+                            SourceType = SourceTypes.Unknown,
                             Service = serviceIdentifier,
-                            IsService = true
+                            Network = sdt.Network,
+                            Provider = "Service",
+                            IsService = true,
                         } );
 
             // Report
@@ -654,23 +653,10 @@ namespace JMS.DVB
         /// <returns>Die Datenstromkennung der SI Tabelle PMT des gewünschten Dienstes.</returns>
         public static ushort? FindService( this PAT[] associations, ushort serviceIdentifier )
         {
-            // Not possible
-            if (null == associations)
-                return null;
-
-            // Scan
-            foreach (PAT association in associations)
-            {
-                // Load
-                ushort? pmt = association[serviceIdentifier];
-
-                // Got it
-                if (pmt.HasValue)
-                    return pmt;
-            }
-
-            // Not there
-            return null;
+            return
+                (associations ?? Enumerable.Empty<PAT>())
+                    .Select( association => association[serviceIdentifier] )
+                    .FirstOrDefault( pmt => pmt.HasValue );
         }
 
         /// <summary>
