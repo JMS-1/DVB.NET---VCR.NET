@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using JMS.DVB.DeviceAccess;
 using JMS.DVB.SI;
 
@@ -371,9 +372,19 @@ namespace JMS.DVB
         private CancellableTask<NIT[]> m_NITReader;
 
         /// <summary>
+        /// Die Hintergrundaufgabe zum Auslesen der Netzwerkinformationen.
+        /// </summary>
+        public Task<NIT[]> LocationInformationReader { get { return m_NITReader; } }
+
+        /// <summary>
         /// Ermittelt die aktuelle <i>Program Association Table</i>.
         /// </summary>
         private CancellableTask<PAT[]> m_PATReader;
+
+        /// <summary>
+        /// Die Hintergrundaufgabe zum Auslesen der Dienstbelegung.
+        /// </summary>
+        public Task<PAT[]> AssociationTableReader { get { return m_PATReader; } }
 
         /// <summary>
         /// Ermittelt die aktuelle <i>Service Description Table</i>.
@@ -381,9 +392,19 @@ namespace JMS.DVB
         private CancellableTask<SDT[]> m_SDTReader;
 
         /// <summary>
+        /// Die Hintergrundaufgabe zum Auslesen der Dienstabelle.
+        /// </summary>
+        public Task<SDT[]> ServiceTableReader { get { return m_SDTReader; } }
+
+        /// <summary>
         /// Die zuletzt ermittelten Daten zur aktuellen Quellgruppe (Transponder).
         /// </summary>
-        private GroupInformation m_PATInfo = null;
+        private Task<GroupInformation> m_groupReader;
+
+        /// <summary>
+        /// Die Hintergrundaufgabe zum Auslesen der Informationen zur Quellgruppe.
+        /// </summary>
+        public Task<GroupInformation> GroupReader { get { return m_groupReader; } }
 
         /// <summary>
         /// Der Zeitpunkt der letzten Auswahl einer Quellgruppe (Transponder).
@@ -581,12 +602,10 @@ namespace JMS.DVB
                 ResetReader( ref m_NITReader );
                 ResetReader( ref m_SDTReader );
                 ResetReader( ref m_PATReader );
+                m_groupReader = null;
 
                 // Erase list of EPG receivers
                 m_ProgramGuideConsumers = new Action<EIT>[0];
-
-                // Forget about group information
-                m_PATInfo = null;
 
                 // List of active consumers
                 List<StreamInformation> consumers;
@@ -655,14 +674,38 @@ namespace JMS.DVB
 
             // Restart network information reader
             if (includeNetworkInformation)
-                ResetReader( ref m_NITReader, true );
+                ResetReader( ref m_NITReader, this.GetTableAsync<NIT> );
 
-            // Discard all
-            ResetReader( ref m_PATReader, true );
-            ResetReader( ref m_SDTReader, true );
+            // Restart core reader
+            ResetReader( ref m_PATReader, this.GetTableAsync<PAT> );
+            ResetReader( ref m_SDTReader, this.GetTableAsync<SDT> );
 
-            // Forget about group information
-            m_PATInfo = null;
+            // Restart group reader
+            m_groupReader = GetGroupInformationAsync();
+        }
+
+        /// <summary>
+        /// Startet die Hintergrundaufgabe zum Auslesen der Informationen der Quellgruppe.
+        /// </summary>
+        /// <returns>Die gewünschte Aufgabe.</returns>
+        private async Task<GroupInformation> GetGroupInformationAsync()
+        {
+            // Requires PAT
+            var patReader = AssociationTableReader;
+            if (patReader == null)
+                return null;
+
+            // Requires SDT
+            var sdtReader = ServiceTableReader;
+            if (sdtReader == null)
+                return null;
+
+            // Load
+            var services = await sdtReader;
+            var associations = await patReader;
+
+            // Construct
+            return services.ToGroupInformation( associations );
         }
 
         /// <summary>
@@ -684,7 +727,7 @@ namespace JMS.DVB
         public LocationInformation GetLocationInformation( int timeout )
         {
             // Just forward
-            var reader = m_NITReader;
+            var reader = LocationInformationReader;
             if (reader == null)
                 return null;
             else if (reader.Wait( timeout ))
@@ -701,26 +744,14 @@ namespace JMS.DVB
         /// <returns>Die gewünschten Informationen oder <i>null.</i></returns>
         public GroupInformation GetGroupInformation( int timeout )
         {
-            // Already did it
-            if (m_PATInfo != null)
-                return m_PATInfo;
-
-            // Requires PAT
-            var patReader = m_PATReader;
-            if (patReader == null)
+            // Load reader
+            var groupReader = GroupReader;
+            if (groupReader == null)
                 return null;
-            else if (!patReader.Wait( timeout ))
+            else if (!groupReader.Wait( timeout ))
                 return null;
-
-            // And SDT reader
-            var sdtReader = m_SDTReader;
-            if (sdtReader == null)
-                return null;
-            else if (!sdtReader.Wait( timeout ))
-                return null;
-
-            // Create information instance
-            return (m_PATInfo = sdtReader.Result.ToGroupInformation( patReader.Result ));
+            else
+                return groupReader.Result;
         }
 
         /// <summary>
@@ -746,7 +777,7 @@ namespace JMS.DVB
                 return null;
 
             // Direct read of result is possible - we already have the group information available
-            var patReader = m_PATReader;
+            var patReader = AssociationTableReader;
             if (patReader == null)
                 return null;
             else
@@ -1082,12 +1113,12 @@ namespace JMS.DVB
         protected abstract void OnDispose();
 
         /// <summary>
-        /// Initialisiert das Auslesen einer Tabellenart.
+        /// Initialisiert eine Hintergrundaufgabe.
         /// </summary>
-        /// <typeparam name="TTableType">Die Art der Tabelle.</typeparam>
+        /// <typeparam name="TResultType">Die Art des Ergebnisses der Aufgabe.</typeparam>
         /// <param name="reader">Die aktuelle Hintergrundaufgabe.</param>
-        /// <param name="restart">Gesetzt, wenn die Aufgabe neu gestartet werden soll.</param>
-        private void ResetReader<TTableType>( ref CancellableTask<TTableType[]> reader, bool restart = false ) where TTableType : WellKnownTable
+        /// <param name="factory">Optional die Methode zur Neuinitialisierung.</param>
+        private void ResetReader<TResultType>( ref CancellableTask<TResultType> reader, Func<CancellableTask<TResultType>> factory = null ) where TResultType : class
         {
             // Wipe out
             var previous = Interlocked.Exchange( ref reader, null );
@@ -1097,8 +1128,8 @@ namespace JMS.DVB
                 previous.Cancel();
 
             // New one
-            if (restart)
-                reader = this.GetTableAsync<TTableType>();
+            if (factory != null)
+                reader = factory();
         }
 
         /// <summary>
@@ -1117,6 +1148,7 @@ namespace JMS.DVB
                     ResetReader( ref m_NITReader );
                     ResetReader( ref m_PATReader );
                     ResetReader( ref m_SDTReader );
+                    m_groupReader = null;
 
                     // Forward
                     OnDispose();
