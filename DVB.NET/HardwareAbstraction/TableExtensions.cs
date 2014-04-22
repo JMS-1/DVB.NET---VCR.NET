@@ -158,9 +158,9 @@ namespace JMS.DVB
         /// <param name="device">Das zu verwendende, bereits aktivierte Gerät.</param>
         /// <param name="stream">Die Datenstromkennung der Tabelle.</param>
         /// <returns>Die Steuerung des Auslesevorgangs.</returns>
-        public static AsyncTableReader<TTableType> GetTableAsync<TTableType>( this Hardware device, ushort stream ) where TTableType : Table
+        public static CancellableTask<TTableType[]> GetTableAsync<TTableType>( this Hardware device, ushort stream ) where TTableType : Table
         {
-            return AsyncTableReader<TTableType>.Create( device, stream );
+            return TableReaderTask<TTableType>.Create( device, stream );
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace JMS.DVB
         /// <typeparam name="TTableType">Die Art der Tabelle.</typeparam>
         /// <param name="device">Das zu verwendende, bereits aktivierte Gerät.</param>
         /// <returns>Die Steuerung des Auslesevorgangs.</returns>
-        public static AsyncTableReader<TTableType> GetTableAsync<TTableType>( this Hardware device ) where TTableType : WellKnownTable
+        public static CancellableTask<TTableType[]> GetTableAsync<TTableType>( this Hardware device ) where TTableType : WellKnownTable
         {
             return GetTableAsync<TTableType>( device, WellKnownTable.GetWellKnownStream<TTableType>() );
         }

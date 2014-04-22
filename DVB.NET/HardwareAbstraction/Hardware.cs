@@ -368,17 +368,17 @@ namespace JMS.DVB
         /// <summary>
         /// Ermittelt die aktuelle <i>Network Information Table</i>.
         /// </summary>
-        private AsyncTableReader<NIT> m_NITReader;
+        private CancellableTask<NIT[]> m_NITReader;
 
         /// <summary>
         /// Ermittelt die aktuelle <i>Program Association Table</i>.
         /// </summary>
-        private AsyncTableReader<PAT> m_PATReader = null;
+        private CancellableTask<PAT[]> m_PATReader = null;
 
         /// <summary>
         /// Ermittelt die aktuelle <i>Service Description Table</i>.
         /// </summary>
-        private AsyncTableReader<SDT> m_SDTReader = null;
+        private CancellableTask<SDT[]> m_SDTReader = null;
 
         /// <summary>
         /// Die zuletzt ermittelten Daten zur aktuellen Quellgruppe (Transponder).
