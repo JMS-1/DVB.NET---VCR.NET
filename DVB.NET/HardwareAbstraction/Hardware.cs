@@ -681,31 +681,22 @@ namespace JMS.DVB
             ResetReader( ref m_SDTReader, this.GetTableAsync<SDT> );
 
             // Restart group reader
-            m_groupReader = GetGroupInformationAsync();
-        }
+            m_groupReader =
+                Task.Run( () =>
+                {
+                    // Requires PAT
+                    var patReader = AssociationTableReader;
+                    if (patReader == null)
+                        return null;
 
-        /// <summary>
-        /// Startet die Hintergrundaufgabe zum Auslesen der Informationen der Quellgruppe.
-        /// </summary>
-        /// <returns>Die gewünschte Aufgabe.</returns>
-        private async Task<GroupInformation> GetGroupInformationAsync()
-        {
-            // Requires PAT
-            var patReader = AssociationTableReader;
-            if (patReader == null)
-                return null;
+                    // Requires SDT
+                    var sdtReader = ServiceTableReader;
+                    if (sdtReader == null)
+                        return null;
 
-            // Requires SDT
-            var sdtReader = ServiceTableReader;
-            if (sdtReader == null)
-                return null;
-
-            // Load
-            var services = await sdtReader;
-            var associations = await patReader;
-
-            // Construct
-            return services.ToGroupInformation( associations );
+                    // Wait and Construct
+                    return sdtReader.Result.ToGroupInformation( patReader.Result );
+                } );
         }
 
         /// <summary>
