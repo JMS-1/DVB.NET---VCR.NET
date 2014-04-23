@@ -105,151 +105,6 @@ namespace JMS.DVB
         }
 
         /// <summary>
-        /// Ermittelt die Informationen zum aktuellen Ursprung.
-        /// </summary>
-        /// <param name="hardware">Die betroffene Hardwareabstraktion.</param>
-        /// <returns>Die gewünschten Informationen oder <i>null.</i></returns>
-        /// <exception cref="ArgumentNullException">Es wurde keine Geräteabstraktion angegeben.</exception>
-        public static LocationInformation GetLocationInformation( this Hardware hardware )
-        {
-            // Validate
-            if (null == hardware)
-                throw new ArgumentNullException( "hardware" );
-
-            // Forward using default
-            return hardware.GetLocationInformation( 15000 );
-        }
-
-        /// <summary>
-        /// Ermittelt die Informationen zur aktuellen Quellgruppe (Transponder).
-        /// </summary>
-        /// <param name="hardware">Die betroffene Hardwareabstraktion.</param>
-        /// <returns>Die gewünschten Informationen oder <i>null.</i></returns>
-        /// <exception cref="ArgumentNullException">Es wurde keine Geräteabstraktion angegeben.</exception>
-        public static GroupInformation GetGroupInformation( this Hardware hardware )
-        {
-            // Validate
-            if (null == hardware)
-                throw new ArgumentNullException( "hardware" );
-
-            // Forward using default
-            return hardware.GetGroupInformation( 5000 );
-        }
-
-        /// <summary>
-        /// Fordert eine Aktualisierung der SI Senderdaten an.
-        /// </summary>
-        /// <param name="source">Die betroffene Quelle.</param>
-        /// <param name="hardware">Das zu verwendene Gerät, das auf die Quellgruppe (Transponder) des
-        /// Senders eingestellt sein muss.</param>
-        /// <param name="profile">Optional das Geräteprofil mit der zugehörigen Senderliste.</param>
-        /// <returns>Die Kontrollinstanz für die Abfrage der veränderten Daten.</returns>
-        /// <exception cref="ArgumentNullException">Ein Parameter wurde nicht angegeben.</exception>
-        /// <exception cref="ArgumentException">Die Quelle ist auf der aktuell gewählten Quellgruppe
-        /// (Transponder) nicht verfügbar.</exception>
-        public static SourceInformationReader BeginGetSourceInformation( this SourceIdentifier source, Hardware hardware, Profile profile )
-        {
-            // Forward
-            return new SourceInformationReader( source, hardware, profile );
-        }
-
-        /// <summary>
-        /// Fordert eine Aktualisierung der SI Senderdaten an.
-        /// </summary>
-        /// <param name="source">Die betroffene Quelle.</param>
-        /// <param name="hardware">Das zu verwendene Gerät, das auf die Quellgruppe (Transponder) des
-        /// Senders eingestellt sein muss.</param>
-        /// <param name="profile">Optional das Geräteprofil mit der zugehörigen Senderliste.</param>
-        /// <returns>Die gewünschten Informationen.</returns>
-        /// <exception cref="ArgumentNullException">Ein Parameter wurde nicht angegeben.</exception>
-        /// <exception cref="ArgumentException">Die Quelle ist auf der aktuell gewählten Quellgruppe
-        /// (Transponder) nicht verfügbar.</exception>
-        public static SourceInformation GetSourceInformation( this SourceIdentifier source, Hardware hardware, Profile profile )
-        {
-            // Create reader and report
-            using (SourceInformationReader reader = source.BeginGetSourceInformation( hardware, profile ))
-                return reader.Wait();
-        }
-
-        /// <summary>
-        /// Fordert eine Aktualisierung der SI Senderdaten an.
-        /// </summary>
-        /// <param name="source">Die betroffene Quelle.</param>
-        /// <param name="hardware">Das zu verwendene Gerät, das auf die Quellgruppe (Transponder) des
-        /// Senders eingestellt sein muss.</param>
-        /// <returns>Die Kontrollinstanz für die Abfrage der veränderten Daten.</returns>
-        /// <exception cref="ArgumentNullException">Ein Parameter wurde nicht angegeben.</exception>
-        /// <exception cref="ArgumentException">Die Quelle ist auf der aktuell gewählten Quellgruppe
-        /// (Transponder) nicht verfügbar.</exception>
-        public static SourceInformationReader BeginGetSourceInformation( this Hardware hardware, SourceIdentifier source )
-        {
-            // Forward
-            return new SourceInformationReader( source, hardware, null );
-        }
-
-        /// <summary>
-        /// Fordert die SI Senderdaten zu einer Quelle an.
-        /// </summary>
-        /// <param name="selection">Die eindeutige Auswahl der Quelle.</param>
-        /// <returns>Die Kontrollinstanz für die Abfrage der veränderten Daten.</returns>
-        /// <exception cref="ArgumentNullException">Es wurde keine Quelle angegeben.</exception>
-        public static SourceInformationReader BeginGetSourceInformation( this SourceSelection selection )
-        {
-            // Validate
-            if (null == selection)
-                throw new ArgumentNullException( "selection" );
-
-            // Forward
-            using (HardwareManager.Open())
-                return new SourceInformationReader( selection.Source, selection.GetHardware(), selection.GetLeafProfile() );
-        }
-
-        /// <summary>
-        /// Fordert die SI Senderdaten zu einer Quelle an.
-        /// </summary>
-        /// <param name="selection">Die eindeutige Auswahl der Quelle.</param>
-        /// <param name="timeout">Die maximale Wartezeit in Seinden.</param>
-        /// <returns>Die gewünschten Informationen oder <i>null</i>, wenn keine ermittelt werden konnten.</returns>
-        /// <exception cref="ArgumentNullException">Es wurde keine Quelle angegeben.</exception>
-        public static SourceInformation GetSourceInformation( this SourceSelection selection, int timeout )
-        {
-            // Create reader and report
-            using (SourceInformationReader reader = BeginGetSourceInformation( selection ))
-                return reader.Wait( timeout );
-        }
-
-        /// <summary>
-        /// Fordert die SI Senderdaten zu einer Quelle an.
-        /// </summary>
-        /// <param name="selection">Die eindeutige Auswahl der Quelle.</param>
-        /// <returns>Die gewünschten Informationen.</returns>
-        /// <exception cref="ArgumentNullException">Es wurde keine Quelle angegeben.</exception>
-        public static SourceInformation GetSourceInformation( this SourceSelection selection )
-        {
-            // Create reader and report
-            using (SourceInformationReader reader = BeginGetSourceInformation( selection ))
-                return reader.Wait();
-        }
-
-        /// <summary>
-        /// Erzeugt einen Aufzeichnungskontext für eine Quelle.
-        /// </summary>
-        /// <param name="selection">Die Informationen zur Quelle.</param>
-        /// <param name="streams">Die gewünschten Aufzeichnungsparameter.</param>
-        /// <returns>Eine Kontrollinstanz für die Aufzeichnung. Diese muss mittels <see cref="IDisposable.Dispose"/>
-        /// freigegeben werden.</returns>
-        public static SourceStreamsManager Open( this SourceSelection selection, StreamSelection streams )
-        {
-            // Validate
-            if (null == selection)
-                throw new ArgumentNullException( "selection" );
-
-            // Forward
-            using (HardwareManager.Open())
-                return selection.Source.Open( selection.GetHardware(), selection.GetLeafProfile(), streams );
-        }
-
-        /// <summary>
         /// Erzeugt einen Aufzeichnungskontext für eine Quelle.
         /// </summary>
         /// <param name="source">Die Informationen zur Quelle.</param>
@@ -267,16 +122,17 @@ namespace JMS.DVB
         /// <summary>
         /// Erzeugt einen Aufzeichnungskontext für eine Quelle.
         /// </summary>
-        /// <param name="hardware">Das zu verwendende Gerät.</param>
-        /// <param name="profile">Opetional ein Geräteprofil mit der zugehörigen Senderliste.</param>
-        /// <param name="source">Die Informationen zur Quelle.</param>
+        /// <param name="selection">Die Informationen zur Quelle.</param>
         /// <param name="streams">Die gewünschten Aufzeichnungsparameter.</param>
         /// <returns>Eine Kontrollinstanz für die Aufzeichnung. Diese muss mittels <see cref="IDisposable.Dispose"/>
         /// freigegeben werden.</returns>
-        public static SourceStreamsManager Open( this Hardware hardware, SourceIdentifier source, Profile profile, StreamSelection streams )
+        public static SourceStreamsManager Open( this SourceSelection selection, StreamSelection streams )
         {
-            // Forward
-            return new SourceStreamsManager( hardware, profile, source, streams );
+            // Validate
+            if (selection == null)
+                throw new ArgumentNullException( "selection" );
+            else
+                return selection.Source.Open( selection.GetHardware(), selection.GetLeafProfile(), streams );
         }
 
         /// <summary>

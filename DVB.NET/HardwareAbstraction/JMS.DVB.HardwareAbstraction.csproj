@@ -129,7 +129,6 @@
     <Compile Include="StreamTypes.cs" />
     <Compile Include="TableExtensions.cs" />
     <Compile Include="CancellableTask.cs" />
-    <Compile Include="TableReaderTask.cs" />
     <Compile Include="TableReader.cs" />
     <Compile Include="TerrestrialProfile.cs" />
     <Compile Include="Hardware.cs" />

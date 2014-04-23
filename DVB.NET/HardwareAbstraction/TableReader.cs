@@ -1,296 +1,121 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using JMS.DVB.SI;
 
 
 namespace JMS.DVB
 {
     /// <summary>
-    /// Schnittstelle zur Kontrolle des asynchronen Einlesens einer Tabelle, die auf mehrere 
-    /// SI Bereichte verteilt sein kann.
-    /// </summary>
-    /// <remarks>
-    /// Die Schnittstellenmethoden dürfen nur auf dem <see cref="Thread"/> verwendet werden,
-    /// auf dem die zugehörige Objektinstanz erzeugt wurde. Also insbesondere <b>nicht</b>
-    /// in einer Rückrufmethode zur Auswertung der Tabellen.
-    /// </remarks>
-    public interface IAsynchronousTableReader : IDisposable
-    {
-        /// <summary>
-        /// Bricht den Zugriff ab.
-        /// </summary>
-        void Cancel();
-
-        /// <summary>
-        /// Meldet die Synchronisationsinstanz zu diesem asynchronen Aufruf.
-        /// </summary>
-        WaitHandle WaitHandle { get; }
-    }
-
-    /// <summary>
-    /// Schnittstelle zur Kontrolle des asynchronen Einlesens einer Tabelle, die auf mehrere 
-    /// SI Bereichte verteilt sein kann.
-    /// </summary>
-    /// <typeparam name="T">Die Art der SI Tabelle, auf die gewartet wird.</typeparam>
-    /// <remarks>
-    /// Die Schnittstellenmethoden dürfen nur auf dem <see cref="Thread"/> verwendet werden,
-    /// auf dem die zugehörige Objektinstanz erzeugt wurde. Also insbesondere <b>nicht</b>
-    /// in einer Rückrufmethode zur Auswertung der Tabellen.
-    /// </remarks>
-    public interface IAsynchronousTableReader<T> : IAsynchronousTableReader where T : Table
-    {
-        /// <summary>
-        /// Wartet auf die angeforderten Tabellen.
-        /// </summary>
-        /// <param name="milliSeconds">Die Wartezeit in Millisekunden.</param>
-        /// <returns>Die angeforderten Tabellen oder <i>null</i>, wenn diese noch nicht bereit stehen.</returns>
-        T[] WaitForTables( int milliSeconds );
-    }
-
-    /// <summary>
     /// Hilfsklasse zum Einlesen einer einzelnen Tabelle, die auf mehrere SI Bereiche verteilt
     /// sein kann.
     /// </summary>
-    public class TableReader<T> : IAsynchronousTableReader<T> where T : Table
+    public static class TableReader
     {
         /// <summary>
-        /// Wird gesetzt, sobald ein Ergebnis bereit steht.
+        /// Startet das Auslesen einer SI-Tabelle.
         /// </summary>
-        private ManualResetEvent m_Done = new ManualResetEvent( false );
-
-        /// <summary>
-        /// Die Analyseeinheit für die Tabellen.
-        /// </summary>
-        private TableParser m_Parser;
-
-        /// <summary>
-        /// Gesetzt, wenn eine Auswertung der Tabellen aktiv ist.
-        /// </summary>
-        private volatile bool m_Active = false;
-
-        /// <summary>
-        /// Gesetzt, wenn eine Anmeldung an der Geräteabstraktion vorliegt.
-        /// </summary>
-        private bool m_IsRegistered = false;
-
-        /// <summary>
-        /// Die Datenstromkennung (PID) für die SI Tabelle.
-        /// </summary>
-        private ushort m_Stream;
-
-        /// <summary>
-        /// Die Geräteabstraktion, über die der Datenstrom empfangen wird.
-        /// </summary>
-        private Hardware m_Provider;
-
-        /// <summary>
-        /// Die Methode, die aufgerufen werden soll, sobald eine Tabelle vollständig ermittelt wurde.
-        /// </summary>
-        private Action<T[]> m_Consumer;
-
-        /// <summary>
-        /// Die bisher rekonstruierten Tabellenteile.
-        /// </summary>
-        private volatile T[] m_Tables = null;
-
-        /// <summary>
-        /// Die Versionsnummer für die Rekonstruktion der Tabellenteile.
-        /// </summary>
-        private int m_Version = 0;
-
-        /// <summary>
-        /// Bisher gefundene Tabellenfragmente.
-        /// </summary>
-        private int m_TableCount = 0;
-
-        /// <summary>
-        /// Die eindeutige Kennung des zugehörigen Verbrauchers.
-        /// </summary>
-        private Guid m_ConsumerId;
-
-        /// <summary>
-        /// Erzeugt eine neue Instanz.
-        /// </summary>
-        /// <param name="provider">Die zu aktuelle Hardware Abstraktion.</param>
-        /// <param name="stream">Die eindeutige Nummer (PID) des Datenstroms in der aktuellen <see cref="SourceGroup"/>.</param>
-        /// <param name="consumer">Eine Methode, die bei vollständiger Rekonstruktion der Tabelle aufgerufen werden soll.</param>
-        public TableReader( Hardware provider, ushort stream, Action<T[]> consumer )
+        /// <typeparam name="TTableType">Die Art der Tabelle.</typeparam>
+        /// <param name="device">Das zu verwendende, bereits aktivierte Gerät.</param>
+        /// <returns>Die Steuerung des Auslesevorgangs.</returns>
+        public static CancellableTask<TTableType[]> GetTableAsync<TTableType>( this Hardware device ) where TTableType : WellKnownTable
         {
-            // Remember
-            m_Provider = provider;
-            m_Consumer = consumer;
-            m_Stream = stream;
-
-            // Configure parser
-            m_Parser = TableParser.Create<T>( OnTable );
-
-            // Activate
-            Restart();
+            return device.GetTableAsync<TTableType>( WellKnownTable.GetWellKnownStream<TTableType>() );
         }
 
         /// <summary>
-        /// Beschickt die Analyseeinheit mit Daten.
+        /// Erzeugt eine neue Hintergrundaufgabe zum Auslesen von SI Tabellen.
         /// </summary>
-        /// <param name="data">Ein Datenblock, der ausgewertet werden soll.</param>
-        /// <param name="offset">Das erste zu benutzende Byte.</param>
-        /// <param name="length">Die Anzahl der zu benutzenden Bytes.</param>
-        public void ProcessData( byte[] data, int offset, int length )
+        /// <param name="device">Das zu verwendende Gerät.</param>
+        /// <param name="stream">Die Datenstromkennung, die überwacht werden soll.</param>
+        /// <returns>Die neue Aufgabe.</returns>
+        public static CancellableTask<TTableType[]> GetTableAsync<TTableType>( this Hardware device, ushort stream ) where TTableType : Table
         {
-            // Forward
-            m_Parser.AddPayload( data, offset, length );
-        }
-
-        /// <summary>
-        /// Beginnt die Annahme von SI Tabellen erneut.
-        /// </summary>
-        private void Restart()
-        {
-            // Stop first
-            Cancel();
-
-            // Start receiving
-            m_TableCount = 0;
-            m_Tables = null;
-            m_Done.Reset();
-            m_Version = 0;
-
-            // Connected to hardware
-            if (null != m_Provider)
+            // Create the task
+            return CancellableTask<TTableType[]>.Run( cancel =>
             {
-                // Register
-                m_ConsumerId = m_Provider.AddConsumer( m_Stream, m_Parser, Table.GetIsExtendedTable<T>() ? StreamTypes.ExtendedTable : StreamTypes.StandardTable );
+                // Prepare
+                var tables = default( TTableType[] );
+                var sync = new object();
+                var expectedVersion = 0;
+                var collectedParts = 0;
+                var done = false;
 
-                // Start receiving data immediately
-                m_Provider.SetConsumerState( m_ConsumerId, true );
-            }
+                // Create parser
+                var parser = TableParser.Create( ( TTableType table ) =>
+                {
+                    // Disabled
+                    if (done)
+                        return;
 
-            // Enable parsing
-            m_IsRegistered = true;
-            m_Active = true;
-        }
+                    // Check version
+                    if (tables != null)
+                        if (table.Version != expectedVersion)
+                            tables = null;
 
-        /// <summary>
-        /// Nimmt eine Tabelle entgegen.
-        /// </summary>
-        /// <param name="table">Eine Tabelle, eventuell nur ein Teil einer auf mehrere SI
-        /// Bereiche verteilte Gesamttabelle.</param>
-        private void OnTable( T table )
-        {
-            // Disabled
-            if (!m_Active)
-                return;
+                    // Discard on count mismatch
+                    if (tables != null)
+                        if (tables.Length != (table.LastSection + 1))
+                            tables = null;
 
-            // Check version
-            if (null != m_Tables)
-                if (table.Version != m_Version)
-                    m_Tables = null;
+                    // Discard on overrun
+                    if (tables != null)
+                        if (table.CurrentSection >= tables.Length)
+                            tables = null;
 
-            // Discard on count mismatch
-            if (null != m_Tables)
-                if (m_Tables.Length != (table.LastSection + 1))
-                    m_Tables = null;
+                    // Discard on duplicates
+                    if (tables != null)
+                        if (tables[table.CurrentSection] != null)
+                            tables = null;
 
-            // Discard on overrun
-            if (null != m_Tables)
-                if (table.CurrentSection >= m_Tables.Length)
-                    m_Tables = null;
+                    // Create once
+                    if (tables == null)
+                    {
+                        // Create in full size
+                        tables = new TTableType[table.LastSection + 1];
+                        expectedVersion = table.Version;
+                        collectedParts = 0;
+                    }
 
-            // Discard on duplicates
-            if (null != m_Tables)
-                if (null != m_Tables[table.CurrentSection])
-                    m_Tables = null;
+                    // Add it
+                    tables[table.CurrentSection] = table;
 
-            // Create once
-            if (null == m_Tables)
-            {
-                // Create in full size
-                m_Tables = new T[table.LastSection + 1];
-                m_Version = table.Version;
-                m_TableCount = 0;
-            }
+                    // Mark as done
+                    if (++collectedParts >= tables.Length)
+                        lock (sync)
+                        {
+                            // Mark
+                            done = true;
 
-            // Add it
-            m_Tables[table.CurrentSection] = table;
+                            // Signal
+                            Monitor.Pulse( sync );
+                        }
+                } );
 
-            // Count it
-            if (++m_TableCount < m_Tables.Length)
-                return;
-
-            // Lock out further actions
-            m_Active = false;
-
-            // Load the result
-            T[] tables = m_Tables;
-
-            // Notify synchronous clients
-            if (null != m_Consumer)
-                if (null != tables)
-                    m_Consumer( tables );
-
-            // Synchronize contents
-            Thread.MemoryBarrier();
-
-            // Notify asynchronous clients
-            m_Done.Set();
-        }
-
-        #region ITableReader<T> Members
-
-        /// <summary>
-        /// Bricht den Zugriff ab.
-        /// </summary>
-        public void Cancel()
-        {
-            // Disable analysis
-            m_Active = false;
-
-            // Already done
-            if (m_IsRegistered)
+                // Register with cleanup
+                var tableType = Table.GetIsExtendedTable<TTableType>() ? StreamTypes.ExtendedTable : StreamTypes.StandardTable;
+                var registration = device.AddConsumer( stream, parser, tableType );
                 try
                 {
-                    // Stop receiving this SI stream
-                    if (null != m_Provider)
-                        m_Provider.SetConsumerState( m_ConsumerId, null );
+                    // Start receiving data
+                    device.SetConsumerState( registration, true );
+
+                    // Wait for end   
+                    using (cancel.Register( () => { lock (sync) Monitor.Pulse( sync ); } ))
+                        lock (sync)
+                            while (!done)
+                                if (cancel.IsCancellationRequested)                                    
+                                    return null;
+                                else
+                                    Monitor.Wait( sync );
                 }
                 finally
                 {
-                    // Deleted registration
-                    m_IsRegistered = false;
+                    // Cleanup
+                    device.SetConsumerState( registration, null );
                 }
+
+                // Report
+                return tables;
+            } );
         }
-
-        /// <summary>
-        /// Beendet die Nutzung dieser Instanz endgültig.
-        /// </summary>
-        public void Dispose()
-        {
-            // Forward
-            Cancel();
-        }
-
-        /// <summary>
-        /// Wartet auf die angeforderten Tabellen.
-        /// </summary>
-        /// <param name="milliSeconds">Die Wartezeit in Millisekunden.</param>
-        /// <returns>Die angeforderten Tabellen oder <i>null</i>, wenn diese noch nicht bereit stehen.</returns>
-        public T[] WaitForTables( int milliSeconds )
-        {
-            // Forward
-            if (!m_Done.WaitOne( milliSeconds, false ))
-                return null;
-
-            // Stop receiver
-            Cancel();
-
-            // Report
-            return m_Tables;
-        }
-
-        /// <summary>
-        /// Meldet die Synchronisationsinstanz zu diesem asynchronen Aufruf.
-        /// </summary>
-        public WaitHandle WaitHandle { get { return m_Done; } }
-
-        #endregion
     }
 }

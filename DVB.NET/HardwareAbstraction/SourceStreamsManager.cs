@@ -182,26 +182,29 @@ namespace JMS.DVB
         }
 
         /// <summary>
+        /// Startet das Auslesen der aktuellen Daten zur aktiven Quelle im Hintergrund.
+        /// </summary>
+        /// <returns>Eine Steuerinstanz zum asynchronen Zugriff auf die aktuellen Daten.</returns>
+        public CancellableTask<SourceInformation> GetCurrentInformationAsync()
+        {
+            // Just forward
+            return Hardware.GetSourceInformationAsync( Source, Profile );
+        }
+
+        /// <summary>
         /// Ermittelt die aktuellen Daten zur aktiven Quelle.
         /// </summary>
         /// <returns>Die neu ermittelten aktuellen Daten.</returns>
         public SourceInformation GetCurrentInformation()
         {
             // Just forward
-            return Source.GetSourceInformation( Hardware, Profile );
+            return GetCurrentInformationAsync().CancelAfter( 5000 ).Result;
         }
 
         /// <summary>
         /// Meldet die aktuell verwendeten Daten der Quelle.
         /// </summary>
-        public SourceInformation ActiveInformation
-        {
-            get
-            {
-                // Just report
-                return m_OriginalSettings;
-            }
-        }
+        public SourceInformation ActiveInformation { get { return m_OriginalSettings; } }
 
         /// <summary>
         /// Meldet oder legt fest, ob Berichte über das Schreiben der Systemuhr
@@ -209,11 +212,7 @@ namespace JMS.DVB
         /// </summary>
         public Action<string, long, byte[]> OnWritingPCR
         {
-            get
-            {
-                // Use cached
-                return m_WritePCRSink;
-            }
+            get { return m_WritePCRSink; }
             set
             {
                 // Forward
@@ -223,16 +222,6 @@ namespace JMS.DVB
                 // Update cached
                 m_WritePCRSink = value;
             }
-        }
-
-        /// <summary>
-        /// Startet das Auslesen der aktuellen Daten zur aktiven Quelle im Hintergrund.
-        /// </summary>
-        /// <returns>Eine Steuerinstanz zum asynchronen Zugriff auf die aktuellen Daten.</returns>
-        public SourceInformationReader BeginGetCurrentInformation()
-        {
-            // Just forward
-            return Source.BeginGetSourceInformation( Hardware, Profile );
         }
 
         /// <summary>

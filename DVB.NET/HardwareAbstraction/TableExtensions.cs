@@ -95,85 +95,6 @@ namespace JMS.DVB
         }
 
         /// <summary>
-        /// Liest eine SI Tabelle, die sich auf mehrere SI Bereiche verteilen kann, einmalig
-        /// ein.
-        /// </summary>
-        /// <typeparam name="T">Die Art der einzulesenden Tabelle.</typeparam>
-        /// <param name="provider">Die zu aktuelle Hardware Abstraktion.</param>
-        /// <param name="stream">Die eindeutige Nummer (PID) des Datenstroms in der aktuellen <see cref="SourceGroup"/>.</param>
-        /// <returns>Eine Instanz zur Steuerung des asynschonen Aufrufs.</returns>
-        public static IAsynchronousTableReader<T> BeginGetTable<T>( this Hardware provider, ushort stream ) where T : Table
-        {
-            return new TableReader<T>( provider, stream, null );
-        }
-
-        /// <summary>
-        /// Liest eine SI Tabelle, die sich auf mehrere SI Bereiche verteilen kann, einmalig
-        /// ein.
-        /// </summary>
-        /// <typeparam name="T">Die Art der einzulesenden Tabelle.</typeparam>
-        /// <param name="provider">Die zu aktuelle Hardware Abstraktion.</param>
-        /// <param name="stream">Die eindeutige Nummer (PID) des Datenstroms in der aktuellen <see cref="SourceGroup"/>.</param>
-        /// <param name="consumer">Eine Methode, die bei vollständiger Rekonstruktion der Tabelle aufgerufen werden soll.</param>
-        /// <returns>Eine Instanz zur Steuerung des asynschonen Aufrufs.</returns>
-        public static IAsynchronousTableReader<T> BeginGetTable<T>( this Hardware provider, ushort stream, Action<T[]> consumer ) where T : Table
-        {
-            // Validate
-            if (null == consumer)
-                throw new ArgumentNullException( "consumer" );
-            else
-                return new TableReader<T>( provider, stream, consumer );
-        }
-
-        /// <summary>
-        /// Liest eine SI Tabelle, die sich auf mehrere SI Bereiche verteilen kann, einmalig
-        /// ein.
-        /// </summary>
-        /// <typeparam name="T">Die Art der einzulesenden Tabelle.</typeparam>
-        /// <param name="provider">Die zu aktuelle Hardware Abstraktion.</param>
-        /// <returns>Eine Instanz zur Steuerung des asynschonen Aufrufs.</returns>
-        public static IAsynchronousTableReader<T> BeginGetTable<T>( this Hardware provider ) where T : WellKnownTable
-        {
-            return BeginGetTable<T>( provider, WellKnownTable.GetWellKnownStream<T>() );
-        }
-
-        /// <summary>
-        /// Liest eine SI Tabelle, die sich auf mehrere SI Bereiche verteilen kann, einmalig
-        /// ein.
-        /// </summary>
-        /// <typeparam name="T">Die Art der einzulesenden Tabelle.</typeparam>
-        /// <param name="provider">Die zu aktuelle Hardware Abstraktion.</param>
-        /// <param name="consumer">Eine Methode, die bei vollständiger Rekonstruktion der Tabelle aufgerufen werden soll.</param>
-        /// <returns>Eine Instanz zur Steuerung des asynschonen Aufrufs.</returns>
-        public static IAsynchronousTableReader<T> BeginGetTable<T>( this Hardware provider, Action<T[]> consumer ) where T : WellKnownTable
-        {
-            return BeginGetTable( provider, WellKnownTable.GetWellKnownStream<T>(), consumer );
-        }
-
-        /// <summary>
-        /// Startet das Auslesen einer SI-Tabelle.
-        /// </summary>
-        /// <typeparam name="TTableType">Die Art der Tabelle.</typeparam>
-        /// <param name="device">Das zu verwendende, bereits aktivierte Gerät.</param>
-        /// <param name="stream">Die Datenstromkennung der Tabelle.</param>
-        /// <returns>Die Steuerung des Auslesevorgangs.</returns>
-        public static CancellableTask<TTableType[]> GetTableAsync<TTableType>( this Hardware device, ushort stream ) where TTableType : Table
-        {
-            return TableReader.Start<TTableType>( device, stream );
-        }
-
-        /// <summary>
-        /// Startet das Auslesen einer SI-Tabelle.
-        /// </summary>
-        /// <typeparam name="TTableType">Die Art der Tabelle.</typeparam>
-        /// <param name="device">Das zu verwendende, bereits aktivierte Gerät.</param>
-        /// <returns>Die Steuerung des Auslesevorgangs.</returns>
-        public static CancellableTask<TTableType[]> GetTableAsync<TTableType>( this Hardware device ) where TTableType : WellKnownTable
-        {
-            return GetTableAsync<TTableType>( device, WellKnownTable.GetWellKnownStream<TTableType>() );
-        }
-
-        /// <summary>
         /// Ermittelt die Informationen zu dem gerade aktiven Ursprung.
         /// </summary>
         /// <param name="provider">Das verwendete DVB.NET Gerät.</param>
@@ -210,30 +131,6 @@ namespace JMS.DVB
         {
             // Forward
             return (TerrestrialLocationInformation) ((Hardware) provider).GetLocationInformation( milliSeconds );
-        }
-
-        /// <summary>
-        /// Ermittelt die Informationen zu dem gerade aktiven Ursprung.
-        /// </summary>
-        /// <param name="provider">Das verwendete DVB.NET Gerät.</param>
-        /// <param name="milliSeconds">Die maximale Wartezeit auf die Informationen in Millisekunden.</param>
-        /// <returns>Die gewünschten Informationen oder <i>null</i>, wenn diese in der angegebenen
-        /// Zeit nicht bereit gestellt werden konnten.</returns>
-        public static LocationInformation GetLocationInformation( this Hardware provider, int milliSeconds )
-        {
-            // Start reader
-            using (IAsynchronousTableReader<NIT> reader = BeginGetTable<NIT>( provider ))
-            {
-                // Wait for the table to arrive
-                NIT[] tables = reader.WaitForTables( milliSeconds );
-
-                // None available - eventually try again using a greater timeout
-                if (null == tables)
-                    return null;
-
-                // Create the location information
-                return tables.ToLocationInformation( provider );
-            }
         }
 
         /// <summary>
@@ -621,28 +518,6 @@ namespace JMS.DVB
 
             // Report
             return info;
-        }
-
-        /// <summary>
-        /// Wartet auf angeforderte SI Tabellen.
-        /// </summary>
-        /// <param name="reader">Der zu verwendende asynchrone Aufruf.</param>
-        /// <param name="bias">Die Startzeit eines ganzen Blocks von asynchronen Aufruf, die mittels
-        /// <see cref="DateTime.UtcNow"/> festgelegt wurde.</param>
-        /// <param name="milliSeconds">Die Wartezeit in Millisekunden relative zum Start.</param>
-        /// <returns>Die gewünschten Tabellen oder <i>null</i>, wenn diese im angegebenen Zeitraum nicht
-        /// empfangen wurden.</returns>
-        public static T[] WaitForTables<T>( this IAsynchronousTableReader<T> reader, DateTime bias, int milliSeconds ) where T : Table
-        {
-            // Validate
-            if (milliSeconds < 0)
-                throw new ArgumentException( milliSeconds.ToString(), "milliSeconds" );
-
-            // Load rest relative to the bias and never less than zero
-            int rest = Math.Max( 0, (int) Math.Round( milliSeconds - (DateTime.UtcNow - bias).TotalMilliseconds ) );
-
-            // Forward
-            return reader.WaitForTables( (0 == milliSeconds) ? 0 : rest );
         }
 
         /// <summary>

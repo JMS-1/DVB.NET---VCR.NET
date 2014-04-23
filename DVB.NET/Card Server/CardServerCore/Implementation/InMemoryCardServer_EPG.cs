@@ -467,7 +467,7 @@ namespace JMS.DVB.CardServer
                 device.SelectGroup( next.Location, next.Group );
 
                 // See if there is something on this group
-                if (null == device.GetGroupInformation())
+                if (null == device.GetGroupInformation( 5000 ))
                 {
                     // Push back
                     m_EPGPending.Add( next );

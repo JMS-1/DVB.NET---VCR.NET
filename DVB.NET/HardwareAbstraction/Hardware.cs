@@ -167,10 +167,10 @@ namespace JMS.DVB
             public Guid AddConsumer( Action<byte[], int, int> callback )
             {
                 // Create new
-                _Registration reg = new _Registration( callback );
+                var reg = new _Registration( callback );
 
                 // Load
-                List<_Registration> consumers = new List<_Registration>( m_Consumers );
+                var consumers = new List<_Registration>( m_Consumers );
 
                 // Append
                 consumers.Add( reg );
@@ -192,17 +192,15 @@ namespace JMS.DVB
             public bool? RemoveConsumer( Guid uniqueIdentifier )
             {
                 // Create helper
-                List<_Registration> consumers = new List<_Registration>( m_Consumers );
+                var consumers = new List<_Registration>( m_Consumers );
 
                 // Find
-                int i = consumers.FindIndex( c => c.UniqueIdentifier.Equals( uniqueIdentifier ) );
-
-                // Not known
+                var i = consumers.FindIndex( c => c.UniqueIdentifier.Equals( uniqueIdentifier ) );
                 if (i < 0)
                     return null;
 
                 // Attach to the registration
-                _Registration consumer = consumers[i];
+                var consumer = consumers[i];
 
                 // Correct
                 consumers.RemoveAt( i );
@@ -234,10 +232,10 @@ namespace JMS.DVB
             public bool? SetConsumerState( Guid uniqueIdentifier, bool active )
             {
                 // Find it
-                _Registration consumer = this[uniqueIdentifier];
+                var consumer = this[uniqueIdentifier];
 
                 // Not known
-                if (null == consumer)
+                if (consumer == null)
                     return null;
 
                 // Is in the indicated state
@@ -268,9 +266,7 @@ namespace JMS.DVB
                 get
                 {
                     // Find it
-                    int i = Array.FindIndex( m_Consumers, c => c.UniqueIdentifier.Equals( uniqueIdentifier ) );
-
-                    // Not known
+                    var i = Array.FindIndex( m_Consumers, c => c.UniqueIdentifier.Equals( uniqueIdentifier ) );
                     if (i < 0)
                         return null;
                     else
@@ -287,10 +283,8 @@ namespace JMS.DVB
             public bool? GetConsumerState( Guid uniqueIdentifier )
             {
                 // Find it
-                _Registration consumer = this[uniqueIdentifier];
-
-                // Ask it
-                if (null == consumer)
+                var consumer = this[uniqueIdentifier];
+                if (consumer == null)
                     return null;
                 else
                     return consumer.IsActive;
@@ -299,14 +293,7 @@ namespace JMS.DVB
             /// <summary>
             /// Meldet die Anzahl der Verbraucher dieses Datenstroms, die gerade Daten empfangen.
             /// </summary>
-            public int ActiveConsumerCount
-            {
-                get
-                {
-                    // Just sum up
-                    return m_Consumers.Count( r => r.IsActive );
-                }
-            }
+            public int ActiveConsumerCount { get { return m_Consumers.Count( r => r.IsActive ); } }
 
             /// <summary>
             /// Verteilt den Datenblock an alle angeschlossenen Verbraucher.
@@ -317,10 +304,10 @@ namespace JMS.DVB
             private void Dispatcher( byte[] data, int offset, int length )
             {
                 // Load the array
-                _Registration[] consumers = m_Consumers;
+                var consumers = m_Consumers;
 
                 // Forward to all
-                foreach (_Registration consumer in consumers)
+                foreach (var consumer in consumers)
                     if (consumer.IsActive)
                         consumer.Sink( data, offset, length );
             }
@@ -434,7 +421,7 @@ namespace JMS.DVB
         internal Hardware( Profile profile )
         {
             // Validate
-            if (null == profile)
+            if (profile == null)
                 throw new ArgumentNullException( "profile" );
 
             // Remember
@@ -537,11 +524,8 @@ namespace JMS.DVB
         /// <param name="table">Die aktuelle Tabelle.</param>
         private void ProgramGuide( EIT table )
         {
-            // Load current state of list
-            var receivers = m_ProgramGuideConsumers;
-
             // Process
-            foreach (Action<EIT> receiver in receivers)
+            foreach (var receiver in m_ProgramGuideConsumers)
                 try
                 {
                     // Send
@@ -677,26 +661,11 @@ namespace JMS.DVB
                 ResetReader( ref m_NITReader, this.GetTableAsync<NIT> );
 
             // Restart core reader
-            ResetReader( ref m_PATReader, this.GetTableAsync<PAT> );
-            ResetReader( ref m_SDTReader, this.GetTableAsync<SDT> );
+            var patReader = ResetReader( ref m_PATReader, this.GetTableAsync<PAT> );
+            var sdtReader = ResetReader( ref m_SDTReader, this.GetTableAsync<SDT> );
 
             // Restart group reader
-            m_groupReader =
-                Task.Run( () =>
-                {
-                    // Requires PAT
-                    var patReader = AssociationTableReader;
-                    if (patReader == null)
-                        return null;
-
-                    // Requires SDT
-                    var sdtReader = ServiceTableReader;
-                    if (sdtReader == null)
-                        return null;
-
-                    // Wait and Construct
-                    return sdtReader.Result.ToGroupInformation( patReader.Result );
-                } );
+            m_groupReader = Task.Run( () => sdtReader.Result.ToGroupInformation( patReader.Result ) );
         }
 
         /// <summary>
@@ -715,7 +684,7 @@ namespace JMS.DVB
         /// <param name="timeout">Die maximale Wartezeit seit Auswahl der Quellgruppe
         /// (Transponder) in Millisekunden.</param>
         /// <returns>Die gewünschten Informationen oder <i>null.</i></returns>
-        public LocationInformation GetLocationInformation( int timeout )
+        public LocationInformation GetLocationInformation( int timeout = 5000 )
         {
             // Just forward
             var reader = LocationInformationReader;
@@ -732,14 +701,15 @@ namespace JMS.DVB
         /// </summary>
         /// <param name="timeout">Die maximale Wartezeit seit Auswahl der Quellgruppe
         /// (Transponder) in Millisekunden.</param>
+        /// <param name="cancel">Optional eine Abbruchsteuerung.</param>
         /// <returns>Die gewünschten Informationen oder <i>null.</i></returns>
-        public GroupInformation GetGroupInformation( int timeout )
+        public GroupInformation GetGroupInformation( int timeout = 5000, CancellationToken? cancel = null )
         {
             // Load reader
             var groupReader = GroupReader;
             if (groupReader == null)
                 return null;
-            else if (!groupReader.Wait( timeout ))
+            else if (!groupReader.CancellableWait( cancel ?? CancellationToken.None ))
                 return null;
             else
                 return groupReader.Result;
@@ -749,27 +719,30 @@ namespace JMS.DVB
         /// Ermittelt die Datenstromkennung der SI Tabelle PMT zu einer Quelle.
         /// </summary>
         /// <param name="source">Die gewünschte Quelle.</param>
+        /// <param name="cancel">Optional eine Abbruchsteuerung.</param>
         /// <returns>Die Datenstromkennung oder <i>null</i>, wenn die Quelle auf
         /// der aktuellen Quellgruppe (Transponder) nicht angeboten wird.</returns>
         /// <exception cref="ArgumentNullException">Es wurde keine Quelle angegeben.</exception>
-        public ushort? GetServicePMT( SourceIdentifier source )
+        public ushort? GetServicePMT( SourceIdentifier source, CancellationToken? cancel = null )
         {
             // Validate
             if (source == null)
                 throw new ArgumentNullException( "source" );
 
             // Get the current group information
-            var groupInfo = this.GetGroupInformation();
+            var groupInfo = GetGroupInformation( cancel: cancel );
             if (groupInfo == null)
                 return null;
 
             // See if group exists
-            if (groupInfo.Sources.Find( s => source.Equals( s ) ) == null)
+            if (!groupInfo.Sources.Any( source.Equals ))
                 return null;
 
             // Direct read of result is possible - we already have the group information available
             var patReader = AssociationTableReader;
             if (patReader == null)
+                return null;
+            else if (!patReader.CancellableWait( cancel ?? CancellationToken.None ))
                 return null;
             else
                 return patReader.Result.FindService( source.Service );
@@ -870,7 +843,7 @@ namespace JMS.DVB
             bool? newState;
 
             // Correction if activating the stream failes
-            Guid correctionId = Guid.Empty;
+            var correctionId = Guid.Empty;
 
             // Must be synchronized
             lock (InstanceSynchronizer)
@@ -993,7 +966,7 @@ namespace JMS.DVB
             }
 
             // Result
-            List<ushort> all = new List<ushort>();
+            var all = new List<ushort>();
 
             // Process
             lock (InstanceSynchronizer)
@@ -1020,14 +993,7 @@ namespace JMS.DVB
         /// Meldet, ob die Anzahl gleichzeitiger Verbraucher beschränkt ist. Für die meiste Hardware 
         /// besteht eine solche Begrenzung nicht.
         /// </summary>
-        public bool HasConsumerRestriction
-        {
-            get
-            {
-                // Report
-                return Restrictions.ConsumerLimit.HasValue && (Restrictions.ConsumerLimit.Value < 200);
-            }
-        }
+        public bool HasConsumerRestriction { get { return Restrictions.ConsumerLimit.HasValue && (Restrictions.ConsumerLimit.Value < 200); } }
 
         /// <summary>
         /// Ermittelt die aktuellen Daten zum empfangenen Signal.
@@ -1040,14 +1006,7 @@ namespace JMS.DVB
         /// <summary>
         /// Meldet, ob der Pipelinemechanismus von DVB.NET 3.9 verwendet werden soll.
         /// </summary>
-        protected virtual bool UsesLegacyPipeline
-        {
-            get
-            {
-                // This is the default
-                return true;
-            }
-        }
+        protected virtual bool UsesLegacyPipeline { get { return true; } }
 
         /// <summary>
         /// Meldet die aktuellen technischen Daten zum empfangenen Signal oder <i>null</i>,
@@ -1077,26 +1036,12 @@ namespace JMS.DVB
         /// <summary>
         /// Meldet, ob die Ressourcen dieser Instanz bereits freigegeben wurden.
         /// </summary>
-        protected bool IsDisposed
-        {
-            get
-            {
-                // Report
-                return m_IsDisposed;
-            }
-        }
+        protected bool IsDisposed { get { return m_IsDisposed; } }
 
         /// <summary>
         /// Meldet, ob gerade die <see cref="Dispose"/> Methode ausgeführt wird.
         /// </summary>
-        protected bool IsDisposing
-        {
-            get
-            {
-                // Report
-                return m_IsDisposing;
-            }
-        }
+        protected bool IsDisposing { get { return m_IsDisposing; } }
 
         /// <summary>
         /// Gibt alle mit dieser Instanz verbundenen Ressourcen frei.
@@ -1109,7 +1054,8 @@ namespace JMS.DVB
         /// <typeparam name="TResultType">Die Art des Ergebnisses der Aufgabe.</typeparam>
         /// <param name="reader">Die aktuelle Hintergrundaufgabe.</param>
         /// <param name="factory">Optional die Methode zur Neuinitialisierung.</param>
-        private void ResetReader<TResultType>( ref CancellableTask<TResultType> reader, Func<CancellableTask<TResultType>> factory = null ) where TResultType : class
+        /// <returns>Die neue Hintergrundaufgabe.</returns>
+        private CancellableTask<TResultType> ResetReader<TResultType>( ref CancellableTask<TResultType> reader, Func<CancellableTask<TResultType>> factory = null ) where TResultType : class
         {
             // Wipe out
             var previous = Interlocked.Exchange( ref reader, null );
@@ -1121,6 +1067,9 @@ namespace JMS.DVB
             // New one
             if (factory != null)
                 reader = factory();
+
+            // Report
+            return reader;
         }
 
         /// <summary>
@@ -1129,27 +1078,30 @@ namespace JMS.DVB
         public void Dispose()
         {
             // Once only
-            if (!m_IsDisposed)
-                try
-                {
-                    // Get flag
-                    m_IsDisposing = true;
+            if (m_IsDisposed)
+                return;
+            if (m_IsDisposing)
+                return;
 
-                    // All readers
-                    ResetReader( ref m_NITReader );
-                    ResetReader( ref m_PATReader );
-                    ResetReader( ref m_SDTReader );
-                    m_groupReader = null;
+            // Do it
+            m_IsDisposing = true;
+            try
+            {
+                // All readers
+                ResetReader( ref m_NITReader );
+                ResetReader( ref m_PATReader );
+                ResetReader( ref m_SDTReader );
+                m_groupReader = null;
 
-                    // Forward
-                    OnDispose();
-                }
-                finally
-                {
-                    // Did it
-                    m_IsDisposing = false;
-                    m_IsDisposed = true;
-                }
+                // Forward
+                OnDispose();
+            }
+            finally
+            {
+                // Did it
+                m_IsDisposing = false;
+                m_IsDisposed = true;
+            }
         }
 
         #endregion

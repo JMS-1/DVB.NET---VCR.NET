@@ -248,7 +248,7 @@ namespace JMS.DVB.CardServer
                 return;
 
             // Get the group information
-            var info = device.GetGroupInformation();
+            var info = device.GetGroupInformation( 5000 );
             if (info == null)
             {
                 // See if we are already out of retries
@@ -516,7 +516,7 @@ namespace JMS.DVB.CardServer
             var info =
                 new ServerInformation
                 {
-                    HasGroupInformation = (device.GetGroupInformation() != null),
+                    HasGroupInformation = (device.GetGroupInformation( 5000 ) != null),
                     ProgramGuideProgress = EPGProgress,
                     Selection = selection.SelectionKey
                 };

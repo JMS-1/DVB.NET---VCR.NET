@@ -145,15 +145,15 @@ namespace JMS.DVB.Administration.Tools
             try
             {
                 // Make sure that hardware is controlled
-                if (null == m_HardwareManager)
+                if (m_HardwareManager == null)
                     m_HardwareManager = HardwareManager.Open();
 
                 // Select the source
                 source.Source.SelectGroup();
 
                 // Get the stream information
-                SourceInformation info = source.Source.GetSourceInformation();
-                if (null == info)
+                var info = source.Source.GetSourceInformationAsync().CancelAfter( 5000 ).Result;
+                if (info == null)
                     return;
 
                 // Attach to the hardware

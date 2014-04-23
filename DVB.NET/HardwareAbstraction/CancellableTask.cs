@@ -108,4 +108,37 @@ namespace JMS.DVB
             }
         }
     }
+
+    /// <summary>
+    /// Hilfsmethoden zur einfacheren Nutzung von abbrechbaren Hintergrundaufgaben.
+    /// </summary>
+    public static class CancellableTaskExtensions
+    {
+        /// <summary>
+        /// Wartet eine begrenzte Zeit auf das Ende einer Hintergrundaufgabe.
+        /// </summary>
+        /// <param name="task">Die Aufgabe.</param>
+        /// <param name="cancel">Steuerung des externen Abbruchs.</param>
+        /// <param name="timeout">Optional die maximale Wartezeit in Millisekunden.</param>
+        /// <returns>Gesetzt, wenn die Aufgabe abgeschlossen wurde.</returns>
+        /// <typeparam name="TResultType">Die Art des Ergebnisses.</typeparam>
+        public static bool CancellableWait<TResultType>( this Task<TResultType> task, CancellationToken cancel, int timeout = Timeout.Infinite )
+        {
+            // Pre-check to avoid exception
+            if (cancel.IsCancellationRequested)
+                return task.IsCompleted;
+
+            // Full mode
+            try
+            {
+                // May throw an exception if token is signaled
+                return task.Wait( timeout, cancel );
+            }
+            catch (OperationCanceledException)
+            {
+                // Hide exception
+                return false;
+            }
+        }
+    }
 }
