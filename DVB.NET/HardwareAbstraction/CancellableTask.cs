@@ -69,6 +69,10 @@ namespace JMS.DVB
         /// <returns>Die neue Aufgabe.</returns>
         public static CancellableTask<TResultType> Run( Func<CancellationToken, TResultType> worker )
         {
+            // Validate
+            if (worker == null)
+                throw new ArgumentException( "no task worker provided", "worker" );
+
             // Allow self reference to new instance
             CancellableTask<TResultType> task = null;
 
@@ -76,36 +80,40 @@ namespace JMS.DVB
             task =
                 new CancellableTask<TResultType>( () =>
                 {
+                    // Provide cleanup of cancel source
                     using (var controller = task.m_cancel)
                         try
                         {
+                            // Try to process without generating exception - if possible
                             return worker( controller.Token );
                         }
                         catch (Exception)
                         {
+                            // In case of any error just report nothing - not applyable to value types
                             return null;
                         }
                         finally
                         {
+                            // Never use cancel source again
                             task.m_cancel = null;
                         }
                 } );
 
-            // Start it
+            // Make sure we clean up in case we are not able to start the task
             try
             {
                 // Request start
                 task.Start();
-
-                // Report
-                return task;
             }
             catch (Exception)
             {
-                // With cleanup
+                // Forward with cleanup
                 using (task.m_cancel)
                     throw;
             }
+
+            // Report
+            return task;
         }
     }
 
@@ -124,14 +132,18 @@ namespace JMS.DVB
         /// <typeparam name="TResultType">Die Art des Ergebnisses.</typeparam>
         public static bool CancellableWait<TResultType>( this Task<TResultType> task, CancellationToken cancel, int timeout = Timeout.Infinite )
         {
-            // Pre-check to avoid exception
+            // Validate
+            if (task == null)
+                throw new ArgumentException( "no task to wait on", "task" );
+
+            // Pre-check to avoid exception if possible
             if (cancel.IsCancellationRequested)
                 return task.IsCompleted;
 
             // Full mode
             try
             {
-                // May throw an exception if token is signaled
+                // May throw an exception if token is signaled or simply report the completition state
                 return task.Wait( timeout, cancel );
             }
             catch (OperationCanceledException)

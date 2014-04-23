@@ -84,32 +84,32 @@ namespace JMS.DVB
             /// <summary>
             /// Die eindeutige Nummer (PID) des Datenstroms.
             /// </summary>
-            public ushort Identifier { get; private set; }
+            public readonly ushort Identifier;
 
             /// <summary>
             /// Die Art der Daten zu diese Datenstrom.
             /// </summary>
-            public StreamTypes StreamType { get; private set; }
+            public readonly StreamTypes StreamType;
 
             /// <summary>
             /// Der aktuelle Empfänger für die Daten dieses Datenstroms.
             /// </summary>
-            public Action<byte[], int, int> Consumer { get; private set; }
+            public readonly Action<byte[], int, int> Consumer;
 
             /// <summary>
             /// Beschreibt die Anmeldung eines einzelnen Verbrauchers.
             /// </summary>
-            private class _Registration
+            private class StreamRegistration
             {
                 /// <summary>
                 /// Die eindeutige Kennung des Verbrauchers.
                 /// </summary>
-                public Guid UniqueIdentifier { get; private set; }
+                public readonly Guid UniqueIdentifier = Guid.NewGuid();
 
                 /// <summary>
                 /// Die Methode, an die alle Daten geleitet werden sollen.
                 /// </summary>
-                public Action<byte[], int, int> Sink { get; private set; }
+                public readonly Action<byte[], int, int> Sink;
 
                 /// <summary>
                 /// Meldet oder legt fest, ob dieser Verbracuher Daten empfangen soll.
@@ -121,14 +121,13 @@ namespace JMS.DVB
                 /// </summary>
                 /// <param name="consumer">Der neu anzumeldende Verbraucher.</param>
                 /// <exception cref="ArgumentNullException">Es wurde keine Methode zum Datenempfang angegeben.</exception>
-                public _Registration( Action<byte[], int, int> consumer )
+                public StreamRegistration( Action<byte[], int, int> consumer )
                 {
                     // Validate
-                    if (null == consumer)
-                        throw new ArgumentNullException( "consumer" );
+                    if (consumer == null)
+                        throw new ArgumentException( "data sink missing", "consumer" );
 
                     // Remember
-                    UniqueIdentifier = Guid.NewGuid();
                     Sink = consumer;
                 }
             }
@@ -136,7 +135,7 @@ namespace JMS.DVB
             /// <summary>
             /// Alle bekannten Verbraucher.
             /// </summary>
-            private volatile _Registration[] m_Consumers;
+            private volatile StreamRegistration[] m_Consumers;
 
             /// <summary>
             /// Erzeugt eine neue Dateninstanz.
@@ -148,7 +147,7 @@ namespace JMS.DVB
             public StreamInformation( ushort stream, StreamTypes type, Action<byte[], int, int> callback, out Guid primaryIdentifier )
             {
                 // Register consumer
-                m_Consumers = new _Registration[] { new _Registration( callback ) };
+                m_Consumers = new[] { new StreamRegistration( callback ) };
 
                 // Report generated identifier
                 primaryIdentifier = m_Consumers[0].UniqueIdentifier;
@@ -167,13 +166,10 @@ namespace JMS.DVB
             public Guid AddConsumer( Action<byte[], int, int> callback )
             {
                 // Create new
-                var reg = new _Registration( callback );
+                var reg = new StreamRegistration( callback );
 
                 // Load
-                var consumers = new List<_Registration>( m_Consumers );
-
-                // Append
-                consumers.Add( reg );
+                var consumers = new List<StreamRegistration>( m_Consumers ) { reg };
 
                 // Push back
                 m_Consumers = consumers.ToArray();
@@ -192,7 +188,7 @@ namespace JMS.DVB
             public bool? RemoveConsumer( Guid uniqueIdentifier )
             {
                 // Create helper
-                var consumers = new List<_Registration>( m_Consumers );
+                var consumers = new List<StreamRegistration>( m_Consumers );
 
                 // Find
                 var i = consumers.FindIndex( c => c.UniqueIdentifier.Equals( uniqueIdentifier ) );
@@ -261,18 +257,7 @@ namespace JMS.DVB
             /// </summary>
             /// <param name="uniqueIdentifier">Die eindeutige Kennung des Verbrauchers.</param>
             /// <returns>Der gewünschte Verbraucher oder <i>null</i>, wenn dieser nicht bekannt ist.</returns>
-            private _Registration this[Guid uniqueIdentifier]
-            {
-                get
-                {
-                    // Find it
-                    var i = Array.FindIndex( m_Consumers, c => c.UniqueIdentifier.Equals( uniqueIdentifier ) );
-                    if (i < 0)
-                        return null;
-                    else
-                        return m_Consumers[i];
-                }
-            }
+            private StreamRegistration this[Guid uniqueIdentifier] { get { return m_Consumers.FirstOrDefault( consumer => consumer.UniqueIdentifier.Equals( uniqueIdentifier ) ); } }
 
             /// <summary>
             /// Ermittelt, ob ein bestimmter Verbraucher gerade Daten empfängt.
@@ -293,7 +278,7 @@ namespace JMS.DVB
             /// <summary>
             /// Meldet die Anzahl der Verbraucher dieses Datenstroms, die gerade Daten empfangen.
             /// </summary>
-            public int ActiveConsumerCount { get { return m_Consumers.Count( r => r.IsActive ); } }
+            public int ActiveConsumerCount { get { return m_Consumers.Count( consumer => consumer.IsActive ); } }
 
             /// <summary>
             /// Verteilt den Datenblock an alle angeschlossenen Verbraucher.
@@ -316,12 +301,12 @@ namespace JMS.DVB
         /// <summary>
         /// Gesetzt, sobald einmal <see cref="Dispose"/> aufgerufen wurde.
         /// </summary>
-        private bool m_IsDisposed = false;
+        private bool m_disposed = false;
 
         /// <summary>
         /// Gesetzt, während <see cref="OnDispose"/> ausgeführt wird.
         /// </summary>
-        private bool m_IsDisposing = false;
+        private bool m_disposing = false;
 
         /// <summary>
         /// Liest oder setzt das zugeordnete Geräteprofil.
@@ -341,47 +326,47 @@ namespace JMS.DVB
         /// <summary>
         /// Alle Datenströme geordnet nach der Datenstromkennung (PID).
         /// </summary>
-        private Dictionary<ushort, StreamInformation> m_StreamsByPID = new Dictionary<ushort, StreamInformation>();
+        private Dictionary<ushort, StreamInformation> m_streamsByPID = new Dictionary<ushort, StreamInformation>();
 
         /// <summary>
         /// Alle Datenströme, geordnet nach der automatisch vergebenen eindeutigen Kennung.
         /// </summary>
-        private Dictionary<Guid, StreamInformation> m_StreamsById = new Dictionary<Guid, StreamInformation>();
+        private Dictionary<Guid, StreamInformation> m_streamsById = new Dictionary<Guid, StreamInformation>();
 
         /// <summary>
         /// Synchronisiert den Zugriff auf die internen Datenstrukturen.
         /// </summary>
-        protected object InstanceSynchronizer { get; private set; }
+        protected readonly object InstanceSynchronizer = new object();
 
         /// <summary>
         /// Ermittelt die aktuelle <i>Network Information Table</i>.
         /// </summary>
-        private CancellableTask<NIT[]> m_NITReader;
+        private CancellableTask<NIT[]> m_networkInformationReader;
 
         /// <summary>
         /// Die Hintergrundaufgabe zum Auslesen der Netzwerkinformationen.
         /// </summary>
-        public Task<NIT[]> LocationInformationReader { get { return m_NITReader; } }
+        public Task<NIT[]> LocationInformationReader { get { return m_networkInformationReader; } }
 
         /// <summary>
         /// Ermittelt die aktuelle <i>Program Association Table</i>.
         /// </summary>
-        private CancellableTask<PAT[]> m_PATReader;
+        private CancellableTask<PAT[]> m_associationReader;
 
         /// <summary>
         /// Die Hintergrundaufgabe zum Auslesen der Dienstbelegung.
         /// </summary>
-        public Task<PAT[]> AssociationTableReader { get { return m_PATReader; } }
+        public Task<PAT[]> AssociationTableReader { get { return m_associationReader; } }
 
         /// <summary>
         /// Ermittelt die aktuelle <i>Service Description Table</i>.
         /// </summary>
-        private CancellableTask<SDT[]> m_SDTReader;
+        private CancellableTask<SDT[]> m_serviceReader;
 
         /// <summary>
         /// Die Hintergrundaufgabe zum Auslesen der Dienstabelle.
         /// </summary>
-        public Task<SDT[]> ServiceTableReader { get { return m_SDTReader; } }
+        public Task<SDT[]> ServiceTableReader { get { return m_serviceReader; } }
 
         /// <summary>
         /// Die zuletzt ermittelten Daten zur aktuellen Quellgruppe (Transponder).
@@ -396,17 +381,17 @@ namespace JMS.DVB
         /// <summary>
         /// Der Zeitpunkt der letzten Auswahl einer Quellgruppe (Transponder).
         /// </summary>
-        private DateTime m_TuneTime = DateTime.MinValue;
+        private DateTime m_lastTuneTime = DateTime.MinValue;
 
         /// <summary>
         /// Alle Empfänger von Daten der Programmzeitschrift.
         /// </summary>
-        private volatile Action<EIT>[] m_ProgramGuideConsumers = { };
+        private volatile Action<EIT> m_programGuideConsumers;
 
         /// <summary>
         /// Die eindeutige Kennung für die Anmeldung der Verbraucher für die Programmzeitschrift.
         /// </summary>
-        private Guid m_ProgramGuideIdentifier;
+        private Guid m_programGuideIdentifier;
 
         /// <summary>
         /// Die zugehörigen Einschränkungen des Gerätes.
@@ -422,7 +407,7 @@ namespace JMS.DVB
         {
             // Validate
             if (profile == null)
-                throw new ArgumentNullException( "profile" );
+                throw new ArgumentException( "profile missing", "profile" );
 
             // Remember
             Profile = profile;
@@ -431,9 +416,6 @@ namespace JMS.DVB
             EffectivePipeline = new List<PipelineItem>( profile.Pipeline.Select( p => new PipelineItem { SupportedOperations = p.SupportedOperations, ComponentType = p.ComponentType } ) );
             EffectiveDeviceAspects = new List<DeviceAspect>( Profile.DeviceAspects.Select( a => new DeviceAspect { Aspekt = a.Aspekt, Value = a.Value } ) );
             EffectiveProfileParameters = new List<ProfileParameter>( Profile.Parameters.Select( p => new ProfileParameter( p.Name, p.Value ) ) );
-
-            // Create helper
-            InstanceSynchronizer = new object();
 
             // Load the restrictions
             Restrictions = Profile.Restrictions ?? new HardwareRestriction();
@@ -455,27 +437,20 @@ namespace JMS.DVB
         {
             // Validate
             if (callback == null)
-                throw new ArgumentNullException( "callback" );
-
-            // Create clone of current
-            var consumers = new List<Action<EIT>>( m_ProgramGuideConsumers );
-
-            // Append
-            consumers.Add( callback );
-
-            // Put back
-            m_ProgramGuideConsumers = consumers.ToArray();
+                throw new ArgumentException( "no program guide sink", "callback" );
+            else
+                m_programGuideConsumers += callback;
 
             // Get the state of the overall receiption
-            var epgState = GetConsumerState( m_ProgramGuideIdentifier );
+            var epgState = GetConsumerState( m_programGuideIdentifier );
 
             // Must register
             if (!epgState.HasValue)
-                m_ProgramGuideIdentifier = this.AddConsumer<EIT>( ProgramGuide );
+                m_programGuideIdentifier = this.AddConsumer<EIT>( ProgramGuide );
 
             // Must start
             if (!epgState.GetValueOrDefault( false ))
-                SetConsumerState( m_ProgramGuideIdentifier, true );
+                SetConsumerState( m_programGuideIdentifier, true );
         }
 
         /// <summary>
@@ -487,16 +462,9 @@ namespace JMS.DVB
         {
             // Validate
             if (callback == null)
-                throw new ArgumentNullException( "callback" );
-
-            // Create clone of current
-            var consumers = new List<Action<EIT>>( m_ProgramGuideConsumers );
-
-            // Remove
-            consumers.Remove( callback );
-
-            // Put back
-            m_ProgramGuideConsumers = consumers.ToArray();
+                throw new ArgumentNullException( "program guide sink missing", "callback" );
+            else
+                m_programGuideConsumers -= callback;
         }
 
         /// <summary>
@@ -525,13 +493,13 @@ namespace JMS.DVB
         private void ProgramGuide( EIT table )
         {
             // Process
-            foreach (var receiver in m_ProgramGuideConsumers)
+            var consumers = m_programGuideConsumers;
+            if (consumers != null)
                 try
                 {
-                    // Send
-                    receiver( table );
+                    consumers( table );
                 }
-                catch
+                catch (Exception)
                 {
                     // Ignore any error
                 }
@@ -583,26 +551,26 @@ namespace JMS.DVB
                 bool allStopped = OnStopAll();
 
                 // Stop all table readers
-                ResetReader( ref m_NITReader );
-                ResetReader( ref m_SDTReader );
-                ResetReader( ref m_PATReader );
+                ResetReader( ref m_networkInformationReader );
+                ResetReader( ref m_associationReader );
+                ResetReader( ref m_serviceReader );
                 m_groupReader = null;
 
                 // Erase list of EPG receivers
-                m_ProgramGuideConsumers = new Action<EIT>[0];
+                m_programGuideConsumers = null;
 
                 // List of active consumers
-                List<StreamInformation> consumers;
+                StreamInformation[] consumers;
 
                 // Be safe
                 lock (InstanceSynchronizer)
                 {
                     // Remember
-                    consumers = new List<StreamInformation>( m_StreamsByPID.Values );
+                    consumers = m_streamsByPID.Values.ToArray();
 
                     // Wipe out
-                    m_StreamsByPID.Clear();
-                    m_StreamsById.Clear();
+                    m_streamsByPID.Clear();
+                    m_streamsById.Clear();
                 }
 
                 // Forward to all streams
@@ -627,7 +595,7 @@ namespace JMS.DVB
                 CurrentGroup = group;
 
                 // Mark time
-                m_TuneTime = DateTime.UtcNow;
+                m_lastTuneTime = DateTime.UtcNow;
             }
 
             // Restart all readers
@@ -658,11 +626,11 @@ namespace JMS.DVB
 
             // Restart network information reader
             if (includeNetworkInformation)
-                ResetReader( ref m_NITReader, this.GetTableAsync<NIT> );
+                ResetReader( ref m_networkInformationReader, this.GetTableAsync<NIT> );
 
             // Restart core reader
-            var patReader = ResetReader( ref m_PATReader, this.GetTableAsync<PAT> );
-            var sdtReader = ResetReader( ref m_SDTReader, this.GetTableAsync<SDT> );
+            var patReader = ResetReader( ref m_associationReader, this.GetTableAsync<PAT> );
+            var sdtReader = ResetReader( ref m_serviceReader, this.GetTableAsync<SDT> );
 
             // Restart group reader
             m_groupReader = Task.Run( () => sdtReader.Result.ToGroupInformation( patReader.Result ) );
@@ -773,7 +741,7 @@ namespace JMS.DVB
             {
                 // Load the stream information
                 StreamInformation info;
-                if (m_StreamsByPID.TryGetValue( stream, out info ))
+                if (m_streamsByPID.TryGetValue( stream, out info ))
                 {
                     // Report
                     if (ConsumerTraceSwitch.Enabled)
@@ -788,11 +756,11 @@ namespace JMS.DVB
                     info = new StreamInformation( stream, type, consumer, out consumerId );
 
                     // Remember it
-                    m_StreamsByPID[stream] = info;
+                    m_streamsByPID[stream] = info;
                 }
 
                 // Add to lookup map
-                m_StreamsById[consumerId] = info;
+                m_streamsById[consumerId] = info;
             }
 
             // Report
@@ -849,7 +817,7 @@ namespace JMS.DVB
             lock (InstanceSynchronizer)
             {
                 // Get the corresponding PID information
-                if (!m_StreamsById.TryGetValue( consumerId, out info ))
+                if (!m_streamsById.TryGetValue( consumerId, out info ))
                 {
                     // Report
                     if (ConsumerTraceSwitch.Enabled)
@@ -883,7 +851,7 @@ namespace JMS.DVB
                     newState = info.RemoveConsumer( consumerId );
 
                     // Forget it
-                    m_StreamsById.Remove( consumerId );
+                    m_streamsById.Remove( consumerId );
                 }
             }
 
@@ -929,7 +897,7 @@ namespace JMS.DVB
             {
                 // Get the corresponding PID information
                 StreamInformation info;
-                if (m_StreamsById.TryGetValue( consumerId, out info ))
+                if (m_streamsById.TryGetValue( consumerId, out info ))
                     return info.GetConsumerState( consumerId );
             }
 
@@ -952,31 +920,17 @@ namespace JMS.DVB
         public ushort[] GetActiveStreams( params StreamTypes[] types )
         {
             // Create map
-            Dictionary<StreamTypes, bool> match = null;
-
-            // Fill
-            if (types != null)
-            {
-                // Create
-                match = new Dictionary<StreamTypes, bool>();
-
-                // All in
-                foreach (var type in types)
-                    match[type] = true;
-            }
-
-            // Result
-            var all = new List<ushort>();
+            var matcher = (types == null) ? null : new HashSet<StreamTypes>( types );
 
             // Process
             lock (InstanceSynchronizer)
-                foreach (var info in m_StreamsByPID.Values)
-                    if ((match == null) || match.ContainsKey( info.StreamType ))
-                        if (info.ActiveConsumerCount > 0)
-                            all.Add( info.Identifier );
-
-            // Report
-            return all.ToArray();
+                return
+                    m_streamsByPID
+                        .Values
+                        .Where( info => (matcher == null) || matcher.Contains( info.StreamType ) )
+                        .Where( info => info.ActiveConsumerCount > 0 )
+                        .Select( info => info.Identifier )
+                        .ToArray();
         }
 
         /// <summary>
@@ -1031,23 +985,6 @@ namespace JMS.DVB
             }
         }
 
-        #region IDisposable Members
-
-        /// <summary>
-        /// Meldet, ob die Ressourcen dieser Instanz bereits freigegeben wurden.
-        /// </summary>
-        protected bool IsDisposed { get { return m_IsDisposed; } }
-
-        /// <summary>
-        /// Meldet, ob gerade die <see cref="Dispose"/> Methode ausgeführt wird.
-        /// </summary>
-        protected bool IsDisposing { get { return m_IsDisposing; } }
-
-        /// <summary>
-        /// Gibt alle mit dieser Instanz verbundenen Ressourcen frei.
-        /// </summary>
-        protected abstract void OnDispose();
-
         /// <summary>
         /// Initialisiert eine Hintergrundaufgabe.
         /// </summary>
@@ -1073,24 +1010,39 @@ namespace JMS.DVB
         }
 
         /// <summary>
+        /// Meldet, ob die Ressourcen dieser Instanz bereits freigegeben wurden.
+        /// </summary>
+        protected bool IsDisposed { get { return m_disposed; } }
+
+        /// <summary>
+        /// Meldet, ob gerade die <see cref="Dispose"/> Methode ausgeführt wird.
+        /// </summary>
+        protected bool IsDisposing { get { return m_disposing; } }
+
+        /// <summary>
+        /// Gibt alle mit dieser Instanz verbundenen Ressourcen frei.
+        /// </summary>
+        protected abstract void OnDispose();
+
+        /// <summary>
         /// Gibt alle mit dieser Instanz verbundenen Ressourcen frei.
         /// </summary>
         public void Dispose()
         {
             // Once only
-            if (m_IsDisposed)
+            if (m_disposed)
                 return;
-            if (m_IsDisposing)
+            if (m_disposing)
                 return;
 
             // Do it
-            m_IsDisposing = true;
+            m_disposing = true;
             try
             {
                 // All readers
-                ResetReader( ref m_NITReader );
-                ResetReader( ref m_PATReader );
-                ResetReader( ref m_SDTReader );
+                ResetReader( ref m_networkInformationReader );
+                ResetReader( ref m_associationReader );
+                ResetReader( ref m_serviceReader );
                 m_groupReader = null;
 
                 // Forward
@@ -1099,12 +1051,10 @@ namespace JMS.DVB
             finally
             {
                 // Did it
-                m_IsDisposing = false;
-                m_IsDisposed = true;
+                m_disposing = false;
+                m_disposed = true;
             }
         }
-
-        #endregion
     }
 
     /// <summary>
