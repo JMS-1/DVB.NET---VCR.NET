@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using JMS.DVB;
 
@@ -10,6 +11,11 @@ namespace JMS.TV.Core
     /// </summary>
     internal class Device
     {
+        /// <summary>
+        /// Ein leeres Feld von Sendern.
+        /// </summary>
+        private static readonly Feed[] _NoFeeds = { };
+
         /// <summary>
         /// Verwaltet alle verfügbaren Sender.
         /// </summary>
@@ -63,18 +69,51 @@ namespace JMS.TV.Core
         public IEnumerable<Feed> SecondaryFeeds { get { return Feeds.Where( feed => feed.IsSecondaryView ); } }
 
         /// <summary>
+        /// Liest asynchron die Quellen einer Gruppe ein.
+        /// </summary>
+        private CancellableTask<SourceSelection[]> m_groupReader;
+
+        /// <summary>
         /// Stellt den Empfang einer Quelle sicher.
         /// </summary>
         /// <param name="source">Die gewünschte Quelle.</param>
         public void EnsureFeed( SourceSelection source )
         {
+            // Unregister all outstanding requests
             ResetFeeds();
 
-            m_feeds =
-                Provider
-                    .Activate( Index, source )
-                    .Select( sourceOnGroup => new Feed( sourceOnGroup, this ) )
-                    .ToArray();
+            // Stop current reader
+            if (m_groupReader != null)
+                m_groupReader.Cancel();
+
+            // Create new
+            m_groupReader = Provider.Activate( Index, source );
+            m_feeds = _NoFeeds;
+
+            // Start processing and wait - for now only!
+            m_groupReader.ContinueWith( task =>
+                {
+                    // Load feed data
+                    var sources = task.Result;
+                    if (sources != null)
+                        if (IsAllocated)
+                            m_feeds = sources.Select( sourceOnGroup => new Feed( sourceOnGroup, this ) ).ToArray();
+                } ).Wait();
+        }
+
+        /// <summary>
+        /// Gibt alle Senderinformationen frei.
+        /// </summary>
+        public void RefreshSourceInformations()
+        {
+            // Not in use
+            if (!IsAllocated)
+                return;
+
+            // Unregister all outstanding requests
+            ResetFeeds();
+
+            Provider.RefreshSourceInformations( Index );
         }
 
         /// <summary>
@@ -82,11 +121,10 @@ namespace JMS.TV.Core
         /// </summary>
         private void ResetFeeds()
         {
+            // Unregister all outstanding requests
             if (m_feeds != null)
                 foreach (var feed in m_feeds)
                     feed.RefreshSourceInformation();
-
-            m_feeds = null;
         }
 
         /// <summary>
@@ -105,9 +143,35 @@ namespace JMS.TV.Core
             if (!IsIdle)
                 return;
 
+            // Unregister all outstanding requests
             ResetFeeds();
 
-            Provider.ReleaseDevice( Index );           
+            // Cancel group lookup
+            if (m_groupReader != null)
+                m_groupReader.Cancel();
+
+            // Forget all
+            m_groupReader = null;
+            m_feeds = null;
+
+            // Shutdown
+            Provider.ReleaseDevice( Index );
+        }
+
+        /// <summary>
+        /// Meldet eine Änderung.
+        /// </summary>
+        /// <param name="sink">Der Empfänger der Meldung.</param>
+        /// <param name="feed">Der betroffene Sender.</param>
+        /// <param name="show">Gesetzt, wenn eine Anzeige erfolgen soll.</param>
+        public void OnViewChanged( Action<IFeed, bool> sink, Feed feed, bool show )
+        {
+            // Not interested
+            if (sink == null)
+                return;
+
+            // Report
+            sink( feed, show );
         }
     }
 }

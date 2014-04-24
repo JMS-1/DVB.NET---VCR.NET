@@ -178,5 +178,15 @@ namespace JMS.TV.Core
             // Report
             return string.Format( "{0}{1}", Source.Source, op );
         }
+
+        /// <summary>
+        /// Löst eine Änderungsmeldung aus.
+        /// </summary>
+        /// <param name="sink">Der Empfänger der Meldung.</param>
+        /// <param name="show">Der neue Zustand.</param>
+        public void OnViewChanged( Action<IFeed, bool> sink, bool show )
+        {
+            m_device.OnViewChanged( sink, this, show );
+        }
     }
 }

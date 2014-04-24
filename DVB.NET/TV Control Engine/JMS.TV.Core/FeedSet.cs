@@ -134,6 +134,15 @@ namespace JMS.TV.Core
         }
 
         /// <summary>
+        /// Stellt sicher, dass von nun an alle Quelldaten neu ermittelt werden.
+        /// </summary>
+        public void RefreshSourceInformations()
+        {
+            foreach (var device in m_devices)
+                device.RefreshSourceInformations();
+        }
+
+        /// <summary>
         /// Beendet den Zugriff auf nicht mehr benötigte Geräte.
         /// </summary>
         public void TestIdle()
@@ -363,9 +372,7 @@ namespace JMS.TV.Core
         /// <param name="show">Gesetzt, wenn der Sender angezeigt werden soll.</param>
         public void OnPrimaryViewChanged( Feed feed, bool show )
         {
-            var sink = PrimaryViewVisibilityChanged;
-            if (sink != null)
-                sink( feed, show );
+            feed.OnViewChanged( PrimaryViewVisibilityChanged, show );
         }
 
         /// <summary>
@@ -375,9 +382,7 @@ namespace JMS.TV.Core
         /// <param name="show">Gesetzt, wenn der Sender angezeigt werden soll.</param>
         public void OnSecondaryViewChanged( Feed feed, bool show )
         {
-            var sink = SecondaryViewVisibilityChanged;
-            if (sink != null)
-                sink( feed, show );
+            feed.OnViewChanged( SecondaryViewVisibilityChanged, show );
         }
 
         /// <summary>

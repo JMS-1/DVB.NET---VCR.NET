@@ -53,6 +53,11 @@ namespace JMS.TV.Core
         void StopSecondaryFeed( string sourceName );
 
         /// <summary>
+        /// Stellt sicher, dass von nun an alle Quelldaten neu ermittelt werden.
+        /// </summary>
+        void RefreshSourceInformations();
+
+        /// <summary>
         /// Beendet alle Aufträge.
         /// </summary>
         void Shutdown();

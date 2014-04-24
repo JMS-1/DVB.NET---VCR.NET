@@ -31,7 +31,7 @@ namespace JMS.TV.Core
         /// <param name="index">Die laufende Nummer des Gerätes.</param>
         /// <param name="source">Die geforderte Quelle.</param>
         /// <returns>Alle Quellen, die nun ohne Umschaltung von diesem gerät empfangen werden können.</returns>
-        SourceSelection[] Activate( int index, SourceSelection source );
+        CancellableTask<SourceSelection[]> Activate( int index, SourceSelection source );
 
         /// <summary>
         /// Ermittelt zu einem Namen die zugehörige Quelle.
@@ -47,5 +47,11 @@ namespace JMS.TV.Core
         /// <param name="source">Die gewünschte Quelle.</param>
         /// <returns>Eine bereits aktivierte Hintergrundaufgabe.</returns>
         CancellableTask<SourceInformation> GetSourceInformationAsync( int index, SourceSelection source );
+
+        /// <summary>
+        /// Stellt sicher, dass alle Quellinformationen neu ermittelt werden.
+        /// </summary>
+        /// <param name="index">Die laufende Nummer des zu verwendende Gerätes.</param>
+        void RefreshSourceInformations( int index );
     }
 }

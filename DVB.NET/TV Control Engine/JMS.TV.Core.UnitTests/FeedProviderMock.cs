@@ -89,7 +89,7 @@ namespace JMS.TV.Core.UnitTests
         /// <param name="index">Die laufende Nummer des Gerätes.</param>
         /// <param name="source">Die geforderte Quelle.</param>
         /// <returns>Alle Quellen, die nun ohne Umschaltung von diesem gerät empfangen werden können.</returns>
-        SourceSelection[] IFeedProvider.Activate( int index, SourceSelection source )
+        CancellableTask<SourceSelection[]> IFeedProvider.Activate( int index, SourceSelection source )
         {
             // Validate
             Assert.IsTrue( (index >= 0) && (index < m_devices.Length), "out of range" );
@@ -105,7 +105,7 @@ namespace JMS.TV.Core.UnitTests
             m_devices[index] = group;
 
             // Report
-            return group.ToArray();
+            return CancellableTask<SourceSelection[]>.Run( cancel => group.ToArray() );
         }
 
         /// <summary>
@@ -256,6 +256,17 @@ namespace JMS.TV.Core.UnitTests
                 {
                     Source = source.Source,
                 } );
+        }
+
+        /// <summary>
+        /// Stellt sicher, dass alle Quellinformationen neu ermittelt werden.
+        /// </summary>
+        /// <param name="index">Die laufende Nummer des zu verwendende Gerätes.</param>
+        void IFeedProvider.RefreshSourceInformations( int index )
+        {
+            // Validate
+            Assert.IsTrue( (index >= 0) && (index < m_devices.Length), "out of range" );
+            Assert.IsNotNull( m_devices[index], "not allocated" );
         }
     }
 }

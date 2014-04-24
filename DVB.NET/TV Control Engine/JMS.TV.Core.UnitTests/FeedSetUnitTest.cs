@@ -452,6 +452,9 @@ namespace JMS.TV.Core.UnitTests
             // Test
             Assert.IsNotNull( info, "info" );
             Assert.AreEqual( provider.Translate( "MDR" ).Source, info.Source, "source" );
+
+            // Do proper shutdown
+            cut.Shutdown();
         }
     }
 }
