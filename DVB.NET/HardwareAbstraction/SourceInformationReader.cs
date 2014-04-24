@@ -35,12 +35,37 @@ namespace JMS.DVB
             if (source == null)
                 throw new ArgumentException( "no source to get information for", "source" );
 
+            // Attach to tasks
+            var patReader = device.AssociationTableReader;
+            var groupReader = device.GroupReader;
+
             // Start 
             return
                 CancellableTask<SourceInformation>.Run( cancel =>
                 {
+                    // Check tasks
+                    if (groupReader == null)
+                        return null;
+                    if (patReader == null)
+                        return null;
+
+                    // Wait on tasks
+                    if (!groupReader.CancellableWait( cancel ))
+                        return null;
+                    if (!patReader.CancellableWait( cancel ))
+                        return null;
+
+                    // Get the current group information
+                    var groupInfo = groupReader.Result;
+                    if (groupInfo == null)
+                        return null;
+
+                    // See if group exists
+                    if (!groupInfo.Sources.Any( source.Equals ))
+                        return null;
+
                     // Find the stream identifier for the service
-                    var pmtIdentifier = device.GetServicePMT( source, cancel );
+                    var pmtIdentifier = patReader.Result.FindService( source.Service );
                     if (!pmtIdentifier.HasValue)
                         return null;
 
@@ -69,34 +94,20 @@ namespace JMS.DVB
                             currentSettings.Update( program );
                     }
 
-                    // Attach to the related group information
-                    var groupReader = device.GroupReader;
-                    if (groupReader != null)
+                    // Find the related station information
+                    var station = groupInfo.Sources.FirstOrDefault( source.Equals ) as Station;
+                    if (station != null)
                     {
-                        // Skip in case of cancel
-                        if (!groupReader.CancellableWait( cancel ))
-                            return null;
+                        // Take data from there
+                        currentSettings.Provider = station.Provider;
+                        currentSettings.Name = station.Name;
 
-                        // Now check the result - may want to skip
-                        var groupInfo = groupReader.Result;
-                        if (groupInfo != null)
-                        {
-                            // Find the related station information
-                            var station = groupInfo.Sources.FirstOrDefault( source.Equals ) as Station;
-                            if (station != null)
-                            {
-                                // Take data from there
-                                currentSettings.Provider = station.Provider;
-                                currentSettings.Name = station.Name;
+                        // See if this is a service
+                        currentSettings.IsService = station.IsService;
 
-                                // See if this is a service
-                                currentSettings.IsService = station.IsService;
-
-                                // Overwrite encryption if regular service entry exists
-                                if (!currentSettings.IsService)
-                                    currentSettings.IsEncrypted = station.IsEncrypted;
-                            }
-                        }
+                        // Overwrite encryption if regular service entry exists
+                        if (!currentSettings.IsService)
+                            currentSettings.IsEncrypted = station.IsEncrypted;
                     }
 
                     // See if profile is attached
