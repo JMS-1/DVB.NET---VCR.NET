@@ -150,7 +150,7 @@ namespace JMS.TV.Core.UnitTests
         /// </summary>
         /// <param name="sourceName">Der Name der Quelle.</param>
         /// <returns>Die Quelle.</returns>
-        SourceSelection IFeedProvider.Translate( string sourceName )
+        public SourceSelection Translate( string sourceName )
         {
             return this.SingleOrDefault( CreateSourceSelection( sourceName ).Equals );
         }
@@ -236,6 +236,26 @@ namespace JMS.TV.Core.UnitTests
 
             // Report
             return source;
+        }
+
+        /// <summary>
+        /// Beginnt mit der Abfrage der Daten zu einer Quelle.
+        /// </summary>
+        /// <param name="index">Die laufenden Nummer des zu verwendenden Gerätes.</param>
+        /// <param name="source">Die gewünschte Quelle.</param>
+        /// <returns>Eine bereits aktivierte Hintergrundaufgabe.</returns>
+        CancellableTask<SourceInformation> IFeedProvider.GetSourceInformationAsync( int index, SourceSelection source )
+        {
+            // Validate
+            Assert.IsTrue( (index >= 0) && (index < m_devices.Length), "out of range" );
+            Assert.IsNotNull( m_devices[index], "not allocated" );
+
+            // Report
+            return CancellableTask<SourceInformation>.Run( cancel =>
+                new SourceInformation
+                {
+                    Source = source.Source,
+                } );
         }
     }
 }

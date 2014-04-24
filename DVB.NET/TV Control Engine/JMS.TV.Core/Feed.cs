@@ -110,6 +110,27 @@ namespace JMS.TV.Core
         private readonly Device m_device;
 
         /// <summary>
+        /// Die Hintergrundaufgabe zum Einlesen der Quellinformationen.
+        /// </summary>
+        private CancellableTask<SourceInformation> m_reader;
+
+        /// <summary>
+        /// Meldet die Hintergrundaufgabe, mit der die Daten der zugehörigen Quelle ermittelt werden.
+        /// </summary>
+        public CancellableTask<SourceInformation> SourceInformationReader
+        {
+            get
+            {
+
+                // Create once only
+                if (m_reader == null)
+                    m_reader = m_device.Provider.GetSourceInformationAsync( m_device.Index, Source );
+
+                return m_reader;
+            }
+        }
+
+        /// <summary>
         /// Erstellt eine neue Beschreibung.
         /// </summary>
         /// <param name="source">Die zugehörige Quelle.</param>
@@ -118,6 +139,17 @@ namespace JMS.TV.Core
         {
             m_device = device;
             Source = source;
+        }
+
+        /// <summary>
+        /// Beendet die Nutzung dieses Senders.
+        /// </summary>
+        public void RefreshSourceInformation()
+        {
+            if (m_reader != null)
+                m_reader.Cancel();
+
+            m_reader = null;
         }
 
         /// <summary>

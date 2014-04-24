@@ -13,12 +13,12 @@ namespace JMS.TV.Core
         /// <summary>
         /// Verwaltet alle verfügbaren Sender.
         /// </summary>
-        private readonly IFeedProvider m_provider;
+        public readonly IFeedProvider Provider;
 
         /// <summary>
         /// Die laufende Nummer des Geräte.
         /// </summary>
-        private readonly int m_index;
+        public readonly int Index;
 
         /// <summary>
         /// Alle gerade verfügbaren Sender.
@@ -32,8 +32,8 @@ namespace JMS.TV.Core
         /// <param name="provider">Die Verwaltung aller Quellen.</param>
         public Device( int index, IFeedProvider provider )
         {
-            m_provider = provider;
-            m_index = index;
+            Provider = provider;
+            Index = index;
         }
 
         /// <summary>
@@ -68,11 +68,25 @@ namespace JMS.TV.Core
         /// <param name="source">Die gewünschte Quelle.</param>
         public void EnsureFeed( SourceSelection source )
         {
+            ResetFeeds();
+
             m_feeds =
-                m_provider
-                    .Activate( m_index, source )
+                Provider
+                    .Activate( Index, source )
                     .Select( sourceOnGroup => new Feed( sourceOnGroup, this ) )
                     .ToArray();
+        }
+
+        /// <summary>
+        /// Gibt alle Senderinformationen frei.
+        /// </summary>
+        private void ResetFeeds()
+        {
+            if (m_feeds != null)
+                foreach (var feed in m_feeds)
+                    feed.RefreshSourceInformation();
+
+            m_feeds = null;
         }
 
         /// <summary>
@@ -80,7 +94,7 @@ namespace JMS.TV.Core
         /// </summary>
         public void EnsureDevice()
         {
-            m_provider.AllocateDevice( m_index );
+            Provider.AllocateDevice( Index );
         }
 
         /// <summary>
@@ -91,8 +105,9 @@ namespace JMS.TV.Core
             if (!IsIdle)
                 return;
 
-            m_provider.ReleaseDevice( m_index );
-            m_feeds = null;
+            ResetFeeds();
+
+            Provider.ReleaseDevice( Index );           
         }
     }
 }

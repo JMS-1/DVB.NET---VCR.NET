@@ -39,6 +39,12 @@
     <DocumentationFile>bin\JMS.TV.Core.UnitTests.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JMS.DVB.HardwareAbstraction">
+      <HintPath>..\..\Assemblies\RunTime\JMS.DVB.HardwareAbstraction.dll</HintPath>
+    </Reference>
+    <Reference Include="JMS.DVB.SITables">
+      <HintPath>..\..\Assemblies\RunTime\JMS.DVB.SITables.dll</HintPath>
+    </Reference>
     <Reference Include="JMS.DVB.SourceManagement">
       <HintPath>..\..\Assemblies\RunTime\JMS.DVB.SourceManagement.dll</HintPath>
     </Reference>

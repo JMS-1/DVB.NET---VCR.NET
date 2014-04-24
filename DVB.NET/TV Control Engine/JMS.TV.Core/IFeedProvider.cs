@@ -39,5 +39,13 @@ namespace JMS.TV.Core
         /// <param name="sourceName">Der Name der Quelle.</param>
         /// <returns>Die Quelle.</returns>
         SourceSelection Translate( string sourceName );
+
+        /// <summary>
+        /// Beginnt mit der Abfrage der Daten zu einer Quelle.
+        /// </summary>
+        /// <param name="index">Die laufenden Nummer des zu verwendenden Gerätes.</param>
+        /// <param name="source">Die gewünschte Quelle.</param>
+        /// <returns>Eine bereits aktivierte Hintergrundaufgabe.</returns>
+        CancellableTask<SourceInformation> GetSourceInformationAsync( int index, SourceSelection source );
     }
 }

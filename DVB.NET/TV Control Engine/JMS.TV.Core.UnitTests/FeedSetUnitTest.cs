@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
+using JMS.DVB;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 
@@ -253,7 +255,7 @@ namespace JMS.TV.Core.UnitTests
             var cut = provider.CreateFeedSet();
 
             // Start recording
-            Assert.IsTrue( cut.TryStartRecordingFeed( "ARD", "0"), "record" );
+            Assert.IsTrue( cut.TryStartRecordingFeed( "ARD", "0" ), "record" );
 
             // Test
             Assert.IsNotNull( cut.PrimaryView, "primary" );
@@ -413,6 +415,43 @@ namespace JMS.TV.Core.UnitTests
 
             // Validate
             provider.AssertIdle( 0, 1, 2, 3 );
+        }
+
+        /// <summary>
+        /// Es ist möglich, Daten zum aktuellen Sender zu ermitteln.
+        /// </summary>
+        [TestMethod]
+        public void CanRetrieveSourceInformationForPrimaryView()
+        {
+            // Create component under test
+            var provider = FeedProviderMock.CreateDefault();
+            var info = default( SourceInformation );
+            var cut = provider.CreateFeedSet();
+            var sync = new object();
+
+            // Register
+            cut.PrimaryViewVisibilityChanged += async ( feed, enabled ) =>
+                {
+                    if (!enabled)
+                        return;
+
+                    info = await feed.SourceInformationReader;
+
+                    lock (sync)
+                        Monitor.Pulse( sync );
+                };
+
+            // Start
+            Assert.IsTrue( cut.TryStartPrimaryFeed( "MDR" ), "primary" );
+
+            // Wait for result
+            lock (sync)
+                while (info == null)
+                    Monitor.Wait( sync );
+
+            // Test
+            Assert.IsNotNull( info, "info" );
+            Assert.AreEqual( provider.Translate( "MDR" ).Source, info.Source, "source" );
         }
     }
 }
