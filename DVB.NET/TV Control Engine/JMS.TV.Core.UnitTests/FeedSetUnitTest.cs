@@ -84,10 +84,20 @@ namespace JMS.TV.Core.UnitTests
             var provider = FeedProviderMock.CreateDefault();
             var cut = provider.CreateFeedSet();
 
-            // Process
-            Assert.IsTrue( cut.TryStartPrimaryFeed( "WDR" ), "choose 1" );
-            Assert.IsTrue( cut.TryStartPrimaryFeed( "ARD" ), "choose 2" );
-            Assert.IsTrue( cut.TryStartPrimaryFeed( "VOX" ), "choose 3" );
+            // Synchronize
+            using (var waiter = new AutoResetEvent( false ))
+            {
+                // Attach wait method
+                cut.PrimaryViewVisibilityChanged += ( f, v ) => { if (v) waiter.Set(); };
+
+                // Process
+                Assert.IsTrue( cut.TryStartPrimaryFeed( "WDR" ), "choose 1" );
+                waiter.WaitOne();
+                Assert.IsTrue( cut.TryStartPrimaryFeed( "ARD" ), "choose 2" );
+                waiter.WaitOne();
+                Assert.IsTrue( cut.TryStartPrimaryFeed( "VOX" ), "choose 3" );
+                waiter.WaitOne();
+            }
 
             // Ask for validation
             provider.AssertDevice( 0, "VOX" );

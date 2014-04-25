@@ -37,59 +37,37 @@ namespace JMS.TV.Core
         /// <summary>
         /// Verändert den primären Sender.
         /// </summary>
-        /// <param name="source">Der betroffenen Sender.</param>
-        /// <param name="newState">Der gewünschte neue Zustand.</param>
-        public void ChangePrimaryView( SourceSelection source, bool newState )
-        {
-            ChangePrimaryView( m_feedSet.FindFeed( source ), newState );
-        }
-
-        /// <summary>
-        /// Verändert den primären Sender.
-        /// </summary>
         /// <param name="feed">Der betroffenen Sender.</param>
-        /// <param name="newState">Der gewünschte neue Zustand.</param>
-        public void ChangePrimaryView( Feed feed, bool newState )
+        public void DisablePrimaryView( Feed feed )
         {
             // Validate
-            if (feed.IsPrimaryView == newState)
-                throw new ArgumentException( "Umschaltung des primären Senders unmöglich", "newState" );
+            if (!feed.IsPrimaryView)
+                throw new ArgumentException( "Umschaltung des primären Senders unmöglich", "feed" );
 
             // Change
-            feed.IsPrimaryView = newState;
+            feed.IsPrimaryView = false;
 
             // Create rollback action
-            m_commitActions.Add( () => m_feedSet.OnPrimaryViewChanged( feed, newState ) );
-            m_rollbackActions.Add( () => feed.IsPrimaryView = !newState );
-        }
-
-        /// <summary>
-        /// Verändert einen sekundären Sender.
-        /// </summary>
-        /// <param name="source">Der betroffenen Sender.</param>
-        /// <param name="newState">Der gewünschte neue Zustand.</param>
-        public void ChangeSecondaryView( SourceSelection source, bool newState )
-        {
-            ChangeSecondaryView( m_feedSet.FindFeed( source ), newState );
+            m_commitActions.Add( () => m_feedSet.OnPrimaryViewChanged( feed, false ) );
+            m_rollbackActions.Add( () => feed.IsPrimaryView = true );
         }
 
         /// <summary>
         /// Verändert einen sekundären Sender.
         /// </summary>
         /// <param name="feed">Der betroffenen Sender.</param>
-        /// <param name="newState">Der gewünschte neue Zustand.</param>
-        public void ChangeSecondaryView( Feed feed, bool newState )
+        public void DisableSecondaryView( Feed feed )
         {
             // Validate
-            if (feed.IsSecondaryView == newState)
-                throw new ArgumentException( "Umschaltung des sekundären Senders unmöglich", "newState" );
+            if (!feed.IsSecondaryView)
+                throw new ArgumentException( "Umschaltung des sekundären Senders unmöglich", "feed" );
 
             // Change
-            feed.IsSecondaryView = newState;
+            feed.IsSecondaryView = false;
 
             // Create rollback action
-            m_commitActions.Add( () => m_feedSet.OnSecondaryViewChanged( feed, newState ) );
-            m_rollbackActions.Add( () => feed.IsSecondaryView = !newState );
+            m_commitActions.Add( () => m_feedSet.OnSecondaryViewChanged( feed, false ) );
+            m_rollbackActions.Add( () => feed.IsSecondaryView = true );
         }
 
         /// <summary>
@@ -139,9 +117,6 @@ namespace JMS.TV.Core
             // From last to first
             m_rollbackActions.Reverse();
             m_rollbackActions.ForEach( rollback => rollback() );
-
-            // Final
-            m_feedSet.TestIdle();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using JMS.DVB;
 
 
@@ -55,7 +56,7 @@ namespace JMS.TV.Core
         /// <summary>
         /// Gesetzt, wenn das Gerät zugewiesen wurde aber gerade nicht in Benutzung ist.
         /// </summary>
-        public bool IsIdle { get { return IsAllocated && m_feeds.All( feed => !feed.IsActive ); } }
+        public bool IsIdle { get { return IsAllocated && (m_feeds.Length > 0) && m_feeds.All( feed => !feed.IsActive ); } }
 
         /// <summary>
         /// Gesetzt, wenn dieses Gerät nur für sekundäre Sender verwendet wird und daher eine Wiederbenutzung für
@@ -74,6 +75,11 @@ namespace JMS.TV.Core
         private CancellableTask<SourceSelection[]> m_groupReader;
 
         /// <summary>
+        /// Meldet asynchron neue Quellen.
+        /// </summary>
+        private Task<Feed[]> m_feedAwaiter;
+
+        /// <summary>
         /// Stellt den Empfang einer Quelle sicher.
         /// </summary>
         /// <param name="source">Die gewünschte Quelle.</param>
@@ -90,15 +96,49 @@ namespace JMS.TV.Core
             m_groupReader = Provider.Activate( Index, source );
             m_feeds = _NoFeeds;
 
-            // Start processing and wait - for now only!
-            m_groupReader.ContinueWith( task =>
+            // Start processing
+            m_feedAwaiter = m_groupReader.ContinueWith( task =>
                 {
                     // Load feed data
                     var sources = task.Result;
                     if (sources != null)
                         if (IsAllocated)
-                            m_feeds = sources.Select( sourceOnGroup => new Feed( sourceOnGroup, this ) ).ToArray();
-                } ).Wait();
+                            return m_feeds = sources.Select( sourceOnGroup => new Feed( sourceOnGroup, this ) ).ToArray();
+
+                    // None
+                    return null;
+                } );
+        }
+
+        /// <summary>
+        /// Meldet eine Benachrichtigung an.
+        /// </summary>
+        /// <param name="source">Eine zu überwachende Quelle.</param>
+        /// <param name="sink">Die auszulösende Benachrichtigung.</param>
+        public void FireWhenAvailable( SourceIdentifier source, Action<Feed, bool> sink )
+        {
+            // No one is interested
+            if (sink == null)
+                return;
+
+            // Can not provide data
+            var reader = m_feedAwaiter;
+            if (reader == null)
+                return;
+
+            // Register
+            reader.ContinueWith( task =>
+            {
+                // See if there are any
+                var feeds = task.Result;
+                if (feeds == null)
+                    return;
+
+                // Find the one
+                var feed = feeds.FirstOrDefault( f => f.Source.Source.Equals( source ) );
+                if (feed != null)
+                    sink( feed, true );
+            } );
         }
 
         /// <summary>
@@ -133,29 +173,6 @@ namespace JMS.TV.Core
         public void EnsureDevice()
         {
             Provider.AllocateDevice( Index );
-        }
-
-        /// <summary>
-        /// Deaktiviert das Gerät, wenn es nicht mehr benötigt wird.
-        /// </summary>
-        public void TestIdle()
-        {
-            if (!IsIdle)
-                return;
-
-            // Unregister all outstanding requests
-            ResetFeeds();
-
-            // Cancel group lookup
-            if (m_groupReader != null)
-                m_groupReader.Cancel();
-
-            // Forget all
-            m_groupReader = null;
-            m_feeds = null;
-
-            // Shutdown
-            Provider.ReleaseDevice( Index );
         }
 
         /// <summary>

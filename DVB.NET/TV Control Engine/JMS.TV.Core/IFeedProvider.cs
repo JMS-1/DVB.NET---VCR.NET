@@ -20,12 +20,6 @@ namespace JMS.TV.Core
         void AllocateDevice( int index );
 
         /// <summary>
-        /// Gibt ein Gerät wieder frei.
-        /// </summary>
-        /// <param name="index">Die 0-basierte laufende Nummer des gewünschten Gerätes.</param>
-        void ReleaseDevice( int index );
-
-        /// <summary>
         /// Stellt sicher, dass ein Geräte eine bestimmte Quelle empfängt.
         /// </summary>
         /// <param name="index">Die laufende Nummer des Gerätes.</param>

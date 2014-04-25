@@ -70,20 +70,6 @@ namespace JMS.TV.Core.UnitTests
         }
 
         /// <summary>
-        /// Gibt ein Gerät wieder frei.
-        /// </summary>
-        /// <param name="index">Die 0-basierte laufende Nummer des gewünschten Gerätes.</param>
-        void IFeedProvider.ReleaseDevice( int index )
-        {
-            // Validate
-            Assert.IsTrue( (index >= 0) && (index < m_devices.Length), "out of range" );
-            Assert.IsNotNull( m_devices[index], "not allocated" );
-
-            // Deallocate
-            m_devices[index] = null;
-        }
-
-        /// <summary>
         /// Stellt sicher, dass ein Geräte eine bestimmte Quelle empfängt.
         /// </summary>
         /// <param name="index">Die laufende Nummer des Gerätes.</param>

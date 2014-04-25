@@ -66,15 +66,6 @@ namespace JMS.TV.Core
         }
 
         /// <summary>
-        /// Beendet die Nutzung eines Gerätes.
-        /// </summary>
-        /// <param name="index">Die laufende Nummer des Gerätes.</param>
-        void IFeedProvider.ReleaseDevice( int index )
-        {
-            // DVB.NET can not unload drivers
-        }
-
-        /// <summary>
         /// Wählt eine Quellgruppe an.
         /// </summary>
         /// <param name="index">Die laufende Nummer des Gerätes.</param>

@@ -47,19 +47,20 @@ namespace JMS.TV.Core
         /// <param name="source">Der gewünschte Sender.</param>
         /// <param name="tx">Die aktuelle Änderungsumgebung.</param>
         /// <returns>Gesetzt, wenn die Aufzeichnung möglich war.</returns>
-        private bool EnsureRecordingFeed( SourceSelection source, FeedTransaction tx )
+        private Device EnsureRecordingFeed( SourceSelection source, FeedTransaction tx )
         {
             // Make sure we can receive it
-            if (EnsurePrimaryFeed( source, tx ))
-                return true;
+            var device = EnsurePrimaryFeed( source, tx );
+            if (device != null)
+                return device;
 
             // See if there is a primary
             var primary = PrimaryView;
             if (primary == null)
-                return false;
+                return null;
 
             // Switch off primary
-            tx.ChangePrimaryView( primary, false );
+            tx.DisablePrimaryView( primary );
 
             // Try again - may fail
             return EnsurePrimaryFeed( source, tx );
@@ -71,25 +72,26 @@ namespace JMS.TV.Core
         /// <param name="source">Der gewünschte Sender.</param>
         /// <param name="tx">Die aktuelle Änderungsumgebung.</param>
         /// <returns>Gesetzt, wenn die Aktivierung erfolgreich war.</returns>
-        private bool EnsurePrimaryFeed( SourceSelection source, FeedTransaction tx )
+        private Device EnsurePrimaryFeed( SourceSelection source, FeedTransaction tx )
         {
             // Make sure we can receive it
-            if (EnsureFeed( source ))
-                return true;
+            var device = EnsureFeed( source );
+            if (device != null)
+                return device;
 
             // See if there is any device we can free
             var availableDevice =
                 m_devices
-                    .Where( device => device.ReusePossible )
+                    .Where( cancidate => cancidate.ReusePossible )
                     .Aggregate( default( Device ), ( best, test ) => ((best != null) && (best.SecondaryFeeds.Count() <= test.SecondaryFeeds.Count())) ? best : test );
 
             // None
             if (availableDevice == null)
-                return false;
+                return null;
 
             // Stop all secondaries
             foreach (var secondaryFeed in availableDevice.SecondaryFeeds)
-                tx.ChangeSecondaryView( secondaryFeed, false );
+                tx.DisableSecondaryView( secondaryFeed );
 
             // Run test again - can not fail
             return EnsureFeed( source );
@@ -100,11 +102,12 @@ namespace JMS.TV.Core
         /// </summary>
         /// <param name="source">Der gewünschte Sender.</param>
         /// <returns>Gesetzt, wenn ein Empfang möglich ist.</returns>
-        private bool EnsureFeed( SourceSelection source )
+        private Device EnsureFeed( SourceSelection source )
         {
             // First see if there is a device handling the source
-            if (FindFeed( source ) != null)
-                return true;
+            var feed = FindFeed( source );
+            if (feed != null)
+                return feed.Device;
 
             // See if there is any device activated but idle and then reuse it - better than starting a brand new device
             foreach (var device in m_devices)
@@ -114,7 +117,7 @@ namespace JMS.TV.Core
                     device.EnsureFeed( source );
 
                     // Report success
-                    return true;
+                    return device;
                 }
 
             // See if there is any device not yet activated
@@ -126,11 +129,11 @@ namespace JMS.TV.Core
                     device.EnsureFeed( source );
 
                     // Report success
-                    return true;
+                    return device;
                 }
 
             // All devices are in use
-            return false;
+            return null;
         }
 
         /// <summary>
@@ -140,15 +143,6 @@ namespace JMS.TV.Core
         {
             foreach (var device in m_devices)
                 device.RefreshSourceInformations();
-        }
-
-        /// <summary>
-        /// Beendet den Zugriff auf nicht mehr benötigte Geräte.
-        /// </summary>
-        public void TestIdle()
-        {
-            foreach (var device in m_devices)
-                device.TestIdle();
         }
 
         /// <summary>
@@ -200,32 +194,36 @@ namespace JMS.TV.Core
                 if (feed.IsPrimaryView)
                     return true;
 
+            // Device we schedule on
+            Device device;
+
             // Prepare the change
             using (var tx = new FeedTransaction( this ))
             {
                 // See if we are secondary
                 if (feed != null)
                     if (feed.IsSecondaryView)
-                        tx.ChangeSecondaryView( feed, false );
+                        tx.DisableSecondaryView( feed );
 
                 // Locate the current primary view
                 var previous = PrimaryView;
                 if (previous != null)
-                    tx.ChangePrimaryView( previous, false );
+                    tx.DisablePrimaryView( previous );
 
                 // Make sure we can receive it
-                if (!EnsurePrimaryFeed( source, tx ))
+                device = EnsurePrimaryFeed( source, tx );
+                if (device == null)
                     return false;
-
-                // Mark as active
-                tx.ChangePrimaryView( source, true );
 
                 // Avoid cleanup
                 tx.Commit();
-
-                // Report success
-                return true;
             }
+
+            // Schedule for report
+            device.FireWhenAvailable( source.Source, OnPrimaryViewChanged );
+
+            // Report success
+            return true;
         }
 
         /// <summary>
@@ -248,22 +246,26 @@ namespace JMS.TV.Core
                 else if (feed.IsPrimaryView)
                     return false;
 
+            // The device we use
+            Device device;
+
             // Prepare the change
             using (var tx = new FeedTransaction( this ))
             {
                 // Make sure we can receive it
-                if (!EnsureFeed( source ))
+                device = EnsureFeed( source );
+                if (device == null)
                     return false;
-
-                // Mark as active
-                tx.ChangeSecondaryView( source, true );
 
                 // Avoid cleanup
                 tx.Commit();
-
-                // Report success
-                return true;
             }
+
+            // Report as active as soon as available
+            device.FireWhenAvailable( source.Source, OnSecondaryViewChanged );
+
+            // Report success
+            return true;
         }
 
         /// <summary>
@@ -288,7 +290,7 @@ namespace JMS.TV.Core
             using (var tx = new FeedTransaction( this ))
             {
                 // Mark as active
-                tx.ChangeSecondaryView( feed, false );
+                tx.DisableSecondaryView( feed );
 
                 // Avoid cleanup
                 tx.Commit();
@@ -339,11 +341,11 @@ namespace JMS.TV.Core
                 {
                     // Primary
                     if (feed.IsPrimaryView)
-                        tx.ChangePrimaryView( feed, false );
+                        tx.DisablePrimaryView( feed );
 
                     // Secondary
                     if (feed.IsSecondaryView)
-                        tx.ChangeSecondaryView( feed, false );
+                        tx.DisableSecondaryView( feed );
 
                     // Recording
                     foreach (var recording in feed.Recordings.ToArray())
@@ -372,6 +374,7 @@ namespace JMS.TV.Core
         /// <param name="show">Gesetzt, wenn der Sender angezeigt werden soll.</param>
         public void OnPrimaryViewChanged( Feed feed, bool show )
         {
+            feed.IsPrimaryView = show;
             feed.OnViewChanged( PrimaryViewVisibilityChanged, show );
         }
 
@@ -382,6 +385,7 @@ namespace JMS.TV.Core
         /// <param name="show">Gesetzt, wenn der Sender angezeigt werden soll.</param>
         public void OnSecondaryViewChanged( Feed feed, bool show )
         {
+            feed.IsSecondaryView = show;
             feed.OnViewChanged( SecondaryViewVisibilityChanged, show );
         }
 
@@ -409,11 +413,15 @@ namespace JMS.TV.Core
                 if (feed.IsRecording( key ))
                     return false;
 
+            // Device to use
+            Device device;
+
             // Prepare the change
             using (var tx = new FeedTransaction( this ))
             {
                 // Make sure we can receive it
-                if (!EnsureRecordingFeed( source, tx ))
+                device = EnsureRecordingFeed( source, tx );
+                if (device == null)
                     return false;
 
                 // Attach to the feed
@@ -422,16 +430,16 @@ namespace JMS.TV.Core
                 // Mark as active
                 tx.ChangeRecording( recording, key, true );
 
-                // May want to make it primary
-                if (PrimaryView == null)
-                    tx.ChangePrimaryView( recording, true );
-
                 // Avoid cleanup
                 tx.Commit();
-
-                // Report success
-                return true;
             }
+
+            // May want to make it primary
+            if (PrimaryView == null)
+                device.FireWhenAvailable( source.Source, OnPrimaryViewChanged );
+
+            // Report success
+            return true;
         }
 
         /// <summary>

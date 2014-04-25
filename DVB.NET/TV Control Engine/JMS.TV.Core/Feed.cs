@@ -107,7 +107,7 @@ namespace JMS.TV.Core
         /// <summary>
         /// Das zugehörige Gerät.
         /// </summary>
-        private readonly Device m_device;
+        public readonly Device Device;
 
         /// <summary>
         /// Die Hintergrundaufgabe zum Einlesen der Quellinformationen.
@@ -124,7 +124,7 @@ namespace JMS.TV.Core
 
                 // Create once only
                 if (m_reader == null)
-                    m_reader = m_device.Provider.GetSourceInformationAsync( m_device.Index, Source );
+                    m_reader = Device.Provider.GetSourceInformationAsync( Device.Index, Source );
 
                 return m_reader;
             }
@@ -137,7 +137,7 @@ namespace JMS.TV.Core
         /// <param name="device">Das zugehörige Gerät.</param>
         public Feed( SourceSelection source, Device device )
         {
-            m_device = device;
+            Device = device;
             Source = source;
         }
 
@@ -186,7 +186,7 @@ namespace JMS.TV.Core
         /// <param name="show">Der neue Zustand.</param>
         public void OnViewChanged( Action<IFeed, bool> sink, bool show )
         {
-            m_device.OnViewChanged( sink, this, show );
+            Device.OnViewChanged( sink, this, show );
         }
     }
 }
