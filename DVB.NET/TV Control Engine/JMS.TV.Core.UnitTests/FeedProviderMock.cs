@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using JMS.DVB;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -253,6 +254,121 @@ namespace JMS.TV.Core.UnitTests
             // Validate
             Assert.IsTrue( (index >= 0) && (index < m_devices.Length), "out of range" );
             Assert.IsNotNull( m_devices[index], "not allocated" );
+        }
+    }
+
+    /// <summary>
+    /// Einige Hilfsmethoden zum einfacheren Testen der <see cref="IFeedSet"/> Schnittstelle.
+    /// </summary>
+    public static class FeedSetExtensions
+    {
+        /// <summary>
+        /// Aktiviert den primären Sender.
+        /// </summary>
+        /// <param name="feedSet">Die Verwaltung der Sender.</param>
+        /// <param name="sourceName">Der Name einer Quelle.</param>
+        /// <returns>Gesetzt, wenn der Sender aktiviert wurde.</returns>
+        public static bool TryPrimary( this IFeedSet feedSet, string sourceName )
+        {
+            // Synchronize
+            using (var waiter = new ManualResetEvent( false ))
+            {
+                // Waiter method
+                Action<IFeed, bool> signal = ( feed, visible ) => { if (visible) waiter.Set(); };
+
+                // Attach wait method
+                feedSet.PrimaryViewVisibilityChanged += signal;
+                try
+                {
+                    // Process
+                    var started = feedSet.TryStartPrimaryFeed( sourceName );
+
+                    // Synchronize
+                    if (started)
+                        Assert.IsTrue( waiter.WaitOne( 1000 ), "timeout" );
+
+                    // Report
+                    return started;
+                }
+                finally
+                {
+                    // Detach waiter
+                    feedSet.PrimaryViewVisibilityChanged -= signal;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Aktiviert eine Aufzeichnung.
+        /// </summary>
+        /// <param name="feedSet">Die Verwaltung der Sender.</param>
+        /// <param name="sourceName">Der Name einer Quelle.</param>
+        /// <param name="key">Die Identifikation der Aufzeichnung.</param>
+        /// <returns>Gesetzt, wenn der Sender aktiviert wurde.</returns>
+        public static bool TryRecord( this IFeedSet feedSet, string sourceName, string key )
+        {
+            // Synchronize
+            using (var waiter = new ManualResetEvent( false ))
+            {
+                // Waiter method
+                Action<IFeed, string, bool> signal = ( feed, rec, start ) => { if (start && (rec == key)) waiter.Set(); };
+
+                // Attach wait method
+                feedSet.RecordingStateChanged += signal;
+                try
+                {
+                    // Process
+                    var started = feedSet.TryStartRecordingFeed( sourceName, key );
+
+                    // Synchronize
+                    if (started)
+                        Assert.IsTrue( waiter.WaitOne( 1000 ), "timeout" );
+
+                    // Report
+                    return started;
+                }
+                finally
+                {
+                    // Detach waiter
+                    feedSet.RecordingStateChanged -= signal;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Aktiviert einen sekundären Sender.
+        /// </summary>
+        /// <param name="feedSet">Die Verwaltung der Sender.</param>
+        /// <param name="sourceName">Der Name einer Quelle.</param>
+        /// <returns>Gesetzt, wenn der Sender aktiviert wurde.</returns>
+        public static bool TrySecondary( this IFeedSet feedSet, string sourceName )
+        {
+            // Synchronize
+            using (var waiter = new ManualResetEvent( false ))
+            {
+                // Waiter method
+                Action<IFeed, bool> signal = ( feed, visible ) => { if (visible) waiter.Set(); };
+
+                // Attach wait method
+                feedSet.SecondaryViewVisibilityChanged += signal;
+                try
+                {
+                    // Process
+                    var started = feedSet.TryStartSecondaryFeed( sourceName );
+
+                    // Synchronize
+                    if (started)
+                        Assert.IsTrue( waiter.WaitOne( 1000 ), "timeout" );
+
+                    // Report
+                    return started;
+                }
+                finally
+                {
+                    // Detach waiter
+                    feedSet.SecondaryViewVisibilityChanged -= signal;
+                }
+            }
         }
     }
 }

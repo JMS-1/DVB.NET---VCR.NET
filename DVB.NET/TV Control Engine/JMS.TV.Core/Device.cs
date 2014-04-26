@@ -142,6 +142,18 @@ namespace JMS.TV.Core
         }
 
         /// <summary>
+        /// Meldet eine Benachrichtigung an.
+        /// </summary>
+        /// <param name="source">Eine zu überwachende Quelle.</param>
+        /// <param name="key">Ein Parameter für die Benachrichtigung.</param>
+        /// <param name="sink">Die auszulösende Benachrichtigung.</param>
+        public void FireWhenAvailable<TParameterType>( SourceIdentifier source, TParameterType key, Action<Feed, TParameterType, bool> sink )
+        {
+            if (sink != null)
+                FireWhenAvailable( source, ( feed, state ) => sink( feed, key, state ) );
+        }
+
+        /// <summary>
         /// Gibt alle Senderinformationen frei.
         /// </summary>
         public void RefreshSourceInformations()

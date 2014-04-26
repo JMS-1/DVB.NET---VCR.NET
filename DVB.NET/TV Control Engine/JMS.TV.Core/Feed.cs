@@ -29,7 +29,7 @@ namespace JMS.TV.Core
             {
                 // Must validate
                 if (value && m_secondaryView)
-                    throw new InvalidOperationException( "Sender kann nicht gleichzeitig primär und sekundär verwendet werden" );
+                    throw new InvalidOperationException( "Sender kann nicht gleichzeitig primär und sekundär angezeigt werden" );
                 else
                     m_primaryView = value;
             }
@@ -53,7 +53,7 @@ namespace JMS.TV.Core
             {
                 // Must validate
                 if (value && m_primaryView)
-                    throw new InvalidOperationException( "Sender kann nicht gleichzeitig primär und sekundär verwendet werden" );
+                    throw new InvalidOperationException( "Sender kann nicht gleichzeitig primär und sekundär angezeigt werden" );
                 else
                     m_secondaryView = value;
             }
@@ -102,7 +102,7 @@ namespace JMS.TV.Core
         /// Beginnt eine Aufzeichnung.
         /// </summary>
         /// <param name="key">Die Identifikation der Aufzeichnung.</param>
-        public void StartRecording( string key ) { m_activeRecordings.Add( key ); }
+        public bool StartRecording( string key ) { return m_activeRecordings.Add( key ); }
 
         /// <summary>
         /// Das zugehörige Gerät.

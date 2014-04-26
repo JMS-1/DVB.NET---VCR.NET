@@ -75,29 +75,18 @@ namespace JMS.TV.Core
         /// </summary>
         /// <param name="feed">Der Sender.</param>
         /// <param name="key">Die Identifikation der Aufzeichung.</param>
-        /// <param name="newState">Der gewünschte Aufzeichnungsstand.</param>
-        public void ChangeRecording( Feed feed, string key, bool newState )
+        public void DisableRecording( Feed feed, string key )
         {
             // Validate
-            if (feed.IsRecording( key ) == newState)
-                throw new ArgumentException( "Aufzeichnung des Senders unmöglich", "newState" );
+            if (!feed.IsRecording( key ))
+                throw new ArgumentException( "Aufzeichnung des Senders kann nicht beendet werden", "key" );
 
             // Change
-            if (newState)
-                feed.StartRecording( key );
-            else
-                feed.StopRecording( key );
+            feed.StopRecording( key );
 
             // Create rollback action
-            m_commitActions.Add( () => m_feedSet.OnRecordingChanged( feed, key, newState ) );
-            m_rollbackActions.Add( () =>
-            {
-                // Reverse change
-                if (newState)
-                    feed.StopRecording( key );
-                else
-                    feed.StartRecording( key );
-            } );
+            m_commitActions.Add( () => m_feedSet.OnRecordingChanged( feed, key, false ) );
+            m_rollbackActions.Add( () => feed.StartRecording( key ) );
         }
 
         /// <summary>

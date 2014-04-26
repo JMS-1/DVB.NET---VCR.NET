@@ -349,7 +349,7 @@ namespace JMS.TV.Core
 
                     // Recording
                     foreach (var recording in feed.Recordings.ToArray())
-                        tx.ChangeRecording( feed, recording, false );
+                        tx.DisableRecording( feed, recording );
                 }
 
                 // Process all
@@ -424,15 +424,12 @@ namespace JMS.TV.Core
                 if (device == null)
                     return false;
 
-                // Attach to the feed
-                var recording = FindFeed( source );
-
-                // Mark as active
-                tx.ChangeRecording( recording, key, true );
-
                 // Avoid cleanup
                 tx.Commit();
             }
+
+            // Report recording
+            device.FireWhenAvailable( source.Source, key, OnRecordingChanged );
 
             // May want to make it primary
             if (PrimaryView == null)
@@ -465,7 +462,7 @@ namespace JMS.TV.Core
             using (var tx = new FeedTransaction( this ))
             {
                 // Mark as active
-                tx.ChangeRecording( feed, key, false );
+                tx.DisableRecording( feed, key );
 
                 // Avoid cleanup
                 tx.Commit();
@@ -485,6 +482,10 @@ namespace JMS.TV.Core
         /// <param name="start">Gesetzt, wenn die Aufzeichnung begonnen werden soll.</param>
         public void OnRecordingChanged( Feed feed, string key, bool start )
         {
+            var changed = start ? feed.StartRecording( key ) : feed.StopRecording( key );
+            if (!changed)
+                return;
+
             var sink = RecordingStateChanged;
             if (sink != null)
                 sink( feed, key, start );
