@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Device.cs" />
+    <Compile Include="IDevice.cs" />
     <Compile Include="IFeed.cs" />
     <Compile Include="Feed.cs" />
     <Compile Include="IFeedSet.cs" />

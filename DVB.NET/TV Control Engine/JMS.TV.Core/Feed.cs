@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using JMS.DVB;
 
 
@@ -14,7 +15,7 @@ namespace JMS.TV.Core
         /// <summary>
         /// Gesetzt, wenn dieser Sender gerade vollständig angezeigt wird - Bild, Ton und Videotext.
         /// </summary>
-        private bool m_primaryView;
+        private volatile bool m_primaryView;
 
         /// <summary>
         /// Gesetzt, wenn dieser Sender gerade vollständig angezeigt wird - Bild, Ton und Videotext.
@@ -38,7 +39,7 @@ namespace JMS.TV.Core
         /// <summary>
         /// Gesetzt, wenn dieser Sender gerade als Bild-In-Bild (PiP) angezeigt wird.
         /// </summary>
-        private bool m_secondaryView;
+        private volatile bool m_secondaryView;
 
         /// <summary>
         /// Gesetzt, wenn dieser Sender gerade als Bild-In-Bild (PiP) angezeigt wird.
@@ -62,7 +63,7 @@ namespace JMS.TV.Core
         /// <summary>
         /// Die zugehörige Quelle.
         /// </summary>
-        public SourceSelection Source { get; private set; }
+        public readonly SourceSelection Source;
 
         /// <summary>
         /// Alle Aufzeichnungen auf diesem Sender.
@@ -72,37 +73,78 @@ namespace JMS.TV.Core
         /// <summary>
         /// Gesetzt, wenn dieser Sender benutzt wird.
         /// </summary>
-        public bool IsActive { get { return m_primaryView || m_secondaryView || (m_activeRecordings.Count > 0); } }
+        public bool IsActive
+        {
+            get
+            {
+                if (m_primaryView)
+                    return true;
+                if (m_secondaryView)
+                    return true;
+
+                lock (m_activeRecordings)
+                    return (m_activeRecordings.Count > 0);
+            }
+        }
 
         /// <summary>
         /// Gesetzt, wenn dieser Sender bei Bedarf abgeschaltet werden darf.
         /// </summary>
-        public bool ReusePossible { get { return !m_primaryView && (m_activeRecordings.Count < 1); } }
+        public bool ReusePossible
+        {
+            get
+            {
+                if (m_primaryView)
+                    return false;
+
+                lock (m_activeRecordings)
+                    return (m_activeRecordings.Count < 1);
+            }
+        }
 
         /// <summary>
         /// Meldet alle aktiven Aufzeichnungen für diesen Sender.
         /// </summary>
-        public IEnumerable<string> Recordings { get { return m_activeRecordings; } }
+        public IEnumerable<string> Recordings
+        {
+            get
+            {
+                lock (m_activeRecordings)
+                    return m_activeRecordings.ToArray();
+            }
+        }
 
         /// <summary>
         /// Prüft, ob eine bestimmte Aufzeichnung bereits aktiv ist.
         /// </summary>
         /// <param name="key">Die Identifikation der Aufzeichnung.</param>
         /// <returns>Gesetzt, wenn die angegebene Aufzeichnung aktiv ist.</returns>
-        public bool IsRecording( string key ) { return m_activeRecordings.Contains( key ); }
+        public bool IsRecording( string key )
+        {
+            lock (m_activeRecordings)
+                return m_activeRecordings.Contains( key );
+        }
 
         /// <summary>
         /// Beendet eine Aufzeichnung.
         /// </summary>
         /// <param name="key">Die Identifikation der Aufzeichnung.</param>
         /// <returns>Gesetzt, wenn die Aufzeichnung beendet wurde.</returns>
-        public bool StopRecording( string key ) { return m_activeRecordings.Remove( key ); }
+        public bool StopRecording( string key )
+        {
+            lock (m_activeRecordings)
+                return m_activeRecordings.Remove( key );
+        }
 
         /// <summary>
         /// Beginnt eine Aufzeichnung.
         /// </summary>
         /// <param name="key">Die Identifikation der Aufzeichnung.</param>
-        public bool StartRecording( string key ) { return m_activeRecordings.Add( key ); }
+        public bool StartRecording( string key )
+        {
+            lock (m_activeRecordings)
+                return m_activeRecordings.Add( key );
+        }
 
         /// <summary>
         /// Das zugehörige Gerät.
@@ -124,7 +166,7 @@ namespace JMS.TV.Core
 
                 // Create once only
                 if (m_reader == null)
-                    m_reader = Device.Provider.GetSourceInformationAsync( Device.Index, Source );
+                    m_reader = Device.ProviderDevice.GetSourceInformationAsync( Source );
 
                 return m_reader;
             }
@@ -168,8 +210,9 @@ namespace JMS.TV.Core
                 op = " secondary";
 
             // Recordings
-            foreach (var recording in m_activeRecordings)
-                op = string.Format( "{0} record({1})", op, recording );
+            lock (m_activeRecordings)
+                foreach (var recording in m_activeRecordings)
+                    op = string.Format( "{0} record({1})", op, recording );
 
             // Idle
             if (string.IsNullOrEmpty( op ))

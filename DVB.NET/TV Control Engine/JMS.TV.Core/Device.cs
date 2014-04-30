@@ -20,12 +20,12 @@ namespace JMS.TV.Core
         /// <summary>
         /// Verwaltet alle verfügbaren Sender.
         /// </summary>
-        public readonly IFeedProvider Provider;
+        private readonly IFeedProvider m_provider;
 
         /// <summary>
-        /// Die laufende Nummer des Geräte.
+        /// Das zugehörige Gerät.
         /// </summary>
-        public readonly int Index;
+        public readonly IDevice ProviderDevice;
 
         /// <summary>
         /// Alle gerade verfügbaren Sender.
@@ -39,8 +39,8 @@ namespace JMS.TV.Core
         /// <param name="provider">Die Verwaltung aller Quellen.</param>
         public Device( int index, IFeedProvider provider )
         {
-            Provider = provider;
-            Index = index;
+            ProviderDevice = provider.GetDevice( index );
+            m_provider = provider;
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace JMS.TV.Core
                 m_groupReader.Cancel();
 
             // Create new
-            m_groupReader = Provider.Activate( Index, source );
+            m_groupReader = ProviderDevice.Activate( source );
             m_feeds = _NoFeeds;
 
             // Start processing
@@ -165,7 +165,7 @@ namespace JMS.TV.Core
             // Unregister all outstanding requests
             ResetFeeds();
 
-            Provider.RefreshSourceInformations( Index );
+            ProviderDevice.RefreshSourceInformations();
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace JMS.TV.Core
         /// </summary>
         public void EnsureDevice()
         {
-            Provider.AllocateDevice( Index );
+            ProviderDevice.Allocate();
         }
 
         /// <summary>

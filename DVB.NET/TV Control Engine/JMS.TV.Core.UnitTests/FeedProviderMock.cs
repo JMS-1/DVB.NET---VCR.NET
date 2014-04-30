@@ -16,6 +16,109 @@ namespace JMS.TV.Core.UnitTests
     public class FeedProviderMock : IFeedProvider, IEnumerable<SourceSelection>
     {
         /// <summary>
+        /// Beschreibt ein einzelnes Gerät.
+        /// </summary>
+        private class DeviceMock : IDevice
+        {
+            /// <summary>
+            /// Die aktuell verwendete Quellgruppe.
+            /// </summary>
+            private volatile HashSet<SourceSelection> m_currentSourceGroup;
+
+            /// <summary>
+            /// Die zugehörige Gesamtsimulation.
+            /// </summary>
+            private readonly FeedProviderMock m_provider;
+
+            /// <summary>
+            /// Erstellt die Simulation eines Gerätes.
+            /// </summary>
+            /// <param name="provider">Die Simulation der Gesamtumgebung.</param>
+            public DeviceMock( FeedProviderMock provider )
+            {
+                m_provider = provider;
+            }
+
+            /// <summary>
+            /// Simuliert den ersten Zugriff auf das Gerät.
+            /// </summary>
+            void IDevice.Allocate()
+            {
+                Assert.IsNull( m_currentSourceGroup, "already allocated" );
+
+                m_currentSourceGroup = new HashSet<SourceSelection>();
+            }
+
+            /// <summary>
+            /// Aktiviert den Empfang einer Quellgruppe.
+            /// </summary>
+            /// <param name="source">Eine Quelle der Gruppe.</param>
+            /// <returns>Die Hintergrundaufgabe zur Aktivierung.</returns>
+            CancellableTask<SourceSelection[]> IDevice.Activate( SourceSelection source )
+            {
+                Assert.IsNotNull( m_currentSourceGroup, "not allocated" );
+
+                // Find the source map
+                var group = m_provider.AllAvailableSources.SingleOrDefault( g => g.Contains( source ) );
+
+                Assert.IsNotNull( group, "no such source" );
+
+                // Mark as tuning
+                m_currentSourceGroup = new HashSet<SourceSelection>();
+
+                // Report
+                return CancellableTask<SourceSelection[]>.Run( cancel => (m_currentSourceGroup = group).ToArray() );
+            }
+
+            /// <summary>
+            /// Beginnt mit dem Laden von Quellinformationen.
+            /// </summary>
+            /// <param name="source">Die gewünschte Quelle.</param>
+            /// <returns>Die Hintergrundaufgabe zum Laden der Quellinformationen.</returns>
+            CancellableTask<SourceInformation> IDevice.GetSourceInformationAsync( SourceSelection source )
+            {
+                Assert.IsNotNull( m_currentSourceGroup, "not allocated" );
+
+                // Make it async
+                return CancellableTask<SourceInformation>.Run( cancel => new SourceInformation { Source = source.Source } );
+            }
+
+            /// <summary>
+            /// Fordert aktuelle Quellinformationen an.
+            /// </summary>
+            void IDevice.RefreshSourceInformations()
+            {
+                Assert.IsNotNull( m_currentSourceGroup, "not allocated" );
+            }
+
+            /// <summary>
+            /// Prüft, ob ein bestimmte Quellen empfangen werden.
+            /// </summary>
+            /// <param name="index">Die externe Nummer des Gerätes.</param>
+            /// <param name="sources">Die mindestens aktiven Quellen.</param>
+            public void AssertDevice( int index, params string[] sources )
+            {
+                // Load map 
+                var group = m_currentSourceGroup;
+
+                // Test
+                Assert.IsNotNull( group, "device {0} not in use", index );
+                foreach (var source in sources)
+                    Assert.IsTrue( group.Contains( m_provider.CreateSourceSelection( source ) ), "device {0} not receiving source {1}", index, source );
+            }
+
+
+            /// <summary>
+            /// Prüft, ob ein Gerät in Benutzung ist.
+            /// </summary>
+            /// <param name="index">Die externe Nummer des Gerätes.</param>
+            public void AssertIdle( int index )
+            {
+                Assert.IsNull( m_currentSourceGroup, "device {0} is in use", index );
+            }
+        }
+
+        /// <summary>
         /// Meldet die für die meisten Tests geeignete Standardverwaltung.
         /// </summary>
         /// <param name="numberOfDevices">Die Anzahl der zu verwendenden Geräte.</param>
@@ -39,17 +142,12 @@ namespace JMS.TV.Core.UnitTests
         /// <summary>
         /// Alle Quellen.
         /// </summary>
-        private readonly List<HashSet<SourceSelection>> m_sources = new List<HashSet<SourceSelection>>();
+        private readonly List<HashSet<SourceSelection>> AllAvailableSources = new List<HashSet<SourceSelection>>();
 
         /// <summary>
         /// Alle Geräte samt deren Belegung.
         /// </summary>
-        private HashSet<SourceSelection>[] m_devices = { };
-
-        /// <summary>
-        /// Meldet alle Geräte.
-        /// </summary>
-        public ICollection<IEnumerable<SourceSelection>> Devices { get { return m_devices; } }
+        private DeviceMock[] m_devices = { };
 
         /// <summary>
         /// Meldet die Anzahl der Geräte.
@@ -57,42 +155,17 @@ namespace JMS.TV.Core.UnitTests
         int IFeedProvider.NumberOfDevices { get { return m_devices.Length; } }
 
         /// <summary>
-        /// Reserviert ein Gerät.
+        /// Ermittelt ein Gerät.
         /// </summary>
-        /// <param name="index">Die 0-basierte laufende Nummer des gewünschten Gerätes.</param>
-        void IFeedProvider.AllocateDevice( int index )
+        /// <param name="index">Die 0-basierte laufende Nummer des Gerätes.</param>
+        /// <returns>Das gewünschte Gerät.</returns>
+        IDevice IFeedProvider.GetDevice( int index )
         {
             // Validate
             Assert.IsTrue( (index >= 0) && (index < m_devices.Length), "out of range" );
-            Assert.IsNull( m_devices[index], "already allocated" );
 
             // Allocate
-            m_devices[index] = new HashSet<SourceSelection>();
-        }
-
-        /// <summary>
-        /// Stellt sicher, dass ein Geräte eine bestimmte Quelle empfängt.
-        /// </summary>
-        /// <param name="index">Die laufende Nummer des Gerätes.</param>
-        /// <param name="source">Die geforderte Quelle.</param>
-        /// <returns>Alle Quellen, die nun ohne Umschaltung von diesem gerät empfangen werden können.</returns>
-        CancellableTask<SourceSelection[]> IFeedProvider.Activate( int index, SourceSelection source )
-        {
-            // Validate
-            Assert.IsTrue( (index >= 0) && (index < m_devices.Length), "out of range" );
-            Assert.IsNotNull( m_devices[index], "not allocated" );
-
-            // Find the source map
-            var group = m_sources.SingleOrDefault( g => g.Contains( source ) );
-
-            // Validate
-            Assert.IsNotNull( group, "no such source" );
-
-            // Remember
-            m_devices[index] = group;
-
-            // Report
-            return CancellableTask<SourceSelection[]>.Run( cancel => group.ToArray() );
+            return m_devices[index];
         }
 
         /// <summary>
@@ -101,7 +174,7 @@ namespace JMS.TV.Core.UnitTests
         /// <param name="numberOfDevices">Die Anzahl der unterstützten Geräte.</param>
         private FeedProviderMock( int numberOfDevices )
         {
-            m_devices = new HashSet<SourceSelection>[numberOfDevices];
+            m_devices = Enumerable.Range( 0, numberOfDevices ).Select( i => new DeviceMock( this ) ).ToArray();
         }
 
         /// <summary>
@@ -111,7 +184,7 @@ namespace JMS.TV.Core.UnitTests
         /// <param name="sourcesInGroup">Die Liste der Quellen der Gruppe.</param>
         public void Add( params string[] sourcesInGroup )
         {
-            m_sources.Add( new HashSet<SourceSelection>( sourcesInGroup.Select( CreateSourceSelection ) ?? Enumerable.Empty<SourceSelection>() ) );
+            AllAvailableSources.Add( new HashSet<SourceSelection>( sourcesInGroup.Select( CreateSourceSelection ) ?? Enumerable.Empty<SourceSelection>() ) );
         }
 
         /// <summary>
@@ -120,7 +193,7 @@ namespace JMS.TV.Core.UnitTests
         /// <returns>Die Liste aller Sender.</returns>
         public IEnumerator<SourceSelection> GetEnumerator()
         {
-            return m_sources.SelectMany( group => group ).OrderBy( source => source.ToString() ).GetEnumerator();
+            return AllAvailableSources.SelectMany( group => group ).OrderBy( source => source.ToString() ).GetEnumerator();
         }
 
         /// <summary>
@@ -149,13 +222,7 @@ namespace JMS.TV.Core.UnitTests
         /// <param name="sources">Die gewünschte Quelle.</param>
         public void AssertDevice( int index, params string[] sources )
         {
-            // Load map 
-            var group = m_devices[index];
-
-            // Test
-            Assert.IsNotNull( group, "device {0} not in use", index );
-            foreach (var source in sources)
-                Assert.IsTrue( group.Contains( CreateSourceSelection( source ) ), "device {0} not receiving source {1}", index, source );
+            m_devices[index].AssertDevice( index, sources );
         }
 
         /// <summary>
@@ -165,7 +232,7 @@ namespace JMS.TV.Core.UnitTests
         public void AssertIdle( params int[] indexes )
         {
             foreach (var index in indexes)
-                Assert.IsNull( m_devices[index], "device {0} is in use", index );
+                m_devices[index].AssertIdle( index );
         }
 
         /// <summary>
@@ -223,37 +290,6 @@ namespace JMS.TV.Core.UnitTests
 
             // Report
             return source;
-        }
-
-        /// <summary>
-        /// Beginnt mit der Abfrage der Daten zu einer Quelle.
-        /// </summary>
-        /// <param name="index">Die laufenden Nummer des zu verwendenden Gerätes.</param>
-        /// <param name="source">Die gewünschte Quelle.</param>
-        /// <returns>Eine bereits aktivierte Hintergrundaufgabe.</returns>
-        CancellableTask<SourceInformation> IFeedProvider.GetSourceInformationAsync( int index, SourceSelection source )
-        {
-            // Validate
-            Assert.IsTrue( (index >= 0) && (index < m_devices.Length), "out of range" );
-            Assert.IsNotNull( m_devices[index], "not allocated" );
-
-            // Report
-            return CancellableTask<SourceInformation>.Run( cancel =>
-                new SourceInformation
-                {
-                    Source = source.Source,
-                } );
-        }
-
-        /// <summary>
-        /// Stellt sicher, dass alle Quellinformationen neu ermittelt werden.
-        /// </summary>
-        /// <param name="index">Die laufende Nummer des zu verwendende Gerätes.</param>
-        void IFeedProvider.RefreshSourceInformations( int index )
-        {
-            // Validate
-            Assert.IsTrue( (index >= 0) && (index < m_devices.Length), "out of range" );
-            Assert.IsNotNull( m_devices[index], "not allocated" );
         }
     }
 
