@@ -63,9 +63,6 @@ namespace JMS.TV.Core.UnitTests
 
                 Assert.IsNotNull( group, "no such source" );
 
-                // Mark as tuning
-                m_currentSourceGroup = new HashSet<SourceSelection>();
-
                 // Report
                 return CancellableTask<SourceSelection[]>.Run( cancel => (m_currentSourceGroup = group).ToArray() );
             }
@@ -80,7 +77,7 @@ namespace JMS.TV.Core.UnitTests
                 Assert.IsNotNull( m_currentSourceGroup, "not allocated" );
 
                 // Make it async
-                return CancellableTask<SourceInformation>.Run( cancel => new SourceInformation { Source = source.Source } );
+                return CancellableTask<SourceInformation>.Run( cancel => m_currentSourceGroup.Contains( source ) ? new SourceInformation { Source = source.Source } : null );
             }
 
             /// <summary>
