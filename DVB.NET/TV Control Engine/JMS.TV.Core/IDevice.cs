@@ -9,11 +9,6 @@ namespace JMS.TV.Core
     public interface IDevice
     {
         /// <summary>
-        /// Reserviert das Gerät.
-        /// </summary>
-        void Allocate();
-
-        /// <summary>
         /// Stellt sicher, dass dieses Geräte eine bestimmte Quelle empfängt.
         /// </summary>
         /// <param name="source">Die geforderte Quelle.</param>

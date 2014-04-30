@@ -46,7 +46,7 @@ namespace JMS.TV.Core
         /// <summary>
         /// Meldet alle gerade verfügbaren Sender.
         /// </summary>
-        public IEnumerable<Feed> Feeds { get { return IsAllocated ? m_feeds : Enumerable.Empty<Feed>(); } }
+        public IEnumerable<Feed> Feeds { get { return m_feeds ?? Enumerable.Empty<Feed>(); } }
 
         /// <summary>
         /// Gesetzt, wenn das zugehörige Gerät zugewiesen wurde.
@@ -56,13 +56,33 @@ namespace JMS.TV.Core
         /// <summary>
         /// Gesetzt, wenn das Gerät zugewiesen wurde aber gerade nicht in Benutzung ist.
         /// </summary>
-        public bool IsIdle { get { return IsAllocated && (m_feeds.Length > 0) && m_feeds.All( feed => !feed.IsActive ); } }
+        public bool IsIdle
+        {
+            get
+            {
+                var feeds = m_feeds;
+                if (feeds == null)
+                    return false;
+
+                return feeds.All( feed => !feed.IsActive );
+            }
+        }
 
         /// <summary>
         /// Gesetzt, wenn dieses Gerät nur für sekundäre Sender verwendet wird und daher eine Wiederbenutzung für
         /// wichtigere Aufgaben möglich ist.
         /// </summary>
-        public bool ReusePossible { get { return IsAllocated && m_feeds.All( feed => feed.ReusePossible ); } }
+        public bool ReusePossible
+        {
+            get
+            {
+                var feeds = m_feeds;
+                if (feeds == null)
+                    return false;
+
+                return feeds.All( feed => feed.ReusePossible );
+            }
+        }
 
         /// <summary>
         /// Ermittelt alle sekundären Sender, die gerade in Benutzung sind.
@@ -88,9 +108,12 @@ namespace JMS.TV.Core
             // Unregister all outstanding requests
             ResetFeeds();
 
-            // Stop current reader
+            // Stop current reader if active - and wait for cancel to finish
             if (m_groupReader != null)
+            {
                 m_groupReader.Cancel();
+                m_groupReader.Wait();
+            }
 
             // Create new
             m_groupReader = ProviderDevice.Activate( source );
@@ -158,7 +181,6 @@ namespace JMS.TV.Core
         /// </summary>
         public void RefreshSourceInformations()
         {
-            // Not in use
             if (!IsAllocated)
                 return;
 
@@ -173,18 +195,8 @@ namespace JMS.TV.Core
         /// </summary>
         private void ResetFeeds()
         {
-            // Unregister all outstanding requests
-            if (m_feeds != null)
-                foreach (var feed in m_feeds)
-                    feed.RefreshSourceInformation();
-        }
-
-        /// <summary>
-        /// Aktiviert das Gerät.
-        /// </summary>
-        public void EnsureDevice()
-        {
-            ProviderDevice.Allocate();
+            foreach (var feed in Feeds)
+                feed.RefreshSourceInformation();
         }
 
         /// <summary>
@@ -195,12 +207,8 @@ namespace JMS.TV.Core
         /// <param name="show">Gesetzt, wenn eine Anzeige erfolgen soll.</param>
         public void OnViewChanged( Action<IFeed, bool> sink, Feed feed, bool show )
         {
-            // Not interested
-            if (sink == null)
-                return;
-
-            // Report
-            sink( feed, show );
+            if (sink != null)
+                sink( feed, show );
         }
     }
 }

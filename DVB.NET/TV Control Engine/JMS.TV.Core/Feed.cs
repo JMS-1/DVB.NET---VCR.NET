@@ -189,7 +189,10 @@ namespace JMS.TV.Core
         public void RefreshSourceInformation()
         {
             if (m_reader != null)
+            {
                 m_reader.Cancel();
+                m_reader.Wait();
+            }
 
             m_reader = null;
         }

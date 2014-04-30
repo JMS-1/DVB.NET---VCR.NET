@@ -18,6 +18,11 @@ namespace JMS.TV.Core
         private class StandardDevice : IDevice
         {
             /// <summary>
+            /// Ein leeres Feld von Quellen.
+            /// </summary>
+            private static readonly SourceSelection[] _NoSources = { };
+
+            /// <summary>
             /// Das zugehörige Geräteprofil.
             /// </summary>
             private readonly Profile m_profile;
@@ -37,15 +42,6 @@ namespace JMS.TV.Core
             }
 
             /// <summary>
-            /// Initialisiert die zugehörigeen Treiber.
-            /// </summary>
-            public void Allocate()
-            {
-                // First call will load DVB.NET driver
-                HardwareManager.OpenHardware( m_profile );
-            }
-
-            /// <summary>
             /// Wählt eine Quellgruppe an.
             /// </summary>
             /// <param name="source">Eine der Quellen der Gruppe.</param>
@@ -57,27 +53,39 @@ namespace JMS.TV.Core
                 if (localSource == null)
                     throw new ArgumentException( "bad source", "source" );
 
-                // Select the group
-                localSource.SelectGroup();
-
-                // Retrieve the group information
-                var device = localSource.GetHardware();
-                var groupReader = device.GroupReader;
-
                 // Create task
                 return
                     CancellableTask<SourceSelection[]>.Run( cancel =>
                     {
+                        // Check for cancel
+                        if (cancel.IsCancellationRequested)
+                            return _NoSources;
+
+                        // Start the hardware on first call - this may take some time
+                        var device = localSource.GetHardware();
+
+                        // Check for cancel
+                        if (cancel.IsCancellationRequested)
+                            return _NoSources;
+
+                        // Select the group - again this may last a bit
+                        localSource.SelectGroup( device );
+
+                        // Check for cancel
+                        if (cancel.IsCancellationRequested)
+                            return _NoSources;
+
                         // Validate
+                        var groupReader = device.GroupReader;
                         if (groupReader == null)
-                            return new SourceSelection[0];
+                            return _NoSources;
                         if (!groupReader.CancellableWait( cancel ))
-                            return new SourceSelection[0];
+                            return _NoSources;
 
                         // Load the map
                         var groupInformation = groupReader.Result;
                         if (groupInformation == null)
-                            return new SourceSelection[0];
+                            return _NoSources;
 
                         // Use profile to map to full source information
                         return
@@ -96,13 +104,12 @@ namespace JMS.TV.Core
             /// <returns>Eine neue passende Hintergrundaufgabe.</returns>
             public CancellableTask<SourceInformation> GetSourceInformationAsync( SourceSelection source )
             {
-                // Map to indicated device
+                // Make sure this device can map the source
                 var localSource = m_profile.FindSource( source.Source ).FirstOrDefault();
                 if (localSource == null)
                     throw new ArgumentException( "bad source", "source" );
-
-                // Start task
-                return SourceInformationReader.GetSourceInformationAsync( localSource );
+                else
+                    return SourceInformationReader.GetSourceInformationAsync( localSource );
             }
 
             /// <summary>

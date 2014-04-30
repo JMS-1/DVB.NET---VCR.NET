@@ -40,28 +40,18 @@ namespace JMS.TV.Core.UnitTests
             }
 
             /// <summary>
-            /// Simuliert den ersten Zugriff auf das Gerät.
-            /// </summary>
-            void IDevice.Allocate()
-            {
-                Assert.IsNull( m_currentSourceGroup, "already allocated" );
-
-                m_currentSourceGroup = new HashSet<SourceSelection>();
-            }
-
-            /// <summary>
             /// Aktiviert den Empfang einer Quellgruppe.
             /// </summary>
             /// <param name="source">Eine Quelle der Gruppe.</param>
             /// <returns>Die Hintergrundaufgabe zur Aktivierung.</returns>
             CancellableTask<SourceSelection[]> IDevice.Activate( SourceSelection source )
             {
-                Assert.IsNotNull( m_currentSourceGroup, "not allocated" );
-
                 // Find the source map
                 var group = m_provider.AllAvailableSources.SingleOrDefault( g => g.Contains( source ) );
 
                 Assert.IsNotNull( group, "no such source" );
+
+                m_currentSourceGroup = new HashSet<SourceSelection>();
 
                 // Report
                 return CancellableTask<SourceSelection[]>.Run( cancel => (m_currentSourceGroup = group).ToArray() );

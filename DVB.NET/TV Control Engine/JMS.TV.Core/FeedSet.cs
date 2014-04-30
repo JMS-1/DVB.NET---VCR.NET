@@ -125,7 +125,6 @@ namespace JMS.TV.Core
                 if (!device.IsAllocated)
                 {
                     // Tune it
-                    device.EnsureDevice();
                     device.EnsureFeed( source );
 
                     // Report success
