@@ -203,9 +203,16 @@ namespace JMS.DVBVCR.RecordingService
                         if (resource == null)
                             continue;
 
-                        // Is not a regular recording
-                        if (!(schedule.Definition is IScheduleDefinition<VCRSchedule>))
+                        // Check for regular recordings - we will not report tasks
+                        var definition = schedule.Definition as IScheduleDefinition<VCRSchedule>;
+                        if (definition == null)
                             continue;
+
+                        // See if we are currently recording this thing
+                        var runningInfo = context.GetRunState( definition.UniqueIdentifier );
+                        if (runningInfo != null)
+                            if (schedule.Time.End == runningInfo.Schedule.Time.End)
+                                continue;
 
                         // See if this is one of our outstanding profiles
                         var profileName = resource.Name;
