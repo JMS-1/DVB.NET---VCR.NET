@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 
 
@@ -11,6 +12,12 @@ namespace JMS.DVBVCR.RecordingService.WebServer
     /// </summary>
     public class ServerHost : IDisposable
     {
+        /// <summary>
+        /// Der Name des Verzeichnisses mit weiteren Anwendungen, die der <i>VCR.NET Recordings Service</i>
+        /// anbieten soll.
+        /// </summary>
+        private const string ApplicationRoot = "Apps";
+
         /// <summary>
         /// Die Anwendung des <i>VCR.NET Recording Service</i> selbst.
         /// </summary>
@@ -40,6 +47,31 @@ namespace JMS.DVBVCR.RecordingService.WebServer
             protected override void RuntimeStarted( ServerRuntime runtime )
             {
                 runtime.SetServer( m_server );
+            }
+        }
+
+        /// <summary>
+        /// Eine alternative Anwendung.
+        /// </summary>
+        private class ExtensionEndPoint : ApplicationEndPoint<ServerRuntime>
+        {
+            /// <summary>
+            /// Erstellt eine Verwaltung der Anwendung.
+            /// </summary>
+            /// <param name="name">Der Name der Anwendung.</param>
+            /// <param name="path">Der relative Pfad zum Anwendungsverzeichnis.</param>
+            public ExtensionEndPoint( string name, string path )
+                : base( name, path )
+            {
+                Start();
+            }
+
+            /// <summary>
+            /// Wird aufgerufen, sobald die Laufzeitumgebung gestartet wurde.
+            /// </summary>
+            /// <param name="runtime">Die neu angelegte Laufzeitumgebung.</param>
+            protected override void RuntimeStarted( ServerRuntime runtime )
+            {
             }
         }
 
@@ -85,6 +117,12 @@ namespace JMS.DVBVCR.RecordingService.WebServer
 
             // Create
             m_endPoints.Add( new PrimaryEndPoint( m_server ) );
+
+            // Check the application directory
+            var appDir = new DirectoryInfo( Path.Combine( Tools.ApplicationDirectory.Parent.FullName, ApplicationRoot ) );
+            if (appDir.Exists)
+                foreach (var app in appDir.GetDirectories())
+                    m_endPoints.Add( new ExtensionEndPoint( app.Name, Path.Combine( ApplicationRoot, app.Name ) ) );
 
             // Report
             Tools.ExtendedLogging( "Listener is up and running" );

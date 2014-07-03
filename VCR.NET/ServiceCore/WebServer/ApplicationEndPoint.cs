@@ -129,8 +129,24 @@ namespace JMS.DVBVCR.RecordingService.WebServer
                     // Load once
                     if (m_runtime == null)
                     {
+                        // Find target
+                        var rootDir = Path.Combine( Tools.ApplicationDirectory.Parent.FullName, m_path );
+                        var binDir = Path.Combine( rootDir, "bin" );
+                        var source = new Uri( GetType().Assembly.CodeBase ).LocalPath;
+                        var target = Path.Combine( binDir, Path.GetFileName( source ) );
+
+                        // Must install server runtime to process
+                        if (!StringComparer.InvariantCultureIgnoreCase.Equals( source, target ))
+                        {
+                            // Make sure target exists
+                            Directory.CreateDirectory( binDir );
+
+                            // Install file - existing will be overwritten
+                            File.Copy( source, target, true );
+                        }
+
                         // Create
-                        m_runtime = (TRuntimeType) ApplicationHost.CreateApplicationHost( typeof( ServerRuntime ), string.Format( "/{0}", m_name ), Path.Combine( Tools.ApplicationDirectory.Parent.FullName, m_path ) );
+                        m_runtime = (TRuntimeType) ApplicationHost.CreateApplicationHost( typeof( ServerRuntime ), string.Format( "/{0}", m_name ), rootDir );
 
                         // Report
                         RuntimeStarted( m_runtime );
