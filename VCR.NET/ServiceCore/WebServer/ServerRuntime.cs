@@ -11,11 +11,62 @@ using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 namespace JMS.DVBVCR.RecordingService.WebServer
 {
     /// <summary>
+    /// Die Basisklasse für alle Anwendungen, die vom <i>VCR.NET Recording Service</i> gestartet werden.
+    /// </summary>
+    public class ApplicationRuntime : MarshalByRefObject
+    {
+        /// <summary>
+        /// Meldet die <see cref="AppDomain"/>, in der ASP.NET läuft.
+        /// </summary>
+        public AppDomain AppDomain { get { return AppDomain.CurrentDomain; } }
+
+        /// <summary>
+        /// Instanzen dieser Klasse sind nicht zeitgebunden.
+        /// </summary>
+        /// <returns>Die Antwort muss immer <i>null</i> sein.</returns>
+        public override object InitializeLifetimeService()
+        {
+            // No lease at all
+            return null;
+        }
+
+        /// <summary>
+        /// Wird periodisch aufgerufen um zu sehen, ob die Anwendung noch verfügbar ist.
+        /// </summary>
+        public void Test()
+        {
+        }
+
+        /// <summary>
+        /// Beginnt mit der Ausführung einer Anfrage.
+        /// </summary>
+        /// <param name="context">Die Anfrage.</param>
+        public void ProcessRequest( ContextAccessor context )
+        {
+            // Execute
+            HttpRuntime.ProcessRequest( new Request( context ) );
+        }
+
+        /// <summary>
+        /// Beendet die ASP.NET Laufzeitumgebung.
+        /// </summary>
+        /// <remarks>
+        /// Der Aufruf kehrt erst wieder zurück, wenn alle ausstehenden Anfragen bearbeitet
+        /// wurden. Neue Anfragen werden nicht angenommen.
+        /// </remarks>
+        public virtual void Stop()
+        {
+            // Shutdown ASP.NET properly
+            HttpRuntime.Close();
+        }
+    }
+
+    /// <summary>
     /// Eine Instanz dieser Klasse sorgt für die Bereitstellung der ASP.NET
     /// Laufzeitumgebung. Sie wird in einer eigenen <see cref="AppDomain"/>
     /// gestartet und nimmt HTTP Anfragen zur Bearbeitung entgegen.
     /// </summary>
-    public class ServerRuntime : MarshalByRefObject
+    public class ServerRuntime : ApplicationRuntime
     {
         /// <summary>
         /// Ermöglicht das dynamische Laden der DVB.NET Bibliotheken.
@@ -42,7 +93,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// <summary>
         /// 
         /// </summary>
-        private static VCRServer m_Server = null;
+        private static VCRServer _VCRServer = null;
 
         /// <summary>
         /// Erzeugt eine ASP.NET Laufzeitumgebung.
@@ -52,38 +103,6 @@ namespace JMS.DVBVCR.RecordingService.WebServer
             // Check for active debugger
             Tools.EnableTracing = Debugger.IsAttached;
             Tools.DomainName = "Virtual Directory";
-
-            // Install watch-dog
-            AppDomain.CurrentDomain.DomainUnload += WatchDog;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private static void WatchDog( object sender, EventArgs e )
-        {
-        }
-
-        /// <summary>
-        /// Instanzen dieser Klasse sind nicht zeitgebunden.
-        /// </summary>
-        /// <returns>Die Antwort muss immer <i>null</i> sein.</returns>
-        public override object InitializeLifetimeService()
-        {
-            // No lease at all
-            return null;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="context"></param>
-        public void ProcessRequest( ContextAccessor context )
-        {
-            // Execute
-            HttpRuntime.ProcessRequest( new Request( context ) );
         }
 
         /// <summary>
@@ -97,14 +116,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
             VCRConfiguration.Register( server.Configuration );
 
             // Add to permanent cache
-            m_Server = server;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public void Test()
-        {
+            _VCRServer = server;
         }
 
         /// <summary>
@@ -114,19 +126,14 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// Der Aufruf kehrt erst wieder zurück, wenn alle ausstehenden Anfragen bearbeitet
         /// wurden. Neue Anfragen werden nicht angenommen.
         /// </remarks>
-        public void Stop()
+        public override void Stop()
         {
             // Reset
-            m_Server = null;
+            _VCRServer = null;
 
-            // Shutdown ASP.NET properly
-            HttpRuntime.Close();
+            // Forward
+            base.Stop();
         }
-
-        /// <summary>
-        /// Meldet die <see cref="AppDomain"/>, in der ASP.NET läuft.
-        /// </summary>
-        public AppDomain AppDomain { get { return AppDomain.CurrentDomain; } }
 
         /// <summary>
         /// Referenz auf die <see cref="AppDomain"/> des Dienstes melden.
@@ -139,7 +146,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
                 TestWebAccess();
 
                 // Report
-                return m_Server;
+                return _VCRServer;
             }
         }
 
@@ -389,7 +396,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
             else
             {
                 // Check for new tasks
-                m_Server.BeginNewPlan();
+                _VCRServer.BeginNewPlan();
 
                 // Finally back to the administration page
                 return false;

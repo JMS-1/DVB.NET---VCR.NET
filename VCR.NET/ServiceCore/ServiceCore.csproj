@@ -215,6 +215,7 @@
     </Compile>
     <Compile Include="SerializationTools.cs" />
     <Compile Include="SettingNames.cs" />
+    <Compile Include="WebServer\ApplicationEndPoint.cs" />
     <Compile Include="WebServer\UserProfileManager.cs" />
     <Compile Include="WebServer\StarterModule.cs" />
     <Compile Include="VCRServer\VCRServer_Recording.cs" />

@@ -51,7 +51,7 @@ namespace JMS.DVBVCR.RecordingService
                 try
                 {
                     // Clear
-                    var target = Path.Combine( ServerHost.BinariesDirectory.FullName, "JMS.DVB.SourceManagement.dll" );
+                    var target = Path.Combine( Path.Combine( Tools.ApplicationDirectory.Parent.FullName, "bin" ), "JMS.DVB.SourceManagement.dll" );
                     if (File.Exists( target ))
                         File.Delete( target );
                 }
