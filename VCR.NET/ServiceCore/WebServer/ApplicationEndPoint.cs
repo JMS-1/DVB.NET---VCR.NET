@@ -222,7 +222,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
                     if (context != null)
                         RunTime.ProcessRequest( new ContextAccessor( context ) );
                 }
-                finally
+                catch (Exception)
                 {
                     // Be safe
                     try

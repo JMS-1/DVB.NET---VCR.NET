@@ -58,110 +58,47 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// <summary>
         /// 
         /// </summary>
-        public Stream OutputStream
-        {
-            get
-            {
-                // Report
-                return Context.Response.OutputStream;
-            }
-        }
+        public Stream OutputStream { get { return Context.Response.OutputStream; } }
 
         /// <summary>
         /// 
         /// </summary>
-        public Stream InputStream
-        {
-            get
-            {
-                // Report
-                return Context.Request.InputStream;
-            }
-        }
+        public Stream InputStream { get { return Context.Request.InputStream; } }
 
         /// <summary>
         /// 
         /// </summary>
-        public string HttpMethod
-        {
-            get
-            {
-                // Report
-                return Context.Request.HttpMethod;
-            }
-        }
+        public string HttpMethod { get { return Context.Request.HttpMethod; } }
 
         /// <summary>
         /// 
         /// </summary>
-        public string RawUrl
-        {
-            get
-            {
-                // Report
-                return Context.Request.RawUrl;
-            }
-        }
+        public string RawUrl { get { return Context.Request.RawUrl; } }
 
         /// <summary>
         /// 
         /// </summary>
-        public string UserAgent
-        {
-            get
-            {
-                // Report
-                return Context.Request.UserAgent;
-            }
-        }
+        public string UserAgent { get { return Context.Request.UserAgent; } }
 
         /// <summary>
         /// 
         /// </summary>
-        public Version ProtocolVersion
-        {
-            get
-            {
-                // Report
-                return Context.Request.ProtocolVersion;
-            }
-        }
+        public Version ProtocolVersion { get { return Context.Request.ProtocolVersion; } }
 
         /// <summary>
         /// 
         /// </summary>
-        public IPEndPoint LocalEndPoint
-        {
-            get
-            {
-                // Report
-                return Context.Request.LocalEndPoint;
-            }
-        }
+        public IPEndPoint LocalEndPoint { get { return Context.Request.LocalEndPoint; } }
 
         /// <summary>
         /// 
         /// </summary>
-        public IPEndPoint RemoteEndPoint
-        {
-            get
-            {
-                // Report
-                return Context.Request.RemoteEndPoint;
-            }
-        }
+        public IPEndPoint RemoteEndPoint { get { return Context.Request.RemoteEndPoint; } }
 
         /// <summary>
         /// 
         /// </summary>
-        public Uri Url
-        {
-            get
-            {
-                // Report
-                return Context.Request.Url;
-            }
-        }
+        public Uri Url { get { return Context.Request.Url; } }
 
         /// <summary>
         /// 
@@ -209,14 +146,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// <summary>
         /// 
         /// </summary>
-        public bool IsSecureConnection
-        {
-            get
-            {
-                // Forward
-                return Context.Request.IsSecureConnection;
-            }
-        }
+        public bool IsSecureConnection { get { return Context.Request.IsSecureConnection; } }
 
         /// <summary>
         /// 
@@ -257,14 +187,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// <summary>
         /// 
         /// </summary>
-        public NameValueCollection RequestHeaders
-        {
-            get
-            {
-                // Report
-                return Context.Request.Headers;
-            }
-        }
+        public NameValueCollection RequestHeaders { get { return Context.Request.Headers; } }
 
         /// <summary>
         /// 
@@ -344,6 +267,16 @@ namespace JMS.DVBVCR.RecordingService.WebServer
             // Get rid of tokens
             using (m_userHandle)
                 m_userHandle = null;
+
+            // Terminate response
+            try
+            {
+                Context.Response.Close();
+            }
+            catch (Exception e)
+            {
+                Tools.LogException( "Context.End", e );
+            }
         }
 
         /// <summary>
