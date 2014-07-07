@@ -392,17 +392,11 @@ namespace JMS.DVB.CardServer
 
             // Create the thread
             m_Thread = new Thread( WorkerThread ) { Name = "DVB.NET Card Server Worker Thread", Priority = ThreadPriority.AboveNormal };
-
-            // Configure it
             m_Thread.SetApartmentState( ApartmentState.STA );
-
-            // Start it
             m_Thread.Start( reset );
 
             // Create the idle thread
             m_IdleThread = new Thread( Idle ) { Name = "DVB.NET Card Server Idle Thread" };
-
-            // Start it 
             m_IdleThread.Start();
         }
 
@@ -924,28 +918,13 @@ namespace JMS.DVB.CardServer
             m_Trigger.Set();
 
             // Stop the threads
-            if (m_IdleThread != null)
-                try
-                {
-                    // Wait for thread to complete
-                    m_IdleThread.Join();
-                }
-                finally
-                {
-                    // Forget
-                    m_IdleThread = null;
-                }
-            if (m_Thread != null)
-                try
-                {
-                    // Wait for thread to finish current work
-                    m_Thread.Join();
-                }
-                finally
-                {
-                    // Forget
-                    m_Thread = null;
-                }
+            var idleThread = Interlocked.Exchange( ref m_IdleThread, null );
+            if (idleThread != null)
+                idleThread.Join();
+
+            var thread = Interlocked.Exchange( ref m_Thread, null );
+            if (thread != null)
+                thread.Join();
 
             // Forward
             base.OnDispose();
