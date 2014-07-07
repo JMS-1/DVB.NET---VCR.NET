@@ -4,27 +4,26 @@
 // Die Rundung des Aufzeichnungsbereichs.
 @guidePlanBorderRadius: 4px;
 
+// Die Höhe der Überlappanzeige.
+@guideInnerHeigth: 1em;
+
 // Markierung fehlerhafter Eingaben.
-.invalid
-{
+.invalid {
     border: 2px solid red;
 }
 
 // Besondere Behandlung von Umschaltern für FireFox.
-.validatingCheckbox
-{
+.validatingCheckbox {
     padding-top: 4px;
 }
 
 // Die durchgängig verwendete Technik zum Ausblenden von visuellen Elementen.
-.invisible
-{
+.invisible {
     display: none;
 }
 
 // Markierung kritischer Eingaben.
-.warning
-{
+.warning {
     font-weight: bold;
     color: red;
 }
@@ -32,20 +31,23 @@
 // Für die eingebettet Hilfe wird ein leicht veränderter Zeichensatz verwendet, um die
 // Hilfetexte von der eigentlichen Anwendung abzuheben. Ebenso sind Hilfetext leicht
 // innerhalb der jeweiligen Anwendungsseite eingerückt.
-.inlineHelp
-{
+.inlineHelp {
     font-size: 16px !important;
     margin: 10px 10px 10px 10px !important;
     width: 80% !important;
 
-    .ui-accordion-header
-    {
+    .ui-accordion-header {
         font-size: 12px;
     }
 }
 
 // Der Bereich, der in der Programmzeitschrift den Überlapp mit der Aufzeichnung anzeigt.
 .guideOverlap {
+    position: absolute;
+    top: 0.2 * @guideInnerHeigth;
+    height: @guideInnerHeigth;
+    width: 100%;
+
     div:first-child {
         border-bottom-left-radius: @guidePlanBorderRadius;
         border-top-left-radius: @guidePlanBorderRadius;
@@ -62,10 +64,28 @@
         box-shadow: 1px 1px 1px @guidePlanBorderColor;
         border-color: @guidePlanBorderColor;
         border-width: 1px 0px 1px;
+        height: @guideInnerHeigth;
         border-style: solid;
+        position: relative;
         display: inline;
         float: left;
     }
+}
+
+// Die Markierung der aktuellen Zeit.
+.guideCurrentTime {
+    position: absolute;
+    height: 1.4 * @guideInnerHeigth;
+    width: 1px;
+    border: 1px solid @guidePlanBorderColor;
+    border-radius: 2px;
+    background-color: white;
+}
+
+// Erlaubt uns das Einblenden der aktuellen Uhrzeit über die Überlappanzeige.
+.guideOverlapWithTime {
+    height: 1.4 * @guideInnerHeigth;
+    position: relative;
 }
 
 // Der Anfang der Überlappungsanzeige.
@@ -92,4 +112,3 @@
 .planOutsideGuide {
     background-color: #eeeeee;
 }
-

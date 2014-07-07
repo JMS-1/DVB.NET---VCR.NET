@@ -70,6 +70,8 @@ var JMSLib;
             if (epgEnd > epgStart) {
                 // Anzeigelement ermitteln
                 var container = html.find('.guideOverlapContainer');
+                var ruler = container.find('.guideOverlap');
+                var current = container.find('.guideCurrentTime');
 
                 // Grenzen korrigieren
                 if (epgStart < recStart)
@@ -87,7 +89,7 @@ var JMSLib;
                 var right = Math.max(0, 90.0 - middle - left);
 
                 // Elemente suchen
-                var all = container.find('div div');
+                var all = ruler.find('div');
                 var preTime = $(all[0]);
                 var recTime = $(all[1]);
                 var postTime = $(all[2]);
@@ -104,6 +106,19 @@ var JMSLib;
                     preTime.width(left + '%');
                 else
                     preTime.remove();
+
+                // Schauen wir mal nach, wie spät es ist
+                var now = $.now();
+                if (now >= recStart)
+                    if (now < recEnd) {
+                        // Die relative Position der aktuellen Uhrzeit
+                        var shift = 90.0 * (now - recStart) / fullTime;
+
+                        // Und ein bisschen durch die Gegend schieben
+                        current.css({ left: shift + '%' });
+
+                        current.removeClass(CSSClass.invisible);
+                    }
 
                 // Sichtbar schalten
                 container.removeClass(CSSClass.invisible);
