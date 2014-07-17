@@ -49,10 +49,6 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// <param name="context">Die aktuelle ASP.NET Anwendung.</param>
         public void Init( HttpApplication context )
         {
-            // Only serve the main application
-            if (!StringComparer.InvariantCultureIgnoreCase.Equals( HttpRuntime.AppDomainAppVirtualPath, "/VCR.NET" ))
-                return;
-
             // Register
             context.BeginRequest += OnBeginRequest;
             context.EndRequest += OnEndRequest;
@@ -73,8 +69,9 @@ namespace JMS.DVBVCR.RecordingService.WebServer
                 // Not again
                 application[_Key] = true;
 
-                // Initialize once
-                SetupWebApplication();
+                // Only serve the main application
+                if (StringComparer.InvariantCultureIgnoreCase.Equals( HttpRuntime.AppDomainAppVirtualPath, "/VCR.NET" ))
+                    SetupWebApplication();
             }
             finally
             {
