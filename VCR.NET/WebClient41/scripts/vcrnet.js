@@ -2320,10 +2320,10 @@ var planPage = (function (_super) {
             return false;
 
         if (item.station == 'EPG')
-            return this.ckGuide.is(':checked');
+            return this.ckTasks.is(':checked');
 
         if (item.station == 'PSI')
-            return this.ckScan.is(':checked');
+            return this.ckTasks.is(':checked');
 
         return true;
     };
@@ -2456,10 +2456,7 @@ var planPage = (function (_super) {
         $('.refreshLink').click(function () {
             return _this.reload(null);
         });
-        this.ckGuide.click(function () {
-            return _this.refresh();
-        });
-        this.ckScan.click(function () {
+        this.ckTasks.click(function () {
             return _this.refresh();
         });
 
@@ -2476,10 +2473,8 @@ var planPage = (function (_super) {
         this.startChooser = $('#startChoice');
 
         // Darstellung der Auswahl konfigurieren
-        this.ckGuide = $('#showGuide');
-        this.ckGuide.button();
-        this.ckScan = $('#showScan');
-        this.ckScan.button();
+        this.ckTasks = $('#showTasks');
+        this.ckTasks.button();
 
         // Vorlagen vorbereiten
         this.detailsManager = new JMSLib.DetailManager(2, 'planRowDetails', 'planRowException');

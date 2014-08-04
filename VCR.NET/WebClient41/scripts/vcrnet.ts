@@ -2851,10 +2851,7 @@ class planPage extends Page implements IPage {
     private startChooser: JQuery;
 
     // Die Option zur Anzeige der Programmzeitschrift
-    private ckGuide: JQuery;
-
-    // Die Option zur Anzeige des Sendersuchlaufs
-    private ckScan: JQuery;
+    private ckTasks: JQuery;
 
     // Aktualisiert die Anzeige
     private refresh(): void {
@@ -2903,10 +2900,10 @@ class planPage extends Page implements IPage {
             return false;
 
         if (item.station == 'EPG')
-            return this.ckGuide.is(':checked');
+            return this.ckTasks.is(':checked');
 
         if (item.station == 'PSI')
-            return this.ckScan.is(':checked');
+            return this.ckTasks.is(':checked');
 
         return true;
     }
@@ -3024,8 +3021,7 @@ class planPage extends Page implements IPage {
 
         // Aktualisierung aufsetzen
         $('.refreshLink').click(() => this.reload(null));
-        this.ckGuide.click(() => this.refresh());
-        this.ckScan.click(() => this.refresh());
+        this.ckTasks.click(() => this.refresh());
 
         this.title = 'Geplante Aufzeichnungen für ' + VCRServer.UserProfile.global.planDaysToShow + ' Tage';
     }
@@ -3039,10 +3035,8 @@ class planPage extends Page implements IPage {
         this.startChooser = $('#startChoice');
 
         // Darstellung der Auswahl konfigurieren
-        this.ckGuide = $('#showGuide');
-        this.ckGuide.button();
-        this.ckScan = $('#showScan');
-        this.ckScan.button();
+        this.ckTasks = $('#showTasks');
+        this.ckTasks.button();
 
         // Vorlagen vorbereiten
         this.detailsManager = new JMSLib.DetailManager(2, 'planRowDetails', 'planRowException');
