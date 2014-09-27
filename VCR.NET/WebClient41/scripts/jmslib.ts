@@ -50,7 +50,7 @@ module JMSLib {
             onError(info.ExceptionMessage);
         }
     }
-
+    
     // Bereitet die Anzeige der Hilfe vor
     export function activateHelp(): void {
         $('.' + CSSClass.inlineHelp).accordion({

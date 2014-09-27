@@ -16,7 +16,7 @@ class CSSClass {
 
     // Der Inhalt einer Hilfeseite
     static faq = 'faqContent';
-
+ 
     // Der Name eines Eingabefeldes
     static editLabel = 'editLabel';
 

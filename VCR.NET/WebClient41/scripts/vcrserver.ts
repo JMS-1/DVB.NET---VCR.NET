@@ -14,7 +14,7 @@ module VCRServer {
     var protocolEnd = serverRoot.indexOf('://');
     var deviceUrl = 'dvbnet' + serverRoot.substr(protocolEnd) + '/';
     var playUrl = deviceUrl + 'play=';
-
+    
     // Der Präfix für alle REST Zugiffe
     var restRoot = serverRoot + '/vcr.net/';
 
