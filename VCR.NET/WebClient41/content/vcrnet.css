@@ -105,6 +105,9 @@ body a[href]:not(.ui-button):hover {
 .vccGreen {
   color: #009900;
 }
+.filePatternTable {
+  font-size: 0.9em;
+}
 .filePatternTable thead {
   font-weight: bold;
 }
