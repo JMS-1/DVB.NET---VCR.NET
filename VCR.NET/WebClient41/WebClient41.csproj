@@ -53,11 +53,6 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft ASP.NET\ASP.NET Web Stack 5\Packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Management" />
     <Reference Include="System.Net.Http">
@@ -82,19 +77,21 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="content\images\ajax-loader.gif" />
-    <Content Include="content\images\ajax-loader.png" />
-    <Content Include="content\images\icons-18-black.png" />
-    <Content Include="content\images\icons-18-white.png" />
-    <Content Include="content\images\icons-36-black.png" />
-    <Content Include="content\images\icons-36-white.png" />
     <Content Include="content\jmslib.css">
       <DependentUpon>jmslib.less</DependentUpon>
     </Content>
     <Content Include="content\jmslib.min.css">
       <DependentUpon>jmslib.less</DependentUpon>
     </Content>
-    <Content Include="content\themes\base\images\animated-overlay.gif" />
+    <Content Include="content\themes\base\accordion.css" />
+    <Content Include="content\themes\base\all.css" />
+    <Content Include="content\themes\base\autocomplete.css" />
+    <Content Include="content\themes\base\base.css" />
+    <Content Include="content\themes\base\button.css" />
+    <Content Include="content\themes\base\core.css" />
+    <Content Include="content\themes\base\datepicker.css" />
+    <Content Include="content\themes\base\dialog.css" />
+    <Content Include="content\themes\base\draggable.css" />
     <Content Include="content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -108,7 +105,17 @@
     <Content Include="content\themes\base\images\ui-icons_454545_256x240.png" />
     <Content Include="content\themes\base\images\ui-icons_888888_256x240.png" />
     <Content Include="content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="content\themes\base\jquery-ui.css" />
+    <Content Include="content\themes\base\menu.css" />
+    <Content Include="content\themes\base\progressbar.css" />
+    <Content Include="content\themes\base\resizable.css" />
+    <Content Include="content\themes\base\selectable.css" />
+    <Content Include="content\themes\base\selectmenu.css" />
+    <Content Include="content\themes\base\slider.css" />
+    <Content Include="content\themes\base\sortable.css" />
+    <Content Include="content\themes\base\spinner.css" />
+    <Content Include="content\themes\base\tabs.css" />
+    <Content Include="content\themes\base\theme.css" />
+    <Content Include="content\themes\base\tooltip.css" />
     <Content Include="FAQ\customschedule.html" />
     <Content Include="FAQ\archive.html" />
     <Content Include="FAQ\configuration.html" />
@@ -164,10 +171,12 @@
     <Content Include="content\vcrnet.css.map">
       <DependentUpon>vcrnet.css</DependentUpon>
     </Content>
-    <None Include="scripts\typings\jqueryui\jqueryui.d.ts" />
-    <None Include="scripts\typings\jquery\jquery.d.ts" />
-    <Content Include="scripts\jquery-2.1.0.min.js" />
-    <Content Include="scripts\jquery-ui-1.10.4.min.js" />
+    <Content Include="packages.config" />
+    <None Include="scripts\jquery-2.1.1.intellisense.js" />
+    <Content Include="scripts\jquery-2.1.1.js" />
+    <Content Include="scripts\jquery-2.1.1.min.js" />
+    <Content Include="scripts\jquery-ui-1.11.1.js" />
+    <Content Include="scripts\jquery-ui.min-1.11.1.js" />
     <Content Include="scripts\vcrnet.js">
       <DependentUpon>vcrnet.ts</DependentUpon>
     </Content>
@@ -223,6 +232,8 @@
     <Content Include="ui\templates\sourceSelection.html" />
     <Content Include="ui\templates\planRow.html" />
     <Content Include="ui\templates\planRowException.html" />
+    <TypeScriptCompile Include="scripts\typings\jqueryui\jqueryui.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="scripts\vcrnet.ts" />
     <Content Include="content\vcrnet.css">
       <DependentUpon>vcrnet.less</DependentUpon>
@@ -241,6 +252,7 @@
     <Content Include="scripts\vcrserver.js">
       <DependentUpon>vcrserver.ts</DependentUpon>
     </Content>
+    <Content Include="scripts\jquery-2.1.1.min.map" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
