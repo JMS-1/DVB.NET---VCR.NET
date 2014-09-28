@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
-  <Fragment>
-    
+  
+  <?define ServiceName = VCR.NET Service ?>
+
+  <Fragment>    
     <ComponentGroup Id="Service">
 
       <Component Id="WebConfiguration" Directory="INSTALLFOLDER">
@@ -21,7 +23,7 @@
       
       <!-- Installation des VCR.NET Recording Service Windows Dienstes. -->
       <Component Id="ServiceInstallOnDemandStart" Directory="BIN" Guid="eb3e209e-2c57-4c46-94da-ca90a399396c">
-        <Condition><![CDATA[NOT (AUTOSTARTMODE = "1")]]></Condition>
+        <Condition><![CDATA[NOT (AUTOSTARTSERVICE = "1")]]></Condition>
         
         <!-- Installation der Dienstdatei. -->
         <File Id="OnDemandServiceExecutable" Source="$(var.Service.TargetPath)" KeyPath="yes" />
@@ -32,7 +34,7 @@
             Description="!(loc.SERVICEDESCRIPTION)"
             DisplayName="!(loc.SERVICENAME)"
             Id="SERVICEINSTALLDEMANDSTART"
-            Name="VCR.NET Service"
+            Name="$(var.ServiceName)"
             Account="LocalSystem"
             ErrorControl="normal"
             Type="ownProcess"
@@ -41,13 +43,13 @@
           <ServiceDependency Id="HTTP"/>
         </ServiceInstall>
 
-        <ServiceControl Id="SERVICECONTROLDEMANDSTART" Start="install" Stop="both" Remove="uninstall" Wait="yes" Name="VCR.NET Service" />
+        <ServiceControl Id="SERVICECONTROLDEMANDSTART" Start="install" Stop="both" Remove="uninstall" Wait="yes" Name="$(var.ServiceName)" />
         
       </Component>
 
       <!-- Installation des VCR.NET Recording Service Windows Dienstes. -->
       <Component Id="ServiceInstallAutoStart" Directory="BIN" Guid="efb08fe3-2077-4d18-913b-796228d79c9f">
-        <Condition><![CDATA[AUTOSTARTMODE = "1"]]></Condition>
+        <Condition><![CDATA[AUTOSTARTSERVICE = "1"]]></Condition>
 
         <!-- Installation der Dienstdatei. -->
         <File Id="AutoStartServiceExecutable" Source="$(var.Service.TargetPath)" KeyPath="yes" />
@@ -58,7 +60,7 @@
             Description="!(loc.SERVICEDESCRIPTION)"
             DisplayName="!(loc.SERVICENAME)"
             Id="SERVICEINSTALLAUTOSTART"
-            Name="VCR.NET Service"
+            Name="$(var.ServiceName)"
             Account="LocalSystem"
             ErrorControl="normal"
             Type="ownProcess"
@@ -67,7 +69,7 @@
           <ServiceDependency Id="HTTP"/>
         </ServiceInstall>
 
-        <ServiceControl Id="SERVICECONTROLAUTOSTART" Start="install" Stop="both" Remove="uninstall" Wait="yes" Name="VCR.NET Service" />
+        <ServiceControl Id="SERVICECONTROLAUTOSTART" Start="install" Stop="both" Remove="uninstall" Wait="yes" Name="$(var.ServiceName)" />
 
       </Component>
 
