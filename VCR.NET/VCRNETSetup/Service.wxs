@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
   <Fragment>
     
     <ComponentGroup Id="Service">
 
       <Component Id="WebConfiguration" Directory="INSTALLFOLDER">
-        <File Source="$(var.WebClient41.ProjectDir)Web.config" />
+        <File Id="WebConfig" Source="$(var.WebClient41.ProjectDir)Web.config" />
+
+        <util:XmlFile 
+            Id="AspNetTempDir"
+            File="[#WebConfig]"
+            SelectionLanguage="XPath"  
+            ElementPath="configuration/system.web/compilation" 
+            Name="tempDirectory" 
+            Action="setValue" 
+            Value="[INSTALLFOLDER]AspNetTemp" 
+            Permanent="yes" />
       </Component>
       
       <!-- Installation des VCR.NET Recording Service Windows Dienstes. -->

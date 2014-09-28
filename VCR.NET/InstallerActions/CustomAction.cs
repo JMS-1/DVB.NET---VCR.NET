@@ -106,30 +106,6 @@ namespace InstallerActions
             // Get the root folder of the installation
             var root = new DirectoryInfo( session.CustomActionData["ROOTDIR"] );
 
-            // Get the path to the web.config
-            var webConfig = new FileInfo( Path.Combine( root.FullName, "web.config" ) );
-            if (webConfig.Exists)
-            {
-                // Create wrapper
-                var config = new XmlDocument();
-
-                // Load it
-                config.Load( webConfig.FullName );
-
-                // Get the section
-                var compiler = (XmlElement) config.SelectSingleNode( "configuration/system.web/compilation" );
-
-                // Update
-                if (compiler != null)
-                {
-                    // Set the temporary directory
-                    compiler.SetAttribute( "tempDirectory", Path.Combine( webConfig.DirectoryName, "AspNetTemp" ) );
-
-                    // Store
-                    config.Save( webConfig.FullName );
-                }
-            }
-
             // Path to service
             var servicePath = Path.Combine( root.FullName, @"bin\JMS.DVBVCR.RecordingService.exe" );
 

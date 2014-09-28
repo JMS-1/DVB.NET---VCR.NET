@@ -22,7 +22,7 @@
     <CompilerAdditionalOptions>_Extensions.wxs</CompilerAdditionalOptions>
     <LinkerAdditionalOptions>obj\$(Configuration)\_Extensions.wixobj</LinkerAdditionalOptions>
     <SuppressIces>ICE57;ICE43</SuppressIces>
-    <WixVariables>SETUPVERSION=4.3.18</WixVariables>
+    <WixVariables>SETUPVERSION=4.3.19</WixVariables>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>..\..\msi\</OutputPath>
@@ -33,7 +33,7 @@
     <SuppressIces>ICE57;ICE43</SuppressIces>
     <CompilerAdditionalOptions>_Extensions.wxs</CompilerAdditionalOptions>
     <LinkerAdditionalOptions>obj\$(Configuration)\_Extensions.wixobj</LinkerAdditionalOptions>
-    <WixVariables>SETUPVERSION=4.3.18</WixVariables>
+    <WixVariables>SETUPVERSION=4.3.19</WixVariables>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AspNetWebApi.wxs" />
@@ -52,6 +52,10 @@
     <EmbeddedResource Include="Deutsch.wxl" />
   </ItemGroup>
   <ItemGroup>
+    <WixExtension Include="WixUtilExtension">
+      <HintPath>$(WixExtDir)\WixUtilExtension.dll</HintPath>
+      <Name>WixUtilExtension</Name>
+    </WixExtension>
     <WixExtension Include="WixUIExtension">
       <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
       <Name>WixUIExtension</Name>
