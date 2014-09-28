@@ -120,19 +120,14 @@
 
     <!-- Aufruf des Installationscodes beschreiben. -->
     <CustomActionRef Id="MIGRATEDATA" />
-    <CustomActionRef Id="ASADMINDATA" />
     <CustomActionRef Id="STARTVCC" />
-    <CustomActionRef Id="ASADMIN" />
     <CustomActionRef Id="MIGRATE" />
 
 
     <!-- Installationscode in die Installationssequenz einordnen. -->
     <InstallExecuteSequence>
       <Custom Action="MIGRATEDATA" Before="MIGRATE" />
-      <Custom Action="ASADMINDATA" Before="ASADMIN" />
-
       <Custom Action="MIGRATE" Before="StartServices">REINSTALL OR NOT Installed</Custom>
-      <Custom Action="ASADMIN" Before="InstallFinalize">REINSTALL OR NOT Installed</Custom>
 
       <StartServices>
         <![CDATA[VersionNT AND (REINSTALL OR NOT Installed) AND (STARTSERVICE = "1")]]>

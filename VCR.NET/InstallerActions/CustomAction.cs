@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Management;
 using System.Xml;
 using JMS.DVB;
 using JMS.DVBVCR.InstallerActions;
@@ -47,36 +46,6 @@ namespace InstallerActions
                 // Construct
                 return ConfigRoot + @"\Parameters";
             }
-        }
-
-        /// <summary>
-        /// Wird bei der Installation oder Reperatur aufgerufen.
-        /// </summary>
-        /// <param name="session">Der laufende Installationsvorgang.</param>
-        /// <returns>Das Ergebnis der Erweiterung</returns>
-        [CustomAction]
-        public static ActionResult AsAdmin( Session session )
-        {
-            // Configuring the service is a bit optional so ignore any error
-            try
-            {
-                // Now we can prepare the service
-                using (var wmi = new ManagementObject( "Win32_Service.Name='VCR.NET Service'" ))
-                {
-                    // Start type
-                    var autoStartMode = "1".Equals( session.CustomActionData["AUTOSTARTMODE"] );
-                    var autoStartModeName = autoStartMode ? "Automatic" : "Manual";
-
-                    // Change start type
-                    wmi.InvokeMethod( "ChangeStartMode", new[] { autoStartModeName } );
-                }
-            }
-            catch (Exception)
-            {
-            }
-
-            // Did it
-            return ActionResult.Success;
         }
 
         /// <summary>

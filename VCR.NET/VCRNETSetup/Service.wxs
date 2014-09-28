@@ -20,16 +20,18 @@
       </Component>
       
       <!-- Installation des VCR.NET Recording Service Windows Dienstes. -->
-      <Component Id="ServiceInstall" Directory="BIN">
-
+      <Component Id="ServiceInstallOnDemandStart" Directory="BIN" Guid="eb3e209e-2c57-4c46-94da-ca90a399396c">
+        <Condition><![CDATA[NOT (AUTOSTARTMODE = "1")]]></Condition>
+        
         <!-- Installation der Dienstdatei. -->
-        <File Source="$(var.Service.TargetPath)" KeyPath="yes" />
-        <File Source="$(var.Service.TargetPath).config" />
+        <File Id="OnDemandServiceExecutable" Source="$(var.Service.TargetPath)" KeyPath="yes" />
+        <File Id="OnDemandServiceConfiguration" Source="$(var.Service.TargetPath).config" />
 
         <!-- Installation des Dienstes. -->
         <ServiceInstall
             Description="!(loc.SERVICEDESCRIPTION)"
             DisplayName="!(loc.SERVICENAME)"
+            Id="SERVICEINSTALLDEMANDSTART"
             Name="VCR.NET Service"
             Account="LocalSystem"
             ErrorControl="normal"
@@ -39,14 +41,36 @@
           <ServiceDependency Id="HTTP"/>
         </ServiceInstall>
 
-        <!-- Wird nur gezielt aktiviert -->
-        <ServiceControl Id="SERVICESTART" Start="install" Wait="yes" Name="VCR.NET Service" />
-
-        <!-- De facto die Deinstallation des Dienstes. -->
-        <ServiceControl Id="SERVICEUNINSTALL" Stop="both" Remove="uninstall" Wait="yes" Name="VCR.NET Service" />
+        <ServiceControl Id="SERVICECONTROLDEMANDSTART" Start="install" Stop="both" Remove="uninstall" Wait="yes" Name="VCR.NET Service" />
         
       </Component>
-      
+
+      <!-- Installation des VCR.NET Recording Service Windows Dienstes. -->
+      <Component Id="ServiceInstallAutoStart" Directory="BIN" Guid="efb08fe3-2077-4d18-913b-796228d79c9f">
+        <Condition><![CDATA[AUTOSTARTMODE = "1"]]></Condition>
+
+        <!-- Installation der Dienstdatei. -->
+        <File Id="AutoStartServiceExecutable" Source="$(var.Service.TargetPath)" KeyPath="yes" />
+        <File Id="AutoStartServiceConfiguration" Source="$(var.Service.TargetPath).config" />
+
+        <!-- Installation des Dienstes. -->
+        <ServiceInstall
+            Description="!(loc.SERVICEDESCRIPTION)"
+            DisplayName="!(loc.SERVICENAME)"
+            Id="SERVICEINSTALLAUTOSTART"
+            Name="VCR.NET Service"
+            Account="LocalSystem"
+            ErrorControl="normal"
+            Type="ownProcess"
+            Start="auto"
+            Vital="yes">
+          <ServiceDependency Id="HTTP"/>
+        </ServiceInstall>
+
+        <ServiceControl Id="SERVICECONTROLAUTOSTART" Start="install" Stop="both" Remove="uninstall" Wait="yes" Name="VCR.NET Service" />
+
+      </Component>
+
     </ComponentGroup>
     
   </Fragment>
