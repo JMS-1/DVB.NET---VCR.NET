@@ -71,7 +71,7 @@
 
     <!-- Die Kerninstallation, die alles zum Betrieb des VCR.NET Recording Service enthält. -->
     <Feature Id="ProductFeature" Title="!(loc.FEATUREBINARIES)" Level="1" Absent="disallow" TypicalDefault="install" AllowAdvertise="no">
-      
+
       <ComponentGroupRef Id="FTPWrap.Binaries" />
       <ComponentGroupRef Id="EasyCut.Binaries" />
       <ComponentGroupRef Id="ControlCenter.Binaries" />
@@ -95,7 +95,7 @@
 
     <!-- Die Installation der Quelltexte, die völlig optional ist. -->
     <Feature Id="SourceFeature" Title="!(loc.FEATURESOURCE)" Level="2" Absent="allow" AllowAdvertise="no">
-      
+
       <ComponentGroupRef Id="FTPWrap.Sources" />
       <ComponentGroupRef Id="FTPWrap.Content" />
       <ComponentGroupRef Id="EasyCut.Sources" />
@@ -119,14 +119,21 @@
     <UIRef Id="VCRNETWizard" />
 
     <!-- Aufruf des Installationscodes beschreiben. -->
+    <CustomActionRef Id="MIGRATEDATA" />
     <CustomActionRef Id="ASADMINDATA" />
     <CustomActionRef Id="STARTVCC" />
     <CustomActionRef Id="ASADMIN" />
+    <CustomActionRef Id="MIGRATE" />
+
 
     <!-- Installationscode in die Installationssequenz einordnen. -->
     <InstallExecuteSequence>
+      <Custom Action="MIGRATEDATA" Before="MIGRATE" />
       <Custom Action="ASADMINDATA" Before="ASADMIN" />
+
+      <Custom Action="MIGRATE" Before="StartServices">REINSTALL OR NOT Installed</Custom>
       <Custom Action="ASADMIN" Before="InstallFinalize">REINSTALL OR NOT Installed</Custom>
+      
       <Custom Action="STARTVCC" Before="InstallFinalize">STARTVCC AND NOT Installed</Custom>
     </InstallExecuteSequence>
 

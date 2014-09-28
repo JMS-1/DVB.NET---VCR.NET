@@ -7,8 +7,21 @@
     <Binary Id="INSTALLERDLL" SourceFile="$(var.InstallerActions.TargetPath)" />
 
     <!-- Übertragen von Installationsparameter in die Übergabeparameter der .NET Installationserweiterung. -->
+    <CustomAction Id="MIGRATEDATA" Return="check" Property="MIGRATE" Value="ROOTDIR=[INSTALLFOLDER]" />
+
+    <!-- Übertragen von Installationsparameter in die Übergabeparameter der .NET Installationserweiterung. -->
     <CustomAction Id="ASADMINDATA" Return="check" Property="ASADMIN" Value="AUTOSTARTMODE=[AUTOSTARTSERVICE];STARTSERVICE=[STARTSERVICE];ROOTDIR=[INSTALLFOLDER]" />
     
+    <!-- Aktualiserung der Konfiguration des Dienstes gemäß dem aktuellen Stand unterstützter Parameter. -->
+    <CustomAction
+        BinaryKey="INSTALLERDLL"
+        DllEntry="MigrateConfiguration"
+        Execute="deferred"
+        Impersonate="no"
+        Return="check"
+        Id="MIGRATE"
+    />
+
     <!-- Zuerst erfolgt der Aufruf einer Erweiterung im normalen (LocalSystem) Kontext der Installation, bei dem letztlich der Dienst laufbereit gemacht wird. -->
     <CustomAction
         BinaryKey="INSTALLERDLL"
@@ -19,7 +32,7 @@
         Id="ASADMIN"
     />
     
-    <!-- Die VCR.NET Übeerwachung hingegen muss im Kontext des Anwenders gestartet werden. -->
+    <!-- Die VCR.NET Überwachung hingegen muss im Kontext des Anwenders gestartet werden. -->
     <CustomAction
         ExeCommand="[TOOLS]$(var.ControlCenter.TargetName).exe /install"
         Return="asyncNoWait"

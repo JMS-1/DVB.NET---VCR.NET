@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Management;
 using System.ServiceProcess;
+using System.Windows.Forms;
 using System.Xml;
 using JMS.DVB;
 using JMS.DVB.Provider.Legacy;
@@ -60,9 +62,6 @@ namespace InstallerActions
         [CustomAction]
         public static ActionResult AsAdmin( Session session )
         {
-            // Process configuration
-            MigrateConfiguration( session );
-
             // Configuring the service is a bit optional so ignore any error
             try
             {
@@ -99,9 +98,12 @@ namespace InstallerActions
         }
 
         /// <summary>
-        /// Übernimmt die Konfiguration der vorhergehenden Installation.
+        /// Aktualisiert die Konfiguration des Dienstes.
         /// </summary>
-        private static void MigrateConfiguration( Session session )
+        /// <param name="session">Der aktuelle Installationsstand.</param>
+        /// <returns>Das Ergebnis der Konfiguration.</returns>
+        [CustomAction]
+        public static ActionResult MigrateConfiguration( Session session )
         {
             // Get the root folder of the installation
             var root = new DirectoryInfo( session.CustomActionData["ROOTDIR"] );
@@ -250,6 +252,9 @@ namespace InstallerActions
                     if (tempConfig.Exists)
                         tempConfig.Delete();
             }
+
+            // Did it
+            return ActionResult.Success;
         }
     }
 }
