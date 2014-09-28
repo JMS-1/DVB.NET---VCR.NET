@@ -10,7 +10,7 @@
     <CustomAction Id="MIGRATEDATA" Return="check" Property="MIGRATE" Value="ROOTDIR=[INSTALLFOLDER]" />
 
     <!-- Übertragen von Installationsparameter in die Übergabeparameter der .NET Installationserweiterung. -->
-    <CustomAction Id="ASADMINDATA" Return="check" Property="ASADMIN" Value="AUTOSTARTMODE=[AUTOSTARTSERVICE];STARTSERVICE=[STARTSERVICE];ROOTDIR=[INSTALLFOLDER]" />
+    <CustomAction Id="ASADMINDATA" Return="check" Property="ASADMIN" Value="AUTOSTARTMODE=[AUTOSTARTSERVICE];ROOTDIR=[INSTALLFOLDER]" />
     
     <!-- Aktualiserung der Konfiguration des Dienstes gemäß dem aktuellen Stand unterstützter Parameter. -->
     <CustomAction

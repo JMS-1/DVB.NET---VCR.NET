@@ -39,6 +39,9 @@
           <ServiceDependency Id="HTTP"/>
         </ServiceInstall>
 
+        <!-- Wird nur gezielt aktiviert -->
+        <ServiceControl Id="SERVICESTART" Start="install" Wait="yes" Name="VCR.NET Service" />
+
         <!-- De facto die Deinstallation des Dienstes. -->
         <ServiceControl Id="SERVICEUNINSTALL" Stop="both" Remove="uninstall" Wait="yes" Name="VCR.NET Service" />
         

@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Management;
-using System.ServiceProcess;
-using System.Windows.Forms;
 using System.Xml;
 using JMS.DVB;
-using JMS.DVB.Provider.Legacy;
 using JMS.DVBVCR.InstallerActions;
 using Microsoft.Deployment.WindowsInstaller;
 using Microsoft.Win32;
@@ -74,19 +69,6 @@ namespace InstallerActions
 
                     // Change start type
                     wmi.InvokeMethod( "ChangeStartMode", new[] { autoStartModeName } );
-
-                    // Check mode
-                    var startService = "1".Equals( session.CustomActionData["STARTSERVICE"] );
-                    if (startService)
-                        using (var svc = new ServiceController( (string) wmi.GetPropertyValue( "Name" ) ))
-                            if (svc.Status != ServiceControllerStatus.Running)
-                            {
-                                // Send start command
-                                svc.Start();
-
-                                // Wait a bit
-                                svc.WaitForStatus( ServiceControllerStatus.Running, TimeSpan.FromSeconds( 10 ) );
-                            }
                 }
             }
             catch (Exception)
