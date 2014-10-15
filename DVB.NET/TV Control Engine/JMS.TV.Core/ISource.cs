@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 
 namespace JMS.TV.Core
 {
@@ -12,5 +7,9 @@ namespace JMS.TV.Core
     /// </summary>
     public interface ISource
     {
+        /// <summary>
+        /// Der eindeutige Name der Quelle.
+        /// </summary>
+        string UniqueName { get; }
     }
 }

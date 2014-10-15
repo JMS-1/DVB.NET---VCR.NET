@@ -16,5 +16,11 @@ namespace JMS.TV.Core
         /// Alle Funktionen zur Steuerung der angezeigten Quelle.
         /// </summary>
         IFrontend Frontend { get; }
+
+        /// <summary>
+        /// Alle unmittelbar nutzbaren Quellen - hierbei handelt es sich im Allgemeinen um eine Favoritenliste 
+        /// und damit einen Ausschnitt aller bekannten Quellen.
+        /// </summary>
+        IReadOnlyList<ISource> Sources { get; }
     }
 }

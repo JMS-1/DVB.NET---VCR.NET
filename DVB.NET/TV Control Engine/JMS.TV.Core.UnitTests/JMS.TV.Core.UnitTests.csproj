@@ -69,6 +69,7 @@
     <Compile Include="Mock\EngineMock.cs" />
     <Compile Include="Mock\FeedProviderMock.cs" />
     <Compile Include="Mock\FrontendMock.cs" />
+    <Compile Include="Mock\SourceMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -13,9 +13,29 @@ namespace JMS.TV.Core.UnitTests.Mock
     public class EngineMock : IEngine
     {
         /// <summary>
+        /// Alle aktuell bekannten Quellen.
+        /// </summary>
+        private static readonly ISource[] _AllSources = 
+            { 
+                SourceMock.Create("Das Erste"),
+                SourceMock.Create("ZDF"),
+                SourceMock.Create("RTL"),
+                SourceMock.Create("SAT.1"),
+                SourceMock.Create("ProSieben"),
+                SourceMock.Create("ProSieben MAXX"),
+                SourceMock.Create("RTL2"),
+                SourceMock.Create("SuperRTL"),
+            };
+
+        /// <summary>
         /// Meldet die Steuerung der aktuellen Anzeige.
         /// </summary>
         public IFrontend Frontend { get; private set; }
+
+        /// <summary>
+        /// Alle aktuell nutzbaren Quellen.
+        /// </summary>
+        public IReadOnlyList<ISource> Sources { get; private set; }
 
         /// <summary>
         /// Erzeugt eine neue Simulation.
@@ -23,6 +43,7 @@ namespace JMS.TV.Core.UnitTests.Mock
         private EngineMock()
         {
             Frontend = new FrontendMock( this );
+            Sources = _AllSources;
         }
 
         /// <summary>
