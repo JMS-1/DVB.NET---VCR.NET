@@ -8,7 +8,7 @@ using JMS.DVB;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 
-namespace JMS.TV.Core.UnitTests
+namespace JMS.TV.Core.UnitTests.Mock
 {
     /// <summary>
     /// Simuliert den Zugriff auf Quellen.

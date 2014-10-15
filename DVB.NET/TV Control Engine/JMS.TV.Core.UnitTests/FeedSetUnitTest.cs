@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using JMS.DVB;
+using JMS.TV.Core.UnitTests.Mock;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 
