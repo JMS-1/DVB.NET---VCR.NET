@@ -413,6 +413,8 @@ namespace JMS.DVB.SI.ProgramGuide
                     m_ShortDescription = shortEvent.Text;
                 else if (string.IsNullOrEmpty( shortEvent.Text ))
                     m_ShortDescription = shortEvent.Name;
+                else if (StringComparer.Ordinal.Equals( shortEvent.Text, m_Description ))
+                    m_ShortDescription = shortEvent.Name;
                 else
                     m_ShortDescription = string.Format( "{0} ({1})", shortEvent.Name, shortEvent.Text );
 

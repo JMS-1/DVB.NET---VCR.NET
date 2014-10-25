@@ -341,6 +341,8 @@ namespace JMS.DVB.CardServer
                     shortDescription = shortEvent.Text;
                 else if (string.IsNullOrEmpty( shortEvent.Text ))
                     shortDescription = shortEvent.Name;
+                else if (StringComparer.Ordinal.Equals( shortEvent.Text, description ))
+                    shortDescription = shortEvent.Name;
                 else
                     shortDescription = string.Format( "{0} ({1})", shortEvent.Name, shortEvent.Text );
 

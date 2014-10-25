@@ -187,7 +187,7 @@ namespace JMS.DVB.Viewer
         /// <summary>
         /// Wartet auf neue Senderdaten.
         /// </summary>
-        private SourceInformationReader m_InfoReader = null;
+        private CancellableTask<SourceInformation> m_InfoReader = null;
 
         /// <summary>
         /// Gesetzt, wenn auf die neuen Informationen zur Quellgruppe gewartet wird.
@@ -335,7 +335,7 @@ namespace JMS.DVB.Viewer
                 return;
 
             // Stop reader
-            using (SourceInformationReader reader = m_InfoReader)
+            using (m_InfoReader)
                 m_InfoReader = null;
 
             // Reset flag
@@ -402,7 +402,7 @@ namespace JMS.DVB.Viewer
                 }
 
             // Retrieve the source information
-            SourceInformation info = source.GetSourceInformation();
+            var info = source.GetSourceInformationAsync().Result;
 
             // Remember
             CurrentSourceConfiguration = info;
@@ -416,7 +416,7 @@ namespace JMS.DVB.Viewer
             ShowCurrentEntry();
 
             // Store to settings if not a service
-            if (null == CurrentPortal)
+            if (CurrentPortal == null)
                 LocalInfo.LocalStation = source.DisplayName;
 
             // Load audio
@@ -702,26 +702,12 @@ namespace JMS.DVB.Viewer
         /// <summary>
         /// Meldet, ob gerade eine Aufzeichnung aktiv ist.
         /// </summary>
-        public override bool IsRecording
-        {
-            get
-            {
-                // Report
-                return (null != RecordingStream);
-            }
-        }
+        public override bool IsRecording { get { return (RecordingStream != null); } }
 
         /// <summary>
         /// Meldet die bereits aufgezeichneten Bytes.
         /// </summary>
-        public override long RecordedBytes
-        {
-            get
-            {
-                // Report
-                return (null != RecordingStream) ? RecordingStream.BytesReceived : 0;
-            }
-        }
+        public override long RecordedBytes { get { return (RecordingStream != null) ? RecordingStream.BytesReceived : 0; } }
 
         /// <summary>
         /// Prüft, ob ein Regionalsender sein Daten verändert hat.
@@ -733,11 +719,11 @@ namespace JMS.DVB.Viewer
             base.KeepAlive( fine );
 
             // No source
-            if (null == CurrentSelection)
+            if (CurrentSelection == null)
                 return;
 
             // Start reader
-            if (null == m_InfoReader)
+            if (m_InfoReader == null)
             {
                 // Make sure that service configuration is reloaded
                 if (!m_HasPendingGroupInformation)
@@ -757,26 +743,26 @@ namespace JMS.DVB.Viewer
                         m_HasPendingGroupInformation = false;
 
                 // Read in background
-                m_InfoReader = CurrentSelection.BeginGetSourceInformation();
+                m_InfoReader = CurrentSelection.GetSourceInformationAsync();
             }
 
             // Only coarse
             if (fine)
                 return;
 
-            // Read the current information
-            SourceInformation info = m_InfoReader.Wait( 0 );
-
-            // Not yet finished
-            if (null == info)
+            // See if we are done
+            if (!m_InfoReader.IsCompleted)
                 return;
 
+            // Read the information
+            var info = m_InfoReader.Result;
+
             // Stop reader
-            using (SourceInformationReader reader = m_InfoReader)
+            using (m_InfoReader)
                 m_InfoReader = null;
 
             // Update recording
-            if (null != RecordingStream)
+            if (RecordingStream != null)
             {
                 // Forward
                 RecordingStream.RetestSourceInformation( info );
