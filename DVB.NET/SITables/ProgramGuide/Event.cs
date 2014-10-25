@@ -413,17 +413,17 @@ namespace JMS.DVB.SI.ProgramGuide
                     m_ShortDescription = shortEvent.Text;
                 else if (string.IsNullOrEmpty( shortEvent.Text ))
                     m_ShortDescription = shortEvent.Name;
-                else if (StringComparer.Ordinal.Equals( shortEvent.Text, m_Description ))
+                else if (string.IsNullOrEmpty( m_Description ) || StringComparer.Ordinal.Equals( shortEvent.Text, m_Description ))
                     m_ShortDescription = shortEvent.Name;
                 else
                     m_ShortDescription = string.Format( "{0} ({1})", shortEvent.Name, shortEvent.Text );
 
                 // Read
-                if (null == m_Name)
+                if (string.IsNullOrEmpty( m_Name ))
                     m_Name = shortEvent.Name;
-                if (null == m_Description)
+                if (string.IsNullOrEmpty( m_Description ))
                     m_Description = shortEvent.Text;
-                if (null == m_Language)
+                if (string.IsNullOrEmpty( m_Language ))
                     m_Language = shortEvent.Language;
             }
 

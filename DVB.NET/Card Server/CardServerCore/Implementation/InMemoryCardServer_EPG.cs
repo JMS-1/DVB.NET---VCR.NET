@@ -341,17 +341,17 @@ namespace JMS.DVB.CardServer
                     shortDescription = shortEvent.Text;
                 else if (string.IsNullOrEmpty( shortEvent.Text ))
                     shortDescription = shortEvent.Name;
-                else if (StringComparer.Ordinal.Equals( shortEvent.Text, description ))
+                else if (string.IsNullOrEmpty( description ) || StringComparer.Ordinal.Equals( shortEvent.Text, description ))
                     shortDescription = shortEvent.Name;
                 else
                     shortDescription = string.Format( "{0} ({1})", shortEvent.Name, shortEvent.Text );
 
                 // Read
-                if (null == name)
+                if (string.IsNullOrEmpty( name ))
                     name = shortEvent.Name;
-                if (null == description)
+                if (string.IsNullOrEmpty( description ))
                     description = shortEvent.Text;
-                if (null == language)
+                if (string.IsNullOrEmpty( language ))
                     language = shortEvent.Language;
             }
 

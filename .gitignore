@@ -183,3 +183,4 @@ $RECYCLE.BIN/
 /DVB.NET/Tools/SignalTools/JMS.DVB.Tools.SourceValidation.sln
 /VCR.NET/WebClient41/Apps
 /VCR.NET/packages
+*.sln
