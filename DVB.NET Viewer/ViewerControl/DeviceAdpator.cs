@@ -335,8 +335,15 @@ namespace JMS.DVB.Viewer
                 return;
 
             // Stop reader
-            using (m_InfoReader)
+            using (var reader = m_InfoReader)
+            {
+                // Forget
                 m_InfoReader = null;
+
+                // Enforce proper shutdown
+                if (reader != null)
+                    reader.Cancel();
+            }
 
             // Reset flag
             m_HasPendingGroupInformation = false;
@@ -758,8 +765,15 @@ namespace JMS.DVB.Viewer
             var info = m_InfoReader.Result;
 
             // Stop reader
-            using (m_InfoReader)
+            using (var reader = m_InfoReader)
+            {
+                // Forget
                 m_InfoReader = null;
+
+                // Enforce proper shutdown
+                if (reader != null)
+                    reader.Cancel();
+            }
 
             // Update recording
             if (RecordingStream != null)
