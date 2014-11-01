@@ -20,7 +20,7 @@ namespace JMS.DVBVCR.RecordingService
         /// <summary>
         /// Wird beim Bauen automatisch eingemischt.
         /// </summary>
-        private const string CURRENTDATE = "2014/10/25";
+        private const string CURRENTDATE = "2014/11/01";
 
         /// <summary>
         /// Aktuelle Version des VCR.NET Recording Service.
