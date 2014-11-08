@@ -677,7 +677,7 @@ namespace JMS.DVB
             var groupReader = GroupReader;
             if (groupReader == null)
                 return null;
-            else if (!groupReader.CancellableWait( cancel ?? CancellationToken.None ))
+            else if (!groupReader.CancellableWait( cancel ?? CancellationToken.None, timeout ))
                 return null;
             else
                 return groupReader.Result;
