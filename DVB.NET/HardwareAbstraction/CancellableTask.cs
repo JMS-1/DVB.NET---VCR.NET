@@ -146,7 +146,7 @@ namespace JMS.DVB
                 // May throw an exception if token is signaled or simply report the completition state
                 return task.Wait( timeout, cancel );
             }
-            catch (OperationCanceledException)
+            catch (Exception)
             {
                 // Hide exception
                 return false;
