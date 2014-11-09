@@ -652,7 +652,7 @@ namespace JMS.DVB
         /// <param name="timeout">Die maximale Wartezeit seit Auswahl der Quellgruppe
         /// (Transponder) in Millisekunden.</param>
         /// <returns>Die gewünschten Informationen oder <i>null.</i></returns>
-        public LocationInformation GetLocationInformation( int timeout = 5000 )
+        public LocationInformation GetLocationInformation( int timeout = 15000 )
         {
             // Just forward
             var reader = LocationInformationReader;

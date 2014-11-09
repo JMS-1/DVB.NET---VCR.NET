@@ -506,7 +506,7 @@ namespace JMS.DVB.Algorithms
                                         var cableGroup = group as CableGroup;
 
                                         // Try load
-                                        var nit = device.GetLocationInformation( 5000 );
+                                        var nit = device.GetLocationInformation( 15000 );
                                         if (nit != null)
                                             foreach (SourceGroup other in nit.Groups)
                                                 if (other.GetType() == groupType)
@@ -694,7 +694,7 @@ namespace JMS.DVB.Algorithms
                                 CableGroup cableGroup = newGroup as CableGroup;
 
                                 // Attach to the NIT
-                                var nit = device.GetLocationInformation( 5000 );
+                                var nit = device.GetLocationInformation( 15000 );
                                 if (null != nit)
                                 {
                                     // Remember
