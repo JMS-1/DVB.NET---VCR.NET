@@ -175,8 +175,8 @@
     <None Include="scripts\jquery-2.1.1.intellisense.js" />
     <None Include="scripts\jquery-2.1.1.js" />
     <Content Include="scripts\jquery-2.1.1.min.js" />
-    <None Include="scripts\jquery-ui-1.11.1.js" />
-    <Content Include="scripts\jquery-ui.min-1.11.1.js" />
+    <None Include="scripts\jquery-ui-1.11.2.js" />
+    <Content Include="scripts\jquery-ui-1.11.2.min.js" />
     <Content Include="scripts\vcrnet.js">
       <DependentUpon>vcrnet.ts</DependentUpon>
     </Content>
