@@ -28,6 +28,10 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
             var job = data.Job.CreateJob();
             var schedule = data.Schedule.CreateSchedule( job );
 
+            // See if we can use it
+            if (!schedule.IsActive)
+                throw new ArgumentException( Properties.Resources.ScheduleInPast );
+
             // Connect
             job.Schedules.Add( schedule );
 
@@ -105,6 +109,10 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
             // Copy over all exceptions
             newSchedule.Exceptions.AddRange( schedule.Exceptions.Where( exception => activeExceptionDates.Contains( exception.When ) ) );
 
+            // See if we can use it
+            if (!newSchedule.IsActive)
+                throw new ArgumentException( Properties.Resources.ScheduleInPast );
+
             // Copy all schedules expect the one wie founr
             newJob.Schedules.AddRange( job.Schedules.Where( oldSchedule => !ReferenceEquals( oldSchedule, schedule ) ) );
 
@@ -164,6 +172,10 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
             // Take the new job data
             var newJob = data.Job.CreateJob( job.UniqueID.Value );
             var newSchedule = data.Schedule.CreateSchedule( newJob );
+
+            // See if we can use it
+            if (!newSchedule.IsActive)
+                throw new ArgumentException( Properties.Resources.ScheduleInPast );
 
             // Add all existing
             newJob.Schedules.AddRange( job.Schedules );

@@ -331,6 +331,15 @@ namespace JMS.DVBVCR.RecordingService.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Die Aufzeichnung liegt in der Vergangenheit.
+        /// </summary>
+        internal static string ScheduleInPast {
+            get {
+                return ResourceManager.GetString("ScheduleInPast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Das Aufwecksignal wird aktiviert.
         /// </summary>
         internal static string StartWaitableTimer {

@@ -228,4 +228,7 @@
   <data name="BadScheduleInformation" xml:space="preserve">
     <value>Es wird versucht, die Aufzeichnung '{1}' ({0}) mehrfach zu starten</value>
   </data>
+  <data name="ScheduleInPast" xml:space="preserve">
+    <value>Die Aufzeichnung liegt in der Vergangenheit</value>
+  </data>
 </root>

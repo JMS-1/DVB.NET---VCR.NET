@@ -212,11 +212,11 @@ body a[href]:not(.ui-button):hover {
 }
 .danger {
   font-weight: bolder;
-  border-color: #8b0000;
+  border-color: darkred;
   border-width: 2px;
 }
 .danger .ui-button-text {
-  color: #8b0000;
+  color: darkred;
 }
 .guideSelection {
   margin: 5px;
