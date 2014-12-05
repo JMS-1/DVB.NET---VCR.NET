@@ -184,3 +184,4 @@ $RECYCLE.BIN/
 /VCR.NET/WebClient41/Apps
 /VCR.NET/packages
 *.sln
+*.openAsAdmin

@@ -201,8 +201,27 @@ namespace JMS.DVBVCR.RecordingService.Persistence
                     if (lastDate == MaxMovableDay)
                         return true;
 
+                    // Attach to the start
+                    var startLocal = start.ToLocalTime();
+                    var startDate = new DateTime( startLocal.Date.Ticks, DateTimeKind.Local );
+
+                    // Find some allowed date - no need to test more than a week
+                    for (var day = 7; day-- > 0; )
+                    {
+                        // Yeah, can to it
+                        if (MayRecordOn( lastDate ))
+                            break;
+
+                        // Previous day
+                        lastDate = lastDate.AddDays( -1 );
+
+                        // Falled back to a date before the first start
+                        if (lastDate < startDate)
+                            return false;
+                    }
+
                     // Move time to the very last recording day
-                    start = (lastDate + start.ToLocalTime().TimeOfDay).ToUniversalTime();
+                    start = (lastDate + startLocal.TimeOfDay).ToUniversalTime();
 
                     // May need to correct for exception
                     var exception = GetException( lastDate );
@@ -247,7 +266,17 @@ namespace JMS.DVBVCR.RecordingService.Persistence
             if (!Days.HasValue)
                 return false;
             else
-                return ((Days.Value & m_DayMapper[day.DayOfWeek]) != 0);
+                return ((Days.Value & GetDay( day.DayOfWeek )) != 0);
+        }
+
+        /// <summary>
+        /// Wandelt einen Wochentag in eine VCR.NET Kennzeichnung des Wochentags.
+        /// </summary>
+        /// <param name="day">Ein beliebiger Wochentag.</param>
+        /// <returns>Die zugehörige Kennzeichnung.</returns>
+        public static VCRDay GetDay( DayOfWeek day )
+        {
+            return m_DayMapper[day];
         }
 
         /// <summary>

@@ -79,6 +79,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="CheckActiveSchedule.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ServiceCore\ServiceCore.csproj">
