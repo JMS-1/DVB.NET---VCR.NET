@@ -71,7 +71,7 @@ namespace EasyCut
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( CutMain ) );
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CutMain));
             this.cmdRun = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -84,121 +84,122 @@ namespace EasyCut
             this.openCuttermaran = new System.Windows.Forms.OpenFileDialog();
             this.saveCut = new System.Windows.Forms.SaveFileDialog();
             this.selPage = new System.Windows.Forms.ComboBox();
-            ((System.ComponentModel.ISupportInitialize) (this.udMinimum)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize) (this.udCorrect)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.udMinimum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.udCorrect)).BeginInit();
             this.SuspendLayout();
             // 
             // cmdRun
             // 
-            resources.ApplyResources( this.cmdRun, "cmdRun" );
+            resources.ApplyResources(this.cmdRun, "cmdRun");
             this.cmdRun.Name = "cmdRun";
-            this.cmdRun.Click += new System.EventHandler( this.cmdRun_Click );
+            this.cmdRun.Click += new System.EventHandler(this.cmdRun_Click);
             // 
             // label1
             // 
-            resources.ApplyResources( this.label1, "label1" );
+            resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
             // 
             // label2
             // 
-            resources.ApplyResources( this.label2, "label2" );
+            resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
             // 
             // selRate
             // 
             this.selRate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            resources.ApplyResources( this.selRate, "selRate" );
+            resources.ApplyResources(this.selRate, "selRate");
             this.selRate.Name = "selRate";
             // 
             // label3
             // 
-            resources.ApplyResources( this.label3, "label3" );
+            resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
             // 
             // udMinimum
             // 
             this.udMinimum.DecimalPlaces = 2;
-            this.udMinimum.Increment = new decimal( new int[] {
+            this.udMinimum.Increment = new decimal(new int[] {
             1,
             0,
             0,
-            65536} );
-            resources.ApplyResources( this.udMinimum, "udMinimum" );
-            this.udMinimum.Maximum = new decimal( new int[] {
+            65536});
+            resources.ApplyResources(this.udMinimum, "udMinimum");
+            this.udMinimum.Maximum = new decimal(new int[] {
             5,
             0,
             0,
-            0} );
+            0});
             this.udMinimum.Name = "udMinimum";
             // 
             // label4
             // 
-            resources.ApplyResources( this.label4, "label4" );
+            resources.ApplyResources(this.label4, "label4");
             this.label4.Name = "label4";
             // 
             // udCorrect
             // 
-            this.udCorrect.Increment = new decimal( new int[] {
+            this.udCorrect.Increment = new decimal(new int[] {
             15,
             0,
             0,
-            0} );
-            resources.ApplyResources( this.udCorrect, "udCorrect" );
-            this.udCorrect.Maximum = new decimal( new int[] {
+            0});
+            resources.ApplyResources(this.udCorrect, "udCorrect");
+            this.udCorrect.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
-            0} );
-            this.udCorrect.Minimum = new decimal( new int[] {
+            0});
+            this.udCorrect.Minimum = new decimal(new int[] {
             10000,
             0,
             0,
-            -2147483648} );
+            -2147483648});
             this.udCorrect.Name = "udCorrect";
             // 
             // ckDVB
             // 
-            resources.ApplyResources( this.ckDVB, "ckDVB" );
+            resources.ApplyResources(this.ckDVB, "ckDVB");
             this.ckDVB.Name = "ckDVB";
             this.ckDVB.UseVisualStyleBackColor = true;
-            this.ckDVB.CheckedChanged += new System.EventHandler( this.ckDVB_CheckedChanged );
+            this.ckDVB.CheckedChanged += new System.EventHandler(this.ckDVB_CheckedChanged);
             // 
             // openCuttermaran
             // 
-            resources.ApplyResources( this.openCuttermaran, "openCuttermaran" );
+            resources.ApplyResources(this.openCuttermaran, "openCuttermaran");
             // 
             // saveCut
             // 
-            resources.ApplyResources( this.saveCut, "saveCut" );
+            resources.ApplyResources(this.saveCut, "saveCut");
+            this.saveCut.FilterIndex = 2;
             // 
             // selPage
             // 
             this.selPage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.selPage.FormattingEnabled = true;
-            resources.ApplyResources( this.selPage, "selPage" );
+            resources.ApplyResources(this.selPage, "selPage");
             this.selPage.Name = "selPage";
             this.selPage.Sorted = true;
             // 
             // CutMain
             // 
-            resources.ApplyResources( this, "$this" );
-            this.Controls.Add( this.selPage );
-            this.Controls.Add( this.ckDVB );
-            this.Controls.Add( this.udCorrect );
-            this.Controls.Add( this.udMinimum );
-            this.Controls.Add( this.label4 );
-            this.Controls.Add( this.label3 );
-            this.Controls.Add( this.selRate );
-            this.Controls.Add( this.label2 );
-            this.Controls.Add( this.label1 );
-            this.Controls.Add( this.cmdRun );
+            resources.ApplyResources(this, "$this");
+            this.Controls.Add(this.selPage);
+            this.Controls.Add(this.ckDVB);
+            this.Controls.Add(this.udCorrect);
+            this.Controls.Add(this.udMinimum);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.selRate);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.cmdRun);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "CutMain";
-            this.Load += new System.EventHandler( this.CutMain_Load );
-            ((System.ComponentModel.ISupportInitialize) (this.udMinimum)).EndInit();
-            ((System.ComponentModel.ISupportInitialize) (this.udCorrect)).EndInit();
-            this.ResumeLayout( false );
+            this.Load += new System.EventHandler(this.CutMain_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.udMinimum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.udCorrect)).EndInit();
+            this.ResumeLayout(false);
             this.PerformLayout();
 
         }
