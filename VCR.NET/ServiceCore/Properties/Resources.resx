@@ -231,4 +231,7 @@
   <data name="ScheduleInPast" xml:space="preserve">
     <value>Die Aufzeichnung liegt in der Vergangenheit</value>
   </data>
+  <data name="BadEPGStation" xml:space="preserve">
+    <value>Quelle '{0}' unbekannt: es wird keine Programmzeitschrift ermittelt</value>
+  </data>
 </root>

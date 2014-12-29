@@ -70,6 +70,15 @@ namespace JMS.DVBVCR.RecordingService.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Quelle &apos;{0}&apos; unbekannt: es wird keine Programmzeitschrift ermittelt.
+        /// </summary>
+        internal static string BadEPGStation {
+            get {
+                return ResourceManager.GetString("BadEPGStation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Der Name enthält ungültige Zeichen.
         /// </summary>
         internal static string BadName {

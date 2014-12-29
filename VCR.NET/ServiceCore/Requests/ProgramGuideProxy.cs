@@ -68,6 +68,9 @@ namespace JMS.DVBVCR.RecordingService.Requests
                 SourceSelection realSource;
                 if (allSources.TryGetValue( legacyName, out realSource ))
                     m_selected.Add( realSource.Source );
+                else
+                    VCRServer.Log( LoggingLevel.Full, Properties.Resources.BadEPGStation, legacyName );
+
             }
         }
 
