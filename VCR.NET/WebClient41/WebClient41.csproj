@@ -172,9 +172,10 @@
       <DependentUpon>vcrnet.css</DependentUpon>
     </Content>
     <None Include="packages.config" />
-    <None Include="scripts\jquery-2.1.1.intellisense.js" />
-    <None Include="scripts\jquery-2.1.1.js" />
-    <Content Include="scripts\jquery-2.1.1.min.js" />
+    <None Include="scripts\jquery-2.1.3.intellisense.js" />
+    <Content Include="scripts\jquery-2.1.3.js" />
+    <Content Include="scripts\jquery-2.1.3.min.js" />
+    <Content Include="scripts\jquery-2.1.3.min.map" />
     <None Include="scripts\jquery-ui-1.11.2.js" />
     <Content Include="scripts\jquery-ui-1.11.2.min.js" />
     <Content Include="scripts\vcrnet.js">
@@ -252,7 +253,6 @@
     <Content Include="scripts\vcrserver.js">
       <DependentUpon>vcrserver.ts</DependentUpon>
     </Content>
-    <None Include="scripts\jquery-2.1.1.min.map" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
