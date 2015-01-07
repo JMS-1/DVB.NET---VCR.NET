@@ -3688,7 +3688,7 @@ class editPage extends Page implements IPage {
 class guidePage extends Page implements IPage {
     title: string = 'Programmzeitschrift';
 
-    visibleLinks: string = '.newLink, .planLink, .currentLink';
+    visibleLinks: string = '.newLink, .planLink, .currentLink, .favLink';
 
     // Alle verwendeten Geräteprofile
     private profiles: VCRServer.ProfileInfoContract[];

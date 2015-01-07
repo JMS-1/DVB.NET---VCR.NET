@@ -185,6 +185,7 @@
     <Content Include="ui\admin.html" />
     <Content Include="ui\faq.html" />
     <Content Include="ui\images\delete.png" />
+    <Content Include="ui\images\fav.png" />
     <Content Include="ui\images\info.png" />
     <Content Include="ui\images\recording.png" />
     <Content Include="ui\log.html" />

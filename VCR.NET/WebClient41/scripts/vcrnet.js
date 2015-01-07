@@ -2596,7 +2596,7 @@ var guidePage = (function (_super) {
     function guidePage() {
         _super.apply(this, arguments);
         this.title = 'Programmzeitschrift';
-        this.visibleLinks = '.newLink, .planLink, .currentLink';
+        this.visibleLinks = '.newLink, .planLink, .currentLink, .favLink';
     }
     // Klappt die Detailansicht auf oder zu
     guidePage.prototype.showDetails = function (guideItem, origin) {
