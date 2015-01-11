@@ -184,6 +184,7 @@
     <Content Include="favicon.ico" />
     <Content Include="ui\admin.html" />
     <Content Include="ui\faq.html" />
+    <Content Include="ui\favorites.html" />
     <Content Include="ui\images\delete.png" />
     <Content Include="ui\images\fav.png" />
     <Content Include="ui\images\info.png" />
@@ -217,7 +218,6 @@
     <Content Include="ui\templates\adminRules.html" />
     <Content Include="ui\templates\adminDevices.html" />
     <Content Include="ui\templates\favoriteRow.html" />
-    <Content Include="ui\templates\favorites.html" />
     <Content Include="ui\templates\logRowDetails.html" />
     <Content Include="ui\templates\logRow.html" />
     <Content Include="ui\templates\planRowDetails.html" />

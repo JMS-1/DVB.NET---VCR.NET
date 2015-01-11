@@ -128,6 +128,9 @@ class SavedGuideQuery {
         return '-';
     }
 
+    // Die gespeicherte Suche, mit der die Anzeige initialisiert werden soll.
+    static guideScope: SavedGuideQuery = null;
+
     // Wird nach bei der Auswahl der Anzahl ausgelöst
     static onClick: (query: SavedGuideQuery) => void = null;
 
@@ -3699,14 +3702,14 @@ class guidePage extends Page implements IPage {
     // Die Verwaltung der Detailansicht
     private details: JMSLib.DetailManager;
 
-    // Die Verwaltung der Favoriten
-    private favorites: JMSLib.DetailManager;
-
     // Die Vorlage für die Sendungsinformationen in der Detailansicht
     private guideTemplate: JQuery;
 
     // Alle Aufträge des aktuell gewählten Geräteprofils
     private jobs: VCRServer.ProfileJobInfoContract[];
+
+    // Die gespeicherte Suche, die angezeigt werden soll
+    private startWith: SavedGuideQuery;
 
     // Klappt die Detailansicht auf oder zu
     private showDetails(guideItem: GuideItem, origin: any): void {
@@ -3859,38 +3862,10 @@ class guidePage extends Page implements IPage {
         GuideFilter.global.changeStart(newStart);
     }
 
-    // Aktiviert oder deaktiviert die Sicht auf die gespeicherten Suchen
-    private toggleFavorites(origin: any): void {
-        SavedGuideQuery.onDeleted = null;
+    onShow(): void {
+        $('.firstButton, .prevButton, .nextButton, .guideHours a, .scanHours a, #resetAll').button();
 
-        var view = this.favorites.toggle({}, origin, 0);
-        if (view == null)
-            return;
-
-        // Liste mit den aktuellen Favoriten aufbauen
-        var table = JMSLib.HTMLTemplate.dynamicCreate(view.find('#favoriteList'), 'favoriteRow');
-        var queries = SavedGuideQueries.load();
-
-        table.loadList(queries);
-
-        // Sobald die Zähler zur Verfügung stehen zweigen wir nur neu an
-        SavedGuideQuery.onCountLoaded = (query: SavedGuideQuery) => table.loadList(queries);
-
-        // Beim Löschen muss die Änderung gespeichert und die Anzeige aktualisiert werden
-        SavedGuideQuery.onDeleted = (query: SavedGuideQuery) => {
-            for (var i = 0; i < queries.length; i++)
-                if (queries[i] === query) {
-                    queries.splice(i, 1);
-
-                    SavedGuideQueries.save();
-
-                    table.loadList(queries);
-
-                    break;
-                }
-        }
-
-        // Zum Hinzufügen
+        // Zum Hinzufügen von gespeicherten Suchen
         var add = $('#addFavorite');
         add.button({ disabled: GuideFilter.global.title == null });
         add.click(() => {
@@ -3903,37 +3878,11 @@ class guidePage extends Page implements IPage {
             query.device = GuideFilter.global.device;
             query.text = GuideFilter.global.title;
 
-            queries.splice(0, 0, query);
-
+            SavedGuideQueries.load().splice(0, 0, query);
             SavedGuideQueries.save();
 
-            table.loadList(queries);
+            add.button({ disabled: true });
         });
-
-        // Auswahl übernehmen
-        SavedGuideQuery.onClick = (query: SavedGuideQuery) => {
-            $('#withContent').prop('checked', !query.titleOnly);
-            $('#searchText').val(query.text.substr(1));
-            $('#withContent').button('refresh');
-            $('#selDevice').val(query.device);
-            $('#selSource').val(query.source);
-
-            GuideFilter.global.content = query.titleOnly ? null : query.text;
-            GuideFilter.global.station = query.source;
-            GuideFilter.global.device = query.device;
-            GuideFilter.global.title = query.text;
-
-            GuideFilter.global.changeStart(null);
-
-            this.deviceChanged(true);
-        };
-
-        // Wir bieten auch hier eine eingebettete Hilfe an
-        JMSLib.activateHelp();
-    }
-
-    onShow(): void {
-        $('.firstButton, .prevButton, .nextButton, .guideHours a, .scanHours a, #resetAll, #favorites').button();
 
         // Wenn wir Geräteprofile haben, müssen wir etwas mehr tun
         if (this.profiles.length > 0) {
@@ -3978,7 +3927,6 @@ class guidePage extends Page implements IPage {
             $('.firstButton').click(() => GuideFilter.global.firstPage());
             $('.prevButton').click(() => GuideFilter.global.prevPage());
             $('.nextButton').click(() => GuideFilter.global.nextPage());
-            $('#favorites').click((origin: Event) => this.toggleFavorites(origin.currentTarget));
             $('#resetAll').click(() => {
                 $('#withContent').prop('checked', true);
                 $('#withContent').button('refresh');
@@ -3994,9 +3942,30 @@ class guidePage extends Page implements IPage {
             // Erste Aktualisierung
             this.deviceChanged(false);
         }
+
+        // Schauen wir mal, ob wir eine gespeicherte Suche anzeigen müssen
+        var startWith = this.startWith;
+        if (startWith != null) {
+            $('#withContent').prop('checked', !startWith.titleOnly);
+            $('#searchText').val(startWith.text.substr(1));
+            $('#withContent').button('refresh');
+            $('#selDevice').val(startWith.device);
+            $('#selSource').val(startWith.source);
+
+            GuideFilter.global.content = startWith.titleOnly ? null : startWith.text;
+            GuideFilter.global.station = startWith.source;
+            GuideFilter.global.device = startWith.device;
+            GuideFilter.global.title = startWith.text;
+
+            GuideFilter.global.changeStart(null);
+        }
     }
 
     onInitialize() {
+        // Schauen wir mal, ob wir einen Favoriten anzeigen sollen
+        this.startWith = SavedGuideQuery.guideScope;
+        SavedGuideQuery.guideScope = null;
+
         var profilesLoaded = this.registerAsyncCall();
         var settingsLoaded = this.registerAsyncCall();
         var guideLoaded = this.registerAsyncCall();
@@ -4004,7 +3973,6 @@ class guidePage extends Page implements IPage {
         // Vorlagen verbinden
         this.guideTable = JMSLib.HTMLTemplate.dynamicCreate($('#guideTable'), 'guideRow');
         this.details = new JMSLib.DetailManager(2, 'guideDetails');
-        this.favorites = new JMSLib.DetailManager(2, 'favorites');
 
         // Liste der Geräteprofile laden
         VCRServer.ProfileCache.load().done((data: VCRServer.ProfileInfoContract[]) => {
@@ -4188,5 +4156,48 @@ class logPage extends Page implements IPage {
 
             profilesLoaded();
         });
+    }
+}
+
+// Die gespeicherten Suchen
+class favoritesPage extends Page implements IPage {
+    title: string = 'Gespeicherte Suchen';
+
+    visibleLinks: string = '.newLink, .planLink, .currentLink, .guideLink';
+
+    private favorites: JMSLib.HTMLTemplate;
+
+    onShow(): void {
+    }
+
+    onInitialize(): void {
+        SavedGuideQuery.onDeleted = null;
+
+        // Liste mit den aktuellen Favoriten aufbauen
+        this.favorites = JMSLib.HTMLTemplate.dynamicCreate($('#favoriteList'), 'favoriteRow');
+
+        var queries = SavedGuideQueries.load();
+
+        this.favorites.loadList(queries);
+
+        // Sobald die Zähler zur Verfügung stehen zweigen wir nur neu an
+        SavedGuideQuery.onCountLoaded = (query: SavedGuideQuery) => this.favorites.loadList(queries);
+
+        // Beim Löschen muss die Änderung gespeichert und die Anzeige aktualisiert werden
+        SavedGuideQuery.onDeleted = (query: SavedGuideQuery) => {
+            for (var i = 0; i < queries.length; i++)
+                if (queries[i] === query) {
+                    queries.splice(i, 1);
+
+                    SavedGuideQueries.save();
+
+                    this.favorites.loadList(queries);
+
+                    break;
+                }
+        }
+
+        // Auswahl übernehmen
+        SavedGuideQuery.onClick = (query: SavedGuideQuery) => SavedGuideQuery.guideScope = query;
     }
 }

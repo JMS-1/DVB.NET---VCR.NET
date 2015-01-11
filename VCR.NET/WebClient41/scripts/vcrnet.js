@@ -137,6 +137,8 @@ var SavedGuideQuery = (function () {
     SavedGuideQuery.loadQueue = new Array();
     // Gesetzt, wenn ein Ladevorgang aktiv ist
     SavedGuideQuery.loading = false;
+    // Die gespeicherte Suche, mit der die Anzeige initialisiert werden soll.
+    SavedGuideQuery.guideScope = null;
     // Wird nach bei der Auswahl der Anzahl ausgelöst
     SavedGuideQuery.onClick = null;
     // Wird nach dem Löschen ausgelöst
@@ -2717,30 +2719,10 @@ var guidePage = (function (_super) {
             newStart = null;
         GuideFilter.global.changeStart(newStart);
     };
-    // Aktiviert oder deaktiviert die Sicht auf die gespeicherten Suchen
-    guidePage.prototype.toggleFavorites = function (origin) {
+    guidePage.prototype.onShow = function () {
         var _this = this;
-        SavedGuideQuery.onDeleted = null;
-        var view = this.favorites.toggle({}, origin, 0);
-        if (view == null)
-            return;
-        // Liste mit den aktuellen Favoriten aufbauen
-        var table = JMSLib.HTMLTemplate.dynamicCreate(view.find('#favoriteList'), 'favoriteRow');
-        var queries = SavedGuideQueries.load();
-        table.loadList(queries);
-        // Sobald die Zähler zur Verfügung stehen zweigen wir nur neu an
-        SavedGuideQuery.onCountLoaded = function (query) { return table.loadList(queries); };
-        // Beim Löschen muss die Änderung gespeichert und die Anzeige aktualisiert werden
-        SavedGuideQuery.onDeleted = function (query) {
-            for (var i = 0; i < queries.length; i++)
-                if (queries[i] === query) {
-                    queries.splice(i, 1);
-                    SavedGuideQueries.save();
-                    table.loadList(queries);
-                    break;
-                }
-        };
-        // Zum Hinzufügen
+        $('.firstButton, .prevButton, .nextButton, .guideHours a, .scanHours a, #resetAll').button();
+        // Zum Hinzufügen von gespeicherten Suchen
         var add = $('#addFavorite');
         add.button({ disabled: GuideFilter.global.title == null });
         add.click(function () {
@@ -2751,30 +2733,10 @@ var guidePage = (function (_super) {
             query.source = GuideFilter.global.station;
             query.device = GuideFilter.global.device;
             query.text = GuideFilter.global.title;
-            queries.splice(0, 0, query);
+            SavedGuideQueries.load().splice(0, 0, query);
             SavedGuideQueries.save();
-            table.loadList(queries);
+            add.button({ disabled: true });
         });
-        // Auswahl übernehmen
-        SavedGuideQuery.onClick = function (query) {
-            $('#withContent').prop('checked', !query.titleOnly);
-            $('#searchText').val(query.text.substr(1));
-            $('#withContent').button('refresh');
-            $('#selDevice').val(query.device);
-            $('#selSource').val(query.source);
-            GuideFilter.global.content = query.titleOnly ? null : query.text;
-            GuideFilter.global.station = query.source;
-            GuideFilter.global.device = query.device;
-            GuideFilter.global.title = query.text;
-            GuideFilter.global.changeStart(null);
-            _this.deviceChanged(true);
-        };
-        // Wir bieten auch hier eine eingebettete Hilfe an
-        JMSLib.activateHelp();
-    };
-    guidePage.prototype.onShow = function () {
-        var _this = this;
-        $('.firstButton, .prevButton, .nextButton, .guideHours a, .scanHours a, #resetAll, #favorites').button();
         // Wenn wir Geräteprofile haben, müssen wir etwas mehr tun
         if (this.profiles.length > 0) {
             // Die Auswahlliste der Geräte füllen
@@ -2812,7 +2774,6 @@ var guidePage = (function (_super) {
             $('.firstButton').click(function () { return GuideFilter.global.firstPage(); });
             $('.prevButton').click(function () { return GuideFilter.global.prevPage(); });
             $('.nextButton').click(function () { return GuideFilter.global.nextPage(); });
-            $('#favorites').click(function (origin) { return _this.toggleFavorites(origin.currentTarget); });
             $('#resetAll').click(function () {
                 $('#withContent').prop('checked', true);
                 $('#withContent').button('refresh');
@@ -2825,16 +2786,32 @@ var guidePage = (function (_super) {
             // Erste Aktualisierung
             this.deviceChanged(false);
         }
+        // Schauen wir mal, ob wir eine gespeicherte Suche anzeigen müssen
+        var startWith = this.startWith;
+        if (startWith != null) {
+            $('#withContent').prop('checked', !startWith.titleOnly);
+            $('#searchText').val(startWith.text.substr(1));
+            $('#withContent').button('refresh');
+            $('#selDevice').val(startWith.device);
+            $('#selSource').val(startWith.source);
+            GuideFilter.global.content = startWith.titleOnly ? null : startWith.text;
+            GuideFilter.global.station = startWith.source;
+            GuideFilter.global.device = startWith.device;
+            GuideFilter.global.title = startWith.text;
+            GuideFilter.global.changeStart(null);
+        }
     };
     guidePage.prototype.onInitialize = function () {
         var _this = this;
+        // Schauen wir mal, ob wir einen Favoriten anzeigen sollen
+        this.startWith = SavedGuideQuery.guideScope;
+        SavedGuideQuery.guideScope = null;
         var profilesLoaded = this.registerAsyncCall();
         var settingsLoaded = this.registerAsyncCall();
         var guideLoaded = this.registerAsyncCall();
         // Vorlagen verbinden
         this.guideTable = JMSLib.HTMLTemplate.dynamicCreate($('#guideTable'), 'guideRow');
         this.details = new JMSLib.DetailManager(2, 'guideDetails');
-        this.favorites = new JMSLib.DetailManager(2, 'favorites');
         // Liste der Geräteprofile laden
         VCRServer.ProfileCache.load().done(function (data) {
             _this.profiles = data;
@@ -2985,5 +2962,39 @@ var logPage = (function (_super) {
         });
     };
     return logPage;
+})(Page);
+// Die gespeicherten Suchen
+var favoritesPage = (function (_super) {
+    __extends(favoritesPage, _super);
+    function favoritesPage() {
+        _super.apply(this, arguments);
+        this.title = 'Gespeicherte Suchen';
+        this.visibleLinks = '.newLink, .planLink, .currentLink, .guideLink';
+    }
+    favoritesPage.prototype.onShow = function () {
+    };
+    favoritesPage.prototype.onInitialize = function () {
+        var _this = this;
+        SavedGuideQuery.onDeleted = null;
+        // Liste mit den aktuellen Favoriten aufbauen
+        this.favorites = JMSLib.HTMLTemplate.dynamicCreate($('#favoriteList'), 'favoriteRow');
+        var queries = SavedGuideQueries.load();
+        this.favorites.loadList(queries);
+        // Sobald die Zähler zur Verfügung stehen zweigen wir nur neu an
+        SavedGuideQuery.onCountLoaded = function (query) { return _this.favorites.loadList(queries); };
+        // Beim Löschen muss die Änderung gespeichert und die Anzeige aktualisiert werden
+        SavedGuideQuery.onDeleted = function (query) {
+            for (var i = 0; i < queries.length; i++)
+                if (queries[i] === query) {
+                    queries.splice(i, 1);
+                    SavedGuideQueries.save();
+                    _this.favorites.loadList(queries);
+                    break;
+                }
+        };
+        // Auswahl übernehmen
+        SavedGuideQuery.onClick = function (query) { return SavedGuideQuery.guideScope = query; };
+    };
+    return favoritesPage;
 })(Page);
 //# sourceMappingURL=vcrnet.js.map

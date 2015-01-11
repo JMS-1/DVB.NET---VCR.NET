@@ -44,6 +44,11 @@
                         neuer Auftrag angelegt, es ist allerdings auch möglich zu einem existierenden Auftrag des gerade gewählten
                         Geräteprofils eine weitere Aufzeichnung hinzu zu fügen.
                     </p>
+                    <p>
+                        Eine Suchbedingung kann nur dann als neuer Favorit angelegt werden, wenn der Suchtext nicht leer ist -
+                        ansonsten ist die zugehörige Schaltfläche ausgeblendet. Eine eventuell aktive Vorauswahl des
+                        Startzeitpunktes wird grundsätzlich nicht in den Favoriten übernommen.
+                    </p>
                 </div>
             </div>
             <fieldset>
@@ -60,7 +65,7 @@
                         <input type="text" id="searchText" size="40" />
                         <input type="checkbox" id="withContent" checked="checked" /><label for="withContent" class="toggleButton">Auch in Beschreibung suchen</label>
                         <a id="resetAll" href="javascript:void(0)">Neue Suche</a>
-                        <a id="favorites" href="javascript:void(0)">Favoriten</a>
+                        <a id="addFavorite" href="javascript:void(0)">Aktuelle Suche als Favorit hinzufügen</a>
                     </span>
                 </div>
                 <div class="guideDays guideSelection">
