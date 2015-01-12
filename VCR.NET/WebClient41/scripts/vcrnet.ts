@@ -3751,7 +3751,7 @@ class guidePage extends Page implements IPage {
 
     // Aktualisiert die Liste der Sendungen
     private refresh(): void {
-        $('#addFavorite').button('option', 'disabled', GuideFilter.global.title == null);
+        $('#addFavorite').button({ 'disabled': GuideFilter.global.title == null });
 
         GuideFilter.global.execute((items: GuideItem[]) => {
             $.each(items, (index: number, item: GuideItem) => item.onShowDetails = (target: GuideItem, origin: any) => this.showDetails(target, origin));
@@ -3958,6 +3958,8 @@ class guidePage extends Page implements IPage {
             GuideFilter.global.title = startWith.text;
 
             GuideFilter.global.changeStart(null);
+
+            add.button({ disabled: true });
         }
     }
 
@@ -4168,14 +4170,6 @@ class favoritesPage extends Page implements IPage {
     private favorites: JMSLib.HTMLTemplate;
 
     onShow(): void {
-    }
-
-    onInitialize(): void {
-        SavedGuideQuery.onDeleted = null;
-
-        // Liste mit den aktuellen Favoriten aufbauen
-        this.favorites = JMSLib.HTMLTemplate.dynamicCreate($('#favoriteList'), 'favoriteRow');
-
         var queries = SavedGuideQueries.load();
 
         this.favorites.loadList(queries);
@@ -4199,5 +4193,15 @@ class favoritesPage extends Page implements IPage {
 
         // Auswahl übernehmen
         SavedGuideQuery.onClick = (query: SavedGuideQuery) => SavedGuideQuery.guideScope = query;
+    }
+
+    onInitialize(): void {
+        SavedGuideQuery.onDeleted = null;
+
+        // Liste mit den aktuellen Favoriten aufbauen
+        this.favorites = JMSLib.HTMLTemplate.dynamicCreate($('#favoriteList'), 'favoriteRow');
+
+        // Wir brauchen mindestens die Informationen aus dem Benutzerprofil
+        VCRServer.UserProfile.global.register(this.registerAsyncCall());
     }
 }

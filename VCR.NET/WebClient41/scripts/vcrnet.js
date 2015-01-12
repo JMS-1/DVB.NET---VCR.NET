@@ -2632,7 +2632,7 @@ var guidePage = (function (_super) {
     // Aktualisiert die Liste der Sendungen
     guidePage.prototype.refresh = function () {
         var _this = this;
-        $('#addFavorite').button('option', 'disabled', GuideFilter.global.title == null);
+        $('#addFavorite').button({ 'disabled': GuideFilter.global.title == null });
         GuideFilter.global.execute(function (items) {
             $.each(items, function (index, item) { return item.onShowDetails = function (target, origin) { return _this.showDetails(target, origin); }; });
             _this.details.reset();
@@ -2799,6 +2799,7 @@ var guidePage = (function (_super) {
             GuideFilter.global.device = startWith.device;
             GuideFilter.global.title = startWith.text;
             GuideFilter.global.changeStart(null);
+            add.button({ disabled: true });
         }
     };
     guidePage.prototype.onInitialize = function () {
@@ -2972,12 +2973,7 @@ var favoritesPage = (function (_super) {
         this.visibleLinks = '.newLink, .planLink, .currentLink, .guideLink';
     }
     favoritesPage.prototype.onShow = function () {
-    };
-    favoritesPage.prototype.onInitialize = function () {
         var _this = this;
-        SavedGuideQuery.onDeleted = null;
-        // Liste mit den aktuellen Favoriten aufbauen
-        this.favorites = JMSLib.HTMLTemplate.dynamicCreate($('#favoriteList'), 'favoriteRow');
         var queries = SavedGuideQueries.load();
         this.favorites.loadList(queries);
         // Sobald die Zähler zur Verfügung stehen zweigen wir nur neu an
@@ -2994,6 +2990,13 @@ var favoritesPage = (function (_super) {
         };
         // Auswahl übernehmen
         SavedGuideQuery.onClick = function (query) { return SavedGuideQuery.guideScope = query; };
+    };
+    favoritesPage.prototype.onInitialize = function () {
+        SavedGuideQuery.onDeleted = null;
+        // Liste mit den aktuellen Favoriten aufbauen
+        this.favorites = JMSLib.HTMLTemplate.dynamicCreate($('#favoriteList'), 'favoriteRow');
+        // Wir brauchen mindestens die Informationen aus dem Benutzerprofil
+        VCRServer.UserProfile.global.register(this.registerAsyncCall());
     };
     return favoritesPage;
 })(Page);
