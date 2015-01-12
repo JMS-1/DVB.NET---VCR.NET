@@ -121,12 +121,10 @@ var SavedGuideQuery = (function () {
         display += ' empfangen werden und deren Name ';
         if (!this.titleOnly)
             display += 'oder Beschreibung ';
-        // Auch wenn wir das jetzt nicht unterstützen gibt es auch die Suche nach exakter Gleichheit
-        if (this.text[0] != '*')
-            display += 'mit';
         display += ' "';
         display += this.text.substr(1);
         display += '" ';
+        // Auch wenn wir das jetzt nicht unterstützen gibt es auch die Suche nach exakter Gleichheit
         if (this.text[0] == '*')
             display += 'enthält';
         else
