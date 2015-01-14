@@ -33,11 +33,37 @@ class CSSClass {
     static badEndTime = 'suspectEnd';
 }
 
+// Die Art der zu suchenden Quelle
+enum GuideSource {
+    // Nur Fernsehsender
+    TV = 1,
+
+    // Nur Radiosender
+    RADIO = 2,
+
+    // Einfach alles
+    ALL = TV + RADIO,
+}
+
+// Die Verschlüsselung der Quelle
+enum GuideEncryption {
+    // Nur kostenlose Quellen
+    FREE = 1,
+
+    // Nur Bezahlsender
+    PAY = 2,
+
+    // Alle Sender
+    ALL = FREE + PAY,
+}
+
 // Beschreibt einen Favoritensuche in der Programmzeitschrift
 class SavedGuideQuery {
     constructor(rawQuery: SavedGuideQuery = null) {
         // Das deserialisierte Objekt sieht aus wie wir hat aber nur Eigenschaften
         if (rawQuery != null) {
+            this.encryption = rawQuery.encryption || GuideEncryption.ALL;
+            this.sourceType = rawQuery.sourceType || GuideSource.ALL;
             this.titleOnly = rawQuery.titleOnly;
             this.device = rawQuery.device;
             this.source = rawQuery.source;
@@ -60,6 +86,12 @@ class SavedGuideQuery {
 
     // Gesetzt, wenn nur im Titel gesucht werden soll
     titleOnly: boolean;
+
+    // Die Art der zu berücksichtigenden Quelle
+    sourceType: GuideSource;
+
+    // Die Art der Verschlüsselung
+    encryption: GuideEncryption;
 
     // Die Anzahl der Sendungen zur Suche
     private cachedCount: number = null;

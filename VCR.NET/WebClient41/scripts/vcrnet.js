@@ -32,6 +32,26 @@ var CSSClass = (function () {
     CSSClass.badEndTime = 'suspectEnd';
     return CSSClass;
 })();
+// Die Art der zu suchenden Quelle
+var GuideSource;
+(function (GuideSource) {
+    // Nur Fernsehsender
+    GuideSource[GuideSource["TV"] = 1] = "TV";
+    // Nur Radiosender
+    GuideSource[GuideSource["RADIO"] = 2] = "RADIO";
+    // Einfach alles
+    GuideSource[GuideSource["ALL"] = GuideSource.TV + GuideSource.RADIO] = "ALL";
+})(GuideSource || (GuideSource = {}));
+// Die Verschlüsselung der Quelle
+var GuideEncryption;
+(function (GuideEncryption) {
+    // Nur kostenlose Quellen
+    GuideEncryption[GuideEncryption["FREE"] = 1] = "FREE";
+    // Nur Bezahlsender
+    GuideEncryption[GuideEncryption["PAY"] = 2] = "PAY";
+    // Alle Sender
+    GuideEncryption[GuideEncryption["ALL"] = GuideEncryption.FREE + GuideEncryption.PAY] = "ALL";
+})(GuideEncryption || (GuideEncryption = {}));
 // Beschreibt einen Favoritensuche in der Programmzeitschrift
 var SavedGuideQuery = (function () {
     function SavedGuideQuery(rawQuery) {
@@ -45,6 +65,8 @@ var SavedGuideQuery = (function () {
         this.loadingCount = false;
         // Das deserialisierte Objekt sieht aus wie wir hat aber nur Eigenschaften
         if (rawQuery != null) {
+            this.encryption = rawQuery.encryption || GuideEncryption.ALL;
+            this.sourceType = rawQuery.sourceType || GuideSource.ALL;
             this.titleOnly = rawQuery.titleOnly;
             this.device = rawQuery.device;
             this.source = rawQuery.source;
