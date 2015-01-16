@@ -4250,6 +4250,10 @@ class favoritesPage extends Page implements IPage {
 
     private favorites: JMSLib.HTMLTemplate;
 
+    private filter: JQuery;
+
+    private static showAll: boolean = true;
+
     onShow(): void {
         var queries = SavedGuideQueries.load();
 
@@ -4276,13 +4280,33 @@ class favoritesPage extends Page implements IPage {
         SavedGuideQuery.onClick = (query: SavedGuideQuery) => SavedGuideQuery.guideScope = query;
     }
 
+    private filterFavorite(favorite: SavedGuideQuery): boolean {
+        if (favoritesPage.showAll)
+            return true;
+        else
+            return (favorite.count() != 0);
+    }
+
+    private refresh(): void {
+        favoritesPage.showAll = (this.filter.find(':checked').val() == '1')
+
+        this.favorites.refresh();
+    }
+
     onInitialize(): void {
         SavedGuideQuery.onDeleted = null;
 
         // Liste mit den aktuellen Favoriten aufbauen
         this.favorites = JMSLib.HTMLTemplate.dynamicCreate($('#favoriteList'), 'favoriteRow');
+        this.favorites.filter = fav => this.filterFavorite(fav);
+        this.filter = $('#favoriteFilter');
 
         // Wir brauchen mindestens die Informationen aus dem Benutzerprofil
         VCRServer.UserProfile.global.register(this.registerAsyncCall());
+
+        // Filter vorbereiten
+        this.filter.find('input[value="' + (favoritesPage.showAll ? 1 : 0) + '"]').prop('checked', true);
+        this.filter.buttonset();
+        this.filter.change(() => this.refresh());
     }
 }

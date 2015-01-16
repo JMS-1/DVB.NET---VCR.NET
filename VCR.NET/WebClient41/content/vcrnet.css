@@ -479,4 +479,9 @@ fieldset legend {
 .guideSourceFilter label {
   margin-right: 0px !important;
 }
+.favoritesFilter {
+  font-size: x-small;
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
 /*# sourceMappingURL=vcrnet.css.map */

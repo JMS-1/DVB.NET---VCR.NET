@@ -3054,13 +3054,31 @@ var favoritesPage = (function (_super) {
         // Auswahl übernehmen
         SavedGuideQuery.onClick = function (query) { return SavedGuideQuery.guideScope = query; };
     };
+    favoritesPage.prototype.filterFavorite = function (favorite) {
+        if (favoritesPage.showAll)
+            return true;
+        else
+            return (favorite.count() != 0);
+    };
+    favoritesPage.prototype.refresh = function () {
+        favoritesPage.showAll = (this.filter.find(':checked').val() == '1');
+        this.favorites.refresh();
+    };
     favoritesPage.prototype.onInitialize = function () {
+        var _this = this;
         SavedGuideQuery.onDeleted = null;
         // Liste mit den aktuellen Favoriten aufbauen
         this.favorites = JMSLib.HTMLTemplate.dynamicCreate($('#favoriteList'), 'favoriteRow');
+        this.favorites.filter = function (fav) { return _this.filterFavorite(fav); };
+        this.filter = $('#favoriteFilter');
         // Wir brauchen mindestens die Informationen aus dem Benutzerprofil
         VCRServer.UserProfile.global.register(this.registerAsyncCall());
+        // Filter vorbereiten
+        this.filter.find('input[value="' + (favoritesPage.showAll ? 1 : 0) + '"]').prop('checked', true);
+        this.filter.buttonset();
+        this.filter.change(function () { return _this.refresh(); });
     };
+    favoritesPage.showAll = true;
     return favoritesPage;
 })(Page);
 //# sourceMappingURL=vcrnet.js.map
