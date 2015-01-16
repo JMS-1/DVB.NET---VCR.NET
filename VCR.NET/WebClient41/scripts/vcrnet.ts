@@ -33,37 +33,13 @@ class CSSClass {
     static badEndTime = 'suspectEnd';
 }
 
-// Die Art der zu suchenden Quelle
-enum GuideSource {
-    // Nur Fernsehsender
-    TV = 1,
-
-    // Nur Radiosender
-    RADIO = 2,
-
-    // Einfach alles
-    ALL = TV + RADIO,
-}
-
-// Die Verschlüsselung der Quelle
-enum GuideEncryption {
-    // Nur kostenlose Quellen
-    FREE = 1,
-
-    // Nur Bezahlsender
-    PAY = 2,
-
-    // Alle Sender
-    ALL = FREE + PAY,
-}
-
 // Beschreibt einen Favoritensuche in der Programmzeitschrift
 class SavedGuideQuery {
     constructor(rawQuery: SavedGuideQuery = null) {
         // Das deserialisierte Objekt sieht aus wie wir hat aber nur Eigenschaften
         if (rawQuery != null) {
-            this.encryption = rawQuery.encryption || GuideEncryption.ALL;
-            this.sourceType = rawQuery.sourceType || GuideSource.ALL;
+            this.encryption = rawQuery.encryption || VCRServer.GuideEncryption.ALL;
+            this.sourceType = rawQuery.sourceType || VCRServer.GuideSource.ALL;
             this.titleOnly = rawQuery.titleOnly;
             this.device = rawQuery.device;
             this.source = rawQuery.source;
@@ -88,10 +64,10 @@ class SavedGuideQuery {
     titleOnly: boolean;
 
     // Die Art der zu berücksichtigenden Quelle
-    sourceType: GuideSource;
+    sourceType: VCRServer.GuideSource;
 
     // Die Art der Verschlüsselung
-    encryption: GuideEncryption;
+    encryption: VCRServer.GuideEncryption;
 
     // Die Anzahl der Sendungen zur Suche
     private cachedCount: number = null;
@@ -194,7 +170,25 @@ class SavedGuideQuery {
 
     // Erstellt eine Textdarstellung
     displayText(): string {
-        var display = 'Alle Sendungen, die über das Gerät ' + this.device
+        var display = 'Alle ';
+
+        // Die besonderen Einschränkungen sind nur gültig, wenn keine Quelle ausgewählt wurde
+        if ((this.source || '') == '') {
+            // Verschlüsselung
+            if (this.encryption == VCRServer.GuideEncryption.FREE)
+                display += 'unverschlüsselten ';
+            else if (this.encryption == VCRServer.GuideEncryption.PAY)
+                display += 'verschlüsselten ';
+
+            // Art
+            if (this.sourceType == VCRServer.GuideSource.TV)
+                display += 'Fernseh-';
+            else if (this.sourceType == VCRServer.GuideSource.RADIO)
+                display += 'Radio-';
+        }
+
+        display += 'Sendungen, die über das Gerät ';
+        display += this.device;
 
         // Die Quelle ist optional
         if (this.source != null)
@@ -282,6 +276,12 @@ class GuideFilter implements VCRServer.GuideFilterContract {
 
     // Die aktuelle Seite
     index: number = 0;
+
+    // Einschränkung auf die Art der Quellen
+    typeFilter: VCRServer.GuideSource = VCRServer.GuideSource.ALL;
+
+    // Einschränkung auf die Verschlüsselung der Quellen
+    cryptFilter: VCRServer.GuideEncryption = VCRServer.GuideEncryption.ALL;
 
     // Wird aufgerufen, wenn sich etwas verändert hat
     onChange: () => void = null;
@@ -400,8 +400,24 @@ class GuideFilter implements VCRServer.GuideFilterContract {
         this.fireChange();
     }
 
+    // Ändert die Art der Sender
+    changeType(type: VCRServer.GuideSource): void {
+        this.typeFilter = type;
+        this.index = 0;
+        this.fireChange();
+    }
+
+    // Ändert die Verschlüsselung
+    changeEncryption(encryption: VCRServer.GuideEncryption): void {
+        this.cryptFilter = encryption;
+        this.index = 0;
+        this.fireChange();
+    }
+
     // Entfernt alle Suchbedingungen
     reset(): void {
+        this.cryptFilter = VCRServer.GuideEncryption.ALL;
+        this.typeFilter = VCRServer.GuideSource.ALL;
         this.station = null;
         this.content = null;
         this.title = null;
@@ -3784,7 +3800,7 @@ class guidePage extends Page implements IPage {
 
         // Einschränkung auf die Quellesuche machen wir nur, wenn keine Quelle ausgewählt ist
         var sourceFilter = $('.guideSourceFilter');
-        if (GuideFilter.global.station == '')
+        if((GuideFilter.global.station || '') == '')
             sourceFilter.removeClass(JMSLib.CSSClass.hide);
         else
             sourceFilter.addClass(JMSLib.CSSClass.hide);
@@ -3914,6 +3930,15 @@ class guidePage extends Page implements IPage {
             query.device = GuideFilter.global.device;
             query.text = GuideFilter.global.title;
 
+            if ((query.source || '') == '') {
+                query.encryption = GuideFilter.global.cryptFilter;
+                query.sourceType = GuideFilter.global.typeFilter;
+            }
+            else {
+                query.encryption = VCRServer.GuideEncryption.ALL;
+                query.sourceType = VCRServer.GuideSource.ALL;
+            }
+
             SavedGuideQueries.load().splice(0, 0, query);
             SavedGuideQueries.save();
 
@@ -3964,8 +3989,9 @@ class guidePage extends Page implements IPage {
             $('.prevButton').click(() => GuideFilter.global.prevPage());
             $('.nextButton').click(() => GuideFilter.global.nextPage());
             $('#resetAll').click(() => {
-                $('#withContent').prop('checked', true);
-                $('#withContent').button('refresh');
+                var toBeChecked = $('#withContent, #guideTVAndRadio, #guideFreeAndPay');
+                toBeChecked.prop('checked', true);
+                toBeChecked.button('refresh');
                 searchText.val(null);
                 selSource.val(null);
 
@@ -3987,8 +4013,18 @@ class guidePage extends Page implements IPage {
             $('#withContent').button('refresh');
             $('#selDevice').val(startWith.device);
             $('#selSource').val(startWith.source);
+            
+            var selectedType = $('input[name="guideSourceType"][value="' + startWith.sourceType + '"]');
+            selectedType.prop('checked', true);
+            selectedType.button('refresh');
+
+            var encryption = $('input[name="guideSourceCrypt"][value="' + startWith.encryption + '"]');
+            encryption.prop('checked', true);
+            encryption.button('refresh');
 
             GuideFilter.global.content = startWith.titleOnly ? null : startWith.text;
+            GuideFilter.global.cryptFilter = startWith.encryption;
+            GuideFilter.global.typeFilter = startWith.sourceType;
             GuideFilter.global.station = startWith.source;
             GuideFilter.global.device = startWith.device;
             GuideFilter.global.title = startWith.text;
@@ -4032,7 +4068,11 @@ class guidePage extends Page implements IPage {
         // Quellauswahl aufbereiten
         var filter = $('.guideSourceFilter');
         filter.buttonset();
-        filter.change(() => this.refresh());
+
+        var sourceTypeFilter = $('#guideSourceType');
+        sourceTypeFilter.change(() => GuideFilter.global.changeType(sourceTypeFilter.find(':checked').val()));
+        var encryptionFilter = $('#guideSourceCrypt');
+        encryptionFilter.change(() => GuideFilter.global.changeEncryption(encryptionFilter.find(':checked').val()));
     }
 }
 

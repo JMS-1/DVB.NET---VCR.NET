@@ -7,6 +7,50 @@ using JMS.DVB;
 namespace JMS.DVBVCR.RecordingService.ProgramGuide
 {
     /// <summary>
+    /// Die Art der zu suchenden Quelle.
+    /// </summary>
+    [Flags]
+    public enum GuideSourceFilter
+    {
+        /// <summary>
+        /// Nur Fernsehsender.
+        /// </summary>
+        Television = 1,
+
+        /// <summary>
+        /// Nur Radiosender.
+        /// </summary>
+        Radio = 2,
+
+        /// <summary>
+        /// Einfach alles.
+        /// </summary>
+        All = Television | Radio,
+    }
+
+    /// <summary>
+    /// Die Verschlüsselung der Quelle.
+    /// </summary>
+    [Flags]
+    public enum GuideEncryptionFilter
+    {
+        /// <summary>
+        /// Nur kostenlose Quellen.
+        /// </summary>
+        Free = 1,
+
+        /// <summary>
+        /// Nur Bezahlsender.
+        /// </summary>
+        Encrypted = 2,
+
+        /// <summary>
+        /// Alle Quellen.
+        /// </summary>
+        All = Free | Encrypted,
+    }
+
+    /// <summary>
     /// Diese Klasse beschreibt eine Auswahl auf die Programmzeitschrift.
     /// </summary>
     public class GuideEntryFilter
@@ -108,6 +152,16 @@ namespace JMS.DVBVCR.RecordingService.ProgramGuide
         public int PageSize { get; set; }
 
         /// <summary>
+        /// Die Art der Quelle.
+        /// </summary>
+        public GuideSourceFilter SourceType { get; set; }
+
+        /// <summary>
+        /// Die Art der Verschlüsselung.
+        /// </summary>
+        public GuideEncryptionFilter SourceEncryption { get; set; }
+
+        /// <summary>
         /// Die aktuell gewünschte Seite.
         /// </summary>
         public int PageIndex;
@@ -120,17 +174,37 @@ namespace JMS.DVBVCR.RecordingService.ProgramGuide
         public IEnumerable<ProgramGuideEntry> Filter( IEnumerable<ProgramGuideEntry> entries )
         {
             // Only use sources available to the target profile
-            entries = entries.Where( entry => VCRProfiles.FindSource( ProfileName, entry.Source ) != null );
+            var entrySet = entries
+                .Select( entry => new { e = entry, s = VCRProfiles.FindSource( ProfileName, entry.Source ) } )
+                .Where( entry => entry.s != null )
+                .Select( entry => new { e = entry.e, s = (Station) entry.s.Source } );
 
             // Name of the station - best filter first
             if (Source != null)
-                entries = entries.Where( entry => Source.Equals( entry.Source ) );
+            {
+                // One source - no more filters
+                entrySet = entrySet.Where( entry => Source.Equals( entry.e.Source ) );
+            }
+            else
+            {
+                // Apply source type filter
+                if (SourceType == GuideSourceFilter.Television)
+                    entrySet = entrySet.Where( entry => entry.s.SourceType == SourceTypes.TV );
+                else if (SourceType == GuideSourceFilter.Radio)
+                    entrySet = entrySet.Where( entry => entry.s.SourceType == SourceTypes.Radio );
+
+                // Apply encryption filter
+                if (SourceEncryption == GuideEncryptionFilter.Free)
+                    entrySet = entrySet.Where( entry => !entry.s.IsEncrypted );
+                else if (SourceEncryption == GuideEncryptionFilter.Encrypted)
+                    entrySet = entrySet.Where( entry => entry.s.IsEncrypted );
+            }
 
             // Start time
             if (Start.HasValue)
             {
                 // Later
-                entries = entries.Where( entry => entry.StartTime >= Start.Value );
+                entrySet = entrySet.Where( entry => entry.e.StartTime >= Start.Value );
             }
             else
             {
@@ -138,7 +212,7 @@ namespace JMS.DVBVCR.RecordingService.ProgramGuide
                 var now = DateTime.UtcNow;
 
                 // Still active
-                entries = entries.Where( entry => entry.EndTime > now );
+                entrySet = entrySet.Where( entry => entry.e.EndTime > now );
             }
 
             // Matcher on content
@@ -170,11 +244,14 @@ namespace JMS.DVBVCR.RecordingService.ProgramGuide
             // Apply content filter
             if (matchTitle != null)
                 if (matchContent != null)
-                    entries = entries.Where( entry => matchTitle( entry ) || matchContent( entry ) );
+                    entrySet = entrySet.Where( entry => matchTitle( entry.e ) || matchContent( entry.e ) );
                 else
-                    entries = entries.Where( matchTitle );
+                    entrySet = entrySet.Where( entry => matchTitle( entry.e ) );
             else if (matchContent != null)
-                entries = entries.Where( matchContent );
+                entrySet = entrySet.Where( entry => matchContent( entry.e ) );
+
+            // Back mapping
+            entries = entrySet.Select( entry => entry.e );
 
             // Caller will get it all
             if (PageSize < 1)

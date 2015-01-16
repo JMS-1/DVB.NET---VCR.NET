@@ -65,6 +65,18 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         public int PageIndex;
 
         /// <summary>
+        /// Die Art der Quelle.
+        /// </summary>
+        [DataMember( Name = "typeFilter" )]
+        public GuideSourceFilter SourceType { get; set; }
+
+        /// <summary>
+        /// Die Art der Verschlüsselung.
+        /// </summary>
+        [DataMember( Name = "cryptFilter" )]
+        public GuideEncryptionFilter SourceEncryption { get; set; }
+
+        /// <summary>
         /// Erstellt die interne Repräsentation eines Filters.
         /// </summary>
         /// <param name="filter">Die externe Darstellung des Filters.</param>
@@ -83,9 +95,11 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
                 new GuideEntryFilter
                 {
                     Source = (source == null) ? null : source.Source,
+                    SourceEncryption = filter.SourceEncryption,
                     ContentPattern = filter.ContentPattern,
                     TitlePattern = filter.TitlePattern,
                     ProfileName = filter.ProfileName,
+                    SourceType = filter.SourceType,
                     PageIndex = filter.PageIndex,
                     PageSize = filter.PageSize,
                     Start = filter.Start,

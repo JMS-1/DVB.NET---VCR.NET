@@ -15,6 +15,26 @@ var VCRServer;
     // Der Präfix für alle REST Zugiffe
     var restRoot = serverRoot + '/vcr.net/';
     ;
+    // Die Art der zu suchenden Quelle
+    (function (GuideSource) {
+        // Nur Fernsehsender
+        GuideSource[GuideSource["TV"] = 1] = "TV";
+        // Nur Radiosender
+        GuideSource[GuideSource["RADIO"] = 2] = "RADIO";
+        // Einfach alles
+        GuideSource[GuideSource["ALL"] = GuideSource.TV + GuideSource.RADIO] = "ALL";
+    })(VCRServer.GuideSource || (VCRServer.GuideSource = {}));
+    var GuideSource = VCRServer.GuideSource;
+    // Die Verschlüsselung der Quelle
+    (function (GuideEncryption) {
+        // Nur kostenlose Quellen
+        GuideEncryption[GuideEncryption["FREE"] = 1] = "FREE";
+        // Nur Bezahlsender
+        GuideEncryption[GuideEncryption["PAY"] = 2] = "PAY";
+        // Alle Sender
+        GuideEncryption[GuideEncryption["ALL"] = GuideEncryption.FREE + GuideEncryption.PAY] = "ALL";
+    })(VCRServer.GuideEncryption || (VCRServer.GuideEncryption = {}));
+    var GuideEncryption = VCRServer.GuideEncryption;
     function getRestRoot() {
         return restRoot;
     }

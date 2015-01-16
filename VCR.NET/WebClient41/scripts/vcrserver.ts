@@ -509,6 +509,30 @@ module VCRServer {
         size: string;
     }
 
+    // Die Art der zu suchenden Quelle
+    export enum GuideSource {
+        // Nur Fernsehsender
+        TV = 1,
+
+        // Nur Radiosender
+        RADIO = 2,
+
+        // Einfach alles
+        ALL = TV + RADIO,
+    }
+
+    // Die Verschlüsselung der Quelle
+    export enum GuideEncryption {
+        // Nur kostenlose Quellen
+        FREE = 1,
+
+        // Nur Bezahlsender
+        PAY = 2,
+
+        // Alle Sender
+        ALL = FREE + PAY,
+    }
+
     // Repräsentiert die Klasse GuideFilter
     export interface GuideFilterContract {
         // Der Name des aktuell ausgewählten Geräteprofils
@@ -531,6 +555,12 @@ module VCRServer {
 
         // Die aktuelle Seite
         index: number;
+
+        // Einschränkung auf die Art der Quellen
+        typeFilter: GuideSource;
+
+        // Einschränkung auf die Verschlüsselung der Quellen
+        cryptFilter: GuideEncryption;
     }
 
     // Repräsentiert die Klasse JobScheduleData
