@@ -2653,6 +2653,12 @@ var guidePage = (function (_super) {
     guidePage.prototype.refresh = function () {
         var _this = this;
         $('#addFavorite').button({ 'disabled': GuideFilter.global.title == null });
+        // Einschränkung auf die Quellesuche machen wir nur, wenn keine Quelle ausgewählt ist
+        var sourceFilter = $('.guideSourceFilter');
+        if (GuideFilter.global.station == '')
+            sourceFilter.removeClass(JMSLib.CSSClass.hide);
+        else
+            sourceFilter.addClass(JMSLib.CSSClass.hide);
         GuideFilter.global.execute(function (items) {
             $.each(items, function (index, item) { return item.onShowDetails = function (target, origin) { return _this.showDetails(target, origin); }; });
             _this.details.reset();
@@ -2848,6 +2854,10 @@ var guidePage = (function (_super) {
             GuideFilter.global.userProfileChanged();
             settingsLoaded();
         });
+        // Quellauswahl aufbereiten
+        var filter = $('.guideSourceFilter');
+        filter.buttonset();
+        filter.change(function () { return _this.refresh(); });
     };
     return guidePage;
 })(Page);

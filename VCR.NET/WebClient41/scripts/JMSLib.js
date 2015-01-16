@@ -8,8 +8,10 @@ var JMSLib;
         }
         // Hebt eine ungültige Eingabe hervor
         CSSClass.invalid = 'invalid';
-        // Macht Oberflächenelemente unsichtbar
+        // Entfernt Oberflächenelemente aus der Anzeige
         CSSClass.invisible = 'invisible';
+        // Macht Oberflächenelemente unsichtbar
+        CSSClass.hide = 'hidden';
         // Gebt eine kritische Eingabe hervor
         CSSClass.warning = 'warning';
         // Die Klasse für die eingebettete Hilfe

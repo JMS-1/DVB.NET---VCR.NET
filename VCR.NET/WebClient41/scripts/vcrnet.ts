@@ -3782,6 +3782,13 @@ class guidePage extends Page implements IPage {
     private refresh(): void {
         $('#addFavorite').button({ 'disabled': GuideFilter.global.title == null });
 
+        // Einschränkung auf die Quellesuche machen wir nur, wenn keine Quelle ausgewählt ist
+        var sourceFilter = $('.guideSourceFilter');
+        if (GuideFilter.global.station == '')
+            sourceFilter.removeClass(JMSLib.CSSClass.hide);
+        else
+            sourceFilter.addClass(JMSLib.CSSClass.hide);
+
         GuideFilter.global.execute((items: GuideItem[]) => {
             $.each(items, (index: number, item: GuideItem) => item.onShowDetails = (target: GuideItem, origin: any) => this.showDetails(target, origin));
 
@@ -4021,6 +4028,11 @@ class guidePage extends Page implements IPage {
 
         // Benutzereinstellungen abwarten
         VCRServer.UserProfile.global.register(() => { GuideFilter.global.userProfileChanged(); settingsLoaded(); });
+
+        // Quellauswahl aufbereiten
+        var filter = $('.guideSourceFilter');
+        filter.buttonset();
+        filter.change(() => this.refresh());
     }
 }
 

@@ -471,4 +471,12 @@ fieldset legend {
 #mainArea {
   margin: 0px 10px;
 }
+.guideSourceFilter {
+  font-size: x-small;
+  margin-left: 5px;
+  margin-right: 0px;
+}
+.guideSourceFilter label {
+  margin-right: 0px !important;
+}
 /*# sourceMappingURL=vcrnet.css.map */

@@ -8,8 +8,11 @@ module JMSLib {
         // Hebt eine ungültige Eingabe hervor
         static invalid = 'invalid';
 
-        // Macht Oberflächenelemente unsichtbar
+        // Entfernt Oberflächenelemente aus der Anzeige
         static invisible = 'invisible';
+
+        // Macht Oberflächenelemente unsichtbar
+        static hide = 'hidden';
 
         // Gebt eine kritische Eingabe hervor
         static warning = 'warning';

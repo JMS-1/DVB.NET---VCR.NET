@@ -7,6 +7,9 @@
 .invisible {
   display: none;
 }
+.hidden {
+  visibility: hidden;
+}
 .warning {
   font-weight: bold;
   color: red;
