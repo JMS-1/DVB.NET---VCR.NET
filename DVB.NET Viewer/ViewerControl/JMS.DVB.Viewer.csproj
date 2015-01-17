@@ -66,36 +66,36 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JMS.DVB.Algorithms, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.2\RunTime\JMS.DVB.Algorithms.dll</HintPath>
+    <Reference Include="JMS.DVB.Algorithms, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.3\RunTime\JMS.DVB.Algorithms.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="JMS.DVB.DirectShow, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.2\RunTime\JMS.DVB.DirectShow.dll</HintPath>
+    <Reference Include="JMS.DVB.DirectShow, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.3\RunTime\JMS.DVB.DirectShow.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="JMS.DVB.EPG, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.2\RunTime\JMS.DVB.EPG.dll</HintPath>
+    <Reference Include="JMS.DVB.EPG, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.3\RunTime\JMS.DVB.EPG.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="JMS.DVB.HardwareAbstraction, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.2\RunTime\JMS.DVB.HardwareAbstraction.dll</HintPath>
+    <Reference Include="JMS.DVB.HardwareAbstraction, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.3\RunTime\JMS.DVB.HardwareAbstraction.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="JMS.DVB.SITables, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.2\RunTime\JMS.DVB.SITables.dll</HintPath>
+    <Reference Include="JMS.DVB.SITables, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.3\RunTime\JMS.DVB.SITables.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="JMS.DVB.SourceManagement, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.2\RunTime\JMS.DVB.SourceManagement.dll</HintPath>
+    <Reference Include="JMS.DVB.SourceManagement, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.3\RunTime\JMS.DVB.SourceManagement.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="JMS.DVB.TS, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.2\RunTime\JMS.DVB.TS.dll</HintPath>
+    <Reference Include="JMS.DVB.TS, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.3\RunTime\JMS.DVB.TS.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="JMS.FavoriteManager, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.2\RunTime\JMS.FavoriteManager.dll</HintPath>
+    <Reference Include="JMS.FavoriteManager, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.3\RunTime\JMS.FavoriteManager.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">

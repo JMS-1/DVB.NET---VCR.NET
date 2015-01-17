@@ -249,7 +249,7 @@ namespace JMS.DVB.DeviceAccess.BDAElements
         public string QueryVendorInfo()
         {
             // Some stuff
-            return "DVB.NET 4.2 DVB Receiver Filter";
+            return "DVB.NET 4.3 DVB Receiver Filter";
         }
 
         #endregion

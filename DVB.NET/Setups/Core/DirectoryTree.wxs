@@ -12,7 +12,7 @@
       <Directory Id="ProgramFilesFolder">
         <Directory Id="ManufacturerFolder" Name="$(var.Manufacturer)">
 
-          <Directory Id="INSTALLFOLDER" Name="DVB.NET 4.2">
+          <Directory Id="INSTALLFOLDER" Name="DVB.NET 4.3">
             
             <Directory Id="DVBNETAdmin.Binaries" />
             <Directory Id="JMS.DVB.Administration.Framework.Binaries" />
@@ -185,7 +185,7 @@
 
       <!-- Menüeinträge -->
       <Directory Id="ProgramMenuFolder">
-        <Directory Id="ShortCutFolder" Name="DVB.NET 4.2" />
+        <Directory Id="ShortCutFolder" Name="DVB.NET 4.3" />
       </Directory>
 
     </Directory>

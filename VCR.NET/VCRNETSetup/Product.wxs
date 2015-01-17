@@ -60,10 +60,10 @@
 
     <!-- DVB.NET muss inklusive des Card Servers in der korrekten Version installiert sein -->
     <Property Id="DVBNETCORE">
-      <RegistrySearch Id="DVBNETCOREREG" Win64="no" Root="HKLM" Key="Software\JMS\DVB.NET\4.2.0.0" Name="Root Directory" Type="raw" />
+      <RegistrySearch Id="DVBNETCOREREG" Win64="no" Root="HKLM" Key="Software\JMS\DVB.NET\4.3.0.0" Name="Root Directory" Type="raw" />
     </Property>
     <Property Id="DVBNETSERVER">
-      <RegistrySearch Id="DVBNETSERVERREG" Win64="no" Root="HKLM" Key="Software\JMS\DVB.NET\4.2.0.0" Name="Server Directory" Type="raw" />
+      <RegistrySearch Id="DVBNETSERVERREG" Win64="no" Root="HKLM" Key="Software\JMS\DVB.NET\4.3.0.0" Name="Server Directory" Type="raw" />
     </Property>
     <Condition Message="!(loc.DVBNETMISSING)">
       <![CDATA[Installed OR (DVBNETCORE AND DVBNETSERVER)]]>

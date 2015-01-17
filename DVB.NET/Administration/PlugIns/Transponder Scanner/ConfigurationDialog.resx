@@ -556,7 +556,7 @@
     <value>selGroups</value>
   </data>
   <data name="&gt;&gt;selGroups.Type" xml:space="preserve">
-    <value>JMS.DVB.Administration.SourceScanner.SourceGroupsSelector, JMS.DVB.Administration.TransponderScan, Version=4.2.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1</value>
+    <value>JMS.DVB.Administration.SourceScanner.SourceGroupsSelector, JMS.DVB.Administration.TransponderScan, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1</value>
   </data>
   <data name="&gt;&gt;selGroups.Parent" xml:space="preserve">
     <value>$this</value>
