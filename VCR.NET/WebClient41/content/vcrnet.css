@@ -412,7 +412,12 @@ body a[href]:not(.ui-button):hover {
   padding-top: 0px;
 }
 .favoriteCount {
+  white-space: nowrap;
   text-align: center;
+}
+.favoriteTitle {
+  padding-left: 10px;
+  white-space: nowrap;
 }
 .startColumn {
   width: 11em;
@@ -472,6 +477,7 @@ fieldset legend {
   margin: 0px 10px;
 }
 .guideSourceFilter {
+  white-space: nowrap;
   font-size: x-small;
   margin-left: 5px;
   margin-right: 0px;
@@ -483,5 +489,8 @@ fieldset legend {
   font-size: x-small;
   margin-bottom: 10px;
   margin-left: 10px;
+}
+#favoritesContainer thead {
+  font-weight: bold;
 }
 /*# sourceMappingURL=vcrnet.css.map */
