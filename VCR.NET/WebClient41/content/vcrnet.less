@@ -660,19 +660,6 @@ body {
     }
 }
 
-// Die Spalte mit der Anzeige der Anzahl der Sendung zu einem Favoriten
-// der Programmzeitschrift
-.favoriteCount {
-    white-space: nowrap;
-    text-align: center;
-}
-
-// Die Spalte mit dem Text der Favoriten.
-.favoriteTitle {
-    padding-left: 10px;
-    white-space: nowrap;
-}
-
 // Die Spalte der Startzeit einer Aufzeichnung.
 .startColumn {
     width: 11em;
@@ -782,8 +769,10 @@ fieldset {
 }
 
 // Die Überschrift über die Liste der Favoriten
-#favoritesContainer{
-    thead{
-        font-weight: bold;
+.favoritesTable {
+    font-family: @font;
+
+    tbody > tr > td:first-Child {
+        text-align: center;
     }
 }
