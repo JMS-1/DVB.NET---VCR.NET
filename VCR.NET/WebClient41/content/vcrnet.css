@@ -484,6 +484,7 @@ fieldset legend {
 }
 .favoritesTable {
   font-family: Arial, sans-serif;
+  margin-left: 10px;
 }
 .favoritesTable tbody > tr > td:first-Child {
   text-align: center;
