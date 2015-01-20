@@ -44,16 +44,16 @@ namespace JMS.DVB.Algorithms.Scheduler
                 m_Items =
                     schedules
                         .Select( schedule =>
-                            {
-                                // Set scope
-                                schedule.Reset( minTime );
+                        {
+                            // Set scope
+                            schedule.Reset( minTime );
 
-                                // Move to first
-                                schedule.MoveNext();
+                            // Move to first
+                            schedule.MoveNext();
 
-                                // Report
-                                return schedule;
-                            } )
+                            // Report
+                            return schedule;
+                        } )
                         .Where( item => item.Current != null )
                         .ToList();
             }
@@ -163,9 +163,6 @@ namespace JMS.DVB.Algorithms.Scheduler
                 // Discard list
                 plans.Clear();
 
-                // We collect all plans forcing to start the recording late separatly
-                var latePlans = new List<SchedulePlan>();
-
                 // Iterate over all plans and try to add the current candidate - in worst case this will multiply possible plans by the number of resources available
                 foreach (var plan in allPlans)
                     for (int i = plan.Resources.Length; i-- > 0; )
@@ -173,29 +170,13 @@ namespace JMS.DVB.Algorithms.Scheduler
                         // Clone of plan must be recreated for each resource because test is allowed to modify it
                         var clone = plan.Clone();
 
-                        // Remember the time we tried
+                        // Remember the time we tried - implicit cast is important, do NOT use var
                         SuggestedPlannedTime plannedTime = planned;
 
                         // See if resource can handle this
                         if (clone.Resources[i].Add( candidate.Definition, plannedTime, minTime ))
-                            if (plannedTime.Planned.Start == planned.Start)
-                            {
-                                // Add to the full plan
-                                plans.Add( clone );
-
-                                // Ignore all late plans to follow
-                                latePlans = null;
-                            }
-                            else if (latePlans != null)
-                            {
-                                // Remember in case we do not find a plan which starts in time
-                                latePlans.Add( clone );
-                            }
+                            plans.Add( clone );
                     }
-
-                // Merge
-                if (latePlans != null)
-                    plans.AddRange( latePlans );
 
                 // Must reset if the recording could not be scheduled at all
                 if (plans.Count < 1)

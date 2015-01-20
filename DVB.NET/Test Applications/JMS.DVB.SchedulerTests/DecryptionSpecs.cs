@@ -263,5 +263,49 @@ namespace JMS.DVB.SchedulerTests
                 device.SetPriority( prio );
             }
         }
+
+        /// <summary>
+        /// Eine Aufzeichnungsplanung kommt durcheinander, wenn eine Aufzeichnung gestartet wird.
+        /// </summary>
+        [TestMethod]
+        public void Bad_Planning_After_Recording_Start()
+        {
+            // Create component under test
+            using (var rm = ResourceManager.Create( StringComparer.InvariantCultureIgnoreCase ))
+            {
+                var now = DateTime.Now.Date.AddDays( 10 );
+
+                var source1 = SourceMock.Create( "s1" );
+                var source2 = SourceMock.Create( "s2" );
+                var source3 = SourceMock.Create( "s3" );
+
+                var dev1 = ResourceMock.Create( "dev1", source1, source2, source3 );
+                var dev2 = ResourceMock.Create( "dev2", source1, source2, source3 );
+
+                var id1 = Guid.NewGuid();
+                var start1 = now.AddHours( 11 ).AddMinutes( 40 );
+                var dur1 = TimeSpan.FromMinutes( 15 );
+
+                var plan1 = RecordingDefinition.Create( false, "test1", id1, null, source1, start1, dur1 );
+                var plan2 = RecordingDefinition.Create( false, "test2", Guid.NewGuid(), null, source2, now.AddHours( 11 ).AddMinutes( 45 ), TimeSpan.FromMinutes( 15 ) );
+                var plan3 = RecordingDefinition.Create( false, "test3", Guid.NewGuid(), null, source3, now.AddHours( 11 ).AddMinutes( 50 ), TimeSpan.FromMinutes( 15 ) );
+
+                rm.Add( dev1 );
+                rm.Add( dev2 );
+
+                Assert.IsTrue( rm.Start( dev2, source1, id1, "test1", start1, start1 + dur1 ) );
+
+                var cut = rm.CreateScheduler( false );
+                cut.Add( plan1 );
+                cut.Add( plan2 );
+                cut.Add( plan3 );
+
+                var schedules = cut.GetSchedules( start1.AddMinutes( 5 ).AddTicks( 1 ) ).Where(s => s.Definition.UniqueIdentifier != id1).ToArray();
+
+                Assert.AreEqual( 2, schedules.Length, "#schedules" );
+                Assert.AreEqual( "test2", schedules[0].Definition.Name, "1" );
+                Assert.AreEqual( "test3", schedules[1].Definition.Name, "2" );
+            }
+        }
     }
 }

@@ -113,6 +113,11 @@ namespace JMS.DVB.Algorithms.Scheduler
         public TimeSpan TotalCut { get; private set; }
 
         /// <summary>
+        /// Meldet die Anzahl der im Rahmen der Planung nicht vollständig ausgeführten Aufzeichnungen.
+        /// </summary>
+        public int CutRecordings { get; private set; }
+
+        /// <summary>
         /// Die zugehörige Gesamtplanung.
         /// </summary>
         public SchedulePlan SchedulePlan { get; private set; }
@@ -168,6 +173,7 @@ namespace JMS.DVB.Algorithms.Scheduler
         {
             // Finish clone process
             m_Recordings.AddRange( original.m_Recordings );
+            CutRecordings = original.CutRecordings;
             TotalCut = original.TotalCut;
         }
 
@@ -294,8 +300,15 @@ namespace JMS.DVB.Algorithms.Scheduler
             // Remember recording
             m_Recordings.Add( new _RecordingItem( recording, time.Planned, time.Planned.Start > initialPlan.Start ) );
 
-            // Adjust cut time - this will be taken in account when checking weights to get the best plan
-            TotalCut += initialPlan.Duration - time.Planned.Duration;
+            // Get cut time
+            var delta = initialPlan.Duration - time.Planned.Duration;
+
+            // Adjust cut time - this will be taken in account when checking weights to get the best plan           
+            TotalCut += delta;
+
+            // Count failures
+            if (delta.Ticks > 0)
+                CutRecordings += 1;
 
             // We did it
             return true;

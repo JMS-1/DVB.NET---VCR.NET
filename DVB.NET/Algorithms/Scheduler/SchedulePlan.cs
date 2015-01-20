@@ -51,8 +51,19 @@ namespace JMS.DVB.Algorithms.Scheduler
             /// <returns>Positiv, wenn der erste Plan mehr Aufzeichnungszeit abschneidet als der zweite.</returns>
             public int Compare( SchedulePlan firstPlan, SchedulePlan secondPlan )
             {
-                // Forward
-                return firstPlan.Resources.Sum( r => r.TotalCut.Ticks ).CompareTo( secondPlan.Resources.Sum( r => r.TotalCut.Ticks ) );
+                // First check the cut time - move larger loss to the end of the list
+                var firstLoss = firstPlan.Resources.Sum( r => r.TotalCut.Ticks );
+                var secondLoss = secondPlan.Resources.Sum( r => r.TotalCut.Ticks );
+                var delta = firstLoss.CompareTo( secondLoss );
+
+                // Can stop if not equal or equal and all zero - normal case!
+                if (delta != 0)
+                    return delta;
+                if (firstLoss == 0)
+                    return 0;
+
+                // Then check for the number of uncut recordings - move larger counts to the end of the list
+                return firstPlan.Resources.Sum( r => r.CutRecordings ).CompareTo( secondPlan.Resources.Sum( r => r.CutRecordings ) );
             }
         }
 
