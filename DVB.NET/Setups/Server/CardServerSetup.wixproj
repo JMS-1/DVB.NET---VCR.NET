@@ -16,14 +16,14 @@
     <OutputPath>..\..\..\msi\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <DefineConstants>Debug</DefineConstants>
-    <WixVariables>SETUPVERSION=4.3.8</WixVariables>
+    <WixVariables>SETUPVERSION=4.3.9</WixVariables>
     <SuppressPdbOutput>True</SuppressPdbOutput>
     <Cultures>de-de</Cultures>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>..\..\..\msi\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
-    <WixVariables>SETUPVERSION=4.3.8</WixVariables>
+    <WixVariables>SETUPVERSION=4.3.9</WixVariables>
     <SuppressPdbOutput>True</SuppressPdbOutput>
     <Cultures>de-de</Cultures>
   </PropertyGroup>
