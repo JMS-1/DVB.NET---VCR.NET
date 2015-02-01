@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "" )]
 [assembly: AssemblyProduct( "VCR.NET Recording Service" )]
-[assembly: AssemblyCopyright( "Copyright © JMS 2003-2013" )]
+[assembly: AssemblyCopyright( "Copyright © 2003-15" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 

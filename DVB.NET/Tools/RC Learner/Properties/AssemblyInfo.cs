@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "" )]
 [assembly: AssemblyProduct( "RC Learner" )]
-[assembly: AssemblyCopyright( "Copyright © JMS 2011-13" )]
+[assembly: AssemblyCopyright( "Copyright © 2003-15" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 

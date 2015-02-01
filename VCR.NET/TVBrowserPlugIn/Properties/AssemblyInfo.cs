@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "JMS" )]
 [assembly: AssemblyProduct( "VCR.NET TV PlugIn" )]
-[assembly: AssemblyCopyright( "" )]
+[assembly: AssemblyCopyright( "Copyright © 2003-15" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 
