@@ -177,9 +177,6 @@ body a[href]:not(.ui-button):hover {
 .optionHelpTable .optionHelpDescription {
   padding-left: 30px;
 }
-.editPart {
-  width: 80%;
-}
 .editPart .lockDeviceOption {
   position: relative;
   top: 2px;
@@ -488,5 +485,14 @@ fieldset legend {
 }
 .favoritesTable tbody > tr > td:first-Child {
   text-align: center;
+}
+.sideBySide {
+  display: table-row;
+}
+.sideBySide div:first-Child {
+  padding-right: 0.5em;
+}
+.sideBySide > div {
+  display: table-cell;
 }
 /*# sourceMappingURL=vcrnet.css.map */

@@ -307,8 +307,6 @@ body {
 
 // Eine Gruppe von Eigenschaften auf dem Formular zum Ändern von Aufzeichnungen.
 .editPart {
-    width: 80%;
-
     .lockDeviceOption {
         position: relative;
         top: 2px;
@@ -775,5 +773,19 @@ fieldset {
 
     tbody > tr > td:first-Child {
         text-align: center;
+    }
+}
+
+// Wir wollen eine Beschriftung links neben einer Auswahl haben, 
+// wobei die Auswahl mehr als eine Zeile hoch werden kann.
+.sideBySide{
+    display: table-row;
+
+    div:first-Child {
+        padding-right: 0.5em;   
+    }
+
+    > div {
+        display: table-cell;
     }
 }
