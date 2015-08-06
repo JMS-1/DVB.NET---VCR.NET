@@ -72,5 +72,10 @@ namespace JMS.DVB.Viewer
         /// Gesetzt, wenn die Fernsteuerung verwendet werden soll.
         /// </summary>
         bool UseRemoteControl { get; }
+
+        /// <summary>
+        /// Die Verzögerung des Tonsignals in Millisekunden.
+        /// </summary>
+        int AVDelay { get; }
     }
 }

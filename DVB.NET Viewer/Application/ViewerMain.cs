@@ -734,59 +734,19 @@ namespace DVBNETViewer
         /// <summary>
         /// Meldet, ob der Cyberlink / PowerDVD Codec für H.264 aktiviert werden soll.
         /// </summary>
-        bool IGeneralInfo.UseCyberlinkCodec
-        {
-            get
-            {
-                // Report
-                return Properties.Settings.Default.UseCyberlinkCodec;
-            }
-        }
+        bool IGeneralInfo.UseCyberlinkCodec { get { return Properties.Settings.Default.UseCyberlinkCodec; } }
 
-        bool IGeneralInfo.UseRemoteControl
-        {
-            get
-            {
-                // Report
-                return Properties.Settings.Default.UseRemote;
-            }
-        }
+        bool IGeneralInfo.UseRemoteControl { get { return Properties.Settings.Default.UseRemote; } }
 
-        string IGeneralInfo.H264Decoder
-        {
-            get
-            {
-                // Report
-                return Properties.Settings.Default.H264Decoder;
-            }
-        }
+        string IGeneralInfo.H264Decoder { get { return Properties.Settings.Default.H264Decoder; } }
 
-        string IGeneralInfo.MPEG2Decoder
-        {
-            get
-            {
-                // Report
-                return Properties.Settings.Default.MPEG2Decoder;
-            }
-        }
+        string IGeneralInfo.MPEG2Decoder { get { return Properties.Settings.Default.MPEG2Decoder; } }
 
-        string IGeneralInfo.AC3Decoder
-        {
-            get
-            {
-                // Report
-                return Properties.Settings.Default.AC3Decoder;
-            }
-        }
+        string IGeneralInfo.AC3Decoder { get { return Properties.Settings.Default.AC3Decoder; } }
 
-        string IGeneralInfo.MP2Decoder
-        {
-            get
-            {
-                // Report
-                return Properties.Settings.Default.MP2Decoder;
-            }
-        }
+        string IGeneralInfo.MP2Decoder { get { return Properties.Settings.Default.MP2Decoder; } }
+
+        int IGeneralInfo.AVDelay { get { return Properties.Settings.Default.AVDelay; } }
 
         void IGeneralInfo.SetPictureParameters( PictureParameters parameters )
         {

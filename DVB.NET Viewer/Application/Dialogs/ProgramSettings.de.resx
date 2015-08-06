@@ -190,9 +190,6 @@
   <data name="ckCyberlink.Text" xml:space="preserve">
     <value>&amp;CyberLink / PowerDVD H.264 Format aktivieren</value>
   </data>
-  <data name="tabGeneral.Text" xml:space="preserve">
-    <value>Allgemein</value>
-  </data>
   <data name="ckRemote.Size" type="System.Drawing.Size, System.Drawing">
     <value>150, 17</value>
   </data>
@@ -205,11 +202,8 @@
   <data name="ckHideCursor.Text" xml:space="preserve">
     <value>Maus&amp;zeiger ausblenden</value>
   </data>
-  <data name="tabVideo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>638, 317</value>
-  </data>
-  <data name="tabVideo.Text" xml:space="preserve">
-    <value>Bild</value>
+  <data name="tabGeneral.Text" xml:space="preserve">
+    <value>Allgemein</value>
   </data>
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 13</value>
@@ -238,8 +232,14 @@
   <data name="label8.Text" xml:space="preserve">
     <value>&amp;Kontrast</value>
   </data>
-  <data name="tabFilter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>638, 317</value>
+  <data name="tabVideo.Text" xml:space="preserve">
+    <value>Bild</value>
+  </data>
+  <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
+    <value>107, 13</value>
+  </data>
+  <data name="label16.Text" xml:space="preserve">
+    <value>Ton&amp;verzögerung (ms)</value>
   </data>
   <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
     <value>56, 13</value>

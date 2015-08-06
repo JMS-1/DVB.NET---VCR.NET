@@ -108,6 +108,7 @@ namespace DVBNETViewer.Dialogs
             ckCyberlink.Checked = settings.UseCyberlinkCodec;
             ckHideCursor.Checked = settings.HideCursor;
             ckRemote.Checked = settings.UseRemote;
+            udAVDelay.Value = settings.AVDelay;
 
             // All lists
             LoadList( selMPEG2, DisplayGraph.VideoDecoderFilters, settings.MPEG2Decoder );
@@ -277,6 +278,7 @@ namespace DVBNETViewer.Dialogs
                 settings.PayTV = (selEnc.SelectedIndex < 2);
                 settings.HideCursor = ckHideCursor.Checked;
                 settings.OSDLifeTime = (int) selOSD.Value;
+                settings.AVDelay = (int) udAVDelay.Value;
                 settings.UseRemote = ckRemote.Checked;
                 settings.Priority = CurrentPriority;
                 settings.BroadcastIP = txMCast.Text;
@@ -357,6 +359,7 @@ namespace DVBNETViewer.Dialogs
                 case "H264Decoder": m_Rebuid = true; break;
                 case "MP2Decoder": m_Rebuid = true; break;
                 case "AC3Decoder": m_Rebuid = true; break;
+                case "AVDelay": m_Rebuid = true; break;
             }
         }
 

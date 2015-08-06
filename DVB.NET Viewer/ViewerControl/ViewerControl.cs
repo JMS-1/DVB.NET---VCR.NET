@@ -1305,6 +1305,7 @@ namespace JMS.DVB.Viewer
             // Configure graph
             directShow.UseCyberlink = GeneralInfo.UseCyberlinkCodec;
             directShow.MPEG2Decoder = GeneralInfo.MPEG2Decoder;
+            directShow.AudioVideoDelay = GeneralInfo.AVDelay;
             directShow.H264Decoder = GeneralInfo.H264Decoder;
             directShow.MP2Decoder = GeneralInfo.MP2Decoder;
             directShow.AC3Decoder = GeneralInfo.AC3Decoder;
@@ -2060,62 +2061,22 @@ namespace JMS.DVB.Viewer
         }
 
 
-        bool IGeneralInfo.UseCyberlinkCodec
-        {
-            get
-            {
-                // Forward - make it the default
-                return ((null == m_GeneralInfo) || m_GeneralInfo.UseCyberlinkCodec);
-            }
-        }
+        bool IGeneralInfo.UseCyberlinkCodec { get { return ((null == m_GeneralInfo) || m_GeneralInfo.UseCyberlinkCodec); } }
 
         /// <summary>
         /// Gesetzt, wenn die Fernsteuerung verwendet werden soll.
         /// </summary>
-        public bool UseRemoteControl
-        {
-            get
-            {
-                // Forward - make it the default
-                return ((null == m_GeneralInfo) || m_GeneralInfo.UseRemoteControl);
-            }
-        }
+        public bool UseRemoteControl { get { return ((null == m_GeneralInfo) || m_GeneralInfo.UseRemoteControl); } }
 
-        string IGeneralInfo.H264Decoder
-        {
-            get
-            {
-                // Forward
-                return (null == m_GeneralInfo) ? null : m_GeneralInfo.H264Decoder;
-            }
-        }
+        int IGeneralInfo.AVDelay { get { return (null == m_GeneralInfo) ? 500 : m_GeneralInfo.AVDelay; } }
 
-        string IGeneralInfo.MPEG2Decoder
-        {
-            get
-            {
-                // Forward
-                return (null == m_GeneralInfo) ? null : m_GeneralInfo.MPEG2Decoder;
-            }
-        }
+        string IGeneralInfo.H264Decoder { get { return (null == m_GeneralInfo) ? null : m_GeneralInfo.H264Decoder; } }
 
-        string IGeneralInfo.AC3Decoder
-        {
-            get
-            {
-                // Forward
-                return (null == m_GeneralInfo) ? null : m_GeneralInfo.AC3Decoder;
-            }
-        }
+        string IGeneralInfo.MPEG2Decoder { get { return (null == m_GeneralInfo) ? null : m_GeneralInfo.MPEG2Decoder; } }
 
-        string IGeneralInfo.MP2Decoder
-        {
-            get
-            {
-                // Forward
-                return (null == m_GeneralInfo) ? null : m_GeneralInfo.MP2Decoder;
-            }
-        }
+        string IGeneralInfo.AC3Decoder { get { return (null == m_GeneralInfo) ? null : m_GeneralInfo.AC3Decoder; } }
+
+        string IGeneralInfo.MP2Decoder { get { return (null == m_GeneralInfo) ? null : m_GeneralInfo.MP2Decoder; } }
 
 
         void IGeneralInfo.SetPictureParameters( PictureParameters parameters )

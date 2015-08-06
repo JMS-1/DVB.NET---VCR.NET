@@ -61,6 +61,8 @@ namespace DVBNETViewer.Dialogs
             this.ckOverwrite = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
             this.tabFilter = new System.Windows.Forms.TabPage();
+            this.udAVDelay = new System.Windows.Forms.NumericUpDown();
+            this.label16 = new System.Windows.Forms.Label();
             this.selH264 = new System.Windows.Forms.ComboBox();
             this.label15 = new System.Windows.Forms.Label();
             this.selAC3 = new System.Windows.Forms.ComboBox();
@@ -79,6 +81,7 @@ namespace DVBNETViewer.Dialogs
             ((System.ComponentModel.ISupportInitialize)(this.selSaturation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selContrast)).BeginInit();
             this.tabFilter.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.udAVDelay)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -103,7 +106,6 @@ namespace DVBNETViewer.Dialogs
             // 
             // selPrio
             // 
-            resources.ApplyResources(this.selPrio, "selPrio");
             this.selPrio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.selPrio.FormattingEnabled = true;
             this.selPrio.Items.AddRange(new object[] {
@@ -113,28 +115,29 @@ namespace DVBNETViewer.Dialogs
             resources.GetString("selPrio.Items3"),
             resources.GetString("selPrio.Items4"),
             resources.GetString("selPrio.Items5")});
+            resources.ApplyResources(this.selPrio, "selPrio");
             this.selPrio.Name = "selPrio";
             // 
             // selType
             // 
-            resources.ApplyResources(this.selType, "selType");
             this.selType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.selType.FormattingEnabled = true;
             this.selType.Items.AddRange(new object[] {
             resources.GetString("selType.Items"),
             resources.GetString("selType.Items1"),
             resources.GetString("selType.Items2")});
+            resources.ApplyResources(this.selType, "selType");
             this.selType.Name = "selType";
             // 
             // selEnc
             // 
-            resources.ApplyResources(this.selEnc, "selEnc");
             this.selEnc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.selEnc.FormattingEnabled = true;
             this.selEnc.Items.AddRange(new object[] {
             resources.GetString("selEnc.Items"),
             resources.GetString("selEnc.Items1"),
             resources.GetString("selEnc.Items2")});
+            resources.ApplyResources(this.selEnc, "selEnc");
             this.selEnc.Name = "selEnc";
             // 
             // selOSD
@@ -234,7 +237,6 @@ namespace DVBNETViewer.Dialogs
             // 
             // tabGeneral
             // 
-            resources.ApplyResources(this.tabGeneral, "tabGeneral");
             this.tabGeneral.BackColor = System.Drawing.SystemColors.Control;
             this.tabGeneral.Controls.Add(this.ckRemote);
             this.tabGeneral.Controls.Add(this.ckHideCursor);
@@ -253,6 +255,7 @@ namespace DVBNETViewer.Dialogs
             this.tabGeneral.Controls.Add(this.label3);
             this.tabGeneral.Controls.Add(this.txMCast);
             this.tabGeneral.Controls.Add(this.selType);
+            resources.ApplyResources(this.tabGeneral, "tabGeneral");
             this.tabGeneral.Name = "tabGeneral";
             // 
             // ckRemote
@@ -269,7 +272,6 @@ namespace DVBNETViewer.Dialogs
             // 
             // tabVideo
             // 
-            resources.ApplyResources(this.tabVideo, "tabVideo");
             this.tabVideo.BackColor = System.Drawing.SystemColors.Control;
             this.tabVideo.Controls.Add(this.selHue);
             this.tabVideo.Controls.Add(this.selBrightness);
@@ -280,6 +282,7 @@ namespace DVBNETViewer.Dialogs
             this.tabVideo.Controls.Add(this.label9);
             this.tabVideo.Controls.Add(this.ckOverwrite);
             this.tabVideo.Controls.Add(this.label8);
+            resources.ApplyResources(this.tabVideo, "tabVideo");
             this.tabVideo.Name = "tabVideo";
             // 
             // selHue
@@ -351,8 +354,9 @@ namespace DVBNETViewer.Dialogs
             // 
             // tabFilter
             // 
-            resources.ApplyResources(this.tabFilter, "tabFilter");
             this.tabFilter.BackColor = System.Drawing.SystemColors.Control;
+            this.tabFilter.Controls.Add(this.udAVDelay);
+            this.tabFilter.Controls.Add(this.label16);
             this.tabFilter.Controls.Add(this.selH264);
             this.tabFilter.Controls.Add(this.label15);
             this.tabFilter.Controls.Add(this.selAC3);
@@ -361,7 +365,33 @@ namespace DVBNETViewer.Dialogs
             this.tabFilter.Controls.Add(this.label13);
             this.tabFilter.Controls.Add(this.selMPEG2);
             this.tabFilter.Controls.Add(this.label12);
+            resources.ApplyResources(this.tabFilter, "tabFilter");
             this.tabFilter.Name = "tabFilter";
+            // 
+            // udAVDelay
+            // 
+            this.udAVDelay.Increment = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            resources.ApplyResources(this.udAVDelay, "udAVDelay");
+            this.udAVDelay.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.udAVDelay.Minimum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            -2147483648});
+            this.udAVDelay.Name = "udAVDelay";
+            // 
+            // label16
+            // 
+            resources.ApplyResources(this.label16, "label16");
+            this.label16.Name = "label16";
             // 
             // selH264
             // 
@@ -441,6 +471,7 @@ namespace DVBNETViewer.Dialogs
             ((System.ComponentModel.ISupportInitialize)(this.selContrast)).EndInit();
             this.tabFilter.ResumeLayout(false);
             this.tabFilter.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.udAVDelay)).EndInit();
             this.ResumeLayout(false);
 
 		}
@@ -487,5 +518,7 @@ namespace DVBNETViewer.Dialogs
 		private System.Windows.Forms.Label label12;
         private System.Windows.Forms.CheckBox ckHideCursor;
         private System.Windows.Forms.CheckBox ckRemote;
+        private System.Windows.Forms.NumericUpDown udAVDelay;
+        private System.Windows.Forms.Label label16;
 	}
 }
