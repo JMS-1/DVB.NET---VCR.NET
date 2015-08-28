@@ -566,6 +566,7 @@ namespace VCRControlCenter
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "VCRNETControl";
+            this.ShowInTaskbar = false;
             this.trayMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.selPort)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.selInterval)).EndInit();

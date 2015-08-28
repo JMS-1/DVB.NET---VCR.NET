@@ -981,7 +981,7 @@ class GuideItem implements JMSLib.IGuideItem {
     }
 
     // Wird aufgerufen, wenn der Anwender die Detailanzeige aktiviert hat
-    onShowDetails: (item: GuideItem, origin: any) => void = (item: GuideItem, origin: any) => {};
+    onShowDetails: (item: GuideItem, origin: any) => void = (item: GuideItem, origin: any) => { };
 
     // Die eindeutige Kennung des Eintrags
     id: string;
@@ -1126,13 +1126,13 @@ class PlanEntry {
     }
 
     // Wird aufgerufen, wenn der Anwender die Detailanzeige aktiviert hat.
-    onShowDetails: (item: PlanEntry, origin: any) => void = (item: PlanEntry, origin: any) => {};
+    onShowDetails: (item: PlanEntry, origin: any) => void = (item: PlanEntry, origin: any) => { };
 
     // Wird aufgerufen, wenn der Anwender die erweiterten Informationen der Programmzeitschrift abruft.
-    onShowGuide: (item: PlanEntry, origin: any) => void = (item: PlanEntry, origin: any) => {};
+    onShowGuide: (item: PlanEntry, origin: any) => void = (item: PlanEntry, origin: any) => { };
 
     // Wird aufgerufen, wenn der Anwender die Ausnahmen konfigurieren möchte.
-    onException: (item: PlanEntry, origin: any) => void = (item: PlanEntry, origin: any) => {};
+    onException: (item: PlanEntry, origin: any) => void = (item: PlanEntry, origin: any) => { };
 
     // Der Name einer CSS Klasse zur Kennzeichnung von Aufzeichnungen über die Zeitumstellung hinweg
     endTimeSuspect: string;
@@ -3336,7 +3336,7 @@ class adminPage extends Page implements IPage {
 
         // Speichern
         directoryUpdate.click(() => {
-            this.directory.directories = $.map($('#recordingDirectories option'), (option: any) : string => option.value);
+            this.directory.directories = $.map($('#recordingDirectories option'), (option: any): string => option.value);
 
             this.update('directory', this.directory, directoryUpdate);
         });
@@ -3466,7 +3466,9 @@ class adminPage extends Page implements IPage {
 
         // Oberfläche vorbereiten
         navigator.tabs(options).addClass('ui-tabs-vertical ui-helper-clearfix');
-        navigator.on('tabsactivate', (ev: JQueryEventObject) => window.location.hash = '#admin;' + arguments[1].newPanel.selector.substr(1));
+        navigator.on('tabsactivate', function (ev: JQueryEventObject) {
+            window.location.hash = '#admin;' + arguments[1].newPanel.selector.substr(1);
+        });
 
         // Oberfläche vorbereiten
         $('.editButtons').button();
@@ -3800,7 +3802,7 @@ class guidePage extends Page implements IPage {
 
         // Einschränkung auf die Quellesuche machen wir nur, wenn keine Quelle ausgewählt ist
         var sourceFilter = $('.guideSourceFilter');
-        if((GuideFilter.global.station || '') == '')
+        if ((GuideFilter.global.station || '') == '')
             sourceFilter.removeClass(JMSLib.CSSClass.hide);
         else
             sourceFilter.addClass(JMSLib.CSSClass.hide);
@@ -4013,7 +4015,7 @@ class guidePage extends Page implements IPage {
             $('#withContent').button('refresh');
             $('#selDevice').val(startWith.device);
             $('#selSource').val(startWith.source);
-            
+
             var selectedType = $('input[name="guideSourceType"][value="' + startWith.sourceType + '"]');
             selectedType.prop('checked', true);
             selectedType.button('refresh');

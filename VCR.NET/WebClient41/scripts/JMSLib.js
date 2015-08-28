@@ -296,6 +296,7 @@ var JMSLib;
         HTMLTemplate.retrieveProperty = function (data, propertyPath) {
             // Zerlegen um auf Subobjektreferenzen zu prüfen
             var parts = propertyPath.split('.');
+            // Alle Fragmente durchgehen
             for (var i = 0; i < parts.length; i++) {
                 // Da ist nichts mehr
                 if (data == null)
@@ -415,7 +416,11 @@ var JMSLib;
             // Die laufende Nummer der gerade angezeigten Vorlage
             this.activeTemplate = -1;
             var templates = new Array();
-            $.each(args, function (index, template) { return TemplateLoader.load(template).done(function (template) { return templates[index] = $(template).find('#template'); }); });
+            $.each(args, function (index, template) {
+                return TemplateLoader.load(template).done(function (template) {
+                    return templates[index] = $(template).find('#template');
+                });
+            });
             this.nodesToMoveUp = nodesUp;
             this.templates = templates;
         }

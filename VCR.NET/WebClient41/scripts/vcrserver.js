@@ -22,7 +22,7 @@ var VCRServer;
         // Nur Radiosender
         GuideSource[GuideSource["RADIO"] = 2] = "RADIO";
         // Einfach alles
-        GuideSource[GuideSource["ALL"] = GuideSource.TV + GuideSource.RADIO] = "ALL";
+        GuideSource[GuideSource["ALL"] = 3] = "ALL";
     })(VCRServer.GuideSource || (VCRServer.GuideSource = {}));
     var GuideSource = VCRServer.GuideSource;
     // Die Verschlüsselung der Quelle
@@ -32,7 +32,7 @@ var VCRServer;
         // Nur Bezahlsender
         GuideEncryption[GuideEncryption["PAY"] = 2] = "PAY";
         // Alle Sender
-        GuideEncryption[GuideEncryption["ALL"] = GuideEncryption.FREE + GuideEncryption.PAY] = "ALL";
+        GuideEncryption[GuideEncryption["ALL"] = 3] = "ALL";
     })(VCRServer.GuideEncryption || (VCRServer.GuideEncryption = {}));
     var GuideEncryption = VCRServer.GuideEncryption;
     function getRestRoot() {
@@ -542,10 +542,9 @@ var VCRServer;
         };
         // Sendet die aktuelle Konfiguration an den Web Service.
         UserProfile.prototype.update = function (onError) {
-            setUserProfile(this.toContract()).done(function (data) {
-                UserProfile.global.loadFrom(data);
-                window.location.hash = 'home';
-            }).fail(JMSLib.dispatchErrorMessage(onError));
+            setUserProfile(this.toContract())
+                .done(function (data) { UserProfile.global.loadFrom(data); window.location.hash = 'home'; })
+                .fail(JMSLib.dispatchErrorMessage(onError));
         };
         // Die einzige Instanz der Einstellungen.
         UserProfile.global = new UserProfile();

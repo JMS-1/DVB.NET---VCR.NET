@@ -2,7 +2,7 @@
 /// <reference path='typings/jqueryui/jqueryui.d.ts' />
 /// <reference path='vcrserver.ts' />
 /// <reference path='jmslib.ts' />
-var __extends = this.__extends || function (d, b) {
+var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
@@ -117,14 +117,14 @@ var SavedGuideQuery = (function () {
         // Die besonderen Einschränkungen sind nur gültig, wenn keine Quelle ausgewählt wurde
         if ((this.source || '') == '') {
             // Verschlüsselung
-            if (this.encryption == 1 /* FREE */)
+            if (this.encryption == VCRServer.GuideEncryption.FREE)
                 display += 'unverschlüsselten ';
-            else if (this.encryption == 2 /* PAY */)
+            else if (this.encryption == VCRServer.GuideEncryption.PAY)
                 display += 'verschlüsselten ';
             // Art
-            if (this.sourceType == 1 /* TV */)
+            if (this.sourceType == VCRServer.GuideSource.TV)
                 display += 'Fernseh-';
-            else if (this.sourceType == 2 /* RADIO */)
+            else if (this.sourceType == VCRServer.GuideSource.RADIO)
                 display += 'Radio-';
         }
         display += 'Sendungen, die über das Gerät ';
@@ -224,9 +224,7 @@ var GuideFilter = (function () {
         this.moreAvailable = false;
     }
     // Meldet, ob ein Blättern nach vorne unterstützt wird
-    GuideFilter.prototype.canPageForward = function () {
-        return this.moreAvailable;
-    };
+    GuideFilter.prototype.canPageForward = function () { return this.moreAvailable; };
     // Deaktiviert verzögerte Anforderungen
     GuideFilter.prototype.cancelTimeout = function () {
         if (this.timeout == null)
@@ -368,10 +366,10 @@ var JobScheduleDataContract = (function () {
     }
     // Aktualisiert eine Aufzeichnung
     JobScheduleDataContract.prototype.update = function (jobId, scheduleId, finishHash, onError) {
-        VCRServer.updateSchedule(jobId, scheduleId, this).done(function () {
-            VCRServer.UserProfile.global.refresh();
-            window.location.hash = finishHash;
-        }).fail(JMSLib.dispatchErrorMessage(onError));
+        VCRServer
+            .updateSchedule(jobId, scheduleId, this)
+            .done(function () { VCRServer.UserProfile.global.refresh(); window.location.hash = finishHash; })
+            .fail(JMSLib.dispatchErrorMessage(onError));
     };
     return JobScheduleDataContract;
 })();
@@ -409,8 +407,7 @@ var Page = (function () {
         this.finishedAsyncCall(1);
     };
     // Wird unmittelbar vor der Anzeige aufgerufen
-    Page.prototype.onShow = function () {
-    };
+    Page.prototype.onShow = function () { };
     // Wird einmalig zur Anzeige aufgerufen
     Page.prototype.show = function () {
         var page = this;
@@ -518,10 +515,7 @@ var SourceSelector = (function () {
         // Kleine Hilfe
         var refresh = function () { return _this.load(); };
         // Alle Änderungen überwachen
-        this.sourceSelectionList.change(function () {
-            _this.sourceNameField.val(_this.sourceSelectionList.val());
-            _this.sourceNameField.change();
-        });
+        this.sourceSelectionList.change(function () { _this.sourceNameField.val(_this.sourceSelectionList.val()); _this.sourceNameField.change(); });
         this.sourceNameField.change(function () {
             var selectedSource = _this.sourceNameField.val();
             _this.sourceSelectionList.val(selectedSource);
@@ -686,7 +680,11 @@ var UserSettingsValidator = (function () {
         this.guidePreTime = JMSLib.Bindings.checkNumber(profile.guidePreTime, 0, 240);
         this.rowsInGuide = JMSLib.Bindings.checkNumber(profile.rowsInGuide, 10, 100);
         // Ergebnis der Prüfung
-        var isValid = (this.planDaysToShow == null) && (this.maximumRecentSources == null) && (this.guidePreTime == null) && (this.guidePostTime == null) && (this.rowsInGuide == null);
+        var isValid = (this.planDaysToShow == null) &&
+            (this.maximumRecentSources == null) &&
+            (this.guidePreTime == null) &&
+            (this.guidePostTime == null) &&
+            (this.rowsInGuide == null);
         // Schaltfläche anpassen
         this.sendButton.button('option', 'disabled', !isValid);
     };
@@ -697,8 +695,7 @@ var GuideItem = (function () {
     function GuideItem(rawData) {
         var _this = this;
         // Wird aufgerufen, wenn der Anwender die Detailanzeige aktiviert hat
-        this.onShowDetails = function (item, origin) {
-        };
+        this.onShowDetails = function (item, origin) { };
         // Eine CSS Klasse, die den Überlapp einer Aufzeichnung mit dem Eintrag ausdrückt.
         this.overlapClass = JMSLib.CSSClass.partialRecord;
         // Zeiten umrechnen
@@ -768,14 +765,11 @@ var PlanEntry = (function () {
     function PlanEntry(rawData) {
         var _this = this;
         // Wird aufgerufen, wenn der Anwender die Detailanzeige aktiviert hat.
-        this.onShowDetails = function (item, origin) {
-        };
+        this.onShowDetails = function (item, origin) { };
         // Wird aufgerufen, wenn der Anwender die erweiterten Informationen der Programmzeitschrift abruft.
-        this.onShowGuide = function (item, origin) {
-        };
+        this.onShowGuide = function (item, origin) { };
         // Wird aufgerufen, wenn der Anwender die Ausnahmen konfigurieren möchte.
-        this.onException = function (item, origin) {
-        };
+        this.onException = function (item, origin) { };
         // Die zugehörigen Informationen der Programmzeitschrift.
         this.guideItem = new GuideItemCache();
         // Zeiten umrechnen
@@ -838,9 +832,7 @@ var PlanEntry = (function () {
         this.guideItem.request(this.epgProfile, this.source, this.start, this.end, dataAvailable);
     };
     // Sendet die aktuelle Ausnahmeregel zur Änderung an den VCR.NET Recording Service.
-    PlanEntry.prototype.updateException = function (onSuccess) {
-        this.exceptionInfo.update(this.legacyId, onSuccess);
-    };
+    PlanEntry.prototype.updateException = function (onSuccess) { this.exceptionInfo.update(this.legacyId, onSuccess); };
     return PlanEntry;
 })();
 // Beschreibt einen einzelne Ausnahmeregel
@@ -915,10 +907,7 @@ var PlanException = (function () {
         startSlider.slider('value', this.startDelta);
         durationSlider.slider('value', this.durationDelta);
         // Aktualisierung
-        var refresh = function () {
-            JMSLib.HTMLTemplate.applyTemplate(_this, element);
-            return true;
-        };
+        var refresh = function () { JMSLib.HTMLTemplate.applyTemplate(_this, element); return true; };
         // Anmelden
         startSlider.slider({
             slide: function (slider, newValue) {
@@ -985,7 +974,8 @@ var ScheduleData = (function () {
                 this.withVideotext = rawData.withVideotext;
                 this.allLanguages = rawData.allLanguages;
                 this.includeDolby = rawData.includeDolby;
-                this.sourceName = rawData.sourceName, this.id = existingData.scheduleId;
+                this.sourceName = rawData.sourceName,
+                    this.id = existingData.scheduleId;
                 this.name = rawData.name;
                 // Fertig
                 return;
@@ -1014,7 +1004,13 @@ var ScheduleData = (function () {
     }
     // Meldet das Wiederholungsmuster.
     ScheduleData.prototype.repeatPattern = function () {
-        var pattern = (this.repeatMonday ? ScheduleData.flagMonday : 0) | (this.repeatTuesday ? ScheduleData.flagTuesday : 0) | (this.repeatWednesday ? ScheduleData.flagWednesday : 0) | (this.repeatThursday ? ScheduleData.flagThursday : 0) | (this.repeatFriday ? ScheduleData.flagFriday : 0) | (this.repeatSaturday ? ScheduleData.flagSaturday : 0) | (this.repeatSunday ? ScheduleData.flagSunday : 0);
+        var pattern = (this.repeatMonday ? ScheduleData.flagMonday : 0) |
+            (this.repeatTuesday ? ScheduleData.flagTuesday : 0) |
+            (this.repeatWednesday ? ScheduleData.flagWednesday : 0) |
+            (this.repeatThursday ? ScheduleData.flagThursday : 0) |
+            (this.repeatFriday ? ScheduleData.flagFriday : 0) |
+            (this.repeatSaturday ? ScheduleData.flagSaturday : 0) |
+            (this.repeatSunday ? ScheduleData.flagSunday : 0);
         return pattern;
     };
     // Erstellt eine für die Datenübertragung geeignete Variante.
@@ -1270,7 +1266,10 @@ var JobDataValidator = (function () {
         deleteButton.unbind('click');
         deleteButton.click(function () {
             deleteButton.button('option', 'disabled', true);
-            VCRServer.deleteSchedule(job.id, schedule.id).done(function () { return window.location.href = '#plan'; }).fail(function (result) {
+            VCRServer
+                .deleteSchedule(job.id, schedule.id)
+                .done(function () { return window.location.href = '#plan'; })
+                .fail(function (result) {
                 var info = $.parseJSON(result.responseText);
                 deleteButton.addClass(JMSLib.CSSClass.invalid);
                 deleteButton.attr('title', info.ExceptionMessage);
@@ -1288,8 +1287,7 @@ var SecuritySettingsValidator = (function () {
         this.model = settings;
     }
     // Methode zur Durchführung einer Prüfung
-    SecuritySettingsValidator.prototype.validate = function () {
-    };
+    SecuritySettingsValidator.prototype.validate = function () { };
     return SecuritySettingsValidator;
 })();
 // Eingabeelemente für das Regelwerk der Aufzeichnungsplanung
@@ -1298,8 +1296,7 @@ var ScheduleRulesValidator = (function () {
         this.model = settings;
     }
     // Methode zur Durchführung einer Prüfung
-    ScheduleRulesValidator.prototype.validate = function () {
-    };
+    ScheduleRulesValidator.prototype.validate = function () { };
     return ScheduleRulesValidator;
 })();
 // Eingabeelemente für die Verzeichnisse
@@ -1452,9 +1449,7 @@ var ProfileValidator = (function () {
         this.list = listValidator;
     }
     // Methode zur Durchführung einer Prüfung
-    ProfileValidator.prototype.validate = function () {
-        this.list.validate();
-    };
+    ProfileValidator.prototype.validate = function () { this.list.validate(); };
     // Methode zur Durchführung einer Prüfung
     ProfileValidator.prototype.doValidate = function (defaultProfile) {
         var model = this.model;
@@ -1539,7 +1534,12 @@ var OtherSettingsValidator = (function () {
         this.webPort = JMSLib.Bindings.checkNumber(model.webPort, 1, 0xffff);
         this.protocol = JMSLib.Bindings.checkNumber(model.protocol, 1, 13);
         this.archive = JMSLib.Bindings.checkNumber(model.archive, 1, 13);
-        var isValid = (this.forcedHibernationDelay == null) && (this.hibernationDelay == null) && (this.protocol == null) && (this.sslPort == null) && (this.webPort == null) && (this.archive == null);
+        var isValid = (this.forcedHibernationDelay == null) &&
+            (this.hibernationDelay == null) &&
+            (this.protocol == null) &&
+            (this.sslPort == null) &&
+            (this.webPort == null) &&
+            (this.archive == null);
         this.sendButton.button('option', 'disabled', !isValid);
     };
     return OtherSettingsValidator;
@@ -1639,7 +1639,11 @@ var CurrentInfo = (function () {
     };
     // Ruft die aktuelle Liste der Aufzeichnungen vom Web Dienst ab.
     CurrentInfo.load = function (whenLoaded) {
-        VCRServer.getPlanCurrent().done(function (data) { return whenLoaded($.map(data, function (rawData) { return new CurrentInfo(rawData); })); });
+        VCRServer.getPlanCurrent().done(function (data) {
+            return whenLoaded($.map(data, function (rawData) {
+                return new CurrentInfo(rawData);
+            }));
+        });
     };
     // Aktualisiert den Endzeitpunkt dieser laufenden Aufzeichnung.
     CurrentInfo.prototype.updateEndTime = function (whenDone) {
@@ -1875,10 +1879,7 @@ var homePage = (function (_super) {
         // Vorlagen vorbereiten
         this.detailsManager = new JMSLib.DetailManager(1, 'startGuide', 'startScan', 'checkUpdate');
         // Mehr als die Versionsinformationen brauchen wir gar nicht
-        VCRServer.getServerVersion().done(function (data) {
-            _this.serverInfo = data;
-            versionAvailable();
-        });
+        VCRServer.getServerVersion().done(function (data) { _this.serverInfo = data; versionAvailable(); });
     };
     homePage.prototype.onShow = function () {
         var _this = this;
@@ -2037,6 +2038,7 @@ var planPage = (function (_super) {
         var rootChecker = (startIndex < 0) ? ' checked="checked"' : '';
         // Neue Auswahl ergänzen
         this.startChooser.append('<input type="radio" id="startChoice0" name="startChoice"' + rootChecker + ' value="0"/><label for="startChoice0">Jetzt</label>');
+        // 7 weitere Auswahlpunkte anlegen
         for (var i = 1; i < 7; i++) {
             // Werte berechnen
             var days = i * VCRServer.UserProfile.global.planDaysToShow;
@@ -2113,43 +2115,21 @@ var adminPage = (function (_super) {
         // Gruppen nur einmal laden
         if (adminPage.groups == null) {
             var groupsLoaded = this.registerAsyncCall();
-            VCRServer.getWindowsGroups().done(function (data) {
-                adminPage.groups = data;
-                groupsLoaded();
-            });
+            VCRServer.getWindowsGroups().done(function (data) { adminPage.groups = data; groupsLoaded(); });
         }
         // Alles nacheinander laden - die Zahl der gleichzeitig offenen Requests ist beschränkt!
-        VCRServer.browseDirectories('', true).then(function (directories) {
-            _this.fillDirectories(directories);
-            return VCRServer.getSecuritySettings();
-        }).then(function (data) {
-            _this.security = data;
-            return VCRServer.getDirectorySettings();
-        }).then(function (data) {
-            _this.directory = data;
-            return VCRServer.getGuideSettings();
-        }).then(function (data) {
-            _this.guide = data;
-            return VCRServer.getSourceScanSettings();
-        }).then(function (data) {
-            _this.scan = data;
-            return VCRServer.getProfileSettings();
-        }).then(function (data) {
-            _this.devices = data;
-            return JMSLib.TemplateLoader.load('adminDevices');
-        }).then(function (template) {
-            $('#devices').append($(template).find('#template').children());
-            return VCRServer.getOtherSettings();
-        }).then(function (data) {
-            _this.other = data;
-            return VCRServer.getSchedulerRules();
-        }).then(function (data) {
-            _this.rules = data;
-            return JMSLib.TemplateLoader.load('adminRules');
-        }).then(function (template) {
-            $('#rules').append($(template).find('#template').children());
-            loadFinished();
-        });
+        VCRServer
+            .browseDirectories('', true)
+            .then(function (directories) { _this.fillDirectories(directories); return VCRServer.getSecuritySettings(); })
+            .then(function (data) { _this.security = data; return VCRServer.getDirectorySettings(); })
+            .then(function (data) { _this.directory = data; return VCRServer.getGuideSettings(); })
+            .then(function (data) { _this.guide = data; return VCRServer.getSourceScanSettings(); })
+            .then(function (data) { _this.scan = data; return VCRServer.getProfileSettings(); })
+            .then(function (data) { _this.devices = data; return JMSLib.TemplateLoader.load('adminDevices'); })
+            .then(function (template) { $('#devices').append($(template).find('#template').children()); return VCRServer.getOtherSettings(); })
+            .then(function (data) { _this.other = data; return VCRServer.getSchedulerRules(); })
+            .then(function (data) { _this.rules = data; return JMSLib.TemplateLoader.load('adminRules'); })
+            .then(function (template) { $('#rules').append($(template).find('#template').children()); loadFinished(); });
         // Geräte laden
         var profiles = $('#profileForGuide');
         var sourcesLoaded = this.registerAsyncCall();
@@ -2182,7 +2162,9 @@ var adminPage = (function (_super) {
     adminPage.prototype.update = function (type, contract, button, filter) {
         if (filter === void 0) { filter = null; }
         button.removeAttr('title');
-        VCRServer.updateConfiguration(type, contract, filter).done(function (data) {
+        VCRServer
+            .updateConfiguration(type, contract, filter)
+            .done(function (data) {
             // Ergebnis bearbeiten
             if (data == null)
                 button.addClass(CSSClass.danger);
@@ -2192,7 +2174,8 @@ var adminPage = (function (_super) {
                 VCRServer.RecordingDirectoryCache.reset();
                 window.location.hash = '#home';
             }
-        }).fail(JMSLib.dispatchErrorMessage(function (message) {
+        })
+            .fail(JMSLib.dispatchErrorMessage(function (message) {
             // Fehler bearbeiten
             button.attr('title', message);
             button.addClass(CSSClass.danger);
@@ -2252,7 +2235,9 @@ var adminPage = (function (_super) {
         // Navigation
         toParent.click(function () {
             var root = _this.directoryBrowser.children().first().val();
-            VCRServer.browseDirectories(root, false).done(function (directories) { return _this.fillDirectories(directories); });
+            VCRServer
+                .browseDirectories(root, false)
+                .done(function (directories) { return _this.fillDirectories(directories); });
         });
         this.directoryBrowser.change(function () {
             var dir = _this.directoryBrowser.val();
@@ -2260,7 +2245,9 @@ var adminPage = (function (_super) {
                 return;
             if (dir.length < 1)
                 return;
-            VCRServer.browseDirectories(dir, true).done(function (directories) { return _this.fillDirectories(directories); });
+            VCRServer
+                .browseDirectories(dir, true)
+                .done(function (directories) { return _this.fillDirectories(directories); });
         });
         // Speichern
         directoryUpdate.click(function () {
@@ -2320,8 +2307,7 @@ var adminPage = (function (_super) {
                 case 'M':
                     _this.scan.interval = -1;
                     break;
-                case 'P':
-                    break;
+                case 'P': break;
             }
             _this.update('scan', _this.scan, scanUpdate, SourceScanSettingsValidator.filterPropertiesOnSend);
         });
@@ -2400,7 +2386,9 @@ var adminPage = (function (_super) {
             }
         // Oberfläche vorbereiten
         navigator.tabs(options).addClass('ui-tabs-vertical ui-helper-clearfix');
-        navigator.on('tabsactivate', function (ev) { return window.location.hash = '#admin;' + arguments[1].newPanel.selector.substr(1); });
+        navigator.on('tabsactivate', function (ev) {
+            window.location.hash = '#admin;' + arguments[1].newPanel.selector.substr(1);
+        });
         // Oberfläche vorbereiten
         $('.editButtons').button();
         // Alle Bereiche vorbereiten
@@ -2469,10 +2457,7 @@ var currentPage = (function (_super) {
         var refresh = function () { return JMSLib.HTMLTemplate.applyTemplate(item, template); };
         // Konfiguration der Einstellungen
         var options = {
-            slide: function (slider, newValue) {
-                item.remainingMinutes = newValue.value;
-                refresh();
-            },
+            slide: function (slider, newValue) { item.remainingMinutes = newValue.value; refresh(); },
             value: item.remainingMinutes,
             max: 480,
             min: 0,
@@ -2485,14 +2470,8 @@ var currentPage = (function (_super) {
         disableButton.button();
         sendButton.button();
         // Aktionen definiert
-        sendButton.click(function () {
-            sendButton.button('disable', true);
-            item.updateEndTime(function () { return _this.reload(); });
-        });
-        disableButton.click(function () {
-            slider.slider('value', item.remainingMinutes = 0);
-            refresh();
-        });
+        sendButton.click(function () { sendButton.button('disable', true); item.updateEndTime(function () { return _this.reload(); }); });
+        disableButton.click(function () { slider.slider('value', item.remainingMinutes = 0); refresh(); });
     };
     currentPage.prototype.onShow = function () {
         var _this = this;
@@ -2511,10 +2490,7 @@ var currentPage = (function (_super) {
         // Wir brauchen auch die Benutzereinstellungen
         VCRServer.UserProfile.global.register(profileAvailable);
         // Und natürlich die eigentlichen Daten
-        CurrentInfo.load(function (infos) {
-            _this.table.loadList(infos);
-            tableAvailable();
-        });
+        CurrentInfo.load(function (infos) { _this.table.loadList(infos); tableAvailable(); });
     };
     return currentPage;
 })(Page);
@@ -2600,10 +2576,7 @@ var editPage = (function (_super) {
         // Daten zur Aufzeichnung laden
         if (hasId) {
             var epgLoaded = this.registerAsyncCall();
-            VCRServer.createScheduleFromGuide(jobScheduleId, epgId).done(function (data) {
-                _this.existingData = data;
-                epgLoaded();
-            });
+            VCRServer.createScheduleFromGuide(jobScheduleId, epgId).done(function (data) { _this.existingData = data; epgLoaded(); });
         }
         // Liste der Geräteprofile laden
         this.loadProfiles($('#selProfile'));
@@ -2719,6 +2692,7 @@ var guidePage = (function (_super) {
                 var firstDay = info.firstStart;
                 if (firstDay != null) {
                     firstDay = new Date(firstDay.getFullYear(), firstDay.getMonth(), firstDay.getDate());
+                    // Maximal 14 Tage, sonst wird die Liste zu unübersichtlich
                     for (var n = 14; (n-- > 0) && (firstDay < info.lastStart);) {
                         selDay.append('<a href="javascript:void(0)" data-day="' + firstDay.toISOString() + '">' + JMSLib.DateFormatter.getShortDate(firstDay) + '</a>');
                         firstDay = new Date(firstDay.getTime() + 86400000);
@@ -2808,9 +2782,7 @@ var guidePage = (function (_super) {
             }
             checkContent.button();
             // Von nun an auf Änderungen überwachen
-            function textChanged() {
-                GuideFilter.global.changeQuery(searchText.val(), checkContent.prop('checked'));
-            }
+            function textChanged() { GuideFilter.global.changeQuery(searchText.val(), checkContent.prop('checked')); }
             searchText.on('change', textChanged);
             searchText.on('input', textChanged);
             checkContent.change(textChanged);
@@ -2880,10 +2852,7 @@ var guidePage = (function (_super) {
             guideLoaded();
         });
         // Benutzereinstellungen abwarten
-        VCRServer.UserProfile.global.register(function () {
-            GuideFilter.global.userProfileChanged();
-            settingsLoaded();
-        });
+        VCRServer.UserProfile.global.register(function () { GuideFilter.global.userProfileChanged(); settingsLoaded(); });
         // Quellauswahl aufbereiten
         var filter = $('.guideSourceFilter');
         filter.buttonset();
@@ -2920,10 +2889,7 @@ var jobsPage = (function (_super) {
         filter.buttonset();
         filter.change(function () { return _this.table.refresh(); });
         // Ladevorgang ausführen
-        InfoJob.load(function (rows) {
-            _this.table.loadList(rows);
-            loaded();
-        });
+        InfoJob.load(function (rows) { _this.table.loadList(rows); loaded(); });
     };
     return jobsPage;
 })(Page);
@@ -2997,6 +2963,7 @@ var logPage = (function (_super) {
         var dayList = $('#selDate');
         // Referenz setzen
         this.referenceDay = new Date(Date.UTC(rawNow.getFullYear(), rawNow.getMonth(), rawNow.getDate()));
+        // Auswahlliste füllen
         for (var i = 0; i < 10; i++) {
             var curDay = new Date(this.referenceDay.getTime() - 7 * i * 86400000);
             var curMonth = 1 + curDay.getUTCMonth();

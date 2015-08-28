@@ -121,6 +121,15 @@
     <value>17, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="trayMenu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>234, 292</value>
+  </data>
+  <data name="&gt;&gt;trayMenu.Name" xml:space="preserve">
+    <value>trayMenu</value>
+  </data>
+  <data name="&gt;&gt;trayMenu.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="mnuDefault.Size" type="System.Drawing.Size, System.Drawing">
     <value>233, 22</value>
   </data>
@@ -190,6 +199,12 @@
   <data name="mnuHibernate.Text" xml:space="preserve">
     <value>&amp;Hibernate after Recording...</value>
   </data>
+  <data name="mnuHibernateReset.Size" type="System.Drawing.Size, System.Drawing">
+    <value>148, 22</value>
+  </data>
+  <data name="mnuHibernateReset.Text" xml:space="preserve">
+    <value>As &amp;configured</value>
+  </data>
   <data name="mnuHibernateSep.Size" type="System.Drawing.Size, System.Drawing">
     <value>230, 6</value>
   </data>
@@ -204,21 +219,6 @@
   </data>
   <data name="mnuClose.Text" xml:space="preserve">
     <value>Close VCR&amp;.NET Control Center</value>
-  </data>
-  <data name="trayMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>234, 314</value>
-  </data>
-  <data name="&gt;&gt;trayMenu.Name" xml:space="preserve">
-    <value>trayMenu</value>
-  </data>
-  <data name="&gt;&gt;trayMenu.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="mnuHibernateReset.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
-  </data>
-  <data name="mnuHibernateReset.Text" xml:space="preserve">
-    <value>As &amp;configured</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
@@ -774,150 +774,6 @@
   <metadata name="tickProcess.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>115, 17</value>
   </metadata>
-  <data name="&gt;&gt;cmdStreaming.Name" xml:space="preserve">
-    <value>cmdStreaming</value>
-  </data>
-  <data name="&gt;&gt;cmdStreaming.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cmdStreaming.Parent" xml:space="preserve">
-    <value>grpStreaming</value>
-  </data>
-  <data name="&gt;&gt;cmdStreaming.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;label9.Name" xml:space="preserve">
-    <value>label9</value>
-  </data>
-  <data name="&gt;&gt;label9.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label9.Parent" xml:space="preserve">
-    <value>grpStreaming</value>
-  </data>
-  <data name="&gt;&gt;label9.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;txArgs.Name" xml:space="preserve">
-    <value>txArgs</value>
-  </data>
-  <data name="&gt;&gt;txArgs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txArgs.Parent" xml:space="preserve">
-    <value>grpStreaming</value>
-  </data>
-  <data name="&gt;&gt;txArgs.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;txMultiCast.Name" xml:space="preserve">
-    <value>txMultiCast</value>
-  </data>
-  <data name="&gt;&gt;txMultiCast.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txMultiCast.Parent" xml:space="preserve">
-    <value>grpStreaming</value>
-  </data>
-  <data name="&gt;&gt;txMultiCast.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;label8.Name" xml:space="preserve">
-    <value>label8</value>
-  </data>
-  <data name="&gt;&gt;label8.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label8.Parent" xml:space="preserve">
-    <value>grpStreaming</value>
-  </data>
-  <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;label7.Name" xml:space="preserve">
-    <value>label7</value>
-  </data>
-  <data name="&gt;&gt;label7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label7.Parent" xml:space="preserve">
-    <value>grpStreaming</value>
-  </data>
-  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;cmdAppChooser.Name" xml:space="preserve">
-    <value>cmdAppChooser</value>
-  </data>
-  <data name="&gt;&gt;cmdAppChooser.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cmdAppChooser.Parent" xml:space="preserve">
-    <value>grpStreaming</value>
-  </data>
-  <data name="&gt;&gt;cmdAppChooser.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;txViewer.Name" xml:space="preserve">
-    <value>txViewer</value>
-  </data>
-  <data name="&gt;&gt;txViewer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txViewer.Parent" xml:space="preserve">
-    <value>grpStreaming</value>
-  </data>
-  <data name="&gt;&gt;txViewer.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;selStreamPort.Name" xml:space="preserve">
-    <value>selStreamPort</value>
-  </data>
-  <data name="&gt;&gt;selStreamPort.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;selStreamPort.Parent" xml:space="preserve">
-    <value>grpStreaming</value>
-  </data>
-  <data name="&gt;&gt;selStreamPort.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;label6.Name" xml:space="preserve">
-    <value>label6</value>
-  </data>
-  <data name="&gt;&gt;label6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
-    <value>grpStreaming</value>
-  </data>
-  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="grpStreaming.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 452</value>
-  </data>
-  <data name="grpStreaming.Size" type="System.Drawing.Size, System.Drawing">
-    <value>516, 164</value>
-  </data>
-  <data name="grpStreaming.TabIndex" type="System.Int32, mscorlib">
-    <value>19</value>
-  </data>
-  <data name="grpStreaming.Text" xml:space="preserve">
-    <value>Streaming Configuration</value>
-  </data>
-  <data name="&gt;&gt;grpStreaming.Name" xml:space="preserve">
-    <value>grpStreaming</value>
-  </data>
-  <data name="&gt;&gt;grpStreaming.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;grpStreaming.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;grpStreaming.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="cmdStreaming.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 126</value>
   </data>
@@ -972,6 +828,287 @@
   <metadata name="errorMessages.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>221, 17</value>
   </metadata>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>61</value>
+  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>543, 620</value>
+  </data>
+  <data name="label10.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 31</value>
+  </data>
+  <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 13</value>
+  </data>
+  <data name="label10.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="label10.Text" xml:space="preserve">
+    <value>Startup &amp;Delay (Seconds):</value>
+  </data>
+  <data name="&gt;&gt;label10.Name" xml:space="preserve">
+    <value>label10</value>
+  </data>
+  <data name="&gt;&gt;label10.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label10.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="selDelay.Location" type="System.Drawing.Point, System.Drawing">
+    <value>276, 29</value>
+  </data>
+  <data name="selDelay.Size" type="System.Drawing.Size, System.Drawing">
+    <value>42, 20</value>
+  </data>
+  <data name="selDelay.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;selDelay.Name" xml:space="preserve">
+    <value>selDelay</value>
+  </data>
+  <data name="&gt;&gt;selDelay.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;selDelay.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;selDelay.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="label11.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label11.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
+    <value>36, 241</value>
+  </data>
+  <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>118, 13</value>
+  </data>
+  <data name="label11.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="label11.Text" xml:space="preserve">
+    <value>Address (for Wake-Up):</value>
+  </data>
+  <data name="&gt;&gt;label11.Name" xml:space="preserve">
+    <value>label11</value>
+  </data>
+  <data name="&gt;&gt;label11.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label11.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="txSubNet.Location" type="System.Drawing.Point, System.Drawing">
+    <value>184, 238</value>
+  </data>
+  <data name="txSubNet.Size" type="System.Drawing.Size, System.Drawing">
+    <value>242, 20</value>
+  </data>
+  <data name="txSubNet.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;txSubNet.Name" xml:space="preserve">
+    <value>txSubNet</value>
+  </data>
+  <data name="&gt;&gt;txSubNet.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txSubNet.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;txSubNet.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAICAQAAAAAADoAgAAFgAAACgAAAAgAAAAQAAAAAEABAAAAAAAAAIAAAAAAAAAAAAAEAAAABAA
+        AAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAgICAAMDAwAAAAP8AAP8AAAD//wD/AAAA/wD/AP//
+        AAD///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAxEREAAAAAAAAAAAAAAAAAMRERAAAAAAAAAAAAAAAAADE
+        REQAAAAAAAAAAAAAAAAADEREQAAAAAAAAAAAAAAAAAxEREAAAAAAAAAAAAAAAAAMRERAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAA////AAAAAAAAAAAAAAAAAP//AAAAAAAAAAAAAAAAAAD///8AAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAL+/sAAAAAAAAAAAAAAAAAv7+/AAAAAAAAAAAAAAAAC/v7+/AA
+        AAAAAAAAAAAAD78PDw8AAAAAAAAAAAAAAAAAALCwsAAAAAAAAAAAAAB3dwAAAAAHd3AAAAAAAAAA8ACI
+        iIiIgABwAABwAAAAAPCAgAAAAICAcAAHcAAAAADwAADw8PAAAHAHB3AAAAAA+IiAsLCwiIhwBweAAAAA
+        APiIjw8PCIiIcAcHgAAAAAD4iIiIiIiIiHAICIAAAAAAd3d3d3d4iJhwCAiAAAAAAAAAAAAAB4iYcA8P
+        gAAABwd3d3d3dweIiHAACPAAAAgIiIiIiIgH//9wAACAAAAPD///////B4iIAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//////4B///+Af///gH///8A////A
+        P///wD///8A////AP///wD///8A////AP///wH///4B///4AP//8AD///CAB//gAAPf4AADj+AAAA/gA
+        AAP4AAAD+AAAA/gAAAPYAAADyAAAA8AAAAPAAADjwAAB98gAA//f/////////w==
+</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>VCR.NET Control Center Configuration</value>
+  </data>
+  <data name="&gt;&gt;mnuDefault.Name" xml:space="preserve">
+    <value>mnuDefault</value>
+  </data>
+  <data name="&gt;&gt;mnuDefault.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem2.Name" xml:space="preserve">
+    <value>toolStripMenuItem2</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;mnuOpenJobList.Name" xml:space="preserve">
+    <value>mnuOpenJobList</value>
+  </data>
+  <data name="&gt;&gt;mnuOpenJobList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;mnuEPG.Name" xml:space="preserve">
+    <value>mnuEPG</value>
+  </data>
+  <data name="&gt;&gt;mnuEPG.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;mnuNewJob.Name" xml:space="preserve">
+    <value>mnuNewJob</value>
+  </data>
+  <data name="&gt;&gt;mnuNewJob.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;mnuCurrent.Name" xml:space="preserve">
+    <value>mnuCurrent</value>
+  </data>
+  <data name="&gt;&gt;mnuCurrent.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;mnuLiveConnect.Name" xml:space="preserve">
+    <value>mnuLiveConnect</value>
+  </data>
+  <data name="&gt;&gt;mnuLiveConnect.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem1.Name" xml:space="preserve">
+    <value>toolStripMenuItem1</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;mnuAdmin.Name" xml:space="preserve">
+    <value>mnuAdmin</value>
+  </data>
+  <data name="&gt;&gt;mnuAdmin.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;mnuHibernateServer.Name" xml:space="preserve">
+    <value>mnuHibernateServer</value>
+  </data>
+  <data name="&gt;&gt;mnuHibernateServer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;mnuWakeupServer.Name" xml:space="preserve">
+    <value>mnuWakeupServer</value>
+  </data>
+  <data name="&gt;&gt;mnuWakeupServer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem3.Name" xml:space="preserve">
+    <value>toolStripMenuItem3</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;mnuHibernate.Name" xml:space="preserve">
+    <value>mnuHibernate</value>
+  </data>
+  <data name="&gt;&gt;mnuHibernate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;mnuHibernateReset.Name" xml:space="preserve">
+    <value>mnuHibernateReset</value>
+  </data>
+  <data name="&gt;&gt;mnuHibernateReset.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;mnuHibernateSep.Name" xml:space="preserve">
+    <value>mnuHibernateSep</value>
+  </data>
+  <data name="&gt;&gt;mnuHibernateSep.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;mnuSettings.Name" xml:space="preserve">
+    <value>mnuSettings</value>
+  </data>
+  <data name="&gt;&gt;mnuSettings.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;mnuClose.Name" xml:space="preserve">
+    <value>mnuClose</value>
+  </data>
+  <data name="&gt;&gt;mnuClose.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;columnHeader1.Name" xml:space="preserve">
+    <value>columnHeader1</value>
+  </data>
+  <data name="&gt;&gt;columnHeader1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;columnHeader2.Name" xml:space="preserve">
+    <value>columnHeader2</value>
+  </data>
+  <data name="&gt;&gt;columnHeader2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;columnHeader3.Name" xml:space="preserve">
+    <value>columnHeader3</value>
+  </data>
+  <data name="&gt;&gt;columnHeader3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;columnHeader5.Name" xml:space="preserve">
+    <value>columnHeader5</value>
+  </data>
+  <data name="&gt;&gt;columnHeader5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tickProcess.Name" xml:space="preserve">
+    <value>tickProcess</value>
+  </data>
+  <data name="&gt;&gt;tickProcess.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;errorMessages.Name" xml:space="preserve">
+    <value>errorMessages</value>
+  </data>
+  <data name="&gt;&gt;errorMessages.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ErrorProvider, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;fileChooser.Name" xml:space="preserve">
+    <value>fileChooser</value>
+  </data>
+  <data name="&gt;&gt;fileChooser.Type" xml:space="preserve">
+    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>VCRNETControl</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="txArgs.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
     <value>MiddleLeft</value>
   </data>
@@ -1170,337 +1307,29 @@
   <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
-  <metadata name="errorMessages.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>221, 17</value>
-  </metadata>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>61</value>
-  </metadata>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+  <data name="grpStreaming.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 452</value>
   </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>543, 620</value>
+  <data name="grpStreaming.Size" type="System.Drawing.Size, System.Drawing">
+    <value>516, 164</value>
   </data>
-  <data name="&gt;&gt;label10.Name" xml:space="preserve">
-    <value>label10</value>
+  <data name="grpStreaming.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
   </data>
-  <data name="&gt;&gt;label10.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="grpStreaming.Text" xml:space="preserve">
+    <value>Streaming Configuration</value>
   </data>
-  <data name="&gt;&gt;label10.Parent" xml:space="preserve">
+  <data name="&gt;&gt;grpStreaming.Name" xml:space="preserve">
+    <value>grpStreaming</value>
+  </data>
+  <data name="&gt;&gt;grpStreaming.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;grpStreaming.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;selDelay.Name" xml:space="preserve">
-    <value>selDelay</value>
-  </data>
-  <data name="&gt;&gt;selDelay.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;selDelay.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;selDelay.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;label11.Name" xml:space="preserve">
-    <value>label11</value>
-  </data>
-  <data name="&gt;&gt;label11.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label11.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="&gt;&gt;txSubNet.Name" xml:space="preserve">
-    <value>txSubNet</value>
-  </data>
-  <data name="&gt;&gt;txSubNet.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txSubNet.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;txSubNet.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        AAABAAEAICAQAAAAAADoAgAAFgAAACgAAAAgAAAAQAAAAAEABAAAAAAAAAIAAAAAAAAAAAAAEAAAABAA
-        AAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAgICAAMDAwAAAAP8AAP8AAAD//wD/AAAA/wD/AP//
-        AAD///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAxEREAAAAAAAAAAAAAAAAAMRERAAAAAAAAAAAAAAAAADE
-        REQAAAAAAAAAAAAAAAAADEREQAAAAAAAAAAAAAAAAAxEREAAAAAAAAAAAAAAAAAMRERAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAA////AAAAAAAAAAAAAAAAAP//AAAAAAAAAAAAAAAAAAD///8AAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAL+/sAAAAAAAAAAAAAAAAAv7+/AAAAAAAAAAAAAAAAC/v7+/AA
-        AAAAAAAAAAAAD78PDw8AAAAAAAAAAAAAAAAAALCwsAAAAAAAAAAAAAB3dwAAAAAHd3AAAAAAAAAA8ACI
-        iIiIgABwAABwAAAAAPCAgAAAAICAcAAHcAAAAADwAADw8PAAAHAHB3AAAAAA+IiAsLCwiIhwBweAAAAA
-        APiIjw8PCIiIcAcHgAAAAAD4iIiIiIiIiHAICIAAAAAAd3d3d3d4iJhwCAiAAAAAAAAAAAAAB4iYcA8P
-        gAAABwd3d3d3dweIiHAACPAAAAgIiIiIiIgH//9wAACAAAAPD///////B4iIAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//////4B///+Af///gH///8A////A
-        P///wD///8A////AP///wD///8A////AP///wH///4B///4AP//8AD///CAB//gAAPf4AADj+AAAA/gA
-        AAP4AAAD+AAAA/gAAAPYAAADyAAAA8AAAAPAAADjwAAB98gAA//f/////////w==
-</value>
-  </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>VCR.NET Control Center Configuration</value>
-  </data>
-  <data name="&gt;&gt;mnuDefault.Name" xml:space="preserve">
-    <value>mnuDefault</value>
-  </data>
-  <data name="&gt;&gt;mnuDefault.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem2.Name" xml:space="preserve">
-    <value>toolStripMenuItem2</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;mnuOpenJobList.Name" xml:space="preserve">
-    <value>mnuOpenJobList</value>
-  </data>
-  <data name="&gt;&gt;mnuOpenJobList.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;mnuEPG.Name" xml:space="preserve">
-    <value>mnuEPG</value>
-  </data>
-  <data name="&gt;&gt;mnuEPG.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;mnuNewJob.Name" xml:space="preserve">
-    <value>mnuNewJob</value>
-  </data>
-  <data name="&gt;&gt;mnuNewJob.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;mnuCurrent.Name" xml:space="preserve">
-    <value>mnuCurrent</value>
-  </data>
-  <data name="&gt;&gt;mnuCurrent.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;mnuLiveConnect.Name" xml:space="preserve">
-    <value>mnuLiveConnect</value>
-  </data>
-  <data name="&gt;&gt;mnuLiveConnect.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem1.Name" xml:space="preserve">
-    <value>toolStripMenuItem1</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;mnuAdmin.Name" xml:space="preserve">
-    <value>mnuAdmin</value>
-  </data>
-  <data name="&gt;&gt;mnuAdmin.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;mnuHibernateServer.Name" xml:space="preserve">
-    <value>mnuHibernateServer</value>
-  </data>
-  <data name="&gt;&gt;mnuHibernateServer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;mnuWakeupServer.Name" xml:space="preserve">
-    <value>mnuWakeupServer</value>
-  </data>
-  <data name="&gt;&gt;mnuWakeupServer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem3.Name" xml:space="preserve">
-    <value>toolStripMenuItem3</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;mnuHibernate.Name" xml:space="preserve">
-    <value>mnuHibernate</value>
-  </data>
-  <data name="&gt;&gt;mnuHibernate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;mnuHibernateReset.Name" xml:space="preserve">
-    <value>mnuHibernateReset</value>
-  </data>
-  <data name="&gt;&gt;mnuHibernateReset.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;mnuHibernateSep.Name" xml:space="preserve">
-    <value>mnuHibernateSep</value>
-  </data>
-  <data name="&gt;&gt;mnuHibernateSep.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;mnuSettings.Name" xml:space="preserve">
-    <value>mnuSettings</value>
-  </data>
-  <data name="&gt;&gt;mnuSettings.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;mnuClose.Name" xml:space="preserve">
-    <value>mnuClose</value>
-  </data>
-  <data name="&gt;&gt;mnuClose.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;columnHeader1.Name" xml:space="preserve">
-    <value>columnHeader1</value>
-  </data>
-  <data name="&gt;&gt;columnHeader1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;columnHeader2.Name" xml:space="preserve">
-    <value>columnHeader2</value>
-  </data>
-  <data name="&gt;&gt;columnHeader2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;columnHeader3.Name" xml:space="preserve">
-    <value>columnHeader3</value>
-  </data>
-  <data name="&gt;&gt;columnHeader3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;columnHeader5.Name" xml:space="preserve">
-    <value>columnHeader5</value>
-  </data>
-  <data name="&gt;&gt;columnHeader5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tickProcess.Name" xml:space="preserve">
-    <value>tickProcess</value>
-  </data>
-  <data name="&gt;&gt;tickProcess.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;errorMessages.Name" xml:space="preserve">
-    <value>errorMessages</value>
-  </data>
-  <data name="&gt;&gt;errorMessages.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ErrorProvider, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;fileChooser.Name" xml:space="preserve">
-    <value>fileChooser</value>
-  </data>
-  <data name="&gt;&gt;fileChooser.Type" xml:space="preserve">
-    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>VCRNETControl</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="label10.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 31</value>
-  </data>
-  <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>125, 13</value>
-  </data>
-  <data name="label10.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="label10.Text" xml:space="preserve">
-    <value>Startup &amp;Delay (Seconds):</value>
-  </data>
-  <data name="&gt;&gt;label10.Name" xml:space="preserve">
-    <value>label10</value>
-  </data>
-  <data name="&gt;&gt;label10.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label10.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="selDelay.Location" type="System.Drawing.Point, System.Drawing">
-    <value>276, 29</value>
-  </data>
-  <data name="selDelay.Size" type="System.Drawing.Size, System.Drawing">
-    <value>42, 20</value>
-  </data>
-  <data name="selDelay.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;selDelay.Name" xml:space="preserve">
-    <value>selDelay</value>
-  </data>
-  <data name="&gt;&gt;selDelay.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;selDelay.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;selDelay.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="txSubNet.Location" type="System.Drawing.Point, System.Drawing">
-    <value>184, 238</value>
-  </data>
-  <data name="txSubNet.Size" type="System.Drawing.Size, System.Drawing">
-    <value>242, 20</value>
-  </data>
-  <data name="txSubNet.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;txSubNet.Name" xml:space="preserve">
-    <value>txSubNet</value>
-  </data>
-  <data name="&gt;&gt;txSubNet.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txSubNet.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;txSubNet.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="label11.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label11.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
-    <value>36, 241</value>
-  </data>
-  <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 13</value>
-  </data>
-  <data name="label11.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="label11.Text" xml:space="preserve">
-    <value>Address (for Wake-Up):</value>
-  </data>
-  <data name="&gt;&gt;label11.Name" xml:space="preserve">
-    <value>label11</value>
-  </data>
-  <data name="&gt;&gt;label11.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label11.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
-    <value>11</value>
+  <data name="&gt;&gt;grpStreaming.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <metadata name="fileChooser.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>345, 17</value>
