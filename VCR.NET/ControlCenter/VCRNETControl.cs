@@ -1210,21 +1210,7 @@ namespace VCRControlCenter
                 {
                     // See if there are pending extensions
                     if (!pendingExtensions)
-                    {
-                        // Hide it
-                        m_Hibernation.Hide();
-
-                        // Initiate hibernation
-                        try
-                        {
-                            // Do the web call
-                            VCRNETRestProxy.TryHibernate( controller.EndPoint );
-                        }
-                        catch
-                        {
-                            // Ignore any error
-                        }
-                    }
+                        m_Hibernation.TryHibernate(controller);
 
                     // No change required
                     return null;
