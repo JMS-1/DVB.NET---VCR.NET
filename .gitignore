@@ -185,3 +185,4 @@ $RECYCLE.BIN/
 /VCR.NET/packages
 *.sln
 *.openAsAdmin
+/VCR.NET/.vs
