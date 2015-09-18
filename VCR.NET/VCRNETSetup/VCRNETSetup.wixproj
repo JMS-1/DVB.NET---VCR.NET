@@ -22,7 +22,7 @@
     <CompilerAdditionalOptions>_Extensions.wxs</CompilerAdditionalOptions>
     <LinkerAdditionalOptions>obj\$(Configuration)\_Extensions.wixobj</LinkerAdditionalOptions>
     <SuppressIces>ICE57;ICE43</SuppressIces>
-    <WixVariables>SETUPVERSION=4.3.41</WixVariables>
+    <WixVariables>SETUPVERSION=4.3.42</WixVariables>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>..\..\msi\</OutputPath>
@@ -33,7 +33,7 @@
     <SuppressIces>ICE57;ICE43</SuppressIces>
     <CompilerAdditionalOptions>_Extensions.wxs</CompilerAdditionalOptions>
     <LinkerAdditionalOptions>obj\$(Configuration)\_Extensions.wixobj</LinkerAdditionalOptions>
-    <WixVariables>SETUPVERSION=4.3.41</WixVariables>
+    <WixVariables>SETUPVERSION=4.3.42</WixVariables>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AspNetWebApi.wxs" />
@@ -159,7 +159,7 @@
   <PropertyGroup>
     <PostBuildEvent>set "$(WixVariables)"
 
-"%25ProgramFiles%25\Windows Kits\8.0\bin\x86\msiinfo.exe" "$(TargetDir)\de-de\$(TargetFileName)" /T "VCR.NET Recording Service %25SETUPVERSION%25"</PostBuildEvent>
+"%25ProgramFiles%25\Windows Kits\10\bin\x86\msiinfo.exe" "$(TargetDir)\de-de\$(TargetFileName)" /T "VCR.NET Recording Service %25SETUPVERSION%25"</PostBuildEvent>
   </PropertyGroup>
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.
