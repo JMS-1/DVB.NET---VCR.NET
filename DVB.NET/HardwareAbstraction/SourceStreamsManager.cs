@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using JMS.DVB.SI;
+﻿using JMS.DVB.SI;
 using JMS.DVB.TS;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 
 
 namespace JMS.DVB
@@ -25,21 +26,10 @@ namespace JMS.DVB
         public VideoTypes VideoType { get; set; }
 
         /// <summary>
-        /// Erzeugt eine neue Beschreibung.
-        /// </summary>
-        public FileStreamInformation()
-        {
-        }
-
-        /// <summary>
         /// Meldet einen Anzeigetest zu Testzwecken.
         /// </summary>
         /// <returns>Der Anzeigetext.</returns>
-        public override string ToString()
-        {
-            // Construct
-            return string.Format( "{0} ({1})", FilePath, VideoType );
-        }
+        public override string ToString() => $"{FilePath} ({VideoType})";
     }
 
     /// <summary>
@@ -185,26 +175,18 @@ namespace JMS.DVB
         /// Startet das Auslesen der aktuellen Daten zur aktiven Quelle im Hintergrund.
         /// </summary>
         /// <returns>Eine Steuerinstanz zum asynchronen Zugriff auf die aktuellen Daten.</returns>
-        public CancellableTask<SourceInformation> GetCurrentInformationAsync()
-        {
-            // Just forward
-            return Hardware.GetSourceInformationAsync( Source, Profile );
-        }
+        public CancellableTask<SourceInformation> GetCurrentInformationAsync() => Hardware.GetSourceInformationAsync( Source, Profile );
 
         /// <summary>
         /// Ermittelt die aktuellen Daten zur aktiven Quelle.
         /// </summary>
         /// <returns>Die neu ermittelten aktuellen Daten.</returns>
-        public SourceInformation GetCurrentInformation()
-        {
-            // Just forward
-            return GetCurrentInformationAsync().CancelAfter( 5000 ).Result;
-        }
+        public SourceInformation GetCurrentInformation() => GetCurrentInformationAsync().CancelAfter( 5000 ).Result;
 
         /// <summary>
         /// Meldet die aktuell verwendeten Daten der Quelle.
         /// </summary>
-        public SourceInformation ActiveInformation { get { return m_OriginalSettings; } }
+        public SourceInformation ActiveInformation => m_OriginalSettings;
 
         /// <summary>
         /// Meldet oder legt fest, ob Berichte über das Schreiben der Systemuhr
@@ -231,11 +213,7 @@ namespace JMS.DVB
         /// <param name="filePath">Optional die Angabe eines Dateinames.</param>
         /// <returns>Gesetzt, wenn die Quelle bekannt ist und der Empfang aktiviert wurde.</returns>
         /// <exception cref="InvalidOperationException">Es ist bereits eine Aufzeichnung aktiv.</exception>
-        public bool CreateStream( string filePath )
-        {
-            // Forward
-            return CreateStream( filePath, null );
-        }
+        public bool CreateStream( string filePath ) => CreateStream( filePath, null );
 
         /// <summary>
         /// Beginnt die Aufzeichnung in einen <i>Transport Stream</i> - optional als 
@@ -311,7 +289,7 @@ namespace JMS.DVB
                     return null;
 
                 // Combine
-                return string.Format( "{0}:{1}", m_TransportStream.TCPClient, m_TransportStream.TCPPort );
+                return $"{m_TransportStream.TCPClient}:{m_TransportStream.TCPPort}";
             }
             set
             {
@@ -490,24 +468,13 @@ namespace JMS.DVB
         /// <summary>
         /// Meldet, ob der Datenempfang aktiviert wurde.
         /// </summary>
-        public bool IsActive
-        {
-            get
-            {
-                // Check stream
-                return (null != m_TransportStream);
-            }
-        }
+        public bool IsActive => (m_TransportStream != null);
 
         /// <summary>
         /// Prüft, ob sich an der Konfiguration der Quelle etwas verändert hat.
         /// </summary>
         /// <returns>Gesetzt, wenn nun der Empfang aktiv ist.</returns>
-        public bool RetestSourceInformation()
-        {
-            // Forward
-            return RetestSourceInformation( GetCurrentInformation() );
-        }
+        public bool RetestSourceInformation() => RetestSourceInformation( GetCurrentInformation() );
 
         /// <summary>
         /// Prüft, ob sich an der Konfiguration der Quelle etwas verändert hat.
@@ -537,8 +504,22 @@ namespace JMS.DVB
             // Nothing changed
             var signature = CreateRecordingSignature( information );
             if (m_TransportStream != null)
+            {
+                // No need to switch
                 if (signature.Equals( m_CurrentSignature ))
                     return true;
+
+                // Report to see what happened
+                if (!string.IsNullOrEmpty( m_CurrentSignature ))
+                    try
+                    {
+                        // Report and ignore
+                        EventLog.WriteEntry( "DVB.NET", $"Detected PSI Change: {m_CurrentSignature} => {signature}", EventLogEntryType.Information );
+                    }
+                    catch
+                    {
+                    }
+            }
 
             // Get the streaming data
             var streamTarget = StreamingTarget;
@@ -593,7 +574,7 @@ namespace JMS.DVB
                     var ext = Path.GetExtension( filePath );
 
                     // Construct new name
-                    filePath = Path.Combine( dir, string.Format( "{0} - {1}{2}", name, m_FileCount, ext ) );
+                    filePath = Path.Combine( dir, $"{name} - {m_FileCount}{ext}" );
                 }
 
             // Try to decrypt
@@ -931,7 +912,7 @@ namespace JMS.DVB
                 }
 
             // Clear flag if no audio is used
-            if (LanguageModes.All == selected.LanguageMode)
+            if (selected.LanguageMode == LanguageModes.All)
                 if (selected.Languages.Count < 1)
                     selected.LanguageMode = LanguageModes.Selection;
         }
@@ -939,14 +920,7 @@ namespace JMS.DVB
         /// <summary>
         /// Meldet alle Dateien, die geöffnet wurden.
         /// </summary>
-        public FileStreamInformation[] AllFiles
-        {
-            get
-            {
-                // Report
-                return m_AllFiles.ToArray();
-            }
-        }
+        public FileStreamInformation[] AllFiles => m_AllFiles.ToArray();
 
         /// <summary>
         /// Übermittelt die Daten zur Programmzeitschrift.
@@ -973,11 +947,7 @@ namespace JMS.DVB
         /// <param name="pid">Die gewünschte Datestromkennung (PID).</param>
         /// <param name="type">Die Art der Nutzdaten im Datenstrom.</param>
         /// <param name="stream">Der Empfänger der Daten.</param>
-        private void AddConsumer( ushort pid, StreamTypes type, StreamBase stream )
-        {
-            // Register
-            m_Consumers.Add( Hardware.AddConsumer( pid, type, stream.AddPayload ) );
-        }
+        private void AddConsumer( ushort pid, StreamTypes type, StreamBase stream ) => m_Consumers.Add( Hardware.AddConsumer( pid, type, stream.AddPayload ) );
 
         /// <summary>
         /// Beendet die Aufzeichnung in eine Datei.

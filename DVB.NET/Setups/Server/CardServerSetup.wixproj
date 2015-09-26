@@ -16,14 +16,14 @@
     <OutputPath>..\..\..\msi\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <DefineConstants>Debug</DefineConstants>
-    <WixVariables>SETUPVERSION=4.3.11</WixVariables>
+    <WixVariables>SETUPVERSION=4.3.12</WixVariables>
     <SuppressPdbOutput>True</SuppressPdbOutput>
     <Cultures>de-de</Cultures>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>..\..\..\msi\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
-    <WixVariables>SETUPVERSION=4.3.11</WixVariables>
+    <WixVariables>SETUPVERSION=4.3.12</WixVariables>
     <SuppressPdbOutput>True</SuppressPdbOutput>
     <Cultures>de-de</Cultures>
   </PropertyGroup>
@@ -93,7 +93,7 @@
   <PropertyGroup>
     <PostBuildEvent>set "$(WixVariables)"
 
-"%25ProgramFiles%25\Windows Kits\8.0\bin\x86\msiinfo.exe" "$(TargetDir)\de-de\$(TargetFileName)" /T "DVB.NET Server %25SETUPVERSION%25"</PostBuildEvent>
+"%25ProgramFiles%25\Windows Kits\10\bin\x86\msiinfo.exe" "$(TargetDir)\de-de\$(TargetFileName)" /T "DVB.NET Server %25SETUPVERSION%25"</PostBuildEvent>
   </PropertyGroup>
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.
