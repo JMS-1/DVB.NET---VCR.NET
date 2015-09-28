@@ -2029,7 +2029,10 @@ var planPage = (function (_super) {
         this.startChooser.children().remove();
         // Mitternacht ermitteln
         var midnight = new Date(Date.now());
-        midnight = new Date(midnight.getFullYear(), midnight.getMonth(), midnight.getDate());
+        var utc = new Date(0);
+        utc.setUTCFullYear(midnight.getFullYear());
+        utc.setUTCMonth(midnight.getMonth());
+        utc.setUTCDate(midnight.getDate());
         // Vorauswahl prüfen
         var hash = window.location.hash;
         var startIndex = hash.indexOf(';');
@@ -2042,12 +2045,12 @@ var planPage = (function (_super) {
             // Werte berechnen
             var days = i * VCRServer.UserProfile.global.planDaysToShow;
             var daysAsString = days.toString();
-            var startDate = new Date(midnight.getTime() + 86400000 * days);
+            var startDate = new Date(utc.getTime() + 86400000 * days);
             var isSelected = (daysAsString == selected);
             var selector = isSelected ? ' selected="selected"' : '';
             var checker = isSelected ? ' checked="checked"' : '';
             // Neue Auswahl ergänzen            
-            this.startChooser.append('<input type="radio" id="startChoice' + i + '" name="startChoice"' + checker + ' value="' + daysAsString + '"/><label for="startChoice' + i + '">' + JMSLib.DateFormatter.getShortDate(startDate) + '</label>');
+            this.startChooser.append('<input type="radio" id="startChoice' + i + '" name="startChoice"' + checker + ' value="' + daysAsString + '"/><label for="startChoice' + i + '">' + JMSLib.DateFormatter.getShortDateUtc(startDate) + '</label>');
         }
         // Anzeige aufbereiten
         this.startChooser.buttonset();

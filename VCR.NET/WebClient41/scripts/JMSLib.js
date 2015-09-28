@@ -496,6 +496,10 @@ var JMSLib;
         DateFormatter.getShortDate = function (start) {
             return DateFormatter.germanDays[start.getDay()] + ' ' + DateFormatter.formatNumber(start.getDate()) + '.' + DateFormatter.formatNumber(1 + start.getMonth());
         };
+        // Ermittelt ein Datum ohne Jahresangabe
+        DateFormatter.getShortDateUtc = function (start) {
+            return DateFormatter.germanDays[start.getUTCDay()] + ' ' + DateFormatter.formatNumber(start.getUTCDate()) + '.' + DateFormatter.formatNumber(1 + start.getUTCMonth());
+        };
         // Ermittelt einen Startzeitpunkt
         DateFormatter.getStartTime = function (start) {
             var time = DateFormatter.formatNumber(start.getHours()) + ':' + DateFormatter.formatNumber(start.getMinutes());
