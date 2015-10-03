@@ -70,7 +70,7 @@
         </ServiceInstall>
 
         <ServiceControl Id="SERVICECONTROLAUTOSTART" Start="install" Stop="both" Remove="uninstall" Wait="yes" Name="$(var.ServiceName)" />
-
+        <ServiceConfig Id="SERVICECONFIGAUTOSTART" DelayedAutoStart="yes" OnInstall="yes" OnReinstall="yes" ServiceName="$(var.ServiceName)" />
       </Component>
 
     </ComponentGroup>
