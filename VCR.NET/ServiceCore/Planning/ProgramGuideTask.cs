@@ -1,6 +1,6 @@
-﻿using System;
+﻿using JMS.DVB.Algorithms.Scheduler;
+using System;
 using System.IO;
-using JMS.DVB.Algorithms.Scheduler;
 
 
 namespace JMS.DVBVCR.RecordingService.Planning
@@ -52,9 +52,9 @@ namespace JMS.DVBVCR.RecordingService.Planning
         {
             // Validate
             if (forResource == null)
-                throw new ArgumentNullException( "forResource" );
+                throw new ArgumentNullException( nameof( forResource ) );
             if (lastUpdate == null)
-                throw new ArgumentNullException( "lastUpdate" );
+                throw new ArgumentNullException( nameof( lastUpdate ) );
 
             // Remember
             m_Resources = new[] { forResource };
@@ -73,49 +73,39 @@ namespace JMS.DVBVCR.RecordingService.Planning
         /// <summary>
         /// Meldet das Gerät, für das diese Sammlung erfolgt.
         /// </summary>
-        public override IScheduleResource[] Resources { get { return m_Resources; } }
+        public override IScheduleResource[] Resources => m_Resources;
 
         /// <summary>
         /// Meldet, ob die Ausführung grundsätzlich aktiviert ist.
         /// </summary>
-        public override bool IsEnabled { get { return VCRConfiguration.Current.ProgramGuideUpdateEnabled; } }
+        public override bool IsEnabled => VCRConfiguration.Current.ProgramGuideUpdateEnabled;
 
         /// <summary>
         /// Meldet wenn möglich den Zeitpunkt, an dem letztmalig ein Durchlauf
         /// stattgefunden hat.
         /// </summary>
-        public override DateTime? LastRun { get { return m_LastUpdate(); } }
+        public override DateTime? LastRun => m_LastUpdate();
 
         /// <summary>
         /// Meldet die maximale Dauer einer Ausführung.
         /// </summary>
-        public override TimeSpan Duration { get { return TimeSpan.FromMinutes( VCRConfiguration.Current.ProgramGuideUpdateDuration ); } }
+        public override TimeSpan Duration => TimeSpan.FromMinutes( VCRConfiguration.Current.ProgramGuideUpdateDuration );
 
         /// <summary>
         /// Meldet die Zeitspanne nach der ein neuer Durchlauf gestartet werden darf,
         /// wenn der Computer sowieso gerade aktiv ist.
         /// </summary>
-        public override TimeSpan? JoinThreshold
-        {
-            get
-            {
-                // Ask configuration
-                if (VCRConfiguration.Current.HasRecordedSomething)
-                    return VCRConfiguration.Current.ProgramGuideJoinThreshold;
-                else
-                    return null;
-            }
-        }
+        public override TimeSpan? JoinThreshold => VCRConfiguration.Current.HasRecordedSomething ? VCRConfiguration.Current.ProgramGuideJoinThreshold : null;
 
         /// <summary>
         /// Meldet die Zeitspanne, die mindestens zwischen zwei Durchläufen liegen soll.
         /// </summary>
-        public override TimeSpan DefaultInterval { get { return VCRConfiguration.Current.ProgramGuideUpdateInterval ?? new TimeSpan( 1 ); } }
+        public override TimeSpan DefaultInterval => VCRConfiguration.Current.ProgramGuideUpdateInterval ?? new TimeSpan( 1 );
 
         /// <summary>
         /// Meldet die bevorzugten Uhrzeiten für eine Ausführung. Die verwendeten Zeiten
         /// bezeichnen dabei Stunden in der lokalen Zeitzone.
         /// </summary>
-        public override uint[] PreferredHours { get { return VCRConfiguration.Current.ProgramGuideUpdateHours; } }
+        public override uint[] PreferredHours => VCRConfiguration.Current.ProgramGuideUpdateHours;
     }
 }

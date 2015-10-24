@@ -1,9 +1,9 @@
-﻿using System;
+﻿using JMS.DVB;
+using JMS.DVBVCR.RecordingService.WebServer;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Web.Http;
-using JMS.DVB;
-using JMS.DVBVCR.RecordingService.WebServer;
 
 
 namespace JMS.DVBVCR.RecordingService.RestWebApi
@@ -107,22 +107,14 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// </summary>
         /// <param name="sourceScan">Wird zur Unterscheidung der Methoden verwendet.</param>
         [HttpPost]
-        public void StartSourceScan( string sourceScan )
-        {
-            // Forward
-            ServerRuntime.VCRServer.ForceSoureListUpdate();
-        }
+        public void StartSourceScan( string sourceScan ) => ServerRuntime.VCRServer.ForceSoureListUpdate();
 
         /// <summary>
         /// Fordert die Aktualisierung der Programmzeitschrift an.
         /// </summary>
         /// <param name="guideUpdate">Wird zur Unterscheidung der Methoden verwendet.</param>
         [HttpPost]
-        public void StartGuideUpdate( string guideUpdate )
-        {
-            // Forward
-            ServerRuntime.VCRServer.ForceProgramGuideUpdate();
-        }
+        public void StartGuideUpdate( string guideUpdate ) => ServerRuntime.VCRServer.ForceProgramGuideUpdate();
 
         /// <summary>
         /// Ändert den Netzwerkversand.

@@ -1,5 +1,5 @@
-﻿using System;
-using JMS.DVB.Algorithms.Scheduler;
+﻿using JMS.DVB.Algorithms.Scheduler;
+using System;
 
 
 namespace JMS.DVBVCR.RecordingService.Planning
@@ -22,7 +22,7 @@ namespace JMS.DVBVCR.RecordingService.Planning
         {
             // Validate
             if (original == null)
-                throw new ArgumentNullException( "original" );
+                throw new ArgumentNullException( nameof( original ) );
 
             // Remember
             RealTime = original.Time;

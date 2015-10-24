@@ -1,9 +1,9 @@
-﻿using System;
+﻿using JMS.DVB;
+using JMS.DVB.Algorithms.Scheduler;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using JMS.DVB;
-using JMS.DVB.Algorithms.Scheduler;
 
 
 namespace JMS.DVBVCR.RecordingService.Planning
@@ -116,10 +116,7 @@ namespace JMS.DVBVCR.RecordingService.Planning
         /// </summary>
         public void Dispose()
         {
-            // Cleanup
-            var manager = Interlocked.Exchange( ref m_manager, null );
-            if (manager != null)
-                manager.Dispose();
+            (Interlocked.Exchange( ref m_manager, null ))?.Dispose();
         }
 
         /// <summary>
@@ -151,7 +148,7 @@ namespace JMS.DVBVCR.RecordingService.Planning
         {
             // Validate
             if (site == null)
-                throw new ArgumentNullException( "site" );
+                throw new ArgumentNullException( nameof( site ) );
 
             // Forward
             return new RecordingPlanner( site );
@@ -164,7 +161,7 @@ namespace JMS.DVBVCR.RecordingService.Planning
         public void DispatchNextActivity( DateTime referenceTime )
         {
             // As long as necessary
-            for (var skipped = new HashSet<Guid>(); ; )
+            for (var skipped = new HashSet<Guid>(); ;)
             {
                 // The plan context we created
                 PlanContext context = null;
@@ -338,11 +335,7 @@ namespace JMS.DVBVCR.RecordingService.Planning
         /// </summary>
         /// <param name="referenceTime">Der Bezugspunkt für die Planung.</param>
         /// <returns>Die Liste der nächsten Aufzeichnungen.</returns>
-        public PlanContext GetPlan( DateTime referenceTime )
-        {
-            // Forward
-            return GetPlan( m_manager.CreateScheduler( false ), referenceTime, null, 1000 );
-        }
+        public PlanContext GetPlan( DateTime referenceTime ) => GetPlan( m_manager.CreateScheduler( false ), referenceTime, null, 1000 );
 
         /// <summary>
         /// Entfernt alle aktiven Aufzeichnungen.

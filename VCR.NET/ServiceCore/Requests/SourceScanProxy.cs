@@ -1,7 +1,7 @@
-﻿using System;
-using JMS.DVB.CardServer;
+﻿using JMS.DVB.CardServer;
 using JMS.DVBVCR.RecordingService.Persistence;
 using JMS.DVBVCR.RecordingService.Status;
+using System;
 
 
 namespace JMS.DVBVCR.RecordingService.Requests
@@ -43,9 +43,9 @@ namespace JMS.DVBVCR.RecordingService.Requests
         {
             // Validate
             if (state == null)
-                throw new ArgumentNullException( "state" );
+                throw new ArgumentNullException( nameof( state ) );
             if (recording == null)
-                throw new ArgumentNullException( "recording" );
+                throw new ArgumentNullException( nameof( recording ) );
 
             // Forward
             return new SourceScanProxy( state, recording );
@@ -54,7 +54,7 @@ namespace JMS.DVBVCR.RecordingService.Requests
         /// <summary>
         /// Die Art dieser Aufzeichnung.
         /// </summary>
-        protected override string TypeName { get { return "Update Source List"; } }
+        protected override string TypeName => "Update Source List";
 
         /// <summary>
         /// Aktiviert die Aktualisierung der Quellen.

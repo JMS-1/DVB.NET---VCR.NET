@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using JMS.DVB;
+﻿using JMS.DVB;
 using JMS.DVB.CardServer;
 using JMS.DVBVCR.RecordingService.Persistence;
 using JMS.DVBVCR.RecordingService.ProgramGuide;
 using JMS.DVBVCR.RecordingService.Status;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 
 namespace JMS.DVBVCR.RecordingService.Requests
@@ -72,7 +72,7 @@ namespace JMS.DVBVCR.RecordingService.Requests
         /// <summary>
         /// Die Art dieser Aufzeichnung.
         /// </summary>
-        protected override string TypeName { get { return "Regular Recording"; } }
+        protected override string TypeName => "Regular Recording";
 
         /// <summary>
         /// Prüft, ob asynchrone Aufrufe ausstehen. Es werden niemals neue Anfragen
@@ -99,11 +99,7 @@ namespace JMS.DVBVCR.RecordingService.Requests
         /// Wird einmalig nach dem Starten des Aufzeichnungsprozesses aufgerufen. Dieser
         /// ist zu diesem Zeitpunkt im Leerlauf.
         /// </summary>
-        protected override void OnStart()
-        {
-            // Select the source group
-            m_groupPending = Server.BeginSelect( Representative.Source.SelectionKey );
-        }
+        protected override void OnStart() => m_groupPending = Server.BeginSelect( Representative.Source.SelectionKey );
 
         /// <summary>
         /// Bearbeitet neue Daten vom Aufzeichnungsprozess. Dieser Aufruf erfolgt immer,
@@ -192,7 +188,7 @@ namespace JMS.DVBVCR.RecordingService.Requests
         {
             // Cleanup from list
             lock (m_recordings)
-                for (int i = m_recordings.Count; i-- > 0; )
+                for (int i = m_recordings.Count; i-- > 0;)
                 {
                     // Load recording
                     var recording = m_recordings[i];
@@ -468,11 +464,7 @@ namespace JMS.DVBVCR.RecordingService.Requests
         /// </summary>
         /// <param name="scheduleIdentifier">Die eindeutige Kennung der Aufzeichnung.</param>
         /// <returns>Die Aufzeichnung, sofern bekannt.</returns>
-        private VCRRecordingInfo FindRecording( Guid scheduleIdentifier )
-        {
-            // Easy
-            return m_recordings.FirstOrDefault( recording => scheduleIdentifier.Equals( recording.ScheduleUniqueID.Value ) );
-        }
+        private VCRRecordingInfo FindRecording( Guid scheduleIdentifier ) => m_recordings.FirstOrDefault( recording => scheduleIdentifier.Equals( recording.ScheduleUniqueID.Value ) );
 
         /// <summary>
         /// Berechnet das aktuelle Ende der Aufzeichnung.

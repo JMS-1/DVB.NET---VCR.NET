@@ -1,5 +1,5 @@
-using System;
 using JMS.DVB.Algorithms.Scheduler;
+using System;
 
 
 namespace JMS.DVBVCR.RecordingService.Persistence
@@ -30,7 +30,7 @@ namespace JMS.DVBVCR.RecordingService.Persistence
         /// <summary>
         /// Meldet, ob Ausnahmewerte gesetzt sind.
         /// </summary>
-        public bool IsEmpty { get { return !Duration.HasValue && !ShiftTime.HasValue; } }
+        public bool IsEmpty => !Duration.HasValue && !ShiftTime.HasValue;
 
         /// <summary>
         /// Wandelt diese Ausnahmebeschreibung in ein entsprechendes Äauivalent für die Planung.

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using JMS.DVB.Algorithms.Scheduler;
+using JMS.DVBVCR.RecordingService.Persistence;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using JMS.DVB.Algorithms.Scheduler;
-using JMS.DVBVCR.RecordingService.Persistence;
 
 
 namespace JMS.DVBVCR.RecordingService.Planning
@@ -90,9 +90,9 @@ namespace JMS.DVBVCR.RecordingService.Planning
         {
             // Validate
             if (schedule == null)
-                throw new ArgumentNullException( "schedule" );
+                throw new ArgumentNullException( nameof( schedule ) );
             if (job == null)
-                throw new ArgumentNullException( "job" );
+                throw new ArgumentNullException( nameof( job ) );
 
             // Skip on missing identifier
             var scheduleIdentifier = schedule.UniqueID;
@@ -121,7 +121,7 @@ namespace JMS.DVBVCR.RecordingService.Planning
         {
             // Validate
             if (schedule == null)
-                throw new ArgumentNullException( "schedule" );
+                throw new ArgumentNullException( nameof( schedule ) );
 
             // Skip on missing identifier
             var scheduleIdentifier = schedule.UniqueID;
@@ -149,20 +149,12 @@ namespace JMS.DVBVCR.RecordingService.Planning
         /// Meldet alle Aufzeichnungen.
         /// </summary>
         /// <returns>Die Liste aller Aufzeichnungen.</returns>
-        public IEnumerator<IScheduleInformation> GetEnumerator()
-        {
-            // Forward
-            return m_schedules.GetEnumerator();
-        }
+        public IEnumerator<IScheduleInformation> GetEnumerator() => m_schedules.GetEnumerator();
 
         /// <summary>
         /// Meldet alle Aufzeichnungen.
         /// </summary>
         /// <returns>Die Liste aller Aufzeichnungen.</returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            // Forward
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

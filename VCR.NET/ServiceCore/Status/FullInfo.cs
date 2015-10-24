@@ -1,7 +1,7 @@
+using JMS.DVBVCR.RecordingService.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
-using JMS.DVBVCR.RecordingService.Persistence;
 
 
 namespace JMS.DVBVCR.RecordingService.Status

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using JMS.DVB;
+﻿using JMS.DVB;
 using JMS.DVB.CardServer;
 using JMS.DVBVCR.RecordingService.Persistence;
 using JMS.DVBVCR.RecordingService.Status;
 using JMS.DVBVCR.RecordingService.Win32Tools;
+using System;
+using System.Collections.Generic;
+using System.Threading;
 
 
 namespace JMS.DVBVCR.RecordingService.Requests
@@ -67,7 +67,7 @@ namespace JMS.DVBVCR.RecordingService.Requests
         /// <summary>
         /// Meldet den Namen des aktuellen Geräteprofils.
         /// </summary>
-        public string ProfileName { get { return ProfileState.ProfileName; } }
+        public string ProfileName => ProfileState.ProfileName;
 
         /// <summary>
         /// Wird aufgerufen, wenn eine Bindung an ein Geräteprofil vorgenommen wird.
@@ -93,11 +93,7 @@ namespace JMS.DVBVCR.RecordingService.Requests
         /// Erzeugt eine Beschreibung der mit diesem Zugriff verbundenen Aufzeichnungen.
         /// </summary>
         /// <returns>Die gewünschte Beschreibung.</returns>
-        public FullInfo CreateFullInformation()
-        {
-            // Forward
-            return CreateFullInformation( false );
-        }
+        public FullInfo CreateFullInformation() => CreateFullInformation( false );
 
         /// <summary>
         /// Erzeugt eine Beschreibung der mit diesem Zugriff verbundenen Aufzeichnungen.
@@ -192,7 +188,7 @@ namespace JMS.DVBVCR.RecordingService.Requests
         /// <summary>
         /// Gesetzt, während dieser Zugriff beendet wird.
         /// </summary>
-        public bool IsShuttingDown { get { return !m_running; } }
+        public bool IsShuttingDown => !m_running;
 
         /// <summary>
         /// Erzeugt einen passenden Aufzeichnungsprozess.
@@ -303,7 +299,7 @@ namespace JMS.DVBVCR.RecordingService.Requests
         /// <summary>
         /// Prüft, ob es sich um eine reguläre Aufzeichnung handelt.
         /// </summary>
-        protected virtual bool IsRealRecording { get { return true; } }
+        protected virtual bool IsRealRecording => true;
 
         /// <summary>
         /// Die Art dieser Aufzeichnung.
@@ -711,11 +707,7 @@ namespace JMS.DVBVCR.RecordingService.Requests
         /// Führt eine Aktion auf dem Aufzeichnungsthread aus.
         /// </summary>
         /// <param name="action">Die gewünschte Aktion.</param>
-        protected void EnqueueActionAndWait( Action action )
-        {
-            // Forward
-            EnqueueActionAndWait<object>( () => { action(); return null; } );
-        }
+        protected void EnqueueActionAndWait( Action action ) => EnqueueActionAndWait<object>( () => { action(); return null; } );
 
         /// <summary>
         /// Führt eine Aktion auf dem Aufzeichnungsthread aus.
@@ -824,21 +816,13 @@ namespace JMS.DVBVCR.RecordingService.Requests
         /// Aktiviert eine VCR.NET Erweiterung.
         /// </summary>
         /// <param name="environment">Die Umgebungsvariablen für die Erweiterung.</param>
-        protected void FireRecordingStartedExtensions( Dictionary<string, string> environment )
-        {
-            // Process extensions
-            ProfileState.Server.ExtensionProcessManager.AddWithCleanup( "RecordingStarted", environment );
-        }
+        protected void FireRecordingStartedExtensions( Dictionary<string, string> environment ) => ProfileState.Server.ExtensionProcessManager.AddWithCleanup( "RecordingStarted", environment );
 
         /// <summary>
         /// Aktiviert eine VCR.NET Erweiterung.
         /// </summary>
         /// <param name="environment">Die Umgebungsvariablen für die Erweiterung.</param>
-        protected void FireRecordingFinishedExtensions( Dictionary<string, string> environment )
-        {
-            // Process extensions
-            ProfileState.Server.ExtensionProcessManager.AddWithCleanup( "RecordingFinished", environment );
-        }
+        protected void FireRecordingFinishedExtensions( Dictionary<string, string> environment ) => ProfileState.Server.ExtensionProcessManager.AddWithCleanup( "RecordingFinished", environment );
 
         #endregion
     }

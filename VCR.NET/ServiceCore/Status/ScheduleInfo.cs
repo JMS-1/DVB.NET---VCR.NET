@@ -1,8 +1,8 @@
+using JMS.DVB;
+using JMS.DVBVCR.RecordingService.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
-using JMS.DVB;
-using JMS.DVBVCR.RecordingService.Persistence;
 
 
 namespace JMS.DVBVCR.RecordingService.Status
@@ -74,9 +74,8 @@ namespace JMS.DVBVCR.RecordingService.Status
         {
             // Find files
             string[] files = null;
-            if (fileMap != null)
-                if (recording.ScheduleUniqueID.HasValue)
-                    fileMap.TryGetValue( recording.ScheduleUniqueID.Value, out files );
+            if (recording.ScheduleUniqueID.HasValue)
+                fileMap?.TryGetValue( recording.ScheduleUniqueID.Value, out files );
 
             // Create new
             return

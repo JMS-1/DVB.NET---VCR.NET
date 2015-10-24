@@ -1,9 +1,9 @@
-﻿using System;
-using System.IO;
-using JMS.DVB;
+﻿using JMS.DVB;
 using JMS.DVB.CardServer;
 using JMS.DVBVCR.RecordingService.Persistence;
 using JMS.DVBVCR.RecordingService.Status;
+using System;
+using System.IO;
 
 
 namespace JMS.DVBVCR.RecordingService.Requests
@@ -47,9 +47,9 @@ namespace JMS.DVBVCR.RecordingService.Requests
         {
             // Validate
             if (profile == null)
-                throw new ArgumentNullException( "profile" );
+                throw new ArgumentNullException( nameof( profile ) );
             if (string.IsNullOrEmpty( target ))
-                throw new ArgumentNullException( "target" );
+                throw new ArgumentNullException( nameof( target ) );
 
             // Create controlling information
             var now = DateTime.UtcNow;
@@ -95,12 +95,12 @@ namespace JMS.DVBVCR.RecordingService.Requests
         /// <summary>
         /// Meldet, ob noch asynchrone Aufrufe ausstehen.
         /// </summary>
-        protected override bool HasPendingServerRequest { get { return false; } }
+        protected override bool HasPendingServerRequest => false;
 
         /// <summary>
         /// Prüft, ob es sich um eine reguläre Aufzeichnungs handelt.
         /// </summary>
-        protected override bool IsRealRecording { get { return false; } }
+        protected override bool IsRealRecording => false;
 
         /// <summary>
         /// Ermittelt eine Beschreibung der aktuellen Nutzung.
@@ -153,7 +153,7 @@ namespace JMS.DVBVCR.RecordingService.Requests
         /// <summary>
         /// Meldet einen Anzeigenamen für den <i>LIVE</i> Zugang.
         /// </summary>
-        protected override string TypeName { get { return "LIVE"; } }
+        protected override string TypeName => "LIVE";
 
         /// <summary>
         /// Aktiviert eine neue Quelle.

@@ -1,9 +1,9 @@
+using JMS.DVB;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
-using JMS.DVB;
 
 
 namespace JMS.DVBVCR.RecordingService.Persistence
@@ -145,14 +145,7 @@ namespace JMS.DVBVCR.RecordingService.Persistence
         /// </summary>
         /// <param name="target">Der Pfad zu einem Zielverzeichnis.</param>
         /// <returns>Die zugehörige Datei.</returns>
-        private FileInfo GetFileName( DirectoryInfo target )
-        {
-            // Create
-            if (UniqueID.HasValue)
-                return new FileInfo( Path.Combine( target.FullName, UniqueID.Value.ToString( "N" ).ToUpper() + FileSuffix ) );
-            else
-                return null;
-        }
+        private FileInfo GetFileName( DirectoryInfo target ) => UniqueID.HasValue ? new FileInfo( Path.Combine( target.FullName, UniqueID.Value.ToString( "N" ).ToUpper() + FileSuffix ) ) : null;
 
         /// <summary>
         /// Ermittelt alle Aufträge in einem Verzeichnis.
@@ -174,7 +167,7 @@ namespace JMS.DVBVCR.RecordingService.Persistence
         /// eine Aufzeichnung noch vorhanden ist.
         /// </summary>
         [XmlIgnore]
-        public bool IsActive { get { return Schedules.Any( schedule => schedule.IsActive ); } }
+        public bool IsActive => Schedules.Any( schedule => schedule.IsActive );
 
         /// <summary>
         /// Prüft, ob ein Auftrag zulässig ist.
@@ -220,23 +213,19 @@ namespace JMS.DVBVCR.RecordingService.Persistence
         /// Meldet, ob diesem Auftrag eine Quelle zugeordnet ist.
         /// </summary>
         [XmlIgnore]
-        public bool HasSource { get { return (Source != null) && (Source.Source != null); } }
+        public bool HasSource => (Source != null) && (Source.Source != null);
 
         /// <summary>
         /// Ermittelt eine Aufzeichnung dieses Auftrags.
         /// </summary>
         /// <param name="uniqueIdentifier">Die eindeutige Kennung der Aufzeichnung.</param>
         /// <returns>Die Aufzeichnung oder <i>null</i>.</returns>
-        public VCRSchedule this[Guid uniqueIdentifier] { get { return Schedules.Find( s => s.UniqueID.HasValue && (s.UniqueID.Value == uniqueIdentifier) ); } }
+        public VCRSchedule this[Guid uniqueIdentifier] => Schedules.Find( s => s.UniqueID.HasValue && (s.UniqueID.Value == uniqueIdentifier) );
 
         /// <summary>
         /// Entfernt alle Ausnahmeregelungen, die bereits verstrichen sind.
         /// </summary>
-        public void CleanupExceptions()
-        {
-            // Forward
-            Schedules.ForEach( schedule => schedule.CleanupExceptions() );
-        }
+        public void CleanupExceptions() => Schedules.ForEach( schedule => schedule.CleanupExceptions() );
 
         /// <summary>
         /// Stellt sicher, dass für diesen Auftrag ein Geräteprprofil ausgewählt ist.
@@ -244,9 +233,8 @@ namespace JMS.DVBVCR.RecordingService.Persistence
         internal void SetProfile()
         {
             // No need
-            if (Source != null)
-                if (!string.IsNullOrEmpty( Source.ProfileName ))
-                    return;
+            if (!string.IsNullOrEmpty( Source?.ProfileName ))
+                return;
 
             // Attach to the default profile
             var defaultProfile = VCRProfiles.DefaultProfile;
@@ -289,11 +277,7 @@ namespace JMS.DVBVCR.RecordingService.Persistence
         /// </summary>
         /// <param name="source">Die Auswahl der Quelle oder <i>null</i>.</param>
         /// <returns>Gesetzt, wenn die Auswahl gültig ist.</returns>
-        public static bool Validate( this SourceSelection source )
-        {
-            // Forward
-            return (VCRProfiles.FindSource( source ) != null);
-        }
+        public static bool Validate( this SourceSelection source ) => (VCRProfiles.FindSource( source ) != null);
 
         /// <summary>
         /// Prüft, ob eine Datenstromauswahl zulässig ist.
@@ -328,14 +312,7 @@ namespace JMS.DVBVCR.RecordingService.Persistence
         /// </summary>
         /// <param name="name">Der zu prüfenden Name.</param>
         /// <returns>Gesetzt, wenn der Name verwendet werden darf.</returns>
-        public static bool IsValidName( this string name )
-        {
-            // Always
-            if (string.IsNullOrEmpty( name ))
-                return true;
-            else
-                return (name.IndexOfAny( m_BadCharacters ) < 0);
-        }
+        public static bool IsValidName( this string name ) => string.IsNullOrEmpty( name ) || (name.IndexOfAny( m_BadCharacters ) < 0);
 
         /// <summary>
         /// Ersetzt alle Zeichen, die nicht in Dateinamen erlaubt sind, durch einen
@@ -351,7 +328,7 @@ namespace JMS.DVBVCR.RecordingService.Persistence
 
             // Correct all
             if (s.IndexOfAny( m_BadCharacters ) >= 0)
-                foreach (char ch in m_BadCharacters)
+                foreach (var ch in m_BadCharacters)
                     s = s.Replace( ch, '_' );
 
             // Report

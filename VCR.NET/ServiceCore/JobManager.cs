@@ -1,8 +1,8 @@
+using JMS.DVBVCR.RecordingService.Persistence;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using JMS.DVBVCR.RecordingService.Persistence;
 
 
 namespace JMS.DVBVCR.RecordingService
@@ -25,17 +25,17 @@ namespace JMS.DVBVCR.RecordingService
         /// <summary>
         /// Ermittelt das Protokollverzeichnis vom VCR.NET.
         /// </summary>
-        public DirectoryInfo LogDirectory { get { return new DirectoryInfo( Path.Combine( RootDirectory.FullName, "Logs" ) ); } }
+        public DirectoryInfo LogDirectory => new DirectoryInfo( Path.Combine( RootDirectory.FullName, "Logs" ) );
 
         /// <summary>
         /// Ermittelt das EPG und Sendersuchlaufverzeichnis vom VCR.NET.
         /// </summary>
-        public DirectoryInfo CollectorDirectory { get { return new DirectoryInfo( Path.Combine( RootDirectory.FullName, "EPG" ) ); } }
+        public DirectoryInfo CollectorDirectory => new DirectoryInfo( Path.Combine( RootDirectory.FullName, "EPG" ) );
 
         /// <summary>
         /// Ermittelt das Verzeichnis aller aktiven Aufträge vom VCR.NET.
         /// </summary>
-        public DirectoryInfo JobDirectory { get { return new DirectoryInfo( Path.Combine( RootDirectory.FullName, "Active" ) ); } }
+        public DirectoryInfo JobDirectory => new DirectoryInfo( Path.Combine( RootDirectory.FullName, "Active" ) );
 
         /// <summary>
         /// Meldet das Wurzelverzeichnis, unter dem Aufträge und Protokolle abgelegt werden.
@@ -114,10 +114,10 @@ namespace JMS.DVBVCR.RecordingService
             lock (m_Jobs)
             {
                 // Load from the map
-                VCRJob internalJob = this[job.UniqueID.Value];
+                var internalJob = this[job.UniqueID.Value];
 
                 // See if this is active
-                if (null != internalJob)
+                if (internalJob != null)
                 {
                     // Delete it
                     internalJob.Delete( JobDirectory );
@@ -211,13 +211,13 @@ namespace JMS.DVBVCR.RecordingService
                     return result;
 
                 // Create file name
-                FileInfo jobFile = new FileInfo( Path.Combine( ArchiveDirectory.FullName, jobIdentifier.ToString( "N" ).ToUpper() + VCRJob.FileSuffix ) );
+                var jobFile = new FileInfo( Path.Combine( ArchiveDirectory.FullName, jobIdentifier.ToString( "N" ).ToUpper() + VCRJob.FileSuffix ) );
                 if (!jobFile.Exists)
                     return null;
 
                 // Load
                 result = SerializationTools.Load<VCRJob>( jobFile );
-                if (null == result)
+                if (result == null)
                     return null;
             }
 
@@ -242,7 +242,7 @@ namespace JMS.DVBVCR.RecordingService
         public void SetRestartThreshold( VCRRecordingInfo recording )
         {
             // Forward
-            if (null != recording)
+            if (recording != null)
                 SetRestartThreshold( recording, recording.EndsAt );
         }
 
@@ -297,7 +297,7 @@ namespace JMS.DVBVCR.RecordingService
         /// <summary>
         /// Ermittelt das Archivverzeichnis vom VCR.NET.
         /// </summary>
-        public DirectoryInfo ArchiveDirectory { get { return new DirectoryInfo( Path.Combine( RootDirectory.FullName, "Archive" ) ); } }
+        public DirectoryInfo ArchiveDirectory => new DirectoryInfo( Path.Combine( RootDirectory.FullName, "Archive" ) );
 
         /// <summary>
         /// Ermittelt alle archivierten Aufträge zu allen DVB.NET Geräteprofilen.

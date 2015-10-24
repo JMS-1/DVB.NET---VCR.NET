@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using JMS.DVB;
+﻿using JMS.DVB;
 using JMS.DVB.CardServer;
 using JMS.DVBVCR.RecordingService.Persistence;
 using JMS.DVBVCR.RecordingService.ProgramGuide;
 using JMS.DVBVCR.RecordingService.Status;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 
 namespace JMS.DVBVCR.RecordingService.Requests
@@ -70,7 +70,6 @@ namespace JMS.DVBVCR.RecordingService.Requests
                     m_selected.Add( realSource.Source );
                 else
                     VCRServer.Log( LoggingLevel.Full, Properties.Resources.BadEPGStation, legacyName );
-
             }
         }
 
@@ -85,9 +84,9 @@ namespace JMS.DVBVCR.RecordingService.Requests
         {
             // Validate
             if (state == null)
-                throw new ArgumentNullException( "state" );
+                throw new ArgumentNullException( nameof( state ) );
             if (recording == null)
-                throw new ArgumentNullException( "recording" );
+                throw new ArgumentNullException( nameof( recording ) );
 
             // Forward
             return new ProgramGuideProxy( state, recording );
@@ -96,7 +95,7 @@ namespace JMS.DVBVCR.RecordingService.Requests
         /// <summary>
         /// Die Art dieser Aufzeichnung.
         /// </summary>
-        protected override string TypeName { get { return "Update Program Guide"; } }
+        protected override string TypeName => "Update Program Guide";
 
         /// <summary>
         /// Beginnt mit der Sammlung.

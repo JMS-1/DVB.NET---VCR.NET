@@ -1,13 +1,13 @@
+using JMS.DVB;
+using JMS.DVB.Algorithms.Scheduler;
+using JMS.DVB.CardServer;
+using JMS.DVBVCR.RecordingService.Planning;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Xml.Serialization;
-using JMS.DVB;
-using JMS.DVB.Algorithms.Scheduler;
-using JMS.DVB.CardServer;
-using JMS.DVBVCR.RecordingService.Planning;
 
 
 namespace JMS.DVBVCR.RecordingService.Persistence
@@ -207,7 +207,7 @@ namespace JMS.DVBVCR.RecordingService.Persistence
         /// Meldet die zugehörige Quelle, so wie sie im aktuellen Geräteprofil bekannt ist.
         /// </summary>
         [XmlIgnore]
-        public SourceSelection CurrentSource { get { return VCRProfiles.FindSource( Source ); } }
+        public SourceSelection CurrentSource => VCRProfiles.FindSource( Source );
 
         /// <summary>
         /// Erstellt eine exakte Kopie dieser Aufzeichnungsinformation.
@@ -218,21 +218,21 @@ namespace JMS.DVBVCR.RecordingService.Persistence
             // Create clone
             var clone =
                 new VCRRecordingInfo
-                    {
-                        Source = (Source == null) ? null : new SourceSelection { DisplayName = Source.DisplayName, SelectionKey = Source.SelectionKey },
-                        Streams = (Streams == null) ? null : Streams.Clone(),
-                        DisableHibernation = DisableHibernation,
-                        ScheduleUniqueID = ScheduleUniqueID,
-                        m_physicalStart = m_physicalStart,
-                        JobUniqueID = JobUniqueID,
-                        StartsLate = StartsLate,
-                        TotalSize = TotalSize,
-                        StartsAt = StartsAt,
-                        FileName = FileName,
-                        IsHidden = IsHidden,
-                        m_endsAt = m_endsAt,
-                        Name = Name,
-                    };
+                {
+                    Source = (Source == null) ? null : new SourceSelection { DisplayName = Source.DisplayName, SelectionKey = Source.SelectionKey },
+                    Streams = (Streams == null) ? null : Streams.Clone(),
+                    DisableHibernation = DisableHibernation,
+                    ScheduleUniqueID = ScheduleUniqueID,
+                    m_physicalStart = m_physicalStart,
+                    JobUniqueID = JobUniqueID,
+                    StartsLate = StartsLate,
+                    TotalSize = TotalSize,
+                    StartsAt = StartsAt,
+                    FileName = FileName,
+                    IsHidden = IsHidden,
+                    m_endsAt = m_endsAt,
+                    Name = Name,
+                };
 
             // File data
             clone.RecordingFiles.AddRange( RecordingFiles.Select( info => new FileInformation { Path = info.Path, VideoType = info.VideoType, ScheduleIdentifier = info.ScheduleIdentifier } ) );
@@ -391,7 +391,7 @@ namespace JMS.DVBVCR.RecordingService.Persistence
             else
             {
                 // Set dummy name
-                pattern = string.Format( "Test {0:dd-MM-yyyy HH-mm-ss}", DateTime.Now );
+                pattern = $"Test {DateTime.Now:dd-MM-yyyy HH-mm-ss}";
             }
 
             // Default directory
@@ -411,11 +411,7 @@ namespace JMS.DVBVCR.RecordingService.Persistence
         /// </summary>
         /// <param name="withPatterns">Der ursprüngliche Dateiname mit Platzhaltern.</param>
         /// <returns>Der Dateiname mit den ausgetauschten Platzhaltern.</returns>
-        private string UpdatePlaceHolders( string withPatterns )
-        {
-            // Replace all
-            return GetReplacementPatterns().Aggregate( withPatterns, ( current, rule ) => current.Replace( rule.Key, rule.Value.MakeValid() ) );
-        }
+        private string UpdatePlaceHolders( string withPatterns ) => GetReplacementPatterns().Aggregate( withPatterns, ( current, rule ) => current.Replace( rule.Key, rule.Value.MakeValid() ) );
 
         /// <summary>
         /// Prüft, ob diese Aufzeichnung zu einem gerade aufgezeichneten Datenstrom gehört.
@@ -466,9 +462,9 @@ namespace JMS.DVBVCR.RecordingService.Persistence
         {
             // Validate
             if (planItem == null)
-                throw new ArgumentNullException( "planItem" );
+                throw new ArgumentNullException( nameof( planItem ) );
             if (context == null)
-                throw new ArgumentNullException( "jobMap" );
+                throw new ArgumentNullException( nameof( context ) );
 
             // Check type
             var definition = planItem.Definition as IScheduleDefinition<VCRSchedule>;
@@ -479,16 +475,16 @@ namespace JMS.DVBVCR.RecordingService.Persistence
                 if (guideCollection != null)
                     return
                         new VCRRecordingInfo
-                            {
-                                Source = new SourceSelection { ProfileName = planItem.Resource.Name, DisplayName = VCRJob.ProgramGuideName },
-                                FileName = Path.Combine( guideCollection.CollectorDirectory.FullName, Guid.NewGuid().ToString( "N" ) + ".epg" ),
-                                ScheduleUniqueID = guideCollection.UniqueIdentifier,
-                                IsHidden = planItem.Resource == null,
-                                StartsLate = planItem.StartsLate,
-                                StartsAt = planItem.Time.Start,
-                                Name = guideCollection.Name,
-                                EndsAt = planItem.Time.End,
-                            };
+                        {
+                            Source = new SourceSelection { ProfileName = planItem.Resource.Name, DisplayName = VCRJob.ProgramGuideName },
+                            FileName = Path.Combine( guideCollection.CollectorDirectory.FullName, Guid.NewGuid().ToString( "N" ) + ".epg" ),
+                            ScheduleUniqueID = guideCollection.UniqueIdentifier,
+                            IsHidden = planItem.Resource == null,
+                            StartsLate = planItem.StartsLate,
+                            StartsAt = planItem.Time.Start,
+                            Name = guideCollection.Name,
+                            EndsAt = planItem.Time.End,
+                        };
 
                 // Check for source list update
                 var sourceUpdater = planItem.Definition as SourceListTask;

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using JMS.DVB;
+﻿using JMS.DVB;
 using JMS.DVB.Algorithms.Scheduler;
+using System;
+using System.Collections.Generic;
 
 
 namespace JMS.DVBVCR.RecordingService.Planning

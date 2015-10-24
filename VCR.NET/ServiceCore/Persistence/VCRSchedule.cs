@@ -1,10 +1,10 @@
+using JMS.DVB;
+using JMS.DVB.Algorithms.Scheduler;
+using JMS.DVBVCR.RecordingService.Planning;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
-using JMS.DVB;
-using JMS.DVB.Algorithms.Scheduler;
-using JMS.DVBVCR.RecordingService.Planning;
 
 
 namespace JMS.DVBVCR.RecordingService.Persistence
@@ -24,8 +24,8 @@ namespace JMS.DVBVCR.RecordingService.Persistence
         /// Abbildung der .NET Wochentage auf die interne Darstellung in <see cref="VCRDay"/>.
         /// </summary>
         static private Dictionary<DayOfWeek, VCRDay> m_DayMapper =
-            new Dictionary<DayOfWeek, VCRDay> 
-            { 
+            new Dictionary<DayOfWeek, VCRDay>
+            {
                 { DayOfWeek.Monday, VCRDay.Monday },
                 { DayOfWeek.Tuesday, VCRDay.Tuesday },
                 { DayOfWeek.Wednesday, VCRDay.Wednesday },
@@ -206,7 +206,7 @@ namespace JMS.DVBVCR.RecordingService.Persistence
                     var startDate = new DateTime( startLocal.Date.Ticks, DateTimeKind.Local );
 
                     // Find some allowed date - no need to test more than a week
-                    for (var day = 7; day-- > 0; )
+                    for (var day = 7; day-- > 0;)
                     {
                         // Yeah, can to it
                         if (MayRecordOn( lastDate ))
@@ -242,42 +242,21 @@ namespace JMS.DVBVCR.RecordingService.Persistence
         /// Meldet, ob für diese Aufzeichnung eine Wiederholung definiert ist.
         /// </summary>
         [XmlIgnore]
-        private bool IsRepeatable
-        {
-            get
-            {
-                // See if repeat mask is set
-                if (Days.HasValue)
-                    return ((int) Days.Value != 0);
-
-                // Once only
-                return false;
-            }
-        }
+        private bool IsRepeatable => Days.HasValue && ((int) Days.Value != 0);
 
         /// <summary>
         /// Prüft, ob eine Aufzeichnung an dem angegebenen Wochentag erlaubt ist.
         /// </summary>
         /// <param name="day">Der genaue Aufzeichnungszeitpunkt in der lokalen Zeitzone.</param>
         /// <returns>Gesetzt, wenn eine Aufzeichnung erlaubt ist.</returns>
-        private bool MayRecordOn( DateTime day )
-        {
-            // Not repeated
-            if (!Days.HasValue)
-                return false;
-            else
-                return ((Days.Value & GetDay( day.DayOfWeek )) != 0);
-        }
+        private bool MayRecordOn( DateTime day ) => Days.HasValue && ((Days.Value & GetDay( day.DayOfWeek )) != 0);
 
         /// <summary>
         /// Wandelt einen Wochentag in eine VCR.NET Kennzeichnung des Wochentags.
         /// </summary>
         /// <param name="day">Ein beliebiger Wochentag.</param>
         /// <returns>Die zugehörige Kennzeichnung.</returns>
-        public static VCRDay GetDay( DayOfWeek day )
-        {
-            return m_DayMapper[day];
-        }
+        public static VCRDay GetDay( DayOfWeek day ) => m_DayMapper[day];
 
         /// <summary>
         /// Ermittelt, ob für einen bestimmten Tag eine Ausnahme definiert ist.
@@ -310,7 +289,7 @@ namespace JMS.DVBVCR.RecordingService.Persistence
             var date = recordingEnd.ToLocalTime().Date;
 
             // Process day around check day
-            for (int i = 5; i-- > 0; )
+            for (int i = 5; i-- > 0;)
             {
                 // Get the current date to test
                 var referenceDay = date.AddDays( 2 - i );
@@ -400,11 +379,11 @@ namespace JMS.DVBVCR.RecordingService.Persistence
         {
             // Validate
             if (scheduler == null)
-                throw new ArgumentNullException( "scheduler" );
+                throw new ArgumentNullException( nameof( scheduler ) );
             if (job == null)
-                throw new ArgumentNullException( "job" );
+                throw new ArgumentNullException( nameof( job ) );
             if (findSource == null)
-                throw new ArgumentNullException( "findSource" );
+                throw new ArgumentNullException( nameof( findSource ) );
 
             // Let VCR.NET choose a profile to do the work
             if (job.AutomaticResourceSelection)
