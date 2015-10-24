@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.IO;
 using System.Net;
 using System.Web;
@@ -34,11 +33,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// <summary>
         /// Der HTTP Zugriff ist beendet.
         /// </summary>
-        public override void EndOfRequest()
-        {
-            // Forward
-            m_Context.End();
-        }
+        public override void EndOfRequest() => m_Context.End();
 
         /// <summary>
         /// Alle zwischengespeicherten Daten zum Aufrufer senden.
@@ -63,21 +58,13 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// Meldet, ob noch eine Netzwerkverbindung zum Client besteht.
         /// </summary>
         /// <returns>Gesetzt, wenn noch eine Verbindung aktiv ist.</returns>
-        public override bool IsClientConnected()
-        {
-            // Forward
-            return m_ClientRunning;
-        }
+        public override bool IsClientConnected() => m_ClientRunning;
 
         /// <summary>
         /// Ermittelt die HTTP Aufrufmethode.
         /// </summary>
         /// <returns>Die HTTP Methode, die vom Client zum Aufruf verwendet wird.</returns>
-        public override string GetHttpVerbName()
-        {
-            // Forward to context
-            return m_Context.HttpMethod;
-        }
+        public override string GetHttpVerbName() => m_Context.HttpMethod;
 
         /// <summary>
         /// Ermittelt die HTTP Version.
@@ -86,31 +73,23 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         public override string GetHttpVersion()
         {
             // Load the version
-            Version version = m_Context.ProtocolVersion;
+            var version = m_Context.ProtocolVersion;
 
             // Ask Context
-            return string.Format( "HTTP/{0}.{1}", version.Major, version.Minor );
+            return $"HTTP/{version.Major}.{version.Minor}";
         }
 
         /// <summary>
         /// Liefert die IP Adresse des Servers.
         /// </summary>
         /// <returns>Die IP Adresse des Servers.</returns>
-        public override string GetLocalAddress()
-        {
-            // Forward
-            return m_Context.LocalEndPoint.Address.ToString();
-        }
+        public override string GetLocalAddress() => m_Context.LocalEndPoint.Address.ToString();
 
         /// <summary>
         /// Liefert den TCP/IP Port unter dem der Server HHTP Aufrufe annimmt.
         /// </summary>
         /// <returns>Der TCP/IP Port des Servers.</returns>
-        public override int GetLocalPort()
-        {
-            // Forward
-            return m_Context.LocalEndPoint.Port;
-        }
+        public override int GetLocalPort() => m_Context.LocalEndPoint.Port;
 
         /// <summary>
         /// Ermittelt die Suchzeichenkette zum Aufruf.
@@ -119,13 +98,14 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         public override string GetQueryString()
         {
             // Get the full URL
-            string fullUrl = m_Context.RawUrl;
+            var fullUrl = m_Context.RawUrl;
 
             // Check for query stringt
-            int index = fullUrl.IndexOf( '?' );
+            var index = fullUrl.IndexOf( '?' );
 
             // None
-            if (index++ < 0) return string.Empty;
+            if (index++ < 0)
+                return string.Empty;
 
             // Split off
             return fullUrl.Substring( index );
@@ -135,52 +115,32 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// Liefert die ursprüngliche URL des Zugriffs.
         /// </summary>
         /// <returns>Die URL des HTTP Zugrifss.</returns>
-        public override string GetRawUrl()
-        {
-            // Forward
-            return m_Context.RawUrl;
-        }
+        public override string GetRawUrl() => m_Context.RawUrl;
 
         /// <summary>
         /// Ermittelt die IP Adresse des Aufrufers.
         /// </summary>
         /// <returns>Die IP Adresse des Aufrufers.</returns>
-        public override string GetRemoteAddress()
-        {
-            // Forward to context
-            return m_Context.RemoteEndPoint.Address.ToString();
-        }
+        public override string GetRemoteAddress() => m_Context.RemoteEndPoint.Address.ToString();
 
         /// <summary>
         /// Liefert den TCP/IP Port, an den die HHTP Antwort gesendet wird.
         /// </summary>
         /// <returns>Der TCP/IP Port für die Rückgabedaten.</returns>
-        public override int GetRemotePort()
-        {
-            // Forward
-            return m_Context.RemoteEndPoint.Port;
-        }
+        public override int GetRemotePort() => m_Context.RemoteEndPoint.Port;
 
         /// <summary>
         /// Ermittelt die lokale URI zum Aufruf.
         /// </summary>
         /// <returns>URI relativ zum Server.</returns>
-        public override string GetUriPath()
-        {
-            // Forward to context
-            return m_Context.Url.LocalPath;
-        }
+        public override string GetUriPath() => m_Context.Url.LocalPath;
 
         /// <summary>
         /// Uberträgt einen vordefinierten HTTP Header Wert.
         /// </summary>
         /// <param name="index">Index des vorderfinierten Wertes.</param>
         /// <param name="value">In den Header zu übernehmende Daten.</param>
-        public override void SendKnownResponseHeader( int index, string value )
-        {
-            // Forward to context
-            m_Context.SetHeader( HttpWorkerRequest.GetKnownResponseHeaderName( index ), value );
-        }
+        public override void SendKnownResponseHeader( int index, string value ) => m_Context.SetHeader( HttpWorkerRequest.GetKnownResponseHeaderName( index ), value );
 
         /// <summary>
         /// Überträgt den Inhalt einer Datei zum Aufrufer.
@@ -247,42 +207,26 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// </summary>
         /// <param name="statusCode">HTTP Statuscode.</param>
         /// <param name="statusDescription">Ergänzende Bexschreibung zum Status.</param>
-        public override void SendStatus( int statusCode, string statusDescription )
-        {
-            // Forward to context
-            m_Context.SetStatus( statusCode, statusDescription );
-        }
+        public override void SendStatus( int statusCode, string statusDescription ) => m_Context.SetStatus( statusCode, statusDescription );
 
         /// <summary>
         /// Überträgt einen HTTP Header Wert.
         /// </summary>
         /// <param name="name">Name des Header Wertes.</param>
         /// <param name="value">In den Header zu übernehmende Daten.</param>
-        public override void SendUnknownResponseHeader( string name, string value )
-        {
-            // Blind forward as is
-            m_Context.SetHeader( name, value );
-        }
+        public override void SendUnknownResponseHeader( string name, string value ) => m_Context.SetHeader( name, value );
 
         /// <summary>
         /// Liefert den Namen des virtuellen Verzeichnisses.
         /// </summary>
         /// <returns>Das virtuelle Verzeichnis.</returns>
-        public override string GetAppPath()
-        {
-            // Report
-            return HttpRuntime.AppDomainAppVirtualPath;
-        }
+        public override string GetAppPath() => HttpRuntime.AppDomainAppVirtualPath;
 
         /// <summary>
         /// Liefert den physikalischen Pfad zum virtuellen Verzeichnis.
         /// </summary>
         /// <returns>Voller Pfad zum physikalischen Verzeichnis.</returns>
-        public override string GetAppPathTranslated()
-        {
-            // Report
-            return HttpRuntime.AppDomainAppPath;
-        }
+        public override string GetAppPathTranslated() => HttpRuntime.AppDomainAppPath;
 
         /// <summary>
         /// Ermittelt den virtuellen Pfad zum HTTP Zugriff.
@@ -291,16 +235,18 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         public override string GetFilePath()
         {
             // Load
-            string path = base.GetFilePath();
+            var path = base.GetFilePath();
 
             // Split
-            string[] parts = path.Split( '/' );
+            var parts = path.Split( '/' );
 
             // Not allowed
-            if (parts.Length < 3) return path;
+            if (parts.Length < 3)
+                return path;
 
             // Check for Web Service call
-            if (!parts[parts.Length - 2].ToLower().EndsWith( ".asmx" )) return path;
+            if (!parts[parts.Length - 2].ToLower().EndsWith( ".asmx" ))
+                return path;
 
             // Cut off the method name
             return path.Substring( 0, path.LastIndexOf( '/' ) );
@@ -313,10 +259,10 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         public override string GetFilePathTranslated()
         {
             // The the path
-            string path = GetFilePath();
+            var path = GetFilePath();
 
             // Cut length
-            int cut = HttpRuntime.AppDomainAppVirtualPath.Length + 1;
+            var cut = HttpRuntime.AppDomainAppVirtualPath.Length + 1;
 
             // Test
             if (path.Length > cut)
@@ -363,13 +309,14 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         public override string GetPathInfo()
         {
             // Retrieve full path
-            string basePath = GetFilePath();
+            var basePath = GetFilePath();
 
             // Retrieve local path
-            string local = m_Context.Url.LocalPath;
+            var local = m_Context.Url.LocalPath;
 
             // Absolute
-            if (basePath.Length >= local.Length) return string.Empty;
+            if (basePath.Length >= local.Length)
+                return string.Empty;
 
             // Get suffix
             return local.Substring( basePath.Length );
@@ -412,22 +359,23 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         public override string[][] GetUnknownRequestHeaders()
         {
             // Result
-            List<string[]> pairs = new List<string[]>();
+            var pairs = new List<string[]>();
 
             // Create as list
-            NameValueCollection headers = m_Context.RequestHeaders;
+            var headers = m_Context.RequestHeaders;
 
             // All of it
-            for (int i = 0; i < headers.Count; ++i)
+            for (var i = 0; i < headers.Count; ++i)
             {
                 // Load the name
-                string name = headers.GetKey( i );
+                var name = headers.GetKey( i );
 
                 // Do not use
-                if (GetKnownRequestHeaderIndex( name ) >= 0) continue;
+                if (GetKnownRequestHeaderIndex( name ) >= 0)
+                    continue;
 
                 // Remember
-                pairs.Add( new string[] { name, headers.Get( i ) } );
+                pairs.Add( new[] { name, headers.Get( i ) } );
             }
 
             // Done
@@ -438,11 +386,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// Ermittelt den aktuellen Anwender.
         /// </summary>
         /// <returns>Windows interne Referenz (Token) zum aktuellen Anwender.</returns>
-        public override IntPtr GetUserToken()
-        {
-            // Forward
-            return m_Context.UserToken;
-        }
+        public override IntPtr GetUserToken() => m_Context.UserToken;
 
         /// <summary>
         /// List die übertragenen Nutzdaten.
@@ -450,21 +394,13 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// <param name="buffer">Speicherbereich für den Emfpang der Daten.</param>
         /// <param name="size">Anzahl der zu lesenden Bytes.</param>
         /// <returns>Anzahl der gelesenen Bytes.</returns>
-        public override int ReadEntityBody( byte[] buffer, int size )
-        {
-            // Forward
-            return m_Context.InputStream.Read( buffer, 0, size );
-        }
+        public override int ReadEntityBody( byte[] buffer, int size ) => m_Context.InputStream.Read( buffer, 0, size );
 
         /// <summary>
         /// Prüfe, ob der aktuelle HTTP Zugriff SSL verwendet.
         /// </summary>
         /// <returns>Gesetzt, wenn die Verbindung zum Aufrufer über SSL erfolgt.</returns>
-        public override bool IsSecure()
-        {
-            // Forward
-            return m_Context.IsSecureConnection;
-        }
+        public override bool IsSecure() => m_Context.IsSecureConnection;
 
         /// <summary>
         /// Ermittelt den Namen dieses Rechners.
@@ -473,16 +409,17 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         public override string GetServerName()
         {
             // Load
-            string name = GetKnownRequestHeader( HeaderHost );
+            var name = GetKnownRequestHeader( HeaderHost );
 
             // Use it
             if (!string.IsNullOrEmpty( name ))
             {
                 // Check for port
-                string[] splitName = name.Split( ':' );
+                var splitName = name.Split( ':' );
 
                 // Can use it
-                if ((1 == splitName.Length) || (2 == splitName.Length)) return splitName[0];
+                if ((1 == splitName.Length) || (2 == splitName.Length))
+                    return splitName[0];
             }
 
             // Default

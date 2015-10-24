@@ -132,7 +132,7 @@ namespace JMS.DVBVCR.RecordingService
                         var station = (Station) source.Value.Source;
 
                         // Enter special notation
-                        profileMap[string.Format( "{0} {1} [{2}]", station.Name, station.ToStringKey(), station.Provider )] = source.Value;
+                        profileMap[$"{station.Name} {station.ToStringKey()} [{station.Provider}]"] = source.Value;
                     }
 
             // Use all

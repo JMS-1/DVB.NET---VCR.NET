@@ -200,7 +200,7 @@ namespace JMS.DVBVCR.RecordingService
             lock (m_RequestLock)
             {
                 // Wait for current request to end
-                for (; ; )
+                for (;;)
                 {
                     // Load
                     var current = m_CurrentRequest;
@@ -300,7 +300,7 @@ namespace JMS.DVBVCR.RecordingService
         {
             // Protect current request against transistions
             lock (m_RequestLock)
-                for (; ; )
+                for (;;)
                 {
                     // Attach to the current request
                     var current = m_CurrentRequest;
@@ -422,7 +422,7 @@ namespace JMS.DVBVCR.RecordingService
         /// Meldet den Namen des Wertes in der Registrierung von Windows, wo der Zeitpunkt
         /// der letzten Aktualisierung der Liste der Quellen gespeichert wird.
         /// </summary>
-        private string SourceUpdateRegistryName { get { return string.Format( "LastPSIRun {0}", ProfileName ); } }
+        private string SourceUpdateRegistryName => $"LastPSIRun {ProfileName}";
 
         /// <summary>
         /// Liest oder setzt den Zeitpunkt der letzen Aktualisierung der Liste der Quellen

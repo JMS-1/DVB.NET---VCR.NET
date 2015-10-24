@@ -408,7 +408,7 @@ namespace JMS.DVBVCR.RecordingService.Requests
                     do
                     {
                         // Create the new name
-                        recording.FileName = Path.Combine( dir, string.Format( "{0} ({1}){2}", name, nextIndex++, ext ) );
+                        recording.FileName = Path.Combine( dir, $"{name} ({nextIndex++}){ext}" );
                     }
                     while (names.ContainsKey( recording.FileName ));
             }

@@ -170,7 +170,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         [DataMember( Name = "remainingMinutes" )]
         public uint RemainingTimeInMinutes
         {
-            get { return (PlanIdentifier == null) ? 0 : checked( (uint) Math.Max( 0, Math.Round( (StartTime + Duration - DateTime.UtcNow).TotalMinutes ) ) ); }
+            get { return (PlanIdentifier == null) ? 0 : checked((uint) Math.Max( 0, Math.Round( (StartTime + Duration - DateTime.UtcNow).TotalMinutes ) )); }
             set { }
         }
 
@@ -254,9 +254,9 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
 
             // Finish            
             if (VCRJob.ProgramGuideName.Equals( sourceName ))
-                current.SizeHint = string.Format( "{0:N0} Einträge", recording.TotalSize );
+                current.SizeHint = $"{recording.TotalSize:N0} Einträge";
             else if (VCRJob.SourceScanName.Equals( sourceName ))
-                current.SizeHint = string.Format( "{0:N0} Quellen", recording.TotalSize );
+                current.SizeHint = $"{recording.TotalSize:N0} Quellen";
             else if (VCRJob.ZappingName.Equals( sourceName ))
                 current.SizeHint = GetSizeHint( recording.TotalSize );
             else
@@ -298,9 +298,9 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         {
             // Check mode
             if (totalSize < 10000m)
-                return string.Format( "{0:N0} kBytes", totalSize );
+                return $"{totalSize:N0} kBytes";
             else
-                return string.Format( "{0:N0} MBytes", Math.Round( totalSize / 1024m ) );
+                return $"{Math.Round( totalSize / 1024m ):N0} MBytes";
         }
 
         /// <summary>

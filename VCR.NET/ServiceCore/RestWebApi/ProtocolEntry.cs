@@ -93,9 +93,9 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
 
             // Finish            
             if (VCRJob.ProgramGuideName.Equals( sourceName ))
-                protocol.SizeHint = string.Format( "{0:N0} Einträge", entry.TotalSize );
+                protocol.SizeHint = $"{entry.TotalSize:N0} Einträge";
             else if (VCRJob.SourceScanName.Equals( sourceName ))
-                protocol.SizeHint = string.Format( "{0:N0} Quellen", entry.TotalSize );
+                protocol.SizeHint = $"{entry.TotalSize:N0} Quellen";
             else
                 protocol.SizeHint = PlanCurrent.GetSizeHint( entry.TotalSize );
 

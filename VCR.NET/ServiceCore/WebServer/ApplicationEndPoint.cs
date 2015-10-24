@@ -64,11 +64,11 @@ namespace JMS.DVBVCR.RecordingService.WebServer
                 m_listener.AuthenticationSchemes |= AuthenticationSchemes.Basic;
 
             // Regular HTTP sink
-            m_listener.Prefixes.Add( string.Format( "http://*:{0}/{1}/", configuration.WebServerTcpPort, name ) );
+            m_listener.Prefixes.Add( $"http://*:{configuration.WebServerTcpPort}/{name}/" );
 
             // Secure HTTP sink
             if (configuration.EncryptWebCommunication)
-                m_listener.Prefixes.Add( string.Format( "https://*:{0}/{1}/", configuration.WebServerSecureTcpPort, name ) );
+                m_listener.Prefixes.Add( $"https://*:{configuration.WebServerSecureTcpPort}/{name}/" );
 
             // Finish configuration
             m_listener.AuthenticationSchemeSelectorDelegate = SelectAuthentication;
@@ -146,7 +146,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
                         }
 
                         // Create
-                        m_runtime = (TRuntimeType) ApplicationHost.CreateApplicationHost( typeof( ServerRuntime ), string.Format( "/{0}", m_name ), rootDir );
+                        m_runtime = (TRuntimeType) ApplicationHost.CreateApplicationHost( typeof( ServerRuntime ), $"/{m_name}", rootDir );
 
                         // Report
                         RuntimeStarted( m_runtime );

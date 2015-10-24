@@ -227,7 +227,7 @@ namespace JMS.DVBVCR.RecordingService.Requests
                 else
                 {
                     // Create thread and start it - if this works we are no longer responsible for the plan request
-                    m_worker = new Thread( Run ) { Name = string.Format( "Card Server Proxy Thread for {0}", ProfileName ) };
+                    m_worker = new Thread( Run ) { Name = $"Card Server Proxy Thread for {ProfileName}" };
                     m_worker.Start();
                 }
             }
@@ -793,10 +793,10 @@ namespace JMS.DVBVCR.RecordingService.Requests
             foreach (var file in files)
             {
                 // Report
-                environment[string.Format( "%{0}File{1}%", prefix, ++i )] = file.Path;
+                environment[$"%{prefix}File{++i}%"] = file.Path;
 
                 // Create the name
-                string formatName = string.Format( "%{0}Format{1}%", prefix, i );
+                string formatName = $"%{prefix}Format{i}%";
 
                 // Check mode
                 switch (file.VideoType)
@@ -809,7 +809,7 @@ namespace JMS.DVBVCR.RecordingService.Requests
             }
 
             // Set count
-            environment[string.Format( "%{0}Files%", prefix )] = i.ToString();
+            environment[$"%{prefix}Files%"] = i.ToString();
         }
 
         /// <summary>

@@ -200,7 +200,7 @@ namespace JMS.DVBVCR.RecordingService
             try
             {
                 // Create the message
-                message = string.Format( "{0} on {2}@{3}: {1}", DateTime.Now, message, Thread.CurrentThread.ManagedThreadId, DomainName );
+                message = $"{DateTime.Now} on {Thread.CurrentThread.ManagedThreadId}@{DomainName}: {message}";
 
                 // Report to trace
                 if (EnableTracing)

@@ -45,7 +45,7 @@ namespace JMS.DVBVCR.RecordingService.ProgramGuide
             JobManager = jobs;
 
             // Calculate file
-            ProgramGuideFile = new FileInfo( Path.Combine( JobManager.CollectorDirectory.FullName, string.Format( "EPGData for {0}.xml", ProfileName ) ) );
+            ProgramGuideFile = new FileInfo( Path.Combine( JobManager.CollectorDirectory.FullName, $"EPGData for {ProfileName}.xml" ) );
 
             // See if profile has it's own program guide
             if (!HasProgramGuide)
@@ -149,7 +149,7 @@ namespace JMS.DVBVCR.RecordingService.ProgramGuide
         /// Meldet den Namen des Wertes in der Registrierung von Windows, wo der Zeitpunkt
         /// der letzten Ausführung gespeichert wird.
         /// </summary>
-        private string UpdateRegistryName { get { return string.Format( "LastEPGRun {0}", ProfileName ); } }
+        private string UpdateRegistryName => $"LastEPGRun {ProfileName}";
 
         /// <summary>
         /// Liest oder setzt den Zeitpunkt der letzen Aktualisierung der Programmzeitschrift.

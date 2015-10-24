@@ -420,7 +420,7 @@ namespace JMS.DVBVCR.RecordingService.Persistence
                     return;
 
             // Load all
-            var name = string.IsNullOrEmpty( Name ) ? job.Name : string.Format( "{0} ({1})", job.Name, Name );
+            var name = string.IsNullOrEmpty( Name ) ? job.Name : $"{job.Name} ({Name})";
             var source = ProfileScheduleResource.CreateSource( selection );
             var duration = TimeSpan.FromMinutes( Duration );
             var noStartBefore = NoStartBefore;
