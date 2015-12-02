@@ -154,12 +154,12 @@
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <PropertyGroup>
-    <PreBuildEvent>“%25WIX%25\bin\heat.exe” dir "$(SolutionDir)FTPWrap/VCR.NET Extension" -ag -sfrag -dr Extensions -var var.ExtensionsPath -cg Extensions -srd -out "$(ProjectDir)_Extensions.wxs"</PreBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
     <PostBuildEvent>set "$(WixVariables)"
 
 "%25ProgramFiles%25\Windows Kits\10\bin\x86\msiinfo.exe" "$(TargetDir)\de-de\$(TargetFileName)" /T "VCR.NET Recording Service %25SETUPVERSION%25"</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>"%25WIX%25bin\heat.exe" dir "$(SolutionDir)FTPWrap/VCR.NET Extension" -ag -sfrag -dr Extensions -var var.ExtensionsPath -cg Extensions -srd -out "$(ProjectDir)_Extensions.wxs"</PreBuildEvent>
   </PropertyGroup>
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.
