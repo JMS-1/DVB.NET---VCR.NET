@@ -47,26 +47,26 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="JMS.DVB.Common, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.3\GAC\JMS.DVB.Common.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\JMS\DVB.NET 4.3\GAC\JMS.DVB.Common.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="JMS.DVB.HardwareAbstraction, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.3\RunTime\JMS.DVB.HardwareAbstraction.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\JMS\DVB.NET 4.3\RunTime\JMS.DVB.HardwareAbstraction.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
     <Reference Include="JMS.DVB.Provider.Legacy, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.3\RunTime\JMS.DVB.Provider.Legacy.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\JMS\DVB.NET 4.3\RunTime\JMS.DVB.Provider.Legacy.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
     <Reference Include="JMS.DVB.SITables, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.3\RunTime\JMS.DVB.SITables.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\JMS\DVB.NET 4.3\RunTime\JMS.DVB.SITables.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
     <Reference Include="JMS.DVB.SourceManagement, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.3\RunTime\JMS.DVB.SourceManagement.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\JMS\DVB.NET 4.3\RunTime\JMS.DVB.SourceManagement.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
