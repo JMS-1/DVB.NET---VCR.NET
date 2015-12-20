@@ -136,7 +136,8 @@ namespace JMS.DVB
             var path = @"SOFTWARE\JMS\DVB.NET\" + name.ToString();
 
             // Attach to the registry
-            using (var key = Registry.LocalMachine.OpenSubKey( path ))
+            using (var reg32 = RegistryKey.OpenBaseKey( RegistryHive.LocalMachine, RegistryView.Registry32 ))
+            using (var key = reg32.OpenSubKey( path, false ))
             {
                 // Not found
                 if (key == null)
