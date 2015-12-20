@@ -286,7 +286,7 @@ namespace JMS.DVB.DeviceAccess.Enumerators
                 pData.cbSize = Marshal.SizeOf( pData );
 
                 // Find them all
-                for (uint ix = 0; SetupDiEnumDeviceInfo( hInfoList, ix++, ref pData ); )
+                for (uint ix = 0; SetupDiEnumDeviceInfo( hInfoList, ix++, ref pData );)
                 {
                     // Load the name
                     string name;
@@ -360,7 +360,7 @@ namespace JMS.DVB.DeviceAccess.Enumerators
             // Open enumerator
             var @class = new Guid( deviceClass );
             var hInfoList = SetupDiGetClassDevs( ref @class, IntPtr.Zero, IntPtr.Zero, 2 );
-            if ((int) hInfoList == -1)
+            if (hInfoList.ToInt64() == -1)
                 throw new DeviceException( "Could not create Device Set" );
 
             // With cleanup
@@ -370,7 +370,7 @@ namespace JMS.DVB.DeviceAccess.Enumerators
                 var pData = new DeviceInfoData { cbSize = Marshal.SizeOf( typeof( DeviceInfoData ) ) };
 
                 // Find them all
-                for (uint ix = 0; SetupDiEnumDeviceInfo( hInfoList, ix++, ref pData ); )
+                for (uint ix = 0; SetupDiEnumDeviceInfo( hInfoList, ix++, ref pData );)
                 {
                     // Friendly name
                     var friendly = ReadStringProperty( hInfoList, ref pData, 0 );
@@ -449,7 +449,7 @@ namespace JMS.DVB.DeviceAccess.Enumerators
                     var pathPtr = new IntPtr( sysmem.ToInt64() + 4 );
 
                     // Find them all
-                    for (uint ix = 0; SetupDiEnumDeviceInterfaces( hInfoList, IntPtr.Zero, ref deviceClassIdentifier, ix++, ref interfaceData ); )
+                    for (uint ix = 0; SetupDiEnumDeviceInterfaces( hInfoList, IntPtr.Zero, ref deviceClassIdentifier, ix++, ref interfaceData );)
                     {
                         // Helper
                         UInt32 needed;

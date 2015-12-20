@@ -210,11 +210,6 @@
     <Compile Include="BDASettings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\dvbnet4.snk">
-      <Link>dvbnet4.snk</Link>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Editors\DeviceIndex.de.resx">
       <DependentUpon>DeviceIndex.cs</DependentUpon>
       <SubType>Designer</SubType>

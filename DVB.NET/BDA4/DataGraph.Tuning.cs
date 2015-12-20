@@ -21,24 +21,17 @@ namespace JMS.DVB.DeviceAccess
             /// <summary>
             /// Meldet die Anfrage zum Wechseln der Quellgruppe.
             /// </summary>
-            public ITuneRequest TuneRequest
-            {
-                get
-                {
-                    // Report
-                    return m_Request;
-                }
-            }
+            public ITuneRequest TuneRequest => m_Request;
 
             /// <summary>
             /// Der Ursprung der Quellegruppe - zurzeit nur für den Satellitenempfang von Bedeutung.
             /// </summary>
-            public GroupLocation GroupLocation { get; private set; }
+            public GroupLocation GroupLocation { get; }
 
             /// <summary>
             /// Die neu anzuwählende Quellgruppe.
             /// </summary>
-            public SourceGroup SourceGroup { get; private set; }
+            public SourceGroup SourceGroup { get; }
 
             /// <summary>
             /// Für den Fall des Empfangs über Satellite die zugehörige DiSEqC Steuermeldung.
@@ -123,8 +116,7 @@ namespace JMS.DVB.DeviceAccess
                     try
                     {
                         // Set it up
-                        if (initializer != null)
-                            initializer( locator );
+                        initializer?.Invoke( locator );
 
                         // Attach locator
                         m_Request.Locator = locator;
@@ -147,11 +139,7 @@ namespace JMS.DVB.DeviceAccess
             /// <summary>
             /// Beendet die Nutzung dieser Instanz endgültig.
             /// </summary>
-            public void Dispose()
-            {
-                // Detach all
-                BDAEnvironment.Release( ref m_Request );
-            }
+            public void Dispose() => BDAEnvironment.Release( ref m_Request );
 
             #endregion
         }
@@ -159,7 +147,7 @@ namespace JMS.DVB.DeviceAccess
         /// <summary>
         /// Die für die Auswahl der Quellgruppe verantwortliche Aktionslist.
         /// </summary>
-        public ActionPipeline<TuneToken> TunePipeline { get; private set; }
+        public ActionPipeline<TuneToken> TunePipeline { get; }
 
         /// <summary>
         /// Wechselt die Quellgruppe.
