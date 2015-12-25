@@ -1,9 +1,9 @@
-﻿using System;
+﻿using JMS.DVB;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using JMS.DVB;
 
 
 namespace JMS.DVBVCR.RecordingService.ProgramGuide
@@ -16,17 +16,17 @@ namespace JMS.DVBVCR.RecordingService.ProgramGuide
         /// <summary>
         /// Die zugehörige Auftragsverwaltung.
         /// </summary>
-        public JobManager JobManager { get; private set; }
+        public JobManager JobManager { get; }
 
         /// <summary>
         /// Der Name des zugehörigen Geräteprofils.
         /// </summary>
-        public string ProfileName { get; private set; }
+        public string ProfileName { get; }
 
         /// <summary>
         /// Meldet die zugehörige Datei mit den Daten der Programmzeitschrift.
         /// </summary>
-        public FileInfo ProgramGuideFile { get; private set; }
+        public FileInfo ProgramGuideFile { get; }
 
         /// <summary>
         /// Die Daten der Programmzeitschrift.
@@ -143,7 +143,7 @@ namespace JMS.DVBVCR.RecordingService.ProgramGuide
         /// <summary>
         /// Meldet das zugehörige Geräteprofil.
         /// </summary>
-        public Profile Profile { get { return VCRProfiles.FindProfile( ProfileName ); } }
+        public Profile Profile => VCRProfiles.FindProfile( ProfileName );
 
         /// <summary>
         /// Meldet den Namen des Wertes in der Registrierung von Windows, wo der Zeitpunkt
@@ -242,15 +242,7 @@ namespace JMS.DVBVCR.RecordingService.ProgramGuide
         /// <param name="source">Die Quelle, deren Eintrag ermittelt werden soll.</param>
         /// <param name="start">Der exakte Startzeitpunkt.</param>
         /// <returns>Der gewünschte Eintrag.</returns>
-        public ProgramGuideEntry FindEntry( SourceIdentifier source, DateTime start )
-        {
-            // Forward
-            var entries = LeafEntries;
-            if (entries == null)
-                return null;
-            else
-                return entries.FindEntry( source, start );
-        }
+        public ProgramGuideEntry FindEntry( SourceIdentifier source, DateTime start ) => LeafEntries?.FindEntry( source, start );
 
         /// <summary>
         /// Ermittelt einen Auszug aus der Programmzeitschrift.

@@ -1,8 +1,8 @@
+using JMS.DVB;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
-using JMS.DVB;
 
 
 namespace JMS.DVBVCR.RecordingService.ProgramGuide
@@ -137,10 +137,10 @@ namespace JMS.DVBVCR.RecordingService.ProgramGuide
         static ProgramGuideEntry()
         {
             // Helper
-            List<char> disallow = new List<char>();
+            var disallow = new List<char>();
 
             // Fill
-            for (char ch = '\x0020'; ch-- > '\x0000'; )
+            for (char ch = '\x0020'; ch-- > '\x0000';)
                 if (('\x0009' != ch) && ('\x000a' != ch) && ('\x000d' != ch))
                     disallow.Add( ch );
 
@@ -175,7 +175,7 @@ namespace JMS.DVBVCR.RecordingService.ProgramGuide
             StringBuilder clean = new StringBuilder();
 
             // Process
-            for (int cur = 0; cur < input.Length; )
+            for (int cur = 0; cur < input.Length;)
             {
                 // Find next
                 int next = input.IndexOfAny( m_Disallowed, cur );
@@ -221,14 +221,7 @@ namespace JMS.DVBVCR.RecordingService.ProgramGuide
         /// Meldet die Quelle zu diesem Eintrag.
         /// </summary>
         [XmlIgnore]
-        public SourceIdentifier Source
-        {
-            get
-            {
-                // Report
-                return new SourceIdentifier( NetworkIdentifier, TransportIdentifier, ServiceIdentifier );
-            }
-        }
+        public SourceIdentifier Source => new SourceIdentifier( NetworkIdentifier, TransportIdentifier, ServiceIdentifier );
 
         #region IComparable Members
 
@@ -244,7 +237,7 @@ namespace JMS.DVBVCR.RecordingService.ProgramGuide
             ProgramGuideEntry other = obj as ProgramGuideEntry;
 
             // Not comparable - we are left of these
-            if (null == other)
+            if (other == null)
                 return -1;
 
             // Forward

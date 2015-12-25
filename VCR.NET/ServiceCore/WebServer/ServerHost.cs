@@ -44,10 +44,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
             /// Wird aufgerufen, sobald die Laufzeitumgebung gestartet wurde.
             /// </summary>
             /// <param name="runtime">Die neu angelegte Laufzeitumgebung.</param>
-            protected override void RuntimeStarted( ServerRuntime runtime )
-            {
-                runtime.SetServer( m_server );
-            }
+            protected override void RuntimeStarted( ServerRuntime runtime ) => runtime.SetServer( m_server );
         }
 
         /// <summary>
@@ -159,11 +156,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// Dient zur Freigabe aller verwendeten Ressourcen.
         /// <seealso cref="Stop"/>
         /// </summary>
-        public void Dispose()
-        {
-            // Finish
-            Stop();
-        }
+        public void Dispose() => Stop();
 
         #endregion
     }

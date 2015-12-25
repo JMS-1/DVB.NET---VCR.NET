@@ -114,8 +114,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
                     try
                     {
                         // See if the domain is still up and running
-                        if (m_runtime != null)
-                            m_runtime.Test();
+                        m_runtime?.Test();
                     }
                     catch
                     {

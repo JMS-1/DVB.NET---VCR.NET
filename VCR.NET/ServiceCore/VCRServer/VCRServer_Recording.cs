@@ -1,6 +1,6 @@
-using System;
 using JMS.DVB;
 using JMS.DVB.CardServer;
+using System;
 
 
 namespace JMS.DVBVCR.RecordingService
@@ -10,13 +10,7 @@ namespace JMS.DVBVCR.RecordingService
         /// <summary>
         /// Wird zur Prüfung auf neue Bearbeitungen aufgerufen.
         /// </summary>
-        public void BeginNewPlan()
-        {
-            // Forward
-            var profiles = Profiles;
-            if (profiles != null)
-                profiles.BeginNewPlan();
-        }
+        public void BeginNewPlan() => Profiles?.BeginNewPlan();
 
         /// <summary>
         /// Fordert eine baldmögliche Aktualisierung der Programmzeitschrift an.
@@ -46,7 +40,7 @@ namespace JMS.DVBVCR.RecordingService
         /// <summary>
         /// Meldet, ob auf irgendeinem Geräteprofil ein Zugriff aktiv ist.
         /// </summary>
-        public bool IsActive { get { return Profiles.IsActive; } }
+        public bool IsActive => Profiles.IsActive;
 
         /// <summary>
         /// Verändert die Endzeit der aktuellen Aufzeichnung auf einem Geräteprofil.
@@ -55,13 +49,7 @@ namespace JMS.DVBVCR.RecordingService
         /// <param name="streamIdentifier">Die eindeutige Kennung des zu verwendenden Datenstroms.</param>
         /// <param name="newEndTime">Der neue Endzeitpunkt.</param>
         /// <param name="disableHibernation">Gesetzt, wenn der Übergang in den Schlafzustand deaktiviert werden soll.</param>
-        public void ChangeRecordingStreamEndTime( string profile, Guid streamIdentifier, DateTime newEndTime, bool disableHibernation )
-        {
-            // Forward
-            var state = FindProfile( profile );
-            if (state != null)
-                state.ChangeStreamEnd( streamIdentifier, newEndTime, disableHibernation );
-        }
+        public void ChangeRecordingStreamEndTime( string profile, Guid streamIdentifier, DateTime newEndTime, bool disableHibernation ) => FindProfile( profile )?.ChangeStreamEnd( streamIdentifier, newEndTime, disableHibernation );
 
         /// <summary>
         /// Aktiviert oder deaktiviert den Netzwerkversand für eine Quelle.
@@ -70,13 +58,7 @@ namespace JMS.DVBVCR.RecordingService
         /// <param name="source">Die betroffene Quelle.</param>
         /// <param name="uniqueIdentifier">Die eindeutige Kennung der Teilaufzeichnung.</param>
         /// <param name="target">Das neue Ziel des Netzwerkversands.</param>
-        public void SetStreamTarget( string profile, SourceIdentifier source, Guid uniqueIdentifier, string target )
-        {
-            // Attach to the profile and process
-            var state = FindProfile( profile );
-            if (state != null)
-                state.SetStreamTarget( source, uniqueIdentifier, target );
-        }
+        public void SetStreamTarget( string profile, SourceIdentifier source, Guid uniqueIdentifier, string target ) => FindProfile( profile )?.SetStreamTarget( source, uniqueIdentifier, target );
 
         /// <summary>
         /// Steuert den Zapping Modus.

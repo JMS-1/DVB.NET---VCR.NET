@@ -1,11 +1,11 @@
+using JMS.DVB;
+using JMS.DVBVCR.RecordingService.Persistence;
+using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security.Principal;
 using System.Web;
-using JMS.DVB;
-using JMS.DVBVCR.RecordingService.Persistence;
-using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
 
 namespace JMS.DVBVCR.RecordingService.WebServer
@@ -18,17 +18,13 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// <summary>
         /// Meldet die <see cref="AppDomain"/>, in der ASP.NET läuft.
         /// </summary>
-        public AppDomain AppDomain { get { return AppDomain.CurrentDomain; } }
+        public AppDomain AppDomain => AppDomain.CurrentDomain;
 
         /// <summary>
         /// Instanzen dieser Klasse sind nicht zeitgebunden.
         /// </summary>
         /// <returns>Die Antwort muss immer <i>null</i> sein.</returns>
-        public override object InitializeLifetimeService()
-        {
-            // No lease at all
-            return null;
-        }
+        public override object InitializeLifetimeService() => null;
 
         /// <summary>
         /// Wird periodisch aufgerufen um zu sehen, ob die Anwendung noch verfügbar ist.
@@ -41,11 +37,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// Beginnt mit der Ausführung einer Anfrage.
         /// </summary>
         /// <param name="context">Die Anfrage.</param>
-        public void ProcessRequest( ContextAccessor context )
-        {
-            // Execute
-            HttpRuntime.ProcessRequest( new Request( context ) );
-        }
+        public void ProcessRequest( ContextAccessor context ) => HttpRuntime.ProcessRequest( new Request( context ) );
 
         /// <summary>
         /// Beendet die ASP.NET Laufzeitumgebung.
@@ -54,11 +46,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// Der Aufruf kehrt erst wieder zurück, wenn alle ausstehenden Anfragen bearbeitet
         /// wurden. Neue Anfragen werden nicht angenommen.
         /// </remarks>
-        public virtual void Stop()
-        {
-            // Shutdown ASP.NET properly
-            HttpRuntime.Close();
-        }
+        public virtual void Stop() => HttpRuntime.Close();
     }
 
     /// <summary>
@@ -154,11 +142,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// Prüft, ob ein Anwender Zugriff auf die Webanwendung hat.
         /// </summary>
         /// <returns>Gesetzt, wenn es sich sogar um einen Administrator handelt.</returns>
-        public static bool TestWebAccess()
-        {
-            // Forward
-            return TestWebAccess( true );
-        }
+        public static bool TestWebAccess() => TestWebAccess( true );
 
         /// <summary>
         /// Prüft, ob ein Anwender Zugriff auf den VCR.NET Recording Service hat.
@@ -173,18 +157,16 @@ namespace JMS.DVBVCR.RecordingService.WebServer
                 return true;
 
             // Attach to the current context
-            HttpContext request = HttpContext.Current;
+            var request = HttpContext.Current;
 
             // Attach to user
-            IPrincipal user = request.User;
+            var user = request.User;
 
             // See if user is provided
-            if (null != user)
+            if (user != null)
             {
                 // Get the user role
-                string userRole = VCRConfiguration.Current.UserRole;
-
-                // No restriction
+                var userRole = VCRConfiguration.Current.UserRole;
                 if (string.IsNullOrEmpty( userRole ))
                     return true;
 
@@ -216,7 +198,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
                 return;
 
             // Attach to the current context
-            HttpContext request = HttpContext.Current;
+            var request = HttpContext.Current;
 
             // Reject
             request.Response.StatusCode = 401;
@@ -296,11 +278,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// <param name="job">Die eindeutige Kennung eines Auftrags.</param>
         /// <param name="schedule">Die eindeutige Kennung einer Aufzeichnung des Auftrags.</param>
         /// <returns>Die eindeutige Referenz.</returns>
-        public static string GetUniqueWebId( Guid job, Guid schedule )
-        {
-            // Forward
-            return GetUniqueWebId( job.ToString( "N" ), schedule.ToString( "N" ) );
-        }
+        public static string GetUniqueWebId( Guid job, Guid schedule ) => GetUniqueWebId( job.ToString( "N" ), schedule.ToString( "N" ) );
 
         /// <summary>
         /// Rekonstruiert einen Auftrag und eine Aufzeichnung aus einer Textdarstellung.
@@ -418,7 +396,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         public static bool GetUsesDolbyAudio( this StreamSelection streams )
         {
             // Check mode
-            if (null == streams)
+            if (streams == null)
                 return false;
             else if (streams.AC3Tracks.LanguageMode != LanguageModes.Selection)
                 return true;
@@ -431,14 +409,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// </summary>
         /// <param name="streams">Die Datenstromkonfiguration.</param>
         /// <returns>Gesetzt, wenn alle Tonspuren aufgezeichnet werden sollen.</returns>
-        public static bool GetUsesAllAudio( this StreamSelection streams )
-        {
-            // Check mode
-            if (null == streams)
-                return false;
-            else
-                return (streams.MP2Tracks.LanguageMode == LanguageModes.All);
-        }
+        public static bool GetUsesAllAudio( this StreamSelection streams ) => (streams != null) && (streams.MP2Tracks.LanguageMode == LanguageModes.All);
 
         /// <summary>
         /// Prüft, ob eine Datenstromkonfiguration DVB Untertitel nicht 
@@ -449,7 +420,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         public static bool GetUsesSubtitles( this StreamSelection streams )
         {
             // Check mode
-            if (null == streams)
+            if (streams == null)
                 return false;
             else if (streams.SubTitles.LanguageMode != LanguageModes.Selection)
                 return true;
@@ -462,28 +433,14 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// </summary>
         /// <param name="streams">Die Datenstromkonfiguration.</param>
         /// <returns>Gesetzt, wenn der Videotext aufgezeichnet werden soll.</returns>
-        public static bool GetUsesVideotext( this StreamSelection streams )
-        {
-            // Check mode
-            if (null == streams)
-                return false;
-            else
-                return streams.Videotext;
-        }
+        public static bool GetUsesVideotext( this StreamSelection streams ) => (streams != null) && streams.Videotext;
 
         /// <summary>
         /// Prüft, ob eine Datenstromkonfiguration auch einen Extrakt der Programmzeitschrift umfasst.
         /// </summary>
         /// <param name="streams">Die Datenstromkonfiguration.</param>
         /// <returns>Gesetzt, wenn die Programmzeitschrift berücksichtigt werden soll.</returns>
-        public static bool GetUsesProgramGuide( this StreamSelection streams )
-        {
-            // Check mode
-            if (null == streams)
-                return false;
-            else
-                return streams.ProgramGuide;
-        }
+        public static bool GetUsesProgramGuide( this StreamSelection streams ) => (streams != null) && streams.ProgramGuide;
 
         /// <summary>
         /// Legt fest, ob die Dolby Digital Tonspur aufgezeichnet werden soll.
@@ -518,15 +475,9 @@ namespace JMS.DVBVCR.RecordingService.WebServer
 
             // Check mode
             if (set)
-            {
-                // All
                 streams.MP2Tracks.LanguageMode = LanguageModes.All;
-            }
             else
-            {
-                // Remember
                 streams.MP2Tracks.LanguageMode = LanguageModes.Primary;
-            }
 
             // Forward
             if (streams.AC3Tracks.LanguageMode != LanguageModes.Selection)
@@ -555,10 +506,6 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// </summary>
         /// <param name="streams">Die Konfiguration der zu verwendenden Datenströme.</param>
         /// <param name="set">Gesetzt, wenn die Datenspur aktiviert werden soll.</param>
-        public static void SetUsesVideotext( this StreamSelection streams, bool set )
-        {
-            // Direct
-            streams.Videotext = set;
-        }
+        public static void SetUsesVideotext( this StreamSelection streams, bool set ) => streams.Videotext = set;
     }
 }

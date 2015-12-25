@@ -13,7 +13,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// <summary>
         /// Meldet die Liste der zuletzt verwendenden Sendern.
         /// </summary>
-        public static StringCollection RecentChannels { get { return (StringCollection) Profile["RecentChannels"]; } }
+        public static StringCollection RecentChannels => (StringCollection) Profile["RecentChannels"];
 
         /// <summary>
         /// Meldet die maximal erlaubte Anzahl von Sendern in der Liste zuletzt verwendeter Sender.
@@ -27,7 +27,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// <summary>
         /// Meldet das aktuelle Benutzerprofil.
         /// </summary>
-        private static ProfileBase Profile { get { return HttpContext.Current.Profile; } }
+        private static ProfileBase Profile => HttpContext.Current.Profile;
 
         /// <summary>
         /// Begrenzt die Anzahl der zuletzt verwendeten Quellen auf die Höchstgrenze.

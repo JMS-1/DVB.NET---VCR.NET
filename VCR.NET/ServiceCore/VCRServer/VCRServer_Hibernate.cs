@@ -1,9 +1,9 @@
+using JMS.DVBVCR.RecordingService.Win32Tools;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using JMS.DVBVCR.RecordingService.Win32Tools;
 
 
 namespace JMS.DVBVCR.RecordingService
@@ -78,11 +78,7 @@ namespace JMS.DVBVCR.RecordingService
         /// <summary>
         /// Setzt diese Instanz in den Anfangszustand bezüglich der Überwachung des Schlafzustands zurück.
         /// </summary>
-        public void ResetPendingHibernation()
-        {
-            // Clear flag
-            m_PendingHibernation = false;
-        }
+        public void ResetPendingHibernation() => m_PendingHibernation = false;
 
         /// <summary>
         /// Teilt der Laufzeitumgebung mit, dass ein Geräteprofil eine Aufzeichnung abgeschlossen hat.

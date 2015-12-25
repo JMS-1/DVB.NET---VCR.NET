@@ -115,18 +115,7 @@ namespace JMS.DVBVCR.RecordingService.Requests
         /// <summary>
         /// Prüft, ob noch Zugriffe ausstehen.
         /// </summary>
-        protected override bool HasPendingServerRequest
-        {
-            get
-            {
-                // See if we are still waiting
-                if (!WaitForEnd( ref m_startPending, "Program Guide Collection now active" ))
-                    return true;
-
-                // Nope, we are idle
-                return false;
-            }
-        }
+        protected override bool HasPendingServerRequest => !WaitForEnd( ref m_startPending, "Program Guide Collection now active" );
 
         /// <summary>
         /// Wird aufgerufen, wenn ein neuer Zustand verfügbar ist.

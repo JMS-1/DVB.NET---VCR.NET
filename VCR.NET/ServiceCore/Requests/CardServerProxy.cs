@@ -183,7 +183,7 @@ namespace JMS.DVBVCR.RecordingService.Requests
         /// <summary>
         /// Wird gesetzt, sobald der Aufzeichnungsthread beendet ist.
         /// </summary>
-        public ManualResetEvent RequestFinished { get; private set; }
+        public ManualResetEvent RequestFinished { get; }
 
         /// <summary>
         /// Gesetzt, während dieser Zugriff beendet wird.

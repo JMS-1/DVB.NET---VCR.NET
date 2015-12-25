@@ -178,7 +178,7 @@ namespace JMS.DVBVCR.RecordingService.ProgramGuide
             var tNext = entry.EndTime;
 
             // May need to cleanup
-            for (++ix; ix < m_Events.Count; )
+            for (++ix; ix < m_Events.Count;)
             {
                 // Load the entry
                 var cur = m_Events[ix];
@@ -209,28 +209,14 @@ namespace JMS.DVBVCR.RecordingService.ProgramGuide
         /// <summary>
         /// Meldet die Anzahl der verwalteten Einträge.
         /// </summary>
-        public int Count
-        {
-            get
-            {
-                // Report
-                return m_Events.Count;
-            }
-        }
+        public int Count => m_Events.Count;
 
         /// <summary>
         /// Ermittelt einen bestimmten Eintrag.
         /// </summary>
         /// <param name="index">Die 0-basierte laufende Nummer des Eintrags.</param>
         /// <returns>Der gewünschte Eintrag.</returns>
-        public ProgramGuideEntry this[int index]
-        {
-            get
-            {
-                // Report
-                return m_Events[index];
-            }
-        }
+        public ProgramGuideEntry this[int index] => m_Events[index];
 
         #region IEnumerable<ProgramGuideEntry> Members
 
@@ -238,11 +224,7 @@ namespace JMS.DVBVCR.RecordingService.ProgramGuide
         /// Erzeugt eine Auflistung über alle enthaltenen Einträge.
         /// </summary>
         /// <returns>Die gewünschte Auflistung.</returns>
-        public IEnumerator<ProgramGuideEntry> GetEnumerator()
-        {
-            // Forward
-            return m_Events.GetEnumerator();
-        }
+        public IEnumerator<ProgramGuideEntry> GetEnumerator() => m_Events.GetEnumerator();
 
         #endregion
 
@@ -252,11 +234,7 @@ namespace JMS.DVBVCR.RecordingService.ProgramGuide
         /// Erzeugt eine Auflistung über alle enthaltenen Einträge.
         /// </summary>
         /// <returns>Die gewünschte Auflistung.</returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            // Forward
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         #endregion
 
@@ -282,11 +260,7 @@ namespace JMS.DVBVCR.RecordingService.ProgramGuide
         /// Erzeugt eine exakte Kopie dieser Liste.
         /// </summary>
         /// <returns>Die gewünschte Kopie.</returns>
-        object ICloneable.Clone()
-        {
-            // Forward
-            return Clone();
-        }
+        object ICloneable.Clone() => Clone();
 
         #endregion
     }

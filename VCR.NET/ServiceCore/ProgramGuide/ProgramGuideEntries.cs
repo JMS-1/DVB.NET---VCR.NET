@@ -1,8 +1,8 @@
+using JMS.DVB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
-using JMS.DVB;
 
 
 namespace JMS.DVBVCR.RecordingService.ProgramGuide
@@ -40,7 +40,7 @@ namespace JMS.DVBVCR.RecordingService.ProgramGuide
         public void AddRange( IEnumerable<ProgramGuideEntry> entries )
         {
             // Add in order
-            if (null != entries)
+            if (entries != null)
                 foreach (var entry in entries)
                     Add( entry );
         }

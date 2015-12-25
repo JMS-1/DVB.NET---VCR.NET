@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.IO;
-using System.Reflection;
 using System.Web;
 using System.Web.Profile;
 using System.Xml;
@@ -47,10 +46,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// </summary>
         /// <param name="usernames">Die Namen der Anwender, deren Profile entfernt werden sollen.</param>
         /// <returns>Die Anzahl der entfernten Profile.</returns>
-        public override int DeleteProfiles( string[] usernames )
-        {
-            return 0;
-        }
+        public override int DeleteProfiles( string[] usernames ) => 0;
 
         /// <summary>
         /// Wird zum Löschen von Benutzerprofilen aufgerufen und macht in dieser Implementierung
@@ -58,10 +54,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// </summary>
         /// <param name="profiles">Eine Sammlung der zu löschenden Profile..</param>
         /// <returns>Die Anzahl der entfernten Profile.</returns>
-        public override int DeleteProfiles( ProfileInfoCollection profiles )
-        {
-            return 0;
-        }
+        public override int DeleteProfiles( ProfileInfoCollection profiles ) => 0;
 
         /// <summary>
         /// Jöscht nicht mehr verwendete Benutzerprofile.
@@ -69,10 +62,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// <param name="authenticationOption">Die Art der Benutzerauthentisierung.</param>
         /// <param name="userInactiveSinceDate">Das Bezugsdatum für die Prüfung auf Inaktivität.</param>
         /// <returns>Die Anzahl der entfernten Profile.</returns>
-        public override int DeleteInactiveProfiles( ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate )
-        {
-            return 0;
-        }
+        public override int DeleteInactiveProfiles( ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate ) => 0;
 
         /// <summary>
         /// Ermittelt die Anzahl nicht mehr verwendeter Benutzerprofile.
@@ -80,10 +70,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// <param name="authenticationOption">Die Art der Benutzerauthentisierung.</param>
         /// <param name="userInactiveSinceDate">Das Bezugsdatum für die Prüfung auf Inaktivität.</param>
         /// <returns>Die Anzahl der nicht mehr verwendeten Benutzerprofile.</returns>
-        public override int GetNumberOfInactiveProfiles( ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate )
-        {
-            return 0;
-        }
+        public override int GetNumberOfInactiveProfiles( ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate ) => 0;
 
         /// <summary>
         /// Erzeugt eine leere Auflistung für Benutzerprofile.
@@ -110,11 +97,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// <param name="pageSize">Die Anzahl der Profile pro Seite.</param>
         /// <param name="totalRecords">Meldet die gesamte Anzahl von Profilen.</param>
         /// <returns>Eine auflistung mit den gewünschten Profilen.</returns>
-        public override ProfileInfoCollection GetAllProfiles( ProfileAuthenticationOption authenticationOption, int pageIndex, int pageSize, out int totalRecords )
-        {
-            // Forward
-            return CreateEmptyCollection( out totalRecords );
-        }
+        public override ProfileInfoCollection GetAllProfiles( ProfileAuthenticationOption authenticationOption, int pageIndex, int pageSize, out int totalRecords ) => CreateEmptyCollection( out totalRecords );
 
         /// <summary>
         /// Meldet alle Benutzerprofile, die nicht mehr verwendet werden.
@@ -125,11 +108,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// <param name="pageSize">Die Anzahl der Profile pro Seite.</param>
         /// <param name="totalRecords">Meldet die gesamte Anzahl von Profilen.</param>
         /// <returns>Eine auflistung mit den gewünschten Profilen.</returns>
-        public override ProfileInfoCollection GetAllInactiveProfiles( ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate, int pageIndex, int pageSize, out int totalRecords )
-        {
-            // Forward
-            return CreateEmptyCollection( out totalRecords );
-        }
+        public override ProfileInfoCollection GetAllInactiveProfiles( ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate, int pageIndex, int pageSize, out int totalRecords ) => CreateEmptyCollection( out totalRecords );
 
         /// <summary>
         /// Meldet alle Benutzerprofile zu einem Benutzernamen.
@@ -140,11 +119,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// <param name="pageSize">Die Anzahl der Profile pro Seite.</param>
         /// <param name="totalRecords">Meldet die gesamte Anzahl von Profilen.</param>
         /// <returns>Eine auflistung mit den gewünschten Profilen.</returns>
-        public override ProfileInfoCollection FindProfilesByUserName( ProfileAuthenticationOption authenticationOption, string usernameToMatch, int pageIndex, int pageSize, out int totalRecords )
-        {
-            // Forward
-            return CreateEmptyCollection( out totalRecords );
-        }
+        public override ProfileInfoCollection FindProfilesByUserName( ProfileAuthenticationOption authenticationOption, string usernameToMatch, int pageIndex, int pageSize, out int totalRecords ) => CreateEmptyCollection( out totalRecords );
 
         /// <summary>
         /// Meldet alle nicht mehr verwendeten Benutzerprofile zu einem Benutzernamen.
@@ -156,11 +131,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// <param name="pageSize">Die Anzahl der Profile pro Seite.</param>
         /// <param name="totalRecords">Meldet die gesamte Anzahl von Profilen.</param>
         /// <returns>Eine auflistung mit den gewünschten Profilen.</returns>
-        public override ProfileInfoCollection FindInactiveProfilesByUserName( ProfileAuthenticationOption authenticationOption, string usernameToMatch, DateTime userInactiveSinceDate, int pageIndex, int pageSize, out int totalRecords )
-        {
-            // Forward
-            return CreateEmptyCollection( out totalRecords );
-        }
+        public override ProfileInfoCollection FindInactiveProfilesByUserName( ProfileAuthenticationOption authenticationOption, string usernameToMatch, DateTime userInactiveSinceDate, int pageIndex, int pageSize, out int totalRecords ) => CreateEmptyCollection( out totalRecords );
 
         /// <summary>
         /// Ermittelt alle Einträge aus einem Benutzerprofil.
@@ -171,7 +142,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         public override SettingsPropertyValueCollection GetPropertyValues( SettingsContext context, SettingsPropertyCollection collection )
         {
             // Profile data
-            XmlDocument xml = new XmlDocument();
+            var xml = new XmlDocument();
 
             // Must be autenticated
             if ((bool) context["IsAuthenticated"])
@@ -231,7 +202,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
                     var parse = property.PropertyType.GetMethod( "Parse", ParseSignature );
 
                     // Set current value
-                    if (null == parse)
+                    if (parse == null)
                         value.PropertyValue = defaultValue;
                     else
                         value.PropertyValue = parse.Invoke( null, new object[] { defaultValue } );
@@ -305,21 +276,11 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// <summary>
         /// Meldet eine Beschreibung.
         /// </summary>
-        public override string Description { get { return "User Profile Manager for VCR.NET"; } }
+        public override string Description => "User Profile Manager for VCR.NET";
 
         /// <summary>
         /// Meldet unseren Namen.
         /// </summary>
-        public override string Name { get { return "VCRNETProvider"; } }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="config"></param>
-        public override void Initialize( string name, NameValueCollection config )
-        {
-            base.Initialize( name, config );
-        }
+        public override string Name => "VCRNETProvider";
     }
 }

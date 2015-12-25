@@ -1,12 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using JMS.DVB;
 using JMS.DVB.Algorithms.Scheduler;
 using JMS.DVBVCR.RecordingService.Persistence;
 using JMS.DVBVCR.RecordingService.Planning;
 using JMS.DVBVCR.RecordingService.ProgramGuide;
 using JMS.DVBVCR.RecordingService.Status;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 
 namespace JMS.DVBVCR.RecordingService
@@ -137,11 +137,7 @@ namespace JMS.DVBVCR.RecordingService
         /// <typeparam name="TInfo">Die Art der gemeldeten Information.</typeparam>
         /// <param name="factory">Methode zum Erzeugen der Informationen zu einem einzelnen Geräteprofil.</param>
         /// <returns>Die Informationen zu den Profilen.</returns>
-        public TInfo[] GetProfiles<TInfo>( Func<ProfileState, TInfo> factory )
-        {
-            // Forward
-            return Profiles.InspectProfiles( factory ).ToArray();
-        }
+        public TInfo[] GetProfiles<TInfo>( Func<ProfileState, TInfo> factory ) => Profiles.InspectProfiles( factory ).ToArray();
 
         /// <summary>
         /// Meldet alle Aufträge.

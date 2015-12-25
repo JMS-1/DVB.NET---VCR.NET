@@ -1,5 +1,5 @@
-using System;
 using JMS.DVBVCR.RecordingService.Persistence;
+using System;
 
 
 namespace JMS.DVBVCR.RecordingService
@@ -16,11 +16,7 @@ namespace JMS.DVBVCR.RecordingService
         /// </summary>
         /// <param name="uniqueIdentifier">Die eindeutige Kennung des Auftrags.</param>
         /// <returns>Der gewünschte Auftrag oder <i>null</i>.</returns>
-        public VCRJob FindJob( Guid uniqueIdentifier )
-        {
-            // Ask job manager
-            return JobManager.FindJob( uniqueIdentifier );
-        }
+        public VCRJob FindJob( Guid uniqueIdentifier ) => JobManager.FindJob( uniqueIdentifier );
 
         /// <summary>
         /// Aktualisiert einen Auftrag oder legt einen neue an.
