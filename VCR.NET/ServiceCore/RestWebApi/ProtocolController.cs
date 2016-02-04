@@ -1,7 +1,7 @@
-﻿using System;
+﻿using JMS.DVBVCR.RecordingService.WebServer;
+using System;
 using System.Globalization;
 using System.Web.Http;
-using JMS.DVBVCR.RecordingService.WebServer;
 
 
 namespace JMS.DVBVCR.RecordingService.RestWebApi

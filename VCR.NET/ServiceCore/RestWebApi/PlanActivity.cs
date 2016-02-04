@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Runtime.Serialization;
-using JMS.DVB;
+﻿using JMS.DVB;
 using JMS.DVB.Algorithms.Scheduler;
 using JMS.DVBVCR.RecordingService.Persistence;
 using JMS.DVBVCR.RecordingService.Planning;
 using JMS.DVBVCR.RecordingService.WebServer;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Runtime.Serialization;
 
 
 namespace JMS.DVBVCR.RecordingService.RestWebApi
@@ -258,10 +258,10 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
             var end = time.End;
             var activity =
                 new PlanActivity
-                    {
-                        IsHidden = (schedule.Resource == null),
-                        IsLate = schedule.StartsLate,
-                    };
+                {
+                    IsHidden = (schedule.Resource == null),
+                    IsLate = schedule.StartsLate,
+                };
 
             // May need some correction
             if (runningInfo != null)

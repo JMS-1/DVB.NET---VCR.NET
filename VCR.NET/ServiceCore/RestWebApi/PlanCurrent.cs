@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Runtime.Serialization;
-using JMS.DVB;
+﻿using JMS.DVB;
 using JMS.DVB.Algorithms.Scheduler;
 using JMS.DVBVCR.RecordingService.Persistence;
 using JMS.DVBVCR.RecordingService.Planning;
 using JMS.DVBVCR.RecordingService.Status;
 using JMS.DVBVCR.RecordingService.WebServer;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Runtime.Serialization;
 
 
 namespace JMS.DVBVCR.RecordingService.RestWebApi
@@ -218,7 +218,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         {
             // Validate
             if (active == null)
-                throw new ArgumentNullException( "active" );
+                throw new ArgumentNullException( nameof( active ) );
 
             // Validate
             var recording = active.Recording;
@@ -395,10 +395,6 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// </summary>
         /// <param name="profileName">Der Name des Geräteprofils.</param>
         /// <returns>Die zugehörige Beschreibung.</returns>
-        public static PlanCurrent Create( string profileName )
-        {
-            // Create
-            return new PlanCurrent { ProfileName = profileName, IsIdle = true };
-        }
+        public static PlanCurrent Create( string profileName ) => new PlanCurrent { ProfileName = profileName, IsIdle = true };
     }
 }

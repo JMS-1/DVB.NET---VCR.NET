@@ -1,5 +1,5 @@
-﻿using System.Web.Http;
-using JMS.DVBVCR.RecordingService.WebServer;
+﻿using JMS.DVBVCR.RecordingService.WebServer;
+using System.Web.Http;
 
 
 namespace JMS.DVBVCR.RecordingService.RestWebApi
@@ -14,11 +14,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// </summary>
         /// <returns>Die Einstellungen des Anwenders.</returns>
         [HttpGet]
-        public UserProfile GetCurrentProfile()
-        {
-            // Report
-            return UserProfile.Create();
-        }
+        public UserProfile GetCurrentProfile() => UserProfile.Create();
 
         /// <summary>
         /// Aktualisiert die Daten des Geräteprofils.

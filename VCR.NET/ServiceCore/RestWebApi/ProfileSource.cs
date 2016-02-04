@@ -1,6 +1,6 @@
-﻿using System;
+﻿using JMS.DVB;
+using System;
 using System.Runtime.Serialization;
-using JMS.DVB;
 
 
 namespace JMS.DVBVCR.RecordingService.RestWebApi
@@ -22,10 +22,6 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// Führt individuelle Initialisierungen aus.
         /// </summary>
         /// <param name="station">Die Informationen zur Quelle.</param>
-        protected override void OnCreate( Station station )
-        {
-            // If it's not definitly a radio station we guess it's television
-            IsTVStation = (station.SourceType != SourceTypes.Radio);
-        }
+        protected override void OnCreate( Station station ) => IsTVStation = (station.SourceType != SourceTypes.Radio);
     }
 }

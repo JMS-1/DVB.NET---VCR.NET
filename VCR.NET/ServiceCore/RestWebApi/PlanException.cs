@@ -1,7 +1,7 @@
-﻿using System;
+﻿using JMS.DVBVCR.RecordingService.Persistence;
+using System;
 using System.Globalization;
 using System.Runtime.Serialization;
-using JMS.DVBVCR.RecordingService.Persistence;
 
 
 namespace JMS.DVBVCR.RecordingService.RestWebApi
@@ -106,9 +106,9 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         {
             // Validate
             if (exception == null)
-                throw new ArgumentNullException( "exception" );
+                throw new ArgumentNullException( nameof( exception ) );
             if (schedule == null)
-                throw new ArgumentNullException( "schedule" );
+                throw new ArgumentNullException( nameof( schedule ) );
 
             // Forward
             return new PlanException( exception, schedule );

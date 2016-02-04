@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JMS.DVBVCR.RecordingService.WebServer;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,7 +7,6 @@ using System.Management;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Web.Http;
-using JMS.DVBVCR.RecordingService.WebServer;
 
 
 namespace JMS.DVBVCR.RecordingService.RestWebApi
@@ -73,7 +73,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
 
                                     // Retrieve
                                     if (MsiGetProductInfo( productCode.ToString(), "VersionString", buffer, ref bufferSize ) == 0)
-                                        _InstalledVersion = new string( buffer, 0, checked( (int) bufferSize ) );
+                                        _InstalledVersion = new string( buffer, 0, checked((int) bufferSize) );
                                 }
                             }
                             catch (Exception e)
@@ -124,12 +124,8 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// <param name="directories">Wird zur Unterscheidung der Methoden verwendet.</param>
         /// <returns>Die gewünschte Liste.</returns>
         [HttpGet]
-        public string[] GetRecordingDirectories( string directories )
-        {
-            // First is default
-            return VCRConfiguration.Current.TargetDirectoriesNames.SelectMany( ScanDirectory ).ToArray();
-        }
-
+        public string[] GetRecordingDirectories( string directories ) => VCRConfiguration.Current.TargetDirectoriesNames.SelectMany( ScanDirectory ).ToArray();
+        
         /// <summary>
         /// Meldet alle Aufträge.
         /// </summary>

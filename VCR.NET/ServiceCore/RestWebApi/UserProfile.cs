@@ -1,7 +1,6 @@
-﻿using System.Linq;
+﻿using JMS.DVBVCR.RecordingService.WebServer;
+using System.Linq;
 using System.Runtime.Serialization;
-using System.Web;
-using JMS.DVBVCR.RecordingService.WebServer;
 
 
 namespace JMS.DVBVCR.RecordingService.RestWebApi

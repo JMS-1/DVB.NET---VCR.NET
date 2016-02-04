@@ -80,15 +80,7 @@ namespace JMS.DVBVCR.RecordingService
         /// <param name="source">Die Quelle, deren Eintrag ermittelt werden soll.</param>
         /// <param name="start">Der exakte Startzeitpunkt.</param>
         /// <returns>Der gewünschte Eintrag.</returns>
-        public ProgramGuideEntry FindProgramGuideEntry( string profileName, SourceIdentifier source, DateTime start )
-        {
-            // See if profile exists
-            var profile = Profiles[profileName];
-            if (profile == null)
-                return null;
-            else
-                return profile.ProgramGuide.FindEntry( source, start );
-        }
+        public ProgramGuideEntry FindProgramGuideEntry( string profileName, SourceIdentifier source, DateTime start ) => Profiles[profileName]?.ProgramGuide.FindEntry( source, start );
 
         /// <summary>
         /// Verändert eine Ausnahme.

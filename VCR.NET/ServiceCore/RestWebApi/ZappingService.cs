@@ -1,7 +1,7 @@
-﻿using System;
-using System.Runtime.Serialization;
-using JMS.DVB;
+﻿using JMS.DVB;
 using JMS.DVB.CardServer;
+using System;
+using System.Runtime.Serialization;
 
 
 namespace JMS.DVBVCR.RecordingService.RestWebApi
@@ -66,7 +66,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         {
             // Validate
             if (service == null)
-                throw new ArgumentNullException( "service" );
+                throw new ArgumentNullException( nameof( service ) );
 
             // Create new
             return

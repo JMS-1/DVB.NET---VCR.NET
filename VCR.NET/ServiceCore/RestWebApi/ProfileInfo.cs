@@ -26,7 +26,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         {
             // Validate
             if (profile == null)
-                throw new ArgumentNullException( "profile" );
+                throw new ArgumentNullException( nameof( profile ) );
 
             // Create
             return new ProfileInfo { Name = profile.ProfileName };

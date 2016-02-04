@@ -1,9 +1,9 @@
-﻿using System;
+﻿using JMS.DVB;
+using JMS.DVBVCR.RecordingService.WebServer;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Web.Http;
-using JMS.DVB;
-using JMS.DVBVCR.RecordingService.WebServer;
 
 
 namespace JMS.DVBVCR.RecordingService.RestWebApi
@@ -36,11 +36,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// <param name="detail">Der Name des zu verwendenden Geräteprofils.</param>
         /// <returns>Die gewünschte Liste von Sendern.</returns>
         [HttpGet]
-        public ProfileSource[] FindSources( string detail )
-        {
-            // Forward to other application domain
-            return ServerRuntime.VCRServer.GetSources( detail, true, true, ProfileSource.Create );
-        }
+        public ProfileSource[] FindSources( string detail ) => ServerRuntime.VCRServer.GetSources( detail, true, true, ProfileSource.Create );
 
         /// <summary>
         /// Verändert den Endzeitpunkt.
@@ -57,7 +53,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
             var end = DateTime.Parse( endTime, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind );
 
             // Forward
-            ServerRuntime.VCRServer.ChangeRecordingStreamEndTime( detail, scheduleIdentifier, end, disableHibernate );            
+            ServerRuntime.VCRServer.ChangeRecordingStreamEndTime( detail, scheduleIdentifier, end, disableHibernate );
         }
 
         /// <summary>

@@ -22,7 +22,7 @@ body a[href]:not(.ui-button):hover {
 .helpLegend {
   margin-left: 20px;
 }
-.helpLegend td :first-child {
+.helpLegend td:first-child {
   padding-right: 5px;
 }
 .helpLegend img {
@@ -154,7 +154,7 @@ body a[href]:not(.ui-button):hover {
   margin-bottom: 0px !important;
 }
 .linkArea {
-  background-color: #dddddd;
+  background-color: #ddd;
   border: 0px solid transparent;
   border-radius: 4px;
   font-size: small;
@@ -286,7 +286,7 @@ body a[href]:not(.ui-button):hover {
   font-size: xx-large;
   font-weight: bold;
   background-color: #dddddd;
-  border: 10px solid #cccccc;
+  border: 10px solid #ccc;
   border-radius: 5px;
 }
 .ui-datepicker {
@@ -452,7 +452,7 @@ fieldset legend {
   margin-left: 10px;
 }
 .suspectEnd {
-  background-color: #ffff00;
+  background-color: #FFFF00;
   font-weight: bold;
 }
 .mainOuter {
@@ -494,4 +494,3 @@ fieldset legend {
 .sideBySide > div {
   display: table-cell;
 }
-/*# sourceMappingURL=vcrnet.css.map */

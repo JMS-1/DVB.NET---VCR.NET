@@ -18,7 +18,7 @@ namespace JMS.DVBVCR.RecordingService
         /// <summary>
         /// Allgemeine Sperre zum Zugriff auf veränderliche globale Eigenschaften.
         /// </summary>
-        private object m_HibernateSync = new object();
+        private readonly object m_HibernateSync = new object();
 
         /// <summary>
         /// Gesetzt, wenn beim Übergang in den Schlafzustand auf interaktive Anwender geprüft werden soll.
