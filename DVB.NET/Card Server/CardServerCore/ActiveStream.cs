@@ -200,7 +200,7 @@ namespace JMS.DVB.CardServer
                 return;
 
             // Get the source information
-            var info = manager.GetCurrentInformation();
+            var info = manager.GetCurrentInformationAsync().CancelAfter( 15000 ).Result;
 
             // Must start
             if (!FirstActivationDone)
