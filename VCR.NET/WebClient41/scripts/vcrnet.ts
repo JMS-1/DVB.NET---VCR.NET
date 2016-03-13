@@ -1065,7 +1065,7 @@ class PlanEntry {
         var end = new Date(start.getTime() + duration);
 
         // Daten aus der Rohdarstellung in das Modell kopieren
-        this.station = (rawData.station == null) ? '(Aufzeichnung gelöscht)' : rawData.station;
+        this.station = (rawData.station == null) ? '(unbekannt)' : rawData.station;
         this.profile = (rawData.device == null) ? '' : rawData.device;
         this.displayStart = JMSLib.DateFormatter.getStartTime(start);
         this.displayEnd = JMSLib.DateFormatter.getEndTime(end);

@@ -406,9 +406,9 @@ namespace JMS.DVBVCR.RecordingService.Persistence
                             Source =
                                 new Station
                                 {
-                                    TransportStream = persistedSource.Source.TransportStream,
-                                    Network = persistedSource.Source.Network,
-                                    Service = persistedSource.Source.Service,
+                                    TransportStream = persistedSource.Source?.TransportStream ?? 0,
+                                    Network = persistedSource.Source?.Network ?? 0,
+                                    Service = persistedSource.Source?.Service ?? 0,
                                     Name = persistedSource.DisplayName,
                                 },
                         };

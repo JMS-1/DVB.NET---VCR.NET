@@ -333,7 +333,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
                     }
 
                 // Copy station name 
-                if (source != null)
+                if (source?.Source != null)
                 {
                     // Remember
                     activity.Source = SourceIdentifier.ToString( source.Source ).Replace( " ", "" );

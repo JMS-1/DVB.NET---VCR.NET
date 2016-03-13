@@ -346,7 +346,7 @@ var VCRServer;
         // Die zwischengespeicherten Verzeichnisse
         RecordingDirectoryCache.directories = null;
         return RecordingDirectoryCache;
-    })();
+    }());
     VCRServer.RecordingDirectoryCache = RecordingDirectoryCache;
     // Verwaltet die Geräteprofile
     var ProfileCache = (function () {
@@ -362,7 +362,7 @@ var VCRServer;
         // Die zwischengespeicherten Geräte
         ProfileCache.profiles = null;
         return ProfileCache;
-    })();
+    }());
     VCRServer.ProfileCache = ProfileCache;
     // Beschreibt die Daten der Programmzeitschrift für ein Gerät
     var GuideInfo = (function () {
@@ -372,7 +372,7 @@ var VCRServer;
             this.stations = rawData.stations;
         }
         return GuideInfo;
-    })();
+    }());
     VCRServer.GuideInfo = GuideInfo;
     // Verwaltet die Zusammenfassung der Daten der Programmzeitschrift für einzelne Geräte
     var GuideInfoCache = (function () {
@@ -389,7 +389,7 @@ var VCRServer;
         };
         GuideInfoCache.guideInfoCache = {};
         return GuideInfoCache;
-    })();
+    }());
     VCRServer.GuideInfoCache = GuideInfoCache;
     // Beschreibt einen einzelne Quelle, so wie sie dem Anwender zur Auswahl angeboten wird
     var SourceEntry = (function () {
@@ -401,7 +401,7 @@ var VCRServer;
             this.firstNameCharacter = this.name.toUpperCase().charAt(0);
         }
         return SourceEntry;
-    })();
+    }());
     VCRServer.SourceEntry = SourceEntry;
     // Verwaltet Listen von Quellen zu Geräteprofilen
     var SourceEntryCollection = (function () {
@@ -431,7 +431,7 @@ var VCRServer;
         // Die einzige Instanz dieser Klasse
         SourceEntryCollection.global = new SourceEntryCollection();
         return SourceEntryCollection;
-    })();
+    }());
     VCRServer.SourceEntryCollection = SourceEntryCollection;
     // Beschreibt die individuellen Einstellungen des Anwenders
     var UserProfile = (function () {
@@ -549,7 +549,7 @@ var VCRServer;
         // Die einzige Instanz der Einstellungen.
         UserProfile.global = new UserProfile();
         return UserProfile;
-    })();
+    }());
     VCRServer.UserProfile = UserProfile;
 })(VCRServer || (VCRServer = {}));
 //# sourceMappingURL=vcrserver.js.map

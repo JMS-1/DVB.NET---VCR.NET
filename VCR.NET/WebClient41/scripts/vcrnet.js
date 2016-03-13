@@ -30,7 +30,7 @@ var CSSClass = (function () {
     // Das Ende einer Aufzeichnung ist eventuell nicht wie erwünscht.
     CSSClass.badEndTime = 'suspectEnd';
     return CSSClass;
-})();
+}());
 // Beschreibt einen Favoritensuche in der Programmzeitschrift
 var SavedGuideQuery = (function () {
     function SavedGuideQuery(rawQuery) {
@@ -160,7 +160,7 @@ var SavedGuideQuery = (function () {
     // Wird nach dem Laden der Anzahl der Sendungen ausgelöst
     SavedGuideQuery.onCountLoaded = null;
     return SavedGuideQuery;
-})();
+}());
 // Die Verwaltung aller gespeicherten Suchen
 var SavedGuideQueries = (function () {
     function SavedGuideQueries() {
@@ -193,7 +193,7 @@ var SavedGuideQueries = (function () {
     // Der Name der Ablage
     SavedGuideQueries.storeName = 'vcrnet.guidequeries';
     return SavedGuideQueries;
-})();
+}());
 // Repräsentiert die Klasse GuideFilter
 var GuideFilter = (function () {
     function GuideFilter() {
@@ -356,7 +356,7 @@ var GuideFilter = (function () {
     // Die einzige Instanz dieser Klasse
     GuideFilter.global = new GuideFilter();
     return GuideFilter;
-})();
+}());
 // Repräsentiert die Klasse JobScheduleData
 var JobScheduleDataContract = (function () {
     function JobScheduleDataContract(job, schedule) {
@@ -371,7 +371,7 @@ var JobScheduleDataContract = (function () {
             .fail(JMSLib.dispatchErrorMessage(onError));
     };
     return JobScheduleDataContract;
-})();
+}());
 // Basisklasse für alle Teilanwendungen
 var Page = (function () {
     function Page() {
@@ -436,7 +436,7 @@ var Page = (function () {
         });
     };
     return Page;
-})();
+}());
 // Globale Initialisierungen
 $(function () {
     // Benutzereinstellungen einmalig anfordern
@@ -632,7 +632,7 @@ var SourceSelector = (function () {
         this.load(true);
     };
     return SourceSelector;
-})();
+}());
 // Verwaltet die Erzeugung der Quellenauswahl
 var SourceSelectorLoader = (function () {
     function SourceSelectorLoader(profile) {
@@ -654,7 +654,7 @@ var SourceSelectorLoader = (function () {
         return new SourceSelector(this, sibling, pure);
     };
     return SourceSelectorLoader;
-})();
+}());
 // Algorithmen zur Prüfung der Eingaben der Benutzereinstellungen
 var UserSettingsValidator = (function () {
     function UserSettingsValidator(send) {
@@ -688,7 +688,7 @@ var UserSettingsValidator = (function () {
         this.sendButton.button('option', 'disabled', !isValid);
     };
     return UserSettingsValidator;
-})();
+}());
 // Beschreibt einen einzelnen Eintrag der Programmzeitschrift, der zur Anzeige vorbereitet wurde
 var GuideItem = (function () {
     function GuideItem(rawData) {
@@ -739,7 +739,7 @@ var GuideItem = (function () {
         };
     }
     return GuideItem;
-})();
+}());
 // Verwaltet einen Eintrag aus der Programmzeitschrift und stellt sicher, dass dieser nur einmal angefordert wird
 var GuideItemCache = (function () {
     function GuideItemCache() {
@@ -758,7 +758,7 @@ var GuideItemCache = (function () {
             dataAvailable(this.guideItem);
     };
     return GuideItemCache;
-})();
+}());
 // Beschreibt einen einzelnen Eintrag in Aufzeichnungsplan
 var PlanEntry = (function () {
     function PlanEntry(rawData) {
@@ -776,7 +776,7 @@ var PlanEntry = (function () {
         var start = new Date(rawData.start);
         var end = new Date(start.getTime() + duration);
         // Daten aus der Rohdarstellung in das Modell kopieren
-        this.station = (rawData.station == null) ? '(Aufzeichnung gelöscht)' : rawData.station;
+        this.station = (rawData.station == null) ? '(unbekannt)' : rawData.station;
         this.profile = (rawData.device == null) ? '' : rawData.device;
         this.displayStart = JMSLib.DateFormatter.getStartTime(start);
         this.displayEnd = JMSLib.DateFormatter.getEndTime(end);
@@ -833,7 +833,7 @@ var PlanEntry = (function () {
     // Sendet die aktuelle Ausnahmeregel zur Änderung an den VCR.NET Recording Service.
     PlanEntry.prototype.updateException = function (onSuccess) { this.exceptionInfo.update(this.legacyId, onSuccess); };
     return PlanEntry;
-})();
+}());
 // Beschreibt einen einzelne Ausnahmeregel
 var PlanException = (function () {
     function PlanException(rawData) {
@@ -942,7 +942,7 @@ var PlanException = (function () {
         });
     };
     return PlanException;
-})();
+}());
 // Beschreibt die Daten einer Aufzeichnung
 var ScheduleData = (function () {
     function ScheduleData(existingData) {
@@ -1072,7 +1072,7 @@ var ScheduleData = (function () {
     // Das Bit für Sonntag.
     ScheduleData.flagSunday = 0x40;
     return ScheduleData;
-})();
+}());
 // Algorithmen zur Prüfung der Eingaben einer Aufzeichnung
 var ScheduleDataValidator = (function () {
     function ScheduleDataValidator(job, existingData) {
@@ -1136,7 +1136,7 @@ var ScheduleDataValidator = (function () {
             this.job.sendButton.button('option', 'disabled', true);
     };
     return ScheduleDataValidator;
-})();
+}());
 // Beschreibt die Daten eines Auftrags
 var JobData = (function () {
     function JobData(existingData, defaultProfile) {
@@ -1201,7 +1201,7 @@ var JobData = (function () {
         data.update(this.id, schedule.id, whenFinished, onError);
     };
     return JobData;
-})();
+}());
 // Algorithmen zur Prüfung der Eingaben eines Auftrags
 var JobDataValidator = (function () {
     function JobDataValidator(existingData, updateButton, defaultProfile) {
@@ -1279,7 +1279,7 @@ var JobDataValidator = (function () {
     // Alle verbotenen Zeichen.
     JobDataValidator.forbidenCharacters = /[\\\/\:\*\?\"\<\>\|]/;
     return JobDataValidator;
-})();
+}());
 // Eingabeelemente für die Sicherheitskonfiguration
 var SecuritySettingsValidator = (function () {
     function SecuritySettingsValidator(settings) {
@@ -1288,7 +1288,7 @@ var SecuritySettingsValidator = (function () {
     // Methode zur Durchführung einer Prüfung
     SecuritySettingsValidator.prototype.validate = function () { };
     return SecuritySettingsValidator;
-})();
+}());
 // Eingabeelemente für das Regelwerk der Aufzeichnungsplanung
 var ScheduleRulesValidator = (function () {
     function ScheduleRulesValidator(settings) {
@@ -1297,7 +1297,7 @@ var ScheduleRulesValidator = (function () {
     // Methode zur Durchführung einer Prüfung
     ScheduleRulesValidator.prototype.validate = function () { };
     return ScheduleRulesValidator;
-})();
+}());
 // Eingabeelemente für die Verzeichnisse
 var DirectorySettingsValidator = (function () {
     function DirectorySettingsValidator(settings, send) {
@@ -1315,7 +1315,7 @@ var DirectorySettingsValidator = (function () {
         this.sendButton.button('option', 'disabled', this.pattern != null);
     };
     return DirectorySettingsValidator;
-})();
+}());
 // Eingabeelemente für die Programmzeitschrift
 var GuideSettingsValidator = (function () {
     function GuideSettingsValidator(settings, send, form) {
@@ -1371,7 +1371,7 @@ var GuideSettingsValidator = (function () {
         this.sendButton.button('option', 'disabled', !isValid);
     };
     return GuideSettingsValidator;
-})();
+}());
 // Eingabeelemente für die Aktualisierung der Quellen
 var SourceScanSettingsValidator = (function () {
     function SourceScanSettingsValidator(settings, send) {
@@ -1440,7 +1440,7 @@ var SourceScanSettingsValidator = (function () {
         this.sendButton.button('option', 'disabled', !isValid);
     };
     return SourceScanSettingsValidator;
-})();
+}());
 // Eingabeelemente für ein einzelnes Gerät
 var ProfileValidator = (function () {
     function ProfileValidator(settings, listValidator) {
@@ -1463,7 +1463,7 @@ var ProfileValidator = (function () {
         return (this.active == null) && (this.priority == null) && (this.ciLimit == null) && (this.sourceLimit == null);
     };
     return ProfileValidator;
-})();
+}());
 // Eingabeelemente für die Geräte
 var ProfileSettingsValidator = (function () {
     function ProfileSettingsValidator(settings, send) {
@@ -1502,7 +1502,7 @@ var ProfileSettingsValidator = (function () {
         this.sendButton.button('option', 'disabled', !isValid);
     };
     return ProfileSettingsValidator;
-})();
+}());
 // Eingabeelemente für die Sicherheitskonfiguration
 var OtherSettingsValidator = (function () {
     function OtherSettingsValidator(settings, send) {
@@ -1542,7 +1542,7 @@ var OtherSettingsValidator = (function () {
         this.sendButton.button('option', 'disabled', !isValid);
     };
     return OtherSettingsValidator;
-})();
+}());
 // Das Modell zur Anzeige einer Aktivität auf einem Gerät
 var CurrentInfo = (function () {
     function CurrentInfo(rawData) {
@@ -1650,7 +1650,7 @@ var CurrentInfo = (function () {
         VCRServer.updateEndTime(this.device, this.suppressHibernate, this.scheduleIdentifier, end).done(whenDone);
     };
     return CurrentInfo;
-})();
+}());
 // Stelle die Daten einer Aufzeichnung dar
 var InfoSchedule = (function () {
     function InfoSchedule(rawInfo, isActive) {
@@ -1691,7 +1691,7 @@ var InfoSchedule = (function () {
         this.link = rawInfo.id;
     }
     return InfoSchedule;
-})();
+}());
 // Bietet das Anlegen einer neuen Aufzeichnung zu einem Auftrag an
 var InfoNew = (function () {
     function InfoNew(legacyId, isActive) {
@@ -1705,7 +1705,7 @@ var InfoNew = (function () {
         this.isActive = isActive;
     }
     return InfoNew;
-})();
+}());
 // Zeigt einen Auftrag als Knoten der Darstellung an
 var InfoJob = (function () {
     function InfoJob(rawInfo) {
@@ -1738,7 +1738,7 @@ var InfoJob = (function () {
         });
     };
     return InfoJob;
-})();
+}());
 // Ein einzelner Protokolleintrag
 var ProtocolEntry = (function () {
     function ProtocolEntry(rawEntry) {
@@ -1775,7 +1775,7 @@ var ProtocolEntry = (function () {
         this.files = $.map(rawEntry.files, function (file) { return VCRServer.getFileRoot() + encodeURIComponent(file); });
     }
     return ProtocolEntry;
-})();
+}());
 ////////////////////////// Die einzelnen Seiten //////////////////////////
 // Benutzerspezifische Einstellungen
 var settingsPage = (function (_super) {
@@ -1792,7 +1792,7 @@ var settingsPage = (function (_super) {
         JMSLib.Bindings.bind(new UserSettingsValidator($('#settingsUpdateButton')), $('#settingsData'));
     };
     return settingsPage;
-})(Page);
+}(Page));
 // Fragen und Antworten
 var faqPage = (function (_super) {
     __extends(faqPage, _super);
@@ -1822,7 +1822,7 @@ var faqPage = (function (_super) {
         });
     };
     return faqPage;
-})(Page);
+}(Page));
 // Die Startseite
 var homePage = (function (_super) {
     __extends(homePage, _super);
@@ -1911,7 +1911,7 @@ var homePage = (function (_super) {
     // Suchmuster zum ermitteln neuer Versionen.
     homePage.versionExtract = />VCRNET\.MSI<\/a>[^<]*\s([^\s]+)\s*</i;
     return homePage;
-})(Page);
+}(Page));
 // Der Aufzeichnungsplan
 var planPage = (function (_super) {
     __extends(planPage, _super);
@@ -2090,7 +2090,7 @@ var planPage = (function (_super) {
         this.reload(planLoaded);
     };
     return planPage;
-})(Page);
+}(Page));
 // Die Konfiguration und Administration
 var adminPage = (function (_super) {
     __extends(adminPage, _super);
@@ -2419,7 +2419,7 @@ var adminPage = (function (_super) {
     // Die Liste aller Benutzergruppen
     adminPage.groups = null;
     return adminPage;
-})(Page);
+}(Page));
 // Alle Aktivitäten
 var currentPage = (function (_super) {
     __extends(currentPage, _super);
@@ -2495,7 +2495,7 @@ var currentPage = (function (_super) {
         CurrentInfo.load(function (infos) { _this.table.loadList(infos); tableAvailable(); });
     };
     return currentPage;
-})(Page);
+}(Page));
 // Aufzeichung anlegen, bearbeiten und löschen
 var editPage = (function (_super) {
     __extends(editPage, _super);
@@ -2599,7 +2599,7 @@ var editPage = (function (_super) {
         VCRServer.UserProfile.global.register(this.registerAsyncCall());
     };
     return editPage;
-})(Page);
+}(Page));
 // Die Programmzeitschrift
 var guidePage = (function (_super) {
     __extends(guidePage, _super);
@@ -2864,7 +2864,7 @@ var guidePage = (function (_super) {
         encryptionFilter.change(function () { return GuideFilter.global.changeEncryption(encryptionFilter.find(':checked').val()); });
     };
     return guidePage;
-})(Page);
+}(Page));
 // Die Liste aller Aufträge
 var jobsPage = (function (_super) {
     __extends(jobsPage, _super);
@@ -2894,7 +2894,7 @@ var jobsPage = (function (_super) {
         InfoJob.load(function (rows) { _this.table.loadList(rows); loaded(); });
     };
     return jobsPage;
-})(Page);
+}(Page));
 // Die Liste der Protokolle
 var logPage = (function (_super) {
     __extends(logPage, _super);
@@ -2995,7 +2995,7 @@ var logPage = (function (_super) {
         });
     };
     return logPage;
-})(Page);
+}(Page));
 // Die gespeicherten Suchen
 var favoritesPage = (function (_super) {
     __extends(favoritesPage, _super);
@@ -3049,5 +3049,5 @@ var favoritesPage = (function (_super) {
     };
     favoritesPage.showAll = true;
     return favoritesPage;
-})(Page);
+}(Page));
 //# sourceMappingURL=vcrnet.js.map

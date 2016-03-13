@@ -25,7 +25,7 @@ var JMSLib;
         // Eine Sendung wird nur teilweise aufgezeichnet.
         CSSClass.partialRecord = 'guideOutsidePlan';
         return CSSClass;
-    })();
+    }());
     JMSLib.CSSClass = CSSClass;
     // Wertet eine Fehlermeldung von einem Web Dienst aus
     function dispatchErrorMessage(onError) {
@@ -132,7 +132,7 @@ var JMSLib;
         // Alle bereits geladenden Vorlagen
         TemplateLoader.loaded = {};
         return TemplateLoader;
-    })();
+    }());
     JMSLib.TemplateLoader = TemplateLoader;
     // Hilfsklasse zur Bindung von Formulareigenschaften an Modelldaten
     var Bindings = (function () {
@@ -248,7 +248,7 @@ var JMSLib;
         // Muster zur Erkennung gültiger Zahlen
         Bindings.numberPattern = /^\d+$/;
         return Bindings;
-    })();
+    }());
     JMSLib.Bindings = Bindings;
     // Verwaltet ein unsichtbares HTML Element als Vorlage für eine Zeile in einer Liste
     var HTMLTemplate = (function () {
@@ -402,7 +402,7 @@ var JMSLib;
         // Die XML Eigenschaft mit dem Namen der Modellmethode, die bei Aktivierung des Oberflächenelementes aufgerufen werden soll
         HTMLTemplate.clickAttribute = 'data-clickevent';
         return HTMLTemplate;
-    })();
+    }());
     JMSLib.HTMLTemplate = HTMLTemplate;
     // Verwaltet in einer Tabellendarstellung die Möglichkeit, Details aufzuklappen.
     var DetailManager = (function () {
@@ -466,7 +466,7 @@ var JMSLib;
             return newElement;
         };
         return DetailManager;
-    })();
+    }());
     JMSLib.DetailManager = DetailManager;
     // Formatiert Datum und Uhrzeit
     var DateFormatter = (function () {
@@ -547,7 +547,7 @@ var JMSLib;
         // Die Kürzel für die Wochentage
         DateFormatter.germanDays = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
         return DateFormatter;
-    })();
+    }());
     JMSLib.DateFormatter = DateFormatter;
     // Verwaltung einer Auswahl von N aus 24 Stunden für die Aktualisierungen
     var HourListSettings = (function () {
@@ -586,7 +586,7 @@ var JMSLib;
             }
         };
         return HourListSettings;
-    })();
+    }());
     JMSLib.HourListSettings = HourListSettings;
 })(JMSLib || (JMSLib = {}));
 //# sourceMappingURL=jmslib.js.map
