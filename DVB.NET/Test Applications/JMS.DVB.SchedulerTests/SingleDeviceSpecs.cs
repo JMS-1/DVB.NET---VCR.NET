@@ -465,11 +465,11 @@ namespace JMS.DVB.SchedulerTests
                     );
             var exception1 =
                 new PlanException
-                    {
-                        ExceptionDate = repeatStartLocal.AddDays( 12 ).Date,
-                        DurationDelta = TimeSpan.FromMinutes( -10 ),
-                        StartDelta = TimeSpan.FromMinutes( 10 ),
-                    };
+                {
+                    ExceptionDate = repeatStartLocal.AddDays( 12 ).Date,
+                    DurationDelta = TimeSpan.FromMinutes( -10 ),
+                    StartDelta = TimeSpan.FromMinutes( 10 ),
+                };
             var exception2 =
                 new PlanException
                 {
@@ -486,16 +486,16 @@ namespace JMS.DVB.SchedulerTests
             // Create component under test
             var cut =
                 new RecordingScheduler( StringComparer.InvariantCultureIgnoreCase )
-                    { 
-                        { FreeTVDevice }, 
-                        { plan, exception1, exception2, exception3 }, 
+                    {
+                        { FreeTVDevice },
+                        { plan, exception1, exception2, exception3 },
                     };
 
             // Load 
             var schedules = cut.GetSchedules( TimeBias ).Take( 30 ).ToArray();
 
             // Check
-            for (int i = 30; i-- > 0; )
+            for (int i = 30; i-- > 0;)
                 if (i == 12)
                 {
                     // Validate

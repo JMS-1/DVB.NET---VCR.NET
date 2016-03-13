@@ -867,5 +867,50 @@ namespace JMS.DVB.SchedulerTests
                 Assert.AreEqual( initial[1].Time.Start, follower.Time.Start );
             }
         }
+
+
+        /// <summary>
+        /// Eine laufende Aufgabe wird korrekt berücksichtigt.
+        /// </summary>
+        [TestMethod]
+        public void CanAddRecordingOverlappingRunning()
+        {
+            // Create component under test
+            using (var cut = ResourceManager.Create( StringComparer.InvariantCultureIgnoreCase ))
+            {
+                // Add a single device
+                cut.Add( ResourceMock.Device1 );
+
+                // Time to use
+                var now = new DateTime( 2013, 12, 3, 17, 0, 0, DateTimeKind.Utc );
+
+                // Start a task
+                Assert.IsTrue( cut.Start( ResourceMock.Device1, null, Guid.NewGuid(), "EPG", now, now.AddMinutes( 20 ) ), "epg" );
+
+                // Create the recording
+                var plan1 = RecordingDefinition.Create( false, "testA", Guid.NewGuid(), null, SourceMock.Source1Group1Free, now.AddMinutes( 1 ), TimeSpan.FromMinutes( 120 ) );
+                var plan2 = RecordingDefinition.Create( false, "testB", Guid.NewGuid(), null, SourceMock.Source1Group2Free, now.AddDays( 1 ).AddHours( 1 ), TimeSpan.FromMinutes( 30 ) );
+                var plan3 = RecordingDefinition.Create( false, "testC", Guid.NewGuid(), null, SourceMock.Source1Group3Free, now.AddDays( 1 ).AddHours( 2 ), TimeSpan.FromMinutes( 30 ) );
+
+                // Loading helper
+                Func<RecordingScheduler, DateTime, IEnumerable<IScheduleInformation>> loader =
+                    ( s, d ) =>
+                    {
+                        // Load recording
+                        s.Add( plan1 );
+                        s.Add( plan2 );
+                        s.Add( plan3 );
+
+                        // Report
+                        return s.GetSchedules( d );
+                    };
+
+                // Find empty list
+                var schedules = cut.GetSchedules( now, loader ).ToArray();
+
+                // Validate
+                Assert.AreEqual( 3, schedules.Count( s => s.Resource != null ), "#" );
+            }
+        }
     }
 }

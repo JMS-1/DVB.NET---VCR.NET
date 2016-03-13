@@ -356,7 +356,7 @@ namespace JMS.DVB.Algorithms.Scheduler
             }
 
             // Correct it all
-            for (; ; )
+            for (;;)
             {
                 // On change we must create a clone
                 var allocationIsPrivate = false;
@@ -447,7 +447,7 @@ namespace JMS.DVB.Algorithms.Scheduler
             var time = timeHolder.Planned;
 
             // As long as needed
-            for (var scanStart = 0; ; )
+            for (var scanStart = 0; ;)
             {
                 // See if there is at least one allocation area available
                 var allocationIndex = m_Allocations.FindIndex( scanStart, a => a.Overlaps( time ) );
@@ -505,21 +505,8 @@ namespace JMS.DVB.Algorithms.Scheduler
             var index = allocations.FindIndex( allocation => allocation.End > planTime.Value );
 
             // Cut off if not the very first
-            if (--index > 0)
-            {
-                // Collapse if only two are left
-                if (index == allocations.Count - 2)
-                    index++;
-
-                // Load the very start of it all
-                var allocation = allocations[0];
-
-                // Update it's end time
-                allocations[0] = allocation.Clone( allocation.Start, allocations[index].End );
-
-                // Cleanup the rest
-                allocations.RemoveRange( 1, index );
-            }
+            if (index > 1)
+                allocations.RemoveRange( 0, index );
 
             // Report
             return clone;

@@ -68,17 +68,13 @@ namespace JMS.DVBVCR.UnitTests
             // Create directory
             m_jobDirectory.Create();
 
-            // Path of the scratch file
-            var zipPath = Path.Combine( m_jobDirectory.FullName, "temp.zip" );
-
-            // Copy our archive to the directory
-            File.WriteAllBytes( zipPath, Properties.Resources.TestJobs );
-
             // Extract [.NET 4.5]
-            //ZipFile.ExtractToDirectory( zipPath, m_jobDirectory.FullName );
-
-            // Forget it
-            File.Delete( zipPath );
+            using (var zipStream = new MemoryStream( Properties.Resources.TestJobs ))
+            using (var zip = new ZipArchive( zipStream ))
+                foreach (var entry in zip.Entries)
+                    using (var source = entry.Open())
+                    using (var target = new FileStream( Path.Combine( m_jobDirectory.FullName, entry.Name ), FileMode.CreateNew, FileAccess.Write, FileShare.None ))
+                        source.CopyTo( target );
 
             // Process all files
             m_jobs =
@@ -174,7 +170,7 @@ namespace JMS.DVBVCR.UnitTests
             // Create component under Test
             using (var cfg = TestConfigurationProvider.Create( Properties.Resources.AllSchedulers ))
             using (var cut = RecordingPlanner.Create( this ))
-                for (int i = 250; i-- > 0; )
+                for (int i = 250; i-- > 0;)
                     cut.DispatchNextActivity( m_planTime );
         }
 
