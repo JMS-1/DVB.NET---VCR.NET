@@ -17,5 +17,11 @@
     <Setting Name="Version" Type="System.String" Scope="User">
       <Value Profile="(Default)">0.0</Value>
     </Setting>
+    <Setting Name="GfDFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="MuxDefault" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

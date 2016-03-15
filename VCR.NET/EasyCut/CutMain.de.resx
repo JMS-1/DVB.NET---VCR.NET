@@ -112,34 +112,16 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="cmdRun.Text" xml:space="preserve">
     <value>&amp;Los</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>Untertitel &amp;Seite</value>
-  </data>
-  <data name="Messages.Items" xml:space="preserve">
-    <value>Cuttermaran Projektdateien|*.cpf|Alle Dateien|*.*</value>
-  </data>
-  <data name="Messages.Items1" xml:space="preserve">
-    <value>Cuttermaran Projektdatei auswählen</value>
-  </data>
-  <data name="Messages.Items2" xml:space="preserve">
-    <value>Text (SUB)|*.sub|Bild (SUP)|*.sup|Alle Dateien|*.*</value>
-  </data>
-  <data name="Messages.Items3" xml:space="preserve">
-    <value>Untertiteldatei auswählen</value>
-  </data>
-  <data name="Messages.Items4" xml:space="preserve">
-    <value>Fehler beim Schneiden</value>
-  </data>
-  <data name="Messages.Items5" xml:space="preserve">
-    <value>Format nicht unterstützt - bitte eine andere Dateiendung verwenden</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>&amp;Bildrate</value>
@@ -162,7 +144,13 @@
   <data name="saveCut.Title" xml:space="preserve">
     <value>Untertiteldatei auswählen</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="ckMux.Size" type="System.Drawing.Size, System.Drawing">
+    <value>148, 17</value>
+  </data>
+  <data name="ckMux.Text" xml:space="preserve">
+    <value>Ein&amp;mischen wenn möglich</value>
+  </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAIAICAQAAAAAADoAgAAJgAAABAQEAAAAAAAKAEAAA4DAAAoAAAAIAAAAEAAAAABAAQAAAAAAIAC

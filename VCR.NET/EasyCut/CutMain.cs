@@ -1,7 +1,9 @@
 using System;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace EasyCut
@@ -28,6 +30,7 @@ namespace EasyCut
         private System.ComponentModel.Container components = null;
         private SaveFileDialog saveCut;
         private ComboBox selPage;
+        private CheckBox ckMux;
 
         /// <summary>
         /// Die aktuelle Projektdatei.
@@ -71,7 +74,7 @@ namespace EasyCut
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CutMain));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( CutMain ) );
             this.cmdRun = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -84,122 +87,130 @@ namespace EasyCut
             this.openCuttermaran = new System.Windows.Forms.OpenFileDialog();
             this.saveCut = new System.Windows.Forms.SaveFileDialog();
             this.selPage = new System.Windows.Forms.ComboBox();
-            ((System.ComponentModel.ISupportInitialize)(this.udMinimum)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.udCorrect)).BeginInit();
+            this.ckMux = new System.Windows.Forms.CheckBox();
+            ((System.ComponentModel.ISupportInitialize) (this.udMinimum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize) (this.udCorrect)).BeginInit();
             this.SuspendLayout();
             // 
             // cmdRun
             // 
-            resources.ApplyResources(this.cmdRun, "cmdRun");
+            resources.ApplyResources( this.cmdRun, "cmdRun" );
             this.cmdRun.Name = "cmdRun";
-            this.cmdRun.Click += new System.EventHandler(this.cmdRun_Click);
+            this.cmdRun.Click += new System.EventHandler( this.cmdRun_Click );
             // 
             // label1
             // 
-            resources.ApplyResources(this.label1, "label1");
+            resources.ApplyResources( this.label1, "label1" );
             this.label1.Name = "label1";
             // 
             // label2
             // 
-            resources.ApplyResources(this.label2, "label2");
+            resources.ApplyResources( this.label2, "label2" );
             this.label2.Name = "label2";
             // 
             // selRate
             // 
+            resources.ApplyResources( this.selRate, "selRate" );
             this.selRate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            resources.ApplyResources(this.selRate, "selRate");
             this.selRate.Name = "selRate";
             // 
             // label3
             // 
-            resources.ApplyResources(this.label3, "label3");
+            resources.ApplyResources( this.label3, "label3" );
             this.label3.Name = "label3";
             // 
             // udMinimum
             // 
+            resources.ApplyResources( this.udMinimum, "udMinimum" );
             this.udMinimum.DecimalPlaces = 2;
-            this.udMinimum.Increment = new decimal(new int[] {
+            this.udMinimum.Increment = new decimal( new int[] {
             1,
             0,
             0,
-            65536});
-            resources.ApplyResources(this.udMinimum, "udMinimum");
-            this.udMinimum.Maximum = new decimal(new int[] {
+            65536} );
+            this.udMinimum.Maximum = new decimal( new int[] {
             5,
             0,
             0,
-            0});
+            0} );
             this.udMinimum.Name = "udMinimum";
             // 
             // label4
             // 
-            resources.ApplyResources(this.label4, "label4");
+            resources.ApplyResources( this.label4, "label4" );
             this.label4.Name = "label4";
             // 
             // udCorrect
             // 
-            this.udCorrect.Increment = new decimal(new int[] {
+            resources.ApplyResources( this.udCorrect, "udCorrect" );
+            this.udCorrect.Increment = new decimal( new int[] {
             15,
             0,
             0,
-            0});
-            resources.ApplyResources(this.udCorrect, "udCorrect");
-            this.udCorrect.Maximum = new decimal(new int[] {
+            0} );
+            this.udCorrect.Maximum = new decimal( new int[] {
             10000,
             0,
             0,
-            0});
-            this.udCorrect.Minimum = new decimal(new int[] {
+            0} );
+            this.udCorrect.Minimum = new decimal( new int[] {
             10000,
             0,
             0,
-            -2147483648});
+            -2147483648} );
             this.udCorrect.Name = "udCorrect";
             // 
             // ckDVB
             // 
-            resources.ApplyResources(this.ckDVB, "ckDVB");
+            resources.ApplyResources( this.ckDVB, "ckDVB" );
             this.ckDVB.Name = "ckDVB";
             this.ckDVB.UseVisualStyleBackColor = true;
-            this.ckDVB.CheckedChanged += new System.EventHandler(this.ckDVB_CheckedChanged);
+            this.ckDVB.CheckedChanged += new System.EventHandler( this.ckDVB_CheckedChanged );
             // 
             // openCuttermaran
             // 
-            resources.ApplyResources(this.openCuttermaran, "openCuttermaran");
+            resources.ApplyResources( this.openCuttermaran, "openCuttermaran" );
             // 
             // saveCut
             // 
-            resources.ApplyResources(this.saveCut, "saveCut");
+            resources.ApplyResources( this.saveCut, "saveCut" );
             this.saveCut.FilterIndex = 2;
             // 
             // selPage
             // 
+            resources.ApplyResources( this.selPage, "selPage" );
             this.selPage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.selPage.FormattingEnabled = true;
-            resources.ApplyResources(this.selPage, "selPage");
             this.selPage.Name = "selPage";
             this.selPage.Sorted = true;
             // 
+            // ckMux
+            // 
+            resources.ApplyResources( this.ckMux, "ckMux" );
+            this.ckMux.Name = "ckMux";
+            this.ckMux.UseVisualStyleBackColor = true;
+            // 
             // CutMain
             // 
-            resources.ApplyResources(this, "$this");
-            this.Controls.Add(this.selPage);
-            this.Controls.Add(this.ckDVB);
-            this.Controls.Add(this.udCorrect);
-            this.Controls.Add(this.udMinimum);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.selRate);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.cmdRun);
+            resources.ApplyResources( this, "$this" );
+            this.Controls.Add( this.ckMux );
+            this.Controls.Add( this.selPage );
+            this.Controls.Add( this.ckDVB );
+            this.Controls.Add( this.udCorrect );
+            this.Controls.Add( this.udMinimum );
+            this.Controls.Add( this.label4 );
+            this.Controls.Add( this.label3 );
+            this.Controls.Add( this.selRate );
+            this.Controls.Add( this.label2 );
+            this.Controls.Add( this.label1 );
+            this.Controls.Add( this.cmdRun );
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "CutMain";
-            this.Load += new System.EventHandler(this.CutMain_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.udMinimum)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.udCorrect)).EndInit();
-            this.ResumeLayout(false);
+            this.Load += new System.EventHandler( this.CutMain_Load );
+            ((System.ComponentModel.ISupportInitialize) (this.udMinimum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize) (this.udCorrect)).EndInit();
+            this.ResumeLayout( false );
             this.PerformLayout();
 
         }
@@ -249,6 +260,7 @@ namespace EasyCut
             // Update settings
             Properties.Settings.Default.Framerate = FrameRateInfo.FindFrameRate( selRate.SelectedIndex ).Rate;
             Properties.Settings.Default.Threshold = udMinimum.Value;
+            Properties.Settings.Default.MuxDefault = ckMux.Checked;
             Properties.Settings.Default.Save();
 
             // Check selection of page
@@ -259,54 +271,55 @@ namespace EasyCut
             try
             {
                 // Load file
-                FileInfo outFile = new FileInfo( saveCut.FileName );
+                var outFile = new FileInfo( saveCut.FileName );
 
                 // Get the type
-                string suffix = outFile.Extension;
+                var suffix = outFile.Extension;
 
                 // Check
-                if ((null == suffix) || (suffix.Length < 2))
+                if ((suffix == null) || (suffix.Length < 2))
                     throw new ApplicationException( Properties.Resources.Error_Format );
 
                 // Cut off
                 suffix = suffix.Substring( 1 );
 
                 // Load type name
-                string typeName = ConfigurationManager.AppSettings[suffix.ToUpper()];
+                var typeName = ConfigurationManager.AppSettings[suffix.ToUpper()];
 
                 // Check
-                if ((null == typeName) || (typeName.Length < 1))
+                if ((typeName == null) || (typeName.Length < 1))
                     throw new ApplicationException( Properties.Resources.Error_Format );
 
                 // Find the type
-                Type cutType = Type.GetType( typeName, true );
+                var cutType = Type.GetType( typeName, true );
 
                 // Create extractor
-                using (ICutter cutter = (ICutter) Activator.CreateInstance( cutType ))
+                using (var cutter = (ICutter) Activator.CreateInstance( cutType ))
                 {
                     // Configure
                     cutter.Framerate = FrameRateInfo.FindFrameRate( selRate.SelectedIndex ).Rate;
                     cutter.MinDuration = (double) udMinimum.Value;
 
                     // Check for VCR.NET 3.1 or later
-                    ICutter2 cutter31 = cutter as ICutter2;
-                    if (null != cutter31) cutter31.TimeCorrection = (double) udCorrect.Value;
+                    var cutter31 = cutter as ICutter2;
+                    if (cutter31 != null)
+                        cutter31.TimeCorrection = (double) udCorrect.Value;
 
                     // Position in output file
                     long pos = 0;
 
                     // Process all cuts
-                    foreach (CutElement cut in m_ProjectFile.CutElements)
+                    foreach (var cut in m_ProjectFile.CutElements)
                     {
                         // Get the core name
-                        string coreName = Path.GetFileNameWithoutExtension( cut.VideoFile.FullName );
+                        var coreName = Path.GetFileNameWithoutExtension( cut.VideoFile.FullName );
 
                         // Append page number
                         if (!ckDVB.Checked)
                             coreName += "[" + Properties.Settings.Default.SubtitlePage.ToString() + "]";
 
                         // Replace suffix
-                        FileInfo ttxFile = new FileInfo( cut.VideoFile.DirectoryName + @"\" + coreName + "." + suffix );
+                        var ttxFile = new FileInfo( cut.VideoFile.DirectoryName + @"\" + coreName + "." + suffix );
 
                         // Must exist
                         if (!ttxFile.Exists)
@@ -325,6 +338,10 @@ namespace EasyCut
 
                     // Finish
                     cutter.Save( saveCut.FileName );
+
+                    // Mux it
+                    if (ckMux.Checked)
+                        DoMux( saveCut.FileName );
                 }
 
                 // Done on success
@@ -334,6 +351,112 @@ namespace EasyCut
             {
                 // Report
                 MessageBox.Show( this, ex.Message, Properties.Resources.Error_Failed );
+            }
+        }
+
+        /// <summary>
+        /// Mischt die Untertitel in eine Datei ein.
+        /// </summary>
+        /// <param name="supPath">Der volle Pfad zur Untertiteldatei.</param>
+        private void DoMux( string supPath )
+        {
+            // Check mode
+            var palPath = supPath + ".pal";
+            if (!File.Exists( palPath ))
+                return;
+
+            // Must have GfD Path
+            var gfdPath = Properties.Settings.Default.GfDFolder;
+            if (!string.IsNullOrEmpty( gfdPath ))
+                if (!Directory.Exists( gfdPath ))
+                    gfdPath = null;
+
+            // Ask user
+            if (string.IsNullOrEmpty( gfdPath ))
+                using (var dlg = new FolderBrowserDialog())
+                {
+                    dlg.Description = Properties.Resources.Browse_GfD;
+                    dlg.ShowNewFolderButton = false;
+
+                    if (dlg.ShowDialog( this ) != DialogResult.OK)
+                        return;
+
+                    // Take it
+                    Properties.Settings.Default.GfDFolder = gfdPath = dlg.SelectedPath;
+                    Properties.Settings.Default.Save();
+                }
+
+            // Ask for source file
+            string videoFile;
+
+            using (var mpg = new OpenFileDialog())
+            {
+                // Configure
+                mpg.Title = Properties.Resources.Browse_Mpg;
+                mpg.Filter = "Videos|*.mpg";
+                mpg.CheckFileExists = true;
+                mpg.AddExtension = true;
+                mpg.DefaultExt = "mpg";
+
+                // Select the file
+                if (mpg.ShowDialog( this ) != DialogResult.OK)
+                    return;
+
+                videoFile = mpg.FileName;
+            }
+
+            // Fixed output path
+            var supDir = Path.Combine( Path.GetDirectoryName( supPath ), Path.GetFileNameWithoutExtension( supPath ) + ".d" );
+
+            if (Directory.Exists( supDir ))
+                Directory.Delete( supDir, true );
+
+            // Generate pictures
+            var procInfo =
+                new ProcessStartInfo
+                {
+                    Arguments = $"\"{supPath.Replace( "\"", "\"\"" )}\" \"{palPath.Replace( "\"", "\"\"" )}\"",
+                    FileName = Path.Combine( gfdPath, "sup2png.exe" ),
+                    UseShellExecute = false,
+                };
+
+            using (var process = Process.Start( procInfo ))
+                process.WaitForExit();
+
+            // Mux - in-place, better user SSD!
+            procInfo =
+                new ProcessStartInfo
+                {
+                    Arguments = $"-s0 \"{Path.Combine( supDir, "spumux.xml" ).Replace( "\"", "\"\"" )}\"",
+                    FileName = Path.Combine( gfdPath, "spumux.exe" ),
+                    RedirectStandardOutput = true,
+                    RedirectStandardInput = true,
+                    UseShellExecute = false,
+                };
+
+            using (var process = Process.Start( procInfo ))
+            {
+                var outbuffer = new byte[10000000];
+
+                // Send input file
+                Task.Run( () =>
+                 {
+                     var inbuffer = new byte[outbuffer.Length];
+
+                     using (var input = new FileStream( videoFile, FileMode.Open, FileAccess.Read, FileShare.Read, inbuffer.Length ))
+                         for (int n; (n = input.Read( inbuffer, 0, inbuffer.Length )) > 0;)
+                             process.StandardInput.BaseStream.Write( inbuffer, 0, n );
+
+                     process.StandardInput.BaseStream.Close();
+                 } );
+
+                // Generate target file
+                using (var output = new FileStream( Path.Combine( Path.GetDirectoryName( videoFile ), Path.GetFileNameWithoutExtension( videoFile ) + "_SUP.mpg" ), FileMode.Create, FileAccess.Write, FileShare.None, outbuffer.Length ))
+                    for (int n; (n = process.StandardOutput.BaseStream.Read( outbuffer, 0, outbuffer.Length )) > 0;)
+                        output.Write( outbuffer, 0, n );
+
+                // Synchronize
+                process.WaitForExit();
             }
         }
 
@@ -385,6 +508,7 @@ namespace EasyCut
             udMinimum.Value = Properties.Settings.Default.Threshold;
 
             // Prepare UI
+            ckMux.Checked = Properties.Settings.Default.MuxDefault;
             ckDVB.Enabled = false;
 
             // Load pages
