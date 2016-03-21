@@ -95,5 +95,14 @@ namespace EasyCut.Properties {
                 return ResourceManager.GetString("Error_Format", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Characters in Path.
+        /// </summary>
+        internal static string Error_Utf8 {
+            get {
+                return ResourceManager.GetString("Error_Utf8", resourceCulture);
+            }
+        }
     }
 }

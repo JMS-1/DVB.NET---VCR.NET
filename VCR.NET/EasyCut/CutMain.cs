@@ -3,8 +3,10 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace EasyCut
 {
@@ -423,11 +425,28 @@ namespace EasyCut
             using (var process = Process.Start( procInfo ))
                 process.WaitForExit();
 
+            // Verify XML
+            var spumuxXml = Path.Combine( supDir, "spumux.xml" );
+            var xml = new XmlDocument();
+
+            try
+            {
+                // Will fail on encoding mismatch
+                xml.Load( spumuxXml );
+            }
+            catch (Exception ex)
+            {
+                // Sorry - no work-around found
+                MessageBox.Show( this, ex.Message, Properties.Resources.Error_Utf8 );
+
+                return;
+            }
+
             // Mux - in-place, better user SSD!
             procInfo =
                 new ProcessStartInfo
                 {
-                    Arguments = $"-s0 \"{Path.Combine( supDir, "spumux.xml" ).Replace( "\"", "\"\"" )}\"",
+                    Arguments = $"-s0 \"{spumuxXml.Replace( "\"", "\"\"" )}\"",
                     FileName = Path.Combine( gfdPath, "spumux.exe" ),
                     RedirectStandardOutput = true,
                     RedirectStandardInput = true,

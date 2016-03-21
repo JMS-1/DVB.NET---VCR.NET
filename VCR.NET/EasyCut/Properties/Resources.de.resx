@@ -129,4 +129,7 @@
   <data name="Error_Format" xml:space="preserve">
     <value>Format nicht unterstützt - bitte eine andere Dateiendung verwenden</value>
   </data>
+  <data name="Error_Utf8" xml:space="preserve">
+    <value>Ungültige Zeichen im Dateipfad</value>
+  </data>
 </root>

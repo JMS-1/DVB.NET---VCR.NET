@@ -129,4 +129,7 @@
   <data name="Error_Format" xml:space="preserve">
     <value>Format not supported - please choose another file extension</value>
   </data>
+  <data name="Error_Utf8" xml:space="preserve">
+    <value>Invalid Characters in Path</value>
+  </data>
 </root>
