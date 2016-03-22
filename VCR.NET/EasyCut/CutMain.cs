@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -38,6 +39,16 @@ namespace EasyCut
         /// Die aktuelle Projektdatei.
         /// </summary>
         private CPFReader m_ProjectFile;
+
+        /// <summary>
+        /// Ermittelt den kurzen Dateinamen.
+        /// </summary>
+        /// <param name="path">Ein langer Dateiname.</param>
+        /// <param name="shortPath">Der kurze Name.</param>
+        /// <param name="bufferSize">Die maximale Länge des kurzen Namens.</param>
+        /// <returns>Die Länge des Namens.</returns>
+        [DllImport( "Kernel32.dll" )]
+        private static extern int GetShortPathName( string path, StringBuilder shortPath, int bufferSize );
 
         /// <summary>
         /// Create the cutter main window.
@@ -425,22 +436,25 @@ namespace EasyCut
             using (var process = Process.Start( procInfo ))
                 process.WaitForExit();
 
-            // Verify XML
+            // Manipulate XML
             var spumuxXml = Path.Combine( supDir, "spumux.xml" );
+            var ansiXml = File.ReadAllText( spumuxXml, Encoding.GetEncoding( 1252 ) );
+
             var xml = new XmlDocument();
+            xml.LoadXml( ansiXml );
 
-            try
+            // Convert names
+            foreach (XmlElement img in xml.SelectNodes( "//spu" ))
             {
-                // Will fail on encoding mismatch
-                xml.Load( spumuxXml );
+                // Convert and write back
+                var path = img.GetAttribute( "image" );
+                var buffer = new StringBuilder( 1000 );
+                if (GetShortPathName( path, buffer, buffer.Capacity - 1 ) > 0)
+                    img.SetAttribute( "image", buffer.ToString() );
             }
-            catch (Exception ex)
-            {
-                // Sorry - no work-around found
-                MessageBox.Show( this, ex.Message, Properties.Resources.Error_Utf8 );
 
-                return;
-            }
+            // Write back
+            File.WriteAllText( spumuxXml, xml.OuterXml, Encoding.GetEncoding( 1252 ) );
 
             // Mux - in-place, better user SSD!
             procInfo =
