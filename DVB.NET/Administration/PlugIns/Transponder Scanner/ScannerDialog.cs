@@ -38,7 +38,7 @@ namespace JMS.DVB.Administration.SourceScanner
         /// <param name="scanner">Die Konfiguration für diesen Suchlauf.</param>
         /// <param name="site">Die Arbeitsumgebung der Erweiterung - üblicherweise das DVB.NET
         /// Administrationswerkzeug.</param>
-        public ScannerDialog( Scanner scanner, IPlugInUISite site )
+        public ScannerDialog(Scanner scanner, IPlugInUISite site)
         {
             // Remember
             m_PlugIn = scanner;
@@ -56,10 +56,10 @@ namespace JMS.DVB.Administration.SourceScanner
         /// </summary>
         /// <param name="sender">Wird ignoriert.</param>
         /// <param name="e">Wird ignoriert.</param>
-        private void ScannerDialog_Load( object sender, EventArgs e )
+        private void ScannerDialog_Load(object sender, EventArgs e)
         {
             // Set up the name of the selected profile
-            lbProfile.Text = string.Format( lbProfile.Text, m_PlugIn.Profile.Name );
+            lbProfile.Text = string.Format(lbProfile.Text, m_PlugIn.Profile.Name);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace JMS.DVB.Administration.SourceScanner
         /// </summary>
         /// <param name="sender">Wird ignoriert.</param>
         /// <param name="e">Wird ignoriert.</param>
-        private void tickEnd_Tick( object sender, EventArgs e )
+        private void tickEnd_Tick(object sender, EventArgs e)
         {
             // See if scanner is done
             if (!m_Scanner.Done)
@@ -78,7 +78,7 @@ namespace JMS.DVB.Administration.SourceScanner
             tickEnd.Enabled = false;
 
             // Final update
-            UpdateCounter( null );
+            UpdateCounter(null);
 
             // Prepare to terminate
             using (TransponderScanner scanner = m_Scanner)
@@ -89,11 +89,16 @@ namespace JMS.DVB.Administration.SourceScanner
                 // Must finish
                 try
                 {
+                    // Check for error
+                    var error = scanner.Error;
+                    if (error != null)
+                        MessageBox.Show(this, error.ToString(), Properties.Resources.Scanner_Error, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
                     // Create question
-                    string quest = string.Format( Properties.Resources.Save_Profile, scanner.Profile.Name );
+                    string quest = string.Format(Properties.Resources.Save_Profile, scanner.Profile.Name);
 
                     // Ask user
-                    DialogResult saveMode = MessageBox.Show( this, quest, Properties.Resources.Save_Profile_Titel, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1 );
+                    DialogResult saveMode = MessageBox.Show(this, quest, Properties.Resources.Save_Profile_Titel, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
 
                     // Profile
                     if (DialogResult.Cancel != saveMode)
@@ -112,14 +117,14 @@ namespace JMS.DVB.Administration.SourceScanner
                     // Protocol
                     if (DialogResult.Yes == saveMode)
                         if (DialogResult.OK == saveProtocol.ShowDialog(this))
-                            using (StreamWriter protocol = new StreamWriter( saveProtocol.FileName, false, Encoding.Unicode ))
+                            using (StreamWriter protocol = new StreamWriter(saveProtocol.FileName, false, Encoding.Unicode))
                             {
                                 // Head line
-                                protocol.WriteLine( ProtocolRecord.LineFormat );
+                                protocol.WriteLine(ProtocolRecord.LineFormat);
 
                                 // All lines
                                 foreach (ProtocolRecord record in scanner.Protocol)
-                                    protocol.WriteLine( record );
+                                    protocol.WriteLine(record);
                             }
                 }
                 finally
@@ -137,11 +142,11 @@ namespace JMS.DVB.Administration.SourceScanner
         /// </summary>
         /// <param name="hint">Detailinformationen zur aktuellen Position.</param>
         /// <returns>Gesetzt, wenn der aktuelle Suchlauf fortgesetzt werden darf.</returns>
-        private bool UpdateCounter( string hint )
+        private bool UpdateCounter(string hint)
         {
             // Call self
             if (InvokeRequired)
-                return (bool) Invoke( new Func<string, bool>( UpdateCounter ), hint );
+                return (bool)Invoke(new Func<string, bool>(UpdateCounter), hint);
 
             // Private counters
             Dictionary<SourceTypes, int> found = new Dictionary<SourceTypes, int>();
@@ -162,7 +167,7 @@ namespace JMS.DVB.Administration.SourceScanner
 
                 // This type
                 int sum;
-                if (!found.TryGetValue( source.Key, out sum ))
+                if (!found.TryGetValue(source.Key, out sum))
                     sum = 0;
 
                 // Update
@@ -170,7 +175,7 @@ namespace JMS.DVB.Administration.SourceScanner
             }
 
             // Set it
-            lbFound.Text = string.Format( Properties.Resources.Report, total, found[SourceTypes.TV], found[SourceTypes.Radio], found[SourceTypes.Unknown], "\r\n\r\n        " + hint );
+            lbFound.Text = string.Format(Properties.Resources.Report, total, found[SourceTypes.TV], found[SourceTypes.Radio], found[SourceTypes.Unknown], "\r\n\r\n        " + hint);
 
             // Try to get a new progress value
             decimal newProgress = 0;
@@ -196,7 +201,7 @@ namespace JMS.DVB.Administration.SourceScanner
             try
             {
                 // Update
-                prgProgress.Value = (int) newProgress;
+                prgProgress.Value = (int)newProgress;
             }
             catch
             {
@@ -215,16 +220,16 @@ namespace JMS.DVB.Administration.SourceScanner
         bool IPlugInControl.Start()
         {
             // Create scanner
-            m_Scanner = new TransponderScanner( m_PlugIn.Profile );
+            m_Scanner = new TransponderScanner(m_PlugIn.Profile);
 
             // Connect all events
-            m_Scanner.OnStartGroup += ( l, g, s ) => UpdateCounter( string.Format( "{0} {1}", g, l ) );
-            m_Scanner.OnStartLocation += ( l, s ) => UpdateCounter( null );
-            m_Scanner.OnDoneGroup += ( l, g, s ) => UpdateCounter( null );
-            m_Scanner.OnDoneLocation += ( l, s ) => UpdateCounter( null );
+            m_Scanner.OnStartGroup += (l, g, s) => UpdateCounter(string.Format("{0} {1}", g, l));
+            m_Scanner.OnStartLocation += (l, s) => UpdateCounter(null);
+            m_Scanner.OnDoneGroup += (l, g, s) => UpdateCounter(null);
+            m_Scanner.OnDoneLocation += (l, s) => UpdateCounter(null);
 
             // Start with counter
-            UpdateCounter( null );
+            UpdateCounter(null);
 
             // Start the scan
             m_Scanner.Scan();
