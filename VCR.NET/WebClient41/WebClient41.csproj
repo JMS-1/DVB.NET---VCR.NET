@@ -177,9 +177,10 @@
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
     <None Include="packages.config" />
-    <None Include="scripts\jquery-2.2.2.intellisense.js" />
-    <None Include="scripts\jquery-2.2.2.js" />
-    <Content Include="scripts\jquery-2.2.2.min.js" />
+    <None Include="scripts\jquery-2.2.4.intellisense.js" />
+    <Content Include="scripts\jquery-2.2.4.js" />
+    <Content Include="scripts\jquery-2.2.4.min.js" />
+    <Content Include="scripts\jquery-2.2.4.min.map" />
     <None Include="scripts\jquery-ui-1.11.4.js" />
     <Content Include="scripts\jquery-ui-1.11.4.min.js" />
     <Content Include="scripts\vcrnet.js">
@@ -258,7 +259,6 @@
     <Content Include="scripts\vcrserver.js">
       <DependentUpon>vcrserver.ts</DependentUpon>
     </Content>
-    <None Include="scripts\jquery-2.2.2.min.map" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
