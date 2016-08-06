@@ -34,7 +34,7 @@ namespace VCRControlCenter
         /// <summary>
         /// Meldet die Adresse des VCR.NET Recording Service
         /// </summary>
-        public string EndPoint { get { return string.Format( "http://{0}:{1}/VCR.NET", ServerName, ServerPort ); } }
+        public string EndPoint => $"http://{ServerName}:{ServerPort}/VCR.NET";
 
         /// <summary>
         /// Wird periodisch aufgerufen und frage den aktuellen Zustand des Dienstes auf einem Rechner ab.

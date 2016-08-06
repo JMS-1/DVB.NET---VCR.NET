@@ -4,7 +4,6 @@ using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Security.Principal;
 using System.Web;
 
 
@@ -247,7 +246,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
             if (job == null)
                 return "*";
             else if (schedule == null)
-                return string.Format( "*{0:N}", job.UniqueID.Value );
+                return $"*{job.UniqueID.Value:N}";
             else
                 return GetUniqueWebId( job.UniqueID.Value, schedule.UniqueID.Value );
         }
@@ -268,7 +267,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
                 schedule = Guid.Empty.ToString( "N" );
 
             // Create
-            return string.Format( "{0}{1}", job, schedule );
+            return $"{job}{schedule}";
         }
 
         /// <summary>

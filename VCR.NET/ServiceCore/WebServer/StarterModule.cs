@@ -22,8 +22,8 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// Alle Dateiendungen, für die wir ETags erzeugen.
         /// </summary>
         private static readonly HashSet<string> _ETagExtensions =
-            new HashSet<string>( StringComparer.InvariantCultureIgnoreCase ) 
-            { 
+            new HashSet<string>( StringComparer.InvariantCultureIgnoreCase )
+            {
                 ".html",
                 ".css",
                 ".js",
@@ -93,7 +93,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
 
             // Check out context
             var context = HttpContext.Current;
-            var worker = ((IServiceProvider) context).GetService( typeof( HttpWorkerRequest ) ) as Request;
+            var worker = ((IServiceProvider)context).GetService( typeof( HttpWorkerRequest ) ) as Request;
             if (worker == null)
                 return;
 
@@ -138,7 +138,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
                 return;
 
             // Check our context
-            var worker = ((IServiceProvider) context).GetService( typeof( HttpWorkerRequest ) ) as Request;
+            var worker = ((IServiceProvider)context).GetService( typeof( HttpWorkerRequest ) ) as Request;
             if (worker == null)
                 return;
 
@@ -178,7 +178,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
             // Convert
             var modifiedAsFileTime = lastModified.ToFileTime();
             var nowAsFileTime = utcNow.ToFileTime();
-            var etag = string.Format( "\"{0:X8}\"", modifiedAsFileTime );
+            var etag = $"\"{modifiedAsFileTime:X8}\"";
 
             // Check mode
             if ((nowAsFileTime - modifiedAsFileTime) <= 30000000L)

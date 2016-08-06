@@ -52,7 +52,7 @@ namespace VCRControlCenter
             /// <summary>
             /// Meldet die physikalische Adresse.
             /// </summary>
-            public byte[] MAC { get { return m_physicalAddress.Take( checked( (int) m_physicalAddressBytes ) ).ToArray(); } }
+            public byte[] MAC { get { return m_physicalAddress.Take( checked((int)m_physicalAddressBytes) ).ToArray(); } }
 
             /// <summary>
             /// Die Netzwerkadresse.
@@ -125,7 +125,7 @@ namespace VCRControlCenter
             /// <summary>
             /// Meldet die Liste aller Geräte.
             /// </summary>
-            public IEnumerable<ProfileInfo> Profiles { get { return (IEnumerable<ProfileInfo>) m_Info; } }
+            public IEnumerable<ProfileInfo> Profiles { get { return (IEnumerable<ProfileInfo>)m_Info; } }
 
             /// <summary>
             /// Meldet den aktuellen Zustand des Dienstes.
@@ -234,7 +234,7 @@ namespace VCRControlCenter
                     return;
 
                 // Load address table
-                var table = Marshal.AllocHGlobal( checked( (int) size ) );
+                var table = Marshal.AllocHGlobal( checked((int)size) );
                 try
                 {
                     // Get the table
@@ -242,13 +242,13 @@ namespace VCRControlCenter
                         return;
 
                     // Get the number of entries in the table
-                    var count = checked( (UInt32) Marshal.ReadInt32( table, 0 ) );
+                    var count = checked((UInt32)Marshal.ReadInt32( table, 0 ));
 
                     // Process entries
                     for (int offset = 4; count-- > 0; offset += IpNetRow.SizeOf)
                     {
                         // Unmarshal from native representation
-                        var data = (IpNetRow) Marshal.PtrToStructure( table + offset, typeof( IpNetRow ) );
+                        var data = (IpNetRow)Marshal.PtrToStructure( table + offset, typeof( IpNetRow ) );
 
                         // See if this is it
                         if (data.Matches( server.AddressList ))
@@ -328,6 +328,6 @@ namespace VCRControlCenter
         /// <summary>
         /// Die Adresse des REST Web Dienstes.
         /// </summary>
-        public string EndPoint { get { return string.Format( "http://{0}:{1}/VCR.NET", ServerName, ServerPort ); } }
+        public string EndPoint => $"http://{ServerName}:{ServerPort}/VCR.NET";
     }
 }

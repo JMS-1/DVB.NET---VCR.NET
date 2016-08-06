@@ -164,7 +164,7 @@ namespace VCRControlCenter
                                 }
 
                             // Get the related color
-                            var colorIndex = (TrayColors) Enum.Parse( typeof( TrayColors ), iconname, true );
+                            var colorIndex = (TrayColors)Enum.Parse( typeof( TrayColors ), iconname, true );
 
                             // Add to map
                             m_TrayIcons[colorIndex] = icon;
@@ -209,7 +209,7 @@ namespace VCRControlCenter
             // Load settings
             ckAutoStart.Checked = m_Settings.AutoStartService;
             ckHibernate.Checked = (m_Settings.HibernationDelay > 0);
-            selHibernate.Value = ckHibernate.Checked ? (int) m_Settings.HibernationDelay : 5;
+            selHibernate.Value = ckHibernate.Checked ? (int)m_Settings.HibernationDelay : 5;
             txMultiCast.Text = m_Settings.MulticastIP;
             selStreamPort.Value = m_Settings.MinPort;
             selDelay.Value = m_Settings.StartupDelay;
@@ -253,7 +253,7 @@ namespace VCRControlCenter
                     if (null != vcr)
                     {
                         // Load path
-                        string image = (string) vcr.GetValue( "ImagePath" );
+                        string image = (string)vcr.GetValue( "ImagePath" );
                         if (!string.IsNullOrEmpty( image ))
                         {
                             // Correct
@@ -273,7 +273,7 @@ namespace VCRControlCenter
                             dom.Load( config.FullName );
 
                             // Check for port
-                            var portNode = (XmlElement) dom.SelectSingleNode( "configuration/appSettings/add[@key='TCPPort']" );
+                            var portNode = (XmlElement)dom.SelectSingleNode( "configuration/appSettings/add[@key='TCPPort']" );
                             var port = ushort.Parse( portNode.GetAttribute( "value" ) );
 
                             // At least there is a valid local server
@@ -339,7 +339,7 @@ namespace VCRControlCenter
                 if (index >= lstServers.Items.Count) return null;
 
                 // Attach to the related server view
-                var view = (PerServerSettings.PerServerView) lstServers.Items[index];
+                var view = (PerServerSettings.PerServerView)lstServers.Items[index];
 
                 // Report server
                 return view.Settings;
@@ -355,7 +355,7 @@ namespace VCRControlCenter
             HideHibernation();
 
             // Reset all
-            for (int n = components.Components.Count; n-- > 0; )
+            for (int n = components.Components.Count; n-- > 0;)
             {
                 // Read it
                 NotifyIcon icon = components.Components[n] as NotifyIcon;
@@ -433,7 +433,7 @@ namespace VCRControlCenter
         private void SetActiveTray( object sender, MouseEventArgs e )
         {
             // Remember
-            m_Active = (NotifyIcon) sender;
+            m_Active = (NotifyIcon)sender;
         }
 
         private void mnuClose_Click( object sender, EventArgs e )
@@ -501,7 +501,7 @@ namespace VCRControlCenter
                 if (settings != null)
                 {
                     // Change top menu
-                    mnuDefault.Text += string.Format( " ({0})", settings.ServerName );
+                    mnuDefault.Text += $" ({settings.ServerName})";
 
                     // Check mode
                     if (settings.View.State != TrayColors.Red)
@@ -636,10 +636,10 @@ namespace VCRControlCenter
             try
             {
                 // Attach to menu item
-                ToolStripItem menu = (ToolStripItem) sender;
+                ToolStripItem menu = (ToolStripItem)sender;
 
                 // Get the corresponding parameter
-                string dvbnetURL = (string) menu.Tag;
+                string dvbnetURL = (string)menu.Tag;
 
                 // Attach to server
                 Process.Start( m_Settings.Viewer, dvbnetURL );
@@ -653,10 +653,10 @@ namespace VCRControlCenter
         void SetHibernateDelay( object sender, EventArgs e )
         {
             // Convert
-            ToolStripMenuItem item = (ToolStripMenuItem) sender;
+            ToolStripMenuItem item = (ToolStripMenuItem)sender;
 
             // Just update
-            m_BlockHibernate = (DateTime) item.Tag;
+            m_BlockHibernate = (DateTime)item.Tag;
         }
 
         private void OpenBrowser( string page )
@@ -747,8 +747,8 @@ namespace VCRControlCenter
             var settings =
                 new PerServerSettings
                 {
-                    RefreshInterval = (int) selInterval.Value,
-                    ServerPort = (ushort) selPort.Value,
+                    RefreshInterval = (int)selInterval.Value,
+                    ServerPort = (ushort)selPort.Value,
                     WakeUpBroadcast = txSubNet.Text,
                     ServerName = txServer.Text,
                 };
@@ -818,7 +818,7 @@ namespace VCRControlCenter
             else
             {
                 // Attach to the selected item
-                var view = (PerServerSettings.PerServerView) lstServers.SelectedItems[0];
+                var view = (PerServerSettings.PerServerView)lstServers.SelectedItems[0];
                 var settings = view.Settings;
 
                 // Load all
@@ -892,8 +892,8 @@ namespace VCRControlCenter
             var port = settings.ServerPort;
 
             // Update
-            settings.RefreshInterval = (int) selInterval.Value;
-            settings.ServerPort = (ushort) selPort.Value;
+            settings.RefreshInterval = (int)selInterval.Value;
+            settings.ServerPort = (ushort)selPort.Value;
             settings.WakeUpBroadcast = txSubNet.Text;
             settings.ServerName = txServer.Text;
 
@@ -966,7 +966,7 @@ namespace VCRControlCenter
             if (m_Settings.AutoStartService == ckAutoStart.Checked)
             {
                 // Get the delay
-                int delay = ckHibernate.Checked ? (int) selHibernate.Value : 0;
+                int delay = ckHibernate.Checked ? (int)selHibernate.Value : 0;
 
                 // Compare
                 if (m_Settings.HibernationDelay == delay) return;
@@ -981,7 +981,7 @@ namespace VCRControlCenter
             get
             {
                 // Attach to selected language
-                CultureItem culture = (CultureItem) selLanguage.SelectedItem;
+                CultureItem culture = (CultureItem)selLanguage.SelectedItem;
 
                 // Report
                 return (null == culture) ? string.Empty : culture.Info.TwoLetterISOLanguageName;
@@ -995,7 +995,7 @@ namespace VCRControlCenter
             int delay = m_Settings.HibernationDelay;
 
             // Update the all
-            m_Settings.HibernationDelay = ckHibernate.Checked ? (int) selHibernate.Value : 0;
+            m_Settings.HibernationDelay = ckHibernate.Checked ? (int)selHibernate.Value : 0;
             m_Settings.AutoStartService = ckAutoStart.Checked;
 
             // Try save
@@ -1110,7 +1110,7 @@ namespace VCRControlCenter
             if (InvokeRequired)
             {
                 // Forward
-                return (bool) Invoke( new ReportPattern( ProcessStateAndCheckHibernation ), controller, state, mustHibernate, pendingExtensions );
+                return (bool)Invoke( new ReportPattern( ProcessStateAndCheckHibernation ), controller, state, mustHibernate, pendingExtensions );
             }
 
             // Get the previous state
@@ -1210,7 +1210,7 @@ namespace VCRControlCenter
                 {
                     // See if there are pending extensions
                     if (!pendingExtensions)
-                        m_Hibernation.TryHibernate(controller);
+                        m_Hibernation.TryHibernate( controller );
 
                     // No change required
                     return null;
@@ -1311,7 +1311,7 @@ namespace VCRControlCenter
             if (Equals( txViewer.Text, m_Settings.Viewer ))
                 if (Equals( txArgs.Text, m_Settings.ViewerArgs ))
                     if (Equals( txMultiCast.Text, m_Settings.MulticastIP ))
-                        if (m_Settings.MinPort == (int) selStreamPort.Value)
+                        if (m_Settings.MinPort == (int)selStreamPort.Value)
                             return;
 
             // Can save
@@ -1403,7 +1403,7 @@ namespace VCRControlCenter
             ushort port = m_Settings.MinPort;
 
             // Update the all
-            m_Settings.MinPort = (ushort) selStreamPort.Value;
+            m_Settings.MinPort = (ushort)selStreamPort.Value;
             m_Settings.MulticastIP = txMultiCast.Text;
             m_Settings.ViewerArgs = txArgs.Text;
             m_Settings.Viewer = txViewer.Text;
@@ -1443,7 +1443,7 @@ namespace VCRControlCenter
                 return;
 
             // Attach to item
-            var item = (ToolStripDropDownItem) sender;
+            var item = (ToolStripDropDownItem)sender;
             if (item == null)
                 return;
 
@@ -1552,7 +1552,7 @@ namespace VCRControlCenter
             int delay = m_Settings.StartupDelay;
 
             // Update
-            m_Settings.StartupDelay = (int) selDelay.Value;
+            m_Settings.StartupDelay = (int)selDelay.Value;
 
             // Try save
             try
@@ -1629,14 +1629,14 @@ namespace VCRControlCenter
                 socket.Connect( settings.SubNetAddress, 7 );
 
                 // Buffer
-                var buffer = new List<byte>( checked( (int) (6 + 16 * mac.Length) ) );
+                var buffer = new List<byte>( checked((int)(6 + 16 * mac.Length)) );
 
                 // Start with prefix
-                for (var i = 6; i-- > 0; )
+                for (var i = 6; i-- > 0;)
                     buffer.Add( 0xff );
 
                 // Add physical address
-                for (var i = 16; i-- > 0; )
+                for (var i = 16; i-- > 0;)
                     buffer.AddRange( mac );
 
                 // Process

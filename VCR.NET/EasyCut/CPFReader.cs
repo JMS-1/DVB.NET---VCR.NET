@@ -123,7 +123,7 @@ namespace EasyCut
         private FileInfo FindVideoFile( int videoIndex )
         {
             // Find the video
-            XmlElement video = (XmlElement) m_Document.DocumentElement.SelectSingleNode( string.Format( "cm:usedVideoFiles[@FileID='{0}']", videoIndex ), m_Namespaces );
+            XmlElement video = (XmlElement)m_Document.DocumentElement.SelectSingleNode( $"cm:usedVideoFiles[@FileID='{videoIndex}']", m_Namespaces );
 
             // Not found
             if (null == video)

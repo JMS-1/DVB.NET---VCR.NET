@@ -27,12 +27,12 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// <summary>
         /// Die Anzahl der gestarteten aber noch nicht zu Ende durchgeführten Operationen.
         /// </summary>
-        private int m_Threads = 0;
+        private int m_Threads;
 
         /// <summary>
         /// Die ASP.NET Laufzeitumgebung.
         /// </summary>
-        private TRuntimeType m_runtime = null;
+        private TRuntimeType m_runtime;
 
         /// <summary>
         /// Synchronisiert den Zugriff auf die Laufzeitumgebung.

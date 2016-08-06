@@ -30,7 +30,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         [DataMember( Name = "duration" )]
         public int DurationInSeconds
         {
-            get { return (int) Math.Round( Duration.TotalSeconds ); }
+            get { return (int)Math.Round( Duration.TotalSeconds ); }
             set { Duration = TimeSpan.FromSeconds( value ); }
         }
 
@@ -117,7 +117,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
             return
                 new GuideItem
                 {
-                    Identifier = string.Format( "{0}:{1}:{2}", entry.StartTime.Ticks, profileName, SourceIdentifier.ToString( entry.Source ).Replace( " ", "" ) ),
+                    Identifier = $"{entry.StartTime.Ticks}:{profileName}:{SourceIdentifier.ToString( entry.Source ).Replace( " ", "" )}",
                     Station = (source == null) ? entry.StationName : source.GetUniqueName(),
                     Duration = TimeSpan.FromSeconds( entry.Duration ),
                     Categories = entry.Categories.ToArray(),
