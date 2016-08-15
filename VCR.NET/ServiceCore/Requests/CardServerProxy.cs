@@ -70,6 +70,11 @@ namespace JMS.DVBVCR.RecordingService.Requests
         public string ProfileName => ProfileState.ProfileName;
 
         /// <summary>
+        /// Meldet die anzahl der gerade aktiven Aufzeichnungen.
+        /// </summary>
+        public virtual int NumberOfActiveRecordings => 1;
+        
+        /// <summary>
         /// Wird aufgerufen, wenn eine Bindung an ein Geräteprofil vorgenommen wird.
         /// </summary>
         public void Activate()

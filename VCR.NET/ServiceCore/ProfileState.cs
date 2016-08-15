@@ -394,6 +394,11 @@ namespace JMS.DVBVCR.RecordingService
         }
 
         /// <summary>
+        /// Meldet die Anzahl der gerade aktiven Aufzeichnungen.
+        /// </summary>
+        public int NumberOfActiveRecordings => m_CurrentRequest?.NumberOfActiveRecordings ?? 0;
+
+        /// <summary>
         /// Aktiviert oder deaktiviert den Netzwerkversand einer aktiven Quelle.
         /// </summary>
         /// <param name="source">Die gewünschte Quelle.</param>

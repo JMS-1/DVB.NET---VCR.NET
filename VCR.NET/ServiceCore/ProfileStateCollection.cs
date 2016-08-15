@@ -67,11 +67,12 @@ namespace JMS.DVBVCR.RecordingService
         /// <typeparam name="TInfo">Die Art der gemeldeten Informationen.</typeparam>
         /// <param name="factory">Methode zum Erstellen der Information zu einem einzelnen Geräteprofil.</param>
         /// <returns>Die Informationen zu den Profilen.</returns>
-        public IEnumerable<TInfo> InspectProfiles<TInfo>( Func<ProfileState, TInfo> factory )
-        {
-            // Forward
-            return m_profiles.Values.Select( factory );
-        }
+        public IEnumerable<TInfo> InspectProfiles<TInfo>( Func<ProfileState, TInfo> factory ) => m_profiles.Values.Select( factory );
+
+        /// <summary>
+        /// Meldet die Anzahl der aktiven Aufzeichnungen.
+        /// </summary>
+        public int NumberOfActiveRecordings => (m_profiles.Count < 1) ? 0 : m_profiles.Values.Sum( profile => profile.NumberOfActiveRecordings );
 
         /// <summary>
         /// Ermittelt den Zustand eines einzelnen Geräteprofils.
@@ -453,7 +454,7 @@ namespace JMS.DVBVCR.RecordingService
         {
             // Make sure that we use an up do date plan
             lock (m_planAvailableSync)
-                for (int i = 2; i-- > 0; )
+                for (int i = 2; i-- > 0;)
                 {
                     // Enforce calculation
                     BeginNewPlan();

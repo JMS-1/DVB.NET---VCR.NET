@@ -114,7 +114,7 @@ namespace JMS.DVBVCR.RecordingService
                         sourcesByIdentifier[source.Source] = source;
 
                         // Correct back the name
-                        source.DisplayName = ((Station) source.Source).FullName;
+                        source.DisplayName = ((Station)source.Source).FullName;
                     }
                 }
 
@@ -129,7 +129,7 @@ namespace JMS.DVBVCR.RecordingService
                     if (!source.Key.Equals( source.Value.DisplayName ))
                     {
                         // Unmap the station
-                        var station = (Station) source.Value.Source;
+                        var station = (Station)source.Value.Source;
 
                         // Enter special notation
                         profileMap[$"{station.Name} {station.ToStringKey()} [{station.Provider}]"] = source.Value;
@@ -251,22 +251,14 @@ namespace JMS.DVBVCR.RecordingService
         /// </summary>
         /// <param name="profileName">Der Name des Geräteprofils.</param>
         /// <returns>Alle Quellen zum Profil.</returns>
-        public static IEnumerable<SourceSelection> GetSources( string profileName )
-        {
-            // Forward
-            return GetSources( profileName, (Func<SourceSelection, bool>) null );
-        }
+        public static IEnumerable<SourceSelection> GetSources( string profileName ) => GetSources( profileName, (Func<SourceSelection, bool>)null );
 
         /// <summary>
         /// Ermittelt alle Quellen zu einem DVB.NET Geräteprofil.
         /// </summary>
         /// <param name="profile">Der Name des Geräteprofils.</param>
         /// <returns>Alle Quellen zum Profil.</returns>
-        public static IEnumerable<SourceSelection> GetSources( Profile profile )
-        {
-            // Forward
-            return GetSources( profile, (Func<SourceSelection, bool>) null );
-        }
+        public static IEnumerable<SourceSelection> GetSources( Profile profile ) => GetSources( profile, (Func<SourceSelection, bool>)null );
 
         /// <summary>
         /// Ermittelt alle Quellen zu einem DVB.NET Geräteprofil.
@@ -274,11 +266,7 @@ namespace JMS.DVBVCR.RecordingService
         /// <param name="profileName">Der Name des Geräteprofils.</param>
         /// <param name="predicate">Methode, die prüft, ob eine Quelle gemeldet werden soll.</param>
         /// <returns>Alle Quellen zum Profil.</returns>
-        public static IEnumerable<SourceSelection> GetSources( string profileName, Func<SourceSelection, bool> predicate )
-        {
-            // Forward
-            return GetSources( FindProfile( profileName ), predicate );
-        }
+        public static IEnumerable<SourceSelection> GetSources( string profileName, Func<SourceSelection, bool> predicate ) => GetSources( FindProfile( profileName ), predicate );
 
         /// <summary>
         /// Ermittelt alle Quellen zu einem DVB.NET Geräteprofil.
@@ -289,10 +277,10 @@ namespace JMS.DVBVCR.RecordingService
         public static IEnumerable<SourceSelection> GetSources( string profileName, Func<Station, bool> predicate )
         {
             // Forward
-            if (null == predicate)
+            if (predicate == null)
                 return GetSources( FindProfile( profileName ) );
             else
-                return GetSources( FindProfile( profileName ), s => predicate( (Station) s.Source ) );
+                return GetSources( FindProfile( profileName ), s => predicate( (Station)s.Source ) );
         }
 
         /// <summary>
@@ -304,7 +292,7 @@ namespace JMS.DVBVCR.RecordingService
         public static IEnumerable<SourceSelection> GetSources( Profile profile, Func<SourceSelection, bool> predicate )
         {
             // Resolve
-            if (null == profile)
+            if (profile == null)
                 yield break;
 
             // Load the map

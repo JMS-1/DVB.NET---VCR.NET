@@ -49,7 +49,12 @@ namespace JMS.DVBVCR.RecordingService
         /// <param name="streamIdentifier">Die eindeutige Kennung des zu verwendenden Datenstroms.</param>
         /// <param name="newEndTime">Der neue Endzeitpunkt.</param>
         /// <param name="disableHibernation">Gesetzt, wenn der Übergang in den Schlafzustand deaktiviert werden soll.</param>
-        public void ChangeRecordingStreamEndTime( string profile, Guid streamIdentifier, DateTime newEndTime, bool disableHibernation ) => FindProfile( profile )?.ChangeStreamEnd( streamIdentifier, newEndTime, disableHibernation );
+        public void ChangeRecordingStreamEndTime( string profile, Guid streamIdentifier, DateTime newEndTime, bool disableHibernation ) => FindProfile( profile )?.ChangeStreamEnd( streamIdentifier, newEndTime, disableHibernation && (NumberOfActiveRecordings == 1) );
+
+        /// <summary>
+        /// Meldet die Anzahl der aktiven Aufzeichnungen.
+        /// </summary>
+        public int NumberOfActiveRecordings => Profiles.NumberOfActiveRecordings;
 
         /// <summary>
         /// Aktiviert oder deaktiviert den Netzwerkversand für eine Quelle.

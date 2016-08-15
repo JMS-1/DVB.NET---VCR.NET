@@ -132,7 +132,7 @@ namespace JMS.DVBVCR.RecordingService.Requests
             }
 
             // Total file size
-            Representative.TotalSize = (uint) (totalSize / 1024);
+            Representative.TotalSize = (uint)(totalSize / 1024);
 
             // No new files
             if (newFiles.Count < 1)
@@ -299,6 +299,19 @@ namespace JMS.DVBVCR.RecordingService.Requests
         }
 
         /// <summary>
+        /// Meldet die anzahl der gerade aktiven Aufzeichnungen.
+        /// </summary>
+        public override int NumberOfActiveRecordings
+        {
+            get
+            {
+                // In case there are no recordings (during startup or shutdown) make sure we block out caller
+                lock (m_recordings)
+                    return Math.Max( 1, m_recordings.Count );
+            }
+        }
+
+        /// <summary>
         /// Verändert den Endzeitpunkt einer Aufzeichnung.
         /// </summary>
         /// <param name="streamIdentifier">Die eindeutige Kennung des betroffenen Datenstroms.</param>
@@ -309,7 +322,7 @@ namespace JMS.DVBVCR.RecordingService.Requests
             // Report
             Tools.ExtendedLogging( "Setting End for {0} to {1}", ProfileName, newEndTime );
 
-            // Disable hibernation
+            // Disable hibernation if this is the last recording in our list
             if (disableHibernation)
                 Representative.DisableHibernation = true;
 
