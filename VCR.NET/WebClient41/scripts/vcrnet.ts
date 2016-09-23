@@ -16,7 +16,7 @@ class CSSClass {
 
     // Der Inhalt einer Hilfeseite
     static faq = 'faqContent';
- 
+
     // Der Name eines Eingabefeldes
     static editLabel = 'editLabel';
 
@@ -530,7 +530,7 @@ class Page {
     initialize(mainContent: JQuery): void {
         this.mainContent = mainContent;
 
-        (<IPage> <any> this).onInitialize();
+        (<IPage><any>this).onInitialize();
 
         this.finishedAsyncCall(1);
     }
@@ -540,7 +540,7 @@ class Page {
 
     // Wird einmalig zur Anzeige aufgerufen
     show(): void {
-        var page = <IPage> <any> this;
+        var page = <IPage><any>this;
 
         // Aktionen zurücksetzen
         $('.refreshLink').off('click');
@@ -956,7 +956,7 @@ class GuideItem implements JMSLib.IGuideItem {
 
         this.categories = categories.join(' ');
         this.ratings = ratings.join(' ');
-        
+
         // Detailanzeige immer aktivieren
         this.showDetails = (origin: Event) => this.onShowDetails(this, origin.currentTarget);
 
@@ -1403,7 +1403,7 @@ class ScheduleData {
                 this.allLanguages = rawData.allLanguages;
                 this.includeDolby = rawData.includeDolby;
                 this.sourceName = rawData.sourceName,
-                this.id = existingData.scheduleId;
+                    this.id = existingData.scheduleId;
                 this.name = rawData.name;
 
                 // Fertig
@@ -3981,7 +3981,7 @@ class guidePage extends Page implements IPage {
             checkContent.button();
 
             // Von nun an auf Änderungen überwachen
-            function textChanged(): void { GuideFilter.global.changeQuery(searchText.val(), checkContent.prop('checked')); }
+            var textChanged = (): void => { GuideFilter.global.changeQuery(searchText.val(), checkContent.prop('checked')); }
             searchText.on('change', textChanged);
             searchText.on('input', textChanged);
             checkContent.change(textChanged);

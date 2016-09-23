@@ -2784,7 +2784,7 @@ var guidePage = (function (_super) {
             }
             checkContent.button();
             // Von nun an auf Änderungen überwachen
-            function textChanged() { GuideFilter.global.changeQuery(searchText.val(), checkContent.prop('checked')); }
+            var textChanged = function () { GuideFilter.global.changeQuery(searchText.val(), checkContent.prop('checked')); };
             searchText.on('change', textChanged);
             searchText.on('input', textChanged);
             checkContent.change(textChanged);
