@@ -2390,7 +2390,7 @@ var adminPage = (function (_super) {
         // Oberfläche vorbereiten
         navigator.tabs(options).addClass('ui-tabs-vertical ui-helper-clearfix');
         navigator.on('tabsactivate', function (ev) {
-            window.location.hash = '#admin;' + arguments[1].newPanel.selector.substr(1);
+            window.location.hash = '#admin;' + arguments[1].newPanel[0].id;
         });
         // Oberfläche vorbereiten
         $('.editButtons').button();
@@ -2802,6 +2802,7 @@ var guidePage = (function (_super) {
                 toBeChecked.button('refresh');
                 searchText.val(null);
                 selSource.val(null);
+                $('.guideSourceFilter').buttonset('refresh');
                 GuideFilter.global.reset();
             });
             // Von nun an auf den Filter reagieren
@@ -2814,15 +2815,16 @@ var guidePage = (function (_super) {
         if (startWith != null) {
             $('#withContent').prop('checked', !startWith.titleOnly);
             $('#searchText').val(startWith.text.substr(1));
-            $('#withContent').button('refresh');
             $('#selDevice').val(startWith.device);
             $('#selSource').val(startWith.source);
+            $('#withContent').button('refresh');
             var selectedType = $('input[name="guideSourceType"][value="' + startWith.sourceType + '"]');
             selectedType.prop('checked', true);
             selectedType.button('refresh');
             var encryption = $('input[name="guideSourceCrypt"][value="' + startWith.encryption + '"]');
             encryption.prop('checked', true);
             encryption.button('refresh');
+            $('.guideSourceFilter').buttonset('refresh');
             GuideFilter.global.content = startWith.titleOnly ? null : startWith.text;
             GuideFilter.global.cryptFilter = startWith.encryption;
             GuideFilter.global.typeFilter = startWith.sourceType;

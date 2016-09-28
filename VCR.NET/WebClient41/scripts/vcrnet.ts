@@ -3471,7 +3471,7 @@ class adminPage extends Page implements IPage {
         // Oberfläche vorbereiten
         navigator.tabs(options).addClass('ui-tabs-vertical ui-helper-clearfix');
         navigator.on('tabsactivate', function (ev: JQueryEventObject) {
-            window.location.hash = '#admin;' + arguments[1].newPanel.selector.substr(1);
+            window.location.hash = '#admin;' + arguments[1].newPanel[0].id;
         });
 
         // Oberfläche vorbereiten
@@ -4001,6 +4001,8 @@ class guidePage extends Page implements IPage {
                 searchText.val(null);
                 selSource.val(null);
 
+                $('.guideSourceFilter').buttonset('refresh');
+
                 GuideFilter.global.reset();
             });
 
@@ -4016,9 +4018,9 @@ class guidePage extends Page implements IPage {
         if (startWith != null) {
             $('#withContent').prop('checked', !startWith.titleOnly);
             $('#searchText').val(startWith.text.substr(1));
-            $('#withContent').button('refresh');
             $('#selDevice').val(startWith.device);
             $('#selSource').val(startWith.source);
+            $('#withContent').button('refresh');
 
             var selectedType = $('input[name="guideSourceType"][value="' + startWith.sourceType + '"]');
             selectedType.prop('checked', true);
@@ -4027,6 +4029,8 @@ class guidePage extends Page implements IPage {
             var encryption = $('input[name="guideSourceCrypt"][value="' + startWith.encryption + '"]');
             encryption.prop('checked', true);
             encryption.button('refresh');
+
+            $('.guideSourceFilter').buttonset('refresh');
 
             GuideFilter.global.content = startWith.titleOnly ? null : startWith.text;
             GuideFilter.global.cryptFilter = startWith.encryption;
