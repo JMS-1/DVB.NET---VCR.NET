@@ -65,6 +65,7 @@ var SavedGuideQuery = (function () {
         var query = SavedGuideQuery.loadQueue.splice(0, 1)[0];
         // Filter zusammenbauen
         var filter = new GuideFilter();
+        filter.typeFilter = query.sourceType;
         filter.station = query.source;
         filter.device = query.device;
         filter.title = query.text;

@@ -103,9 +103,17 @@
     <Content Include="content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
     <Content Include="content\themes\base\images\ui-icons_222222_256x240.png" />
     <Content Include="content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="content\themes\base\images\ui-icons_444444_256x240.png" />
     <Content Include="content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="content\themes\base\images\ui-icons_555555_256x240.png" />
+    <Content Include="content\themes\base\images\ui-icons_777620_256x240.png" />
+    <Content Include="content\themes\base\images\ui-icons_777777_256x240.png" />
     <Content Include="content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="content\themes\base\images\ui-icons_cc0000_256x240.png" />
     <Content Include="content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="content\themes\base\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="content\themes\base\jquery-ui.css" />
+    <Content Include="content\themes\base\jquery-ui.min.css" />
     <Content Include="content\themes\base\menu.css" />
     <Content Include="content\themes\base\progressbar.css" />
     <Content Include="content\themes\base\resizable.css" />
@@ -176,13 +184,16 @@
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
-    <None Include="packages.config" />
-    <None Include="scripts\jquery-2.2.4.intellisense.js" />
-    <Content Include="scripts\jquery-2.2.4.js" />
-    <Content Include="scripts\jquery-2.2.4.min.js" />
-    <Content Include="scripts\jquery-2.2.4.min.map" />
-    <None Include="scripts\jquery-ui-1.11.4.js" />
-    <Content Include="scripts\jquery-ui-1.11.4.min.js" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="scripts\jquery-3.1.1.intellisense.js" />
+    <Content Include="scripts\jquery-3.1.1.js" />
+    <Content Include="scripts\jquery-3.1.1.min.js" />
+    <Content Include="scripts\jquery-3.1.1.slim.js" />
+    <Content Include="scripts\jquery-3.1.1.slim.min.js" />
+    <Content Include="scripts\jquery-ui-1.12.1.js" />
+    <Content Include="scripts\jquery-ui-1.12.1.min.js" />
     <Content Include="scripts\vcrnet.js">
       <DependentUpon>vcrnet.ts</DependentUpon>
     </Content>
@@ -259,6 +270,8 @@
     <Content Include="scripts\vcrserver.js">
       <DependentUpon>vcrserver.ts</DependentUpon>
     </Content>
+    <Content Include="scripts\jquery-3.1.1.slim.min.map" />
+    <Content Include="scripts\jquery-3.1.1.min.map" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

@@ -93,6 +93,7 @@ class SavedGuideQuery {
 
         // Filter zusammenbauen
         var filter = new GuideFilter();
+        filter.typeFilter = query.sourceType;
         filter.station = query.source;
         filter.device = query.device;
         filter.title = query.text;
