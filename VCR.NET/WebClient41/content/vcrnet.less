@@ -14,7 +14,7 @@
 @background: #f4f4f4;
 
 // Der Zeichensatz der Anwendung.
-@font: Arial,sans-serif;
+@font: Verdana, Arial, sans-serif;
 
 // Die Farbe aller Verweise in allen Zuständen.
 @linkColor: #0000ff;
@@ -43,12 +43,29 @@ body {
         text-decoration: none;
     }
 
+    a[href]:not(.ui-button):hover {
+        text-decoration: underline;
+    }
+
     .ui-button {
         color: black !important;
     }
 
-    a[href]:not(.ui-button):hover {
-        text-decoration: underline;
+    .ui-checkboxradio-radio-label > span {
+        display: none;
+    }
+
+    .ui-button:active, .ui-checkboxradio-radio-label.ui-state-active, .ui-checkboxradio-label.ui-state-active, .ui-checkboxradio-radio-label.ui-state-active:hover, .ui-checkboxradio-label.ui-state-active:hover {
+        background: @tableHeaderRowColor;
+        border-color: @tableHeaderRowColor;
+    }
+
+    .ui-state-focus {
+        box-shadow: none;
+    }
+
+    .ui-widget {
+        font-family: @font;
     }
 }
 
@@ -357,7 +374,7 @@ body {
 
 // Eine Auswahl im Aufzeichnungsplan, deren Position leicht korrigiert werden muss.
 .planButton {
-    margin-top: 2px;
+    margin-top: 1px;
 }
 
 // Wird zum Hervorheben einer Schaltfläche verwendet, wenn der Anwender diese ausgelöst hat,
@@ -775,13 +792,13 @@ fieldset {
     }
 }
 
-// Wir wollen eine Beschriftung links neben einer Auswahl haben, 
+// Wir wollen eine Beschriftung links neben einer Auswahl haben,
 // wobei die Auswahl mehr als eine Zeile hoch werden kann.
-.sideBySide{
+.sideBySide {
     display: table-row;
 
     div:first-Child {
-        padding-right: 0.5em;   
+        padding-right: 0.5em;
     }
 
     > div {
