@@ -1,7 +1,4 @@
-﻿/// <reference path='typings/jquery/jquery.d.ts' />
-/// <reference path='typings/jqueryui/jqueryui.d.ts' />
-
-module JMSLib {
+﻿module JMSLib {
 
     // Alle CSS Klassen, die vom Code aus gesetzt werden
     export class CSSClass {

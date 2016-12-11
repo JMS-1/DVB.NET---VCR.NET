@@ -1,6 +1,4 @@
-﻿/// <reference path='typings/jquery/jquery.d.ts' />
-/// <reference path='typings/jqueryui/jqueryui.d.ts' />
-/// <reference path='vcrserver.ts' />
+﻿/// <reference path='vcrserver.ts' />
 /// <reference path='jmslib.ts' />
 
 // Alle CSS Klassen, die vom Code aus gesetzt werden

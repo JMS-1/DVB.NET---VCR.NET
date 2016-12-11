@@ -34,6 +34,17 @@
     <TypeScriptIncludeComments>true</TypeScriptIncludeComments>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
     <Prefer32Bit>false</Prefer32Bit>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile>scripts/vcrnet.js</TypeScriptOutFile>
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -46,6 +57,17 @@
     <TypeScriptIncludeComments>true</TypeScriptIncludeComments>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
     <Prefer32Bit>false</Prefer32Bit>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile>scripts/vcrnet.js</TypeScriptOutFile>
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="JMS.DVB.SourceManagement, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
@@ -123,6 +145,7 @@
     <Content Include="content\themes\base\tabs.css" />
     <Content Include="content\themes\base\theme.css" />
     <Content Include="content\themes\base\tooltip.css" />
+    <Content Include="default.html" />
     <Content Include="FAQ\customschedule.html" />
     <Content Include="FAQ\archive.html" />
     <Content Include="FAQ\configuration.html" />
@@ -169,9 +192,6 @@
     <Content Include="FAQ\streamoptions.png" />
     <Content Include="FAQ\streamprotection.png" />
     <Content Include="gulpfile.js" />
-    <Content Include="scripts\jmslib.js">
-      <DependentUpon>jmslib.ts</DependentUpon>
-    </Content>
     <TypeScriptCompile Include="scripts\jmslib.ts" />
     <Content Include="packages.config">
       <SubType>Designer</SubType>
@@ -183,9 +203,14 @@
     <Content Include="scripts\jquery-3.1.1.slim.min.js" />
     <Content Include="scripts\jquery-ui-1.12.1.js" />
     <Content Include="scripts\jquery-ui-1.12.1.min.js" />
-    <Content Include="scripts\vcrnet.js">
-      <DependentUpon>vcrnet.ts</DependentUpon>
-    </Content>
+    <Content Include="scripts\react\react-dom-server.js" />
+    <Content Include="scripts\react\react-dom-server.min.js" />
+    <Content Include="scripts\react\react-dom.js" />
+    <Content Include="scripts\react\react-dom.min.js" />
+    <Content Include="scripts\react\react-with-addons.js" />
+    <Content Include="scripts\react\react-with-addons.min.js" />
+    <Content Include="scripts\react\react.js" />
+    <Content Include="scripts\react\react.min.js" />
     <Content Include="favicon.ico" />
     <Content Include="ui\admin.html" />
     <Content Include="ui\faq.html" />
@@ -239,37 +264,25 @@
     <Content Include="ui\templates\sourceSelection.html" />
     <Content Include="ui\templates\planRow.html" />
     <Content Include="ui\templates\planRowException.html" />
-    <TypeScriptCompile Include="scripts\typings\jqueryui\jqueryui.d.ts" />
-    <TypeScriptCompile Include="scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="scripts\vcrnet.ts" />
-    <Content Include="default.html" />
+    <Content Include="default_old.html" />
     <None Include="content\jmslib.scss" />
+    <TypeScriptCompile Include="typings\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="scripts\vcrserver.ts" />
-    <Content Include="scripts\vcrserver.js">
-      <DependentUpon>vcrserver.ts</DependentUpon>
-    </Content>
     <Content Include="scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="scripts\jquery-3.1.1.min.map" />
+    <Content Include="typings.json" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="content\vcrnet.scss" />
-    <Content Include="scripts\vcrnet.js.map">
-      <DependentUpon>vcrnet.ts</DependentUpon>
-    </Content>
-    <Content Include="scripts\jmslib.js.map">
-      <DependentUpon>jmslib.ts</DependentUpon>
-    </Content>
-    <Content Include="scripts\vcrserver.js.map">
-      <DependentUpon>vcrserver.ts</DependentUpon>
-    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

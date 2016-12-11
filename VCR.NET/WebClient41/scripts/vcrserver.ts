@@ -1,5 +1,4 @@
-﻿/// <reference path='typings/jquery/jquery.d.ts' />
-/// <reference path='jmslib.ts' />
+﻿/// <reference path='jmslib.ts' />
 
 module VCRServer {
     // Normalerweise sind wir das selbst
