@@ -84,6 +84,7 @@
     <Content Include="content\jmslib.min.css">
       <DependentUpon>jmslib.less</DependentUpon>
     </Content>
+    <None Include="content\styles.scss" />
     <Content Include="content\themes\base\accordion.css" />
     <Content Include="content\themes\base\all.css" />
     <Content Include="content\themes\base\autocomplete.css" />
@@ -170,6 +171,7 @@
     <Content Include="FAQ\sources.png" />
     <Content Include="FAQ\streamoptions.png" />
     <Content Include="FAQ\streamprotection.png" />
+    <Content Include="gulpfile.js" />
     <Content Include="scripts\jmslib.js">
       <DependentUpon>jmslib.ts</DependentUpon>
     </Content>
@@ -198,6 +200,7 @@
       <DependentUpon>vcrnet.ts</DependentUpon>
     </Content>
     <Content Include="favicon.ico" />
+    <Content Include="styles.css" />
     <Content Include="ui\admin.html" />
     <Content Include="ui\faq.html" />
     <Content Include="ui\favorites.html" />

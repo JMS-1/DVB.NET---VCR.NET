@@ -186,3 +186,5 @@ $RECYCLE.BIN/
 *.sln
 *.openAsAdmin
 /VCR.NET/.vs
+/VCR.NET/node_modules
+/VCR.NET/WebClient41/styles.css
