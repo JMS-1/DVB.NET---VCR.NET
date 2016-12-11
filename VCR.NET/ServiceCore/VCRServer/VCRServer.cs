@@ -25,7 +25,7 @@ namespace JMS.DVBVCR.RecordingService
         /// <summary>
         /// Aktuelle Version des VCR.NET Recording Service.
         /// </summary>
-        public const string CurrentVersion = "4.3 [" + CURRENTDATE + "]";
+        public const string CurrentVersion = "4.5 [" + CURRENTDATE + "]";
 
         /// <summary>
         /// Konfigurationseintrag in der Registrierung von Windows.
