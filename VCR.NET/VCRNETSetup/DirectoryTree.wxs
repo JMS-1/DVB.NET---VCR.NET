@@ -99,11 +99,14 @@
 
             <!-- Quellcode (optional) -->
             <Directory Id="ContentFiles" Name="content">
+              <Component Id="StyleSheetSource.Styles" Guid="*">
+                <File Id="StyleSheet.Styles" Source="$(var.WebClient41.ProjectDir)content/styles.scss" />
+              </Component>
               <Component Id="StyleSheetSource.JMSLib" Guid="*">
-                <File Id="StyleSheet.JMSLib" Source="$(var.WebClient41.ProjectDir)content/jmslib.less" />
+                <File Id="StyleSheet.JMSLib" Source="$(var.WebClient41.ProjectDir)content/jmslib.scss" />
               </Component>
               <Component Id="StyleSheetSource.VCRNET" Guid="*">
-                <File Id="StyleSheet.VCRNET" Source="$(var.WebClient41.ProjectDir)content/vcrnet.less" />
+                <File Id="StyleSheet.VCRNET" Source="$(var.WebClient41.ProjectDir)content/vcrnet.scss" />
               </Component>
             </Directory>
 
@@ -127,8 +130,9 @@
       <ComponentRef Id="TypeScriptSource.VCRNET"/>
       <ComponentRef Id="TypeScriptSource.jQuery"/>
       <ComponentRef Id="TypeScriptSource.jQueryUI"/>
-      <ComponentRef Id="StyleSheetSource.JMSLib"/>
+      <ComponentRef Id="StyleSheetSource.Styles"/>
       <ComponentRef Id="StyleSheetSource.VCRNET"/>
+      <ComponentRef Id="StyleSheetSource.JMSLib"/>
     </ComponentGroup>
 
   </Fragment>
