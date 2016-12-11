@@ -1,45 +1,45 @@
 ﻿// Die Hintergrundfarbe der als Listeneinträge in den Tabellen.
-@tableRowColor: #e0e0e0;
+$tableRowColor: #e0e0e0;
 
 // Die Kopfzeile aller unsere Tabellen ist etwas dunkler als die einzelnen Listeneinträge.
-@tableHeaderRowColor: #cccccc;
+$tableHeaderRowColor: #cccccc;
 
 // Die Farbe des Rahmens für die Anzeige logisch getrennter Bereiche auf einer Seite der Anwendung.
-@softBorderColor: #ccc;
+$softBorderColor: #ccc;
 
 // Die Hintergrundfarbe für Trennlinien und den Sprungbereich.
-@lineBackgroundColor: #ddd;
+$lineBackgroundColor: #ddd;
 
 // Die Hintergrundfarbe des Anwendung.
-@background: #f4f4f4;
+$background: #f4f4f4;
 
 // Der Zeichensatz der Anwendung.
-@font: Verdana, Arial, sans-serif;
+$font: Verdana, Arial, sans-serif;
 
 // Die Farbe aller Verweise in allen Zuständen.
-@linkColor: #0000ff;
-@linkColorHome: #0000a0;
+$linkColor: #0000ff;
+$linkColorHome: #0000a0;
 
 // Diese Farbe markiert eine Schaltfläche, deren Aktion nicht ausgeführt werden konnte.
-@updateFailedColor: darkred;
+$updateFailedColor: darkred;
 
 // Die veränderte Rahmenbreite einer Schaltfläche, deren Aktion nicht ausgeführt werden konnte.
-@updateFailedWeight: bolder;
+$updateFailedWeight: bolder;
 
 // Wird verwendet um den Anwender kurz auf Änderungen aufmerksam zu machen.
-@textHighlightColor: #111111;
+$textHighlightColor: #111111;
 
 // Zeit eine Warnung an.
-@warning: #FFFF00;
+$warning: #FFFF00;
 
 // Festlegung des allgemeinen Hintergrunds - das betrifft hier vor allen Zeichensatz und den Hintergrund sowie
 // die Verweise.
 body {
-    background-color: @background;
-    font-family: @font;
+    background-color: $background;
+    font-family: $font;
 
     :link, :visited {
-        color: @linkColor;
+        color: $linkColor;
         text-decoration: none;
     }
 
@@ -56,8 +56,8 @@ body {
     }
 
     .ui-button:active, .ui-checkboxradio-radio-label.ui-state-active, .ui-checkboxradio-label.ui-state-active, .ui-checkboxradio-radio-label.ui-state-active:hover, .ui-checkboxradio-label.ui-state-active:hover {
-        background: @tableHeaderRowColor;
-        border-color: @tableHeaderRowColor;
+        background: $tableHeaderRowColor;
+        border-color: $tableHeaderRowColor;
     }
 
     .ui-state-focus {
@@ -65,7 +65,7 @@ body {
     }
 
     .ui-widget {
-        font-family: @font;
+        font-family: $font;
     }
 }
 
@@ -110,13 +110,13 @@ body {
 
     thead {
         tr {
-            background-color: @tableHeaderRowColor;
+            background-color: $tableHeaderRowColor;
             font-weight: bold;
         }
     }
 
     tr {
-        background-color: @tableRowColor;
+        background-color: $tableRowColor;
     }
 
     td:first-child {
@@ -129,7 +129,7 @@ body {
         border-right: 0px;
         border-top: 1px;
         border-bottom: 1px;
-        border-color: @background;
+        border-color: $background;
         border-style: solid;
     }
 }
@@ -141,7 +141,7 @@ body {
 // Für die eingeblendeten Detailansichten müssen wird die Farbgebung kompensieren.
 .detailView {
     td {
-        border-color: @tableRowColor;
+        border-color: $tableRowColor;
     }
 }
 
@@ -238,7 +238,7 @@ body {
     margin-top: -20px;
 
     :link, :visited {
-        color: @linkColorHome;
+        color: $linkColorHome;
     }
 
     .taskStarter {
@@ -290,7 +290,7 @@ body {
 
 // Beschreibt den Hintergurnd für den Sprungbereich, der auf quasi allen Seiten oben angezeigt wird.
 .linkArea {
-    background-color: @lineBackgroundColor;
+    background-color: $lineBackgroundColor;
     border: 0px solid transparent;
     border-radius: 4px;
     font-size: small;
@@ -384,12 +384,12 @@ body {
 // Befehlen verwendet, die ein zweites Auslösen der Schaltfläche als Bestätigung verlangen -
 // etwa das Löschen einer Aufzeichnung.
 .danger {
-    font-weight: @updateFailedWeight;
-    border-color: @updateFailedColor;
+    font-weight: $updateFailedWeight;
+    border-color: $updateFailedColor;
     border-width: 2px;
 
     .ui-button-text {
-        color: @updateFailedColor;
+        color: $updateFailedColor;
     }
 }
 
@@ -504,8 +504,8 @@ body {
     text-align: center;
     font-size: xx-large;
     font-weight: bold;
-    background-color: @softBorderColor + #111111;
-    border: 10px solid @softBorderColor;
+    background-color: $softBorderColor + #111111;
+    border: 10px solid $softBorderColor;
     border-radius: 5px;
 }
 
@@ -522,7 +522,7 @@ body {
 // Ein kurzzeitig markierter Text um dem Anwender über eine Änderung zu informieren.
 .highlightText {
     font-weight: bold;
-    color: @textHighlightColor;
+    color: $textHighlightColor;
 }
 
 // Die Auswahl für den Bereich bei der Anzeige aller Aufträge und Aufzeichnungen.
@@ -744,7 +744,7 @@ fieldset {
 
 // Markiert einen Endzeitpunkt, der sich durch die Zeitumstellung eventuell verschoben hat.
 .suspectEnd {
-    background-color: @warning;
+    background-color: $warning;
     font-weight: bold;
 }
 

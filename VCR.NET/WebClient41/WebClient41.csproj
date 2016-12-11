@@ -78,13 +78,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="content\jmslib.css">
-      <DependentUpon>jmslib.less</DependentUpon>
-    </Content>
-    <Content Include="content\jmslib.min.css">
-      <DependentUpon>jmslib.less</DependentUpon>
-    </Content>
     <None Include="content\styles.scss" />
+    <Content Include="content\styles.css">
+      <DependentUpon>styles.scss</DependentUpon>
+    </Content>
     <Content Include="content\themes\base\accordion.css" />
     <Content Include="content\themes\base\all.css" />
     <Content Include="content\themes\base\autocomplete.css" />
@@ -176,16 +173,6 @@
       <DependentUpon>jmslib.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="scripts\jmslib.ts" />
-    <Content Include="content\jmslib.css.map">
-      <DependentUpon>jmslib.css</DependentUpon>
-    </Content>
-    <Content Include="content\vcrnet.css.map">
-      <DependentUpon>vcrnet.css</DependentUpon>
-    </Content>
-    <None Include="compilerconfig.json" />
-    <None Include="compilerconfig.json.defaults">
-      <DependentUpon>compilerconfig.json</DependentUpon>
-    </None>
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
@@ -200,7 +187,6 @@
       <DependentUpon>vcrnet.ts</DependentUpon>
     </Content>
     <Content Include="favicon.ico" />
-    <Content Include="styles.css" />
     <Content Include="ui\admin.html" />
     <Content Include="ui\faq.html" />
     <Content Include="ui\favorites.html" />
@@ -256,14 +242,8 @@
     <TypeScriptCompile Include="scripts\typings\jqueryui\jqueryui.d.ts" />
     <TypeScriptCompile Include="scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="scripts\vcrnet.ts" />
-    <Content Include="content\vcrnet.css">
-      <DependentUpon>vcrnet.less</DependentUpon>
-    </Content>
     <Content Include="default.html" />
-    <None Include="content\jmslib.less" />
-    <Content Include="content\vcrnet.min.css">
-      <DependentUpon>vcrnet.less</DependentUpon>
-    </Content>
+    <None Include="content\jmslib.scss" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -280,7 +260,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="content\vcrnet.less" />
+    <None Include="content\vcrnet.scss" />
     <Content Include="scripts\vcrnet.js.map">
       <DependentUpon>vcrnet.ts</DependentUpon>
     </Content>
