@@ -8,6 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Local.testsettings = Local.testsettings
 		package.json = package.json
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+		typings.json = typings.json
 		VCR.NET.vsmdi = VCR.NET.vsmdi
 	EndProjectSection
 EndProject

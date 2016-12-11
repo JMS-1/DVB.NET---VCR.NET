@@ -192,6 +192,9 @@
     <Content Include="FAQ\streamoptions.png" />
     <Content Include="FAQ\streamprotection.png" />
     <Content Include="gulpfile.js" />
+    <TypeScriptCompile Include="..\typings\index.d.ts">
+      <Link>src\index.d.ts</Link>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="scripts\jmslib.ts" />
     <Content Include="packages.config">
       <SubType>Designer</SubType>
@@ -275,7 +278,6 @@
     <None Include="content\jmslib.scss" />
     <TypeScriptCompile Include="src\main.tsx" />
     <TypeScriptCompile Include="src\viewModels\main.ts" />
-    <TypeScriptCompile Include="typings\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -284,7 +286,6 @@
     <TypeScriptCompile Include="scripts\vcrserver.ts" />
     <Content Include="scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="scripts\jquery-3.1.1.min.map" />
-    <Content Include="typings.json" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
