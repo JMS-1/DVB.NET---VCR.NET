@@ -3,18 +3,11 @@ import React = __React;
 import ReactDOM = __React.__DOM;
 
 namespace VCRNETClient {
-    export interface IApplication {
-    }
-
-    class Application implements IApplication {
-        constructor() {
-            $(this.startup.bind(this));
-        }
-
-        private startup(): void {
+    class Application {
+        static startup(): void {
             ReactDOM.render(<Main />, document.querySelector(`body`));
         }
     }
 
-    export var App: IApplication = new Application();
+    $(Application.startup);
 }
