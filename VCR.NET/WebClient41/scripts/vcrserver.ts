@@ -587,7 +587,7 @@ module VCRServer {
         return deviceUrl;
     }
 
-    export function getServerVersion(): JQueryPromise<any> {
+    export function getServerVersion(): JQueryPromise<InfoServiceContract> {
         return $.ajax({
             url: restRoot + 'info',
             dataType: 'json',

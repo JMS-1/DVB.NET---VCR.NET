@@ -199,6 +199,7 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="content\vcrnet_old.scss" />
     <None Include="scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="scripts\jquery-3.1.1.js" />
     <Content Include="scripts\jquery-3.1.1.min.js" />
@@ -221,6 +222,10 @@
     <Content Include="scripts\vcrnet.js.map">
       <DependentUpon>vcrnet.js</DependentUpon>
     </Content>
+    <Content Include="src\components\plan.scss" />
+    <Content Include="src\components\home.scss" />
+    <Content Include="src\components\main.scss" />
+    <None Include="src\components\router.scss" />
     <Content Include="ui\admin.html" />
     <Content Include="ui\faq.html" />
     <Content Include="ui\favorites.html" />
@@ -276,8 +281,12 @@
     <TypeScriptCompile Include="scripts\vcrnet.ts" />
     <Content Include="default_old.html" />
     <None Include="content\jmslib.scss" />
-    <TypeScriptCompile Include="src\main.tsx" />
-    <TypeScriptCompile Include="src\viewModels\main.ts" />
+    <TypeScriptCompile Include="src\components\home.tsx" />
+    <TypeScriptCompile Include="src\components\main.tsx" />
+    <TypeScriptCompile Include="src\components\plan.tsx" />
+    <TypeScriptCompile Include="src\components\router.tsx" />
+    <TypeScriptCompile Include="src\strings.ts" />
+    <TypeScriptCompile Include="src\vcrnet.tsx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -286,12 +295,12 @@
     <TypeScriptCompile Include="scripts\vcrserver.ts" />
     <Content Include="scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="scripts\jquery-3.1.1.min.map" />
+    <Content Include="src\vcrnet.scss" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="content\vcrnet.scss" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

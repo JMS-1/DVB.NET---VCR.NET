@@ -1,2 +1,8 @@
 ﻿@import "jmslib";
-@import "vcrnet";
+@import "vcrnet_old";
+
+@import "../src/vcrnet.scss";
+@import "../src/components/main.scss";
+@import "../src/components/router.scss";
+@import "../src/components/home.scss";
+@import "../src/components/plan.scss";
