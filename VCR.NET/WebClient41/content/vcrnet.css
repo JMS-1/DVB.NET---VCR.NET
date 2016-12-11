@@ -225,12 +225,12 @@ body .ui-widget {
   margin-top: 1px;
 }
 .danger {
-  font-weight: bolder;
-  border-color: darkred;
-  border-width: 2px;
+  font-weight: bolder !important;
+  border-color: darkred !important;
+  border-width: 2px !important;
 }
 .danger .ui-button-text {
-  color: darkred;
+  color: darkred !important;
 }
 .guideSelection {
   margin: 5px;
