@@ -384,12 +384,12 @@ body {
 // Befehlen verwendet, die ein zweites Auslösen der Schaltfläche als Bestätigung verlangen -
 // etwa das Löschen einer Aufzeichnung.
 .danger {
-    font-weight: $updateFailedWeight;
-    border-color: $updateFailedColor;
-    border-width: 2px;
+    font-weight: $updateFailedWeight !important;
+    border-color: $updateFailedColor !important;
+    border-width: 2px !important;
 
     .ui-button-text {
-        color: $updateFailedColor;
+        color: $updateFailedColor !important;
     }
 }
 
