@@ -577,74 +577,75 @@ class Page {
 }
 
 // Globale Initialisierungen
-$(() => {
-    // Benutzereinstellungen einmalig anfordern
-    VCRServer.UserProfile.global.refresh();
+if (document.location.pathname !== "/default.html")
+    $(() => {
+        // Benutzereinstellungen einmalig anfordern
+        VCRServer.UserProfile.global.refresh();
 
-    // Informationsdaten ermitteln
-    VCRServer.getServerVersion().done((data: VCRServer.InfoServiceContract) => $('#masterTitle').text('VCR.NET Recording Service ' + data.version));
+        // Informationsdaten ermitteln
+        VCRServer.getServerVersion().done((data: VCRServer.InfoServiceContract) => $('#masterTitle').text('VCR.NET Recording Service ' + data.version));
 
-    // Hier kommt der Inhalt hin
-    var mainContent = $('#mainArea');
-    var tagClass = '.initialDisable';
+        // Hier kommt der Inhalt hin
+        var mainContent = $('#mainArea');
+        var tagClass = '.initialDisable';
 
-    // Alles, was unsichtbar ist, zusätzlich markieren
-    $('.' + JMSLib.CSSClass.invisible).addClass(tagClass.substr(1));
+        // Alles, was unsichtbar ist, zusätzlich markieren
+        $('.' + JMSLib.CSSClass.invisible).addClass(tagClass.substr(1));
 
-    // Eine Teilanwendung laden
-    function loadMain(template: string): void {
-        // Zustand zurück setzen - es ist teilweise einfach, an globale statische Methoden zu binden, wenn die zugehörigen Daten auch global gehalten werden
-        VCRServer.UserProfile.global.register(null);
-        SavedGuideQuery.onCountLoaded = null;
-        GuideFilter.global.onChange = null;
-        SavedGuideQuery.onDeleted = null;
-        SavedGuideQuery.onClick = null;
+        // Eine Teilanwendung laden
+        function loadMain(template: string): void {
+            // Zustand zurück setzen - es ist teilweise einfach, an globale statische Methoden zu binden, wenn die zugehörigen Daten auch global gehalten werden
+            VCRServer.UserProfile.global.register(null);
+            SavedGuideQuery.onCountLoaded = null;
+            GuideFilter.global.onChange = null;
+            SavedGuideQuery.onDeleted = null;
+            SavedGuideQuery.onClick = null;
 
-        // Anwender informieren und Seite anfordern
-        $('#headline').text('(bitte einen Moment Geduld)');
+            // Anwender informieren und Seite anfordern
+            $('#headline').text('(bitte einen Moment Geduld)');
 
-        JMSLib.TemplateLoader.loadAbsolute('ui/' + template + '.html').done((wholeFile: string) => {
-            var content = $(wholeFile).find('#mainContent');
-            var starterClass = template + 'Page';
-            var starter: Page = new window[starterClass];
+            JMSLib.TemplateLoader.loadAbsolute('ui/' + template + '.html').done((wholeFile: string) => {
+                var content = $(wholeFile).find('#mainContent');
+                var starterClass = template + 'Page';
+                var starter: Page = new window[starterClass];
 
-            // Alles, was initial unsichtbar war, nun auf unsichtbar schalten
-            $(tagClass).addClass(JMSLib.CSSClass.invisible);
+                // Alles, was initial unsichtbar war, nun auf unsichtbar schalten
+                $(tagClass).addClass(JMSLib.CSSClass.invisible);
 
-            // Inhalt der Seite laden
-            mainContent.html(null);
-            mainContent.html(content.html());
+                // Inhalt der Seite laden
+                mainContent.html(null);
+                mainContent.html(content.html());
 
-            // Individuelle Initalisierung aufrufen            
-            starter.initialize(mainContent);
-        });
-    }
+                // Individuelle Initalisierung aufrufen            
+                starter.initialize(mainContent);
+            });
+        }
 
-    // Gerade angezeigte Teilanwendung
-    var currentHash = '';
+        // Gerade angezeigte Teilanwendung
+        var currentHash = '';
 
-    // Aktuelle Teilanwendung ermitteln und laden
-    window.onhashchange = (ev: Event) => {
-        var hash = window.location.hash;
-        if (hash.indexOf('#') != 0)
-            hash = '#home';
+        // Aktuelle Teilanwendung ermitteln und laden
+        window.onhashchange = (ev: Event) => {
+            var hash = window.location.hash;
+            if (hash.indexOf('#') != 0)
+                hash = '#home';
 
-        var app = hash.substr(1);
-        var endOfApp = app.indexOf(';');
-        if (endOfApp >= 0)
-            app = app.substr(0, endOfApp);
+            var app = hash.substr(1);
+            var endOfApp = app.indexOf(';');
+            if (endOfApp >= 0)
+                app = app.substr(0, endOfApp);
 
-        if (currentHash == app)
-            if (currentHash != 'faq')
-                if (currentHash != 'guide')
-                    return;
+            if (currentHash == app)
+                if (currentHash != 'faq')
+                    if (currentHash != 'guide')
+                        return;
 
-        loadMain(currentHash = app);
-    }
+            loadMain(currentHash = app);
+        }
 
-    // Aktuelle Seite laden
-    window.onhashchange(null);
-})
+        // Aktuelle Seite laden
+        window.onhashchange(null);
+    })
 
 // Verwaltet die Auswahl einer Quelle für die Aufzeichnung, einschließlich der Aufzeichnungsoptionen
 class SourceSelector {

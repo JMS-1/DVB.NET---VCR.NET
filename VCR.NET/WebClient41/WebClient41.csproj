@@ -212,6 +212,12 @@
     <Content Include="scripts\react\react.js" />
     <Content Include="scripts\react\react.min.js" />
     <Content Include="favicon.ico" />
+    <Content Include="scripts\vcrnet.js">
+      <DependentUpon>vcrnet.ts</DependentUpon>
+    </Content>
+    <Content Include="scripts\vcrnet.js.map">
+      <DependentUpon>vcrnet.js</DependentUpon>
+    </Content>
     <Content Include="ui\admin.html" />
     <Content Include="ui\faq.html" />
     <Content Include="ui\favorites.html" />
