@@ -6,26 +6,26 @@ var JMSLib;
     var CSSClass = (function () {
         function CSSClass() {
         }
-        // Hebt eine ungültige Eingabe hervor
-        CSSClass.invalid = 'invalid';
-        // Entfernt Oberflächenelemente aus der Anzeige
-        CSSClass.invisible = 'invisible';
-        // Macht Oberflächenelemente unsichtbar
-        CSSClass.hide = 'hidden';
-        // Gebt eine kritische Eingabe hervor
-        CSSClass.warning = 'warning';
-        // Die Klasse für die eingebettete Hilfe
-        CSSClass.inlineHelp = 'inlineHelp';
-        // Eine Schaltfläche, die eine einzelne Stunde repräsentiert
-        CSSClass.hourSetting = 'hourChecker';
-        // Wird beim Aufklappen einer Detailansicht gesetzt
-        CSSClass.detailView = 'detailView';
-        // Eine Aufzeichnung umfasst eine ganze Sendung.
-        CSSClass.fullRecord = 'guideInsidePlan';
-        // Eine Sendung wird nur teilweise aufgezeichnet.
-        CSSClass.partialRecord = 'guideOutsidePlan';
         return CSSClass;
     }());
+    // Hebt eine ungültige Eingabe hervor
+    CSSClass.invalid = 'invalid';
+    // Entfernt Oberflächenelemente aus der Anzeige
+    CSSClass.invisible = 'invisible';
+    // Macht Oberflächenelemente unsichtbar
+    CSSClass.hide = 'hidden';
+    // Gebt eine kritische Eingabe hervor
+    CSSClass.warning = 'warning';
+    // Die Klasse für die eingebettete Hilfe
+    CSSClass.inlineHelp = 'inlineHelp';
+    // Eine Schaltfläche, die eine einzelne Stunde repräsentiert
+    CSSClass.hourSetting = 'hourChecker';
+    // Wird beim Aufklappen einer Detailansicht gesetzt
+    CSSClass.detailView = 'detailView';
+    // Eine Aufzeichnung umfasst eine ganze Sendung.
+    CSSClass.fullRecord = 'guideInsidePlan';
+    // Eine Sendung wird nur teilweise aufgezeichnet.
+    CSSClass.partialRecord = 'guideOutsidePlan';
     JMSLib.CSSClass = CSSClass;
     // Wertet eine Fehlermeldung von einem Web Dienst aus
     function dispatchErrorMessage(onError) {
@@ -127,12 +127,12 @@ var JMSLib;
                 return $.get(fullName).done(function (html) { return TemplateLoader.loaded[fullName] = html; });
             return $.Deferred().resolve(template);
         };
-        // Die Ablage für alle Vorlagen
-        TemplateLoader.templateRoot = 'ui/templates/';
-        // Alle bereits geladenden Vorlagen
-        TemplateLoader.loaded = {};
         return TemplateLoader;
     }());
+    // Die Ablage für alle Vorlagen
+    TemplateLoader.templateRoot = 'ui/templates/';
+    // Alle bereits geladenden Vorlagen
+    TemplateLoader.loaded = {};
     JMSLib.TemplateLoader = TemplateLoader;
     // Hilfsklasse zur Bindung von Formulareigenschaften an Modelldaten
     var Bindings = (function () {
@@ -241,14 +241,14 @@ var JMSLib;
                 return 'Der maximal erlaubte Wert ist ' + max;
             return null;
         };
-        // Die XML Eigenschaft mit dem Namen der zugehörigen Modelleigenschaft
-        Bindings.propertyAttribute = 'data-property';
-        // Die XML Eigenschaft mit der Referenz auf die Anzeige der Prüfergebnisse
-        Bindings.validationAttribute = 'data-validation-target';
-        // Muster zur Erkennung gültiger Zahlen
-        Bindings.numberPattern = /^\d+$/;
         return Bindings;
     }());
+    // Die XML Eigenschaft mit dem Namen der zugehörigen Modelleigenschaft
+    Bindings.propertyAttribute = 'data-property';
+    // Die XML Eigenschaft mit der Referenz auf die Anzeige der Prüfergebnisse
+    Bindings.validationAttribute = 'data-validation-target';
+    // Muster zur Erkennung gültiger Zahlen
+    Bindings.numberPattern = /^\d+$/;
     JMSLib.Bindings = Bindings;
     // Verwaltet ein unsichtbares HTML Element als Vorlage für eine Zeile in einer Liste
     var HTMLTemplate = (function () {
@@ -385,24 +385,24 @@ var JMSLib;
             this.items = items;
             this.refresh();
         };
-        // Die XML Eigenschaft mit der Markierung für Pflichteigenschaften
-        HTMLTemplate.requiredAttribute = 'data-property-required';
-        // Die XML Eigenschaft mit der Werteformatierung
-        HTMLTemplate.formatAttribute = 'data-format';
-        // Der Platzhalter für die Ersetzung des Wertes in einer Formatierung
-        HTMLTemplate.valuePlaceholder = '##value##';
-        // Die XML Eigenschaft mit dem Selector für das Zielelement der Modelleigenschaft
-        HTMLTemplate.targetAttribute = 'data-target';
-        // Die XML Eigenschaft mit dem Namen der XML Zieleigenschaft für die Modelleigenschaft
-        HTMLTemplate.targetAttributeAttribute = 'data-attribute';
-        // Die XML Eigenschaft mit der Markierung für Werte, die in das Modell zurückfliessen sollen
-        HTMLTemplate.writebackAttribute = 'data-writeback';
-        // Die XML Eigenschaft mit dem Namen der Modelleigenschaft, die ein Prüfergebnis enthält
-        HTMLTemplate.validationResultAttribute = 'data-validation-result';
-        // Die XML Eigenschaft mit dem Namen der Modellmethode, die bei Aktivierung des Oberflächenelementes aufgerufen werden soll
-        HTMLTemplate.clickAttribute = 'data-clickevent';
         return HTMLTemplate;
     }());
+    // Die XML Eigenschaft mit der Markierung für Pflichteigenschaften
+    HTMLTemplate.requiredAttribute = 'data-property-required';
+    // Die XML Eigenschaft mit der Werteformatierung
+    HTMLTemplate.formatAttribute = 'data-format';
+    // Der Platzhalter für die Ersetzung des Wertes in einer Formatierung
+    HTMLTemplate.valuePlaceholder = '##value##';
+    // Die XML Eigenschaft mit dem Selector für das Zielelement der Modelleigenschaft
+    HTMLTemplate.targetAttribute = 'data-target';
+    // Die XML Eigenschaft mit dem Namen der XML Zieleigenschaft für die Modelleigenschaft
+    HTMLTemplate.targetAttributeAttribute = 'data-attribute';
+    // Die XML Eigenschaft mit der Markierung für Werte, die in das Modell zurückfliessen sollen
+    HTMLTemplate.writebackAttribute = 'data-writeback';
+    // Die XML Eigenschaft mit dem Namen der Modelleigenschaft, die ein Prüfergebnis enthält
+    HTMLTemplate.validationResultAttribute = 'data-validation-result';
+    // Die XML Eigenschaft mit dem Namen der Modellmethode, die bei Aktivierung des Oberflächenelementes aufgerufen werden soll
+    HTMLTemplate.clickAttribute = 'data-clickevent';
     JMSLib.HTMLTemplate = HTMLTemplate;
     // Verwaltet in einer Tabellendarstellung die Möglichkeit, Details aufzuklappen.
     var DetailManager = (function () {
@@ -544,10 +544,10 @@ var JMSLib;
                 return null;
             return digit - 0x30;
         };
-        // Die Kürzel für die Wochentage
-        DateFormatter.germanDays = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
         return DateFormatter;
     }());
+    // Die Kürzel für die Wochentage
+    DateFormatter.germanDays = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
     JMSLib.DateFormatter = DateFormatter;
     // Verwaltung einer Auswahl von N aus 24 Stunden für die Aktualisierungen
     var HourListSettings = (function () {

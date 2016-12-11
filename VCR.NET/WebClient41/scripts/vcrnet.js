@@ -11,31 +11,31 @@ var __extends = (this && this.__extends) || function (d, b) {
 var CSSClass = (function () {
     function CSSClass() {
     }
-    // Markiert im Aufzeichnungsplan inaktive Aufzeichnungsoptionen (e.g. VideoText)
-    CSSClass.inactiveOptionClass = 'inactiveRecordingOption';
-    // Verändert kurz den Namen einer Eingabe um Änderungen anzuzeigen
-    CSSClass.blink = 'highlightText';
-    // Markiert eine Schaltfläche für eine zusätzliche Bestätigung einer Aktion durch den Anwender
-    CSSClass.danger = 'danger';
-    // Der Inhalt einer Hilfeseite
-    CSSClass.faq = 'faqContent';
-    // Der Name eines Eingabefeldes
-    CSSClass.editLabel = 'editLabel';
-    // Der Platzhalter zwischen dem Namen eines Eingabefeldes und dem Wert
-    CSSClass.editSpacing = 'spaceColumn';
-    // In der Liste der Aufträge und Aufzeichnungen eine Zeile ohne den Namen eines Auftrags
-    CSSClass.noJobText = 'jobTextPlaceholder';
-    // Die Anzeige des Namens eines Auftrags in der Liste der Aufträge und Aufzeichnungen
-    CSSClass.jobText = 'jobText';
-    // Das Ende einer Aufzeichnung ist eventuell nicht wie erwünscht.
-    CSSClass.badEndTime = 'suspectEnd';
     return CSSClass;
 }());
+// Markiert im Aufzeichnungsplan inaktive Aufzeichnungsoptionen (e.g. VideoText)
+CSSClass.inactiveOptionClass = 'inactiveRecordingOption';
+// Verändert kurz den Namen einer Eingabe um Änderungen anzuzeigen
+CSSClass.blink = 'highlightText';
+// Markiert eine Schaltfläche für eine zusätzliche Bestätigung einer Aktion durch den Anwender
+CSSClass.danger = 'danger';
+// Der Inhalt einer Hilfeseite
+CSSClass.faq = 'faqContent';
+// Der Name eines Eingabefeldes
+CSSClass.editLabel = 'editLabel';
+// Der Platzhalter zwischen dem Namen eines Eingabefeldes und dem Wert
+CSSClass.editSpacing = 'spaceColumn';
+// In der Liste der Aufträge und Aufzeichnungen eine Zeile ohne den Namen eines Auftrags
+CSSClass.noJobText = 'jobTextPlaceholder';
+// Die Anzeige des Namens eines Auftrags in der Liste der Aufträge und Aufzeichnungen
+CSSClass.jobText = 'jobText';
+// Das Ende einer Aufzeichnung ist eventuell nicht wie erwünscht.
+CSSClass.badEndTime = 'suspectEnd';
 // Beschreibt einen Favoritensuche in der Programmzeitschrift
 var SavedGuideQuery = (function () {
     function SavedGuideQuery(rawQuery) {
-        var _this = this;
         if (rawQuery === void 0) { rawQuery = null; }
+        var _this = this;
         // Optional die Quelle
         this.source = null;
         // Die Anzahl der Sendungen zur Suche
@@ -148,20 +148,20 @@ var SavedGuideQuery = (function () {
             display += 'ist';
         return display;
     };
-    // Die noch zu ladenden Zähler
-    SavedGuideQuery.loadQueue = new Array();
-    // Gesetzt, wenn ein Ladevorgang aktiv ist
-    SavedGuideQuery.loading = false;
-    // Die gespeicherte Suche, mit der die Anzeige initialisiert werden soll.
-    SavedGuideQuery.guideScope = null;
-    // Wird nach bei der Auswahl der Anzahl ausgelöst
-    SavedGuideQuery.onClick = null;
-    // Wird nach dem Löschen ausgelöst
-    SavedGuideQuery.onDeleted = null;
-    // Wird nach dem Laden der Anzahl der Sendungen ausgelöst
-    SavedGuideQuery.onCountLoaded = null;
     return SavedGuideQuery;
 }());
+// Die noch zu ladenden Zähler
+SavedGuideQuery.loadQueue = new Array();
+// Gesetzt, wenn ein Ladevorgang aktiv ist
+SavedGuideQuery.loading = false;
+// Die gespeicherte Suche, mit der die Anzeige initialisiert werden soll.
+SavedGuideQuery.guideScope = null;
+// Wird nach bei der Auswahl der Anzahl ausgelöst
+SavedGuideQuery.onClick = null;
+// Wird nach dem Löschen ausgelöst
+SavedGuideQuery.onDeleted = null;
+// Wird nach dem Laden der Anzahl der Sendungen ausgelöst
+SavedGuideQuery.onCountLoaded = null;
 // Die Verwaltung aller gespeicherten Suchen
 var SavedGuideQueries = (function () {
     function SavedGuideQueries() {
@@ -191,10 +191,10 @@ var SavedGuideQueries = (function () {
     SavedGuideQueries.save = function () {
         VCRServer.updateSearchQueries(JSON.stringify(SavedGuideQueries.queries, SavedGuideQuery.filterProperties));
     };
-    // Der Name der Ablage
-    SavedGuideQueries.storeName = 'vcrnet.guidequeries';
     return SavedGuideQueries;
 }());
+// Der Name der Ablage
+SavedGuideQueries.storeName = 'vcrnet.guidequeries';
 // Repräsentiert die Klasse GuideFilter
 var GuideFilter = (function () {
     function GuideFilter() {
@@ -354,10 +354,10 @@ var GuideFilter = (function () {
     GuideFilter.prototype.count = function (whenLoaded) {
         VCRServer.countProgramGuide(this, GuideFilter.filterProperties).done(whenLoaded);
     };
-    // Die einzige Instanz dieser Klasse
-    GuideFilter.global = new GuideFilter();
     return GuideFilter;
 }());
+// Die einzige Instanz dieser Klasse
+GuideFilter.global = new GuideFilter();
 // Repräsentiert die Klasse JobScheduleData
 var JobScheduleDataContract = (function () {
     function JobScheduleDataContract(job, schedule) {
@@ -1054,26 +1054,26 @@ var ScheduleData = (function () {
         // Report
         return contract;
     };
-    // Der kleinste erlaubte Datumswert.
-    ScheduleData.minimumDate = new Date(1963, 8, 29);
-    // Der höchste erlaubte Datumswert.
-    ScheduleData.maximumDate = new Date(2999, 11, 31);
-    // Das Bit für Montag.
-    ScheduleData.flagMonday = 0x01;
-    // Das Bit für Dienstag.
-    ScheduleData.flagTuesday = 0x02;
-    // Das Bit für Mittwoch.
-    ScheduleData.flagWednesday = 0x04;
-    // Das Bit für Donnerstag.
-    ScheduleData.flagThursday = 0x08;
-    // Das Bit für Freitag.
-    ScheduleData.flagFriday = 0x10;
-    // Das Bit für Samstag.
-    ScheduleData.flagSaturday = 0x20;
-    // Das Bit für Sonntag.
-    ScheduleData.flagSunday = 0x40;
     return ScheduleData;
 }());
+// Der kleinste erlaubte Datumswert.
+ScheduleData.minimumDate = new Date(1963, 8, 29);
+// Der höchste erlaubte Datumswert.
+ScheduleData.maximumDate = new Date(2999, 11, 31);
+// Das Bit für Montag.
+ScheduleData.flagMonday = 0x01;
+// Das Bit für Dienstag.
+ScheduleData.flagTuesday = 0x02;
+// Das Bit für Mittwoch.
+ScheduleData.flagWednesday = 0x04;
+// Das Bit für Donnerstag.
+ScheduleData.flagThursday = 0x08;
+// Das Bit für Freitag.
+ScheduleData.flagFriday = 0x10;
+// Das Bit für Samstag.
+ScheduleData.flagSaturday = 0x20;
+// Das Bit für Sonntag.
+ScheduleData.flagSunday = 0x40;
 // Algorithmen zur Prüfung der Eingaben einer Aufzeichnung
 var ScheduleDataValidator = (function () {
     function ScheduleDataValidator(job, existingData) {
@@ -1277,10 +1277,10 @@ var JobDataValidator = (function () {
             });
         });
     };
-    // Alle verbotenen Zeichen.
-    JobDataValidator.forbidenCharacters = /[\\\/\:\*\?\"\<\>\|]/;
     return JobDataValidator;
 }());
+// Alle verbotenen Zeichen.
+JobDataValidator.forbidenCharacters = /[\\\/\:\*\?\"\<\>\|]/;
 // Eingabeelemente für die Sicherheitskonfiguration
 var SecuritySettingsValidator = (function () {
     function SecuritySettingsValidator(settings) {
@@ -1782,9 +1782,10 @@ var ProtocolEntry = (function () {
 var settingsPage = (function (_super) {
     __extends(settingsPage, _super);
     function settingsPage() {
-        _super.apply(this, arguments);
-        this.title = 'Individuelle Einstellungen ändern';
-        this.visibleLinks = '.guideLink, .newLink, .planLink, .currentLink';
+        var _this = _super.apply(this, arguments) || this;
+        _this.title = 'Individuelle Einstellungen ändern';
+        _this.visibleLinks = '.guideLink, .newLink, .planLink, .currentLink';
+        return _this;
     }
     settingsPage.prototype.onInitialize = function () {
         VCRServer.UserProfile.global.register(this.registerAsyncCall());
@@ -1798,9 +1799,10 @@ var settingsPage = (function (_super) {
 var faqPage = (function (_super) {
     __extends(faqPage, _super);
     function faqPage() {
-        _super.apply(this, arguments);
-        this.title = '';
-        this.visibleLinks = '.guideLink, .newLink, .planLink, .currentLink';
+        var _this = _super.apply(this, arguments) || this;
+        _this.title = '';
+        _this.visibleLinks = '.guideLink, .newLink, .planLink, .currentLink';
+        return _this;
     }
     faqPage.prototype.onInitialize = function () {
         var _this = this;
@@ -1828,9 +1830,10 @@ var faqPage = (function (_super) {
 var homePage = (function (_super) {
     __extends(homePage, _super);
     function homePage() {
-        _super.apply(this, arguments);
-        this.title = '';
-        this.visibleLinks = '';
+        var _this = _super.apply(this, arguments) || this;
+        _this.title = '';
+        _this.visibleLinks = '';
+        return _this;
     }
     // Aktiviert eine Anzeige zur Aktualisierung
     homePage.prototype.showUpdate = function (button, index, method) {
@@ -1909,21 +1912,22 @@ var homePage = (function (_super) {
         checkUpdate.click(function () { return _this.checkUpdate(checkUpdate); });
         this.title = 'VCR.NET Recording Service ' + serverInfo.version + ' (' + serverInfo.msiVersion + ')';
     };
-    // Suchmuster zum ermitteln neuer Versionen.
-    homePage.versionExtract = />VCRNET\.MSI<\/a>[^<]*\s([^\s]+)\s*</i;
     return homePage;
 }(Page));
+// Suchmuster zum ermitteln neuer Versionen.
+homePage.versionExtract = />VCRNET\.MSI<\/a>[^<]*\s([^\s]+)\s*</i;
 // Der Aufzeichnungsplan
 var planPage = (function (_super) {
     __extends(planPage, _super);
     function planPage() {
-        _super.apply(this, arguments);
-        this.title = '';
-        this.visibleLinks = '.guideLink, .newLink, .refreshLink, .currentLink';
+        var _this = _super.apply(this, arguments) || this;
+        _this.title = '';
+        _this.visibleLinks = '.guideLink, .newLink, .refreshLink, .currentLink';
         // Erster zu berücksichtigender Zeitpunkt
-        this.minStart = new Date(0);
+        _this.minStart = new Date(0);
         // Letzter zu berücksichtigender Zeitpunkt
-        this.maxStart = new Date(0);
+        _this.maxStart = new Date(0);
+        return _this;
     }
     // Aktualisiert die Anzeige
     planPage.prototype.refresh = function () {
@@ -2096,9 +2100,10 @@ var planPage = (function (_super) {
 var adminPage = (function (_super) {
     __extends(adminPage, _super);
     function adminPage() {
-        _super.apply(this, arguments);
-        this.title = 'Administration und Konfiguration';
-        this.visibleLinks = '.guideLink, .newLink, .planLink, .currentLink';
+        var _this = _super.apply(this, arguments) || this;
+        _this.title = 'Administration und Konfiguration';
+        _this.visibleLinks = '.guideLink, .newLink, .planLink, .currentLink';
+        return _this;
     }
     // Überträgt die Liste der Verzeichnisse in die Oberfläche
     adminPage.prototype.fillDirectories = function (directories) {
@@ -2417,17 +2422,18 @@ var adminPage = (function (_super) {
         // Oberfläche vorbereiten
         $('.' + JMSLib.CSSClass.hourSetting).button();
     };
-    // Die Liste aller Benutzergruppen
-    adminPage.groups = null;
     return adminPage;
 }(Page));
+// Die Liste aller Benutzergruppen
+adminPage.groups = null;
 // Alle Aktivitäten
 var currentPage = (function (_super) {
     __extends(currentPage, _super);
     function currentPage() {
-        _super.apply(this, arguments);
-        this.title = 'Geräteübersicht';
-        this.visibleLinks = '.refreshLink, .guideLink, .planLink, .newLink';
+        var _this = _super.apply(this, arguments) || this;
+        _this.title = 'Geräteübersicht';
+        _this.visibleLinks = '.refreshLink, .guideLink, .planLink, .newLink';
+        return _this;
     }
     // Führt eine vollständige Aktualisierung aus
     currentPage.prototype.reload = function () {
@@ -2501,9 +2507,10 @@ var currentPage = (function (_super) {
 var editPage = (function (_super) {
     __extends(editPage, _super);
     function editPage() {
-        _super.apply(this, arguments);
-        this.title = '';
-        this.visibleLinks = '.guideLink, .planLink, .currentLink';
+        var _this = _super.apply(this, arguments) || this;
+        _this.title = '';
+        _this.visibleLinks = '.guideLink, .planLink, .currentLink';
+        return _this;
     }
     editPage.prototype.onShow = function () {
         // Modelldaten erstellen
@@ -2605,9 +2612,10 @@ var editPage = (function (_super) {
 var guidePage = (function (_super) {
     __extends(guidePage, _super);
     function guidePage() {
-        _super.apply(this, arguments);
-        this.title = 'Programmzeitschrift';
-        this.visibleLinks = '.newLink, .planLink, .currentLink, .favLink';
+        var _this = _super.apply(this, arguments) || this;
+        _this.title = 'Programmzeitschrift';
+        _this.visibleLinks = '.newLink, .planLink, .currentLink, .favLink';
+        return _this;
     }
     // Klappt die Detailansicht auf oder zu
     guidePage.prototype.showDetails = function (guideItem, origin) {
@@ -2872,9 +2880,10 @@ var guidePage = (function (_super) {
 var jobsPage = (function (_super) {
     __extends(jobsPage, _super);
     function jobsPage() {
-        _super.apply(this, arguments);
-        this.title = 'Alle Aufträge';
-        this.visibleLinks = '.guideLink, .newLink, .planLink, .currentLink';
+        var _this = _super.apply(this, arguments) || this;
+        _this.title = 'Alle Aufträge';
+        _this.visibleLinks = '.guideLink, .newLink, .planLink, .currentLink';
+        return _this;
     }
     jobsPage.prototype.onInitialize = function () {
         var _this = this;
@@ -2902,9 +2911,10 @@ var jobsPage = (function (_super) {
 var logPage = (function (_super) {
     __extends(logPage, _super);
     function logPage() {
-        _super.apply(this, arguments);
-        this.title = 'Aufzeichnungsprotokolle einsehen';
-        this.visibleLinks = '.guideLink, .newLink, .planLink, .currentLink';
+        var _this = _super.apply(this, arguments) || this;
+        _this.title = 'Aufzeichnungsprotokolle einsehen';
+        _this.visibleLinks = '.guideLink, .newLink, .planLink, .currentLink';
+        return _this;
     }
     // Prüft einen Eintrag
     logPage.prototype.filter = function (entry) {
@@ -3003,9 +3013,10 @@ var logPage = (function (_super) {
 var favoritesPage = (function (_super) {
     __extends(favoritesPage, _super);
     function favoritesPage() {
-        _super.apply(this, arguments);
-        this.title = 'Gespeicherte Suchen';
-        this.visibleLinks = '.newLink, .planLink, .currentLink, .guideLink';
+        var _this = _super.apply(this, arguments) || this;
+        _this.title = 'Gespeicherte Suchen';
+        _this.visibleLinks = '.newLink, .planLink, .currentLink, .guideLink';
+        return _this;
     }
     favoritesPage.prototype.onShow = function () {
         var _this = this;
@@ -3050,7 +3061,7 @@ var favoritesPage = (function (_super) {
         this.filter.buttonset();
         this.filter.change(function () { return _this.refresh(); });
     };
-    favoritesPage.showAll = true;
     return favoritesPage;
 }(Page));
+favoritesPage.showAll = true;
 //# sourceMappingURL=vcrnet.js.map

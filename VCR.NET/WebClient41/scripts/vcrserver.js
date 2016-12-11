@@ -16,6 +16,7 @@ var VCRServer;
     var restRoot = serverRoot + '/vcr.net/';
     ;
     // Die Art der zu suchenden Quelle
+    var GuideSource;
     (function (GuideSource) {
         // Nur Fernsehsender
         GuideSource[GuideSource["TV"] = 1] = "TV";
@@ -23,9 +24,9 @@ var VCRServer;
         GuideSource[GuideSource["RADIO"] = 2] = "RADIO";
         // Einfach alles
         GuideSource[GuideSource["ALL"] = 3] = "ALL";
-    })(VCRServer.GuideSource || (VCRServer.GuideSource = {}));
-    var GuideSource = VCRServer.GuideSource;
+    })(GuideSource = VCRServer.GuideSource || (VCRServer.GuideSource = {}));
     // Die Verschlüsselung der Quelle
+    var GuideEncryption;
     (function (GuideEncryption) {
         // Nur kostenlose Quellen
         GuideEncryption[GuideEncryption["FREE"] = 1] = "FREE";
@@ -33,8 +34,7 @@ var VCRServer;
         GuideEncryption[GuideEncryption["PAY"] = 2] = "PAY";
         // Alle Sender
         GuideEncryption[GuideEncryption["ALL"] = 3] = "ALL";
-    })(VCRServer.GuideEncryption || (VCRServer.GuideEncryption = {}));
-    var GuideEncryption = VCRServer.GuideEncryption;
+    })(GuideEncryption = VCRServer.GuideEncryption || (VCRServer.GuideEncryption = {}));
     function getRestRoot() {
         return restRoot;
     }
@@ -343,10 +343,10 @@ var VCRServer;
             else
                 return getRecordingDirectories().done(function (data) { return RecordingDirectoryCache.directories = data; });
         };
-        // Die zwischengespeicherten Verzeichnisse
-        RecordingDirectoryCache.directories = null;
         return RecordingDirectoryCache;
     }());
+    // Die zwischengespeicherten Verzeichnisse
+    RecordingDirectoryCache.directories = null;
     VCRServer.RecordingDirectoryCache = RecordingDirectoryCache;
     // Verwaltet die Geräteprofile
     var ProfileCache = (function () {
@@ -359,10 +359,10 @@ var VCRServer;
             else
                 return getProfileInfos().done(function (data) { return ProfileCache.profiles = data; });
         };
-        // Die zwischengespeicherten Geräte
-        ProfileCache.profiles = null;
         return ProfileCache;
     }());
+    // Die zwischengespeicherten Geräte
+    ProfileCache.profiles = null;
     VCRServer.ProfileCache = ProfileCache;
     // Beschreibt die Daten der Programmzeitschrift für ein Gerät
     var GuideInfo = (function () {
@@ -387,9 +387,9 @@ var VCRServer;
             else
                 return getGuideInfo(profileName).done(function (data) { return GuideInfoCache.guideInfoCache[profileName] = data; });
         };
-        GuideInfoCache.guideInfoCache = {};
         return GuideInfoCache;
     }());
+    GuideInfoCache.guideInfoCache = {};
     VCRServer.GuideInfoCache = GuideInfoCache;
     // Beschreibt einen einzelne Quelle, so wie sie dem Anwender zur Auswahl angeboten wird
     var SourceEntry = (function () {
@@ -428,10 +428,10 @@ var VCRServer;
             else
                 return this.profileSources[profileName];
         };
-        // Die einzige Instanz dieser Klasse
-        SourceEntryCollection.global = new SourceEntryCollection();
         return SourceEntryCollection;
     }());
+    // Die einzige Instanz dieser Klasse
+    SourceEntryCollection.global = new SourceEntryCollection();
     VCRServer.SourceEntryCollection = SourceEntryCollection;
     // Beschreibt die individuellen Einstellungen des Anwenders
     var UserProfile = (function () {
@@ -546,10 +546,10 @@ var VCRServer;
                 .done(function (data) { UserProfile.global.loadFrom(data); window.location.hash = 'home'; })
                 .fail(JMSLib.dispatchErrorMessage(onError));
         };
-        // Die einzige Instanz der Einstellungen.
-        UserProfile.global = new UserProfile();
         return UserProfile;
     }());
+    // Die einzige Instanz der Einstellungen.
+    UserProfile.global = new UserProfile();
     VCRServer.UserProfile = UserProfile;
 })(VCRServer || (VCRServer = {}));
 //# sourceMappingURL=vcrserver.js.map
