@@ -1,11 +1,4 @@
-﻿// Die Farbe der Umrandung für den Aufzeichnungsbereich.
-$guidePlanBorderColor:#999999;
-
-// Die Rundung des Aufzeichnungsbereichs.
-$guidePlanBorderRadius:4px;
-
-// Die Höhe der Überlappanzeige.
-$guideInnerHeigth:1em;
+﻿@import "vars";
 
 // Markierung fehlerhafter Eingaben.
 .invalid {

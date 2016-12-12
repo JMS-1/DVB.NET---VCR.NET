@@ -145,6 +145,7 @@
     <Content Include="content\themes\base\tabs.css" />
     <Content Include="content\themes\base\theme.css" />
     <Content Include="content\themes\base\tooltip.css" />
+    <None Include="content\vars.scss" />
     <Content Include="default.html" />
     <Content Include="FAQ\customschedule.html" />
     <Content Include="FAQ\archive.html" />
