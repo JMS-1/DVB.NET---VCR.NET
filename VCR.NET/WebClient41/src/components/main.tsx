@@ -10,7 +10,7 @@ namespace VCRNETClient {
 
     export class Main extends React.Component<IMainStatic, IMainDynamic>{
         render(): JSX.Element {
-            var title = Strings.headline.productName;
+            var title = "VCR.NET Recording Service";
 
             if (this.state && this.state.serverVersion) {
                 title = `${title} ${this.state.serverVersion.version}`;

@@ -222,6 +222,9 @@
     <Content Include="scripts\vcrnet.js.map">
       <DependentUpon>vcrnet.js</DependentUpon>
     </Content>
+    <None Include="src\components\internalLink.scss" />
+    <None Include="src\components\helpLink.scss" />
+    <None Include="src\components\externalLink.scss" />
     <Content Include="src\components\plan.scss" />
     <Content Include="src\components\home.scss" />
     <Content Include="src\components\main.scss" />
@@ -281,11 +284,13 @@
     <TypeScriptCompile Include="scripts\vcrnet.ts" />
     <Content Include="default_old.html" />
     <None Include="content\jmslib.scss" />
+    <TypeScriptCompile Include="src\components\externalLink.tsx" />
+    <TypeScriptCompile Include="src\components\helpLink.tsx" />
     <TypeScriptCompile Include="src\components\home.tsx" />
+    <TypeScriptCompile Include="src\components\internalLink.tsx" />
     <TypeScriptCompile Include="src\components\main.tsx" />
     <TypeScriptCompile Include="src\components\plan.tsx" />
     <TypeScriptCompile Include="src\components\router.tsx" />
-    <TypeScriptCompile Include="src\strings.ts" />
     <TypeScriptCompile Include="src\vcrnet.tsx" />
   </ItemGroup>
   <ItemGroup>
