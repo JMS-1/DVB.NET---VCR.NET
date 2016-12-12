@@ -12,8 +12,14 @@ namespace VCRNETClient {
         render(): JSX.Element {
             var title = Strings.headline.productName;
 
-            if (this.state && this.state.serverVersion)
-                title = `${title} ${this.state.serverVersion.version} (${this.state.serverVersion.msiVersion})`;
+            if (this.state && this.state.serverVersion) {
+                title = `${title} ${this.state.serverVersion.version}`;
+
+                if (document.title !== title)
+                    document.title = title;
+
+                title = `${title} (${this.state.serverVersion.msiVersion})`;
+            }
 
             return <div className="vcrnet-main">
                 <h1>{title}</h1>
