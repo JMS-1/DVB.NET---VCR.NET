@@ -9,8 +9,6 @@
         onNewPage: (page: Page) => void;
 
         constructor() {
-            this.setPage();
-
             VCRServer.getServerVersion().then(this.setServerInfo.bind(this));
         }
 
