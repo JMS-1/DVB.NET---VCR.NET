@@ -2,6 +2,7 @@
 
 namespace VCRNETClient {
     interface IMainStatic {
+        application: App.Application;
     }
 
     interface IMainDynamic {
@@ -23,12 +24,16 @@ namespace VCRNETClient {
 
             return <div className="vcrnet-main">
                 <h1>{title}</h1>
-                <Router />
+                <Router application={this.props.application} />
             </div>;
         }
 
-        componentDidMount(): void {
-            VCRServer.getServerVersion().done(info => this.setState({ serverVersion: info }));
+        componentWillMount(): void {
+            this.props.application.onNewServerVersion = info => this.setState({ serverVersion: info });
+        }
+
+        componentWillUnmount(): void {
+            this.props.application.onNewServerVersion = undefined;
         }
     }
 }

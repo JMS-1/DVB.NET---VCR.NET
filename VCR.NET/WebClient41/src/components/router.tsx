@@ -2,12 +2,11 @@
 
 namespace VCRNETClient {
     interface IRouterStatic {
+        application: App.Application;
     }
 
     interface IRouterDynamic {
         view: string;
-
-        subView: string;
     }
 
     export class Router extends React.Component<IRouterStatic, IRouterDynamic>{
@@ -16,17 +15,20 @@ namespace VCRNETClient {
         constructor() {
             super();
 
-            this.state = { view: "", subView: "" };
+            this.state = { view: "" };
 
             this._onhashchange = this.onhashchange.bind(this);
         }
 
         render(): JSX.Element {
-            var active = <Home />;
+            var active = <div />;
 
             switch (this.state.view) {
-                case "plan":
-                    active = <Plan />;
+                case App.HomePage.name:
+                    active = <Home />
+                    break;
+                case App.PlanPage.name:
+                    active = <Plan />
                     break;
             }
 
@@ -37,22 +39,28 @@ namespace VCRNETClient {
             var hash = document.location.hash || "";
 
             if ((hash.length < 1) || (hash[0] !== "#"))
-                this.setState({ view: "", subView: "" });
+                this.props.application.setPage();
             else {
                 var sep = hash.indexOf(";");
                 if (sep < 0)
-                    this.setState({ view: hash.substr(1), subView: "" });
+                    this.props.application.setPage(hash.substr(1));
                 else
-                    this.setState({ view: hash.substr(1, sep - 1), subView: hash.substr(sep + 1) });
+                    this.props.application.setPage(hash.substr(1, sep - 1), hash.substr(sep + 1));
             }
         }
 
-        componentDidMount(): void {
+        componentWillMount(): void {
+            this.props.application.onNewPage = page => this.setState({ view: page.getName() });
+
             window.addEventListener("hashchange", this._onhashchange);
+
+            this.onhashchange();
         }
 
         componentWillUnmount(): void {
             window.removeEventListener("hashchange", this._onhashchange);
+
+            this.props.application.onNewPage = undefined;
         }
     }
 }
