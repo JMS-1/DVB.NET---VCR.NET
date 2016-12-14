@@ -3,6 +3,8 @@
 namespace VCRNETClient {
     interface IRouterStatic {
         application: App.Application;
+
+        version: VCRServer.InfoServiceContract;
     }
 
     interface IRouterDynamic {

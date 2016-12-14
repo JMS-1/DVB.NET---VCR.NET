@@ -18,8 +18,6 @@
             return this._planPage;
         }
 
-        private _serverVersion: VCRServer.InfoServiceContract;
-
         onNewServerVersion: (info: VCRServer.InfoServiceContract) => void;
 
         onNewPage: (page: Page) => void;
@@ -29,8 +27,6 @@
         }
 
         private setServerInfo(info: VCRServer.InfoServiceContract): void {
-            this._serverVersion = info;
-
             if (this.onNewServerVersion)
                 this.onNewServerVersion(info);
         }
