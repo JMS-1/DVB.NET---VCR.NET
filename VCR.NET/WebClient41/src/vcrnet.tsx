@@ -3,11 +3,7 @@ import React = __React;
 import ReactDOM = __React.__DOM;
 
 namespace VCRNETClient {
-    class Application {
-        static startup(): void {
-            ReactDOM.render(<Main />, document.querySelector(`body`));
-        }
-    }
-
-    $(Application.startup);
+    $(() => {
+        ReactDOM.render(<Main />, document.querySelector(`body`));
+    });
 }

@@ -8,6 +8,10 @@ namespace VCRNETClient.App {
             return HomePage.name;
         }
 
+        reset(): void {
+            setTimeout(() => this.application.setBusy(false), 0);
+        }
+
         constructor(application: Application) {
             super(application);
         }
