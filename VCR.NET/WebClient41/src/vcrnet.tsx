@@ -5,7 +5,7 @@ import ReactDOM = __React.__DOM;
 namespace VCRNETClient {
     class Application {
         static startup(): void {
-            ReactDOM.render(<Main application={new App.Application()} />, document.querySelector(`body`));
+            ReactDOM.render(<Main />, document.querySelector(`body`));
         }
     }
 

@@ -1,34 +1,17 @@
 ﻿namespace VCRNETClient.App {
-    export class Application {
-        private _homePage: HomePage;
-
-        getHomePage(): HomePage {
-            if (!this._homePage)
-                this._homePage = new HomePage(this);
-
-            return this._homePage;
-        }
-
-        private _planPage: PlanPage;
-
-        getPlanPage(): PlanPage {
-            if (!this._planPage)
-                this._planPage = new PlanPage(this);
-
-            return this._planPage;
-        }
-
+    export interface IApplicationSite {
         onNewServerVersion: (info: VCRServer.InfoServiceContract) => void;
+    }
+
+    export class Application {
+        homePage = new HomePage(this);
+
+        planPage = new PlanPage(this);
 
         onNewPage: (page: Page) => void;
 
-        constructor() {
-            VCRServer.getServerVersion().then(this.setServerInfo.bind(this));
-        }
-
-        private setServerInfo(info: VCRServer.InfoServiceContract): void {
-            if (this.onNewServerVersion)
-                this.onNewServerVersion(info);
+        constructor(site: IApplicationSite) {
+            VCRServer.getServerVersion().then(info => site.onNewServerVersion(info));
         }
 
         setPage(name: string = HomePage.name, section: string = ""): void {
@@ -36,10 +19,10 @@
 
             switch (name) {
                 case PlanPage.name:
-                    page = this.getPlanPage();
+                    page = this.planPage;
                     break;
                 default:
-                    page = this.getHomePage();
+                    page = this.homePage;
                     break;
             }
 

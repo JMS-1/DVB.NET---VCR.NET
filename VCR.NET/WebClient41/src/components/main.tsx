@@ -2,14 +2,15 @@
 
 namespace VCRNETClient {
     interface IMainStatic {
-        application: App.Application;
     }
 
     interface IMainDynamic {
         version: VCRServer.InfoServiceContract;
     }
 
-    export class Main extends React.Component<IMainStatic, IMainDynamic>{
+    export class Main extends React.Component<IMainStatic, IMainDynamic> implements App.IApplicationSite {
+        private _application = new App.Application(this);
+
         render(): JSX.Element {
             var title = "VCR.NET Recording Service";
 
@@ -24,16 +25,12 @@ namespace VCRNETClient {
 
             return <div className="vcrnet-main">
                 <h1>{title}</h1>
-                <Router application={this.props.application} version={this.state && this.state.version} />
+                <Router application={this._application} version={this.state && this.state.version} />
             </div>;
         }
 
-        componentWillMount(): void {
-            this.props.application.onNewServerVersion = info => this.setState({ version: info });
-        }
-
-        componentWillUnmount(): void {
-            this.props.application.onNewServerVersion = undefined;
+        onNewServerVersion(info: VCRServer.InfoServiceContract): void {
+            this.setState({ version: info });
         }
     }
 }
