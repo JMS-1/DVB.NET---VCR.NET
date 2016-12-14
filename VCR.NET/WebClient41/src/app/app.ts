@@ -1,6 +1,22 @@
 ﻿namespace VCRNETClient.App {
     export class Application {
-        private _currentPage: Page;
+        private _homePage: HomePage;
+
+        getHomePage(): HomePage {
+            if (!this._homePage)
+                this._homePage = new HomePage(this);
+
+            return this._homePage;
+        }
+
+        private _planPage: PlanPage;
+
+        getPlanPage(): PlanPage {
+            if (!this._planPage)
+                this._planPage = new PlanPage(this);
+
+            return this._planPage;
+        }
 
         private _serverVersion: VCRServer.InfoServiceContract;
 
@@ -20,17 +36,19 @@
         }
 
         setPage(name: string = HomePage.name, section: string = ""): void {
+            var page: Page;
+
             switch (name) {
                 case PlanPage.name:
-                    this._currentPage = new PlanPage(this);
+                    page = this.getPlanPage();
                     break;
                 default:
-                    this._currentPage = new HomePage(this);
+                    page = this.getHomePage();
                     break;
             }
 
             if (this.onNewPage)
-                this.onNewPage(this._currentPage);
+                this.onNewPage(page);
         }
     }
 }

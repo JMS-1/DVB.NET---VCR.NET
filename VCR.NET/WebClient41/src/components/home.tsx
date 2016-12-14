@@ -2,6 +2,7 @@
 
 namespace VCRNETClient {
     interface IHomeStatic {
+        page: App.HomePage;
     }
 
     interface IHomeDynamic {

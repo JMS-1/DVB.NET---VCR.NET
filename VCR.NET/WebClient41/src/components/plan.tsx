@@ -2,6 +2,7 @@
 
 namespace VCRNETClient {
     interface IPlanStatic {
+        page: App.PlanPage;
     }
 
     interface IPlanDynamic {
