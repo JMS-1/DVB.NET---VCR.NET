@@ -1,4 +1,12 @@
 ﻿@import "../../content/vars";
 
 .vcrnet-navigation {
+    .vcrnet-pict {
+        margin-right: 2px;
+    }
+
+    .vcrnet-internalLink:last-child {
+        margin-right: 6px;
+        font-size: smaller;
+    }
 }

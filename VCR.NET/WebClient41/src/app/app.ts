@@ -1,6 +1,8 @@
 ﻿namespace VCRNETClient.App {
     export interface IApplicationSite {
-        onBusyChanged: (isBusy: boolean) => void;
+        onBusyChanged(isBusy: boolean): void;
+
+        onFirstStart(): void;
     }
 
     export class Application {
@@ -28,7 +30,7 @@
             this.setBusy(false);
 
             // Wir können nun die Standardseite aktivieren
-            this.switchPage();
+            this._site.onFirstStart();
         }
 
         switchPage(name: string = HomePage.name, section: string = ""): void {
@@ -41,15 +43,15 @@
             // Den Singleton der gewünschten Seite ermitteln.
             switch (name) {
                 case PlanPage.name:
-                    this.page  = this._planPage;
+                    this.page = this._planPage;
                     break;
                 default:
-                    this.page  = this._homePage;
+                    this.page = this._homePage;
                     break;
             }
 
             // Zustand wie beim Erstaufruf vorbereiten.
-            this.page .reset();
+            this.page.reset();
         }
 
         setBusy(isBusy: boolean): void {

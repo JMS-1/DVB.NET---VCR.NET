@@ -47,6 +47,10 @@ namespace VCRNETClient {
             this.setState({ active: !isBusy });
         }
 
+        onFirstStart(): void {
+            this.onhashchange();
+        }
+
         private onhashchange(): void {
             var hash = document.location.hash || "";
 
