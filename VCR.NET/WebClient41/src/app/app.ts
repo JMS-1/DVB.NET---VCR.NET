@@ -1,9 +1,5 @@
 ﻿namespace VCRNETClient.App {
     export interface IApplicationSite {
-        onNewServerVersion: (info: VCRServer.InfoServiceContract) => void;
-
-        onNewPage: (page: App.Page) => void;
-
         onBusyChanged: (isBusy: boolean) => void;
     }
 
@@ -11,6 +7,11 @@
         private _homePage = new HomePage(this);
 
         private _planPage = new PlanPage(this);
+
+        // Nach aussen hin sichtbarer globaler Zustand.
+        version: VCRServer.InfoServiceContract;
+
+        page: App.Page;
 
         // Initial sind wir gesperrt.
         private _busy = true;
@@ -21,10 +22,12 @@
         }
 
         private onVersionAvailable(info: VCRServer.InfoServiceContract): void {
-            this._site.onNewServerVersion(info);
+            this.version = info;
 
-            // Alle Startvorgänge sind abgeschlossen, wir können nun die Standardseite aktivieren.
+            // Alle Startvorgänge sind abgeschlossen
             this.setBusy(false);
+
+            // Wir können nun die Standardseite aktivieren
             this.switchPage();
         }
 
@@ -36,21 +39,17 @@
             this.setBusy(true);
 
             // Den Singleton der gewünschten Seite ermitteln.
-            var page: Page;
-
             switch (name) {
                 case PlanPage.name:
-                    page = this._planPage;
+                    this.page  = this._planPage;
                     break;
                 default:
-                    page = this._homePage;
+                    this.page  = this._homePage;
                     break;
             }
 
             // Zustand wie beim Erstaufruf vorbereiten.
-            page.reset();
-
-            this._site.onNewPage(page);
+            this.page .reset();
         }
 
         setBusy(isBusy: boolean): void {

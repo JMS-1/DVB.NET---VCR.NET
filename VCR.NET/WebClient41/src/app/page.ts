@@ -6,5 +6,9 @@
 
         constructor(protected readonly application: Application) {
         }
+
+        showNavigation(): boolean {
+            return true;
+        }
     }
 }

@@ -15,5 +15,9 @@ namespace VCRNETClient.App {
         constructor(application: Application) {
             super(application);
         }
+
+        showNavigation(): boolean {
+            return false;
+        }
     }
 }

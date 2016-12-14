@@ -3,7 +3,6 @@ import React = __React;
 import ReactDOM = __React.__DOM;
 
 namespace VCRNETClient {
-    $(() => {
-        ReactDOM.render(<Main />, document.querySelector(`body`));
-    });
+    // Initialisiert die react.js Laufzeitumgebung.
+    $(() => ReactDOM.render(<Main />, document.querySelector(`body`)));
 }
