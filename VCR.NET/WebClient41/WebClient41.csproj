@@ -227,6 +227,7 @@
     <None Include="src\components\helpLink.scss" />
     <None Include="src\components\externalLink.scss" />
     <None Include="src\components\navigation.scss" />
+    <None Include="src\components\pictogram.scss" />
     <Content Include="src\components\plan.scss" />
     <Content Include="src\components\home.scss" />
     <Content Include="src\components\main.scss" />
@@ -296,6 +297,7 @@
     <TypeScriptCompile Include="src\components\internalLink.tsx" />
     <TypeScriptCompile Include="src\components\main.tsx" />
     <TypeScriptCompile Include="src\components\navigation.tsx" />
+    <TypeScriptCompile Include="src\components\pictogram.tsx" />
     <TypeScriptCompile Include="src\components\plan.tsx" />
     <TypeScriptCompile Include="src\components\view.tsx" />
     <TypeScriptCompile Include="src\vcrnet.tsx" />

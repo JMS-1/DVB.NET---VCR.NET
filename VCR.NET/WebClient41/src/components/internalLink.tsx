@@ -5,6 +5,8 @@ namespace VCRNETClient {
         text: string;
 
         view: string;
+
+        pict?: string
     }
 
     interface IInternalLinkDynamic {
@@ -12,7 +14,10 @@ namespace VCRNETClient {
 
     export class InternalLink extends React.Component<IInternalLinkStatic, IInternalLinkDynamic>{
         render(): JSX.Element {
-            return <a className="internalLink" href={"#" + this.props.view}>{this.props.text}</a>;
+            return <span>
+                {this.props.pict ? <a className="vcrnet-internalLink" href={"#" + this.props.view}><Pictogram name={this.props.pict} /></a> : null}
+                <a className="vcrnet-internalLink" href={"#" + this.props.view}>{this.props.text}</a>
+            </span>;
         }
     }
 }

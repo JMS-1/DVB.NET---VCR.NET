@@ -14,18 +14,18 @@ namespace VCRNETClient {
                 <div>
                     Willkommen zur Benutzeroberfläche des VCR.NET Recording Service. Von hier aus geht es direkt zu:
                 <ul>
-                        <li><InternalLink text="dem Aufzeichnungsplan" view="plan" /> mit den anstehenden Aufzeichnungen<HelpLink page="faq;parallelrecording"/></li>
-                        <li><InternalLink text="den laufenden Aufzeichnungen" view="current" /> mit den Aktivitäten der einzelnen DVB Geräte</li>
-                        <li><InternalLink text="der Programmzeitschrift" view="guide" /> zum Anlegen neuer Aufzeichnungen<HelpLink page="faq;epg" /></li>
-                        <li><InternalLink text="einer neuen Aufzeichnung" view="edit" /></li>
+                        <li><InternalLink text="dem Aufzeichnungsplan" pict="plan" view="plan" /> mit den anstehenden Aufzeichnungen<HelpLink page="faq;parallelrecording"/></li>
+                        <li><InternalLink text="den laufenden Aufzeichnungen" pict="devices" view="current" /> mit den Aktivitäten der einzelnen DVB Geräte</li>
+                        <li><InternalLink text="der Programmzeitschrift" pict="guide" view="guide" /> zum Anlegen neuer Aufzeichnungen<HelpLink page="faq;epg" /></li>
+                        <li><InternalLink text="einer neuen Aufzeichnung" pict="new" view="edit" /></li>
                     </ul>
                     <ul>
-                        <li><InternalLink text="den vorhandenen Aufzeichnungen" view="jobs" />, um diese zu verändern oder ins Archiv zu übertragen</li>
+                        <li><InternalLink text="den vorhandenen Aufzeichnungen" pict="jobs" view="jobs" />, um diese zu verändern oder ins Archiv zu übertragen</li>
                         <li><InternalLink text="den archivierten Aufzeichnungen" view="jobs;archive" />, um diese anzusehen, zu verändern, zu reaktivieren oder endgültig zu löschen<HelpLink page="faq;archive" /></li>
                         <li><InternalLink text="den Protokollen" view="log" /> von bereits durchgeführten Aufzeichnungen<HelpLink page="faq;log" /></li>
                     </ul>
                     <ul>
-                        <li><InternalLink text="den individuellen Anpassungen" view="settings" /> der Web Oberfläche</li>
+                        <li><InternalLink text="den individuellen Anpassungen" pict="settings" view="settings" /> der Web Oberfläche</li>
                     </ul>
                 </div>
                 <div>
@@ -34,7 +34,7 @@ namespace VCRNETClient {
                         <li><InternalLink text="die Programmzeitschrift sobald wie möglich aktualisieren" view="" /><HelpLink page="faq;epgconfig" /></li>
                         <li><InternalLink text="einen Sendersuchlauf sobald wie möglich durchführen" view="" /><HelpLink page="faq;psiconfig" /></li>
                         <li>prüfen, ob inzwischen eine <InternalLink text="neuere Version" view="" /> des VCR.NET Recording Service angeboten wird</li>
-                        <li><InternalLink text="die Konfiguration des VCR.NET Recording Service verändern" view="admin" /></li>
+                        <li><InternalLink text="die Konfiguration des VCR.NET Recording Service verändern" pict="admin" view="admin" /></li>
                     </ul>
                 </div>
                 <div>

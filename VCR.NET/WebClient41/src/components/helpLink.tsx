@@ -10,7 +10,7 @@ namespace VCRNETClient {
 
     export class HelpLink extends React.Component<IHelpLinkStatic, IHelpLinkDynamic>{
         render(): JSX.Element {
-            return <a className="helpLink" href={"#" + this.props.page}><img src="ui/images/info.png"></img></a>;
+            return <a className="vcrnet-helpLink" href={"#" + this.props.page}><Pictogram name="info" /></a>;
         }
     }
 }
