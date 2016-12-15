@@ -15,5 +15,16 @@ namespace VCRNETClient.App {
         constructor(application: Application) {
             super(application);
         }
+
+        showPlan(): boolean {
+            return false;
+        }
+
+        showRefresh(): boolean {
+            return true;
+        }
+
+        onRefresh(): void {
+        }
     }
 }

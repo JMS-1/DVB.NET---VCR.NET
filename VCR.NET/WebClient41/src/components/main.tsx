@@ -19,28 +19,12 @@ namespace VCRNETClient {
             this._onhashchange = this.onhashchange.bind(this);
         }
 
-        render(): JSX.Element {
-            var title = "VCR.NET Recording Service";
+        componentDidMount(): void {
+            window.addEventListener("hashchange", this._onhashchange);
+        }
 
-            if (this._application.version) {
-                title = `${title} ${this._application.version.version}`;
-
-                if (document.title !== title)
-                    document.title = title;
-
-                title = `${title} (${this._application.version.msiVersion})`;
-            }
-
-            if (this.state && this.state.active)
-                return <div className="vcrnet-main">
-                    <h1>{title}</h1>
-                    {this._application.page && this._application.page.showNavigation() ? <Navigation /> : null}
-                    <View page={this._application.page} />
-                </div>;
-            else
-                return <div className="vcrnet-main">
-                    <h1>(Bitte etwas Geduld)</h1>
-                </div>;
+        componentWillUnmount(): void {
+            window.removeEventListener("hashchange", this._onhashchange);
         }
 
         onBusyChanged(isBusy: boolean): void {
@@ -49,6 +33,31 @@ namespace VCRNETClient {
 
         onFirstStart(): void {
             this.onhashchange();
+        }
+
+        render(): JSX.Element {
+            var title = "VCR.NET Recording Service";
+            var version = this._application.version;
+
+            if (version) {
+                title = `${title} ${version.version}`;
+
+                if (document.title !== title)
+                    document.title = title;
+
+                title = `${title} (${version.msiVersion})`;
+            }
+
+            if (this.state && this.state.active)
+                return <div className="vcrnet-main">
+                    <h1>{title}</h1>
+                    <Navigation page={this._application.page} />
+                    <View page={this._application.page} />
+                </div>;
+            else
+                return <div className="vcrnet-main">
+                    <h1>(Bitte etwas Geduld)</h1>
+                </div>;
         }
 
         private onhashchange(): void {
@@ -67,14 +76,6 @@ namespace VCRNETClient {
 
         private setPage(name: string = "", section: string = "") {
             this._application.switchPage(name, section);
-        }
-
-        componentDidMount(): void {
-            window.addEventListener("hashchange", this._onhashchange);
-        }
-
-        componentWillUnmount(): void {
-            window.removeEventListener("hashchange", this._onhashchange);
         }
     }
 }

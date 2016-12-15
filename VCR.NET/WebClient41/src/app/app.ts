@@ -33,7 +33,7 @@
             this._site.onFirstStart();
         }
 
-        switchPage(name: string = HomePage.name, section: string = ""): void {
+        switchPage(name: string, section: string): void {
             // Wir sind noch in einem Übergang oder beim Starten
             if (this._busy)
                 return;
@@ -59,6 +59,6 @@
                 return;
 
             this._site.onBusyChanged(this._busy = isBusy);
-        }
+        }        
     }
 }
