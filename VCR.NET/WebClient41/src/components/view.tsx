@@ -15,10 +15,10 @@ namespace VCRNETClient {
             if (this.props.page)
                 switch (this.props.page.getName()) {
                     case App.HomePage.name:
-                        active = <Home page={this.props.page} />
+                        active = <Home page={this.props.page as App.HomePage} />
                         break;
                     case App.PlanPage.name:
-                        active = <Plan page={this.props.page} />
+                        active = <Plan page={this.props.page as App.PlanPage} />
                         break;
                 }
 

@@ -20,7 +20,7 @@
 
         constructor(private _site: IApplicationSite) {
             // Alle Startvorgänge einleiten.
-            VCRServer.getServerVersion().then(this.onVersionAvailable.bind(this));
+            VCRServer.getServerVersion().done(this.onVersionAvailable.bind(this));
         }
 
         private onVersionAvailable(info: VCRServer.InfoServiceContract): void {
@@ -33,10 +33,10 @@
             this._site.onFirstStart();
         }
 
-        switchPage(name: string, section: string): void {
+        switchPage(name: string, section: string): boolean {
             // Wir sind noch in einem Übergang oder beim Starten
             if (this._busy)
-                return;
+                return false;
 
             this.setBusy(true);
 
@@ -52,13 +52,13 @@
 
             // Zustand wie beim Erstaufruf vorbereiten.
             this.page.reset();
+
+            return true;
         }
 
         setBusy(isBusy: boolean): void {
-            if (isBusy === this._busy)
-                return;
-
-            this._site.onBusyChanged(this._busy = isBusy);
-        }        
+            if (isBusy !== this._busy)
+                this._site.onBusyChanged(this._busy = isBusy);
+        }
     }
 }

@@ -232,6 +232,7 @@
     <Content Include="src\components\home.scss" />
     <Content Include="src\components\main.scss" />
     <None Include="src\components\view.scss" />
+    <None Include="src\components\planRow.scss" />
     <Content Include="ui\admin.html" />
     <Content Include="ui\faq.html" />
     <Content Include="ui\favorites.html" />
@@ -288,8 +289,10 @@
     <Content Include="default_old.html" />
     <None Include="content\jmslib.scss" />
     <TypeScriptCompile Include="src\app\app.ts" />
+    <TypeScriptCompile Include="src\app\dateFormatter.ts" />
     <TypeScriptCompile Include="src\app\homePage.ts" />
     <TypeScriptCompile Include="src\app\page.ts" />
+    <TypeScriptCompile Include="src\app\planEntry.ts" />
     <TypeScriptCompile Include="src\app\planPage.ts" />
     <TypeScriptCompile Include="src\components\externalLink.tsx" />
     <TypeScriptCompile Include="src\components\helpLink.tsx" />
@@ -299,6 +302,7 @@
     <TypeScriptCompile Include="src\components\navigation.tsx" />
     <TypeScriptCompile Include="src\components\pictogram.tsx" />
     <TypeScriptCompile Include="src\components\plan.tsx" />
+    <TypeScriptCompile Include="src\components\planRow.tsx" />
     <TypeScriptCompile Include="src\components\view.tsx" />
     <TypeScriptCompile Include="src\vcrnet.tsx" />
   </ItemGroup>
