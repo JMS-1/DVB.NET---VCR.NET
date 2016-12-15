@@ -18,7 +18,7 @@ namespace VCRNETClient.App {
 
         private _jobs: PlanEntry[];
 
-        private _filter: (job: PlanEntry) => boolean = job => true;
+        private _filter: (job: PlanEntry) => boolean = this.filterJob.bind(this);
 
         constructor(application: Application) {
             super(application);
@@ -50,6 +50,10 @@ namespace VCRNETClient.App {
             this._site = site;
 
             this.fireRefresh();
+        }
+
+        private filterJob(job: PlanEntry): boolean {
+            return true;
         }
 
         private reload(): void {
