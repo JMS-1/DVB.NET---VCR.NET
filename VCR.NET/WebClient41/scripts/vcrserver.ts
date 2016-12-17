@@ -601,7 +601,7 @@ module VCRServer {
         });
     }
 
-    export function getUserProfile(): JQueryPromise<any> {
+    export function getUserProfile(): JQueryPromise<UserProfileContract> {
         return $.ajax({
             url: restRoot + 'userprofile',
             dataType: 'json',

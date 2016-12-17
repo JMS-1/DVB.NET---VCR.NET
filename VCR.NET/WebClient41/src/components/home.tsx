@@ -41,7 +41,7 @@ namespace VCRNETClient {
                     Weitere Informationen zum VCR.NET Recording Service findet man hier im Bereich der <InternalLink text="Fragen & Antworten" view="faq;overview" />, auf der <ExternalLink text="Homepage im Internet" url="http://www.psimarron.net/vcrnet" /> oder im <ExternalLink text="offiziellen Forum" url="http://www.watchersnet.de/Default.aspx?tabid=52&g=topics&f=17" />.
                 </div>
                 <div>
-                    Dr. Jochen Manns, 2003-16
+                    Dr. Jochen Manns, 2003-17
                 </div>
             </div>;
         }

@@ -3,6 +3,8 @@
 namespace VCRNETClient {
     interface IPlanStatic {
         page: App.PlanPage;
+
+        daysToShow: number;
     }
 
     interface IPlanDynamic {

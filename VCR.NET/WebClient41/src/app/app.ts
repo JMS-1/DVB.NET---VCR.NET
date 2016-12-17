@@ -13,18 +13,32 @@
         // Nach aussen hin sichtbarer globaler Zustand.
         version: VCRServer.InfoServiceContract;
 
+        profile: VCRServer.UserProfileContract;
+
         page: App.Page;
 
         // Initial sind wir gesperrt.
         private _busy = true;
 
+        // Wieviele ausstehende Zugriffe bis zum Start gibt es noch.
+        private _startPending = 2;
+
         constructor(private _site: IApplicationSite) {
+            var testStart = this.testStart.bind(this);
+
             // Alle Startvorgänge einleiten.
-            VCRServer.getServerVersion().done(this.onVersionAvailable.bind(this));
+            VCRServer.getServerVersion().then(info => this.version = info).then(testStart);
+            VCRServer.getUserProfile().then(profile => this.profile = profile).then(testStart);
         }
 
         private onVersionAvailable(info: VCRServer.InfoServiceContract): void {
             this.version = info;
+            this.testStart();
+        }
+
+        private testStart(): void {
+            if (this._startPending-- > 1)
+                return;
 
             // Alle Startvorgänge sind abgeschlossen
             this.setBusy(false);
