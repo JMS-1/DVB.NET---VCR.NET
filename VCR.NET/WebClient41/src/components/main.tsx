@@ -52,7 +52,7 @@ namespace VCRNETClient {
                 return <div className="vcrnet-main">
                     <h1>{title}</h1>
                     <Navigation page={this._application.page} />
-                    <View page={this._application.page} profile={this._application.profile} />
+                    <View page={this._application.page} />
                 </div>;
             else
                 return <div className="vcrnet-main">

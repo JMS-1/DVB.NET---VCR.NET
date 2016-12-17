@@ -3,8 +3,6 @@
 namespace VCRNETClient {
     interface IViewStatic {
         page: App.Page;
-
-        profile: VCRServer.UserProfileContract;
     }
 
     interface IViewDynamic {
@@ -20,7 +18,7 @@ namespace VCRNETClient {
                         active = <Home page={this.props.page as App.HomePage} />
                         break;
                     case App.PlanPage.name:
-                        active = <Plan page={this.props.page as App.PlanPage} daysToShow={this.props.profile.planDays} />
+                        active = <Plan page={this.props.page as App.PlanPage} />
                         break;
                 }
 
