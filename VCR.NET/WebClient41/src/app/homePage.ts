@@ -17,5 +17,15 @@ namespace VCRNETClient.App {
         showNavigation(): boolean {
             return false;
         }
+
+        getTitle(): string {
+            var version = this.application.version;
+            var title = this.application.getTitle();
+
+            if (version)
+                return `${title} (${version.msiVersion})`;
+            else
+                return title;
+        }
     }
 }

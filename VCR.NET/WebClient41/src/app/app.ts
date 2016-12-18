@@ -73,5 +73,15 @@
             if (isBusy !== this._busy)
                 this._site.onBusyChanged(this._busy = isBusy);
         }
+
+        getTitle(): string {
+            var title = "VCR.NET Recording Service";
+            var version = this.version;
+
+            if (version)
+                return `${title} ${version.version}`;
+            else
+                return title;
+        }
     }
 }

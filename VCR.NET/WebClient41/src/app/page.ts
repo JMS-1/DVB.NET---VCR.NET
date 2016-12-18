@@ -4,6 +4,8 @@
 
         abstract reset(): void;
 
+        abstract getTitle(): string;
+
         readonly refresh: () => void;
 
         constructor(protected readonly application: Application) {

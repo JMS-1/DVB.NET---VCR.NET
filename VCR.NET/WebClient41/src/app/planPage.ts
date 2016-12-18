@@ -109,11 +109,17 @@ namespace VCRNETClient.App {
                 return;
 
             this._startIndex = index;
-            this.reload();
+            this.fireRefresh();
         }
 
         getStartFilter(): IPlanStartFilter[] {
             return this._startFilter.slice(0, this._startFilter.length - 1);
+        }
+
+        getTitle(): string {
+            var days = this.application.profile.planDays;
+
+            return `Geplante Aufzeichnungen für ${days} Tag${(days === 1) ? "" : "e"}`;
         }
     }
 }

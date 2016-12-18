@@ -36,21 +36,14 @@ namespace VCRNETClient {
         }
 
         render(): JSX.Element {
-            var title = "VCR.NET Recording Service";
-            var version = this._application.version;
+            var title = this._application.getTitle();
 
-            if (version) {
-                title = `${title} ${version.version}`;
-
-                if (document.title !== title)
-                    document.title = title;
-
-                title = `${title} (${version.msiVersion})`;
-            }
+            if (document.title !== title)
+                document.title = title;
 
             if (this.state && this.state.active)
                 return <div className="vcrnet-main">
-                    <h1>{title}</h1>
+                    <h1>{this._application.page ? this._application.page.getTitle() : title}</h1>
                     <Navigation page={this._application.page} />
                     <View page={this._application.page} />
                 </div>;
