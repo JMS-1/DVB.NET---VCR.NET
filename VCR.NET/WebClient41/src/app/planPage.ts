@@ -2,7 +2,13 @@
 
 namespace VCRNETClient.App {
     export interface IPlanSite {
-        onRefresh(jobs: PlanEntry[]): void;
+        onRefresh(jobs: PlanEntry[], index: number): void;
+    }
+
+    export interface IPlanStartFilter {
+        index: number;
+
+        date: Date;
     }
 
     export class PlanPage extends Page {
@@ -19,6 +25,10 @@ namespace VCRNETClient.App {
         private _jobs: PlanEntry[];
 
         private _filter: (job: PlanEntry) => boolean = this.filterJob.bind(this);
+
+        private _startIndex = 0;
+
+        private _startFilter: IPlanStartFilter[];
 
         constructor(application: Application) {
             super(application);
@@ -37,8 +47,21 @@ namespace VCRNETClient.App {
         }
 
         reset(): void {
+            var now = new Date();
+
+            now = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+            this._startFilter = []
+
+            for (var i = 0; i < 8; i++) {
+                this._startFilter.push({ index: i, date: now });
+
+                now = new Date(now.getFullYear(), now.getMonth(), now.getDate() + this.application.profile.planDays);
+            }
+
             this._site = undefined;
             this._jobs = undefined;
+            this._startIndex = 0;
 
             this.reload();
         }
@@ -53,6 +76,14 @@ namespace VCRNETClient.App {
         }
 
         private filterJob(job: PlanEntry): boolean {
+            var startDay = this._startFilter[this._startIndex].date;
+            var endDay = this._startFilter[this._startIndex + 1].date;
+
+            if (job.start >= endDay)
+                return false;
+            if (job.end <= startDay)
+                return false;
+
             return true;
         }
 
@@ -72,7 +103,19 @@ namespace VCRNETClient.App {
 
         private fireRefresh(): void {
             if (this._site && this._jobs)
-                this._site.onRefresh(this._jobs.filter(this._filter));
+                this._site.onRefresh(this._jobs.filter(this._filter), this._startIndex);
+        }
+
+        filterOnStart(index: number): void {
+            if (index === this._startIndex)
+                return;
+
+            this._startIndex = index;
+            this.reload();
+        }
+
+        getStartFilter(): IPlanStartFilter[] {
+            return this._startFilter.slice(0, this._startFilter.length - 1);
         }
     }
 }

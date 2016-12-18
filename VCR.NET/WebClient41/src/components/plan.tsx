@@ -7,6 +7,8 @@ namespace VCRNETClient {
 
     interface IPlanDynamic {
         jobs?: App.PlanEntry[];
+
+        start?: number;
     }
 
     export class Plan extends React.Component<IPlanStatic, IPlanDynamic> implements App.IPlanSite {
@@ -14,6 +16,16 @@ namespace VCRNETClient {
             this.props.page.setSite(this);
 
             return <div className="vcrnet-plan">
+                {(this.state && this.state.start !== undefined) ?
+                    <div className="vcrnet-plan-filter">
+                        <RadioGroup>
+                            {this.props.page.getStartFilter().map(f =>
+                                <Radio
+                                    groupName="filterStart"
+                                    isChecked={this.state.start === f.index}
+                                    onClick={() => this.props.page.filterOnStart(f.index)}>{(f.index === 0) ? "Jetzt" : DateFormatter.getShortDate(f.date)}</Radio>)}
+                        </RadioGroup>
+                    </div> : null}
                 {(this.state && this.state.jobs) ? <table>
                     <thead>
                         <tr>
@@ -32,8 +44,8 @@ namespace VCRNETClient {
             </div>;
         }
 
-        onRefresh(jobs: App.PlanEntry[]): void {
-            this.setState({ jobs: jobs });
+        onRefresh(jobs: App.PlanEntry[], index: number): void {
+            this.setState({ jobs: jobs, start: index });
         }
     }
 }

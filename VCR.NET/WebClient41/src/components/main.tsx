@@ -61,16 +61,18 @@ namespace VCRNETClient {
         }
 
         private onhashchange(): void {
-            var hash = document.location.hash || "";
+            // Auslesen der Kennung - für FireFox ist es nicht möglich, .hash direkt zu verwenden, da hierbei eine Decodierung durchgeführt wird
+            var query = window.location.href.split("#");
+            var hash = (query.length > 1) ? query[1] : "";
 
-            if ((hash.length < 1) || (hash[0] !== "#"))
+            if (hash.length < 1)
                 this.setPage();
             else {
                 var sep = hash.indexOf(";");
                 if (sep < 0)
-                    this.setPage(hash.substr(1));
+                    this.setPage(hash);
                 else
-                    this.setPage(hash.substr(1, sep - 1), hash.substr(sep + 1));
+                    this.setPage(hash.substr(0, sep), hash.substr(sep + 1));
             }
         }
 
