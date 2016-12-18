@@ -14,10 +14,8 @@ namespace VCRNETClient.App {
     export class PlanPage extends Page {
         private static _key = 0;
 
-        static readonly name = "plan";
-
         getName(): string {
-            return PlanPage.name;
+            return "plan";
         }
 
         private _site: IPlanSite;

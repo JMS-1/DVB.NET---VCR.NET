@@ -12,15 +12,10 @@ namespace VCRNETClient {
         render(): JSX.Element {
             var active: JSX.Element = null;
 
-            if (this.props.page)
-                switch (this.props.page.getName()) {
-                    case App.HomePage.name:
-                        active = <Home page={this.props.page as App.HomePage} />
-                        break;
-                    case App.PlanPage.name:
-                        active = <Plan page={this.props.page as App.PlanPage} />
-                        break;
-                }
+            if (this.props.page instanceof App.HomePage)
+                active = <Home page={this.props.page as App.HomePage} />
+            else if (this.props.page instanceof App.PlanPage)
+                active = <Plan page={this.props.page as App.PlanPage} />
 
             return <div className="vcrnet-view">{active}</div>;
         }

@@ -8,7 +8,7 @@
     export class Application {
         private _homePage = new HomePage(this);
 
-        private _planPage = new PlanPage(this);
+        private _pageMapper: { [name: string]: Page } = {};
 
         // Nach aussen hin sichtbarer globaler Zustand.
         version: VCRServer.InfoServiceContract;
@@ -24,6 +24,12 @@
         private _startPending = 2;
 
         constructor(private _site: IApplicationSite) {
+            // Alle bekannten Seiten.
+            var pages: Page[] = [this._homePage, new PlanPage(this)];
+
+            // Abbildung erstellen.
+            pages.forEach(p => this._pageMapper[p.getName()] = p);
+
             var testStart = this.testStart.bind(this);
 
             // Alle Startvorgänge einleiten.
@@ -55,14 +61,7 @@
             this.setBusy(true);
 
             // Den Singleton der gewünschten Seite ermitteln.
-            switch (name) {
-                case PlanPage.name:
-                    this.page = this._planPage;
-                    break;
-                default:
-                    this.page = this._homePage;
-                    break;
-            }
+            this.page = this._pageMapper[name] || this._homePage;
 
             // Zustand wie beim Erstaufruf vorbereiten.
             this.page.reset();
