@@ -1,0 +1,16 @@
+﻿@import "../../content/vars";
+
+.vcrnet-inline-help {
+    border: 1px solid black;
+    background: lightgrey;
+    border-radius: 2px;
+
+    > h1 {
+        font-size: small;
+        font-weight: normal;
+        color: white;
+        background: cornflowerblue;
+        padding: 4px;
+        margin: 0;
+    }
+}
