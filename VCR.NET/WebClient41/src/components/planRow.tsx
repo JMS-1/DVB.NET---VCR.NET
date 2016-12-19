@@ -3,6 +3,8 @@
 namespace VCRNETClient {
     interface IPlanRowStatic {
         entry: App.PlanEntry;
+
+        detailToggle: () => void;
     }
 
     interface IPlanRowDynamic {
@@ -12,7 +14,7 @@ namespace VCRNETClient {
         render(): JSX.Element {
             return <tr className="vcrnet-planrow">
                 <td><Pictogram name={this.props.entry.mode} type="gif" /></td>
-                <td>{this.props.entry.displayStart}</td>
+                <td><a href="javascript:void(0)" onClick={this.props.detailToggle}>{this.props.entry.displayStart}</a></td>
                 <td>{this.props.entry.displayEnd}</td>
                 <td>{this.props.entry.station}</td>
                 <td>{this.props.entry.fullName}</td>

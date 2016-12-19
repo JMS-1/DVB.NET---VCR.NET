@@ -9,6 +9,8 @@ namespace VCRNETClient {
         jobs?: App.PlanEntry[];
 
         start?: number;
+
+        detailKey?: string;
     }
 
     export class Plan extends React.Component<IPlanStatic, IPlanDynamic> implements App.IPlanSite {
@@ -38,10 +40,19 @@ namespace VCRNETClient {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.jobs.map(job => <PlanRow entry={job} key={job.key} />)}
+                        {this.state.jobs.map(job => [
+                            <PlanRow entry={job} key={job.key} detailToggle={() => this.toggleDetail(job)} />,
+                            (job.key === this.state.detailKey) ? <DetailRow prefixColumns={1} dataColumns={5} key={`${job.key}Details`} >
+                                [EPGINFO]
+                            </DetailRow> : null
+                        ])}
                     </tbody>
                 </table> : null}
             </div>;
+        }
+
+        private toggleDetail(job: App.PlanEntry): void {
+            this.setState({ detailKey: (job.key === this.state.detailKey) ? undefined : job.key });
         }
 
         onRefresh(jobs: App.PlanEntry[], index: number): void {

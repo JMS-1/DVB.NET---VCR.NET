@@ -91,7 +91,7 @@ namespace VCRNETClient.App {
 
             // Zusätzlich beschränken wir uns auf maximal 500 Einträge
             VCRServer.getPlan(500, endOfTime).done((raw: any[]) => {
-                this._jobs = raw.map(job => new PlanEntry(job, PlanPage._key++));
+                this._jobs = raw.map(job => new PlanEntry(job, `${PlanPage._key++}`));
 
                 this.fireRefresh();
 

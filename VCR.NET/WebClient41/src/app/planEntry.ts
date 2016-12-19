@@ -37,7 +37,7 @@
 
     // Beschreibt einen einzelnen Eintrag in Aufzeichnungsplan
     export class PlanEntry {
-        constructor(rawData: any, public key: number) {
+        constructor(rawData: any, public key: string) {
             // Zeiten umrechnen
             var duration = rawData.duration * 1000;
             var start = new Date(rawData.start);

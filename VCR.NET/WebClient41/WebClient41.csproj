@@ -228,6 +228,7 @@
     <None Include="src\components\externalLink.scss" />
     <None Include="src\components\navigation.scss" />
     <None Include="src\components\pictogram.scss" />
+    <None Include="src\components\detailRow.scss" />
     <Content Include="src\components\plan.scss" />
     <Content Include="src\components\home.scss" />
     <Content Include="src\components\main.scss" />
@@ -296,6 +297,7 @@
     <TypeScriptCompile Include="src\app\page.ts" />
     <TypeScriptCompile Include="src\app\planEntry.ts" />
     <TypeScriptCompile Include="src\app\planPage.ts" />
+    <TypeScriptCompile Include="src\components\detailRow.tsx" />
     <TypeScriptCompile Include="src\components\externalLink.tsx" />
     <TypeScriptCompile Include="src\components\helpLink.tsx" />
     <TypeScriptCompile Include="src\components\home.tsx" />
