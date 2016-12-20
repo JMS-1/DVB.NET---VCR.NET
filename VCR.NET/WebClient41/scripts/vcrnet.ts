@@ -583,7 +583,7 @@ if (document.location.pathname !== "/default.html")
         VCRServer.UserProfile.global.refresh();
 
         // Informationsdaten ermitteln
-        VCRServer.getServerVersion().done((data: VCRServer.InfoServiceContract) => $('#masterTitle').text('VCR.NET Recording Service ' + data.version));
+        VCRServer._getServerVersion().done((data: VCRServer.InfoServiceContract) => $('#masterTitle').text('VCR.NET Recording Service ' + data.version));
 
         // Hier kommt der Inhalt hin
         var mainContent = $('#mainArea');
@@ -2497,7 +2497,7 @@ class CurrentInfo {
 
     // Ruft die aktuelle Liste der Aufzeichnungen vom Web Dienst ab.
     static load(whenLoaded: (infos: CurrentInfo[]) => void): void {
-        VCRServer.getPlanCurrent().done((data: VCRServer.PlanCurrentContract[]) =>
+        VCRServer._getPlanCurrent().done((data: VCRServer.PlanCurrentContract[]) =>
             whenLoaded($.map(data, (rawData: any) =>
                 new CurrentInfo(rawData))));
     }
@@ -2836,7 +2836,7 @@ class homePage extends Page implements IPage {
         this.detailsManager = new JMSLib.DetailManager(1, 'startGuide', 'startScan', 'checkUpdate');
 
         // Mehr als die Versionsinformationen brauchen wir gar nicht
-        VCRServer.getServerVersion().done((data: VCRServer.InfoServiceContract) => { this.serverInfo = data; versionAvailable(); });
+        VCRServer._getServerVersion().done((data: VCRServer.InfoServiceContract) => { this.serverInfo = data; versionAvailable(); });
     }
 
     onShow(): void {
@@ -2999,7 +2999,7 @@ class planPage extends Page implements IPage {
         var endOfTime = new Date(Date.now() + 13 * 7 * 86400000);
 
         // Zusätzlich beschränken wir uns auf maximal 500 Einträge
-        VCRServer.getPlan(500, endOfTime).done((data: any) => {
+        VCRServer._getPlan(500, endOfTime).done((data: any) => {
             // Rohdaten in Modelldaten transformieren
             var plan = $.map(data, (rawData: any) => {
                 var item = new PlanEntry(rawData);

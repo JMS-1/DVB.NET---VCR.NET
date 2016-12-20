@@ -37,11 +37,6 @@
             VCRServer.getUserProfile().then(profile => this.profile = profile).then(testStart);
         }
 
-        private onVersionAvailable(info: VCRServer.InfoServiceContract): void {
-            this.version = info;
-            this.testStart();
-        }
-
         private testStart(): void {
             if (this._startPending-- > 1)
                 return;

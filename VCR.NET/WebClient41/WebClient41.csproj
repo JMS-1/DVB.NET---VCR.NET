@@ -290,6 +290,7 @@
     <Content Include="ui\templates\sourceSelection.html" />
     <Content Include="ui\templates\planRow.html" />
     <Content Include="ui\templates\planRowException.html" />
+    <TypeScriptCompile Include="scripts\typings\es6-promise\es6-promise.d.ts" />
     <TypeScriptCompile Include="scripts\vcrnet.ts" />
     <Content Include="default_old.html" />
     <None Include="content\jmslib.scss" />

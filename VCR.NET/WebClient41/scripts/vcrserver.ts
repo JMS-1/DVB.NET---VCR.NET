@@ -13,9 +13,66 @@ module VCRServer {
     var protocolEnd = serverRoot.indexOf('://');
     var deviceUrl = 'dvbnet' + serverRoot.substr(protocolEnd) + '/';
     var playUrl = deviceUrl + 'play=';
-    
+
     // Der Präfix für alle REST Zugiffe
     var restRoot = serverRoot + '/vcr.net/';
+
+    // Hilfsklasse zur Emulation von ES6 Promises.
+    class PromiseHelper<TResponseType> implements Thenable<TResponseType>{
+        // Wird im Erfolgsfall aufgerufen.
+        private _success: (value: TResponseType) => any | Thenable<any>;
+
+        // Wird im Fehlerfall aufgerufen.
+        private _failure: (error: any) => any | Thenable<any>;
+
+        // Alle Nachfolger.
+        private _next: PromiseHelper<any>[] = [];
+
+        // Meldet die Ergebnisauswertung an.
+        then<TProjectedType>(onFulfilled?: (value: TResponseType) => TProjectedType, onRejected?: (error: any) => TProjectedType): Thenable<TProjectedType> {
+            this._success = onFulfilled;
+            this._failure = onRejected;
+
+            // Nachfolger einrichten.
+            var next = new PromiseHelper<TProjectedType>();
+
+            this._next.push(next);
+
+            return next;
+        }
+
+        // Daten melden.
+        success(value: TResponseType): void {
+            var processedValue = this._success ? this._success(value) : value;
+
+            this._next.forEach(next => next.success(processedValue));
+        }
+
+        // Fehler melden.
+        failure(error: any): void {
+            var processedError = this._failure ? this._failure(error) : error;
+
+            this._next.forEach(next => next.failure(processedError));
+        }
+    }
+
+    // Führt eine Web Anfrage aus.
+    function doUrlCall<TResponseType>(url: string, method: string = 'GET'): Thenable<TResponseType> {
+        var thenable = new PromiseHelper<TResponseType>();
+        var xhr = new XMLHttpRequest();
+
+        xhr.addEventListener("load", () => {
+            if (xhr.status < 400)
+                thenable.success(JSON.parse(xhr.responseText));
+            else
+                thenable.failure(xhr.responseText);
+        });
+
+        xhr.open(method, restRoot + url);
+        xhr.send();
+
+        return thenable;
+    }
 
     // Repräsentiert die Klasse InfoService
     export interface InfoServiceContract {
@@ -587,11 +644,15 @@ module VCRServer {
         return deviceUrl;
     }
 
-    export function getServerVersion(): JQueryPromise<InfoServiceContract> {
+    export function _getServerVersion(): JQueryPromise<InfoServiceContract> {
         return $.ajax({
             url: restRoot + 'info',
             dataType: 'json',
         });
+    }
+
+    export function getServerVersion(): Thenable<InfoServiceContract> {
+        return doUrlCall('info');
     }
 
     export function getProfileInfos(): JQueryPromise<any> {
@@ -601,11 +662,15 @@ module VCRServer {
         });
     }
 
-    export function getUserProfile(): JQueryPromise<UserProfileContract> {
+    export function _getUserProfile(): JQueryPromise<UserProfileContract> {
         return $.ajax({
             url: restRoot + 'userprofile',
             dataType: 'json',
         });
+    }
+
+    export function getUserProfile(): Thenable<UserProfileContract> {
+        return doUrlCall('userprofile');
     }
 
     export function setUserProfile(profile: UserProfileContract): JQueryPromise<any> {
@@ -626,11 +691,15 @@ module VCRServer {
         });
     }
 
-    export function getPlanCurrent(): JQueryPromise<PlanCurrentContract[]> {
+    export function _getPlanCurrent(): JQueryPromise<PlanCurrentContract[]> {
         return $.ajax({
             url: restRoot + 'plan',
             dataType: 'json',
         });
+    }
+
+    export function getPlanCurrent(): Thenable<PlanCurrentContract[]> {
+        return doUrlCall('plan');
     }
 
     export function getPlanCurrentForMobile(): JQueryPromise<PlanCurrentContractMobile[]> {
@@ -828,11 +897,15 @@ module VCRServer {
         });
     }
 
-    export function getPlan(limit: number, end: Date): JQueryPromise<any> {
+    export function _getPlan(limit: number, end: Date): JQueryPromise<any> {
         return $.ajax({
             url: restRoot + 'plan?limit=' + limit + '&end=' + end.toISOString(),
             dataType: 'json',
         });
+    }
+
+    export function getPlan(limit: number, end: Date): Thenable<any[]> {
+        return doUrlCall(`plan?limit=${limit}&end=${end.toISOString()}`);
     }
 
     export function getPlanForMobile(limit: number): JQueryPromise<any> {
@@ -1059,7 +1132,7 @@ module VCRServer {
         refresh(): void {
             this.isLoaded = false;
 
-            getUserProfile().done((data: UserProfileContract) => this.loadFrom(data));
+            _getUserProfile().done((data: UserProfileContract) => this.loadFrom(data));
         }
 
         // Übernimmt neue Daten.

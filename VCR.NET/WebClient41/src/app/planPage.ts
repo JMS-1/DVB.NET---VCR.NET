@@ -97,7 +97,7 @@ namespace VCRNETClient.App {
             var endOfTime = new Date(Date.now() + 13 * 7 * 86400000);
 
             // Zusätzlich beschränken wir uns auf maximal 500 Einträge
-            VCRServer.getPlan(500, endOfTime).done((raw: any[]) => {
+            VCRServer.getPlan(500, endOfTime).then(raw => {
                 this._jobs = raw.map(job => new PlanEntry(job, `${PlanPage._key++}`));
 
                 this.fireRefresh();
