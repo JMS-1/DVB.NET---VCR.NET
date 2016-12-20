@@ -11,12 +11,16 @@ namespace VCRNETClient {
         start?: number;
 
         detailKey?: string;
+
+        showDetails?: boolean;
     }
 
     export class Plan extends React.Component<IPlanStatic, IPlanDynamic> implements App.IPlanSite {
-        render(): JSX.Element {
+        componentWillMount(): void {
             this.props.page.setSite(this);
+        }
 
+        render(): JSX.Element {
             return <div className="vcrnet-plan">
                 Hier sieht man einen Ausschnitt der geplanten Aufzeichnungen für die nächsten Wochen.<HelpLink page="faq;parallelrecording" />
                 <InlineHelp title="Erläuterungen zur Bedienung">
@@ -83,6 +87,7 @@ namespace VCRNETClient {
                             <RadioGroup>
                                 {this.props.page.getStartFilter().map(f =>
                                     <Radio
+                                        key={f.index}
                                         groupName="filterStart"
                                         isChecked={this.state.start === f.index}
                                         onClick={() => this.props.page.filterOnStart(f.index)}>{(f.index === 0) ? "Jetzt" : DateFormatter.getShortDate(f.date)}</Radio>)}
@@ -103,10 +108,15 @@ namespace VCRNETClient {
                         </thead>
                         <tbody>
                             {this.state.jobs.map(job => [
-                                <PlanRow entry={job} key={job.key} detailToggle={() => this.toggleDetail(job)} />,
-                                (job.key === this.state.detailKey) ? <DetailRow prefixColumns={1} dataColumns={5} key={`${job.key}Details`} >
-                                    [EPGINFO]
-                            </DetailRow> : null
+                                <PlanRow entry={job} key={job.key} detailToggle={() => this.toggleDetail(job, true)} editToggle={() => this.toggleDetail(job, false)} />,
+                                ((job.key === this.state.detailKey) && this.state.showDetails) ?
+                                    <DetailRow prefixColumns={1} dataColumns={5} key={`${job.key}Details`}>
+                                        [EPGINFO]
+                                    </DetailRow> : null,
+                                ((job.key === this.state.detailKey) && !this.state.showDetails) ?
+                                    <DetailRow prefixColumns={1} dataColumns={5} key={`${job.key}Exceptions`}>
+                                        [EXTENSIONEDIT]
+                                    </DetailRow> : null
                             ])}
                         </tbody>
                     </table> : null
@@ -114,8 +124,11 @@ namespace VCRNETClient {
             </div >;
         }
 
-        private toggleDetail(job: App.PlanEntry): void {
-            this.setState({ detailKey: (job.key === this.state.detailKey) ? undefined : job.key });
+        private toggleDetail(job: App.PlanEntry, details: boolean): void {
+            if ((job.key === this.state.detailKey) && (details === this.state.showDetails))
+                this.setState({ detailKey: undefined });
+            else
+                this.setState({ detailKey: job.key, showDetails: details });
         }
 
         onRefresh(jobs: App.PlanEntry[], index: number): void {

@@ -4,5 +4,5 @@ import ReactDOM = __React.__DOM;
 
 namespace VCRNETClient {
     // Initialisiert die react.js Laufzeitumgebung.
-    $(() => ReactDOM.render(<Main />, document.querySelector(`body`)));
+    $(() => ReactDOM.render(<Main />, document.querySelector(`vcrnet-spa`)));
 }

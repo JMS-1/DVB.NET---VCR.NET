@@ -12,7 +12,12 @@
 @import "../src/components/navigation.scss";
 @import "../src/components/view.scss";
 @import "../src/components/main.scss";
-@import "../src/components/home.scss";
 @import "../src/components/planRow.scss";
 @import "../src/components/detailRow.scss";
-@import "../src/components/plan.scss";
+
+@import "../src/pages/home.scss";
+@import "../src/pages/plan.scss";
+
+vcrnet-spa{
+    display: block;
+}

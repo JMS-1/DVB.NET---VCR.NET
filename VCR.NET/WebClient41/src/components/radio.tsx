@@ -16,7 +16,7 @@ namespace VCRNETClient {
         render(): JSX.Element {
             return <label className="vcrnet-radio" data-checked={this.props.isChecked ? "yes" : null}>
                 {this.props.isChecked}
-                <input type="RADIO" name={this.props.groupName} checked={this.props.isChecked} onClick={this.props.onClick} />{this.props.children}
+                <input type="RADIO" name={this.props.groupName} defaultChecked={this.props.isChecked} onClick={this.props.onClick} />{this.props.children}
             </label>;
         }
     }
