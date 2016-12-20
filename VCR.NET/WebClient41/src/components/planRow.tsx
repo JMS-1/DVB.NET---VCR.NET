@@ -15,8 +15,8 @@ namespace VCRNETClient {
     export class PlanRow extends React.Component<IPlanRowStatic, IPlanRowDynamic>  {
         render(): JSX.Element {
             return <tr className="vcrnet-planrow">
-                <td><Pictogram name={this.props.entry.mode} type="gif" /></td>
-                <td><a href="javascript:void(0)" onClick={this.props.detailToggle}>{this.props.entry.displayStart}</a></td>
+                <td>{this.props.entry.mode ? <Pictogram name={this.props.entry.mode} type="gif" /> : <span>&nbsp;</span>}</td>
+                <td>{this.props.entry.mode ? <a href="javascript:void(0)" onClick={this.props.detailToggle}>{this.props.entry.displayStart}</a> : <span>{this.props.entry.displayStart}</span>}</td>
                 <td>{this.props.entry.displayEnd}</td>
                 <td>{this.props.entry.station}</td>
                 <td className="vcrnet-planrow-name">

@@ -230,6 +230,7 @@
     <None Include="src\components\pictogram.scss" />
     <None Include="src\components\detailRow.scss" />
     <None Include="src\components\inlineHelp.scss" />
+    <None Include="src\components\checkbox.scss" />
     <Content Include="src\pages\plan.scss" />
     <Content Include="src\pages\home.scss" />
     <Content Include="src\components\main.scss" />
@@ -298,6 +299,7 @@
     <TypeScriptCompile Include="src\app\page.ts" />
     <TypeScriptCompile Include="src\app\planEntry.ts" />
     <TypeScriptCompile Include="src\app\planPage.ts" />
+    <TypeScriptCompile Include="src\components\checkbox.tsx" />
     <TypeScriptCompile Include="src\components\detailRow.tsx" />
     <TypeScriptCompile Include="src\components\externalLink.tsx" />
     <TypeScriptCompile Include="src\components\helpLink.tsx" />

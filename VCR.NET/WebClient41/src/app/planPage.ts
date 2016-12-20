@@ -2,7 +2,7 @@
 
 namespace VCRNETClient.App {
     export interface IPlanSite {
-        onRefresh(jobs: PlanEntry[], index: number): void;
+        onRefresh(jobs: PlanEntry[], index: number, showTasks: boolean): void;
     }
 
     export interface IPlanStartFilter {
@@ -25,6 +25,8 @@ namespace VCRNETClient.App {
         private _filter: (job: PlanEntry) => boolean = this.filterJob.bind(this);
 
         private _startIndex = 0;
+
+        private _showTasks = false;
 
         private _startFilter: IPlanStartFilter[];
 
@@ -57,6 +59,7 @@ namespace VCRNETClient.App {
                 now = new Date(now.getFullYear(), now.getMonth(), now.getDate() + this.application.profile.planDays);
             }
 
+            this._showTasks = false;
             this._site = undefined;
             this._jobs = undefined;
             this._startIndex = 0;
@@ -79,8 +82,12 @@ namespace VCRNETClient.App {
 
             if (job.start >= endDay)
                 return false;
-            if (job.end <= startDay)
+            else if (job.end <= startDay)
                 return false;
+
+            if (!this._showTasks)
+                if (!job.mode)
+                    return false;
 
             return true;
         }
@@ -101,7 +108,7 @@ namespace VCRNETClient.App {
 
         private fireRefresh(): void {
             if (this._site && this._jobs)
-                this._site.onRefresh(this._jobs.filter(this._filter), this._startIndex);
+                this._site.onRefresh(this._jobs.filter(this._filter), this._startIndex, this._showTasks);
         }
 
         filterOnStart(index: number): void {
@@ -109,6 +116,11 @@ namespace VCRNETClient.App {
                 return;
 
             this._startIndex = index;
+            this.fireRefresh();
+        }
+
+        toggleTaskFilter(): void {
+            this._showTasks = !this._showTasks;
             this.fireRefresh();
         }
 

@@ -2,6 +2,7 @@
 @import "vcrnet_old";
 
 @import "../src/vcrnet.scss";
+@import "../src/components/checkbox.scss";
 @import "../src/components/radio.scss";
 @import "../src/components/radioGroup.scss";
 @import "../src/components/pictogram.scss";
@@ -18,6 +19,22 @@
 @import "../src/pages/home.scss";
 @import "../src/pages/plan.scss";
 
-vcrnet-spa{
+vcrnet-spa {
     display: block;
+}
+
+.vcrnet-toggleButton {
+    margin: 0px 4px;
+    padding: 1px 2px;
+    font-size: small;
+    border: 1px solid black;
+
+    input {
+        display: none;
+    }
+
+    &[data-checked] {
+        font-weight: bold;
+        background: white;
+    }
 }

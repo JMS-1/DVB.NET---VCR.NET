@@ -13,6 +13,8 @@ namespace VCRNETClient {
         detailKey?: string;
 
         showDetails?: boolean;
+
+        showTasks?: boolean;
     }
 
     export class Plan extends React.Component<IPlanStatic, IPlanDynamic> implements App.IPlanSite {
@@ -40,24 +42,26 @@ namespace VCRNETClient {
                         Aufzeichnung wie gewünscht ausgeführt werden kann oder nicht.
                     </p>
                     <table>
-                        <tr>
-                            <td>
-                                <Pictogram name="intime" type="gif" />
-                            </td>
-                            <td>Die Aufzeichnung wird wie programmiert ausgeführt.</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <Pictogram name="late" type="gif" />
-                            </td>
-                            <td>Die Aufzeichnung beginnt verspätet, eventuell fehlt der Anfang.</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <Pictogram name="lost" type="gif" />
-                            </td>
-                            <td>Die Aufzeichnung kann nicht ausgeführt werden.</td>
-                        </tr>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <Pictogram name="intime" type="gif" />
+                                </td>
+                                <td>Die Aufzeichnung wird wie programmiert ausgeführt.</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <Pictogram name="late" type="gif" />
+                                </td>
+                                <td>Die Aufzeichnung beginnt verspätet, eventuell fehlt der Anfang.</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <Pictogram name="lost" type="gif" />
+                                </td>
+                                <td>Die Aufzeichnung kann nicht ausgeführt werden.</td>
+                            </tr>
+                        </tbody>
                     </table>
                     <p>
                         Direkt rechts neben dem Symbol wird der Beginn der
@@ -69,16 +73,18 @@ namespace VCRNETClient {
                         Durch Anwählen des Verweises auf den Namen der Aufzeichnung kann diese bearbeitet werden.
                     </p>
                     <table>
-                        <tr>
-                            <td>
-                                <Pictogram name="exceptOff" />
-                            </td>
-                            <td>
-                                Handelt es sich um eine sich wiederholende Aufzeichnung<HelpLink page="faq;repeatingschedules" />,
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <Pictogram name="exceptOff" />
+                                </td>
+                                <td>
+                                    Handelt es sich um eine sich wiederholende Aufzeichnung<HelpLink page="faq;repeatingschedules" />,
                                 so kann auch das Symbol direkt rechts neben dem Namen angeklickt werden,
                                 um die Ausnahmeregelung für die jeweilige Aufzeichnung anzuzeigen und zu ändern.
                             </td>
-                        </tr>
+                            </tr>
+                        </tbody>
                     </table>
                 </InlineHelp>
                 {
@@ -92,6 +98,9 @@ namespace VCRNETClient {
                                         isChecked={this.state.start === f.index}
                                         onClick={() => this.props.page.filterOnStart(f.index)}>{(f.index === 0) ? "Jetzt" : DateFormatter.getShortDate(f.date)}</Radio>)}
                             </RadioGroup>
+                            <CheckBox onToggle={() => this.props.page.toggleTaskFilter()} isChecked={this.state.showTasks}>
+                                Aufgaben einblenden
+                            </CheckBox>
                         </div> : null
                 }
                 {
@@ -131,8 +140,8 @@ namespace VCRNETClient {
                 this.setState({ detailKey: job.key, showDetails: details });
         }
 
-        onRefresh(jobs: App.PlanEntry[], index: number): void {
-            this.setState({ jobs: jobs, start: index });
+        onRefresh(jobs: App.PlanEntry[], index: number, showTasks: boolean): void {
+            this.setState({ jobs: jobs, start: index, showTasks: showTasks });
         }
     }
 }
