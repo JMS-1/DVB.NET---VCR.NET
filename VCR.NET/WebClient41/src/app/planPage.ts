@@ -46,7 +46,7 @@ namespace VCRNETClient.App {
             this.reload();
         }
 
-        reset(): void {
+        reset(section: string): void {
             var now = new Date();
 
             now = new Date(now.getFullYear(), now.getMonth(), now.getDate());

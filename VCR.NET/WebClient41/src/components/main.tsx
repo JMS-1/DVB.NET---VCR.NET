@@ -37,15 +37,16 @@ namespace VCRNETClient {
 
         render(): JSX.Element {
             var title = this._application.getTitle();
+            var page = this._application.page;
 
             if (document.title !== title)
                 document.title = title;
 
             if (this.state && this.state.active)
                 return <div className="vcrnet-main">
-                    <h1>{this._application.page ? this._application.page.getTitle() : title}</h1>
-                    <Navigation page={this._application.page} />
-                    <View page={this._application.page} />
+                    <h1>{page ? page.getTitle() : title}</h1>
+                    <Navigation page={page} />
+                    <View page={page} />
                 </div>;
             else
                 return <div className="vcrnet-main">

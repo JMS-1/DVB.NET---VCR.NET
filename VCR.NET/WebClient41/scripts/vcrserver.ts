@@ -913,11 +913,15 @@ module VCRServer {
         });
     }
 
-    export function createScheduleFromGuide(legacyId: string, epgId: string): JQueryPromise<any> {
+    export function _createScheduleFromGuide(legacyId: string, epgId: string): JQueryPromise<JobScheduleInfoContract> {
         return $.ajax({
             url: restRoot + 'edit/' + legacyId + epgId,
             dataType: 'json',
         });
+    }
+
+    export function createScheduleFromGuide(legacyId: string, epgId: string): Thenable<JobScheduleInfoContract> {
+        return doUrlCall(`edit/${legacyId}${epgId}`);
     }
 
     export function _getPlan(limit: number, end: Date): JQueryPromise<any> {

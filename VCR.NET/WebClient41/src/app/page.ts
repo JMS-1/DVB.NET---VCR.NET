@@ -2,7 +2,7 @@
     export abstract class Page {
         abstract getName(): string;
 
-        abstract reset(): void;
+        abstract reset(section: string): void;
 
         abstract getTitle(): string;
 

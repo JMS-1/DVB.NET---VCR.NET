@@ -231,6 +231,7 @@
     <None Include="src\components\detailRow.scss" />
     <None Include="src\components\inlineHelp.scss" />
     <None Include="src\components\checkbox.scss" />
+    <None Include="src\pages\edit.scss" />
     <Content Include="src\pages\plan.scss" />
     <Content Include="src\pages\home.scss" />
     <Content Include="src\components\main.scss" />
@@ -296,14 +297,19 @@
     <None Include="content\jmslib.scss" />
     <TypeScriptCompile Include="src\app\app.ts" />
     <TypeScriptCompile Include="src\app\dateFormatter.ts" />
+    <TypeScriptCompile Include="src\app\editPage.ts" />
     <TypeScriptCompile Include="src\app\homePage.ts" />
+    <TypeScriptCompile Include="src\app\jobData.ts" />
     <TypeScriptCompile Include="src\app\page.ts" />
     <TypeScriptCompile Include="src\app\planEntry.ts" />
+    <TypeScriptCompile Include="src\app\planException.ts" />
     <TypeScriptCompile Include="src\app\planPage.ts" />
+    <TypeScriptCompile Include="src\app\scheduleData.ts" />
     <TypeScriptCompile Include="src\components\checkbox.tsx" />
     <TypeScriptCompile Include="src\components\detailRow.tsx" />
     <TypeScriptCompile Include="src\components\externalLink.tsx" />
     <TypeScriptCompile Include="src\components\helpLink.tsx" />
+    <TypeScriptCompile Include="src\pages\edit.tsx" />
     <TypeScriptCompile Include="src\pages\home.tsx" />
     <TypeScriptCompile Include="src\components\inlineHelp.tsx" />
     <TypeScriptCompile Include="src\components\internalLink.tsx" />

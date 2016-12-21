@@ -6,7 +6,7 @@ namespace VCRNETClient.App {
             return "home";
         }
 
-        reset(): void {
+        reset(section: string): void {
             setTimeout(() => this.application.setBusy(false), 0);
         }
 

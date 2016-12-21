@@ -3708,7 +3708,7 @@ class editPage extends Page implements IPage {
         if (hasId) {
             var epgLoaded = this.registerAsyncCall();
 
-            VCRServer.createScheduleFromGuide(jobScheduleId, epgId).done((data: VCRServer.JobScheduleInfoContract) => { this.existingData = data; epgLoaded(); });
+            VCRServer._createScheduleFromGuide(jobScheduleId, epgId).done(data => { this.existingData = data; epgLoaded(); });
         }
 
         // Liste der Geräteprofile laden

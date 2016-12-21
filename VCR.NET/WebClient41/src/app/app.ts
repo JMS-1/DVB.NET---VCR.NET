@@ -25,7 +25,7 @@
 
         constructor(private _site: IApplicationSite) {
             // Alle bekannten Seiten.
-            var pages: Page[] = [this._homePage, new PlanPage(this)];
+            var pages: Page[] = [this._homePage, new PlanPage(this), new EditPage(this)];
 
             // Abbildung erstellen.
             pages.forEach(p => this._pageMapper[p.getName()] = p);
@@ -59,7 +59,7 @@
             this.page = this._pageMapper[name] || this._homePage;
 
             // Zustand wie beim Erstaufruf vorbereiten.
-            this.page.reset();
+            this.page.reset(section);
 
             return true;
         }
