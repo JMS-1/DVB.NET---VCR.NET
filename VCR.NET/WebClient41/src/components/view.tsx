@@ -3,6 +3,8 @@
 namespace VCRNETClient {
     interface IViewStatic {
         page: App.Page;
+
+        faqs: IHelpComponentProvider;
     }
 
     interface IViewDynamic {
@@ -18,6 +20,8 @@ namespace VCRNETClient {
                 active = <Plan page={this.props.page as App.PlanPage} />
             else if (this.props.page instanceof App.EditPage)
                 active = <Edit page={this.props.page as App.EditPage} />
+            else if (this.props.page instanceof App.HelpPage)
+                active = <Help page={this.props.page as App.HelpPage} faqs={this.props.faqs} />
 
             return <div className="vcrnet-view">{active}</div>;
         }

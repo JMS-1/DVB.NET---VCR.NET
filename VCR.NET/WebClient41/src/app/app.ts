@@ -6,7 +6,9 @@
     }
 
     export class Application {
-        private _homePage = new HomePage(this);
+        private readonly _homePage = new HomePage(this);
+
+        readonly helpPage = new HelpPage(this);
 
         private _pageMapper: { [name: string]: Page } = {};
 
@@ -25,7 +27,12 @@
 
         constructor(private _site: IApplicationSite) {
             // Alle bekannten Seiten.
-            var pages: Page[] = [this._homePage, new PlanPage(this), new EditPage(this)];
+            var pages: Page[] = [
+                this._homePage,
+                this.helpPage,
+                new PlanPage(this),
+                new EditPage(this),
+            ];
 
             // Abbildung erstellen.
             pages.forEach(p => this._pageMapper[p.getName()] = p);

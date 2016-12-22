@@ -1,6 +1,11 @@
 ﻿/// <reference path="../vcrnet.tsx" />
+/// <reference path="../pages/faq/parallelRecording.tsx" />
 
 namespace VCRNETClient {
+    export interface IHelpComponentProvider {
+        getHelpComponent(section: string): HelpComponent;
+    }
+
     interface IMainStatic {
     }
 
@@ -8,7 +13,11 @@ namespace VCRNETClient {
         active?: boolean;
     }
 
-    export class Main extends React.Component<IMainStatic, IMainDynamic> implements App.IApplicationSite {
+    export class Main extends React.Component<IMainStatic, IMainDynamic> implements App.IApplicationSite, App.IHelpSite {
+        private static _faq: { [section: string]: HelpComponent } = {
+            parallelrecording: new ParallelRecording()
+        };
+
         private _application = new App.Application(this);
 
         private _onhashchange: () => void;
@@ -20,11 +29,15 @@ namespace VCRNETClient {
         }
 
         componentDidMount(): void {
+            this._application.helpPage.setSite(this);
+
             window.addEventListener("hashchange", this._onhashchange);
         }
 
         componentWillUnmount(): void {
             window.removeEventListener("hashchange", this._onhashchange);
+
+            this._application.helpPage.setSite(undefined);
         }
 
         onBusyChanged(isBusy: boolean): void {
@@ -46,7 +59,7 @@ namespace VCRNETClient {
                 return <div className="vcrnet-main">
                     <h1>{page ? page.getTitle() : title}</h1>
                     <Navigation page={page} />
-                    <View page={page} />
+                    <View page={page} faqs={this} />
                 </div>;
             else
                 return <div className="vcrnet-main">
@@ -72,6 +85,16 @@ namespace VCRNETClient {
 
         private setPage(name: string = "", section: string = "") {
             this._application.switchPage(name, section);
+        }
+
+        getHelpComponent(section: string): HelpComponent {
+            return Main._faq[section];
+        }
+
+        getCurrentHelpTitle(section: string): string {
+            var faq = this.getHelpComponent(section);
+
+            return faq && faq.getTitle();
         }
     }
 }

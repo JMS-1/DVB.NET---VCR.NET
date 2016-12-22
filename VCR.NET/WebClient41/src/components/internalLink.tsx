@@ -2,7 +2,7 @@
 
 namespace VCRNETClient {
     interface IInternalLinkStatic {
-        text: string;
+        text?: string;
 
         view: string | (() => void);
 
@@ -24,7 +24,7 @@ namespace VCRNETClient {
 
             return <span>
                 {this.props.pict ? <a className="vcrnet-internalLink" href={target} onClick={click}><Pictogram name={this.props.pict} /></a> : null}
-                <a className="vcrnet-internalLink" href={target} onClick={click}>{this.props.text}</a>
+                {this.props.text ? <a className="vcrnet-internalLink" href={target} onClick={click}>{this.props.text}</a> : null}
             </span>;
         }
     }

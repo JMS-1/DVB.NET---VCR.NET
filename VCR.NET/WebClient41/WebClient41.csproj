@@ -232,6 +232,7 @@
     <None Include="src\components\inlineHelp.scss" />
     <None Include="src\components\checkbox.scss" />
     <None Include="src\pages\edit.scss" />
+    <None Include="src\pages\help.scss" />
     <Content Include="src\pages\plan.scss" />
     <Content Include="src\pages\home.scss" />
     <Content Include="src\components\main.scss" />
@@ -298,6 +299,7 @@
     <TypeScriptCompile Include="src\app\app.ts" />
     <TypeScriptCompile Include="src\app\dateFormatter.ts" />
     <TypeScriptCompile Include="src\app\editPage.ts" />
+    <TypeScriptCompile Include="src\app\help.ts" />
     <TypeScriptCompile Include="src\app\homePage.ts" />
     <TypeScriptCompile Include="src\app\jobData.ts" />
     <TypeScriptCompile Include="src\app\page.ts" />
@@ -310,6 +312,9 @@
     <TypeScriptCompile Include="src\components\externalLink.tsx" />
     <TypeScriptCompile Include="src\components\helpLink.tsx" />
     <TypeScriptCompile Include="src\pages\edit.tsx" />
+    <TypeScriptCompile Include="src\pages\faq\helpComponent.ts" />
+    <TypeScriptCompile Include="src\pages\faq\parallelRecording.tsx" />
+    <TypeScriptCompile Include="src\pages\help.tsx" />
     <TypeScriptCompile Include="src\pages\home.tsx" />
     <TypeScriptCompile Include="src\components\inlineHelp.tsx" />
     <TypeScriptCompile Include="src\components\internalLink.tsx" />
