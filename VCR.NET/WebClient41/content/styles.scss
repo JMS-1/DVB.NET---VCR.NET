@@ -34,7 +34,7 @@ vcrnet-spa {
         display: none;
     }
 
-    &[data-checked] {
+    &[data-vcrnet-checked] {
         font-weight: bold;
         background: white;
     }
