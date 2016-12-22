@@ -1,4 +1,19 @@
 ﻿@import "../../content/vars";
 
 .vcrnet-edit {
+    .vcrnet-inline-help table {
+        margin: 10px;
+
+        > tbody {
+            > tr {
+                &:nth-child(2n+1) {
+                    font-weight: bold;
+                }
+
+                &:nth-child(2n+2) > td {
+                    padding-left: 20px;
+                }
+            }
+        }
+    }
 }
