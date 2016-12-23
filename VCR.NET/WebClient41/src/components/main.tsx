@@ -16,6 +16,7 @@ namespace VCRNETClient {
     export class Main extends React.Component<IMainStatic, IMainDynamic> implements App.IApplicationSite, App.IHelpSite {
         private static _faq: { [section: string]: HelpComponent } = {
             parallelrecording: new HelpPages.ParallelRecording(),
+            epgconfig: new HelpPages.AdminProgramGuide(),
             epg: new HelpPages.ProgramGuide(),
             archive: new HelpPages.Archive(),
             log: new HelpPages.Log()
