@@ -18,6 +18,7 @@ namespace VCRNETClient {
             parallelrecording: new HelpPages.ParallelRecording(),
             epgconfig: new HelpPages.AdminProgramGuide(),
             psiconfig: new HelpPages.AdminSourceScan(),
+            overview: new HelpPages.Overview(),
             epg: new HelpPages.ProgramGuide(),
             archive: new HelpPages.Archive(),
             log: new HelpPages.Log()
