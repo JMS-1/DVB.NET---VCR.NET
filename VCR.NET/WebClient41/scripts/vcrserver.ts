@@ -17,71 +17,9 @@ module VCRServer {
     // Der Präfix für alle REST Zugiffe
     var restRoot = serverRoot + '/vcr.net/';
 
-    // Hilfsklasse zur Emulation von ES6 Promises - die Implementierung ist weit von korrekt (in verschiedenen Aspekten), für uns reicht es aber so.
-    class PromiseHelper<TResponseType> implements Thenable<TResponseType>{
-        // Wird im Erfolgsfall aufgerufen.
-        private _success: (value: TResponseType) => any | Thenable<any>;
-
-        // Wird im Fehlerfall aufgerufen.
-        private _failure: (error: any) => any | Thenable<any>;
-
-        // Alle Nachfolger.
-        private _next: PromiseHelper<any>[] = [];
-
-        // Meldet die Ergebnisauswertung an.
-        then<TProjectedType>(onFulfilled?: (value: TResponseType) => TProjectedType | Thenable<TProjectedType>, onRejected?: (error: any) => TProjectedType | Thenable<TProjectedType>): Thenable<TProjectedType> {
-            this._success = onFulfilled;
-            this._failure = onRejected;
-
-            // Nachfolger einrichten.
-            var next = new PromiseHelper<TProjectedType>();
-
-            this._next.push(next);
-
-            return next;
-        }
-
-        // Prüft, ob eine Weiterleitung verwendet werden soll.
-        private propagate(test: any): boolean {
-            if (!test)
-                return false;
-
-            // Macht nur Sinn wenn das Objekt eine then Methode hat - hm, geht das nicht auch sicherer?
-            var thenMethod = test["then"];
-            if (!thenMethod)
-                return false;
-            if (!(thenMethod instanceof Function))
-                return false;
-
-            // Irgendwann später probieren wir es noch einmal.
-            var thenable: Thenable<any> = test;
-
-            // Wenn der asnychrone Zugriff denn dann durch ist, dann können wir das durchreichen.
-            thenable.then(value => this._next.forEach(next => next.success(value)), error => this._next.forEach(next => next.failure(next)));
-
-            return true;
-        }
-
-        // Daten melden.
-        success(value: TResponseType): void {
-            var processedValue = this._success ? this._success(value) : value;
-
-            if (!this.propagate(processedValue))
-                this._next.forEach(next => next.success(processedValue));
-        }
-
-        // Fehler melden.
-        failure(error: any): void {
-            var processedError = this._failure ? this._failure(error) : error;
-
-            if (!this.propagate(processedError))
-                this._next.forEach(next => next.failure(processedError));
-        }
-    }
-
     // Führt eine Web Anfrage aus.
     function doUrlCall<TResponseType>(url: string, method: string = 'GET'): Thenable<TResponseType> {
-        var thenable = new PromiseHelper<TResponseType>();
+        var thenable = new VCRNETClient.App.PromiseHelper<TResponseType>();
         var xhr = new XMLHttpRequest();
 
         xhr.addEventListener("load", () => {
@@ -667,29 +605,12 @@ module VCRServer {
         return deviceUrl;
     }
 
-    export function _getServerVersion(): JQueryPromise<InfoServiceContract> {
-        return $.ajax({
-            url: restRoot + 'info',
-            dataType: 'json',
-        });
-    }
-
     export function getServerVersion(): Thenable<InfoServiceContract> {
         return doUrlCall('info');
     }
 
-    export function getProfileInfos(): JQueryPromise<any> {
-        return $.ajax({
-            url: restRoot + 'profile',
-            dataType: 'json',
-        });
-    }
-
-    export function _getUserProfile(): JQueryPromise<UserProfileContract> {
-        return $.ajax({
-            url: restRoot + 'userprofile',
-            dataType: 'json',
-        });
+    export function getProfileInfos(): Thenable<ProfileInfoContract[]> {
+        return doUrlCall('profile');
     }
 
     export function getUserProfile(): Thenable<UserProfileContract> {
@@ -711,13 +632,6 @@ module VCRServer {
             contentType: 'text/plain',
             data: queries,
             type: 'PUT'
-        });
-    }
-
-    export function _getPlanCurrent(): JQueryPromise<PlanCurrentContract[]> {
-        return $.ajax({
-            url: restRoot + 'plan',
-            dataType: 'json',
         });
     }
 
@@ -753,11 +667,8 @@ module VCRServer {
         });
     }
 
-    export function getProfileSources(device: string): JQueryPromise<any> {
-        return $.ajax({
-            url: restRoot + 'profile/' + device,
-            dataType: 'json',
-        });
+    export function getProfileSources(device: string): Thenable<ProfileSourceContract[]> {
+        return doUrlCall(`profile/${device}`);
     }
 
     export function getSecuritySettings(): JQueryPromise<any> {
@@ -834,11 +745,8 @@ module VCRServer {
         });
     }
 
-    export function getRecordingDirectories(): JQueryPromise<any> {
-        return $.ajax({
-            url: restRoot + 'info?directories',
-            dataType: 'json',
-        });
+    export function getRecordingDirectories(): Thenable<string[]> {
+        return doUrlCall('info?directories');
     }
 
     export function getGuideItem(device: string, source: string, start: Date, end: Date): JQueryPromise<VCRServer.GuideItemContract> {
@@ -913,22 +821,8 @@ module VCRServer {
         });
     }
 
-    export function _createScheduleFromGuide(legacyId: string, epgId: string): JQueryPromise<JobScheduleInfoContract> {
-        return $.ajax({
-            url: restRoot + 'edit/' + legacyId + epgId,
-            dataType: 'json',
-        });
-    }
-
     export function createScheduleFromGuide(legacyId: string, epgId: string): Thenable<JobScheduleInfoContract> {
         return doUrlCall(`edit/${legacyId}${epgId}`);
-    }
-
-    export function _getPlan(limit: number, end: Date): JQueryPromise<any> {
-        return $.ajax({
-            url: restRoot + 'plan?limit=' + limit + '&end=' + end.toISOString(),
-            dataType: 'json',
-        });
     }
 
     export function getPlan(limit: number, end: Date): Thenable<any[]> {
@@ -980,11 +874,18 @@ module VCRServer {
         }
 
         // Ruft die Verzeichnisse ab
-        static load(): JQueryPromise<any> {
-            if (RecordingDirectoryCache.directories != null)
-                return $.Deferred().resolve(RecordingDirectoryCache.directories);
-            else
-                return getRecordingDirectories().done((data: string[]) => RecordingDirectoryCache.directories = data);
+        static load(): Thenable<string[]> {
+            // Erstmalig laden
+            var directories = RecordingDirectoryCache.directories;
+            if (directories === null)
+                return getRecordingDirectories().then(data => RecordingDirectoryCache.directories = data);
+
+            // Bekannte Liste verzögert setzen.
+            var promise = new VCRNETClient.App.PromiseHelper<string[]>();
+
+            setTimeout(() => promise.success(directories), 0)
+
+            return promise;
         }
     }
 
@@ -994,11 +895,16 @@ module VCRServer {
         private static profiles: ProfileInfoContract[] = null;
 
         // Ruft die Profile ab
-        static load(): JQueryPromise<any> {
-            if (ProfileCache.profiles != null)
-                return $.Deferred().resolve(ProfileCache.profiles);
-            else
-                return getProfileInfos().done((data: ProfileInfoContract[]) => ProfileCache.profiles = data);
+        static load(): Thenable<ProfileInfoContract[]> {
+            var profiles = ProfileCache.profiles;
+            if (profiles === null)
+                return getProfileInfos().then(data => ProfileCache.profiles = data);
+
+            var promise = new VCRNETClient.App.PromiseHelper<ProfileInfoContract[]>();
+
+            setTimeout(() => promise.success(profiles), 0);
+
+            return promise;
         }
     }
 
@@ -1061,33 +967,31 @@ module VCRServer {
     }
 
     // Verwaltet Listen von Quellen zu Geräteprofilen
-    export class SourceEntryCollection {
+    export class ProfileSourcesCache {
         // Verwaltet alle Quellen zu allen Geräten als Nachschlageliste
-        private profileSources: any = {};
+        private static profileSources: { [device: string]: SourceEntry[] } = {};
 
         // Fordert die Quellen eines Geräteprofils an.
-        requestSources(profileName: string, whenDone: () => void): void {
+        static load(profileName: string): Thenable<SourceEntry[]> {
             // Eventuell haben wir das schon einmal gemacht
-            if (this.getSourcesForProfile(profileName) != undefined)
-                whenDone();
-            else
-                getProfileSources(profileName).done((data: ProfileSourceContract[]) => {
-                    this.profileSources[profileName] = $.map(data, (rawData: ProfileSourceContract) => new SourceEntry(rawData));
+            var sources = ProfileSourcesCache.profileSources[profileName];
+            if (sources === undefined)
+                return getProfileSources(profileName).then(data => ProfileSourcesCache.profileSources[profileName] = $.map(data, rawData => new SourceEntry(rawData)));
 
-                    whenDone();
-                });
+            var promise = new VCRNETClient.App.PromiseHelper<SourceEntry[]>();
+
+            setTimeout(() => promise.success(sources), 0);
+
+            return promise;
         }
 
         // Meldet die aktuellen Quellen eines Gerätes.
-        getSourcesForProfile(profileName: string): SourceEntry[] {
+        static readCache(profileName: string): SourceEntry[] {
             if (profileName == null)
                 return [];
             else
-                return this.profileSources[profileName];
+                return ProfileSourcesCache.profileSources[profileName];
         }
-
-        // Die einzige Instanz dieser Klasse
-        static global = new SourceEntryCollection();
     }
 
     // Beschreibt die individuellen Einstellungen des Anwenders
@@ -1159,7 +1063,7 @@ module VCRServer {
         refresh(): void {
             this.isLoaded = false;
 
-            _getUserProfile().done((data: UserProfileContract) => this.loadFrom(data));
+            getUserProfile().then(data => this.loadFrom(data));
         }
 
         // Übernimmt neue Daten.

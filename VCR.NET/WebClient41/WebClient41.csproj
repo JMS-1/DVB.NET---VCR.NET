@@ -299,6 +299,7 @@
     <TypeScriptCompile Include="src\app\planEntry.ts" />
     <TypeScriptCompile Include="src\app\planException.ts" />
     <TypeScriptCompile Include="src\app\planPage.ts" />
+    <TypeScriptCompile Include="src\app\promise.ts" />
     <TypeScriptCompile Include="src\app\scheduleData.ts" />
     <TypeScriptCompile Include="src\components\checkbox.tsx" />
     <TypeScriptCompile Include="src\components\detailRow.tsx" />

@@ -564,11 +564,11 @@ class Page {
     loadProfiles(target: JQuery): void {
         var whenDone = this.registerAsyncCall();
 
-        VCRServer.ProfileCache.load().done((profiles: VCRServer.ProfileInfoContract[]) => {
+        VCRServer.ProfileCache.load().then(profiles => {
             $.each(profiles, (index: number, profile: VCRServer.ProfileInfoContract) => {
                 target.append(new Option(profile.name));
 
-                VCRServer.SourceEntryCollection.global.requestSources(profile.name, this.registerAsyncCall());
+                VCRServer.ProfileSourcesCache.load(profile.name).then(sources => this.registerAsyncCall());
             });
 
             whenDone();
@@ -583,7 +583,7 @@ if (document.location.pathname !== "/default.html")
         VCRServer.UserProfile.global.refresh();
 
         // Informationsdaten ermitteln
-        VCRServer._getServerVersion().done((data: VCRServer.InfoServiceContract) => $('#masterTitle').text('VCR.NET Recording Service ' + data.version));
+        VCRServer.getServerVersion().then(data => $('#masterTitle').text('VCR.NET Recording Service ' + data.version));
 
         // Hier kommt der Inhalt hin
         var mainContent = $('#mainArea');
@@ -717,7 +717,7 @@ class SourceSelector {
 
         // Liste der Quellen ermitteln
         var profile = this.loader.profileSelector.val();
-        var sources = VCRServer.SourceEntryCollection.global.getSourcesForProfile(profile);
+        var sources = VCRServer.ProfileSourcesCache.readCache(profile);
 
         // Aktuelle Quelle sichern - diese kommt unabhängig vom Filter immer in die Liste
         var currentSource = this.sourceNameField.val();
@@ -2497,7 +2497,7 @@ class CurrentInfo {
 
     // Ruft die aktuelle Liste der Aufzeichnungen vom Web Dienst ab.
     static load(whenLoaded: (infos: CurrentInfo[]) => void): void {
-        VCRServer._getPlanCurrent().done((data: VCRServer.PlanCurrentContract[]) =>
+        VCRServer.getPlanCurrent().then(data =>
             whenLoaded($.map(data, (rawData: any) =>
                 new CurrentInfo(rawData))));
     }
@@ -2836,7 +2836,7 @@ class homePage extends Page implements IPage {
         this.detailsManager = new JMSLib.DetailManager(1, 'startGuide', 'startScan', 'checkUpdate');
 
         // Mehr als die Versionsinformationen brauchen wir gar nicht
-        VCRServer._getServerVersion().done((data: VCRServer.InfoServiceContract) => { this.serverInfo = data; versionAvailable(); });
+        VCRServer.getServerVersion().then(data => { this.serverInfo = data; versionAvailable(); });
     }
 
     onShow(): void {
@@ -2999,7 +2999,7 @@ class planPage extends Page implements IPage {
         var endOfTime = new Date(Date.now() + 13 * 7 * 86400000);
 
         // Zusätzlich beschränken wir uns auf maximal 500 Einträge
-        VCRServer._getPlan(500, endOfTime).done((data: any) => {
+        VCRServer.getPlan(500, endOfTime).then(data => {
             // Rohdaten in Modelldaten transformieren
             var plan = $.map(data, (rawData: any) => {
                 var item = new PlanEntry(rawData);
@@ -3708,14 +3708,14 @@ class editPage extends Page implements IPage {
         if (hasId) {
             var epgLoaded = this.registerAsyncCall();
 
-            VCRServer._createScheduleFromGuide(jobScheduleId, epgId).done(data => { this.existingData = data; epgLoaded(); });
+            VCRServer.createScheduleFromGuide(jobScheduleId, epgId).then(data => { this.existingData = data; epgLoaded(); });
         }
 
         // Liste der Geräteprofile laden
         this.loadProfiles($('#selProfile'));
 
         // Liste der Verzeichnisse wählen
-        VCRServer.RecordingDirectoryCache.load().done((directories: string[]) => {
+        VCRServer.RecordingDirectoryCache.load().then(directories => {
             var directoryList = $('#selDirectory');
 
             $.each(directories, (index: number, directory: string) => directoryList.append(new Option(directory)));
@@ -4058,7 +4058,7 @@ class guidePage extends Page implements IPage {
         this.details = new JMSLib.DetailManager(2, 'guideDetails');
 
         // Liste der Geräteprofile laden
-        VCRServer.ProfileCache.load().done((data: VCRServer.ProfileInfoContract[]) => {
+        VCRServer.ProfileCache.load().then(data => {
             this.profiles = data;
 
             profilesLoaded();
@@ -4234,7 +4234,7 @@ class logPage extends Page implements IPage {
         filter.click(() => this.refresh());
 
         // Geräte ermitteln
-        VCRServer.ProfileCache.load().done((profiles: VCRServer.ProfileInfoContract[]) => {
+        VCRServer.ProfileCache.load().then(profiles => {
             var list = $('#selProfile');
 
             // Alle Namen eintragen
