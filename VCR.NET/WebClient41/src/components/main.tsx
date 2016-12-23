@@ -17,6 +17,7 @@ namespace VCRNETClient {
         private static _faq: { [section: string]: HelpComponent } = {
             parallelrecording: new HelpPages.ParallelRecording(),
             epgconfig: new HelpPages.AdminProgramGuide(),
+            psiconfig: new HelpPages.AdminSourceScan(),
             epg: new HelpPages.ProgramGuide(),
             archive: new HelpPages.Archive(),
             log: new HelpPages.Log()
