@@ -169,7 +169,6 @@
     <Content Include="FAQ\hibernation.html" />
     <Content Include="FAQ\filecontents.html" />
     <Content Include="FAQ\epgconfig.html" />
-    <Content Include="FAQ\epg.html" />
     <Content Include="FAQ\editcurrent.html" />
     <Content Include="FAQ\dvbnet.html" />
     <Content Include="FAQ\decryption.html" />
@@ -311,6 +310,7 @@
     <TypeScriptCompile Include="src\components\externalLink.tsx" />
     <TypeScriptCompile Include="src\components\helpLink.tsx" />
     <TypeScriptCompile Include="src\pages\edit.tsx" />
+    <TypeScriptCompile Include="src\pages\faq\epg.tsx" />
     <TypeScriptCompile Include="src\pages\faq\helpComponent.ts" />
     <TypeScriptCompile Include="src\pages\faq\parallelRecording.tsx" />
     <TypeScriptCompile Include="src\pages\help.tsx" />
