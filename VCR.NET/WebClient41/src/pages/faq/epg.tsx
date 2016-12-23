@@ -20,7 +20,7 @@ namespace VCRNETClient.HelpPages {
                 Tage.
                 <br />
                 <br />
-                Der VCR.NET Recording Service kann dazu <InternalLink view="faq;epgconfig" text="konfiguriert" /> werden,
+                Der VCR.NET Recording Service kann dazu <InternalLink view="faq;epgconfig">konfiguriert</InternalLink> werden,
                 für eine ausgewählte Liste von Quellen die Programmzeitschrift periodisch
                 zu aktualisieren - üblich ist ein oder zweimal am Tag. Auf Basis dieser Daten lassen
                 sich dann Aufzeichnungen programmieren. Zur Auswahl<InternalLink view="guide" pict="guide" /> stehen
@@ -38,7 +38,7 @@ namespace VCRNETClient.HelpPages {
                 Voreinstellungen<InternalLink view="settings" pict="settings" /> des
                 Anwenders erweitert. Die eigentliche Programmierung muss noch einmal bestätigt werden,
                 wobei dann auch noch Detailänderungen möglich sind - zum Beispiel um direkt
-                eine <InternalLink view="faq;repeatingschedules" text="Serienaufzeichnung" /> anzulegen.
+                eine <InternalLink view="faq;repeatingschedules">Serienaufzeichnung</InternalLink> anzulegen.
             </div>;
         }
     }

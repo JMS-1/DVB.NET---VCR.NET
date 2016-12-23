@@ -42,7 +42,7 @@ namespace VCRNETClient.HelpPages {
                 und in voller Länge aufgezeichnet werden. Sollte nun eine weitere Aufzeichnung einer
                 anderen Quellgruppe hinzugefügt werden, so hat der VCR.NET Recording Service verschiedene
                 Strategien, die programmierten Wünsche so gut wie möglich zu
-                erfüllen. <InternalLink view="faq;customschedule" text="Die genauen Regeln" /> sind
+                erfüllen. <InternalLink view="faq;customschedule">Die genauen Regeln</InternalLink> sind
                 etwas komplexer und berücksichtigen neben der programmierten Anfangszeit
                 der Aufzeichnungen unter anderem auch die mögliche Anzahl vollständig durchgeführter
                 Aufzeichnungen und den Gesamtverlust verspätet beginnender Aufzeichnungen.

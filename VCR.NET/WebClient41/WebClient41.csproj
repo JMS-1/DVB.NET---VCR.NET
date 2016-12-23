@@ -148,7 +148,6 @@
     <None Include="content\vars.scss" />
     <Content Include="default.html" />
     <Content Include="FAQ\customschedule.html" />
-    <Content Include="FAQ\archive.html" />
     <Content Include="FAQ\configuration.html" />
     <Content Include="FAQ\controlcenter.html" />
     <Content Include="FAQ\recover.png" />
@@ -164,7 +163,6 @@
     <Content Include="FAQ\overview.html" />
     <Content Include="FAQ\numberoffiles.html" />
     <Content Include="FAQ\nexus.html" />
-    <Content Include="FAQ\log.html" />
     <Content Include="FAQ\jobsandschedules.html" />
     <Content Include="FAQ\hibernation.html" />
     <Content Include="FAQ\filecontents.html" />
@@ -310,8 +308,10 @@
     <TypeScriptCompile Include="src\components\externalLink.tsx" />
     <TypeScriptCompile Include="src\components\helpLink.tsx" />
     <TypeScriptCompile Include="src\pages\edit.tsx" />
+    <TypeScriptCompile Include="src\pages\faq\archive.tsx" />
     <TypeScriptCompile Include="src\pages\faq\epg.tsx" />
     <TypeScriptCompile Include="src\pages\faq\helpComponent.ts" />
+    <TypeScriptCompile Include="src\pages\faq\log.tsx" />
     <TypeScriptCompile Include="src\pages\faq\parallelRecording.tsx" />
     <TypeScriptCompile Include="src\pages\help.tsx" />
     <TypeScriptCompile Include="src\pages\home.tsx" />

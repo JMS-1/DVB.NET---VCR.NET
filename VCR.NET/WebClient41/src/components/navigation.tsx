@@ -17,13 +17,13 @@ namespace VCRNETClient {
                 return null;
 
             return <div className="vcrnet-navigation">
-                {page.showRefresh() ? <InternalLink text="Aktualisieren" view={page.refresh} pict="refresh" /> : null}
-                <InternalLink text="Startseite" view="home" pict="home" />
-                {page.showFavorites() ? <InternalLink text="Favoriten" view="favorites" pict="fav" /> : null}
-                {page.showGuide() ? <InternalLink text="Programmzeitschrift" view="guide" pict="guide" /> : null}
-                {page.showPlan() ? <InternalLink text="Aufzeichnungsplan" view="plan" pict="plan" /> : null}
-                {page.showNew() ? <InternalLink text="Neue Aufzeichnung" view="edit" pict="new" /> : null}
-                {page.showCurrent() ? <InternalLink text="Geräte" view="current" pict="devices" /> : null}
+                {page.showRefresh() ? <InternalLink view={page.refresh} pict="refresh">Aktualisieren</InternalLink> : null}
+                <InternalLink view="home" pict="home">Startseite</InternalLink>
+                {page.showFavorites() ? <InternalLink view="favorites" pict="fav">Favoriten</InternalLink> : null}
+                {page.showGuide() ? <InternalLink view="guide" pict="guide">Programmzeitschrift</InternalLink> : null}
+                {page.showPlan() ? <InternalLink view="plan" pict="plan">Aufzeichnungsplan</InternalLink> : null}
+                {page.showNew() ? <InternalLink view="edit" pict="new">Neue Aufzeichnung</InternalLink> : null}
+                {page.showCurrent() ? <InternalLink view="current" pict="devices">Geräte</InternalLink> : null}
             </div>;
         }
     }

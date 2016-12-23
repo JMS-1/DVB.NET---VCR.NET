@@ -14,31 +14,33 @@ namespace VCRNETClient {
                 <div>
                     Willkommen zur Benutzeroberfläche des VCR.NET Recording Service. Von hier aus geht es direkt zu:
                 <ul>
-                        <li><InternalLink text="dem Aufzeichnungsplan" pict="plan" view="plan" /> mit den anstehenden Aufzeichnungen<HelpLink page="faq;parallelrecording"/></li>
-                        <li><InternalLink text="den laufenden Aufzeichnungen" pict="devices" view="current" /> mit den Aktivitäten der einzelnen DVB Geräte</li>
-                        <li><InternalLink text="der Programmzeitschrift" pict="guide" view="guide" /> zum Anlegen neuer Aufzeichnungen<HelpLink page="faq;epg" /></li>
-                        <li><InternalLink text="einer neuen Aufzeichnung" pict="new" view="edit" /></li>
+                        <li><InternalLink pict="plan" view="plan">dem Aufzeichnungsplan</InternalLink> mit den anstehenden Aufzeichnungen<HelpLink page="faq;parallelrecording" /></li>
+                        <li><InternalLink pict="devices" view="current">den laufenden Aufzeichnungen</InternalLink> mit den Aktivitäten der einzelnen DVB Geräte</li>
+                        <li><InternalLink pict="guide" view="guide">der Programmzeitschrift</InternalLink> zum Anlegen neuer Aufzeichnungen<HelpLink page="faq;epg" /></li>
+                        <li><InternalLink pict="new" view="edit">einer neuen Aufzeichnung</InternalLink></li>
                     </ul>
                     <ul>
-                        <li><InternalLink text="den vorhandenen Aufzeichnungen" pict="jobs" view="jobs" />, um diese zu verändern oder ins Archiv zu übertragen</li>
-                        <li><InternalLink text="den archivierten Aufzeichnungen" view="jobs;archive" />, um diese anzusehen, zu verändern, zu reaktivieren oder endgültig zu löschen<HelpLink page="faq;archive" /></li>
-                        <li><InternalLink text="den Protokollen" view="log" /> von bereits durchgeführten Aufzeichnungen<HelpLink page="faq;log" /></li>
+                        <li><InternalLink pict="jobs" view="jobs">den vorhandenen Aufzeichnungen</InternalLink>, um diese zu verändern oder ins Archiv zu übertragen</li>
+                        <li><InternalLink view="jobs;archive">den archivierten Aufzeichnungen</InternalLink>, um diese anzusehen, zu verändern, zu reaktivieren oder endgültig zu löschen<HelpLink page="faq;archive" /></li>
+                        <li><InternalLink view="log">den Protokollen</InternalLink> von bereits durchgeführten Aufzeichnungen<HelpLink page="faq;log" /></li>
                     </ul>
                     <ul>
-                        <li><InternalLink text="den individuellen Anpassungen" pict="settings" view="settings" /> der Web Oberfläche</li>
+                        <li><InternalLink pict="settings" view="settings">den individuellen Anpassungen</InternalLink> der Web Oberfläche</li>
                     </ul>
                 </div>
                 <div>
                     Je nach den zugeteilten Benutzerrechten können Sie darüber hinaus folgende administrative Tätigkeiten wahrnehmen:
                     <ul>
-                        <li><InternalLink text="die Programmzeitschrift sobald wie möglich aktualisieren" view="" /><HelpLink page="faq;epgconfig" /></li>
-                        <li><InternalLink text="einen Sendersuchlauf sobald wie möglich durchführen" view="" /><HelpLink page="faq;psiconfig" /></li>
-                        <li>prüfen, ob inzwischen eine <InternalLink text="neuere Version" view="" /> des VCR.NET Recording Service angeboten wird</li>
-                        <li><InternalLink text="die Konfiguration des VCR.NET Recording Service verändern" pict="admin" view="admin" /></li>
+                        <li><InternalLink view="">die Programmzeitschrift sobald wie möglich aktualisieren</InternalLink><HelpLink page="faq;epgconfig" /></li>
+                        <li><InternalLink view="">einen Sendersuchlauf sobald wie möglich durchführen</InternalLink><HelpLink page="faq;psiconfig" /></li>
+                        <li>prüfen, ob inzwischen eine <InternalLink view="">neuere Version</InternalLink> des VCR.NET Recording Service angeboten wird</li>
+                        <li><InternalLink pict="admin" view="admin">die Konfiguration des VCR.NET Recording Service verändern</InternalLink></li>
                     </ul>
                 </div>
                 <div>
-                    Weitere Informationen zum VCR.NET Recording Service findet man hier im Bereich der <InternalLink text="Fragen & Antworten" view="faq;overview" />, auf der <ExternalLink text="Homepage im Internet" url="http://www.psimarron.net/vcrnet" /> oder im <ExternalLink text="offiziellen Forum" url="http://www.watchersnet.de/Default.aspx?tabid=52&g=topics&f=17" />.
+                    Weitere Informationen zum VCR.NET Recording Service findet man hier im Bereich der <InternalLink view="faq;overview">Fragen &amp; Antworten</InternalLink>, auf
+                    der <ExternalLink url="http://www.psimarron.net/vcrnet">Homepage im Internet</ExternalLink> oder
+                    im <ExternalLink url="http://www.watchersnet.de/Default.aspx?tabid=52&g=topics&f=17">offiziellen Forum</ExternalLink>.
                 </div>
                 <div>
                     Dr. Jochen Manns, 2003-17
