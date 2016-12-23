@@ -161,7 +161,6 @@
     <Content Include="FAQ\sourcechooser.html" />
     <Content Include="FAQ\repeatingschedules.html" />
     <Content Include="FAQ\psiconfig.html" />
-    <Content Include="FAQ\parallelrecording.html" />
     <Content Include="FAQ\overview.html" />
     <Content Include="FAQ\numberoffiles.html" />
     <Content Include="FAQ\nexus.html" />
