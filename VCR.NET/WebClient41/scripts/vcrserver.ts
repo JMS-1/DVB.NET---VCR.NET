@@ -30,6 +30,7 @@ module VCRServer {
         });
 
         xhr.open(method, restRoot + url);
+        xhr.setRequestHeader("accept", "application/json");
         xhr.send();
 
         return thenable;

@@ -1,8 +1,11 @@
 ﻿@import "../../../content/vars";
 
 .vcrnet-editfield {
+    display: block;
+
+    // Das erste Element eines Eingabefeldes ist immer die Bezeichnung, die in einer festen Breite ausgegeben wird.
     > div:first-child {
         display: inline-block;
-        width: 150px;
+        width: 250px;
     }
 }

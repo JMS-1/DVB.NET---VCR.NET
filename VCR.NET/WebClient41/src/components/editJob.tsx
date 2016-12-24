@@ -12,9 +12,14 @@ namespace VCRNETClient {
         render(): JSX.Element {
             return <fieldset className="vcrnet-jobdata">
                 <legend>Daten zum Auftrag</legend>
-                <Field label="Name:" help="faq;jobsandschedules">
-                    <EditText noui={this.props.job.nameEditor} chars={100} hint="(Jeder Auftrag muss einen Namen haben)" />
-                </Field>
+
+                <Ui.Field label="DVB.NET Geräteprofil:">
+                    <Ui.SingleSelect noui={this.props.job.deviceEditor} />
+                </Ui.Field>
+
+                <Ui.Field label="Name:" help="faq;jobsandschedules">
+                    <Ui.EditText noui={this.props.job.nameEditor} chars={100} hint="(Jeder Auftrag muss einen Namen haben)" />
+                </Ui.Field>
             </fieldset>;
         }
     }

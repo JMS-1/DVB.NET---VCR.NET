@@ -2,9 +2,10 @@
 
     // Beschreibt die Daten eines Auftrags
     export class JobData {
-        constructor(existingData: VCRServer.JobScheduleInfoContract, defaultProfile: string, onChange: () => void) {
+        constructor(existingData: VCRServer.JobScheduleInfoContract, defaultProfile: string, onChange: () => void, devices: string[]) {
             // Pflegekomponenten erstellen
             this.nameEditor = new NoUi.StringEditor(this, "name", onChange, true);
+            this.deviceEditor = new NoUi.StringListEditor(this, "device", onChange, true, devices);
 
             // Schauen wir mal, ob wir etwas ändern sollen
             if (existingData != null) {
@@ -54,6 +55,8 @@
         // Das zu verwendende DVB Gerät.
         device: string;
 
+        readonly deviceEditor: NoUi.StringListEditor;
+
         // Gesetzt, wenn die Aufzeichnung immer auf dem Gerät stattfinden soll.
         lockedToDevice: boolean;
 
@@ -93,6 +96,7 @@
         validate(): void {
             // Lokalisierte Prüfungen.
             this.nameEditor.validate();
+            this.deviceEditor.validate();
         }
     }
 
