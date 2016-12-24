@@ -1,0 +1,7 @@
+﻿@import "../../../content/vars";
+
+.vcrnet-edittext {
+    &:not([title=""]) {
+        border-color: red;
+    }
+}

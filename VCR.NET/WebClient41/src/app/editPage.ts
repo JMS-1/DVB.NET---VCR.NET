@@ -1,12 +1,18 @@
 ﻿/// <reference path="page.ts" />
 
 namespace VCRNETClient.App {
+    export interface IEditSite {
+        onRefresh(): void;
+    }
+
     export class EditPage extends Page {
         job: JobData;
 
         schedule: ScheduleData;
 
         private _loadFinished = this.loadFinished.bind(this);
+
+        private _onChanged = this.onChanged.bind(this);
 
         private _loadPending: number;
 
@@ -16,8 +22,14 @@ namespace VCRNETClient.App {
 
         private _sources: VCRServer.SourceEntry[];
 
+        private _site: IEditSite;
+
         getName(): string {
             return "edit";
+        }
+
+        setSite(site: IEditSite): void {
+            this._site = site;
         }
 
         constructor(application: Application) {
@@ -32,7 +44,7 @@ namespace VCRNETClient.App {
             VCRServer.RecordingDirectoryCache.load().then(dirs => this._directories = dirs).then(this._loadFinished);
             VCRServer.ProfileCache.load().then(profiles => this._profiles = profiles).then(this._loadFinished);
             VCRServer.createScheduleFromGuide(section.substr(3), "").then(info => {
-                this.job = new JobData(info, null);
+                this.job = new JobData(info, null, this._onChanged);
                 this.schedule = new ScheduleData(info);
 
                 // Quellen für das aktuelle Geräteprofil laden.
@@ -41,8 +53,12 @@ namespace VCRNETClient.App {
         }
 
         private loadFinished(): void {
-            if (--this._loadPending === 0)
-                this.application.setBusy(false);
+            if (--this._loadPending !== 0)
+                return;
+
+            this.job.validate();
+
+            this.application.setBusy(false);
         }
 
         private loadSources(): Thenable<VCRServer.SourceEntry[]> {
@@ -61,7 +77,14 @@ namespace VCRNETClient.App {
         }
 
         getTitle(): string {
-            return `[TBD]`;
+            return `Aufzeichnung bearbeiten`;
+        }
+
+        private onChanged(): void {
+            this.job.validate();
+
+            if (this._site)
+                this._site.onRefresh();
         }
     }
 }

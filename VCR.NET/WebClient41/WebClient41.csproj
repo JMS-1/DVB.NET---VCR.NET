@@ -170,6 +170,9 @@
     <Content Include="FAQ\currentstream.html" />
     <Content Include="FAQ\decryptlimit.png" />
     <Content Include="FAQ\endchange.png" />
+    <None Include="src\components\editJob.scss" />
+    <None Include="src\components\reactUi\editField.scss" />
+    <None Include="src\components\reactUi\editText.scss" />
     <Content Include="ui\images\faq\epgonoff.png" />
     <Content Include="ui\images\faq\epgsources.png" />
     <Content Include="ui\images\faq\epgtimes.png" />
@@ -295,6 +298,8 @@
     <TypeScriptCompile Include="src\app\help.ts" />
     <TypeScriptCompile Include="src\app\homePage.ts" />
     <TypeScriptCompile Include="src\app\jobData.ts" />
+    <TypeScriptCompile Include="src\app\noUi\generic.ts" />
+    <TypeScriptCompile Include="src\app\noUi\simpleText.ts" />
     <TypeScriptCompile Include="src\app\page.ts" />
     <TypeScriptCompile Include="src\app\planEntry.ts" />
     <TypeScriptCompile Include="src\app\planException.ts" />
@@ -303,8 +308,11 @@
     <TypeScriptCompile Include="src\app\scheduleData.ts" />
     <TypeScriptCompile Include="src\components\checkbox.tsx" />
     <TypeScriptCompile Include="src\components\detailRow.tsx" />
+    <TypeScriptCompile Include="src\components\reactUi\editField.tsx" />
+    <TypeScriptCompile Include="src\components\editJob.tsx" />
     <TypeScriptCompile Include="src\components\externalLink.tsx" />
     <TypeScriptCompile Include="src\components\helpLink.tsx" />
+    <TypeScriptCompile Include="src\components\reactUi\editText.tsx" />
     <TypeScriptCompile Include="src\pages\edit.tsx" />
     <TypeScriptCompile Include="src\pages\faq\adminGuide.tsx" />
     <TypeScriptCompile Include="src\pages\faq\adminScan.tsx" />

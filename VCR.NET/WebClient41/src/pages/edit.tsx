@@ -8,7 +8,11 @@ namespace VCRNETClient {
     interface IEditDynamic {
     }
 
-    export class Edit extends React.Component<IEditStatic, IEditDynamic> {
+    export class Edit extends React.Component<IEditStatic, IEditDynamic> implements App.IEditSite {
+
+        componentWillMount(): void {
+            this.props.page.setSite(this);
+        }
 
         render(): JSX.Element {
             return <div className="vcrnet-edit">
@@ -16,7 +20,7 @@ namespace VCRNETClient {
                     Mit diesem Formular werden alle Daten erfasst, die für die Ausführung einer Aufzeichnung benötigt werden. Im
                     oberen Bereich finden sich die Einstellungen des Auftrags<HelpLink page="faq;jobsandschedules" />,
                     die allen Aufzeichnungen des Auftrags gemeinsam sind.
-                    In der Mitte werden die eigentlichen Aufzeichnungsdaten festgelegt. Der untere Bereich ist für sich 
+                    In der Mitte werden die eigentlichen Aufzeichnungsdaten festgelegt. Der untere Bereich ist für sich
                     wiederholende Aufzeichnungen aktiv, wenn für einzelne Tage Ausnahmeregeln definiert wurden.
                 </div>
                 <InlineHelp title="Erläuterungen zu den Daten eines Auftrags">
@@ -36,7 +40,7 @@ namespace VCRNETClient {
                                     <td>Verwendung des Geräteprofils</td>
                                 </tr>
                                 <tr>
-                                    <td>wird diese Option aktiviert, so erfolgt die Aufzeichnung auf dem ausgewählten Gerät - 
+                                    <td>wird diese Option aktiviert, so erfolgt die Aufzeichnung auf dem ausgewählten Gerät -
                                     ansonsten ist es möglich, dass zum Beispiel bei zeitlichen Kollisionen zur Aufzeichnung
                                     auf ein anderes Gerät ausgewichen wird</td>
                                 </tr>
@@ -51,7 +55,7 @@ namespace VCRNETClient {
                                     <td>Aufzeichnungsverzeichnis</td>
                                 </tr>
                                 <tr>
-                                    <td>optional kann hier ein alteratives Aufzeichnungsverzeichnis ausgewählt werden, 
+                                    <td>optional kann hier ein alteratives Aufzeichnungsverzeichnis ausgewählt werden,
                                     wobei allerdings nur die konfigurierten Verzeichnisse erlaubt sind</td>
                                 </tr>
                             </tbody>
@@ -91,7 +95,12 @@ namespace VCRNETClient {
                         </table>
                     </div>
                 </InlineHelp>
+                <JobData job={this.props.page.job} />
             </div>;
+        }
+
+        onRefresh(): void {
+            this.forceUpdate();
         }
     }
 }

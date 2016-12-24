@@ -2,7 +2,10 @@
 
     // Beschreibt die Daten eines Auftrags
     export class JobData {
-        constructor(existingData: VCRServer.JobScheduleInfoContract, defaultProfile: string) {
+        constructor(existingData: VCRServer.JobScheduleInfoContract, defaultProfile: string, onChange: () => void) {
+            // Pflegekomponenten erstellen
+            this.nameEditor = new NoUi.StringEditor(this, "name", onChange, true);
+
             // Schauen wir mal, ob wir etwas ändern sollen
             if (existingData != null) {
                 // Auftragsdaten müssen vorhanden sein
@@ -43,6 +46,8 @@
         // Der Name des Auftrags.
         name: string;
 
+        readonly nameEditor: NoUi.StringEditor;
+
         // Das Aufzeichnungsverzeichnis.
         directory: string;
 
@@ -82,6 +87,12 @@
             };
 
             return contract;
+        }
+
+        // Prüft alle Daten.
+        validate(): void {
+            // Lokalisierte Prüfungen.
+            this.nameEditor.validate();
         }
     }
 
