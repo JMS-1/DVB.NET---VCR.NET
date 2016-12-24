@@ -71,11 +71,8 @@ namespace VCRNETClient.App {
             var profile = this.job.device;
 
             return VCRServer.ProfileSourcesCache.load(profile).then(sources => {
-                if (this.job.device === profile) {
-                    this._sources = sources;
-
-                    this.job.validate();
-                }
+                if (this.job.device === profile)
+                    this.job.validate(this._sources = sources);
 
                 return sources;
             });

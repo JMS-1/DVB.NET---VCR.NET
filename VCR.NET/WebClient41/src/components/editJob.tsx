@@ -14,7 +14,8 @@ namespace VCRNETClient {
                 <legend>Daten zum Auftrag</legend>
 
                 <Ui.Field label="DVB.NET Geräteprofil:">
-                    <Ui.SingleSelect noui={this.props.job.deviceEditor} />
+                    <Ui.EditTextWithList noui={this.props.job.deviceEditor} />
+                    <Ui.EditBoolean noui={this.props.job.lockedEditor}>(auf diesem Gerät aufzeichnen)</Ui.EditBoolean>
                 </Ui.Field>
 
                 <Ui.Field label="Name:" help="faq;jobsandschedules">

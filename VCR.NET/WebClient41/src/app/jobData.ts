@@ -5,6 +5,7 @@
         constructor(existingData: VCRServer.JobScheduleInfoContract, defaultProfile: string, onChange: () => void, devices: string[]) {
             // Pflegekomponenten erstellen
             this.nameEditor = new NoUi.StringEditor(this, "name", onChange, true);
+            this.lockedEditor = new NoUi.BooleanEditor(this, "lockedToDevice", onChange);
             this.deviceEditor = new NoUi.StringListEditor(this, "device", onChange, true, devices);
 
             // Schauen wir mal, ob wir etwas ändern sollen
@@ -60,6 +61,8 @@
         // Gesetzt, wenn die Aufzeichnung immer auf dem Gerät stattfinden soll.
         lockedToDevice: boolean;
 
+        readonly lockedEditor: NoUi.BooleanEditor;
+
         // Gesetzt, wenn alle Sprachen aufgezeichnet werden sollen.
         allLanguages: boolean;
 
@@ -93,10 +96,11 @@
         }
 
         // Prüft alle Daten.
-        validate(): void {
+        validate(sources: VCRServer.SourceEntry[]): void {
             // Lokalisierte Prüfungen.
             this.nameEditor.validate();
             this.deviceEditor.validate();
+            this.lockedEditor.validate();
         }
     }
 

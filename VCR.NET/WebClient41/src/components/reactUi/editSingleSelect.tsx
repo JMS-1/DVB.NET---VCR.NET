@@ -15,7 +15,7 @@ namespace VCRNETClient.Ui {
     }
 
     // Verwaltete eine Zeichenkette, die über eine einfache Auswahlliste festgelegt wird.
-    export class SingleSelect extends React.Component<IEditSelectStatic, IEditTextDynamic>  {
+    export class EditTextWithList extends React.Component<IEditSelectStatic, IEditTextDynamic>  {
         // Wird bei einer veränderten Auswahl aufgerufen.
         private readonly _onChange = this.onChange.bind(this);
 
