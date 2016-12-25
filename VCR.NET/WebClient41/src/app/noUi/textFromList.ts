@@ -1,16 +1,27 @@
-﻿namespace VCRNETClient.App.NoUi {
+﻿/// <reference path="simpleText.ts" />
+
+namespace VCRNETClient.App.NoUi {
+
+    // Beschreibt einen Wert zur Auswahl durch den Anwender.
+    export interface ISelectableValue<TValueType> {
+        // Der tatsächlich gespeicherte Wert.
+        readonly value: TValueType;
+
+        // Der Wert zur Anzeige.
+        readonly display: string;
+    }
 
     // Beschreibt eine Eigenschaft der Art Zeichenkette mit einer festen Liste von möglichen Werten.
     export interface IStringFromListEditor extends IStringEditor {
         // Die Liste der erlaubten Werten.
-        readonly allowedValues: string[];
+        readonly allowedValues: ISelectableValue<string>[];
     }
 
     // Verwaltete eine Eigenschaft der Art Zeichenkette, deren mögliche Werte festgelegt sind.
     export class StringListEditor extends StringEditor implements IStringFromListEditor {
 
         // Legt eine neue Verwaltung an.
-        constructor(data: any, prop: string, onChange: () => void, isRequired: boolean, public readonly allowedValues: string[]) {
+        constructor(data: any, prop: string, onChange: () => void, isRequired: boolean, public readonly allowedValues: ISelectableValue<string>[]) {
             super(data, prop, onChange, isRequired);
         }
 
@@ -25,7 +36,7 @@
             // Der Wert muss in der Liste sein.
             var value = (this.val() || "").trim();
 
-            if (this.allowedValues.indexOf(value) < 0)
+            if (!this.allowedValues.some(av => av.value === value))
                 this.message = "Der Wert ist nicht in der Liste der möglichen Werte enthalten.";
         }
     }

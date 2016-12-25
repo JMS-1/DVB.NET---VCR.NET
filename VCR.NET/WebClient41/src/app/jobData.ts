@@ -2,11 +2,13 @@
 
     // Beschreibt die Daten eines Auftrags
     export class JobData {
-        constructor(existingData: VCRServer.JobScheduleInfoContract, defaultProfile: string, onChange: () => void, devices: string[]) {
+        constructor(existingData: VCRServer.JobScheduleInfoContract, defaultProfile: string, onChange: () => void, devices: NoUi.ISelectableValue<string>[], folders: NoUi.ISelectableValue<string>[]) {
             // Pflegekomponenten erstellen
             this.nameEditor = new NoUi.StringEditor(this, "name", onChange, true);
+            this.channelSelector = new NoUi.ChannelEditor(this, "sourceName", onChange);
             this.lockedEditor = new NoUi.BooleanEditor(this, "lockedToDevice", onChange);
             this.deviceEditor = new NoUi.StringListEditor(this, "device", onChange, true, devices);
+            this.folderEditor = new NoUi.StringListEditor(this, "directory", onChange, false, folders);
 
             // Schauen wir mal, ob wir etwas ändern sollen
             if (existingData != null) {
@@ -53,6 +55,8 @@
         // Das Aufzeichnungsverzeichnis.
         directory: string;
 
+        readonly folderEditor: NoUi.StringListEditor;
+
         // Das zu verwendende DVB Gerät.
         device: string;
 
@@ -78,6 +82,8 @@
         // Der Name der Quelle, die aufgezeichnet werden soll.
         sourceName: string;
 
+        readonly channelSelector: NoUi.ChannelEditor;
+
         // Erstellt eine für die Datenübertragung geeignete Variante.
         toWebService(): VCRServer.EditJobContract {
             var contract: VCRServer.EditJobContract = {
@@ -100,7 +106,9 @@
             // Lokalisierte Prüfungen.
             this.nameEditor.validate();
             this.deviceEditor.validate();
+            this.folderEditor.validate();
             this.lockedEditor.validate();
+            this.channelSelector.validate();
         }
     }
 

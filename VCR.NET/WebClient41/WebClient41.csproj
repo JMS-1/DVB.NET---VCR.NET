@@ -175,6 +175,7 @@
     <None Include="src\components\reactUi\editText.scss" />
     <None Include="src\components\reactUi\editSingleSelect.scss" />
     <None Include="src\components\reactUi\editFlag.scss" />
+    <None Include="src\components\reactUi\editChannel.scss" />
     <Content Include="ui\images\faq\epgonoff.png" />
     <Content Include="ui\images\faq\epgsources.png" />
     <Content Include="ui\images\faq\epgtimes.png" />
@@ -300,10 +301,11 @@
     <TypeScriptCompile Include="src\app\help.ts" />
     <TypeScriptCompile Include="src\app\homePage.ts" />
     <TypeScriptCompile Include="src\app\jobData.ts" />
+    <TypeScriptCompile Include="src\app\noUi\channelSelector.ts" />
     <TypeScriptCompile Include="src\app\noUi\generic.ts" />
     <TypeScriptCompile Include="src\app\noUi\simpleFlag.ts" />
     <TypeScriptCompile Include="src\app\noUi\simpleText.ts" />
-    <TypeScriptCompile Include="src\app\noUi\textFromList.tsx" />
+    <TypeScriptCompile Include="src\app\noUi\textFromList.ts" />
     <TypeScriptCompile Include="src\app\page.ts" />
     <TypeScriptCompile Include="src\app\planEntry.ts" />
     <TypeScriptCompile Include="src\app\planException.ts" />
@@ -312,6 +314,7 @@
     <TypeScriptCompile Include="src\app\scheduleData.ts" />
     <TypeScriptCompile Include="src\components\checkbox.tsx" />
     <TypeScriptCompile Include="src\components\detailRow.tsx" />
+    <TypeScriptCompile Include="src\components\reactUi\editChannel.tsx" />
     <TypeScriptCompile Include="src\components\reactUi\editField.tsx" />
     <TypeScriptCompile Include="src\components\editJob.tsx" />
     <TypeScriptCompile Include="src\components\externalLink.tsx" />

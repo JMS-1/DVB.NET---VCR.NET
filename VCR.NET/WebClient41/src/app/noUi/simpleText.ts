@@ -1,4 +1,6 @@
-﻿namespace VCRNETClient.App.NoUi {
+﻿/// <reference path="generic.ts" />
+
+namespace VCRNETClient.App.NoUi {
 
     // Beschreibt eine Eigenschaft der Art Zeichenkette mit Prüfergebnissen.
     export interface IStringEditor extends IValidatableValue<string> {

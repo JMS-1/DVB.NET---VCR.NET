@@ -1,4 +1,6 @@
-﻿namespace VCRNETClient.App.NoUi {
+﻿/// <reference path="generic.ts" />
+
+namespace VCRNETClient.App.NoUi {
 
     // Beschreibt eine Eigenschaft mit einem Wahrheitswert mit Prüfergebnissen.
     export interface IBooleanEditor extends IValidatableValue<boolean> {

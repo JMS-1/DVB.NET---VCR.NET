@@ -21,6 +21,14 @@ namespace VCRNETClient {
                 <Ui.Field label="Name:" help="faq;jobsandschedules">
                     <Ui.EditText noui={this.props.job.nameEditor} chars={100} hint="(Jeder Auftrag muss einen Namen haben)" />
                 </Ui.Field>
+
+                <Ui.Field label="Verzeichnis:">
+                    <Ui.EditTextWithList noui={this.props.job.folderEditor} />
+                </Ui.Field>
+
+                <Ui.Field label="Quelle:" help="faq;sourcechooser">
+                    <Ui.EditChannel noui={this.props.job.channelSelector} />
+                </Ui.Field>
             </fieldset>;
         }
     }

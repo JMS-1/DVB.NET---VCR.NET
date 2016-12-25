@@ -36,7 +36,7 @@
             this.message = "";
         }
 
-        // Initialisiert die verwaltung einer Eigenschaft auf Basis eines JavaScript Feldes.
+        // Initialisiert die Verwaltung einer Eigenschaft auf Basis eines JavaScript Feldes.
         protected constructor(private readonly _data: any, private readonly _prop: string, private readonly _onChange: () => void) {
         }
     }

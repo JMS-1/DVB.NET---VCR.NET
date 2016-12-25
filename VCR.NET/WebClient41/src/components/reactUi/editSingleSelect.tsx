@@ -33,13 +33,13 @@ namespace VCRNETClient.Ui {
         // Erstellt die Anzeige für die Komponente.
         render(): JSX.Element {
             return <select className="vcrnet-editlist" value={this.state.current} onChange={this._onChange}>
-                {this.props.noui.allowedValues.map(av => <option key={av} value={av}>{av}</option>)}
+                {this.props.noui.allowedValues.map(av => <option key={av.display} value={`${av.value}`}>{av.display}</option>)}
             </select>;
         }
 
         // Übergibt eine veränderte Auswahl an die NoUi-Schicht.
         private onChange(ev: React.FormEvent): any {
-            this.props.noui.val((ev.target as HTMLInputElement).value);
+            this.props.noui.val((ev.target as HTMLSelectElement).value);
         }
     }
 }

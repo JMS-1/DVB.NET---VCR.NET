@@ -95,7 +95,9 @@ namespace VCRNETClient {
                         </table>
                     </div>
                 </InlineHelp>
-                <JobData job={this.props.page.job} />
+                <form>
+                    <JobData job={this.props.page.job} />
+                </form>
             </div>;
         }
 

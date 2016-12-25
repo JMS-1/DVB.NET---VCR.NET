@@ -18,10 +18,6 @@ namespace VCRNETClient.App {
 
         private _loadPending: number;
 
-        private _directories: string[];
-
-        private _profiles: VCRServer.ProfileInfoContract[];
-
         private _sources: VCRServer.SourceEntry[];
 
         private _site: IEditSite;
@@ -39,24 +35,26 @@ namespace VCRNETClient.App {
         }
 
         reset(section: string): void {
-            this._loadPending = 2;
+            this._loadPending = 1;
             this.job = undefined;
             this.schedule = undefined;
-            this._profiles = undefined;
-            this._directories = undefined;
 
-            VCRServer.RecordingDirectoryCache.load().then(dirs => this._directories = dirs).then(this._loadFinished);
+            VCRServer.RecordingDirectoryCache.load().then(dirs => {
+                var folderSelection = dirs.map(f => <NoUi.ISelectableValue<string>>{ value: f, display: f });
 
-            VCRServer.ProfileCache.load().then(profiles => {
-                this._profiles = profiles;
+                folderSelection.unshift(<NoUi.ISelectableValue<string>>{ value: "", display: "(Voreinstellung verwenden)" });
 
-                return VCRServer.createScheduleFromGuide(section.substr(3), "").then(info => {
-                    this.job = new JobData(info, profiles[0].name, this._onChanged, profiles.map(p => p.name));
-                    this.schedule = new ScheduleData(info);
+                return VCRServer.ProfileCache.load().then(profiles => {
+                    var profileSelection = profiles.map(p => <NoUi.ISelectableValue<string>>{ value: p.name, display: p.name });
 
-                    // Quellen für das aktuelle Geräteprofil laden.
-                    return this.loadSources();
-                }).then(this._loadFinished);
+                    return VCRServer.createScheduleFromGuide(section.substr(3), "").then(info => {
+                        this.job = new JobData(info, profiles[0].name, this._onChanged, profileSelection, folderSelection);
+                        this.schedule = new ScheduleData(info);
+
+                        // Quellen für das aktuelle Geräteprofil laden.
+                        return this.loadSources();
+                    }).then(this._loadFinished);
+                });
             });
         }
 
