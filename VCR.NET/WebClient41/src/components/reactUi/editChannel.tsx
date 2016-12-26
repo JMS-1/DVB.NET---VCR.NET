@@ -2,22 +2,29 @@
 
 namespace VCRNETClient.Ui {
 
+    // Konfiguration der Senderauswahl.
     interface IEditChannelStatic {
+        // Die Formular- und Prüflogik zur Senderauswahl.
         noui: App.NoUi.IChannelSelector;
     }
 
+    // Der Zustand der Senderauswahl.
     interface IEditChannelDynamic {
     }
 
+    // Die React.Js Anzeige zur Senderauswahl.
     export class EditChannel extends React.Component<IEditChannelStatic, IEditChannelDynamic> implements App.NoUi.IChannelSelectorSite {
+        // Beim Einbinden der Anzeige in die Oberfläche wird eine Verbindung zur Logik hergestellt.
         componentWillMount(): void {
             this.props.noui.setSite(this);
         }
 
+        // Beim Ausklinken der Anzeige wird die Verbindung zur Logik aufgehoben.
         componentWillUnmount(): void {
             this.props.noui.setSite(undefined);
         }
 
+        // Anzeige erstellen.
         render(): JSX.Element {
             return <div className="vcrnet-editchannel">
                 <select value={this.props.noui.val()} onChange={this._source}>
@@ -35,30 +42,35 @@ namespace VCRNETClient.Ui {
             </div>;
         }
 
+        // Einschränkung auf die Verschlüsselung ändern.
         private _encryption = this.updateEncryption.bind(this);
 
         private updateEncryption(ev: React.FormEvent): void {
             this.props.noui.encryption((ev.target as HTMLSelectElement).value);
         }
 
+        // Einschränkung auf die Art der Quelle ändern.
         private _type = this.updateType.bind(this);
 
         private updateType(ev: React.FormEvent): void {
             this.props.noui.type((ev.target as HTMLSelectElement).value);
         }
 
+        // Einschränkung auf den Namen der Quelle ändern.
         private _section = this.updateSection.bind(this);
 
         private updateSection(ev: React.FormEvent): void {
             this.props.noui.section((ev.target as HTMLSelectElement).value);
         }
 
+        // Ausgewählte Quelle ändern.
         private _source = this.updateSource.bind(this);
 
         private updateSource(ev: React.FormEvent): void {
             this.props.noui.val((ev.target as HTMLSelectElement).value);
         }
 
+        // Anzeige aktualisieren, nachdem in der Logik eine neue Liste relevanter Quellen erstellt wurde.
         refresh(): void {
             this.forceUpdate();
         }

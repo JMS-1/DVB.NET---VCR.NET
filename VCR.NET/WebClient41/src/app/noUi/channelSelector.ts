@@ -2,37 +2,50 @@
 
 namespace VCRNETClient.App.NoUi {
 
+    // Wird von der Anzeige der Senderauswahl bereitgestellt.
     export interface IChannelSelectorSite {
+        // Die Anzeige muss erneuert werden, weil sich vermutlich die Liste der Quellen verändert hat.
         refresh(): void;
     }
 
+    // Schnitstelle zur Pflege der Senderauswahl.
     export interface IChannelSelector extends IValidatableValue<string> {
+        // Legt die Arbeitsumgebung fest.
         setSite(site: IChannelSelectorSite): void;
 
+        // Die Vorauswahl der Quellen vor allem nach dem ersten Zeichen des Namens.
         section(newSection?: string): string;
 
         readonly sections: string[];
 
+        // Die Vorauswahl der Quellen über die Art (Fernsehen oder Radio).
         type(newType?: string): string;
 
         readonly types: string[];
 
+        // Die Vorauswahl der Quellen über die Verschlüsselung.
         encryption(newEncryption?: string): string;
 
         readonly encryptions: string[];
 
+        // Die komplette Liste aller verfügbaren Quellen.
         sourceNames: ISelectableValue<string>[];
     }
 
+    // Stellt die Logik zur Auswahl eines Senders zur Verfügung.
     export class ChannelEditor extends ValueHolder<string> implements IChannelSelector {
+
+        // Die Auswahl der Verschlüsselung.
         private static readonly _encryptions = [
             "Alle Quellen",
             "Nur verschlüsselte Quellen",
             "Nur unverschlüsselte Quellen"
         ];
 
+        // Die aktuelle Einschränkung bezüglich der Verschlüsselung.
         private _encryption = ChannelEditor._encryptions[0];
 
+        // Prüft ob eine Quelle der aktuellen Einschränkung der Verschlüsselung entspricht.
         private applyEncryptionFilter(source: VCRServer.SourceEntry): boolean {
             switch (this.encryptions.indexOf(this._encryption)) {
                 case 0:
@@ -46,8 +59,10 @@ namespace VCRNETClient.App.NoUi {
             }
         }
 
+        // Alle Auswahlmöglichkeiten der Verschlüsselung.
         encryptions = ChannelEditor._encryptions;
 
+        // Meldet oder ändert die aktuelle Auswahl der Verschlüsselung.
         encryption(newEncryption?: string): string {
             var oldEncryption = this._encryption;
 
@@ -62,14 +77,17 @@ namespace VCRNETClient.App.NoUi {
             return oldEncryption;
         }
 
+        // Die Auswahlmöglichkeiten zur Art der Quelle.
         private static readonly _types = [
             "Alle Quellen",
             "Nur Radio",
             "Nur Fernsehen"
         ];
 
+        // Die aktuelle Einschränung auf die Art der Quelle.
         private _type = ChannelEditor._types[0];
 
+        // Prüft, ob eine Quelle der aktuell ausgewählten Art entspricht.
         private applyTypeFilter(source: VCRServer.SourceEntry): boolean {
             switch (this.types.indexOf(this._type)) {
                 case 0:
@@ -83,8 +101,10 @@ namespace VCRNETClient.App.NoUi {
             }
         }
 
+        // Alle Auswahlmöglichkeiten für die Art der Quelle.
         types = ChannelEditor._types;
 
+        // Meldet oder ändert die Auswahl der Art der Quellen.
         type(newType?: string): string {
             var oldType = this._type;
 
@@ -99,6 +119,7 @@ namespace VCRNETClient.App.NoUi {
             return oldType;
         }
 
+        // Alle möglichen Einschränkungen auf die Namen der Quellen.
         private static readonly _sections = [
             "(Zuletzt verwendet)",
             "A B C",
@@ -115,14 +136,16 @@ namespace VCRNETClient.App.NoUi {
             "(Alle Quellen)"
         ];
 
+        // Die aktuelle Auswahl auf die Namen der Quellen.
         private _section = ChannelEditor._sections[0];
 
+        // Prüft, ob der Name einer Quelle der aktuellen Auswahl entspricht.
         private applySectionFilter(source: VCRServer.SourceEntry): boolean {
             var first = source.firstNameCharacter;
 
             switch (this.sections.indexOf(this._section)) {
                 case 0:
-                    return false;
+                    return this._favorites[source.name];
                 case 1:
                     return (first >= "A") && (first <= "C");
                 case 2:
@@ -152,8 +175,10 @@ namespace VCRNETClient.App.NoUi {
             }
         }
 
+        // Alle Auswahlmöglichkeiten zum Namen der Quellen.
         sections = ChannelEditor._sections;
 
+        // Meldet oder ändert die Auswahl für die Einschränkung auf den Namen der Quellen.
         section(newSection?: string): string {
             var oldSection = this._section;
 
@@ -168,21 +193,33 @@ namespace VCRNETClient.App.NoUi {
             return oldSection;
         }
 
+        // Alle aktuell bezüglich aller Einschränkungen relevanten Quellen.
         sourceNames: ISelectableValue<string>[];
 
-        private _site: IChannelSelectorSite;
-
+        // Sämtliche bekannten Quellen.
         private _sources: VCRServer.SourceEntry[] = [];
+
+        // Die bevorzugten Quellen des Anwenders - hier in einem Dictionary zur Prüfung optimiert.
+        private _favorites: { [source: string]: boolean } = {};
+
+        // Die aktuelle Arbeitsumgebung der Senderauswahl.
+        private _site: IChannelSelectorSite;
 
         setSite(site: IChannelSelectorSite): void {
             this._site = site;
         }
 
-        constructor(data: any, prop: string, onChange: () => void) {
+        // Erstellt eine neue Logik zur Senderauswahl.
+        constructor(data: any, prop: string, favoriteSources: string[], onChange: () => void) {
             super(data, prop, onChange);
+
+            // Übernimmt die lineare Liste aller bevorzugten Sender zur schnelleren Auswahl in ein Dictionary.
+            favoriteSources.forEach(s => this._favorites[s] = true);
         }
 
+        // Ermittelt die Liste der relevanten Quellen neu.
         private refreshFilter(): void {
+            // Alle Quellen bezürglich der aktiven Filter untersuchen.
             this.sourceNames = this._sources.filter(s => {
                 if (!this.applyEncryptionFilter(s))
                     return false;
@@ -194,6 +231,7 @@ namespace VCRNETClient.App.NoUi {
                 return true;
             }).map(s => <ISelectableValue<string>>{ value: s.name, display: s.name });
 
+            // Aktuelle Quelle zusätzliche in die Liste einmischen, so dass immer eine korrekte Auswahl existiert.
             var source = this.val();
 
             if ((source || "").trim().length > 0)
@@ -208,18 +246,22 @@ namespace VCRNETClient.App.NoUi {
                             break;
                         }
 
+                    // Bereits gewählte Quelle an der korrekten Position in der Liste eintragen.
                     if (insertAt < 0)
                         this.sourceNames.push({ value: source, display: source });
                     else
                         this.sourceNames.splice(insertAt, 0, { value: source, display: source });
                 }
 
+            // Der erste Eintrag erlaubt es immer auch einfach mal keinen Sender auszuwählen.
             this.sourceNames.unshift({ value: "", display: "(Keine Quelle)" });
 
+            // Anzeige aktualisieren.
             if (this._site)
                 this._site.refresh();
         }
 
+        // Aktuelle Liste der Quellen festlegen, etwa nach der Änderung des zu verwendenden Geräteprofils.
         setSources(sources: VCRServer.SourceEntry[]): void {
             this._sources = sources;
 

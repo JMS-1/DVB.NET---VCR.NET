@@ -48,7 +48,7 @@ namespace VCRNETClient.App {
                     var profileSelection = profiles.map(p => <NoUi.ISelectableValue<string>>{ value: p.name, display: p.name });
 
                     return VCRServer.createScheduleFromGuide(section.substr(3), "").then(info => {
-                        this.job = new JobData(info, profiles[0].name, this._onChanged, profileSelection, folderSelection);
+                        this.job = new JobData(info, profileSelection, this.application.profile.recentSources || [], folderSelection, this._onChanged);
                         this.schedule = new ScheduleData(info);
 
                         // Quellen für das aktuelle Geräteprofil laden.

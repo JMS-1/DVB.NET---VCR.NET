@@ -2,13 +2,13 @@
 
     // Beschreibt die Daten eines Auftrags
     export class JobData {
-        constructor(existingData: VCRServer.JobScheduleInfoContract, defaultProfile: string, onChange: () => void, devices: NoUi.ISelectableValue<string>[], folders: NoUi.ISelectableValue<string>[]) {
+        constructor(existingData: VCRServer.JobScheduleInfoContract, devices: NoUi.ISelectableValue<string>[], favoriteSources: string[], folders: NoUi.ISelectableValue<string>[], onChange: () => void) {
             // Pflegekomponenten erstellen
             this.nameEditor = new NoUi.StringEditor(this, "name", onChange, true);
-            this.channelSelector = new NoUi.ChannelEditor(this, "sourceName", onChange);
             this.lockedEditor = new NoUi.BooleanEditor(this, "lockedToDevice", onChange);
             this.deviceEditor = new NoUi.StringListEditor(this, "device", onChange, true, devices);
             this.folderEditor = new NoUi.StringListEditor(this, "directory", onChange, false, folders);
+            this.channelSelector = new NoUi.ChannelEditor(this, "sourceName", favoriteSources, onChange);
 
             // Schauen wir mal, ob wir etwas ändern sollen
             if (existingData != null) {
@@ -32,11 +32,11 @@
             }
 
             // Ein ganz neuer Auftrag
+            this.device = (devices && (devices.length > 0)) ? devices[0].value : null;
             this.withSubtitles = VCRServer.UserProfile.global.defaultDVBSubtitles;
             this.allLanguages = VCRServer.UserProfile.global.defaultAllLanguages;
             this.withVideotext = VCRServer.UserProfile.global.defaultVideotext;
             this.includeDolby = VCRServer.UserProfile.global.defaultDolby;
-            this.device = defaultProfile;
             this.lockedToDevice = false;
             this.sourceName = '';
             this.directory = '';
