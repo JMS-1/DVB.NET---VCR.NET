@@ -9,11 +9,19 @@ namespace VCRNETClient.Ui {
     interface IEditChannelDynamic {
     }
 
-    export class EditChannel extends React.Component<IEditChannelStatic, IEditChannelDynamic>  {
+    export class EditChannel extends React.Component<IEditChannelStatic, IEditChannelDynamic> implements App.NoUi.IChannelSelectorSite {
+        componentWillMount(): void {
+            this.props.noui.setSite(this);
+        }
+
+        componentWillUnmount(): void {
+            this.props.noui.setSite(undefined);
+        }
+
         render(): JSX.Element {
             return <div className="vcrnet-editchannel">
-                <select>
-                    <option>[TBD]</option>
+                <select value={this.props.noui.val()} onChange={this._source}>
+                    {this.props.noui.sourceNames.map(s => <option key={`${s.value}`} value={`${s.value}`}>{s.display}</option>)}
                 </select>
                 <select value={this.props.noui.section()} onChange={this._section}>
                     {this.props.noui.sections.map(s => <option key={s} value={s}>{s}</option>)}
@@ -31,23 +39,27 @@ namespace VCRNETClient.Ui {
 
         private updateEncryption(ev: React.FormEvent): void {
             this.props.noui.encryption((ev.target as HTMLSelectElement).value);
-
-            this.forceUpdate();
         }
 
         private _type = this.updateType.bind(this);
 
         private updateType(ev: React.FormEvent): void {
             this.props.noui.type((ev.target as HTMLSelectElement).value);
-
-            this.forceUpdate();
         }
 
         private _section = this.updateSection.bind(this);
 
         private updateSection(ev: React.FormEvent): void {
             this.props.noui.section((ev.target as HTMLSelectElement).value);
+        }
 
+        private _source = this.updateSource.bind(this);
+
+        private updateSource(ev: React.FormEvent): void {
+            this.props.noui.val((ev.target as HTMLSelectElement).value);
+        }
+
+        refresh(): void {
             this.forceUpdate();
         }
     }

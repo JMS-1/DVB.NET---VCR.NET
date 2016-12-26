@@ -103,6 +103,9 @@
 
         // Prüft alle Daten.
         validate(sources: VCRServer.SourceEntry[]): void {
+            // Aktualisieren.
+            this.channelSelector.setSources(sources);
+
             // Lokalisierte Prüfungen.
             this.nameEditor.validate();
             this.deviceEditor.validate();
