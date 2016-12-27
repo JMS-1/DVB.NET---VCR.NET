@@ -176,6 +176,7 @@
     <None Include="src\components\reactUi\editSingleSelect.scss" />
     <None Include="src\components\reactUi\editFlag.scss" />
     <None Include="src\components\reactUi\editChannel.scss" />
+    <None Include="src\components\reactUi\editChannelFlags.scss" />
     <Content Include="ui\images\faq\epgonoff.png" />
     <Content Include="ui\images\faq\epgsources.png" />
     <Content Include="ui\images\faq\epgtimes.png" />
@@ -315,6 +316,7 @@
     <TypeScriptCompile Include="src\components\checkbox.tsx" />
     <TypeScriptCompile Include="src\components\detailRow.tsx" />
     <TypeScriptCompile Include="src\components\reactUi\editChannel.tsx" />
+    <TypeScriptCompile Include="src\components\reactUi\editChannelFlags.tsx" />
     <TypeScriptCompile Include="src\components\reactUi\editField.tsx" />
     <TypeScriptCompile Include="src\components\editJob.tsx" />
     <TypeScriptCompile Include="src\components\externalLink.tsx" />

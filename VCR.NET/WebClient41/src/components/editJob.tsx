@@ -29,6 +29,10 @@ namespace VCRNETClient {
                 <Ui.Field label="Quelle:" help="faq;sourcechooser">
                     <Ui.EditChannel noui={this.props.noui.source} />
                 </Ui.Field>
+
+                <Ui.Field label="Besonderheiten:" help="faq;filecontents">
+                    <Ui.EditChannelFlags noui={this.props.noui} />
+                </Ui.Field>
             </fieldset>;
         }
     }
