@@ -300,7 +300,7 @@
     <TypeScriptCompile Include="src\app\editPage.ts" />
     <TypeScriptCompile Include="src\app\help.ts" />
     <TypeScriptCompile Include="src\app\homePage.ts" />
-    <TypeScriptCompile Include="src\app\jobData.ts" />
+    <TypeScriptCompile Include="src\app\noUi\job.ts" />
     <TypeScriptCompile Include="src\app\noUi\channelSelector.ts" />
     <TypeScriptCompile Include="src\app\noUi\generic.ts" />
     <TypeScriptCompile Include="src\app\noUi\simpleFlag.ts" />

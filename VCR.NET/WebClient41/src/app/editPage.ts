@@ -6,7 +6,7 @@ namespace VCRNETClient.App {
     }
 
     export class EditPage extends Page {
-        job: JobData;
+        job: NoUi.JobEditor;
 
         schedule: ScheduleData;
 
@@ -48,7 +48,7 @@ namespace VCRNETClient.App {
                     var profileSelection = profiles.map(p => <NoUi.ISelectableValue<string>>{ value: p.name, display: p.name });
 
                     return VCRServer.createScheduleFromGuide(section.substr(3), "").then(info => {
-                        this.job = new JobData(info, profileSelection, this.application.profile.recentSources || [], folderSelection, this._onChanged);
+                        this.job = new NoUi.JobEditor(info.job, profileSelection, this.application.profile.recentSources || [], folderSelection, this._onChanged);
                         this.schedule = new ScheduleData(info);
 
                         // Quellen für das aktuelle Geräteprofil laden.
@@ -66,10 +66,10 @@ namespace VCRNETClient.App {
         }
 
         private loadSources(): Thenable<VCRServer.SourceEntry[]> {
-            var profile = this.job.device;
+            var profile = this.job.device.val();
 
             return VCRServer.ProfileSourcesCache.load(profile).then(sources => {
-                if (this.job.device === profile)
+                if (this.job.device.val() === profile)
                     this.job.validate(this._sources = sources);
 
                 return sources;
