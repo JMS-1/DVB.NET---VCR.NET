@@ -6,6 +6,9 @@ namespace VCRNETClient.Ui {
     interface IEditBooleanStatic {
         // Die Formular- und Prüflogik zum Wert.
         noui: App.NoUi.IBooleanEditor;
+
+        // Gesetzt, wenn der Wert nicht verändert werden darf.
+        disabled?: boolean;
     }
 
     // Der aktuelle Zustand der Auswahl.
@@ -33,7 +36,7 @@ namespace VCRNETClient.Ui {
         // Erstellt die Anzeige der Komponente.
         render(): JSX.Element {
             return <label className="vcrnet-editflag">
-                <input type="CHECKBOX" checked={this.state.current} onChange={this._onChange} />
+                <input type="CHECKBOX" disabled={this.props.disabled} checked={this.state.current} onChange={this._onChange} />
                 {this.props.children}
             </label>;
         }
