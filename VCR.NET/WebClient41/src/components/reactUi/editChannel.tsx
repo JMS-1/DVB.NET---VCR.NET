@@ -33,10 +33,10 @@ namespace VCRNETClient.Ui {
                 <select value={this.props.noui.section()} onChange={this._section}>
                     {this.props.noui.sections.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
-                <select value={this.props.noui.type()} onChange={this._type}>
+                <select value={this.props.noui.type()} onChange={this._type} hidden={!this.props.noui.showFilter}>
                     {this.props.noui.types.map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
-                <select value={this.props.noui.encryption()} onChange={this._encryption}>
+                <select value={this.props.noui.encryption()} onChange={this._encryption} hidden={!this.props.noui.showFilter}>
                     {this.props.noui.encryptions.map(e => <option key={e} value={e}>{e}</option>)}
                 </select>
             </div>;

@@ -238,8 +238,8 @@ module VCRServer {
         originalDuration: number;
     }
 
-    // Repräsentiert die Klasse EditSchedule
-    export interface EditScheduleContract {
+    // Gemeinsame Schnittstelle der Klassen EditSchedule und EditJob
+    export interface EditJobScheduleCommonContract {
         // Der Name der Aufzeichnung
         name: string;
 
@@ -257,7 +257,10 @@ module VCRServer {
 
         // Gesetzt, wenn Untertitel aufgezeichnet werden sollen
         withSubtitles: boolean;
+    }
 
+    // Repräsentiert die Klasse EditSchedule
+    export interface EditScheduleContract extends EditJobScheduleCommonContract {
         // Der erste Startzeitpunkt in ISO Notation
         firstStart: string;
 
@@ -275,33 +278,15 @@ module VCRServer {
     }
 
     // Repräsentiert die Klasse EditJob
-    export interface EditJobContract {
-        // Der Name des Auftrags
-        name: string;
-
+    export interface EditJobContract extends EditJobScheduleCommonContract {
         // Das zu verwendende Aufzeichnungsverzeichnis
         directory: string;
 
         // Das zu verwendende Gerät
         device: string;
 
-        // Die Quelle, die für alle Aufzeichnungen verwendet werden soll, die nicht selbst eine solche definieren
-        sourceName: string;
-
         // Gesetzt, wenn die Aufzeichnung auf jeden Fall auf dem angegebenen Geräte erfolgen soll
         lockedToDevice: boolean;
-
-        // Gesetzt um alle Sprachen aufzuzeichnen
-        allLanguages: boolean;
-
-        // Gesetzt, um die Dolby Digital Tonspur aufzuzeichnen
-        includeDolby: boolean;
-
-        // Gesetzt, um den Videotext aufzuzeichnen
-        withVideotext: boolean;
-
-        // Gesetzt, um die Untertitel aufzuzeichnen
-        withSubtitles: boolean;
     }
 
     // Repräsentiert die Klasse JobScheduleInfo

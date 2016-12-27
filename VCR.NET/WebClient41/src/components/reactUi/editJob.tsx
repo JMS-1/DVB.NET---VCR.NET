@@ -1,6 +1,6 @@
-﻿/// <reference path="../vcrnet.tsx" />
+﻿/// <reference path="../../vcrnet.tsx" />
 
-namespace VCRNETClient {
+namespace VCRNETClient.Ui {
     interface IJobDataStatic {
         noui: App.NoUi.JobEditor;
     }

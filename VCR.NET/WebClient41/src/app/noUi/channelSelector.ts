@@ -30,6 +30,9 @@ namespace VCRNETClient.App.NoUi {
 
         // Die komplette Liste aller verfügbaren Quellen.
         sourceNames: ISelectableValue<string>[];
+
+        // Gesetzt, wenn die zusätzlichen Filter angezeigt werden sollen.
+        readonly showFilter: boolean;
     }
 
     // Stellt die Logik zur Auswahl eines Senders zur Verfügung.
@@ -183,12 +186,16 @@ namespace VCRNETClient.App.NoUi {
             var oldSection = this._section;
 
             if (newSection !== undefined)
-                if (newSection !== oldSection)
-                    if (this.sections.indexOf(newSection) >= 0) {
+                if (newSection !== oldSection) {
+                    var sectionIndex = this.sections.indexOf(newSection);
+
+                    if (sectionIndex >= 0) {
+                        this.showFilter = (sectionIndex > 0);
                         this._section = newSection;
 
                         this.refreshFilter();
                     }
+                }
 
             return oldSection;
         }
@@ -208,6 +215,9 @@ namespace VCRNETClient.App.NoUi {
         setSite(site: IChannelSelectorSite): void {
             this._site = site;
         }
+
+        // Gesetzt, wenn die zusätzlichen Filter angezeigt werden sollen.
+        showFilter = false;
 
         // Erstellt eine neue Logik zur Senderauswahl.
         constructor(data: any, prop: string, favoriteSources: string[], onChange: () => void) {

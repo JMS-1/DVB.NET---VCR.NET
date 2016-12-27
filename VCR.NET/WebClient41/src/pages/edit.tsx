@@ -23,82 +23,143 @@ namespace VCRNETClient {
                     In der Mitte werden die eigentlichen Aufzeichnungsdaten festgelegt. Der untere Bereich ist für sich
                     wiederholende Aufzeichnungen aktiv, wenn für einzelne Tage Ausnahmeregeln definiert wurden.
                 </div>
-                <InlineHelp title="Erläuterungen zu den Daten eines Auftrags">
-                    <div>
-                        Für einen Auftrag gibt es erst einmal die Informationen, die allen Aufzeichnungen gemeinsam sind,
+                {this.renderJobHelp()}
+                <form>
+                    <Ui.JobData noui={this.props.page.job} />
+                </form>
+                {this.renderScheduleHelp()}
+                <form>
+                    <Ui.ScheduleData />
+                </form>
+            </div>;
+        }
+
+        private renderScheduleHelp(): JSX.Element {
+            return <InlineHelp title="Erläuterungen zu den Daten einer Aufzeichnung">
+                <div>
+                    Einem Auftrag können beliebig viele Aufzeichnungen zugeordnet sein, die sich alle die
+                    gemeinsamen Einstellungen des Auftrags teilen. Darüber hinaus können pro Aufzeichnung
+                    folgende Angaben gemacht werden:
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>Name</td>
+                            </tr>
+                            <tr>
+                                <td>die Angabe des Namens einer Aufzeichnung ist optional und wird wenn vorhanden im Aufzeichnungsplan hinter dem Namen des Auftrags angezeigt</td>
+                            </tr>
+                            <tr>
+                                <td>Quelle</td>
+                            </tr>
+                            <tr>
+                                <td>ist keine Quelle zur Aufzeichnung ausgewählt, so wird die für den Auftrag konfigurierte Quelle verwendet - ist für einen Auftrag keine Quelle
+                                angegeben, so muss jede Aufzeichnung eine solche festlegen</td>
+                            </tr>
+                            <tr>
+                                <td>Aufzeichnungsoptionen</td>
+                            </tr>
+                            <tr>
+                                <td>ist eine Quelle festgelegt, so können diese Optionen genau wie bei dem Auftrag eingestellt werden</td>
+                            </tr>
+                            <tr>
+                                <td>Datum der ersten Aufzeichnung</td>
+                            </tr>
+                            <tr>
+                                <td>das Datum, ab dem die Aufzeichnung erstmalig ausgeführt werden soll</td>
+                            </tr>
+                            <tr>
+                                <td>Aufzeichnungszeitraum</td>
+                            </tr>
+                            <tr>
+                                <td>die Uhrzeiten, zwischen denen die Aufzeichnung nach Möglichkeit erfolgen soll - liegt der Endzeitpunkt vor dem Beginn so wird
+                                davon ausgegangen, dass das Ende auf den Folgetag fällt</td>
+                            </tr>
+                            <tr>
+                                <td>Wiederholung</td>
+                            </tr>
+                            <tr>
+                                <td>optional ist es möglich, die Wochentage anzugeben, an denen die Aufzeichnung ausgeführt werden soll - ist dies geschehen, so kann
+                                zusätzlich das Datum der letzten Ausführung eingegeben werden</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </InlineHelp>;
+        }
+
+        private renderJobHelp(): JSX.Element {
+            return <InlineHelp title="Erläuterungen zu den Daten eines Auftrags">
+                <div>
+                    Für einen Auftrag gibt es erst einmal die Informationen, die allen Aufzeichnungen gemeinsam sind,
                         die dem Auftrag zugeordnet sind.
                         <table>
-                            <tbody>
-                                <tr>
-                                    <td>Geräteprofil</td>
-                                </tr>
-                                <tr>
-                                    <td>die zur Auswahl angebotenen Quellen beschränken sich auf die Quellen, die über
+                        <tbody>
+                            <tr>
+                                <td>Geräteprofil</td>
+                            </tr>
+                            <tr>
+                                <td>die zur Auswahl angebotenen Quellen beschränken sich auf die Quellen, die über
                                     dieses Gerät aufgezeichnet werden können</td>
-                                </tr>
-                                <tr>
-                                    <td>Verwendung des Geräteprofils</td>
-                                </tr>
-                                <tr>
-                                    <td>wird diese Option aktiviert, so erfolgt die Aufzeichnung auf dem ausgewählten Gerät -
+                            </tr>
+                            <tr>
+                                <td>Verwendung des Geräteprofils</td>
+                            </tr>
+                            <tr>
+                                <td>wird diese Option aktiviert, so erfolgt die Aufzeichnung auf dem ausgewählten Gerät -
                                     ansonsten ist es möglich, dass zum Beispiel bei zeitlichen Kollisionen zur Aufzeichnung
                                     auf ein anderes Gerät ausgewichen wird</td>
-                                </tr>
-                                <tr>
-                                    <td>Name</td>
-                                </tr>
-                                <tr>
-                                    <td>jeder Auftrag muss einen Namen haben, unter dem seine Aufzeichnungen im
+                            </tr>
+                            <tr>
+                                <td>Name</td>
+                            </tr>
+                            <tr>
+                                <td>jeder Auftrag muss einen Namen haben, unter dem seine Aufzeichnungen im
                                     Aufzeichnungsplan erscheinen</td>
-                                </tr>
-                                <tr>
-                                    <td>Aufzeichnungsverzeichnis</td>
-                                </tr>
-                                <tr>
-                                    <td>optional kann hier ein alteratives Aufzeichnungsverzeichnis ausgewählt werden,
+                            </tr>
+                            <tr>
+                                <td>Aufzeichnungsverzeichnis</td>
+                            </tr>
+                            <tr>
+                                <td>optional kann hier ein alteratives Aufzeichnungsverzeichnis ausgewählt werden,
                                     wobei allerdings nur die konfigurierten Verzeichnisse erlaubt sind</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        Ergänzend können eine Quelle und Aufzeichnungsoptionen festlegt werden. Diese Einstellungen kommen
+                            </tr>
+                        </tbody>
+                    </table>
+                    Ergänzend können eine Quelle und Aufzeichnungsoptionen festlegt werden. Diese Einstellungen kommen
                         allerdings nur dann zum Einsatz, wenn für eine Aufzeichnung keine Quelle explizit festgelegt wurde.
                         Als Aufzeichnungsoptionen stehen folgende Einstellungen zur Verfügung:
                         <table>
-                            <tbody>
-                                <tr>
-                                    <td>Dolby Digital</td>
-                                </tr>
-                                <tr>
-                                    <td>sollte die Quelle Dolby Digital Spuren anbieten, so wird zusätzlich zum üblichen
+                        <tbody>
+                            <tr>
+                                <td>Dolby Digital</td>
+                            </tr>
+                            <tr>
+                                <td>sollte die Quelle Dolby Digital Spuren anbieten, so wird zusätzlich zum üblichen
                                     Stereoton die primäre Dolby Spur mit aufgezeichnet</td>
-                                </tr>
-                                <tr>
-                                    <td>Alle Sprachen</td>
-                                </tr>
-                                <tr>
-                                    <td>es werden alle Tonspuren aufgezeichnet - und nicht nur die jeweils primäre Sprache</td>
-                                </tr>
-                                <tr>
-                                    <td>Videotext</td>
-                                </tr>
-                                <tr>
-                                    <td>der Videotext wird mit in die Aufzeichnungsdatei übernommen, sofern die Quelle einen
+                            </tr>
+                            <tr>
+                                <td>Alle Sprachen</td>
+                            </tr>
+                            <tr>
+                                <td>es werden alle Tonspuren aufgezeichnet - und nicht nur die jeweils primäre Sprache</td>
+                            </tr>
+                            <tr>
+                                <td>Videotext</td>
+                            </tr>
+                            <tr>
+                                <td>der Videotext wird mit in die Aufzeichnungsdatei übernommen, sofern die Quelle einen
                                     solchen ausstrahlt - daraus können später dann je nach Quelle Untertitel extrahiert werden</td>
-                                </tr>
-                                <tr>
-                                    <td>Untertitel</td>
-                                </tr>
-                                <tr>
-                                    <td>wenn die Quelle DVB Untertitel anbietet, so werden diese vollständig mit aufgezeichnet</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </InlineHelp>
-                <form>
-                    <JobData noui={this.props.page.job} />
-                </form>
-            </div>;
+                            </tr>
+                            <tr>
+                                <td>Untertitel</td>
+                            </tr>
+                            <tr>
+                                <td>wenn die Quelle DVB Untertitel anbietet, so werden diese vollständig mit aufgezeichnet</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </InlineHelp>;
         }
 
         onRefresh(): void {
