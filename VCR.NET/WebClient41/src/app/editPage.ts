@@ -8,7 +8,7 @@ namespace VCRNETClient.App {
     export class EditPage extends Page {
         job: NoUi.JobEditor;
 
-        schedule: ScheduleData;
+        schedule: NoUi.ScheduleEditor;
 
         private _loadFinished = this.loadFinished.bind(this);
 
@@ -48,8 +48,10 @@ namespace VCRNETClient.App {
                     var profileSelection = profiles.map(p => <NoUi.ISelectableValue<string>>{ value: p.name, display: p.name });
 
                     return VCRServer.createScheduleFromGuide(section.substr(3), "").then(info => {
-                        this.job = new NoUi.JobEditor(info.job, profileSelection, this.application.profile.recentSources || [], folderSelection, this._onChanged);
-                        this.schedule = new ScheduleData(info);
+                        var favorites = this.application.profile.recentSources || [];
+
+                        this.job = new NoUi.JobEditor(info.job, profileSelection, favorites, folderSelection, this._onChanged);
+                        this.schedule = new NoUi.ScheduleEditor(info.schedule, favorites, this._onChanged);
 
                         // Quellen für das aktuelle Geräteprofil laden.
                         return this.loadSources();
@@ -69,8 +71,12 @@ namespace VCRNETClient.App {
             var profile = this.job.device.val();
 
             return VCRServer.ProfileSourcesCache.load(profile).then(sources => {
-                if (this.job.device.val() === profile)
-                    this.job.validate(this._sources = sources);
+                if (this.job.device.val() === profile) {
+                    this._sources = sources;
+
+                    this.job.validate(sources);
+                    this.schedule.validate(sources, (this.job.source.val() || "").trim().length < 1);
+                }
 
                 return sources;
             });

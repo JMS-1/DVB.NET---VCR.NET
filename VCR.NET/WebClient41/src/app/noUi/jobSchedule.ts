@@ -31,9 +31,9 @@
         readonly withSubtitles: BooleanEditor;
 
         // Prüft alle Daten.
-        validate(sources: VCRServer.SourceEntry[]): void {
+        validate(sources: VCRServer.SourceEntry[], sourceIsRequired: boolean): void {
             // Aktualisieren.
-            this.source.setSources(sources);
+            this.source.setSources(sources, sourceIsRequired);
 
             // Lokalisierte Prüfungen.
             this.name.validate();

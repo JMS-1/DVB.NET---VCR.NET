@@ -27,7 +27,7 @@ namespace VCRNETClient.Ui {
         // Anzeige erstellen.
         render(): JSX.Element {
             return <div className="vcrnet-editchannel">
-                <select value={this.props.noui.val()} onChange={this._source}>
+                <select value={this.props.noui.val()} onChange={this._source} title={this.props.noui.message}>
                     {this.props.noui.sourceNames.map(s => <option key={`${s.value}`} value={`${s.value}`}>{s.display}</option>)}
                 </select>
                 <select value={this.props.noui.section()} onChange={this._section}>

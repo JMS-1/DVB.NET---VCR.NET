@@ -24,7 +24,7 @@ namespace VCRNETClient.App.NoUi {
 
         // Prüft alle Daten.
         validate(sources: VCRServer.SourceEntry[]): void {
-            super.validate(sources);
+            super.validate(sources, false);
 
             // Lokalisierte Prüfungen.
             this.device.validate();

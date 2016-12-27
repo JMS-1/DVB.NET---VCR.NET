@@ -219,6 +219,9 @@ namespace VCRNETClient.App.NoUi {
         // Gesetzt, wenn die zusätzlichen Filter angezeigt werden sollen.
         showFilter = false;
 
+        // Gesetzt, wenn eine Quelle angegeben werden muss.
+        private _isRequired = false;
+
         // Erstellt eine neue Logik zur Senderauswahl.
         constructor(data: any, prop: string, favoriteSources: string[], onChange: () => void) {
             super(data, prop, onChange);
@@ -272,10 +275,36 @@ namespace VCRNETClient.App.NoUi {
         }
 
         // Aktuelle Liste der Quellen festlegen, etwa nach der Änderung des zu verwendenden Geräteprofils.
-        setSources(sources: VCRServer.SourceEntry[]): void {
+        setSources(sources: VCRServer.SourceEntry[], sourceIsRequired: boolean): void {
+            this._isRequired = sourceIsRequired;
+
+            // Falls wir auf der gleichen Liste arbeiten müssen wir gar nichts machen.
+            if (this._sources === sources)
+                return;
+
+            // Die Liste der Quellen wurde verändert.
             this._sources = sources;
 
             this.refreshFilter();
+        }
+
+        // Prüft den aktuellen Wert.
+        validate(): void {
+            // Sollte die Basisklasse bereits einen Fehler melden so ist dieser so elementar, dass er unbedingt verwendet werden soll.
+            super.validate();
+
+            if (this.message.length > 0)
+                return;
+
+            // Die Quelle darf leer sein.
+            if (!this._isRequired)
+                return;
+
+            // Quelle prüfen.
+            var value = (this.val() || "").trim();
+
+            if (value.length < 1)
+                this.message = "Entweder für die Aufzeichnung oder für den Auftrag muss eine Quelle angegeben werden.";
         }
     }
 }

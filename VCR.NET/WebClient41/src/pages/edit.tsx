@@ -29,7 +29,7 @@ namespace VCRNETClient {
                 </form>
                 {this.renderScheduleHelp()}
                 <form>
-                    <Ui.ScheduleData />
+                    <Ui.ScheduleData noui={this.props.page.schedule} />
                 </form>
             </div>;
         }
