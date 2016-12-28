@@ -4,7 +4,7 @@
     export abstract class JobScheduleEditor<TModelType extends VCRServer.EditJobScheduleCommonContract>  {
         constructor(protected model: TModelType, mustHaveName: boolean, favoriteSources: string[], onChange: () => void) {
             // Pflegekomponenten erstellen
-            this.name = new StringEditor(this.model, "name", onChange, mustHaveName);
+            this.name = new StringEditor(this.model, "name", onChange, mustHaveName, "Ein Auftrag muss einen Namen haben.");
             this.allLanguages = new BooleanEditor(this.model, "allLanguages", onChange);
             this.includeDolby = new BooleanEditor(this.model, "includeDolby", onChange);
             this.withVideotext = new BooleanEditor(this.model, "withVideotext", onChange);

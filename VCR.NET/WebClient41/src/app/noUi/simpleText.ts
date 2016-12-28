@@ -10,7 +10,7 @@ namespace VCRNETClient.App.NoUi {
     export class StringEditor extends ValueHolder<string> implements IStringEditor {
 
         // Legt eine neue Verwaltung an.
-        constructor(data: any, prop: string, onChange: () => void, private readonly _isRequired: boolean) {
+        constructor(data: any, prop: string, onChange: () => void, private readonly _isRequired: boolean, private _message?: string) {
             super(data, prop, onChange);
         }
 
@@ -30,7 +30,7 @@ namespace VCRNETClient.App.NoUi {
             var value = (this.val() || "").trim();
 
             if (value.length < 1)
-                this.message = "Es muss ein Wert angegeben werden.";
+                this.message = this._message || "Es muss ein Wert angegeben werden.";
         }
     }
 }

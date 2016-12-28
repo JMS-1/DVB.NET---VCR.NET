@@ -50,6 +50,10 @@ namespace VCRNETClient.App.NoUi {
 
         // Prüft ob eine Quelle der aktuellen Einschränkung der Verschlüsselung entspricht.
         private applyEncryptionFilter(source: VCRServer.SourceEntry): boolean {
+            // Wenn wir nur die bevorzugten Sender anzeigen gibt es keine Einschränkung.
+            if (!this.showFilter)
+                return true;
+
             switch (this.encryptions.indexOf(this._encryption)) {
                 case 0:
                     return true;
@@ -92,6 +96,10 @@ namespace VCRNETClient.App.NoUi {
 
         // Prüft, ob eine Quelle der aktuell ausgewählten Art entspricht.
         private applyTypeFilter(source: VCRServer.SourceEntry): boolean {
+            // Wenn wir nur die bevorzugten Sender anzeigen gibt es keine Einschränkung.
+            if (!this.showFilter)
+                return true;
+
             switch (this.types.indexOf(this._type)) {
                 case 0:
                     return true;
@@ -222,6 +230,9 @@ namespace VCRNETClient.App.NoUi {
         // Gesetzt, wenn eine Quelle angegeben werden muss.
         private _isRequired = false;
 
+        // Gesetzt, wenn der Sender bekannt ist.
+        private _hasChannel = false;
+
         // Erstellt eine neue Logik zur Senderauswahl.
         constructor(data: any, prop: string, favoriteSources: string[], onChange: () => void) {
             super(data, prop, onChange);
@@ -246,28 +257,31 @@ namespace VCRNETClient.App.NoUi {
 
             // Aktuelle Quelle zusätzliche in die Liste einmischen, so dass immer eine korrekte Auswahl existiert.
             var source = this.val();
+            var hasSource = ((source || "").trim().length > 0);
 
-            if ((source || "").trim().length > 0)
-                if (!this.sourceNames.some(s => s.value === source)) {
-                    var cmp = source.toLocaleUpperCase();
-                    var insertAt = -1;
+            if (hasSource && !this.sourceNames.some(s => s.value === source)) {
+                var cmp = source.toLocaleUpperCase();
+                var insertAt = -1;
 
-                    for (var i = 0; i < this.sourceNames.length; i++)
-                        if (cmp.localeCompare(this.sourceNames[i].value.toLocaleUpperCase()) < 0) {
-                            insertAt = i;
+                for (var i = 0; i < this.sourceNames.length; i++)
+                    if (cmp.localeCompare(this.sourceNames[i].value.toLocaleUpperCase()) < 0) {
+                        insertAt = i;
 
-                            break;
-                        }
+                        break;
+                    }
 
-                    // Bereits gewählte Quelle an der korrekten Position in der Liste eintragen.
-                    if (insertAt < 0)
-                        this.sourceNames.push({ value: source, display: source });
-                    else
-                        this.sourceNames.splice(insertAt, 0, { value: source, display: source });
-                }
+                // Bereits gewählte Quelle an der korrekten Position in der Liste eintragen.
+                if (insertAt < 0)
+                    this.sourceNames.push({ value: source, display: source });
+                else
+                    this.sourceNames.splice(insertAt, 0, { value: source, display: source });
+            }
 
             // Der erste Eintrag erlaubt es immer auch einfach mal keinen Sender auszuwählen.
             this.sourceNames.unshift({ value: "", display: "(Keine Quelle)" });
+
+            // Schauen wir mal, ob wir die Quelle überhaupt kennen.
+            this._hasChannel = (!hasSource || this._sources.some(s => s.name === source));
 
             // Anzeige aktualisieren.
             if (this._site)
@@ -296,7 +310,14 @@ namespace VCRNETClient.App.NoUi {
             if (this.message.length > 0)
                 return;
 
-            // Die Quelle darf leer sein.
+            // Unbekannter Sender.
+            if (!this._hasChannel) {
+                this.message = "Die Quelle wird von dem ausgewählten Gerät nicht empfangen.";
+
+                return;
+            }
+
+            // Die Quelle darf eventuell auch leer sein.
             if (!this._isRequired)
                 return;
 
