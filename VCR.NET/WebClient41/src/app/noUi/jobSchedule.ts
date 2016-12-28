@@ -1,7 +1,28 @@
 ﻿namespace VCRNETClient.App.NoUi {
 
-    // Bietet die Daten eines Auftrags zur Pflege an.
-    export abstract class JobScheduleEditor<TModelType extends VCRServer.EditJobScheduleCommonContract>  {
+    // Schnittstelle zur Pflege der gemeinsamen Daten eines Auftrags oder einer Aufzeichnung.
+    export interface IJobScheduleEditor {
+        // Der Name des Auftrags.
+        readonly name: StringEditor;
+
+        // Der Name der Quelle, die aufgezeichnet werden soll.
+        readonly source: ChannelEditor;
+
+        // Gesetzt um alle Sprachen aufzuzeichnen
+        readonly allLanguages: BooleanEditor;
+
+        // Gesetzt, um die Dolby Digital Tonspur aufzuzeichnen
+        readonly includeDolby: BooleanEditor;
+
+        // Gesetzt, um den Videotext aufzuzeichnen
+        readonly withVideotext: BooleanEditor;
+
+        // Gesetzt, um die Untertitel aufzuzeichnen
+        readonly withSubtitles: BooleanEditor;
+    }
+
+    // Bietet die gemeinsamen Daten eines Auftrags oder einer Aufzeichnung zur Pflege an.
+    export abstract class JobScheduleEditor<TModelType extends VCRServer.EditJobScheduleCommonContract> implements IJobScheduleEditor {
         constructor(protected model: TModelType, mustHaveName: boolean, favoriteSources: string[], onChange: () => void) {
             // Pflegekomponenten erstellen
             this.name = new StringEditor(this.model, "name", onChange, mustHaveName, "Ein Auftrag muss einen Namen haben.");

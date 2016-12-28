@@ -1,7 +1,11 @@
 ﻿namespace VCRNETClient.App.NoUi {
 
-    // Beschreibt die Daten einer Aufzeichnung
-    export class ScheduleEditor extends JobScheduleEditor<VCRServer.EditScheduleContract> {
+    // Schnittstelle zur Pflege einer Aufzeichnung.
+    export interface IScheduleEditor extends IJobScheduleEditor {
+    }
+
+    // Beschreibt die Daten einer Aufzeichnung.
+    export class ScheduleEditor extends JobScheduleEditor<VCRServer.EditScheduleContract> implements IScheduleEditor {
         constructor(model: VCRServer.EditScheduleContract, favoriteSources: string[], onChange: () => void) {
             super(model, false, favoriteSources, onChange);
 

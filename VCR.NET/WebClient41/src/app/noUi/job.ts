@@ -2,8 +2,20 @@
 
 namespace VCRNETClient.App.NoUi {
 
+    // Schnittstelle zur Pflege eines Auftrags.
+    export interface IJobEditor extends IJobScheduleEditor {
+        // Das Aufzeichnungsverzeichnis.
+        readonly folder: StringListEditor;
+
+        // Das zu verwendende DVB Gerät.
+        readonly device: StringListEditor;
+
+        // Gesetzt, wenn die Aufzeichnung immer auf dem Gerät stattfinden soll.
+        readonly deviceLock: BooleanEditor;
+    }
+
     // Bietet die Daten eines Auftrags zur Pflege an.
-    export class JobEditor extends JobScheduleEditor<VCRServer.EditJobContract> {
+    export class JobEditor extends JobScheduleEditor<VCRServer.EditJobContract> implements IJobEditor {
         constructor(model: VCRServer.EditJobContract, devices: ISelectableValue<string>[], favoriteSources: string[], folders: ISelectableValue<string>[], onChange: () => void) {
             super(model, true, favoriteSources, onChange);
 

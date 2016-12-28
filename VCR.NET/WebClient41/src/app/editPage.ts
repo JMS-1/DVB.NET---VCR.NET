@@ -6,9 +6,17 @@ namespace VCRNETClient.App {
     }
 
     export class EditPage extends Page {
-        job: NoUi.JobEditor;
+        private _job: NoUi.JobEditor;
 
-        schedule: NoUi.ScheduleEditor;
+        getJob(): NoUi.IJobEditor {
+            return this._job;
+        }
+
+        private _schedule: NoUi.ScheduleEditor;
+
+        getSchedule(): NoUi.IScheduleEditor {
+            return this._schedule;
+        }
 
         private _loadFinished = this.loadFinished.bind(this);
 
@@ -36,8 +44,8 @@ namespace VCRNETClient.App {
 
         reset(section: string): void {
             this._loadPending = 1;
-            this.job = undefined;
-            this.schedule = undefined;
+            this._job = undefined;
+            this._schedule = undefined;
 
             VCRServer.RecordingDirectoryCache.load().then(dirs => {
                 var folderSelection = dirs.map(f => <NoUi.ISelectableValue<string>>{ value: f, display: f });
@@ -50,8 +58,8 @@ namespace VCRNETClient.App {
                     return VCRServer.createScheduleFromGuide(section.substr(3), "").then(info => {
                         var favorites = this.application.profile.recentSources || [];
 
-                        this.job = new NoUi.JobEditor(info.job, profileSelection, favorites, folderSelection, this._onChanged);
-                        this.schedule = new NoUi.ScheduleEditor(info.schedule, favorites, this._onChanged);
+                        this._job = new NoUi.JobEditor(info.job, profileSelection, favorites, folderSelection, this._onChanged);
+                        this._schedule = new NoUi.ScheduleEditor(info.schedule, favorites, this._onChanged);
 
                         // Quellen für das aktuelle Geräteprofil laden.
                         return this.loadSources();
@@ -68,14 +76,14 @@ namespace VCRNETClient.App {
         }
 
         private loadSources(): Thenable<VCRServer.SourceEntry[]> {
-            var profile = this.job.device.val();
+            var profile = this._job.device.val();
 
             return VCRServer.ProfileSourcesCache.load(profile).then(sources => {
-                if (this.job.device.val() === profile) {
+                if (this._job.device.val() === profile) {
                     this._sources = sources;
 
-                    this.job.validate(sources);
-                    this.schedule.validate(sources, (this.job.source.val() || "").trim().length < 1);
+                    this._job.validate(sources);
+                    this._schedule.validate(sources, (this._job.source.val() || "").trim().length < 1);
                 }
 
                 return sources;

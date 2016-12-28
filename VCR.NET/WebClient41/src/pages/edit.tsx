@@ -25,11 +25,11 @@ namespace VCRNETClient {
                 </div>
                 {this.renderJobHelp()}
                 <form>
-                    <Ui.JobData noui={this.props.page.job} />
+                    <Ui.JobData noui={this.props.page.getJob()} />
                 </form>
                 {this.renderScheduleHelp()}
                 <form>
-                    <Ui.ScheduleData noui={this.props.page.schedule} />
+                    <Ui.ScheduleData noui={this.props.page.getSchedule()} />
                 </form>
             </div>;
         }

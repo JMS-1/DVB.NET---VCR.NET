@@ -2,7 +2,7 @@
 
 namespace VCRNETClient.Ui {
     interface IJobDataStatic {
-        noui: App.NoUi.JobEditor;
+        noui: App.NoUi.IJobEditor;
     }
 
     interface IJobDataDynamic {

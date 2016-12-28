@@ -3,7 +3,7 @@
 namespace VCRNETClient.Ui {
 
     interface IEditChannelFlagsStatic {
-        noui: App.NoUi.JobScheduleEditor<any>;
+        noui: App.NoUi.IJobScheduleEditor;
     }
 
     interface IEditChannelFlagsDynamic {

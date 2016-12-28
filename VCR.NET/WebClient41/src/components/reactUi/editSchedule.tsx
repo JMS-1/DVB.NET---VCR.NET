@@ -2,7 +2,7 @@
 
 namespace VCRNETClient.Ui {
     interface IScheduleDataStatic {
-        noui: App.NoUi.ScheduleEditor;
+        noui: App.NoUi.IScheduleEditor;
     }
 
     interface IScheduleDataDynamic {
