@@ -24,6 +24,10 @@ namespace VCRNETClient.Ui {
                 <Ui.Field label="Besonderheiten:" help="faq;filecontents">
                     <Ui.EditChannelFlags noui={this.props.noui} />
                 </Ui.Field>
+
+                <Ui.Field label="Datum:">
+                    <Ui.EditDay noui={this.props.noui.firstStart} />
+                </Ui.Field>
             </fieldset>;
         }
     }

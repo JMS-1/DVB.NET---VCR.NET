@@ -2,12 +2,17 @@
 
     // Schnittstelle zur Pflege einer Aufzeichnung.
     export interface IScheduleEditor extends IJobScheduleEditor {
+        // Dateum der wersten Aufzeichnung.
+        readonly firstStart: IDaySelector;
     }
 
     // Beschreibt die Daten einer Aufzeichnung.
     export class ScheduleEditor extends JobScheduleEditor<VCRServer.EditScheduleContract> implements IScheduleEditor {
         constructor(model: VCRServer.EditScheduleContract, favoriteSources: string[], onChange: () => void) {
             super(model, false, favoriteSources, onChange);
+
+            // Pflegbare Eigenschaften anlegen.
+            this.firstStart = new DayEditor(model, "firstStart", onChange);
 
             /*
             var repeat = rawData.repeatPattern;
@@ -29,6 +34,9 @@
             this.endTime = DateFormatter.getEndTime(end);
             */
         }
+
+        // Dateum der wersten Aufzeichnung.
+        readonly firstStart: DayEditor;
 
         // Der kleinste erlaubte Datumswert.
         static minimumDate: Date = new Date(1963, 8, 29);
@@ -56,6 +64,12 @@
 
         // Das Bit für Sonntag.
         static flagSunday: number = 0x40;
+
+        validate(sources: VCRServer.SourceEntry[], sourceIsRequired: boolean): void {
+            super.validate(sources, sourceIsRequired);
+
+            this.firstStart.validate();
+        }
     }
 
 }

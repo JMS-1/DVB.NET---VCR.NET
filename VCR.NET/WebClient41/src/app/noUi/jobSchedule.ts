@@ -3,22 +3,22 @@
     // Schnittstelle zur Pflege der gemeinsamen Daten eines Auftrags oder einer Aufzeichnung.
     export interface IJobScheduleEditor {
         // Der Name des Auftrags.
-        readonly name: StringEditor;
+        readonly name: IStringEditor;
 
         // Der Name der Quelle, die aufgezeichnet werden soll.
-        readonly source: ChannelEditor;
+        readonly source: IChannelSelector;
 
         // Gesetzt um alle Sprachen aufzuzeichnen
-        readonly allLanguages: BooleanEditor;
+        readonly allLanguages: IBooleanEditor;
 
         // Gesetzt, um die Dolby Digital Tonspur aufzuzeichnen
-        readonly includeDolby: BooleanEditor;
+        readonly includeDolby: IBooleanEditor;
 
         // Gesetzt, um den Videotext aufzuzeichnen
-        readonly withVideotext: BooleanEditor;
+        readonly withVideotext: IBooleanEditor;
 
         // Gesetzt, um die Untertitel aufzuzeichnen
-        readonly withSubtitles: BooleanEditor;
+        readonly withSubtitles: IBooleanEditor;
     }
 
     // Bietet die gemeinsamen Daten eines Auftrags oder einer Aufzeichnung zur Pflege an.

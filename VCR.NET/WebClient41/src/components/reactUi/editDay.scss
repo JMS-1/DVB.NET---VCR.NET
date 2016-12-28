@@ -1,0 +1,14 @@
+﻿@import "../../../content/vars";
+
+.vcrnet-editday {
+    vertical-align: top;
+    display: inline-block;
+    border: 1px solid black;
+    border-radius: 2px;
+    font-size: small;
+    padding: 4px;
+
+    thead {
+        font-weight: bold;
+    }
+}

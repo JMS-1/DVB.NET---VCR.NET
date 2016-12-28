@@ -5,13 +5,13 @@ namespace VCRNETClient.App.NoUi {
     // Schnittstelle zur Pflege eines Auftrags.
     export interface IJobEditor extends IJobScheduleEditor {
         // Das Aufzeichnungsverzeichnis.
-        readonly folder: StringListEditor;
+        readonly folder: IStringFromListEditor;
 
         // Das zu verwendende DVB Gerät.
-        readonly device: StringListEditor;
+        readonly device: IStringFromListEditor;
 
         // Gesetzt, wenn die Aufzeichnung immer auf dem Gerät stattfinden soll.
-        readonly deviceLock: BooleanEditor;
+        readonly deviceLock: IBooleanEditor;
     }
 
     // Bietet die Daten eines Auftrags zur Pflege an.
