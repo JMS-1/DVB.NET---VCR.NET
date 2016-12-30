@@ -96,7 +96,7 @@ namespace VCRNETClient.Ui {
             if (days.length !== 7)
                 return null;
 
-            return <tr key={rowKey}>{days.map(day => {
+            return <tr key={rowKey}>{days.map((day, index) => {
                 var classes: string[] = [];
 
                 if (day.isCurrentMonth)
@@ -106,7 +106,7 @@ namespace VCRNETClient.Ui {
                 if (day.isToday)
                     classes.push("vcrnet-editday-today");
 
-                return <td onClick={day.select} key={`${day.date.getTime()}`} className={classes.join(" ")}>{day.display}</td>;
+                return <td onClick={day.select} key={`${index}`} className={classes.join(" ")}>{day.display}</td>;
             })}</tr>;
         }
 
