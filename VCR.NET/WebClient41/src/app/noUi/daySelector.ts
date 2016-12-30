@@ -7,11 +7,15 @@ namespace VCRNETClient.App.NoUi {
     }
 
     export interface ISelectableDay {
+        readonly date: Date;
+
         readonly display: string;
 
-        readonly current: boolean;
+        readonly isCurrentMonth: boolean;
 
-        readonly today: boolean;
+        readonly isCurrentDay: boolean;
+
+        readonly isToday: boolean;
 
         select(): void;
     }
@@ -24,6 +28,8 @@ namespace VCRNETClient.App.NoUi {
         monthForward(): void;
 
         today(): void;
+
+        reset(): void;
 
         month(newMonth?: string): string;
 
@@ -76,6 +82,25 @@ namespace VCRNETClient.App.NoUi {
         }
 
         today(): void {
+            this.moveTo(new Date());
+        }
+
+        reset(): void {
+            this.moveTo(new Date(this.val()));
+        }
+
+        private moveTo(date: Date): void {
+            var newMonth = this.months[date.getMonth()];
+            var newYear = `${date.getFullYear()}`;
+
+            if (this._month === newMonth)
+                if (this._year === newYear)
+                    return;
+
+            this._month = newMonth;
+            this._year = newYear;
+
+            this.refresh();
         }
 
         private static _months = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
@@ -114,7 +139,7 @@ namespace VCRNETClient.App.NoUi {
 
         years: string[];
 
-        readonly days: ISelectableDay[];
+        days: ISelectableDay[];
 
         private _site: IDaySelectorSite;
 
@@ -127,6 +152,7 @@ namespace VCRNETClient.App.NoUi {
             this._month = this.months[date.getMonth()];
             this._year = `${date.getFullYear()}`;
 
+            this.fillDayList();
             this.fillYearSelector();
         }
 
@@ -143,11 +169,61 @@ namespace VCRNETClient.App.NoUi {
                 this.years.push(`${year + i}`);
         }
 
+        private fillDayList(): void {
+            var year = parseInt(this._year);
+            var month = this.months.indexOf(this._month);
+            var current = new Date(year, month, 1);
+            current = new Date(year, month, 1 - (current.getDay() + 6) % 7);
+
+            var now = new Date();
+            now = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+            var selected = new Date(this.val());
+            selected = new Date(selected.getFullYear(), selected.getMonth(), selected.getDate());
+
+            this.days = [];
+
+            do {
+                for (var i = 7; i-- > 0; current = new Date(year, current.getMonth(), current.getDate() + 1)) {
+                    let day: ISelectableDay;
+
+                    day = {
+                        isCurrentDay: current.getTime() === selected.getTime(),
+                        isCurrentMonth: current.getMonth() === month,
+                        isToday: current.getTime() === now.getTime(),
+                        select: () => this.selectDay(day),
+                        display: `${current.getDate()}`,
+                        date: current
+                    };
+
+                    if (day.isCurrentDay)
+                        day.select = undefined;
+
+                    this.days.push(day);
+                }
+            }
+            while (current.getMonth() === month);
+        }
+
         constructor(data: any, prop: string, onChange: () => void) {
             super(data, prop, onChange);
         }
 
+        private selectDay(day: ISelectableDay): void {
+            var oldSelected = new Date(this.val());
+            var newSelected = new Date(day.date.getFullYear(), day.date.getMonth(), day.date.getDate(), oldSelected.getHours(), oldSelected.getMinutes(), oldSelected.getSeconds(), oldSelected.getMilliseconds());
+
+            if (newSelected.getTime() === oldSelected.getTime())
+                return;
+
+            this.val(newSelected.toISOString());
+
+            this.reset();
+            this.refresh();
+        }
+
         private refresh(): void {
+            this.fillDayList();
             this.fillYearSelector();
 
             if (this._site)

@@ -5,10 +5,83 @@
     display: inline-block;
     border: 1px solid black;
     border-radius: 2px;
-    font-size: small;
+    font-size: smaller;
     padding: 4px;
 
-    thead {
-        font-weight: bold;
+    > div:first-child {
+        position: relative;
+        z-index: 0;
+
+        > img {
+            cursor: pointer;
+            z-index: 1;
+
+            &:first-child {
+                float: left;
+            }
+
+            &:last-child {
+                float: right;
+            }
+        }
+
+        > div {
+            position: absolute;
+            display: inline-block;
+            text-align: center;
+            z-index: -1;
+            right: 0;
+            left: 0;
+
+            > select {
+                margin-left: 5px;
+                margin-right: 5px;
+            }
+        }
+    }
+
+    > div:last-child {
+        > button:first-child {
+            float: left;
+        }
+
+        > button:last-child {
+            float: right;
+        }
+    }
+
+    > table {
+        display: block;
+        clear: both;
+
+        td {
+            width: 3rem;
+            text-align: center;
+        }
+
+        > thead {
+            font-weight: bold;
+        }
+
+        > tbody {
+            td {
+                background: lightgray;
+                border: 1px solid darkgray;
+                cursor: pointer;
+
+                &:not(.vcrnet-editday-month) {
+                    color: darkgray;
+                }
+
+                &.vcrnet-editday-selected {
+                    font-weight: bold;
+                    cursor: default;
+                }
+
+                &.vcrnet-editday-today {
+                    background: antiquewhite;
+                }
+            }
+        }
     }
 }
