@@ -10,39 +10,39 @@
             if (asString.length > 1)
                 return asString;
             else
-                return '0' + asString;
+                return `0${asString}`;
         }
 
         // Ermittelt die Uhrzeit
         static getEndTime(end: Date): string {
-            return DateFormatter.formatNumber(end.getHours()) + ':' + DateFormatter.formatNumber(end.getMinutes());
+            return `${DateFormatter.formatNumber(end.getHours())}:${DateFormatter.formatNumber(end.getMinutes())}`;
         }
 
         // Ermittelt eine Dauer in Minuten und stellt diese als Uhrzeit dar
         static getDuration(duration: Date): string {
-            return DateFormatter.formatNumber(duration.getUTCHours()) + ':' + DateFormatter.formatNumber(duration.getUTCMinutes());
+            return `${DateFormatter.formatNumber(duration.getUTCHours())}:${DateFormatter.formatNumber(duration.getUTCMinutes())}`;
         }
 
         // Ermittelt ein Datum
         static getStartDate(start: Date): string {
-            return DateFormatter.getShortDate(start) + '.' + start.getFullYear().toString();
+            return `${DateFormatter.getShortDate(start)}.${start.getFullYear().toString()}`;
         }
 
         // Ermittelt ein Datum ohne Jahresangabe
         static getShortDate(start: Date): string {
-            return DateFormatter.germanDays[start.getDay()] + ' ' + DateFormatter.formatNumber(start.getDate()) + '.' + DateFormatter.formatNumber(1 + start.getMonth());
+            return `${DateFormatter.germanDays[start.getDay()]} ${DateFormatter.formatNumber(start.getDate())}.${DateFormatter.formatNumber(1 + start.getMonth())}`;
         }
 
         // Ermittelt ein Datum ohne Jahresangabe
         static getShortDateUtc(start: Date): string {
-            return DateFormatter.germanDays[start.getUTCDay()] + ' ' + DateFormatter.formatNumber(start.getUTCDate()) + '.' + DateFormatter.formatNumber(1 + start.getUTCMonth());
+            return `${DateFormatter.germanDays[start.getUTCDay()]} ${DateFormatter.formatNumber(start.getUTCDate())}.${DateFormatter.formatNumber(1 + start.getUTCMonth())}`;
         }
 
         // Ermittelt einen Startzeitpunkt
         static getStartTime(start: Date): string {
-            var time = DateFormatter.formatNumber(start.getHours()) + ':' + DateFormatter.formatNumber(start.getMinutes());
+            var time = `${DateFormatter.formatNumber(start.getHours())}:${DateFormatter.formatNumber(start.getMinutes())}`;
 
-            return DateFormatter.getStartDate(start) + ' ' + time;
+            return `${DateFormatter.getStartDate(start)} ${time}`;
         }
 
         // Prüft eine Eingabe auf eine gültige Uhrzeit (H:M, jeweils ein oder zweistellig)

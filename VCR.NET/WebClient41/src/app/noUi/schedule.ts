@@ -2,8 +2,11 @@
 
     // Schnittstelle zur Pflege einer Aufzeichnung.
     export interface IScheduleEditor extends IJobScheduleEditor {
-        // Dateum der wersten Aufzeichnung.
+        // Datum der ersten Aufzeichnung.
         readonly firstStart: IDaySelector;
+
+        // Uhrzeit der ersten Aufzeichnung.
+        readonly startTime: ITimeEditor;
     }
 
     // Beschreibt die Daten einer Aufzeichnung.
@@ -13,6 +16,7 @@
 
             // Pflegbare Eigenschaften anlegen.
             this.firstStart = new DayEditor(model, "firstStart", onChange);
+            this.startTime = new TimeEditor(model, "firstStart", onChange);
 
             /*
             var repeat = rawData.repeatPattern;
@@ -35,8 +39,11 @@
             */
         }
 
-        // Dateum der wersten Aufzeichnung.
+        // Datum der ersten Aufzeichnung.
         readonly firstStart: DayEditor;
+
+        // Uhrzeit der ersten Aufzeichnung.
+        readonly startTime: TimeEditor;
 
         // Der kleinste erlaubte Datumswert.
         static minimumDate: Date = new Date(1963, 8, 29);
@@ -69,6 +76,7 @@
             super.validate(sources, sourceIsRequired);
 
             this.firstStart.validate();
+            this.startTime.validate();
         }
     }
 

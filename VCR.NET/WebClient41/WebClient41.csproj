@@ -179,6 +179,7 @@
     <None Include="src\components\reactUi\editChannelFlags.scss" />
     <None Include="src\components\reactUi\editSchedule.scss" />
     <None Include="src\components\reactUi\editDay.scss" />
+    <None Include="src\components\reactUi\editTime.scss" />
     <Content Include="ui\images\faq\epgonoff.png" />
     <Content Include="ui\images\faq\epgsources.png" />
     <Content Include="ui\images\faq\epgtimes.png" />
@@ -311,6 +312,7 @@
     <TypeScriptCompile Include="src\app\noUi\simpleFlag.ts" />
     <TypeScriptCompile Include="src\app\noUi\simpleText.ts" />
     <TypeScriptCompile Include="src\app\noUi\textFromList.ts" />
+    <TypeScriptCompile Include="src\app\noUi\timeOnly.ts" />
     <TypeScriptCompile Include="src\app\page.ts" />
     <TypeScriptCompile Include="src\app\planEntry.ts" />
     <TypeScriptCompile Include="src\app\planException.ts" />
@@ -330,6 +332,7 @@
     <TypeScriptCompile Include="src\components\reactUi\editSchedule.tsx" />
     <TypeScriptCompile Include="src\components\reactUi\editSingleSelect.tsx" />
     <TypeScriptCompile Include="src\components\reactUi\editText.tsx" />
+    <TypeScriptCompile Include="src\components\reactUi\editTime.tsx" />
     <TypeScriptCompile Include="src\pages\edit.tsx" />
     <TypeScriptCompile Include="src\pages\faq\adminGuide.tsx" />
     <TypeScriptCompile Include="src\pages\faq\adminScan.tsx" />

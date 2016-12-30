@@ -28,6 +28,10 @@ namespace VCRNETClient.Ui {
                 <Ui.Field label="Datum:">
                     <Ui.EditDay noui={this.props.noui.firstStart} />
                 </Ui.Field>
+
+                <Ui.Field label="Zeitraum:">
+                    <Ui.EditTime noui={this.props.noui.startTime} />
+                </Ui.Field>
             </fieldset>;
         }
     }
