@@ -5,8 +5,8 @@
         // Datum der ersten Aufzeichnung.
         readonly firstStart: IDaySelector;
 
-        // Uhrzeit der ersten Aufzeichnung.
-        readonly startTime: ITimeEditor;
+        // Laufzeit der Aufzeichnung.
+        readonly duration: IDurationEditor;
     }
 
     // Beschreibt die Daten einer Aufzeichnung.
@@ -16,7 +16,7 @@
 
             // Pflegbare Eigenschaften anlegen.
             this.firstStart = new DayEditor(model, "firstStart", onChange);
-            this.startTime = new TimeEditor(model, "firstStart", onChange);
+            this.duration = new DurationEditor(model, "firstStart", "duration", onChange);
 
             /*
             var repeat = rawData.repeatPattern;
@@ -43,7 +43,7 @@
         readonly firstStart: DayEditor;
 
         // Uhrzeit der ersten Aufzeichnung.
-        readonly startTime: TimeEditor;
+        readonly duration: DurationEditor;
 
         // Der kleinste erlaubte Datumswert.
         static minimumDate: Date = new Date(1963, 8, 29);
@@ -76,7 +76,7 @@
             super.validate(sources, sourceIsRequired);
 
             this.firstStart.validate();
-            this.startTime.validate();
+            this.duration.validate();
         }
     }
 

@@ -30,7 +30,7 @@ namespace VCRNETClient.Ui {
                 </Ui.Field>
 
                 <Ui.Field label="Zeitraum:">
-                    <Ui.EditTime noui={this.props.noui.startTime} />
+                    <Ui.EditDuration noui={this.props.noui.duration} />
                 </Ui.Field>
             </fieldset>;
         }

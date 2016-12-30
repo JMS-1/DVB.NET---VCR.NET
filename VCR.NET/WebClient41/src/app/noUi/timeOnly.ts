@@ -28,7 +28,7 @@ namespace VCRNETClient.App.NoUi {
             this._time = DateFormatter.getEndTime(new Date(this.val()));
         }
 
-        constructor(data: any, prop: string, onChange: () => void) {
+        constructor(data: any, prop: string, onChange: () => void, private _externalValidator?: () => string) {
             super(data, prop, onChange);
         }
 
@@ -64,7 +64,11 @@ namespace VCRNETClient.App.NoUi {
         }
 
         validate(): void {
-            if ((this._time === undefined) || (DateFormatter.parseTime(this._time) !== null))
+            var external = (this._externalValidator && this._externalValidator()) || "";
+
+            if (external.length > 0)
+                this.message = external;
+            else if ((this._time === undefined) || (DateFormatter.parseTime(this._time) !== null))
                 super.validate();
             else
                 this.message = "Ungültige Uhrzeit."

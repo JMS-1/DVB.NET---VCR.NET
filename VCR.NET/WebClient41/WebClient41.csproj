@@ -180,6 +180,7 @@
     <None Include="src\components\reactUi\editSchedule.scss" />
     <None Include="src\components\reactUi\editDay.scss" />
     <None Include="src\components\reactUi\editTime.scss" />
+    <None Include="src\components\reactUi\editDuration.scss" />
     <Content Include="ui\images\faq\epgonoff.png" />
     <Content Include="ui\images\faq\epgsources.png" />
     <Content Include="ui\images\faq\epgtimes.png" />
@@ -305,6 +306,7 @@
     <TypeScriptCompile Include="src\app\help.ts" />
     <TypeScriptCompile Include="src\app\homePage.ts" />
     <TypeScriptCompile Include="src\app\noUi\daySelector.ts" />
+    <TypeScriptCompile Include="src\app\noUi\duration.ts" />
     <TypeScriptCompile Include="src\app\noUi\job.ts" />
     <TypeScriptCompile Include="src\app\noUi\channelSelector.ts" />
     <TypeScriptCompile Include="src\app\noUi\generic.ts" />
@@ -324,6 +326,7 @@
     <TypeScriptCompile Include="src\components\reactUi\editChannel.tsx" />
     <TypeScriptCompile Include="src\components\reactUi\editChannelFlags.tsx" />
     <TypeScriptCompile Include="src\components\reactUi\editDay.tsx" />
+    <TypeScriptCompile Include="src\components\reactUi\editDuration.tsx" />
     <TypeScriptCompile Include="src\components\reactUi\editField.tsx" />
     <TypeScriptCompile Include="src\components\reactUi\editJob.tsx" />
     <TypeScriptCompile Include="src\components\externalLink.tsx" />
