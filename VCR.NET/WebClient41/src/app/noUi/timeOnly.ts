@@ -28,8 +28,8 @@ namespace VCRNETClient.App.NoUi {
             this._time = DateFormatter.getEndTime(new Date(this.val()));
         }
 
-        constructor(data: any, prop: string, onChange: () => void, private _externalValidator?: () => string) {
-            super(data, prop, onChange);
+        constructor(data: any, prop: string, onChange: () => void, name?: string, private _externalValidator?: () => string) {
+            super(data, prop, onChange, name);
         }
 
         time(newTime?: string): string {

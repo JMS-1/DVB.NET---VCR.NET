@@ -21,6 +21,8 @@ namespace VCRNETClient.App.NoUi {
     }
 
     export interface IDaySelector {
+        readonly name: string;
+
         setSite(newSite: IDaySelectorSite): void;
 
         monthBackward(): void;
@@ -205,8 +207,8 @@ namespace VCRNETClient.App.NoUi {
             while (current.getMonth() === month);
         }
 
-        constructor(data: any, prop: string, onChange: () => void) {
-            super(data, prop, onChange);
+        constructor(data: any, prop: string, onChange: () => void, name: string) {
+            super(data, prop, onChange, name);
         }
 
         private selectDay(day: ISelectableDay): void {

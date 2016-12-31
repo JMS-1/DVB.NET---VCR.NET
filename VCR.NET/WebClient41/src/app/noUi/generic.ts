@@ -2,6 +2,8 @@
 
     // Beschreibt die Verwaltung einer beliebigen Eigenschaft.
     export interface IValueHolder<TValueType> {
+        readonly name: string;
+
         val(newValue?: TValueType): TValueType;
     }
 
@@ -37,7 +39,7 @@
         }
 
         // Initialisiert die Verwaltung einer Eigenschaft auf Basis eines JavaScript Feldes.
-        protected constructor(private readonly _data: any, private readonly _prop: string, private readonly _onChange: () => void) {
+        protected constructor(private readonly _data: any, private readonly _prop: string, private readonly _onChange: () => void, public readonly name: string) {
         }
     }
 }

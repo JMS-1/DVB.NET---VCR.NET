@@ -37,7 +37,7 @@ namespace VCRNETClient.Ui {
         render(): JSX.Element {
             return <label className="vcrnet-editflag">
                 <input type="CHECKBOX" disabled={this.props.disabled} checked={this.state.current} onChange={this._onChange} />
-                {this.props.children}
+                {this.props.noui.name}
             </label>;
         }
 

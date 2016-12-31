@@ -10,8 +10,8 @@ namespace VCRNETClient.App.NoUi {
     export class StringEditor extends ValueHolder<string> implements IStringEditor {
 
         // Legt eine neue Verwaltung an.
-        constructor(data: any, prop: string, onChange: () => void, private readonly _isRequired: boolean, private _message?: string) {
-            super(data, prop, onChange);
+        constructor(data: any, prop: string, onChange: () => void, name: string, private readonly _isRequired: boolean, private _message?: string) {
+            super(data, prop, onChange, name);
         }
 
         // Prüft den aktuellen Wert auf Gültigkeit.

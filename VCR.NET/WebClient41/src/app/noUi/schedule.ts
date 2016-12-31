@@ -7,6 +7,17 @@
 
         // Laufzeit der Aufzeichnung.
         readonly duration: IDurationEditor;
+
+        // Wiederholungsmuster
+        readonly repeat: INumberEditor;
+
+        readonly onMonday: IBooleanEditor;
+        readonly onTuesday: IBooleanEditor;
+        readonly onWednesday: IBooleanEditor;
+        readonly onThursday: IBooleanEditor;
+        readonly onFriday: IBooleanEditor;
+        readonly onSaturday: IBooleanEditor;
+        readonly onSunday: IBooleanEditor;
     }
 
     // Beschreibt die Daten einer Aufzeichnung.
@@ -15,27 +26,22 @@
             super(model, false, favoriteSources, onChange);
 
             // Pflegbare Eigenschaften anlegen.
-            this.firstStart = new DayEditor(model, "firstStart", onChange);
-            this.duration = new DurationEditor(model, "firstStart", "duration", onChange);
+            this.firstStart = new DayEditor(model, "firstStart", onChange, "Datum");
+            this.repeat = new NumberEditor(model, "repeatPattern", onChange, "Wiederholung");
+            this.duration = new DurationEditor(model, "firstStart", "duration", onChange, "Zeitraum");
+
+            this.onMonday = new BooleanSetEditor(ScheduleEditor.flagMonday, this.repeat, DateFormatter.germanDays[1]);
+            this.onTuesday = new BooleanSetEditor(ScheduleEditor.flagTuesday, this.repeat, DateFormatter.germanDays[2]);
+            this.onWednesday = new BooleanSetEditor(ScheduleEditor.flagWednesday, this.repeat, DateFormatter.germanDays[3]);
+            this.onThursday = new BooleanSetEditor(ScheduleEditor.flagThursday, this.repeat, DateFormatter.germanDays[4]);
+            this.onFriday = new BooleanSetEditor(ScheduleEditor.flagFriday, this.repeat, DateFormatter.germanDays[5]);
+            this.onSaturday = new BooleanSetEditor(ScheduleEditor.flagSaturday, this.repeat, DateFormatter.germanDays[6]);
+            this.onSunday = new BooleanSetEditor(ScheduleEditor.flagSunday, this.repeat, DateFormatter.germanDays[0]);
 
             /*
-            var repeat = rawData.repeatPattern;
-            var start = new Date(rawData.firstStart);
-            var end = new Date(start.getTime() + 60000 * rawData.duration);
-
             // Übernehmen
             this.exceptionInfos = $.map(rawData.exceptions, (rawException: VCRServer.PlanExceptionContract) => new PlanException(rawException));
             this.lastDay = (repeat == 0) ? ScheduleEditor.maximumDate : new Date(rawData.lastDay);
-            this.firstStart = new Date(start.getFullYear(), start.getMonth(), start.getDate());
-            this.repeatWednesday = (repeat & ScheduleEditor.flagWednesday) != 0;
-            this.repeatThursday = (repeat & ScheduleEditor.flagThursday) != 0;
-            this.repeatSaturday = (repeat & ScheduleEditor.flagSaturday) != 0;
-            this.repeatTuesday = (repeat & ScheduleEditor.flagTuesday) != 0;
-            this.repeatMonday = (repeat & ScheduleEditor.flagMonday) != 0;
-            this.repeatFriday = (repeat & ScheduleEditor.flagFriday) != 0;
-            this.repeatSunday = (repeat & ScheduleEditor.flagSunday) != 0;
-            this.startTime = DateFormatter.getEndTime(start);
-            this.endTime = DateFormatter.getEndTime(end);
             */
         }
 
@@ -45,6 +51,9 @@
         // Uhrzeit der ersten Aufzeichnung.
         readonly duration: DurationEditor;
 
+        // Muster zur Wiederholung.
+        readonly repeat: NumberEditor;
+
         // Der kleinste erlaubte Datumswert.
         static minimumDate: Date = new Date(1963, 8, 29);
 
@@ -52,31 +61,46 @@
         static maximumDate: Date = new Date(2999, 11, 31);
 
         // Das Bit für Montag.
-        static flagMonday: number = 0x01;
+        private static flagMonday: number = 0x01;
+
+        readonly onMonday: BooleanSetEditor;
 
         // Das Bit für Dienstag.
-        static flagTuesday: number = 0x02;
+        private static flagTuesday: number = 0x02;
+
+        readonly onTuesday: BooleanSetEditor;
 
         // Das Bit für Mittwoch.
-        static flagWednesday: number = 0x04;
+        private static flagWednesday: number = 0x04;
+
+        readonly onWednesday: BooleanSetEditor;
 
         // Das Bit für Donnerstag.
-        static flagThursday: number = 0x08;
+        private static flagThursday: number = 0x08;
+
+        readonly onThursday: BooleanSetEditor;
 
         // Das Bit für Freitag.
-        static flagFriday: number = 0x10;
+        private static flagFriday: number = 0x10;
+
+        readonly onFriday: BooleanSetEditor;
 
         // Das Bit für Samstag.
-        static flagSaturday: number = 0x20;
+        private static flagSaturday: number = 0x20;
+
+        readonly onSaturday: BooleanSetEditor;
 
         // Das Bit für Sonntag.
-        static flagSunday: number = 0x40;
+        private static flagSunday: number = 0x40;
+
+        readonly onSunday: BooleanSetEditor;
 
         validate(sources: VCRServer.SourceEntry[], sourceIsRequired: boolean): void {
             super.validate(sources, sourceIsRequired);
 
             this.firstStart.validate();
             this.duration.validate();
+            this.repeat.validate();
         }
     }
 

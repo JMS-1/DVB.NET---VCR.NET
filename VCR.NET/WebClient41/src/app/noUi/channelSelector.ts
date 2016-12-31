@@ -235,7 +235,7 @@ namespace VCRNETClient.App.NoUi {
 
         // Erstellt eine neue Logik zur Senderauswahl.
         constructor(data: any, prop: string, favoriteSources: string[], onChange: () => void) {
-            super(data, prop, onChange);
+            super(data, prop, onChange, "Quelle");
 
             // Übernimmt die lineare Liste aller bevorzugten Sender zur schnelleren Auswahl in ein Dictionary.
             favoriteSources.forEach(s => this._favorites[s] = true);

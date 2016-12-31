@@ -3,7 +3,7 @@
 namespace VCRNETClient.Ui {
 
     interface IEditChannelFlagsStatic {
-        noui: App.NoUi.IJobScheduleEditor;
+        noui: App.NoUi.ISourceFlagsEditor;
     }
 
     interface IEditChannelFlagsDynamic {
@@ -16,15 +16,15 @@ namespace VCRNETClient.Ui {
         }
 
         componentWillReceiveProps(nextProps: IEditChannelFlagsStatic, nextContext: any): void {
-            this.setState({ disabled: (nextProps.noui.source.val() || "").trim().length < 1 });
+            this.setState({ disabled: !nextProps.noui.isEnabled() });
         }
 
         render(): JSX.Element {
             return <div className="vcrnet-editchannelflags">
-                <EditBoolean noui={this.props.noui.includeDolby} disabled={this.state.disabled}>Dolby Digital (AC3)</EditBoolean>
-                <EditBoolean noui={this.props.noui.allLanguages} disabled={this.state.disabled}>Alle Sprachen</EditBoolean>
-                <EditBoolean noui={this.props.noui.withVideotext} disabled={this.state.disabled}>Videotext</EditBoolean>
-                <EditBoolean noui={this.props.noui.withSubtitles} disabled={this.state.disabled}>DVB Untertitel</EditBoolean>
+                <EditBoolean noui={this.props.noui.includeDolby} disabled={this.state.disabled} />
+                <EditBoolean noui={this.props.noui.allLanguages} disabled={this.state.disabled} />
+                <EditBoolean noui={this.props.noui.withVideotext} disabled={this.state.disabled} />
+                <EditBoolean noui={this.props.noui.withSubtitles} disabled={this.state.disabled} />
             </div>;
         }
     }

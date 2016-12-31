@@ -21,8 +21,8 @@ namespace VCRNETClient.App.NoUi {
     export class StringListEditor extends StringEditor implements IStringFromListEditor {
 
         // Legt eine neue Verwaltung an.
-        constructor(data: any, prop: string, onChange: () => void, isRequired: boolean, public readonly allowedValues: ISelectableValue<string>[]) {
-            super(data, prop, onChange, isRequired);
+        constructor(data: any, prop: string, onChange: () => void, name: string, isRequired: boolean, public readonly allowedValues: ISelectableValue<string>[]) {
+            super(data, prop, onChange, name, isRequired);
         }
 
         // Prüft den aktuellen Wert.

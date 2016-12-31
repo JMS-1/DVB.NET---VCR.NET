@@ -20,9 +20,9 @@ namespace VCRNETClient.App.NoUi {
             super(model, true, favoriteSources, onChange);
 
             // Pflegekomponenten erstellen
-            this.deviceLock = new BooleanEditor(this.model, "lockedToDevice", onChange);
-            this.device = new StringListEditor(this.model, "device", onChange, true, devices);
-            this.folder = new StringListEditor(this.model, "directory", onChange, false, folders);
+            this.deviceLock = new BooleanEditor(this.model, "lockedToDevice", onChange, "(auf diesem Gerät aufzeichnen)");
+            this.device = new StringListEditor(this.model, "device", onChange, "DVB.NET Geräteprofil", true, devices);
+            this.folder = new StringListEditor(this.model, "directory", onChange, "Verzeichnis", false, folders);
         }
 
         // Das Aufzeichnungsverzeichnis.

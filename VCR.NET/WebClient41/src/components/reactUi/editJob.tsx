@@ -13,25 +13,25 @@ namespace VCRNETClient.Ui {
             return <fieldset className="vcrnet-jobdata">
                 <legend>Daten zum Auftrag</legend>
 
-                <Ui.Field label="DVB.NET Geräteprofil:">
+                <Ui.Field label={`${this.props.noui.device.name}:`}>
                     <Ui.EditTextWithList noui={this.props.noui.device} />
-                    <Ui.EditBoolean noui={this.props.noui.deviceLock}>(auf diesem Gerät aufzeichnen)</Ui.EditBoolean>
+                    <Ui.EditBoolean noui={this.props.noui.deviceLock} />
                 </Ui.Field>
 
-                <Ui.Field label="Name:" help="faq;jobsandschedules">
+                <Ui.Field label={`${this.props.noui.name.name}:`} help="faq;jobsandschedules">
                     <Ui.EditText noui={this.props.noui.name} chars={100} hint="(Jeder Auftrag muss einen Namen haben)" />
                 </Ui.Field>
 
-                <Ui.Field label="Verzeichnis:">
+                <Ui.Field label={`${this.props.noui.folder.name}:`}>
                     <Ui.EditTextWithList noui={this.props.noui.folder} />
                 </Ui.Field>
 
-                <Ui.Field label="Quelle:" help="faq;sourcechooser">
+                <Ui.Field label={`${this.props.noui.source.name}:`} help="faq;sourcechooser">
                     <Ui.EditChannel noui={this.props.noui.source} />
                 </Ui.Field>
 
-                <Ui.Field label="Besonderheiten:" help="faq;filecontents">
-                    <Ui.EditChannelFlags noui={this.props.noui} />
+                <Ui.Field label={`${this.props.noui.sourceFlags.name}:`} help="faq;filecontents">
+                    <Ui.EditChannelFlags noui={this.props.noui.sourceFlags} />
                 </Ui.Field>
             </fieldset>;
         }
