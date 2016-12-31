@@ -49,6 +49,8 @@ namespace VCRNETClient.Ui {
 
         // Überträgt einen veränderten Wert in die NoUi Schicht, in der dann Prüfungen und eine Aktualisierung ausgelöst werden.
         private onChange(ev: React.FormEvent): any {
+            ev.preventDefault();
+
             this.props.noui.val((ev.target as HTMLInputElement).value);
         }
     }

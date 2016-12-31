@@ -46,6 +46,8 @@ namespace VCRNETClient.Ui {
         private _encryption = this.updateEncryption.bind(this);
 
         private updateEncryption(ev: React.FormEvent): void {
+            ev.preventDefault();
+
             this.props.noui.encryption((ev.target as HTMLSelectElement).value);
         }
 
@@ -53,6 +55,8 @@ namespace VCRNETClient.Ui {
         private _type = this.updateType.bind(this);
 
         private updateType(ev: React.FormEvent): void {
+            ev.preventDefault();
+
             this.props.noui.type((ev.target as HTMLSelectElement).value);
         }
 
@@ -60,6 +64,8 @@ namespace VCRNETClient.Ui {
         private _section = this.updateSection.bind(this);
 
         private updateSection(ev: React.FormEvent): void {
+            ev.preventDefault();
+
             this.props.noui.section((ev.target as HTMLSelectElement).value);
         }
 

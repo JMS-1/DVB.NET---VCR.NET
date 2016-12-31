@@ -67,24 +67,32 @@ namespace VCRNETClient.Ui {
         private readonly _nextMonth = this.nextMonth.bind(this);
 
         private nextMonth(ev: React.FormEvent): void {
+            ev.preventDefault();
+
             this.props.noui.monthForward();
         }
 
         private readonly _prevMonth = this.prevMonth.bind(this);
 
         private prevMonth(ev: React.FormEvent): void {
+            ev.preventDefault();
+
             this.props.noui.monthBackward();
         }
 
         private readonly _selectMonth = this.selectMonth.bind(this);
 
         private selectMonth(ev: React.FormEvent): void {
+            ev.preventDefault();
+
             this.props.noui.month((ev.target as HTMLSelectElement).value);
         }
 
         private readonly _selectYear = this.selectYear.bind(this);
 
         private selectYear(ev: React.FormEvent): void {
+            ev.preventDefault();
+
             this.props.noui.year((ev.target as HTMLSelectElement).value);
         }
 

@@ -39,6 +39,8 @@ namespace VCRNETClient.Ui {
 
         // Übergibt eine veränderte Auswahl an die NoUi-Schicht.
         private onChange(ev: React.FormEvent): any {
+            ev.preventDefault();
+
             this.props.noui.val((ev.target as HTMLSelectElement).value);
         }
     }
