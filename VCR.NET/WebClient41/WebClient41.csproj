@@ -98,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <TypeScriptCompile Include="src\app\noUi\localizable.ts" />
   </ItemGroup>
   <ItemGroup>
     <None Include="content\styles.scss" />

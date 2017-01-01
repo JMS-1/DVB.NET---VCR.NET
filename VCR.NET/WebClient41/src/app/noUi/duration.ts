@@ -6,9 +6,7 @@ namespace VCRNETClient.App.NoUi {
         refresh(): void;
     }
 
-    export interface IDurationEditor {
-        readonly name: string;
-
+    export interface IDurationEditor extends IDisplayText {
         setSite(site: IDurationEditorSite): void;
 
         readonly startTime: ITimeEditor;
@@ -30,8 +28,8 @@ namespace VCRNETClient.App.NoUi {
 
         readonly endTime: TimeEditor;
 
-        constructor(data: any, propTime: string, propDuration: string, onChange: () => void, name: string) {
-            super(data, propDuration, onChange, name);
+        constructor(data: any, propTime: string, propDuration: string, onChange: () => void, text: string) {
+            super(data, propDuration, onChange, text);
 
             this.startTime = new TimeEditor(data, propTime, this._onChanged);
 

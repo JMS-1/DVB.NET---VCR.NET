@@ -3,6 +3,11 @@ import React = __React;
 import ReactDOM = __React.__DOM;
 
 namespace VCRNETClient {
+
+    // Beschreibt einen nicht vorhandenen Zustand einer React.Js Komponente.
+    export interface INoDynamicState {
+    }
+
     // Initialisiert die react.js Laufzeitumgebung.
     export function startup(): void {
         ReactDOM.render(<Main />, document.querySelector(`vcrnet-spa`));
