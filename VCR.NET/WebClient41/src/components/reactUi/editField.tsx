@@ -19,10 +19,10 @@ namespace VCRNETClient.Ui {
     export class Field extends React.Component<IFieldStatic, IFieldDynamic>{
         // Erzeugt die Anzeige eines Eingabefeldes.
         render(): JSX.Element {
-            return <label className="vcrnet-editfield">
+            return <div className="vcrnet-editfield">
                 <div>{this.props.label}{this.props.help ? <HelpLink page={this.props.help} /> : null}</div>
-                {this.props.children}
-            </label>;
+                <div>{this.props.children}</div>
+            </div>;
         }
     }
 }

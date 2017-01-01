@@ -31,6 +31,11 @@ namespace VCRNETClient {
                 <form>
                     <Ui.ScheduleData noui={this.props.page.getSchedule()} />
                 </form>
+                {this.renderExceptionHelp()}
+                <form>
+                    <fieldset><legend>Aktive Ausnahmeregeln</legend>[TBD]</fieldset>
+                </form>
+                {this.renderButtonHelp()}
             </div>;
         }
 
@@ -158,6 +163,30 @@ namespace VCRNETClient {
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </InlineHelp>;
+        }
+
+        private renderExceptionHelp(): JSX.Element {
+            return <InlineHelp title="Erläuterungen zu den Ausnahmeregelungen">
+                <div>
+                    Es werden alle noch aktiven Ausnahmeregeln angezeigt. Änderungen an den Regeln selbst können an
+                    dieser Stelle allerdings nicht vorgenommen werden, dazu dient alleine der Aufzeichnungsplan. Es
+                    ist allerdings möglich, über die erste Spalte eine aktive Ausnahmeregel gänzlich zu entfernen. Die
+                    Änderung wird erst beim Speichern des Formulars gültig.
+                </div>
+            </InlineHelp>;
+        }
+
+        private renderButtonHelp(): JSX.Element {
+            return <InlineHelp title="Erläuterungen zur Bedienung">
+                <div>
+                    Beim Löschen wird nur die angezeigte Aufzeichnung unwiederbringlich aus dem Auftrag entfernt. Handelt es sich um
+                    die letzte Aufzeichnung des Auftrags, so wird auch dieser endgültig aus der Verwaltung des VCR.NET Recording
+                    Service entfernt. Da das Löschen in beiden Fällen eine kritische Änderung auslöst, muss die Schaltfläche
+                    zweimal betätigt werden - nach dem ersten Aktivieren ändert sich lediglich die Farbe und signalisiert 
+                    damit, dass auf eine Bestätigung gewartet wird. Während des Neuanlegens einer Aufzeichnung wird die
+                    Schaltfläche zum Löschen nicht angeboten.           
                 </div>
             </InlineHelp>;
         }

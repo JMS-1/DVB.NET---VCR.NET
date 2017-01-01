@@ -3,9 +3,12 @@
 .vcrnet-editfield {
     display: block;
 
-    // Das erste Element eines Eingabefeldes ist immer die Bezeichnung, die in einer festen Breite ausgegeben wird.
-    > div:first-child {
+    > div {
         display: inline-block;
-        width: 12rem;
+        vertical-align: top;
+        // Das erste Element eines Eingabefeldes ist immer die Bezeichnung, die in einer festen Breite ausgegeben wird.
+        &:first-child {
+            width: 12rem;
+        }
     }
 }

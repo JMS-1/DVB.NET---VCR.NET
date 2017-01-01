@@ -18,6 +18,9 @@
         readonly onFriday: IBooleanEditor;
         readonly onSaturday: IBooleanEditor;
         readonly onSunday: IBooleanEditor;
+
+        // Ende der Wiederholung
+        readonly lastDay: IDaySelector;
     }
 
     // Beschreibt die Daten einer Aufzeichnung.
@@ -27,6 +30,7 @@
 
             // Pflegbare Eigenschaften anlegen.
             this.firstStart = new DayEditor(model, "firstStart", onChange, "Datum");
+            this.lastDay = new DayEditor(model, "lastDay", onChange, "wiederholen bis zum");
             this.repeat = new NumberEditor(model, "repeatPattern", onChange, "Wiederholung");
             this.duration = new DurationEditor(model, "firstStart", "duration", onChange, "Zeitraum");
 
@@ -41,7 +45,6 @@
             /*
             // Übernehmen
             this.exceptionInfos = $.map(rawData.exceptions, (rawException: VCRServer.PlanExceptionContract) => new PlanException(rawException));
-            this.lastDay = (repeat == 0) ? ScheduleEditor.maximumDate : new Date(rawData.lastDay);
             */
         }
 
@@ -53,6 +56,9 @@
 
         // Muster zur Wiederholung.
         readonly repeat: NumberEditor;
+
+        // Ende der Wiederholung
+        readonly lastDay: DayEditor;
 
         // Der kleinste erlaubte Datumswert.
         static minimumDate: Date = new Date(1963, 8, 29);
