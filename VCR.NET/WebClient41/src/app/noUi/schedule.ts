@@ -29,9 +29,9 @@
             super(model, false, favoriteSources, onChange);
 
             // Pflegbare Eigenschaften anlegen.
-            this.firstStart = new DayEditor(model, "firstStart", onChange, "Datum");
-            this.lastDay = new DayEditor(model, "lastDay", onChange, "wiederholen bis zum");
+            this.firstStart = new DayEditor(model, "firstStart", onChange, "Datum", false);
             this.repeat = new NumberEditor(model, "repeatPattern", onChange, "Wiederholung");
+            this.lastDay = new DayEditor(model, "lastDay", onChange, "wiederholen bis zum", true);
             this.duration = new DurationEditor(model, "firstStart", "duration", onChange, "Zeitraum");
 
             this.onMonday = new BooleanSetEditor(ScheduleEditor.flagMonday, this.repeat, DateFormatter.germanDays[1]);

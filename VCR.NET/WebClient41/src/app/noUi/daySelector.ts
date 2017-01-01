@@ -88,7 +88,7 @@ namespace VCRNETClient.App.NoUi {
         }
 
         reset(): void {
-            this.moveTo(new Date(this.val()));
+            this.moveTo(this.day());
         }
 
         private moveTo(date: Date): void {
@@ -145,11 +145,27 @@ namespace VCRNETClient.App.NoUi {
 
         private _site: IDaySelectorSite;
 
+        private day(newDay?: Date): Date {
+            var oldDay = new Date(this.val());
+
+            if (this._utc)
+                oldDay = new Date(oldDay.getUTCFullYear(), oldDay.getUTCMonth(), oldDay.getUTCDate(), oldDay.getUTCHours(), oldDay.getUTCMinutes(), oldDay.getUTCSeconds(), oldDay.getUTCMilliseconds());
+
+            if (newDay !== undefined) {
+                if (this._utc)
+                    newDay = new Date(Date.UTC(newDay.getFullYear(), newDay.getMonth(), newDay.getDate(), newDay.getHours(), newDay.getMinutes(), newDay.getSeconds(), newDay.getMilliseconds()));
+
+                this.val(newDay.toISOString());
+            }
+
+            return oldDay;
+        }
+
         setSite(newSite: IDaySelectorSite): void {
             if (!(this._site = newSite))
                 return;
 
-            var date = new Date(this.val());
+            var date = this.day();
 
             this._month = this.months[date.getMonth()];
             this._year = `${date.getFullYear()}`;
@@ -180,7 +196,7 @@ namespace VCRNETClient.App.NoUi {
             var now = new Date();
             now = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-            var selected = new Date(this.val());
+            var selected = this.day();
             selected = new Date(selected.getFullYear(), selected.getMonth(), selected.getDate());
 
             this.days = [];
@@ -207,18 +223,18 @@ namespace VCRNETClient.App.NoUi {
             while (current.getMonth() === month);
         }
 
-        constructor(data: any, prop: string, onChange: () => void, name: string) {
+        constructor(data: any, prop: string, onChange: () => void, name: string, private _utc: boolean) {
             super(data, prop, onChange, name);
         }
 
         private selectDay(day: ISelectableDay): void {
-            var oldSelected = new Date(this.val());
+            var oldSelected = this.day();
             var newSelected = new Date(day.date.getFullYear(), day.date.getMonth(), day.date.getDate(), oldSelected.getHours(), oldSelected.getMinutes(), oldSelected.getSeconds(), oldSelected.getMilliseconds());
 
             if (newSelected.getTime() === oldSelected.getTime())
                 return;
 
-            this.val(newSelected.toISOString());
+            this.day(newSelected);
 
             this.reset();
             this.refresh();
