@@ -98,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <TypeScriptCompile Include="src\app\noUi\command.ts" />
     <TypeScriptCompile Include="src\app\noUi\localizable.ts" />
   </ItemGroup>
   <ItemGroup>
@@ -182,6 +183,16 @@
     <None Include="src\components\reactUi\editDay.scss" />
     <None Include="src\components\reactUi\editTime.scss" />
     <None Include="src\components\reactUi\editDuration.scss" />
+    <None Include="src\components\reactUi\command.scss" />
+    <Content Include="src\components\reactUi\styles.css">
+      <DependentUpon>styles.scss</DependentUpon>
+    </Content>
+    <Content Include="src\components\styles.css">
+      <DependentUpon>styles.scss</DependentUpon>
+    </Content>
+    <Content Include="src\pages\styles.css">
+      <DependentUpon>styles.scss</DependentUpon>
+    </Content>
     <Content Include="ui\images\faq\epgonoff.png" />
     <Content Include="ui\images\faq\epgsources.png" />
     <Content Include="ui\images\faq\epgtimes.png" />
@@ -236,6 +247,8 @@
     <None Include="src\components\detailRow.scss" />
     <None Include="src\components\inlineHelp.scss" />
     <None Include="src\components\checkbox.scss" />
+    <Content Include="src\components\reactUi\styles.scss" />
+    <Content Include="src\components\styles.scss" />
     <None Include="src\pages\edit.scss" />
     <None Include="src\pages\help.scss" />
     <Content Include="src\pages\plan.scss" />
@@ -325,6 +338,7 @@
     <TypeScriptCompile Include="src\app\noUi\schedule.ts" />
     <TypeScriptCompile Include="src\components\checkbox.tsx" />
     <TypeScriptCompile Include="src\components\detailRow.tsx" />
+    <TypeScriptCompile Include="src\components\reactUi\command.tsx" />
     <TypeScriptCompile Include="src\components\reactUi\editChannel.tsx" />
     <TypeScriptCompile Include="src\components\reactUi\editChannelFlags.tsx" />
     <TypeScriptCompile Include="src\components\reactUi\editDay.tsx" />
@@ -369,6 +383,7 @@
     <Content Include="scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="scripts\jquery-3.1.1.min.map" />
     <Content Include="src\vcrnet.scss" />
+    <Content Include="src\pages\styles.scss" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

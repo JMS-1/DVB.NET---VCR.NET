@@ -8,7 +8,7 @@
         // Laufzeit der Aufzeichnung.
         readonly duration: IDurationEditor;
 
-        // Wiederholungsmuster
+        // Wiederholungsmuster als Ganzes und aufgespalten als Wahrheitswert pro Wochentag.
         readonly repeat: INumberEditor;
 
         readonly onMonday: IBooleanEditor;
@@ -106,7 +106,23 @@
 
             this.firstStart.validate();
             this.duration.validate();
+            this.lastDay.validate();
             this.repeat.validate();
+        }
+
+        isValid(): boolean {
+            if (!super.isValid())
+                return false;
+            if (this.firstStart.message.length > 0)
+                return false;
+            if (this.duration.message.length > 0)
+                return false;
+            if (this.repeat.message.length > 0)
+                return false;
+            if (this.lastDay.message.length > 0)
+                return false;
+
+            return true;
         }
     }
 

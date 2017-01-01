@@ -36,6 +36,9 @@ namespace VCRNETClient {
                     <fieldset><legend>Aktive Ausnahmeregeln</legend>[TBD]</fieldset>
                 </form>
                 {this.renderButtonHelp()}
+                <div>
+                    <Ui.Command noui={this.props.page.getSaveCommand()} />
+                </div>
             </div>;
         }
 
@@ -184,9 +187,9 @@ namespace VCRNETClient {
                     Beim Löschen wird nur die angezeigte Aufzeichnung unwiederbringlich aus dem Auftrag entfernt. Handelt es sich um
                     die letzte Aufzeichnung des Auftrags, so wird auch dieser endgültig aus der Verwaltung des VCR.NET Recording
                     Service entfernt. Da das Löschen in beiden Fällen eine kritische Änderung auslöst, muss die Schaltfläche
-                    zweimal betätigt werden - nach dem ersten Aktivieren ändert sich lediglich die Farbe und signalisiert 
+                    zweimal betätigt werden - nach dem ersten Aktivieren ändert sich lediglich die Farbe und signalisiert
                     damit, dass auf eine Bestätigung gewartet wird. Während des Neuanlegens einer Aufzeichnung wird die
-                    Schaltfläche zum Löschen nicht angeboten.           
+                    Schaltfläche zum Löschen nicht angeboten.
                 </div>
             </InlineHelp>;
         }

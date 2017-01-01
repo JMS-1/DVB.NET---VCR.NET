@@ -43,6 +43,20 @@ namespace VCRNETClient.App.NoUi {
             this.folder.validate();
             this.deviceLock.validate();
         }
+
+        // Gesetzt, wenn die Einstellungen des Auftrags gültig sind.
+        isValid(): boolean {
+            if (!super.isValid())
+                return false;
+            if (this.device.message.length > 0)
+                return false;
+            if (this.folder.message.length > 0)
+                return false;
+            if (this.deviceLock.message.length > 0)
+                return false;
+
+            return true;
+        }
     }
 
 }

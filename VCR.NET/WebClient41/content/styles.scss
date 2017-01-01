@@ -2,36 +2,10 @@
 @import "vcrnet_old";
 
 @import "../src/vcrnet.scss";
-@import "../src/components/checkbox.scss";
-@import "../src/components/radio.scss";
-@import "../src/components/radioGroup.scss";
-@import "../src/components/pictogram.scss";
-@import "../src/components/internalLink.scss";
-@import "../src/components/externalLink.scss";
-@import "../src/components/helpLink.scss";
-@import "../src/components/inlineHelp.scss";
-@import "../src/components/navigation.scss";
-@import "../src/components/view.scss";
-@import "../src/components/main.scss";
-@import "../src/components/planRow.scss";
-@import "../src/components/detailRow.scss";
 
-@import "../src/components/reactUi/editField.scss";
-@import "../src/components/reactUi/editText.scss";
-@import "../src/components/reactUi/editSingleSelect.scss";
-@import "../src/components/reactUi/editFlag.scss";
-@import "../src/components/reactUi/editChannel.scss";
-@import "../src/components/reactUi/editChannelFlags.scss";
-@import "../src/components/reactUi/editJob.scss";
-@import "../src/components/reactUi/editSchedule.scss";
-@import "../src/components/reactUi/editDay.scss";
-@import "../src/components/reactUi/editTime.scss";
-@import "../src/components/reactUi/editDuration.scss";
-
-@import "../src/pages/home.scss";
-@import "../src/pages/plan.scss";
-@import "../src/pages/edit.scss";
-@import "../src/pages/help.scss";
+@import "../src/components/styles.scss";
+@import "../src/components/reactUi/styles.scss";
+@import "../src/pages/styles.scss";
 
 vcrnet-spa {
     display: block;

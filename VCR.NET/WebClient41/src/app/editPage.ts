@@ -18,6 +18,12 @@ namespace VCRNETClient.App {
             return this._schedule;
         }
 
+        private _save = new NoUi.Command(() => this.onSave(), () => this._isValid, "Übernehmen");
+
+        getSaveCommand(): NoUi.ICommand {
+            return this._save;
+        }
+
         private _loadFinished = this.loadFinished.bind(this);
 
         private _onChanged = this.onChanged.bind(this);
@@ -29,6 +35,8 @@ namespace VCRNETClient.App {
         private _sources: VCRServer.SourceEntry[];
 
         private _site: IEditSite;
+
+        private _isValid = false;
 
         getName(): string {
             return "edit";
@@ -84,6 +92,8 @@ namespace VCRNETClient.App {
 
                     this._job.validate(sources);
                     this._schedule.validate(sources, (this._job.source.val() || "").trim().length < 1);
+
+                    this._isValid = this._job.isValid() && this._schedule.isValid();
                 }
 
                 return sources;
@@ -107,6 +117,9 @@ namespace VCRNETClient.App {
             this.loadSources().then(this._refreshSite);
 
             this.refreshSite();
+        }
+
+        private onSave(): void {
         }
     }
 }

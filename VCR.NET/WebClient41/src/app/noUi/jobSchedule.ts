@@ -72,6 +72,24 @@
             this.sourceFlags.withVideotext.validate();
             this.sourceFlags.withSubtitles.validate();
         }
+
+        // Gesetzt, wenn die Einstellungen der Quelle gültig sind.
+        isValid(): boolean {
+            if (this.name.message.length > 0)
+                return false;
+            if (this.source.message.length > 0)
+                return false;
+            if (this.sourceFlags.allLanguages.message.length > 0)
+                return false;
+            if (this.sourceFlags.includeDolby.message.length > 0)
+                return false;
+            if (this.sourceFlags.withVideotext.message.length > 0)
+                return false;
+            if (this.sourceFlags.withSubtitles.message.length > 0)
+                return false;
+
+            return true;
+        }
     }
 
 }
