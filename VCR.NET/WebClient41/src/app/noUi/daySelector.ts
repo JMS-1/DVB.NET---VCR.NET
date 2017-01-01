@@ -149,11 +149,11 @@ namespace VCRNETClient.App.NoUi {
             var oldDay = new Date(this.val());
 
             if (this._utc)
-                oldDay = new Date(oldDay.getUTCFullYear(), oldDay.getUTCMonth(), oldDay.getUTCDate(), oldDay.getUTCHours(), oldDay.getUTCMinutes(), oldDay.getUTCSeconds(), oldDay.getUTCMilliseconds());
+                oldDay = new Date(oldDay.getUTCFullYear(), oldDay.getUTCMonth(), oldDay.getUTCDate());
 
             if (newDay !== undefined) {
                 if (this._utc)
-                    newDay = new Date(Date.UTC(newDay.getFullYear(), newDay.getMonth(), newDay.getDate(), newDay.getHours(), newDay.getMinutes(), newDay.getSeconds(), newDay.getMilliseconds()));
+                    newDay = new Date(Date.UTC(newDay.getFullYear(), newDay.getMonth(), newDay.getDate()));
 
                 this.val(newDay.toISOString());
             }
