@@ -6,6 +6,8 @@ namespace VCRNETClient.App {
     }
 
     export class EditPage extends Page {
+        private _raw: VCRServer.JobScheduleInfoContract;
+
         private _job: NoUi.JobEditor;
 
         getJob(): NoUi.IJobEditor {
@@ -18,8 +20,6 @@ namespace VCRNETClient.App {
             return this._schedule;
         }
 
-        private _save = new NoUi.Command(() => this.onSave(), () => this._isValid, "Übernehmen");
-
         getSaveCommand(): NoUi.ICommand {
             return this._save;
         }
@@ -29,6 +29,8 @@ namespace VCRNETClient.App {
         private _onChanged = this.onChanged.bind(this);
 
         private _refreshSite = this.refreshSite.bind(this);
+
+        private _save = new NoUi.Command(() => this.onSave(), () => this._isValid, this._refreshSite, "Übernehmen");
 
         private _loadPending: number;
 
@@ -52,6 +54,7 @@ namespace VCRNETClient.App {
 
         reset(section: string): void {
             this._loadPending = 1;
+            this._raw = undefined;
             this._job = undefined;
             this._schedule = undefined;
 
@@ -66,6 +69,7 @@ namespace VCRNETClient.App {
                     return VCRServer.createScheduleFromGuide(section.substr(3), "").then(info => {
                         var favorites = this.application.profile.recentSources || [];
 
+                        this._raw = info;
                         this._job = new NoUi.JobEditor(info.job, profileSelection, favorites, folderSelection, this._onChanged);
                         this._schedule = new NoUi.ScheduleEditor(info.schedule, favorites, this._onChanged);
 
@@ -119,7 +123,10 @@ namespace VCRNETClient.App {
             this.refreshSite();
         }
 
-        private onSave(): void {
+        private onSave(): Thenable<void> {
+            return VCRServer
+                .updateSchedule(this._raw.jobId, this._raw.scheduleId, { job: this._raw.job, schedule: this._raw.schedule })
+                .then(() => this.application.gotoPage(this.application.planPage.getName()));
         }
     }
 }

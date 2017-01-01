@@ -93,6 +93,10 @@ namespace VCRNETClient {
             this._application.switchPage(name, section);
         }
 
+        goto(name: string): void {
+            window.location.href = `#${name}`;
+        }
+
         getHelpComponent(section: string): HelpComponent {
             return Main._faq[section];
         }

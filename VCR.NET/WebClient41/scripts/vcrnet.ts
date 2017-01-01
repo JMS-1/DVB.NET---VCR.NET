@@ -470,8 +470,7 @@ class JobScheduleDataContract implements VCRServer.JobScheduleDataContract {
     update(jobId: string, scheduleId: string, finishHash: string, onError: (message: string) => void): void {
         VCRServer
             .updateSchedule(jobId, scheduleId, this)
-            .done(() => { VCRServer.UserProfile.global.refresh(); window.location.hash = finishHash; })
-            .fail(JMSLib.dispatchErrorMessage(onError));
+            .then(() => { VCRServer.UserProfile.global.refresh(); window.location.hash = finishHash; }, JMSLib.dispatchErrorMessage(onError));
     }
 }
 

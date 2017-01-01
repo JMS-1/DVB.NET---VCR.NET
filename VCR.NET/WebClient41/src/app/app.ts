@@ -3,12 +3,16 @@
         onBusyChanged(isBusy: boolean): void;
 
         onFirstStart(): void;
+
+        goto(page: string);
     }
 
     export class Application {
         private readonly _homePage = new HomePage(this);
 
         readonly helpPage = new HelpPage(this);
+
+        readonly planPage = new PlanPage(this);
 
         private _pageMapper: { [name: string]: Page } = {};
 
@@ -30,7 +34,7 @@
             var pages: Page[] = [
                 this._homePage,
                 this.helpPage,
-                new PlanPage(this),
+                this.planPage,
                 new EditPage(this),
             ];
 
@@ -53,6 +57,10 @@
 
             // Wir können nun die Standardseite aktivieren
             this._site.onFirstStart();
+        }
+
+        gotoPage(name: string): void {
+            this._site.goto(name);
         }
 
         switchPage(name: string, section: string): boolean {

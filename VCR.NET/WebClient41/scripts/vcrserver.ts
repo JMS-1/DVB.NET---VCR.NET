@@ -18,20 +18,32 @@ module VCRServer {
     var restRoot = serverRoot + '/vcr.net/';
 
     // Führt eine Web Anfrage aus.
-    function doUrlCall<TResponseType>(url: string, method: string = 'GET'): Thenable<TResponseType> {
+    function doUrlCall<TResponseType, TRequestType>(url: string, method: string = 'GET', request?: TRequestType): Thenable<TResponseType> {
         var thenable = new VCRNETClient.App.PromiseHelper<TResponseType>();
         var xhr = new XMLHttpRequest();
 
         xhr.addEventListener("load", () => {
             if (xhr.status < 400)
-                thenable.success(JSON.parse(xhr.responseText));
+                if (xhr.status === 204)
+                    thenable.success(undefined);
+                else
+                    thenable.success(JSON.parse(xhr.responseText));
             else
                 thenable.failure(xhr.responseText);
         });
 
         xhr.open(method, restRoot + url);
         xhr.setRequestHeader("accept", "application/json");
-        xhr.send();
+
+        if (request === undefined) {
+            xhr.send();
+        }
+        else {
+            xhr.setRequestHeader("content-type", "application/json");
+
+            xhr.send(JSON.stringify(request));
+        }
+
 
         return thenable;
     }
@@ -822,31 +834,22 @@ module VCRServer {
         });
     }
 
-    export function updateSchedule(jobId: string, scheduleId: string, data: JobScheduleDataContract): JQueryPromise<any> {
-        // Die Einstellungen, wie sie für das Neuanlegen benötigt werden
-        var sendOptions: JQueryAjaxSettings =
-            {
-                contentType: 'application/json',
-                data: JSON.stringify(data),
-                url: restRoot + 'edit',
-                type: 'POST',
-            };
+    export function updateSchedule(jobId: string, scheduleId: string, data: JobScheduleDataContract): Thenable<void> {
+        var method = "POST";
+        var url = "edit";
 
-        // Eventuell existiert der Auftrag schon
         if (jobId != null) {
-            sendOptions.url += '/' + jobId;
+            url += '/' + jobId;
 
-            // Eventuell existiert dann auch die Aufzeichnung
             if (scheduleId != null) {
-                sendOptions.url += scheduleId;
+                url += scheduleId;
 
-                // Das wäre dann eine Aktualisierung
-                sendOptions.type = 'PUT';
+                method = 'PUT';
             }
         }
 
         // Befehl ausführen
-        return $.ajax(sendOptions);
+        return doUrlCall<void, JobScheduleDataContract>(url, method, data);
     }
 
     // Verwaltet die Aufzeichnungsverzeichnisse

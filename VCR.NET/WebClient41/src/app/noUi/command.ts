@@ -8,13 +8,35 @@ namespace VCRNETClient.App.NoUi {
         execute(): void;
     }
 
-    export class Command implements ICommand {
-        constructor(private _executor: () => void, public isEnabled: () => boolean, public text: string) {
+    export class Command<TResponseType> implements ICommand {
+        private _busy = false;
+
+        constructor(private _begin: () => Thenable<TResponseType>, private _test: () => boolean, private _onChange: () => void, public text: string) {
+        }
+
+        isEnabled(): boolean {
+            if (this._busy)
+                return false;
+            else
+                return this._test();
+        }
+
+        private setBusy(newVal: boolean): void {
+            if (this._busy === newVal)
+                return;
+
+            this._busy = newVal;
+
+            this._onChange();
         }
 
         execute(): void {
             if (!this.isEnabled())
                 return;
+
+            this.setBusy(true);
+
+            this._begin().then(() => this.setBusy(false), e => this.setBusy(false));
         }
     }
 }
