@@ -2,14 +2,8 @@
 
 namespace VCRNETClient.Ui {
 
-    // Eigenschaften zur visuellen Pflege eines Wahrheitswertes.
-    interface IEditBooleanStatic {
-        // Der Zugriff auf den Wahrheitswert im Modell.
-        noui: App.NoUi.IBooleanEditor;
-    }
-
     // React.Js Komponente zur visuellen Pflege eines Wahrheitswertes.
-    export class EditBoolean extends React.Component<IEditBooleanStatic, INoDynamicState>  {
+    export class EditBoolean extends NoUiView<App.NoUi.IBooleanEditor>  {
         // Erstellt die Anzeige der Komponente.
         render(): JSX.Element {
             return <label className="vcrnet-editflag">

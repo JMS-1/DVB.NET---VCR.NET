@@ -2,14 +2,7 @@
 
 namespace VCRNETClient.Ui {
 
-    interface IEditTimeStatic {
-        noui: App.NoUi.ITimeEditor;
-    }
-
-    interface IEditTimeDynamic {
-    }
-
-    export class EditTime extends React.Component<IEditTimeStatic, IEditTimeDynamic> implements App.NoUi.ITimeEditorSite {
+    export class EditTime extends NoUiView<App.NoUi.ITimeEditor> implements App.NoUi.ITimeEditorSite {
         componentWillMount(): void {
             this.props.noui.setSite(this);
         }

@@ -2,14 +2,8 @@
 
 namespace VCRNETClient.Ui {
 
-    // Schnittstelle zur Pflege der in eine Aufzeichnung zu integrierenden Sonderdaten.
-    interface IEditChannelFlagsStatic {
-        // Zugriff auf die einzelnen Wahrheitswerte.
-        noui: App.NoUi.ISourceFlagsEditor;
-    }
-
     // React.Js Komponente zur visuellen Darstellung der Aufzeichnungsoptionen.
-    export class EditChannelFlags extends React.Component<IEditChannelFlagsStatic, INoDynamicState>  {
+    export class EditChannelFlags extends NoUiView<App.NoUi.ISourceFlagsEditor>  {
 
         // Erzeugt die visuelle Darstellung.
         render(): JSX.Element {

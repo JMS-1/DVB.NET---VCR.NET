@@ -1,14 +1,7 @@
 ﻿/// <reference path="../../vcrnet.tsx" />
 
 namespace VCRNETClient.Ui {
-    interface IScheduleDataStatic {
-        noui: App.NoUi.IScheduleEditor;
-    }
-
-    interface IScheduleDataDynamic {
-    }
-
-    export class ScheduleData extends React.Component<IScheduleDataStatic, IScheduleDataDynamic>{
+    export class ScheduleData extends NoUiView<App.NoUi.IScheduleEditor>{
         render(): JSX.Element {
             return <fieldset className="vcrnet-scheduledata">
                 <legend>Daten zur Aufzeichnung</legend>

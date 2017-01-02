@@ -2,14 +2,7 @@
 
 namespace VCRNETClient.Ui {
 
-    interface IEditDayStatic {
-        noui: App.NoUi.IDaySelector;
-    }
-
-    interface IEditDayDynamic {
-    }
-
-    export class EditDay extends React.Component<IEditDayStatic, IEditDayDynamic> implements App.NoUi.IDaySelectorSite {
+    export class EditDay extends NoUiView<App.NoUi.IDaySelector> implements App.NoUi.IDaySelectorSite {
         componentWillMount(): void {
             this.props.noui.setSite(this);
         }

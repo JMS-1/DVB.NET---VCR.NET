@@ -2,11 +2,7 @@
 
 namespace VCRNETClient.Ui {
 
-    interface ICommandStatic {
-        noui: App.NoUi.ICommand;
-    }
-
-    export class Command extends React.Component<ICommandStatic, INoDynamicState>  {
+    export class Command extends NoUiView<App.NoUi.ICommand>  {
         render(): JSX.Element {
             return <button className="vcrnet-command" disabled={!this.props.noui.isEnabled()} onClick={() => this.props.noui.execute()}>
                 {this.props.noui.text}

@@ -1,14 +1,7 @@
 ﻿/// <reference path="../../vcrnet.tsx" />
 
 namespace VCRNETClient.Ui {
-    interface IJobDataStatic {
-        noui: App.NoUi.IJobEditor;
-    }
-
-    interface IJobDataDynamic {
-    }
-
-    export class JobData extends React.Component<IJobDataStatic, IJobDataDynamic>{
+    export class JobData extends NoUiView<App.NoUi.IJobEditor>{
         render(): JSX.Element {
             return <fieldset className="vcrnet-jobdata">
                 <legend>Daten zum Auftrag</legend>

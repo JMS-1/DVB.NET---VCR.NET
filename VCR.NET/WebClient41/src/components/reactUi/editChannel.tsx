@@ -2,18 +2,8 @@
 
 namespace VCRNETClient.Ui {
 
-    // Konfiguration der Senderauswahl.
-    interface IEditChannelStatic {
-        // Die Formular- und Prüflogik zur Senderauswahl.
-        noui: App.NoUi.IChannelSelector;
-    }
-
-    // Der Zustand der Senderauswahl.
-    interface IEditChannelDynamic {
-    }
-
     // Die React.Js Anzeige zur Senderauswahl.
-    export class EditChannel extends React.Component<IEditChannelStatic, IEditChannelDynamic> implements App.NoUi.IChannelSelectorSite {
+    export class EditChannel extends NoUiView<App.NoUi.IChannelSelector> implements App.NoUi.IChannelSelectorSite {
         // Beim Einbinden der Anzeige in die Oberfläche wird eine Verbindung zur Logik hergestellt.
         componentWillMount(): void {
             this.props.noui.setSite(this);
