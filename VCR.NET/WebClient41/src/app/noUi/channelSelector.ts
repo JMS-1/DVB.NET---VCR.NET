@@ -238,7 +238,10 @@ namespace VCRNETClient.App.NoUi {
             super(data, prop, onChange, "Quelle");
 
             // Übernimmt die lineare Liste aller bevorzugten Sender zur schnelleren Auswahl in ein Dictionary.
-            favoriteSources.forEach(s => this._favorites[s] = true);
+            if (this.showFilter = (favoriteSources.length < 1))
+                this._section = this.sections[this.sections.length - 1];
+            else
+                favoriteSources.forEach(s => this._favorites[s] = true);
         }
 
         // Ermittelt die Liste der relevanten Quellen neu.
