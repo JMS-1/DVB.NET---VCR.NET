@@ -2,19 +2,15 @@
 
     // Beschreibt einen einzelne Ausnahmeregel
     export class PlanException {
-        constructor(rawData: VCRServer.PlanExceptionContract) {
+        constructor(public rawException: VCRServer.PlanExceptionContract) {
             // Daten aus den Rohdaten übernehmen
-            this.referenceDayDisplay = parseInt(rawData.referenceDayDisplay, 10);
-            this.originalStart = new Date(rawData.originalStart);
-            this.originalDuration = rawData.originalDuration;
-            this.referenceDay = rawData.referenceDay;
-            this.durationDelta = rawData.timeDelta;
-            this.startDelta = rawData.startShift;
-            this.rawException = rawData;
+            this.referenceDayDisplay = parseInt(rawException.referenceDayDisplay, 10);
+            this.originalStart = new Date(rawException.originalStart);
+            this.originalDuration = rawException.originalDuration;
+            this.referenceDay = rawException.referenceDay;
+            this.durationDelta = rawException.timeDelta;
+            this.startDelta = rawException.startShift;
         }
-
-        // Die Ausnahme, so wie der Web Service sie uns gemeldet hat.
-        rawException: any;
 
         // Das Referenzdatum für die Ausnahme.
         private referenceDay: string;

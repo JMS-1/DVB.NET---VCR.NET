@@ -6,7 +6,7 @@ namespace VCRNETClient {
     }
 
     interface IPlanDynamic {
-        jobs?: App.PlanEntry[];
+        jobs?: App.IPlanEntry[];
 
         start?: number;
 
@@ -133,14 +133,14 @@ namespace VCRNETClient {
             </div >;
         }
 
-        private toggleDetail(job: App.PlanEntry, details: boolean): void {
+        private toggleDetail(job: App.IPlanEntry, details: boolean): void {
             if ((job.key === this.state.detailKey) && (details === this.state.showDetails))
                 this.setState({ detailKey: undefined });
             else
                 this.setState({ detailKey: job.key, showDetails: details });
         }
 
-        onRefresh(jobs: App.PlanEntry[], index: number, showTasks: boolean): void {
+        onRefresh(jobs: App.IPlanEntry[], index: number, showTasks: boolean): void {
             this.setState({ jobs: jobs, start: index, showTasks: showTasks });
         }
     }

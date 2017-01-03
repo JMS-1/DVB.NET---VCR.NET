@@ -122,8 +122,7 @@ module VCRServer {
         guideSearches: string;
     }
 
-    // Repräsentiert die Klasse PlanCurrent
-    export interface PlanCurrentContractMobile {
+    export interface PlanCurrentContract {
         // Das Gerät, auf dem die Aktivität stattfindet
         device: string;
 
@@ -144,9 +143,7 @@ module VCRServer {
 
         // Gesetzt, wenn Daten aus der Programmzeitschrift für die Dauer der Aktivität vorliegen
         epg: boolean;
-    };
 
-    export interface PlanCurrentContract extends PlanCurrentContractMobile {
         // Eine eindeutige Kennung einer Aufzeichnung zum Abruf der Detailinformationen
         id: string;
 
@@ -170,6 +167,63 @@ module VCRServer {
 
         // Die verbleibende Anzahl von Minuten einer aktiven Aufzeichnung oder Aufgabe
         remainingMinutes: number;
+    }
+
+    // Beschreibt einen Eintrag im Aufzeichnungsplan.
+    export interface PlanActivityContract {
+        // Beginn der Aufzeichnung im ISO Format.
+        start?: string | Date;
+
+        // Dauer der Aufzeichung in Sekunden.
+        duration: string | number;
+
+        // Name der Aufzeichnung.
+        name: string;
+
+        // Gerät, auf dem aufgezeichnet wird.
+        device?: string;
+
+        // Sender, von dem aufgezeichnet wird.
+        station?: string;
+
+        // Gesetzt, wenn die Aufzeichnung verspätet beginnt.
+        late: boolean;
+
+        // Gesetzt, wenn die Aufzeichnung gar nicht ausgeführt wird.
+        lost: boolean;
+
+        // Gesetzt, wenn Informationen aus der Programmzeitschrift vorliegen.
+        epg: boolean;
+
+        // Das Gerät, in dessen Programmzeitschrift die Aufzeichnung gefunden wurde.
+        epgDevice?: string;
+
+        // Die Quelle zur Aufzeichnung in der Programzeitschrift.
+        source?: string;
+
+        // Die eindeutige Kennung der Aufzeichnung.
+        id: string;
+
+        // Gesetzt, wenn die Endzeit durch eine Sommer-/Winterzeitumstellung nicht korrekt ist.
+        suspectEndTime: boolean;
+
+        // Gesetzt, wenn alle Tonspuren aufgezeichnet werden sollen.
+        allAudio: boolean;
+
+        // Gesetzt, wenn Dolby Tonspuren aufgezeichnet werden sollen.
+        ac3: boolean;
+
+        // Gesetzt, wenn der Videotext mit aufgezeichnet werden soll.
+        ttx: boolean;
+
+        // Gesetzt, wenn DVB Untertitel mit aufgezeichnet werden sollen.
+        dvbsub: boolean;
+
+        // Gesetzt, wenn die Aufzeichnung laut Programmzeitschrift gerade läuft.
+        epgCurrent: boolean;
+
+        // Aktive Ausnahmeregel für die Aufzeichnung.
+        exception?: PlanExceptionContract;
     }
 
     // Repräsentiert die Klasse GuideItem
@@ -637,13 +691,6 @@ module VCRServer {
         return doUrlCall('plan');
     }
 
-    export function getPlanCurrentForMobile(): JQueryPromise<PlanCurrentContractMobile[]> {
-        return $.ajax({
-            url: restRoot + 'plan?mobile',
-            dataType: 'json',
-        });
-    }
-
     export function getProfileJobInfos(device: string): JQueryPromise<any> {
         return $.ajax({
             url: restRoot + 'profile/' + device + '?activeJobs',
@@ -823,15 +870,8 @@ module VCRServer {
         return doUrlCall(`edit/${legacyId}${epgId}`);
     }
 
-    export function getPlan(limit: number, end: Date): Thenable<any[]> {
+    export function getPlan(limit: number, end: Date): Thenable<PlanActivityContract[]> {
         return doUrlCall(`plan?limit=${limit}&end=${end.toISOString()}`);
-    }
-
-    export function getPlanForMobile(limit: number): JQueryPromise<any> {
-        return $.ajax({
-            url: restRoot + 'plan?limit=' + limit + '&mobile',
-            dataType: 'json',
-        });
     }
 
     export function updateSchedule(jobId: string, scheduleId: string, data: JobScheduleDataContract): Thenable<void> {

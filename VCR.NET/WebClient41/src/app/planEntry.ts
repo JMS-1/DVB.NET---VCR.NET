@@ -1,78 +1,12 @@
 ﻿namespace VCRNETClient.App {
 
-    // Beschreibt einen einzelnen Eintrag in Aufzeichnungsplan
-    export class PlanEntry {
-        constructor(rawData: any, public key: string) {
-            // Zeiten umrechnen
-            var duration = rawData.duration * 1000;
-            var start = new Date(rawData.start);
-            var end = new Date(start.getTime() + duration);
+    // Erweiterte Schnittstelle (View Model) zur Anzeige eines Eintrags des Aufzeichnunsplans.
+    export interface IPlanEntry extends VCRServer.PlanActivityContract {
+        // Ein eindeutiger Name.
+        key: string;
 
-            // Daten aus der Rohdarstellung in das Modell kopieren
-            this.station = (rawData.station == null) ? '(unbekannt)' : rawData.station;
-            this.profile = (rawData.device == null) ? '' : rawData.device;
-            this.displayStart = DateFormatter.getStartTime(start);
-            this.displayEnd = DateFormatter.getEndTime(end);
-            this.epgProfile = rawData.epgDevice;
-            this.fullName = rawData.name;
-            this.source = rawData.source;
-            this.id = rawData.id;
-            this.start = start;
-            this.end = end;
-
-            // Aufzeichnungsoptionen
-            this.currentGuide = rawData.epgCurrent;
-            this.allAudio = rawData.allAudio;
-            this.hasGuideEntry = rawData.epg;
-            this.subTitles = rawData.dvbsub;
-            this.videoText = rawData.ttx;
-            this.dolby = rawData.ac3;
-
-            // Für Aufgaben konfigurieren wir keine Verweise
-            if (this.station == 'PSI')
-                return;
-            if (this.station == 'EPG')
-                return;
-
-            // Aufzeichungsmodus ermitteln
-            if (rawData.lost)
-                this.mode = 'lost';
-            else if (rawData.late)
-                this.mode = 'late';
-            else
-                this.mode = 'intime';
-
-            // Ausnahmen auswerten
-            if (rawData.exception != null)
-                this.exceptionInfo = new PlanException(rawData.exception);
-
-            // Die Endzeit könnte nicht wie gewünscht sein
-            this.endTimeSuspect = rawData.suspectEndTime;
-        }
-
-        // Gesetzt zur Kennzeichnung von Aufzeichnungen über die Zeitumstellung hinweg
-        endTimeSuspect: boolean;
-
-        // Die Kennung der zugehörigen Quelle.
-        private source: string;
-
-        // Kennung einer Aufzeichnung, so wie sie in der ursprünglichen ASP.NET Anwendung verwendet wird.
-        id: string;
-
-        // Der volle Name des Senders.
-        station: string;
-
-        // Das DVB.NET Gerät, das die Aufzeichnung ausführen wird.
-        profile: string;
-
-        // Das DVB.NET Gerät, über das Sendungsinformationen nachgeschlagen werden können.
-        private epgProfile: string;
-
-        // Der volle Name der Aufzeichnung.
-        fullName: string;
-
-        // Der Zeitpunkt, an dem die Aufzeichnung beginnen wird.
-        start: Date;
+        // Ein Kürzel für die Qualität der Aufzeichnung, etwa ob dieser verspätet beginnt.
+        mode: string;
 
         // Der Zeitpunkt, an dem die Aufzeichnung enden wird.
         end: Date;
@@ -83,32 +17,47 @@
         // Der Endzeitpunkt, formatiert für die Darstellung - es werden nur Stunden und Minuten angezeigt.
         displayEnd: string;
 
-        // Gesetzt wenn alle Tonspuren aufgezeichnet werden sollen.
-        allAudio: boolean;
-
-        // Gesetzt wenn Dolby Digital Tonspuren aufgezeichnet werden soll.
-        dolby: boolean;
-
-        // Gesetzt wenn der Videotext aufgezeichnet werden soll.
-        videoText: boolean;
-
-        // Gesetzt wenn DVB Untertitel aufgezeichnet werden sollen.
-        subTitles: boolean;
-
-        // Gesetzt wenn die Aufzeichnung Informationen zu den Sendungen enthält.
-        currentGuide: boolean;
-
-        // Ein Kürzel für die Qualität der Aufzeichnung, etwa ob dieser verspätet beginnt.
-        mode: string;
-
         // Die zugehörige Ausnahmeregel.
         exceptionInfo: PlanException;
-
-        // Ein Kürzel für die Existenz von Ausnahmen.
-        exceptionMode: boolean;
-
-        // Gesetzt wenn Informationen der Programmzeitschrift abgerufen werden können.
-        hasGuideEntry: boolean;
     }
 
+    // Initialisiert ein View Model für einen Eintrag des Aufzeichnungsplans.
+    export function enrichPlanEntry(entry: VCRServer.PlanActivityContract, key: string): IPlanEntry {
+        // Das Model vom Server wird nur gekapselt und ist unveränderlich - eine JSON Serialisierung ist so allerdings nicht mehr möglich.
+        var enriched = <IPlanEntry>{ ["__proto__"]: entry };
+
+        // Defaultwerte einsetzen
+        enriched.key = key;
+
+        if (enriched.station == null)
+            enriched.station = '(unbekannt)';
+        if (enriched.device == null)
+            enriched.device = '';
+
+        // Zeiten umrechnen
+        var duration = 1000 * <any>enriched.duration;
+        var start = new Date(enriched.start);
+        var end = new Date(start.getTime() + duration);
+
+        // Daten aus der Rohdarstellung in das Modell kopieren
+        enriched.displayStart = DateFormatter.getStartTime(enriched.start = start);
+        enriched.displayEnd = DateFormatter.getEndTime(enriched.end = end);
+        enriched.duration = duration / 1000;
+
+        // Ausnahmen auswerten
+        if (enriched.exception)
+            enriched.exceptionInfo = new PlanException(enriched.exception);
+
+        // Aufzeichungsmodus ermitteln
+        if (enriched.station !== 'PSI')
+            if (enriched.station !== 'EPG')
+                if (enriched.lost)
+                    enriched.mode = 'lost';
+                else if (enriched.late)
+                    enriched.mode = 'late';
+                else
+                    enriched.mode = 'intime';
+
+        return enriched;
+    }
 }
