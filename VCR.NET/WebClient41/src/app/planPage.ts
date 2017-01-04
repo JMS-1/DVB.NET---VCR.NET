@@ -2,7 +2,7 @@
 
 namespace VCRNETClient.App {
     export interface IPlanSite {
-        onRefresh(jobs: IPlanEntry[], index: number, showTasks: boolean): void;
+        onRefresh(): void;
     }
 
     export interface IPlanStartFilter {
@@ -22,11 +22,23 @@ namespace VCRNETClient.App {
 
         private _jobs: IPlanEntry[];
 
+        getJobs(): IPlanEntry[] {
+            return this._jobs && this._jobs.filter(this._filter);
+        }
+
         private _filter: (job: IPlanEntry) => boolean = this.filterJob.bind(this);
 
         private _startIndex = 0;
 
+        getIndex(): number {
+            return this._startIndex;
+        }
+
         private _showTasks = false;
+
+        showTasks(): boolean {
+            return this._showTasks;
+        }
 
         private _startFilter: IPlanStartFilter[];
 
@@ -107,8 +119,8 @@ namespace VCRNETClient.App {
         }
 
         private fireRefresh(): void {
-            if (this._site && this._jobs)
-                this._site.onRefresh(this._jobs.filter(this._filter), this._startIndex, this._showTasks);
+            if (this._site)
+                this._site.onRefresh();
         }
 
         filterOnStart(index: number): void {

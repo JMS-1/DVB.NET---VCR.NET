@@ -9,10 +9,7 @@ namespace VCRNETClient {
         editToggle: () => void;
     }
 
-    interface IPlanRowDynamic {
-    }
-
-    export class PlanRow extends React.Component<IPlanRowStatic, IPlanRowDynamic>  {
+    export class PlanRow extends React.Component<IPlanRowStatic, INoDynamicState>  {
         render(): JSX.Element {
             return <tr className="vcrnet-planrow">
                 <td>{this.props.entry.mode ? <Pictogram name={this.props.entry.mode} type="gif" /> : <span>&nbsp;</span>}</td>
