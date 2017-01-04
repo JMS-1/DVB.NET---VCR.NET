@@ -110,7 +110,9 @@ namespace VCRNETClient.App {
 
             // Zusätzlich beschränken wir uns auf maximal 500 Einträge
             VCRServer.getPlan(500, endOfTime).then(plan => {
-                this._jobs = plan.map(job => enrichPlanEntry(job, `${PlanPage._key++}`));
+                var toggleDetail = this.toggleDetail.bind(this);
+
+                this._jobs = plan.map(job => enrichPlanEntry(job, `${PlanPage._key++}`, toggleDetail));
 
                 this.fireRefresh();
 
@@ -118,7 +120,27 @@ namespace VCRNETClient.App {
             });
         }
 
-        private fireRefresh(): void {
+        private toggleDetail(job: IPlanEntry, epg: boolean): void {
+            if (job.showEpg && epg)
+                job.showEpg = false;
+            else if (job.showException && !epg)
+                job.showException = false;
+            else {
+                this._jobs.forEach(j => j.showEpg = j.showException = false);
+
+                if (epg)
+                    job.showEpg = true;
+                else
+                    job.showException = true;
+            }
+
+            this.fireRefresh(false);
+        }
+
+        private fireRefresh(full = true): void {
+            if (full && this._jobs)
+                this._jobs.forEach(j => j.showEpg = j.showException = false);
+
             if (this._site)
                 this._site.onRefresh();
         }

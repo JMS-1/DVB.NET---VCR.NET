@@ -19,10 +19,19 @@
 
         // Die zugehörige Ausnahmeregel.
         exception: IPlanException;
+
+        // Zeigt die Programmzeitschrift an.
+        showEpg: boolean;
+
+        // Zeigt die Pflege der Ausnahmeregel an.
+        showException: boolean;
+
+        // Schaltet die Detailanzeige um.
+        toggleDetail: (epg: boolean) => void;
     }
 
     // Initialisiert ein View Model für einen Eintrag des Aufzeichnungsplans.
-    export function enrichPlanEntry(entry: VCRServer.PlanActivityContract, key: string): IPlanEntry {
+    export function enrichPlanEntry(entry: VCRServer.PlanActivityContract, key: string, toggleDetail: (entry: IPlanEntry, epg: boolean) => void): IPlanEntry {
         if (!entry)
             return null;
 
@@ -59,6 +68,9 @@
                     enriched.mode = 'late';
                 else
                     enriched.mode = 'intime';
+
+        // Methoden.
+        enriched.toggleDetail = epg => toggleDetail(enriched, epg);
 
         return enriched;
     }

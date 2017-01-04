@@ -1,18 +1,10 @@
 ﻿/// <reference path="../vcrnet.tsx" />
 
 namespace VCRNETClient {
-    interface IPlanDynamic {
-        detailKey?: string;
-
-        showDetails?: boolean;
-    }
-
-    export class Plan extends React.Component<INoUiComponent<App.PlanPage>, IPlanDynamic> implements App.IPlanSite {
+    export class Plan extends NoUiView<App.PlanPage> implements App.IPlanSite {
         // Beim Einbinden der Anzeige in die Oberfläche wird eine Verbindung zur Logik hergestellt.
         componentWillMount(): void {
             this.props.noui.setSite(this);
-
-            this.setState({ showDetails: false });
         }
 
         // Beim Ausklinken der Anzeige wird die Verbindung zur Logik aufgehoben.
@@ -54,12 +46,12 @@ namespace VCRNETClient {
                         </thead>
                         <tbody>
                             {jobs.map(job => [
-                                <PlanRow entry={job} key={job.key} detailToggle={() => this.toggleDetail(job, true)} editToggle={() => this.toggleDetail(job, false)} />,
-                                ((job.key === this.state.detailKey) && this.state.showDetails) ?
+                                <Ui.PlanRow noui={job} key={job.key} />,
+                                job.showEpg ?
                                     <DetailRow prefixColumns={1} dataColumns={5} key={`${job.key}Details`}>
                                         [EPGINFO]
                                     </DetailRow> : null,
-                                ((job.key === this.state.detailKey) && !this.state.showDetails) ?
+                                job.showException ?
                                     <DetailRow prefixColumns={1} dataColumns={5} key={`${job.key}Exceptions`}>
                                         [EXTENSIONEDIT]
                                     </DetailRow> : null
@@ -68,13 +60,6 @@ namespace VCRNETClient {
                     </table> : null
                 }
             </div >;
-        }
-
-        private toggleDetail(job: App.IPlanEntry, details: boolean): void {
-            if ((job.key === this.state.detailKey) && (details === this.state.showDetails))
-                this.setState({ detailKey: undefined });
-            else
-                this.setState({ detailKey: job.key, showDetails: details });
         }
 
         onRefresh(): void {
