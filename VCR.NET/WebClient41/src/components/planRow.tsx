@@ -21,7 +21,7 @@ namespace VCRNETClient {
                 <td>{this.props.entry.station}</td>
                 <td className="vcrnet-planrow-name">
                     <div><InternalLink view={`edit;id=${this.props.entry.id}`}>{this.props.entry.name}</InternalLink></div>
-                    <div>{this.props.entry.exceptionInfo ? <a href="javascript:void(0)" onClick={this.props.editToggle}><Pictogram name="exceptOff" /></a> : null}</div>
+                    <div>{this.props.entry.exception ? <a href="javascript:void(0)" onClick={this.props.editToggle}><Pictogram name="exceptOff" /></a> : null}</div>
                 </td>
                 <td>{this.props.entry.device}</td>
             </tr>;

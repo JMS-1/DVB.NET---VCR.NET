@@ -18,11 +18,14 @@
         displayEnd: string;
 
         // Die zugehörige Ausnahmeregel.
-        exceptionInfo: PlanException;
+        exception: IPlanException;
     }
 
     // Initialisiert ein View Model für einen Eintrag des Aufzeichnungsplans.
     export function enrichPlanEntry(entry: VCRServer.PlanActivityContract, key: string): IPlanEntry {
+        if (!entry)
+            return null;
+
         // Das Model vom Server wird nur gekapselt und ist unveränderlich - eine JSON Serialisierung ist so allerdings nicht mehr möglich.
         var enriched = <IPlanEntry>{ ["__proto__"]: entry };
 
@@ -45,8 +48,7 @@
         enriched.duration = duration / 1000;
 
         // Ausnahmen auswerten
-        if (enriched.exception)
-            enriched.exceptionInfo = new PlanException(enriched.exception);
+        enriched.exception = enrichPlanException(enriched.exception);
 
         // Aufzeichungsmodus ermitteln
         if (enriched.station !== 'PSI')

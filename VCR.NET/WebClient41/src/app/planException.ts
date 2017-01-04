@@ -1,37 +1,18 @@
 ﻿namespace VCRNETClient.App {
 
-    // Beschreibt einen einzelne Ausnahmeregel
-    export class PlanException {
-        constructor(public rawException: VCRServer.PlanExceptionContract) {
-            // Daten aus den Rohdaten übernehmen
-            this.referenceDayDisplay = parseInt(rawException.referenceDayDisplay, 10);
-            this.originalStart = new Date(rawException.originalStart);
-            this.originalDuration = rawException.originalDuration;
-            this.referenceDay = rawException.referenceDay;
-            this.durationDelta = rawException.timeDelta;
-            this.startDelta = rawException.startShift;
-        }
-
-        // Das Referenzdatum für die Ausnahme.
-        private referenceDay: string;
-
-        // Das Referenzdatum für die Ausnahme.
-        private referenceDayDisplay: number;
-
-        // Der ursprüngliche Startzeitpunkt.
-        private originalStart: Date;
-
-        // Die geplante Dauer der Aufzeichnung.
-        originalDuration: number;
-
-        // Die Verschiebung des Startzeitpunktes in Minuten.
-        startDelta: number;
-
-        // Die Veränderung der Dauer in Minuten.
-        durationDelta: number;
-
-        // Gesetzt, wenn diese Ausnahme ausgewählt wurde.
-        isActive: boolean;
+    export interface IPlanException extends VCRServer.PlanExceptionContract {
     }
 
+    export function enrichPlanException(exception: VCRServer.PlanExceptionContract): IPlanException {
+        if (!exception)
+            return null;
+
+        // Das Model vom Server wird nur gekapselt und ist unveränderlich - eine JSON Serialisierung ist so allerdings nicht mehr möglich.
+        var enriched = <IPlanException>{ ["__proto__"]: exception };
+
+        enriched.referenceDayDisplay = parseInt(<string>enriched.referenceDayDisplay, 10);
+        enriched.originalStart = new Date(<string>enriched.originalStart);
+
+        return enriched;
+    }
 }

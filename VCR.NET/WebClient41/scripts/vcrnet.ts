@@ -1227,8 +1227,8 @@ class PlanEntry {
 class PlanException {
     constructor(rawData: VCRServer.PlanExceptionContract) {
         // Daten aus den Rohdaten übernehmen
-        this.referenceDayDisplay = parseInt(rawData.referenceDayDisplay, 10);
-        this.originalStart = new Date(rawData.originalStart);
+        this.referenceDayDisplay = parseInt(<string>rawData.referenceDayDisplay, 10);
+        this.originalStart = new Date(<string>rawData.originalStart);
         this.originalDuration = rawData.originalDuration;
         this.referenceDay = rawData.referenceDay;
         this.durationDelta = rawData.timeDelta;
