@@ -6,7 +6,9 @@ namespace VCRNETClient.App {
     }
 
     export interface IPlanStartFilter {
-        index: number;
+        active: boolean;
+
+        activate: () => void;
 
         date: Date;
     }
@@ -23,15 +25,12 @@ namespace VCRNETClient.App {
         private _jobs: IPlanEntry[];
 
         getJobs(): IPlanEntry[] {
-            return this._jobs && this._jobs.filter(this._filter);
-        }
+            if (this._jobs)
+                for (var i = 0; i < this._startFilter.length - 1; i++)
+                    if (this._startFilter[i].active)
+                        return this._jobs.filter(job => this.filterJob(job, i));
 
-        private _filter: (job: IPlanEntry) => boolean = this.filterJob.bind(this);
-
-        private _startIndex = 0;
-
-        getIndex(): number {
-            return this._startIndex;
+            return null;
         }
 
         private _showTasks = false;
@@ -66,7 +65,21 @@ namespace VCRNETClient.App {
             this._startFilter = []
 
             for (var i = 0; i < 8; i++) {
-                this._startFilter.push({ index: i, date: now });
+                let filter: IPlanStartFilter;
+
+                filter = {
+                    active: i === 0,
+                    date: now,
+                    activate: () => {
+                        this._startFilter.forEach(f => f.active = false);
+
+                        filter.active = true;
+
+                        this.fireRefresh();
+                    }
+                };
+
+                this._startFilter.push(filter);
 
                 now = new Date(now.getFullYear(), now.getMonth(), now.getDate() + this.application.profile.planDays);
             }
@@ -74,7 +87,6 @@ namespace VCRNETClient.App {
             this._showTasks = false;
             this._site = undefined;
             this._jobs = undefined;
-            this._startIndex = 0;
 
             this.reload();
         }
@@ -88,9 +100,9 @@ namespace VCRNETClient.App {
             this.fireRefresh();
         }
 
-        private filterJob(job: PlanEntry): boolean {
-            var startDay = this._startFilter[this._startIndex].date;
-            var endDay = this._startFilter[this._startIndex + 1].date;
+        private filterJob(job: IPlanEntry, startIndex: number): boolean {
+            var startDay = this._startFilter[startIndex].date;
+            var endDay = this._startFilter[startIndex + 1].date;
 
             if (job.start >= endDay)
                 return false;
@@ -143,14 +155,6 @@ namespace VCRNETClient.App {
 
             if (this._site)
                 this._site.onRefresh();
-        }
-
-        filterOnStart(index: number): void {
-            if (index === this._startIndex)
-                return;
-
-            this._startIndex = index;
-            this.fireRefresh();
         }
 
         toggleTaskFilter(): void {

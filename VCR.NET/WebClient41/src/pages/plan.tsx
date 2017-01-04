@@ -14,19 +14,16 @@ namespace VCRNETClient {
 
         render(): JSX.Element {
             var jobs = this.props.noui.getJobs();
-            var startIndex = this.props.noui.getIndex();
 
             return <div className="vcrnet-plan">
                 Hier sieht man einen Ausschnitt der geplanten Aufzeichnungen für die nächsten Wochen.<HelpLink page="faq;parallelrecording" />
                 {this.getHelp()}
                 <div className="vcrnet-plan-filter">
                     <RadioGroup>
-                        {this.props.noui.getStartFilter().map(f =>
-                            <Radio
-                                key={f.index}
-                                groupName="filterStart"
-                                isChecked={startIndex === f.index}
-                                onClick={() => this.props.noui.filterOnStart(f.index)}>{(f.index === 0) ? "Jetzt" : DateFormatter.getShortDate(f.date)}</Radio>)}
+                        {this.props.noui.getStartFilter().map((f, index) =>
+                            <Radio key={index} groupName="filterStart" isChecked={f.active} onClick={() => f.activate()}>
+                                {(index === 0) ? "Jetzt" : DateFormatter.getShortDate(f.date)}
+                            </Radio>)}
                     </RadioGroup>
                     <CheckBox onToggle={() => this.props.noui.toggleTaskFilter()} isChecked={this.props.noui.showTasks()}>
                         Aufgaben einblenden
