@@ -1,5 +1,4 @@
 ﻿/// <reference path="../vcrnet.tsx" />
-/// <reference path="../pages/faq/parallelRecording.tsx" />
 
 namespace VCRNETClient {
     export interface IHelpComponentProvider {
@@ -44,6 +43,9 @@ namespace VCRNETClient {
             window.removeEventListener("hashchange", this._onhashchange);
 
             this._application.helpPage.setSite(undefined);
+        }
+
+        refresh(): void {
         }
 
         onBusyChanged(isBusy: boolean): void {

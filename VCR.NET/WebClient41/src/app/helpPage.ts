@@ -1,26 +1,19 @@
 ﻿/// <reference path="noUi/page.ts" />
 
 namespace VCRNETClient.App {
-    export interface IHelpSite {
+    export interface IHelpSite extends NoUi.INoUiSite {
         getCurrentHelpTitle(section: string): string;
     }
 
-    export class HelpPage extends NoUi.Page {
+    export class HelpPage extends NoUi.Page<IHelpSite> {
         getRoute(): string {
             return "faq";
         }
 
         section: string;
 
-        private _site: IHelpSite;
-
         constructor(application: Application) {
             super(application);
-        }
-
-        setSite(site: IHelpSite): void {
-            if (this._site !== site)
-                this._site = site;
         }
 
         reset(section: string): void {
@@ -30,7 +23,9 @@ namespace VCRNETClient.App {
         }
 
         getTitle(): string {
-            return this._site && this._site.getCurrentHelpTitle(this.section);
+            var site = this.getSite();
+
+            return site && site.getCurrentHelpTitle(this.section);
         }
     }
 }

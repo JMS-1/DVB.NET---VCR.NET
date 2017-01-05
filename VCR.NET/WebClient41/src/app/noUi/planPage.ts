@@ -1,6 +1,6 @@
-﻿/// <reference path="noUi/page.ts" />
+﻿/// <reference path="page.ts" />
 
-namespace VCRNETClient.App {
+namespace VCRNETClient.App.NoUi {
     export interface IPlanStartFilter {
         active: boolean;
 
@@ -9,14 +9,12 @@ namespace VCRNETClient.App {
         date: Date;
     }
 
-    export class PlanPage extends NoUi.Page implements NoUi.INoUiWithSite {
+    export class PlanPage extends Page<INoUiSite> {
         private static _key = 0;
 
         getRoute(): string {
             return "plan";
         }
-
-        private _site: NoUi.INoUiSite;
 
         private _jobs: IPlanEntry[];
 
@@ -49,8 +47,8 @@ namespace VCRNETClient.App {
             return true;
         }
 
-        onRefresh(): void {
-            this.reload();
+        onReload(): void {
+            this.query();
         }
 
         reset(section: string): void {
@@ -81,17 +79,13 @@ namespace VCRNETClient.App {
             }
 
             this._showTasks = false;
-            this._site = undefined;
             this._jobs = undefined;
 
-            this.reload();
+            this.query();
         }
 
-        setSite(newSite: NoUi.INoUiSite): void {
-            this._site = newSite;
-
-            if (this._site)
-                this.fireRefresh();
+        protected onSiteChanged(): void {
+            this.fireRefresh();
         }
 
         private filterJob(job: IPlanEntry, startIndex: number): boolean {
@@ -110,7 +104,7 @@ namespace VCRNETClient.App {
             return true;
         }
 
-        private reload(): void {
+        private query(): void {
             // Wir schauen maximal 13 Wochen in die Zukunft
             var endOfTime = new Date(Date.now() + 13 * 7 * 86400000);
 
@@ -147,8 +141,7 @@ namespace VCRNETClient.App {
             if (full && this._jobs)
                 this._jobs.forEach(j => j.showEpg = j.showException = false);
 
-            if (this._site)
-                this._site.refresh();
+            this.refresh();
         }
 
         toggleTaskFilter(): void {

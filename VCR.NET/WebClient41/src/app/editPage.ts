@@ -1,7 +1,7 @@
 ﻿/// <reference path="noUi/page.ts" />
 
 namespace VCRNETClient.App {
-    export class EditPage extends NoUi.Page {
+    export class EditPage extends NoUi.Page<NoUi.INoUiSite> {
         private _raw: VCRServer.JobScheduleInfoContract;
 
         private _job: NoUi.JobEditor;
@@ -32,16 +32,10 @@ namespace VCRNETClient.App {
 
         private _sources: VCRServer.SourceEntry[];
 
-        private _site: NoUi.INoUiSite;
-
         private _isValid = false;
 
         getRoute(): string {
             return "edit";
-        }
-
-        setSite(site: NoUi.INoUiSite): void {
-            this._site = site;
         }
 
         constructor(application: Application) {
@@ -109,8 +103,7 @@ namespace VCRNETClient.App {
         }
 
         private refreshSite(): void {
-            if (this._site)
-                this._site.refresh();
+            this.refresh();
         }
 
         private onChanged(): void {

@@ -13,16 +13,16 @@
 
         readonly helpPage = new HelpPage(this);
 
-        readonly planPage = new PlanPage(this);
+        readonly planPage = new NoUi.PlanPage(this);
 
-        private _pageMapper: { [name: string]: NoUi.Page } = {};
+        private _pageMapper: { [name: string]: NoUi.IPage } = {};
 
         // Nach aussen hin sichtbarer globaler Zustand.
         version: VCRServer.InfoServiceContract;
 
         profile: VCRServer.UserProfileContract;
 
-        page: App.NoUi.Page;
+        page: App.NoUi.IPage;
 
         // Initial sind wir gesperrt.
         private _busy = true;
@@ -32,7 +32,7 @@
 
         constructor(private _site: IApplicationSite) {
             // Alle bekannten Seiten.
-            var pages: NoUi.Page[] = [
+            var pages: NoUi.IPage[] = [
                 this._homePage,
                 this.helpPage,
                 this.planPage,

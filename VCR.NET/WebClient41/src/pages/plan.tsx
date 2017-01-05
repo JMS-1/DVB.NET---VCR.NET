@@ -1,7 +1,8 @@
 ﻿/// <reference path="../vcrnet.tsx" />
 
 namespace VCRNETClient {
-    export class Plan extends NoUiViewWithSite<App.PlanPage> {
+
+    export class Plan extends NoUiViewWithSite<App.NoUi.PlanPage> {
         render(): JSX.Element {
             var jobs = this.props.noui.getJobs();
 
@@ -114,4 +115,5 @@ namespace VCRNETClient {
             </InlineHelp>;
         }
     }
+
 }

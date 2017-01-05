@@ -1,6 +1,7 @@
 ﻿/// <reference path="../vcrnet.tsx" />
 
 namespace VCRNETClient {
+
     export class Home extends NoUiView<App.NoUi.HomePage>{
         render(): JSX.Element {
             return <div>
@@ -41,4 +42,5 @@ namespace VCRNETClient {
             </div>;
         }
     }
+
 }
