@@ -1,7 +1,7 @@
-﻿/// <reference path="page.ts" />
+﻿/// <reference path="noUi/page.ts" />
 
 namespace VCRNETClient.App {
-    export class EditPage extends Page {
+    export class EditPage extends NoUi.Page {
         private _raw: VCRServer.JobScheduleInfoContract;
 
         private _job: NoUi.JobEditor;
@@ -36,7 +36,7 @@ namespace VCRNETClient.App {
 
         private _isValid = false;
 
-        getName(): string {
+        getRoute(): string {
             return "edit";
         }
 
@@ -122,7 +122,7 @@ namespace VCRNETClient.App {
         private onSave(): Thenable<void> {
             return VCRServer
                 .updateSchedule(this._raw.jobId, this._raw.scheduleId, { job: this._raw.job, schedule: this._raw.schedule })
-                .then(() => this.application.gotoPage(this.application.planPage.getName()));
+                .then(() => this.application.gotoPage(this.application.planPage.getRoute()));
         }
     }
 }

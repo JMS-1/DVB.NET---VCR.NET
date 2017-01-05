@@ -2,7 +2,7 @@
 
 namespace VCRNETClient {
     interface IViewStatic {
-        page: App.Page;
+        page: App.NoUi.Page;
 
         faqs: IHelpComponentProvider;
     }
@@ -11,8 +11,8 @@ namespace VCRNETClient {
         render(): JSX.Element {
             var active: JSX.Element = null;
 
-            if (this.props.page instanceof App.HomePage)
-                active = <Home noui={this.props.page as App.HomePage} />
+            if (this.props.page instanceof App.NoUi.HomePage)
+                active = <Home noui={this.props.page as App.NoUi.HomePage} />
             else if (this.props.page instanceof App.PlanPage)
                 active = <Plan noui={this.props.page as App.PlanPage} />
             else if (this.props.page instanceof App.EditPage)

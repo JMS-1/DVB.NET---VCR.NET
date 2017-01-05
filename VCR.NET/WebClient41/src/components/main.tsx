@@ -64,7 +64,7 @@ namespace VCRNETClient {
             if (this.state && this.state.active)
                 return <div className="vcrnet-main">
                     <h1>{page ? page.getTitle() : title}</h1>
-                    <Navigation page={page} />
+                    <Navigation noui={page} />
                     <View page={page} faqs={this} />
                 </div>;
             else

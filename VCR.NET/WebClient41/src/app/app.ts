@@ -9,20 +9,20 @@
     }
 
     export class Application {
-        private readonly _homePage = new HomePage(this);
+        private readonly _homePage = new NoUi.HomePage(this);
 
         readonly helpPage = new HelpPage(this);
 
         readonly planPage = new PlanPage(this);
 
-        private _pageMapper: { [name: string]: Page } = {};
+        private _pageMapper: { [name: string]: NoUi.Page } = {};
 
         // Nach aussen hin sichtbarer globaler Zustand.
         version: VCRServer.InfoServiceContract;
 
         profile: VCRServer.UserProfileContract;
 
-        page: App.Page;
+        page: App.NoUi.Page;
 
         // Initial sind wir gesperrt.
         private _busy = true;
@@ -32,7 +32,7 @@
 
         constructor(private _site: IApplicationSite) {
             // Alle bekannten Seiten.
-            var pages: Page[] = [
+            var pages: NoUi.Page[] = [
                 this._homePage,
                 this.helpPage,
                 this.planPage,
@@ -40,7 +40,7 @@
             ];
 
             // Abbildung erstellen.
-            pages.forEach(p => this._pageMapper[p.getName()] = p);
+            pages.forEach(p => this._pageMapper[p.getRoute()] = p);
 
             var testStart = this.testStart.bind(this);
 

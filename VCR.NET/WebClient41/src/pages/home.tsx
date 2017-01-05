@@ -1,12 +1,12 @@
 ﻿/// <reference path="../vcrnet.tsx" />
 
 namespace VCRNETClient {
-    export class Home extends NoUiView<App.HomePage>{
+    export class Home extends NoUiView<App.NoUi.HomePage>{
         render(): JSX.Element {
             return <div>
                 <div>
                     Willkommen zur Benutzeroberfläche des VCR.NET Recording Service. Von hier aus geht es direkt zu:
-                <ul>
+                    <ul>
                         <li><InternalLink pict="plan" view="plan">dem Aufzeichnungsplan</InternalLink> mit den anstehenden Aufzeichnungen<HelpLink page="faq;parallelrecording" /></li>
                         <li><InternalLink pict="devices" view="current">den laufenden Aufzeichnungen</InternalLink> mit den Aktivitäten der einzelnen DVB Geräte</li>
                         <li><InternalLink pict="guide" view="guide">der Programmzeitschrift</InternalLink> zum Anlegen neuer Aufzeichnungen<HelpLink page="faq;epg" /></li>

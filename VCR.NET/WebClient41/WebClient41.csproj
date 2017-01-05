@@ -318,7 +318,7 @@
     <TypeScriptCompile Include="src\app\dateFormatter.ts" />
     <TypeScriptCompile Include="src\app\editPage.ts" />
     <TypeScriptCompile Include="src\app\help.ts" />
-    <TypeScriptCompile Include="src\app\homePage.ts" />
+    <TypeScriptCompile Include="src\app\noUi\homePage.ts" />
     <TypeScriptCompile Include="src\app\noUi\daySelector.ts" />
     <TypeScriptCompile Include="src\app\noUi\duration.ts" />
     <TypeScriptCompile Include="src\app\noUi\job.ts" />
@@ -331,7 +331,7 @@
     <TypeScriptCompile Include="src\app\noUi\site.ts" />
     <TypeScriptCompile Include="src\app\noUi\textFromList.ts" />
     <TypeScriptCompile Include="src\app\noUi\timeOnly.ts" />
-    <TypeScriptCompile Include="src\app\page.ts" />
+    <TypeScriptCompile Include="src\app\noUi\page.ts" />
     <TypeScriptCompile Include="src\app\planEntry.ts" />
     <TypeScriptCompile Include="src\app\planException.ts" />
     <TypeScriptCompile Include="src\app\planPage.ts" />

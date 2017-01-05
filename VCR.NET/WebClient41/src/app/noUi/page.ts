@@ -1,6 +1,6 @@
-﻿namespace VCRNETClient.App {
+﻿namespace VCRNETClient.App.NoUi {
     export abstract class Page {
-        abstract getName(): string;
+        abstract getRoute(): string;
 
         abstract reset(section: string): void;
 

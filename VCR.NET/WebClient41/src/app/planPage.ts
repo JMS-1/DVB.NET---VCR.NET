@@ -1,4 +1,4 @@
-﻿/// <reference path="page.ts" />
+﻿/// <reference path="noUi/page.ts" />
 
 namespace VCRNETClient.App {
     export interface IPlanStartFilter {
@@ -9,10 +9,10 @@ namespace VCRNETClient.App {
         date: Date;
     }
 
-    export class PlanPage extends Page implements NoUi.INoUiWithSite {
+    export class PlanPage extends NoUi.Page implements NoUi.INoUiWithSite {
         private static _key = 0;
 
-        getName(): string {
+        getRoute(): string {
             return "plan";
         }
 

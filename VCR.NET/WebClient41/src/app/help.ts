@@ -1,12 +1,12 @@
-﻿/// <reference path="page.ts" />
+﻿/// <reference path="noUi/page.ts" />
 
 namespace VCRNETClient.App {
     export interface IHelpSite {
         getCurrentHelpTitle(section: string): string;
     }
 
-    export class HelpPage extends Page {
-        getName(): string {
+    export class HelpPage extends NoUi.Page {
+        getRoute(): string {
             return "faq";
         }
 

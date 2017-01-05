@@ -1,17 +1,10 @@
 ﻿/// <reference path="../vcrnet.tsx" />
 
 namespace VCRNETClient {
-    interface INavigationStatic {
-        page: App.Page;
-    }
-
-    interface INavigationDynamic {
-        active?: boolean;
-    }
-
-    export class Navigation extends React.Component<INavigationStatic, INavigationDynamic>  {
+    export class Navigation extends NoUiView<App.NoUi.Page>
+    {
         render(): JSX.Element {
-            var page = this.props.page;
+            var page = this.props.noui;
 
             if (!page || !page.showNavigation())
                 return null;
