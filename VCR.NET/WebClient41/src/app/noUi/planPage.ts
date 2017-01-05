@@ -1,20 +1,39 @@
 ﻿/// <reference path="page.ts" />
 
 namespace VCRNETClient.App.NoUi {
-    export interface IPlanStartFilter {
+
+    // Die Auswahl eines Datumsfilters.
+    export interface IPlanStartFilter extends IDisplayText {
+        // Gesetzt, wenn der Filter aktiv ist.
+        readonly active: boolean;
+
+        // Aktiviert den Filter.
+        activate(): void;
+    }
+
+    // Die Implementierung der Auswahl eines Datumsfilters.
+    class PlanStartFilter implements IPlanStartFilter {
+        // Gesetzt, wenn der Filter aktiv ist.
         active: boolean;
 
-        activate: () => void;
+        // Der Anzeigetext des Filters.
+        readonly text: string;
 
-        date: Date;
+        // Erstellt einen neuen Filter.
+        constructor(first: boolean, public readonly date: Date, private _activate: (filter: PlanStartFilter) => void) {
+            // Sonderbehandlung für die Anzeige der ersten Auswahl. die zugleich auf vorgewählt ist.
+            this.active = first;
+            this.text = first ? "Jetzt" : DateFormatter.getShortDate(date);
+        }
+
+        // Aktiviert diesen Filter - und deaktiviert alle anderen.
+        activate(): void {
+            this._activate(this);
+        }
     }
 
     export class PlanPage extends Page<INoUiSite> {
         private static _key = 0;
-
-        getRoute(): string {
-            return "plan";
-        }
 
         private _jobs: IPlanEntry[];
 
@@ -33,10 +52,10 @@ namespace VCRNETClient.App.NoUi {
             return this._showTasks;
         }
 
-        private _startFilter: IPlanStartFilter[];
+        private _startFilter: PlanStartFilter[];
 
         constructor(application: Application) {
-            super(application);
+            super("plan", application);
 
             this.navigation.plan = false;
             this.navigation.refresh = true;
@@ -46,6 +65,12 @@ namespace VCRNETClient.App.NoUi {
             this.query();
         }
 
+        private activateFilter(filter: PlanStartFilter): void {
+            this._startFilter.forEach(f => f.active = (f === filter));
+
+            this.fireRefresh();
+        }
+
         reset(section: string): void {
             var now = new Date();
 
@@ -53,22 +78,10 @@ namespace VCRNETClient.App.NoUi {
 
             this._startFilter = []
 
+            var activate = this.activateFilter.bind(this);
+
             for (var i = 0; i < 8; i++) {
-                let filter: IPlanStartFilter;
-
-                filter = {
-                    active: i === 0,
-                    date: now,
-                    activate: () => {
-                        this._startFilter.forEach(f => f.active = false);
-
-                        filter.active = true;
-
-                        this.fireRefresh();
-                    }
-                };
-
-                this._startFilter.push(filter);
+                this._startFilter.push(new PlanStartFilter(i === 0, now, activate));
 
                 now = new Date(now.getFullYear(), now.getMonth(), now.getDate() + this.application.profile.planDays);
             }

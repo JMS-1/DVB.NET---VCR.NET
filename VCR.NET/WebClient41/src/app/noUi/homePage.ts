@@ -4,18 +4,12 @@ namespace VCRNETClient.App.NoUi {
 
     // Die Anwendungslogik für die Startseite.
     export class HomePage extends Page<INoUiSite> {
-
         // Erstellt die Anwendungslogik.
         constructor(application: Application) {
-            super(application);
+            super("home", application);
 
             // Meldet, dass die Navigationsleiste nicht angezeigt werden soll.
             this.navigation = null;
-        }
-
-        // Meldet den eindeutigen Kurznamen (die Route) der Startseite.
-        getRoute(): string {
-            return "home";
         }
 
         // Zeigt die Startseite (erneut) an.

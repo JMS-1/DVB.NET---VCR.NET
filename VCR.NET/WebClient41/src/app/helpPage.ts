@@ -6,8 +6,8 @@ namespace VCRNETClient.App {
     }
 
     export class HelpPage extends NoUi.Page<IHelpSite> {
-        getRoute(): string {
-            return "faq";
+        constructor(application: Application) {
+            super("faq", application);
         }
 
         section: string;

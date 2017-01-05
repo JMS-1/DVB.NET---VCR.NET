@@ -8,31 +8,34 @@
         // Der Navigationsbereich.
         readonly navigation: {
             // Aktualisierung.
-            refresh: boolean;
+            readonly refresh: boolean;
 
             // Aufzeichnungsplan.
-            plan: boolean;
+            readonly plan: boolean;
 
             // Programmzeitschrift.
-            guide: boolean;
+            readonly guide: boolean;
 
             // Suchfavoriten.
-            favorites: boolean;
+            readonly favorites: boolean;
 
             // Neu anlegen.
-            new: boolean;
+            readonly new: boolean;
 
             // Laufende Aufzeichnungen.
-            current: boolean;
+            readonly current: boolean;
         };
 
         // Fordert zur Aktualisierung der zur Seite gehörenden Daten auf.
         reload(): void;
     }
 
+    // Basisklasse zur Implementierung von Seiten.
     export abstract class Page<TSiteType extends INoUiSite> implements IPage {
+        // Das zugehörige Oberflächenelement.
         private _site: TSiteType;
 
+        // Legt das zugehörige Oberflächenelement fest.
         setSite(newSite: TSiteType): void {
             this._site = newSite;
 
@@ -40,24 +43,28 @@
                 this.onSiteChanged();
         }
 
+        // Meldet das zugehörige Oberflächenelement.
         protected getSite(): TSiteType {
             return this._site;
         }
 
+        // Wird ausgelöst, wenn das zugehörige Oberflächenelement gesetzt wurde.
         protected onSiteChanged(): void {
         }
 
+        // Meldet Änderungen an das zugehörige Oberflächenelement.
         protected refresh(): void {
             if (this._site)
                 this._site.refresh();
         }
 
-        abstract getRoute(): string;
-
+        // Initialisiert die Seite zur erneuten Anzeige.
         abstract reset(section: string): void;
 
+        // Meldet die Überschrift der Seite.
         abstract getTitle(): string;
 
+        // Initialisiert den Navigationsbereich.
         navigation = {
             favorites: false,
             refresh: false,
@@ -67,10 +74,13 @@
             new: true
         };
 
-        constructor(protected readonly application: Application) {
+        // Initialisiert eine neue Seite.
+        constructor(public readonly route: string, protected readonly application: Application) {
         }
 
+        // Aktualisiert den Inhalt der Seite.
         reload(): void {
         }
     }
+
 }

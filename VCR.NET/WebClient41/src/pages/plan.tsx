@@ -12,9 +12,7 @@ namespace VCRNETClient {
                 <div className="vcrnet-plan-filter">
                     <RadioGroup>
                         {this.props.noui.getStartFilter().map((f, index) =>
-                            <Radio key={index} groupName="filterStart" isChecked={f.active} onClick={() => f.activate()}>
-                                {(index === 0) ? "Jetzt" : DateFormatter.getShortDate(f.date)}
-                            </Radio>)}
+                            <Radio key={index} groupName="filterStart" isChecked={f.active} onClick={() => f.activate()}>{f.text}</Radio>)}
                     </RadioGroup>
                     <CheckBox onToggle={() => this.props.noui.toggleTaskFilter()} isChecked={this.props.noui.showTasks()}>
                         Aufgaben einblenden

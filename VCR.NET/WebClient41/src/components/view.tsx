@@ -18,7 +18,7 @@ namespace VCRNETClient {
             else if (this.props.page instanceof App.EditPage)
                 active = <Edit noui={this.props.page as App.EditPage} />
             else if (this.props.page instanceof App.HelpPage)
-                active = <Help page={this.props.page as App.HelpPage} faqs={this.props.faqs} />
+                active = <Help noui={this.props.page as App.HelpPage} faqs={this.props.faqs} />
 
             return <div className="vcrnet-view">{active}</div>;
         }

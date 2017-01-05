@@ -42,7 +42,7 @@
             ];
 
             // Abbildung erstellen.
-            pages.forEach(p => this._pageMapper[p.getRoute()] = p);
+            pages.forEach(p => this._pageMapper[p.route] = p);
 
             var testStart = this.testStart.bind(this);
 

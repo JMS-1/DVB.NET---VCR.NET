@@ -34,12 +34,8 @@ namespace VCRNETClient.App {
 
         private _isValid = false;
 
-        getRoute(): string {
-            return "edit";
-        }
-
         constructor(application: Application) {
-            super(application);
+            super("edit", application);
 
             this.navigation.new = false;
         }
@@ -113,7 +109,7 @@ namespace VCRNETClient.App {
         private onSave(): Thenable<void> {
             return VCRServer
                 .updateSchedule(this._raw.jobId, this._raw.scheduleId, { job: this._raw.job, schedule: this._raw.schedule })
-                .then(() => this.application.gotoPage(this.application.planPage.getRoute()));
+                .then(() => this.application.gotoPage(this.application.planPage.route));
         }
     }
 }
