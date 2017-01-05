@@ -1,19 +1,8 @@
 ﻿/// <reference path="../vcrnet.tsx" />
 
 namespace VCRNETClient {
-    interface IEditStatic {
-        page: App.EditPage;
-    }
-
-    interface IEditDynamic {
-    }
-
-    export class Edit extends React.Component<IEditStatic, IEditDynamic> implements App.IEditSite {
-
-        componentWillMount(): void {
-            this.props.page.setSite(this);
-        }
-
+    export class Edit extends NoUiViewWithSite<App.EditPage>
+    {
         render(): JSX.Element {
             return <div className="vcrnet-edit">
                 <div>
@@ -25,11 +14,11 @@ namespace VCRNETClient {
                 </div>
                 {this.renderJobHelp()}
                 <form>
-                    <Ui.JobData noui={this.props.page.getJob()} />
+                    <Ui.JobData noui={this.props.noui.getJob()} />
                 </form>
                 {this.renderScheduleHelp()}
                 <form>
-                    <Ui.ScheduleData noui={this.props.page.getSchedule()} />
+                    <Ui.ScheduleData noui={this.props.noui.getSchedule()} />
                 </form>
                 {this.renderExceptionHelp()}
                 <form>
@@ -37,7 +26,7 @@ namespace VCRNETClient {
                 </form>
                 {this.renderButtonHelp()}
                 <div>
-                    <Ui.Command noui={this.props.page.getSaveCommand()} />
+                    <Ui.Command noui={this.props.noui.getSaveCommand()} />
                 </div>
             </div>;
         }
@@ -192,10 +181,6 @@ namespace VCRNETClient {
                     Schaltfläche zum Löschen nicht angeboten.
                 </div>
             </InlineHelp>;
-        }
-
-        onRefresh(): void {
-            this.forceUpdate();
         }
     }
 }

@@ -7,10 +7,7 @@ namespace VCRNETClient {
         faqs: IHelpComponentProvider;
     }
 
-    interface IHelpDynamic {
-    }
-
-    export class Help extends React.Component<IHelpStatic, IHelpDynamic> {
+    export class Help extends React.Component<IHelpStatic, INoDynamicState> {
         render(): JSX.Element {
             var element = this.props.faqs.getHelpComponent(this.props.page.section);
 

@@ -2,28 +2,13 @@
 
 namespace VCRNETClient.App.NoUi {
 
-    export interface IDurationEditorSite {
-        refresh(): void;
-    }
-
     export interface IDurationEditor extends IDisplayText {
-        setSite(site: IDurationEditorSite): void;
-
         readonly startTime: ITimeEditor;
 
         readonly endTime: ITimeEditor;
     }
 
     export class DurationEditor extends ValueHolder<number> implements IDurationEditor {
-        private _site: ITimeEditorSite;
-
-        setSite(site: ITimeEditorSite): void {
-            this._site = site;
-
-            if (!site)
-                return;
-        }
-
         readonly startTime: TimeEditor;
 
         readonly endTime: TimeEditor;

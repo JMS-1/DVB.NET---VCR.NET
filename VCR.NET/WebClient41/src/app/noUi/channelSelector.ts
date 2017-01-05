@@ -2,17 +2,8 @@
 
 namespace VCRNETClient.App.NoUi {
 
-    // Wird von der Anzeige der Senderauswahl bereitgestellt.
-    export interface IChannelSelectorSite {
-        // Die Anzeige muss erneuert werden, weil sich vermutlich die Liste der Quellen verändert hat.
-        refresh(): void;
-    }
-
     // Schnitstelle zur Pflege der Senderauswahl.
-    export interface IChannelSelector extends IValidatableValue<string> {
-        // Legt die Arbeitsumgebung fest.
-        setSite(site: IChannelSelectorSite): void;
-
+    export interface IChannelSelector extends IValidatableValue<string>, INoUiWithSite {
         // Die Vorauswahl der Quellen vor allem nach dem ersten Zeichen des Namens.
         section(newSection?: string): string;
 
@@ -36,7 +27,7 @@ namespace VCRNETClient.App.NoUi {
     }
 
     // Stellt die Logik zur Auswahl eines Senders zur Verfügung.
-    export class ChannelEditor extends ValueHolder<string> implements IChannelSelector {
+    export class ChannelEditor extends ValueHolderWithSite<string> implements IChannelSelector {
 
         // Die Auswahl der Verschlüsselung.
         private static readonly _encryptions = [
@@ -217,13 +208,6 @@ namespace VCRNETClient.App.NoUi {
         // Die bevorzugten Quellen des Anwenders - hier in einem Dictionary zur Prüfung optimiert.
         private _favorites: { [source: string]: boolean } = {};
 
-        // Die aktuelle Arbeitsumgebung der Senderauswahl.
-        private _site: IChannelSelectorSite;
-
-        setSite(site: IChannelSelectorSite): void {
-            this._site = site;
-        }
-
         // Gesetzt, wenn die zusätzlichen Filter angezeigt werden sollen.
         showFilter = false;
 
@@ -287,8 +271,7 @@ namespace VCRNETClient.App.NoUi {
             this._hasChannel = (!hasSource || this._sources.some(s => s.name === source));
 
             // Anzeige aktualisieren.
-            if (this._site)
-                this._site.refresh();
+            this.refresh();
         }
 
         // Aktuelle Liste der Quellen festlegen, etwa nach der Änderung des zu verwendenden Geräteprofils.

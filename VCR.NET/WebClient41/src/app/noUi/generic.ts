@@ -53,4 +53,28 @@
         protected constructor(private readonly _data: any, private readonly _prop: string, private readonly _onChange: () => void, public readonly text: string, private _testReadOnly?: () => boolean) {
         }
     }
+
+    // Basisklasse zur Pflege des Wertes einer einzelnen Eigenschaft.
+    export abstract class ValueHolderWithSite<TValueType> extends ValueHolder<TValueType> implements INoUiWithSite {
+        private _site: INoUiSite;
+
+        // Benachrichtigt die Oberfläche zur Aktualisierung der Anzeige.
+        protected refresh(): void {
+            if (this._site)
+                this._site.refresh();
+        }
+
+        // Meldet die Oberfläche an.
+        setSite(site: INoUiSite): void {
+            this._site = site;
+
+            if (this._site)
+                this.onSiteChanged();
+        }
+
+        // Wird ausgelöst, wenn eine Anmeldung der Oberfläche erfolgt ist.
+        protected onSiteChanged(): void {
+        }
+    }
+
 }

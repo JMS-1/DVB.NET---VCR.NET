@@ -11,10 +11,7 @@ namespace VCRNETClient {
         onClick?: () => void;
     }
 
-    interface IPictDynamic {
-    }
-
-    export class Pictogram extends React.Component<IPictStatic, IPictDynamic>{
+    export class Pictogram extends React.Component<IPictStatic, INoDynamicState>{
         render(): JSX.Element {
             return <img className="vcrnet-pict" alt={this.props.description} src={`ui/images/${this.props.name}.${this.props.type || "png"}`} onClick={this.props.onClick}></img>;
         }

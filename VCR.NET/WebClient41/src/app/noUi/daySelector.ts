@@ -2,10 +2,6 @@
 
 namespace VCRNETClient.App.NoUi {
 
-    export interface IDaySelectorSite {
-        refresh(): void;
-    }
-
     export interface ISelectableDay {
         readonly date: Date;
 
@@ -20,9 +16,7 @@ namespace VCRNETClient.App.NoUi {
         select(): void;
     }
 
-    export interface IDaySelector extends IDisplayText {
-        setSite(newSite: IDaySelectorSite): void;
-
+    export interface IDaySelector extends IDisplayText, INoUiWithSite {
         monthBackward(): void;
 
         monthForward(): void;
@@ -44,7 +38,7 @@ namespace VCRNETClient.App.NoUi {
         readonly days: ISelectableDay[];
     }
 
-    export class DayEditor extends ValueHolder<string> implements IDaySelector {
+    export class DayEditor extends ValueHolderWithSite<string> implements IDaySelector {
         private static _dayNames = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
         readonly dayNames = DayEditor._dayNames;
@@ -141,8 +135,6 @@ namespace VCRNETClient.App.NoUi {
 
         days: ISelectableDay[];
 
-        private _site: IDaySelectorSite;
-
         private day(newDay?: Date): Date {
             var oldDay = new Date(this.val());
 
@@ -159,10 +151,7 @@ namespace VCRNETClient.App.NoUi {
             return oldDay;
         }
 
-        setSite(newSite: IDaySelectorSite): void {
-            if (!(this._site = newSite))
-                return;
-
+        protected onSiteChanged(): void {
             var date = this.day();
 
             this._month = this.months[date.getMonth()];
@@ -238,12 +227,11 @@ namespace VCRNETClient.App.NoUi {
             this.refresh();
         }
 
-        private refresh(): void {
+        protected refresh(): void {
             this.fillDayList();
             this.fillYearSelector();
 
-            if (this._site)
-                this._site.refresh();
+            super.refresh();
         }
     }
 }

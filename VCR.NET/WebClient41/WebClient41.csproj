@@ -328,6 +328,7 @@
     <TypeScriptCompile Include="src\app\noUi\simpleNumber.ts" />
     <TypeScriptCompile Include="src\app\noUi\simpleFlag.ts" />
     <TypeScriptCompile Include="src\app\noUi\simpleText.ts" />
+    <TypeScriptCompile Include="src\app\noUi\site.ts" />
     <TypeScriptCompile Include="src\app\noUi\textFromList.ts" />
     <TypeScriptCompile Include="src\app\noUi\timeOnly.ts" />
     <TypeScriptCompile Include="src\app\page.ts" />

@@ -1,14 +1,7 @@
 ﻿/// <reference path="../vcrnet.tsx" />
 
 namespace VCRNETClient {
-    interface IHomeStatic {
-        page: App.HomePage;
-    }
-
-    interface IHomeDynamic {
-    }
-
-    export class Home extends React.Component<IHomeStatic, IHomeDynamic>{
+    export class Home extends NoUiView<App.HomePage>{
         render(): JSX.Element {
             return <div>
                 <div>

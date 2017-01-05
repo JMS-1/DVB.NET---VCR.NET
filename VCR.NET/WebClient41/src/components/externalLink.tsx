@@ -5,10 +5,7 @@ namespace VCRNETClient {
         url: string;
     }
 
-    interface IExternalLinkDynamic {
-    }
-
-    export class ExternalLink extends React.Component<IExternalLinkStatic, IExternalLinkDynamic>{
+    export class ExternalLink extends React.Component<IExternalLinkStatic, INoDynamicState>{
         render(): JSX.Element {
             return <a className="vcrnet-externalLink" href={this.props.url} target="_blank">{this.props.children}</a>;
         }

@@ -2,29 +2,16 @@
 
 namespace VCRNETClient.App.NoUi {
 
-    export interface ITimeEditorSite {
-        refresh(): void;
-    }
-
-    export interface ITimeEditor {
-        setSite(site: ITimeEditorSite): void;
-
+    export interface ITimeEditor extends INoUiWithSite {
         time(newTime?: string): string;
 
         error(): string;
     }
 
-    export class TimeEditor extends ValueHolder<string> implements ITimeEditor {
+    export class TimeEditor extends ValueHolderWithSite<string> implements ITimeEditor {
         private _time: string;
 
-        private _site: ITimeEditorSite;
-
-        setSite(site: ITimeEditorSite): void {
-            this._site = site;
-
-            if (!site)
-                return;
-
+        protected onSiteChanged(): void {
             this._time = DateFormatter.getEndTime(new Date(this.val()));
         }
 
@@ -50,8 +37,7 @@ namespace VCRNETClient.App.NoUi {
                         this.val(newDate.toISOString());
                     }
 
-                    if (this._site)
-                        this._site.refresh();
+                    this.refresh();
                 }
 
             return oldValue;

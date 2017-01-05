@@ -2,15 +2,7 @@
 
 namespace VCRNETClient.Ui {
 
-    export class EditTime extends NoUiView<App.NoUi.ITimeEditor> implements App.NoUi.ITimeEditorSite {
-        componentWillMount(): void {
-            this.props.noui.setSite(this);
-        }
-
-        componentWillUnmount(): void {
-            this.props.noui.setSite(undefined);
-        }
-
+    export class EditTime extends NoUiViewWithSite<App.NoUi.ITimeEditor> implements App.NoUi.INoUiSite {
         render(): JSX.Element {
             return <input className="vcrnet-edittime"
                 type="TEXT"
@@ -26,10 +18,6 @@ namespace VCRNETClient.Ui {
             ev.preventDefault();
 
             this.props.noui.time((ev.target as HTMLInputElement).value);
-        }
-
-        refresh(): void {
-            this.forceUpdate();
         }
     }
 }

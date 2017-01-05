@@ -1,10 +1,6 @@
 ﻿/// <reference path="page.ts" />
 
 namespace VCRNETClient.App {
-    export interface IEditSite {
-        onRefresh(): void;
-    }
-
     export class EditPage extends Page {
         private _raw: VCRServer.JobScheduleInfoContract;
 
@@ -36,7 +32,7 @@ namespace VCRNETClient.App {
 
         private _sources: VCRServer.SourceEntry[];
 
-        private _site: IEditSite;
+        private _site: NoUi.INoUiSite;
 
         private _isValid = false;
 
@@ -44,7 +40,7 @@ namespace VCRNETClient.App {
             return "edit";
         }
 
-        setSite(site: IEditSite): void {
+        setSite(site: NoUi.INoUiSite): void {
             this._site = site;
         }
 
@@ -114,7 +110,7 @@ namespace VCRNETClient.App {
 
         private refreshSite(): void {
             if (this._site)
-                this._site.onRefresh();
+                this._site.refresh();
         }
 
         private onChanged(): void {

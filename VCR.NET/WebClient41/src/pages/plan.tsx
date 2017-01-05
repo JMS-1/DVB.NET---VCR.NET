@@ -1,17 +1,7 @@
 ﻿/// <reference path="../vcrnet.tsx" />
 
 namespace VCRNETClient {
-    export class Plan extends NoUiView<App.PlanPage> implements App.IPlanSite {
-        // Beim Einbinden der Anzeige in die Oberfläche wird eine Verbindung zur Logik hergestellt.
-        componentWillMount(): void {
-            this.props.noui.setSite(this);
-        }
-
-        // Beim Ausklinken der Anzeige wird die Verbindung zur Logik aufgehoben.
-        componentWillUnmount(): void {
-            this.props.noui.setSite(undefined);
-        }
-
+    export class Plan extends NoUiViewWithSite<App.PlanPage> {
         render(): JSX.Element {
             var jobs = this.props.noui.getJobs();
 
@@ -57,10 +47,6 @@ namespace VCRNETClient {
                     </table> : null
                 }
             </div >;
-        }
-
-        onRefresh(): void {
-            this.forceUpdate();
         }
 
         private getHelp(): JSX.Element {

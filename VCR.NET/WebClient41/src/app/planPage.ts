@@ -1,10 +1,6 @@
 ﻿/// <reference path="page.ts" />
 
 namespace VCRNETClient.App {
-    export interface IPlanSite {
-        onRefresh(): void;
-    }
-
     export interface IPlanStartFilter {
         active: boolean;
 
@@ -13,14 +9,14 @@ namespace VCRNETClient.App {
         date: Date;
     }
 
-    export class PlanPage extends Page {
+    export class PlanPage extends Page implements NoUi.INoUiWithSite {
         private static _key = 0;
 
         getName(): string {
             return "plan";
         }
 
-        private _site: IPlanSite;
+        private _site: NoUi.INoUiSite;
 
         private _jobs: IPlanEntry[];
 
@@ -91,13 +87,11 @@ namespace VCRNETClient.App {
             this.reload();
         }
 
-        setSite(site: IPlanSite): void {
-            if (this._site === site)
-                return;
+        setSite(newSite: NoUi.INoUiSite): void {
+            this._site = newSite;
 
-            this._site = site;
-
-            this.fireRefresh();
+            if (this._site)
+                this.fireRefresh();
         }
 
         private filterJob(job: IPlanEntry, startIndex: number): boolean {
@@ -154,7 +148,7 @@ namespace VCRNETClient.App {
                 this._jobs.forEach(j => j.showEpg = j.showException = false);
 
             if (this._site)
-                this._site.onRefresh();
+                this._site.refresh();
         }
 
         toggleTaskFilter(): void {

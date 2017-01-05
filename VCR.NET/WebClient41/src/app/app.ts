@@ -1,4 +1,5 @@
 ﻿namespace VCRNETClient.App {
+
     export interface IApplicationSite {
         onBusyChanged(isBusy: boolean): void;
 

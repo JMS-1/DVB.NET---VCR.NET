@@ -2,15 +2,7 @@
 
 namespace VCRNETClient.Ui {
 
-    export class EditDay extends NoUiView<App.NoUi.IDaySelector> implements App.NoUi.IDaySelectorSite {
-        componentWillMount(): void {
-            this.props.noui.setSite(this);
-        }
-
-        componentWillUnmount(): void {
-            this.props.noui.setSite(undefined);
-        }
-
+    export class EditDay extends NoUiViewWithSite<App.NoUi.IDaySelector> implements App.NoUi.INoUiSite {
         // Anzeige erstellen.
         render(): JSX.Element {
             return <div className="vcrnet-editday">
@@ -87,10 +79,6 @@ namespace VCRNETClient.Ui {
             ev.preventDefault();
 
             this.props.noui.year((ev.target as HTMLSelectElement).value);
-        }
-
-        refresh(): void {
-            this.forceUpdate();
         }
 
         private getRow(days: App.NoUi.ISelectableDay[], rowKey: number): JSX.Element {
