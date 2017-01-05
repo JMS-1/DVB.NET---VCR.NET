@@ -37,17 +37,12 @@ namespace VCRNETClient.App.NoUi {
 
         constructor(application: Application) {
             super(application);
+
+            this.navigation.plan = false;
+            this.navigation.refresh = true;
         }
 
-        showPlan(): boolean {
-            return false;
-        }
-
-        showRefresh(): boolean {
-            return true;
-        }
-
-        onReload(): void {
+        reload(): void {
             this.query();
         }
 

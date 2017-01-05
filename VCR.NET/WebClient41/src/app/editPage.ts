@@ -40,6 +40,8 @@ namespace VCRNETClient.App {
 
         constructor(application: Application) {
             super(application);
+
+            this.navigation.new = false;
         }
 
         reset(section: string): void {
@@ -92,10 +94,6 @@ namespace VCRNETClient.App {
 
                 return sources;
             });
-        }
-
-        showNew(): boolean {
-            return false;
         }
 
         getTitle(): string {

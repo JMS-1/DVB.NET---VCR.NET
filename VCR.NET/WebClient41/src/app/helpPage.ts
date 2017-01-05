@@ -12,10 +12,6 @@ namespace VCRNETClient.App {
 
         section: string;
 
-        constructor(application: Application) {
-            super(application);
-        }
-
         reset(section: string): void {
             this.section = section;
 

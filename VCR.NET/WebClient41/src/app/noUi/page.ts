@@ -1,25 +1,33 @@
 ﻿namespace VCRNETClient.App.NoUi {
 
+    // Die äußere Sicht auf eine Seite der Anwendung.
     export interface IPage extends INoUiWithSite {
-        getRoute(): string;
-
+        // Die Überschrift der Seite.
         getTitle(): string;
 
-        showNavigation(): boolean;
+        // Der Navigationsbereich.
+        readonly navigation: {
+            // Aktualisierung.
+            refresh: boolean;
 
-        showRefresh(): boolean;
+            // Aufzeichnungsplan.
+            plan: boolean;
 
-        showPlan(): boolean;
+            // Programmzeitschrift.
+            guide: boolean;
 
-        showGuide(): boolean;
+            // Suchfavoriten.
+            favorites: boolean;
 
-        showFavorites(): boolean;
+            // Neu anlegen.
+            new: boolean;
 
-        showNew(): boolean;
+            // Laufende Aufzeichnungen.
+            current: boolean;
+        };
 
-        showCurrent(): boolean;
-
-        readonly reload: () => void;
+        // Fordert zur Aktualisierung der zur Seite gehörenden Daten auf.
+        reload(): void;
     }
 
     export abstract class Page<TSiteType extends INoUiSite> implements IPage {
@@ -50,41 +58,19 @@
 
         abstract getTitle(): string;
 
-        readonly reload: () => void;
+        navigation = {
+            favorites: false,
+            refresh: false,
+            current: true,
+            guide: true,
+            plan: true,
+            new: true
+        };
 
         constructor(protected readonly application: Application) {
-            this.reload = this.onReload.bind(this);
         }
 
-        showNavigation(): boolean {
-            return true;
-        }
-
-        showRefresh(): boolean {
-            return false;
-        }
-
-        showPlan(): boolean {
-            return true;
-        }
-
-        showGuide(): boolean {
-            return true;
-        }
-
-        showFavorites(): boolean {
-            return false;
-        }
-
-        showNew(): boolean {
-            return true;
-        }
-
-        showCurrent(): boolean {
-            return true;
-        }
-
-        onReload(): void {
+        reload(): void {
         }
     }
 }
