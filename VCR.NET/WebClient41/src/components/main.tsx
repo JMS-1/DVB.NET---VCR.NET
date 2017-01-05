@@ -8,11 +8,7 @@ namespace VCRNETClient {
     interface IMainStatic {
     }
 
-    interface IMainDynamic {
-        active?: boolean;
-    }
-
-    export class Main extends React.Component<IMainStatic, IMainDynamic> implements App.IApplicationSite, App.IHelpSite {
+    export class Main extends React.Component<IMainStatic, INoDynamicState> implements App.IApplicationSite, App.IHelpSite {
         private static _faq: { [section: string]: HelpComponent } = {
             parallelrecording: new HelpPages.ParallelRecording(),
             epgconfig: new HelpPages.AdminProgramGuide(),
@@ -46,10 +42,7 @@ namespace VCRNETClient {
         }
 
         refresh(): void {
-        }
-
-        onBusyChanged(isBusy: boolean): void {
-            this.setState({ active: !isBusy });
+            this.forceUpdate();
         }
 
         onFirstStart(): void {
@@ -63,15 +56,15 @@ namespace VCRNETClient {
             if (document.title !== title)
                 document.title = title;
 
-            if (this.state && this.state.active)
+            if (this._application.getIsBusy())
+                return <div className="vcrnet-main">
+                    <h1>(Bitte etwas Geduld)</h1>
+                </div>;
+            else
                 return <div className="vcrnet-main">
                     <h1>{page ? page.getTitle() : title}</h1>
                     <Navigation noui={page} />
                     <View page={page} faqs={this} />
-                </div>;
-            else
-                return <div className="vcrnet-main">
-                    <h1>(Bitte etwas Geduld)</h1>
                 </div>;
         }
 

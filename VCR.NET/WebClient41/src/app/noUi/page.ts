@@ -1,8 +1,6 @@
 ﻿namespace VCRNETClient.App.NoUi {
 
     export interface IPage extends INoUiWithSite {
-        reset(section: string): void;
-
         getRoute(): string;
 
         getTitle(): string;

@@ -1,8 +1,6 @@
 ﻿namespace VCRNETClient.App {
 
-    export interface IApplicationSite {
-        onBusyChanged(isBusy: boolean): void;
-
+    export interface IApplicationSite extends NoUi.INoUiSite {
         onFirstStart(): void;
 
         goto(page: string);
@@ -15,7 +13,7 @@
 
         readonly planPage = new NoUi.PlanPage(this);
 
-        private _pageMapper: { [name: string]: NoUi.IPage } = {};
+        private _pageMapper: { [name: string]: NoUi.Page<any> } = {};
 
         // Nach aussen hin sichtbarer globaler Zustand.
         version: VCRServer.InfoServiceContract;
@@ -27,12 +25,16 @@
         // Initial sind wir gesperrt.
         private _busy = true;
 
+        getIsBusy(): boolean {
+            return this._busy;
+        }
+
         // Wieviele ausstehende Zugriffe bis zum Start gibt es noch.
         private _startPending = 2;
 
         constructor(private _site: IApplicationSite) {
             // Alle bekannten Seiten.
-            var pages: NoUi.IPage[] = [
+            var pages: NoUi.Page<any>[] = [
                 this._homePage,
                 this.helpPage,
                 this.planPage,
@@ -72,17 +74,25 @@
             this.setBusy(true);
 
             // Den Singleton der gewünschten Seite ermitteln.
-            this.page = this._pageMapper[name] || this._homePage;
+            var page = this._pageMapper[name] || this._homePage;
+
+            // Aktivieren.
+            this.page = page;                
 
             // Zustand wie beim Erstaufruf vorbereiten.
-            this.page.reset(section);
+            page.reset(section);
 
             return true;
         }
 
         setBusy(isBusy: boolean): void {
-            if (isBusy !== this._busy)
-                this._site.onBusyChanged(this._busy = isBusy);
+            if (isBusy === this._busy)
+                return;
+
+            this._busy = isBusy
+
+            if (this._site)
+                this._site.refresh();
         }
 
         getTitle(): string {
