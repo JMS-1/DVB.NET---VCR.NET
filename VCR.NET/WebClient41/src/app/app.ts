@@ -92,7 +92,7 @@
             this._busy = isBusy
 
             if (this._site)
-                this._site.refresh();
+                this._site.refreshUi();
         }
 
         getTitle(): string {

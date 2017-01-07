@@ -563,11 +563,11 @@ class Page {
     loadProfiles(target: JQuery): void {
         var whenDone = this.registerAsyncCall();
 
-        VCRServer.ProfileCache.load().then(profiles => {
+        VCRServer.ProfileCache.getPromise().then(profiles => {
             $.each(profiles, (index: number, profile: VCRServer.ProfileInfoContract) => {
                 target.append(new Option(profile.name));
 
-                VCRServer.ProfileSourcesCache.load(profile.name).then(sources => this.registerAsyncCall());
+                VCRServer.ProfileSourcesCache.getPromise(profile.name).then(sources => this.registerAsyncCall());
             });
 
             whenDone();
@@ -716,7 +716,7 @@ class SourceSelector {
 
         // Liste der Quellen ermitteln
         var profile = this.loader.profileSelector.val();
-        var sources = VCRServer.ProfileSourcesCache.readCache(profile);
+        var sources: VCRServer.SourceEntry[] = []; // VCRServer.ProfileSourcesCache.readCache(profile);
 
         // Aktuelle Quelle sichern - diese kommt unabhängig vom Filter immer in die Liste
         var currentSource = this.sourceNameField.val();
@@ -3714,7 +3714,7 @@ class editPage extends Page implements IPage {
         this.loadProfiles($('#selProfile'));
 
         // Liste der Verzeichnisse wählen
-        VCRServer.RecordingDirectoryCache.load().then(directories => {
+        VCRServer.RecordingDirectoryCache.getPromise().then(directories => {
             var directoryList = $('#selDirectory');
 
             $.each(directories, (index: number, directory: string) => directoryList.append(new Option(directory)));
@@ -4057,7 +4057,7 @@ class guidePage extends Page implements IPage {
         this.details = new JMSLib.DetailManager(2, 'guideDetails');
 
         // Liste der Geräteprofile laden
-        VCRServer.ProfileCache.load().then(data => {
+        VCRServer.ProfileCache.getPromise().then(data => {
             this.profiles = data;
 
             profilesLoaded();
@@ -4233,7 +4233,7 @@ class logPage extends Page implements IPage {
         filter.click(() => this.refresh());
 
         // Geräte ermitteln
-        VCRServer.ProfileCache.load().then(profiles => {
+        VCRServer.ProfileCache.getPromise().then(profiles => {
             var list = $('#selProfile');
 
             // Alle Namen eintragen

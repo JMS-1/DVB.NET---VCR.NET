@@ -41,7 +41,7 @@ namespace VCRNETClient {
             this._application.helpPage.setSite(undefined);
         }
 
-        refresh(): void {
+        refreshUi(): void {
             this.forceUpdate();
         }
 

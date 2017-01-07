@@ -53,9 +53,9 @@
         }
 
         // Meldet Änderungen an das zugehörige Oberflächenelement.
-        protected refresh(): void {
+        protected refreshUi(): void {
             if (this._site)
-                this._site.refresh();
+                this._site.refreshUi();
         }
 
         // Initialisiert die Seite zur erneuten Anzeige.

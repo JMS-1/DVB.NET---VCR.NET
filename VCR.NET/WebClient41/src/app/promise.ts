@@ -1,64 +1,105 @@
 ﻿namespace VCRNETClient.App {
 
-    // Hilfsklasse zur Emulation von ES6 Promises - die Implementierung ist weit von korrekt (in verschiedenen Aspekten), für uns reicht es aber so.
-    export class PromiseHelper<TResponseType> implements Thenable<TResponseType>{
+    // Schnittstelle zur Verteilung asnychron ermittelter Daten.
+    export interface Thenable<TResponseType, TErrorType> {
+        // Meldet die Ergebnisauswertung an.
+        then<TProjectedType>(onFulfilled?: (value: TResponseType) => TProjectedType | Thenable<TProjectedType, TErrorType> | void, onRejected?: (error: TErrorType) => TErrorType | Thenable<TProjectedType, TErrorType> | void): Thenable<TProjectedType, TErrorType>;
+    }
+
+    // Verteiler für asynchron ermittelte Daten.
+    export class PromiseHelper<TResponseType, TErrorType> implements Thenable<TResponseType, TErrorType>{
         // Wird im Erfolgsfall aufgerufen.
-        private _success: (value: TResponseType) => any | Thenable<any>;
+        private _success: ((value: TResponseType) => void)[] = [];
 
         // Wird im Fehlerfall aufgerufen.
-        private _failure: (error: any) => any | Thenable<any>;
+        private _failure: ((error: TErrorType) => void)[] = [];
 
-        // Alle Nachfolger.
-        private _next: PromiseHelper<any>[] = [];
+        // Dasbereits bekannte Ergebnis.
+        private _result: { isError: boolean; data?: TResponseType; error?: any };
 
         // Meldet die Ergebnisauswertung an.
-        then<TProjectedType>(onFulfilled?: (value: TResponseType) => TProjectedType | Thenable<TProjectedType>, onRejected?: (error: any) => TProjectedType | Thenable<TProjectedType>): Thenable<TProjectedType> {
-            this._success = onFulfilled;
-            this._failure = onRejected;
+        then<TProjectedType>(onFulfilled?: (value: TResponseType) => TProjectedType | Thenable<TProjectedType, TErrorType> | void, onRejected?: (error: TErrorType) => TErrorType | Thenable<TProjectedType, TErrorType> | void): Thenable<TProjectedType, TErrorType> {
+            // Nachfolger erstellen.
+            var next = new PromiseHelper<TProjectedType, TErrorType>();
 
-            // Nachfolger einrichten.
-            var next = new PromiseHelper<TProjectedType>();
+            // Nachfoler einbinden.
+            if (onFulfilled)
+                this._success.push(v => next.success(onFulfilled(v)));
+            if (onRejected)
+                this._failure.push(e => next.failure(onRejected(e)));
 
-            this._next.push(next);
+            // Eventuell vorhandenes Ergebnis direkt verteilen.
+            this.dispatch();
 
+            // Nachfolger melden.
             return next;
         }
 
+        // Ergebnis verteilen.
+        private dispatch(): void {
+            // Noch kein Ergebnis da.
+            if (!this._result)
+                return;
+
+            // Je nach Situation verteilen.
+            if (this._result.isError)
+                this._failure.splice(0).forEach(c => c(this._result.error));
+            else
+                this._success.splice(0).forEach(c => c(this._result.data));
+        }
+       
         // Prüft, ob eine Weiterleitung verwendet werden soll.
-        private propagate(test: any): boolean {
+        private getThenable(test: any): Thenable<any, TErrorType> {
             if (!test)
-                return false;
+                return null;
 
             // Macht nur Sinn wenn das Objekt eine then Methode hat - hm, geht das nicht auch sicherer?
             var thenMethod = test["then"];
             if (!thenMethod)
-                return false;
+                return null;
             if (!(thenMethod instanceof Function))
-                return false;
+                return null;
 
             // Irgendwann später probieren wir es noch einmal.
-            var thenable: Thenable<any> = test;
-
-            // Wenn der asnychrone Zugriff denn dann durch ist, dann können wir das durchreichen.
-            thenable.then(value => this._next.forEach(next => next.success(value)), error => this._next.forEach(next => next.failure(next)));
-
-            return true;
+            return (test as Thenable<any, TErrorType>);
         }
 
         // Daten melden.
-        success(value: TResponseType): void {
-            var processedValue = this._success ? this._success(value) : value;
+        success(value: TResponseType | Thenable<TResponseType, TErrorType> | void): void {
+            // Das geht immer nur einmal.
+            if (this._result)
+                throw "Ein Promise kann nur einmal benachrichtigt werden";
 
-            if (!this.propagate(processedValue))
-                this._next.forEach(next => next.success(processedValue));
+            // Auf verzögerte Ausführung prüfen.
+            var asAsync = this.getThenable(value);
+
+            if (asAsync)
+                asAsync.then(v => this.success(v));
+            else {
+                // Ergebnis merken und verteilen.
+                this._result = { isError: false, data: value as TResponseType };
+
+                this.dispatch();
+            }
         }
 
         // Fehler melden.
-        failure(error: any): void {
-            var processedError = this._failure ? this._failure(error) : error;
+        failure(error: TErrorType | Thenable<TResponseType, TErrorType> | void): void {
+            // Das geht immer nur einmal.
+            if (this._result)
+                throw "Ein Promise kann nur einmal benachrichtigt werden";
 
-            if (!this.propagate(processedError))
-                this._next.forEach(next => next.failure(processedError));
+            // Auf verzögerte Ausführung prüfen.
+            var asAsync = this.getThenable(error);
+
+            if (asAsync)
+                asAsync.then(e => this.failure(e));
+            else {
+                // Ergebnis merken und verteilen.
+                this._result = { isError: true, error: error as TErrorType };
+
+                this.dispatch();
+            }
         }
     }
 

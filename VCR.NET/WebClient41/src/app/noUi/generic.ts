@@ -61,7 +61,7 @@
         // Benachrichtigt die Oberfläche zur Aktualisierung der Anzeige.
         protected refresh(): void {
             if (this._site)
-                this._site.refresh();
+                this._site.refreshUi();
         }
 
         // Meldet die Oberfläche an.

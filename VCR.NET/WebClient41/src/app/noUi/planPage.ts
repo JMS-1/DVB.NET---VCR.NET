@@ -149,7 +149,7 @@ namespace VCRNETClient.App.NoUi {
             if (full && this._jobs)
                 this._jobs.forEach(j => j.showEpg = j.showException = false);
 
-            this.refresh();
+            this.refreshUi();
         }
 
         toggleTaskFilter(): void {

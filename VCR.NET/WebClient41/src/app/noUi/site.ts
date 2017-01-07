@@ -3,7 +3,7 @@
     // Diese Schnittstelle wird von Views angeboten, die über notwendige Aktualisierungen der Oberfläche informiert werden möchten.
     export interface INoUiSite {
         // Wird ausgelöst, sobald eine Aktualisierung notwendig ist.
-        refresh(): void;
+        refreshUi(): void;
     }
 
     // Schnittstelle für NoUi Komponenten die über Änderungen benachrichtigen.

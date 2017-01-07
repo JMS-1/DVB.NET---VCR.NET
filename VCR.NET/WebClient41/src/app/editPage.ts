@@ -46,12 +46,12 @@ namespace VCRNETClient.App {
             this._job = undefined;
             this._schedule = undefined;
 
-            VCRServer.RecordingDirectoryCache.load().then(dirs => {
+            VCRServer.RecordingDirectoryCache.getPromise().then(dirs => {
                 var folderSelection = dirs.map(f => <NoUi.ISelectableValue<string>>{ value: f, display: f });
 
                 folderSelection.unshift(<NoUi.ISelectableValue<string>>{ value: "", display: "(Voreinstellung verwenden)" });
 
-                return VCRServer.ProfileCache.load().then(profiles => {
+                return VCRServer.ProfileCache.getPromise().then(profiles => {
                     var profileSelection = profiles.map(p => <NoUi.ISelectableValue<string>>{ value: p.name, display: p.name });
 
                     return VCRServer.createScheduleFromGuide(section.substr(3), "").then(info => {
@@ -75,10 +75,10 @@ namespace VCRNETClient.App {
             this.application.setBusy(false);
         }
 
-        private loadSources(): Thenable<VCRServer.SourceEntry[]> {
+        private loadSources(): Thenable<VCRServer.SourceEntry[], XMLHttpRequest> {
             var profile = this._job.device.val();
 
-            return VCRServer.ProfileSourcesCache.load(profile).then(sources => {
+            return VCRServer.ProfileSourcesCache.getPromise(profile).then(sources => {
                 if (this._job.device.val() === profile) {
                     this._sources = sources;
 
@@ -97,7 +97,7 @@ namespace VCRNETClient.App {
         }
 
         private refreshSite(): void {
-            this.refresh();
+            this.refreshUi();
         }
 
         private onChanged(): void {
@@ -106,7 +106,7 @@ namespace VCRNETClient.App {
             this.refreshSite();
         }
 
-        private onSave(): Thenable<void> {
+        private onSave(): Thenable<void, XMLHttpRequest> {
             return VCRServer
                 .updateSchedule(this._raw.jobId, this._raw.scheduleId, { job: this._raw.job, schedule: this._raw.schedule })
                 .then(() => this.application.gotoPage(this.application.planPage.route));

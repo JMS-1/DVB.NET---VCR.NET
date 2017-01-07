@@ -32,7 +32,7 @@ namespace VCRNETClient {
         }
         
         // Fordert eine Aktualisierung der Anzeige an.
-        refresh(): void {
+        refreshUi(): void {
             this.forceUpdate();
         }
     }

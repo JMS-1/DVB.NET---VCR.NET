@@ -11,7 +11,7 @@ namespace VCRNETClient.App.NoUi {
     export class Command<TResponseType> implements ICommand {
         private _busy = false;
 
-        constructor(private _begin: () => Thenable<TResponseType>, private _test: () => boolean, private _onChange: () => void, public text: string) {
+        constructor(private _begin: () => Thenable<TResponseType, XMLHttpRequest>, private _test: () => boolean, private _onChange: () => void, public text: string) {
         }
 
         isEnabled(): boolean {
