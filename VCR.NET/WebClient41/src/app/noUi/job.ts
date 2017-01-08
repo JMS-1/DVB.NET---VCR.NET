@@ -16,8 +16,8 @@ namespace VCRNETClient.App.NoUi {
 
     // Bietet die Daten eines Auftrags zur Pflege an.
     export class JobEditor extends JobScheduleEditor<VCRServer.EditJobContract> implements IJobEditor {
-        constructor(model: VCRServer.EditJobContract, devices: ISelectableValue<string>[], favoriteSources: string[], folders: ISelectableValue<string>[], onChange: () => void) {
-            super(model, true, favoriteSources, onChange);
+        constructor(page: IPage, model: VCRServer.EditJobContract, devices: ISelectableValue<string>[], favoriteSources: string[], folders: ISelectableValue<string>[], onChange: () => void) {
+            super(page, model, true, favoriteSources, onChange);
 
             // Pflegekomponenten erstellen
             this.deviceLock = new BooleanEditor(this.model, "lockedToDevice", onChange, "(auf diesem Gerät aufzeichnen)");

@@ -4,7 +4,7 @@ namespace VCRNETClient {
     interface IViewStatic {
         page: App.NoUi.IPage;
 
-        faqs: IHelpComponentProvider;
+        topics: IHelpComponentProvider;
     }
 
     export class View extends React.Component<IViewStatic, INoDynamicState>{
@@ -18,7 +18,7 @@ namespace VCRNETClient {
             else if (this.props.page instanceof App.EditPage)
                 active = <Edit noui={this.props.page as App.EditPage} />
             else if (this.props.page instanceof App.HelpPage)
-                active = <Help noui={this.props.page as App.HelpPage} faqs={this.props.faqs} />
+                active = <Help noui={this.props.page as App.HelpPage} topics={this.props.topics} />
 
             return <div className="vcrnet-view">{active}</div>;
         }

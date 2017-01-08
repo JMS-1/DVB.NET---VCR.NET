@@ -9,7 +9,7 @@ namespace VCRNETClient {
     }
 
     export class Main extends React.Component<IMainStatic, INoDynamicState> implements App.IApplicationSite, App.IHelpSite {
-        private static _faq: { [section: string]: HelpComponent } = {
+        private static _topics: { [section: string]: HelpComponent } = {
             parallelrecording: new HelpPages.ParallelRecording(),
             epgconfig: new HelpPages.AdminProgramGuide(),
             psiconfig: new HelpPages.AdminSourceScan(),
@@ -64,7 +64,7 @@ namespace VCRNETClient {
                 return <div className="vcrnet-main">
                     <h1>{page ? page.getTitle() : title}</h1>
                     <Navigation noui={page} />
-                    <View page={page} faqs={this} />
+                    <View page={page} topics={this} />
                 </div>;
         }
 
@@ -93,13 +93,13 @@ namespace VCRNETClient {
         }
 
         getHelpComponent(section: string): HelpComponent {
-            return Main._faq[section];
+            return Main._topics[section];
         }
 
         getCurrentHelpTitle(section: string): string {
-            var faq = this.getHelpComponent(section);
+            var topic = this.getHelpComponent(section);
 
-            return faq && faq.getTitle();
+            return topic && topic.getTitle();
         }
     }
 }

@@ -4,6 +4,9 @@ namespace VCRNETClient.Ui {
 
     // Die Konfiguration eines Eingabefeldes.
     interface IFieldStatic {
+        // Die übergeordnete Seite.
+        page: App.NoUi.IPage;
+
         // Der Anzeigename des Feldes.
         label: string;
 
@@ -20,7 +23,7 @@ namespace VCRNETClient.Ui {
         // Erzeugt die Anzeige eines Eingabefeldes.
         render(): JSX.Element {
             return <div className="vcrnet-editfield">
-                <div>{this.props.label}{this.props.help ? <HelpLink page={this.props.help} /> : null}</div>
+                <div>{this.props.label}{this.props.help ? <HelpLink page={this.props.page} topic={this.props.help} /> : null}</div>
                 <div>{this.props.children}</div>
             </div>;
         }

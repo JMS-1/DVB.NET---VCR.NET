@@ -20,7 +20,7 @@ namespace VCRNETClient {
     }
 
     // Implementierung einer React.Js Komponente für ein NoUi Präsentationsmodell.
-    export abstract class NoUiViewWithSite<TViewModelType extends App.NoUi.INoUiWithSite> extends NoUiView<TViewModelType> implements App.NoUi.INoUiSite {
+    export abstract class NoUiViewWithSite<TViewModelType extends App.NoUi.INoUiWithSite> extends NoUiView<TViewModelType> implements App.NoUi.IPageSite {
         // Führt die Anmeldung auf Benachrichtigungen aus.
         componentWillMount(): void {
             this.props.noui.setSite(this);

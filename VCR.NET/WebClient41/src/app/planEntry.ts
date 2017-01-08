@@ -2,9 +2,6 @@
 
     // Erweiterte Schnittstelle (View Model) zur Anzeige eines Eintrags des Aufzeichnunsplans.
     export interface IPlanEntry extends VCRServer.PlanActivityContract {
-        // Ein eindeutiger Name.
-        key: string;
-
         // Ein Kürzel für die Qualität der Aufzeichnung, etwa ob dieser verspätet beginnt.
         mode: string;
 
@@ -28,10 +25,13 @@
 
         // Schaltet die Detailanzeige um.
         toggleDetail: (epg: boolean) => void;
+
+        // Anwendungsverweis zum Ändern dieses Eintrags.
+        editLink: string;
     }
 
     // Initialisiert ein View Model für einen Eintrag des Aufzeichnungsplans.
-    export function enrichPlanEntry(entry: VCRServer.PlanActivityContract, key: string, toggleDetail: (entry: IPlanEntry, epg: boolean) => void): IPlanEntry {
+    export function enrichPlanEntry(entry: VCRServer.PlanActivityContract, toggleDetail: (entry: IPlanEntry, epg: boolean) => void, application: App.Application): IPlanEntry {
         if (!entry)
             return null;
 
@@ -39,8 +39,6 @@
         var enriched = <IPlanEntry>{ ["__proto__"]: entry };
 
         // Defaultwerte einsetzen
-        enriched.key = key;
-
         if (enriched.station == null)
             enriched.station = '(unbekannt)';
         if (enriched.device == null)
@@ -68,6 +66,10 @@
                     enriched.mode = 'late';
                 else
                     enriched.mode = 'intime';
+
+        // Verweise.
+        if (enriched.mode)
+            enriched.editLink = `edit;id=${enriched.id}`;
 
         // Methoden.
         enriched.toggleDetail = epg => toggleDetail(enriched, epg);

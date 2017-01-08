@@ -2,6 +2,12 @@
 
     // Die äußere Sicht auf eine Seite der Anwendung.
     export interface IPage extends INoUiWithSite {
+        // Rückgriff auf die Anwendung als Ganzes.
+        readonly application: IApplication;
+
+        // Dereindeutige Name (die Route) zur Seite.
+        readonly route: string;
+
         // Die Überschrift der Seite.
         getTitle(): string;
 
@@ -31,7 +37,7 @@
     }
 
     // Basisklasse zur Implementierung von Seiten.
-    export abstract class Page<TSiteType extends INoUiSite> implements IPage {
+    export abstract class Page<TSiteType extends IPageSite> implements IPage {
         // Das zugehörige Oberflächenelement.
         private _site: TSiteType;
 
@@ -75,7 +81,7 @@
         };
 
         // Initialisiert eine neue Seite.
-        constructor(public readonly route: string, protected readonly application: Application) {
+        constructor(public readonly route: string, public readonly application: Application) {
         }
 
         // Aktualisiert den Inhalt der Seite.

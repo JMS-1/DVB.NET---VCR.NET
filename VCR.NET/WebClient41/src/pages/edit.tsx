@@ -7,7 +7,7 @@ namespace VCRNETClient {
             return <div className="vcrnet-edit">
                 <div>
                     Mit diesem Formular werden alle Daten erfasst, die für die Ausführung einer Aufzeichnung benötigt werden. Im
-                    oberen Bereich finden sich die Einstellungen des Auftrags<HelpLink page="faq;jobsandschedules" />,
+                    oberen Bereich finden sich die Einstellungen des Auftrags<HelpLink page={this.props.noui} topic="jobsandschedules" />,
                     die allen Aufzeichnungen des Auftrags gemeinsam sind.
                     In der Mitte werden die eigentlichen Aufzeichnungsdaten festgelegt. Der untere Bereich ist für sich
                     wiederholende Aufzeichnungen aktiv, wenn für einzelne Tage Ausnahmeregeln definiert wurden.

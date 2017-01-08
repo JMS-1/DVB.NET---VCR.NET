@@ -17,6 +17,9 @@
 
     // Schnittstelle zur Pflege der gemeinsamen Daten eines Auftrags oder einer Aufzeichnung.
     export interface IJobScheduleEditor {
+        // Die zugehörige Seite der Anwendung.
+        readonly page: IPage;
+
         // Der Name des Auftrags.
         readonly name: IStringEditor;
 
@@ -29,7 +32,7 @@
 
     // Bietet die gemeinsamen Daten eines Auftrags oder einer Aufzeichnung zur Pflege an.
     export abstract class JobScheduleEditor<TModelType extends VCRServer.EditJobScheduleCommonContract> implements IJobScheduleEditor {
-        constructor(protected model: TModelType, mustHaveName: boolean, favoriteSources: string[], onChange: () => void) {
+        constructor(public readonly page: IPage, protected model: TModelType, mustHaveName: boolean, favoriteSources: string[], onChange: () => void) {
             var noSource = () => (this.source.val() || "").trim().length < 1;
 
             // Pflegekomponenten erstellen

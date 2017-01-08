@@ -2,7 +2,7 @@
 
 namespace VCRNETClient.Ui {
 
-    export class EditTime extends NoUiViewWithSite<App.NoUi.ITimeEditor> implements App.NoUi.INoUiSite {
+    export class EditTime extends NoUiViewWithSite<App.NoUi.ITimeEditor> implements App.NoUi.IPageSite {
         render(): JSX.Element {
             return <input className="vcrnet-edittime"
                 type="TEXT"

@@ -25,8 +25,8 @@
 
     // Beschreibt die Daten einer Aufzeichnung.
     export class ScheduleEditor extends JobScheduleEditor<VCRServer.EditScheduleContract> implements IScheduleEditor {
-        constructor(model: VCRServer.EditScheduleContract, favoriteSources: string[], onChange: () => void) {
-            super(model, false, favoriteSources, onChange);
+        constructor(page: IPage, model: VCRServer.EditScheduleContract, favoriteSources: string[], onChange: () => void) {
+            super(page, model, false, favoriteSources, onChange);
 
             // Pflegbare Eigenschaften anlegen.
             this.firstStart = new DayEditor(model, "firstStart", onChange, "Datum", false);

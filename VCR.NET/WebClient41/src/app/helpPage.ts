@@ -1,7 +1,7 @@
 ﻿/// <reference path="noUi/page.ts" />
 
 namespace VCRNETClient.App {
-    export interface IHelpSite extends NoUi.INoUiSite {
+    export interface IHelpSite extends NoUi.IPageSite {
         getCurrentHelpTitle(section: string): string;
     }
 

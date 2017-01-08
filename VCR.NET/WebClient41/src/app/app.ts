@@ -1,17 +1,29 @@
 ﻿namespace VCRNETClient.App {
 
-    export interface IApplicationSite extends NoUi.INoUiSite {
+    export interface IApplication {
+        readonly homePage: NoUi.IPage;
+
+        readonly helpPage: NoUi.IPage;
+
+        readonly planPage: NoUi.IPage;
+
+        readonly editPage: NoUi.IPage;
+    }
+
+    export interface IApplicationSite extends NoUi.IPageSite {
         onFirstStart(): void;
 
         goto(page: string);
     }
 
-    export class Application {
-        private readonly _homePage = new NoUi.HomePage(this);
+    export class Application implements IApplication {
+        readonly homePage = new NoUi.HomePage(this);
 
         readonly helpPage = new HelpPage(this);
 
         readonly planPage = new NoUi.PlanPage(this);
+
+        readonly editPage = new EditPage(this);
 
         private _pageMapper: { [name: string]: NoUi.Page<any> } = {};
 
@@ -35,10 +47,10 @@
         constructor(private _site: IApplicationSite) {
             // Alle bekannten Seiten.
             var pages: NoUi.Page<any>[] = [
-                this._homePage,
+                this.homePage,
                 this.helpPage,
                 this.planPage,
-                new EditPage(this),
+                this.editPage,
             ];
 
             // Abbildung erstellen.
@@ -74,7 +86,7 @@
             this.setBusy(true);
 
             // Den Singleton der gewünschten Seite ermitteln.
-            var page = this._pageMapper[name] || this._homePage;
+            var page = this._pageMapper[name] || this.homePage;
 
             // Aktivieren.
             this.page = page;                

@@ -1,7 +1,7 @@
 ﻿/// <reference path="noUi/page.ts" />
 
 namespace VCRNETClient.App {
-    export class EditPage extends NoUi.Page<NoUi.INoUiSite> {
+    export class EditPage extends NoUi.Page<NoUi.IPageSite> {
         private _raw: VCRServer.JobScheduleInfoContract;
 
         private _job: NoUi.JobEditor;
@@ -58,8 +58,8 @@ namespace VCRNETClient.App {
                         var favorites = this.application.profile.recentSources || [];
 
                         this._raw = info;
-                        this._job = new NoUi.JobEditor(info.job, profileSelection, favorites, folderSelection, this._onChanged);
-                        this._schedule = new NoUi.ScheduleEditor(info.schedule, favorites, this._onChanged);
+                        this._job = new NoUi.JobEditor(this, info.job, profileSelection, favorites, folderSelection, this._onChanged);
+                        this._schedule = new NoUi.ScheduleEditor(this, info.schedule, favorites, this._onChanged);
 
                         // Quellen für das aktuelle Geräteprofil laden.
                         return this.loadSources();
