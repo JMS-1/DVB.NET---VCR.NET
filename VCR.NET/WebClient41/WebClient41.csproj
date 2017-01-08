@@ -316,7 +316,7 @@
     <TypeScriptCompile Include="src\app\app.ts" />
     <TypeScriptCompile Include="src\app\dateFormatter.ts" />
     <TypeScriptCompile Include="src\app\editPage.ts" />
-    <TypeScriptCompile Include="src\app\helpPage.ts" />
+    <TypeScriptCompile Include="src\app\noUi\helpPage.ts" />
     <TypeScriptCompile Include="src\app\noUi\homePage.ts" />
     <TypeScriptCompile Include="src\app\noUi\daySelector.ts" />
     <TypeScriptCompile Include="src\app\noUi\duration.ts" />

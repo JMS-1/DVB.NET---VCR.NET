@@ -19,7 +19,7 @@
     export class Application implements IApplication {
         readonly homePage = new NoUi.HomePage(this);
 
-        readonly helpPage = new HelpPage(this);
+        readonly helpPage = new NoUi.HelpPage(this);
 
         readonly planPage = new NoUi.PlanPage(this);
 

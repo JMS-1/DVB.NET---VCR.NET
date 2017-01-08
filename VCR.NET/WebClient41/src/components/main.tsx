@@ -8,16 +8,20 @@ namespace VCRNETClient {
     interface IMainStatic {
     }
 
-    export class Main extends React.Component<IMainStatic, INoDynamicState> implements App.IApplicationSite, App.IHelpSite {
-        private static _topics: { [section: string]: HelpComponent } = {
-            parallelrecording: new HelpPages.ParallelRecording(),
-            epgconfig: new HelpPages.AdminProgramGuide(),
-            psiconfig: new HelpPages.AdminSourceScan(),
-            overview: new HelpPages.Overview(),
-            epg: new HelpPages.ProgramGuide(),
-            archive: new HelpPages.Archive(),
-            log: new HelpPages.Log()
-        };
+    export class Main extends React.Component<IMainStatic, INoDynamicState> implements App.IApplicationSite, App.NoUi.IHelpSite {
+        private static _topics: { [section: string]: HelpComponent };
+
+        private static initStatic(): void {
+            Main._topics = {};
+
+            Main._topics["parallelrecording"] = new HelpPages.ParallelRecording();
+            Main._topics["epgconfig"] = new HelpPages.AdminProgramGuide();
+            Main._topics["psiconfig"] = new HelpPages.AdminSourceScan();
+            Main._topics["overview"] = new HelpPages.Overview();
+            Main._topics["epg"] = new HelpPages.ProgramGuide();
+            Main._topics["archive"] = new HelpPages.Archive();
+            Main._topics["log"] = new HelpPages.Log();
+        }
 
         private _application = new App.Application(this);
 
@@ -25,6 +29,9 @@ namespace VCRNETClient {
 
         constructor() {
             super();
+
+            if (!Main._topics)
+                Main.initStatic();
 
             this._onhashchange = this.onhashchange.bind(this);
         }
