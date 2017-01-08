@@ -6,11 +6,11 @@ namespace VCRNETClient.HelpPages {
             return "Quellen aktualisieren (Sendersuchlauf)";
         }
 
-        render(): JSX.Element {
+        render(page: App.NoUi.IPage): JSX.Element {
             return <div>
                 Zur Programmierung von Aufzeichnungen bietet der VCR.NET Recording Service für jedes
-                DVB Gerät die <InternalLink view="faq;sourcechooser">Quellen (Sender)</InternalLink> an, die im
-                zugehörigen <InternalLink view="faq;dvbnet">DVB.NET</InternalLink> Geräteprofil
+                DVB Gerät die <InternalLink view={`${page.route};sourcechooser`}>Quellen (Sender)</InternalLink> an, die im
+                zugehörigen <InternalLink view={`${page.route};dvbnet`}>DVB.NET</InternalLink> Geräteprofil
                 hinterlegt sind. Diese Liste ändert
                 sich je nach Empfangsart von Zeit zu Zeit und es macht dann Sinn, eine Aktualisierung
                 durchzuführen. Das kann manuell mit dem <em>DVB.NET Konfigurations- und Administrationswerkzeug</em>
@@ -27,12 +27,12 @@ namespace VCRNETClient.HelpPages {
                 <br />
                 <br />
                 Im Endeffekt erfolgt die Konfiguration ganz analog
-                zur <InternalLink view="faq;epgconfig">Programmzeitschrift</InternalLink>.
+                zur <InternalLink view={`${page.route};epgconfig`}>Programmzeitschrift</InternalLink>.
                 Die Aktualisierung kann gänzlich deaktiviert werden, nur manuell erfolgen oder wie
                 im Bild gezeigt einem Zeitplan folgen. Zuerst einmal erfolgt die Angabe der vollen
                 Stunden, an denen eine Aktualisierung stattfinden darf - je nach Planung
                 der Aufzeichnungen kann dieser Zeitpunkt auch nach hinten geschoben werden,
-                da <InternalLink view="faq;tasks">Sonderaufgaben</InternalLink> wie
+                da <InternalLink view={`${page.route};tasks`}>Sonderaufgaben</InternalLink> wie
                 die Aktualisierung der Liste der Quellen
                 eine niedrigere Priorität als reguläre Aufzeichnungen haben. Es macht hier durchaus
                 Sinn, mindestens zwei Zeiten zu verwenden, wobei die eine im Nachtbereich und die

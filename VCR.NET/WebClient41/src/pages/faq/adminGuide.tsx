@@ -6,9 +6,9 @@ namespace VCRNETClient.HelpPages {
             return "Konfiguration der Programmzeitschrift";
         }
 
-        render(): JSX.Element {
+        render(page: App.NoUi.IPage): JSX.Element {
             return <div>
-                Damit der VCR.NET Recording Service eine <InternalLink view="faq;epg">Programmzeitschrift</InternalLink> zur
+                Damit der VCR.NET Recording Service eine <InternalLink view={`${page.route};epg`}>Programmzeitschrift</InternalLink> zur
                 Programmierung neuer Aufzeichnungen zur Verfügung stellen kann muss erst einmal
                 festgelegt werden, mit welchem Inhalt diese zu füllen ist. Im Administrationsbereich
                 der Web Oberfläche gibt es dazu eine gesonderten
@@ -25,7 +25,7 @@ namespace VCRNETClient.HelpPages {
                 1 mehr als 1,000 Radio- und Fernsehsender angeboten werden, so macht eine Einschränkungen
                 auf die eigenen Lieblingssender durchaus Sinn. Nach Vorauswahl eines der vom VCR.NET
                 Recording Service verwendeten DVB Geräte können mit
-                den <InternalLink view="faq;sourcechooser">üblichen Methoden</InternalLink> Quellen
+                den <InternalLink view={`${page.route};sourcechooser`}>üblichen Methoden</InternalLink> Quellen
                 ausgewählt und zur Liste hinzugefügt werden -
                 natürlich können Quellen auch wieder aus der Liste entfernt werden.
                 <br />
@@ -46,7 +46,7 @@ namespace VCRNETClient.HelpPages {
                 zu aktualisieren ist. Dazu können bis zu die Stunden pro Tag angegeben werden,
                 zu dem eine entsprechende Aktivität gestartet werden soll - wie bei normalen Aufzeichnung
                 wird der Rechner dazu wenn notwendig aus
-                dem <InternalLink view="faq;hibernation">Schlafzustand</InternalLink> aufgeweckt.
+                dem <InternalLink view={`${page.route};hibernation`}>Schlafzustand</InternalLink> aufgeweckt.
                 Damit diese Sammlung auch in der Planung der Aufzeichnungen berücksichtigt
                 werden kann, muss auch immer eine maximale Laufzeit für die Aktualisierung angegeben
                 werden. Ist diese zu kurz eingestellt, so wird der VCR.NET Recording Service die
@@ -56,7 +56,7 @@ namespace VCRNETClient.HelpPages {
                 wird auch die
                 Aktivität <InternalLink view="current" pict="devices" /> auf
                 dem DVB Gerät beendet.
-                Mit Hilfe der <InternalLink view="faq;log">Protokollliste</InternalLink> lässt
+                Mit Hilfe der <InternalLink view={`${page.route};log`}>Protokollliste</InternalLink> lässt
                 sich dann leicht feststellen, was ein typischer Wert für die Laufzeit ist.
                 <br />
                 <br />

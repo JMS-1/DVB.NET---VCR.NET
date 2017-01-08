@@ -6,7 +6,7 @@ namespace VCRNETClient.HelpPages {
             return "Planung von Aufzeichnungen";
         }
 
-        render(): JSX.Element {
+        render(page: App.NoUi.IPage): JSX.Element {
             return <div>
                 Selbstverständlich ist es keine Problem unabhängig Aufzeichnungen auf mehreren DVB
                 Karten zu programmieren, wenn diese dem VCR.NET Recording Service zur Nutzung
@@ -42,7 +42,7 @@ namespace VCRNETClient.HelpPages {
                 und in voller Länge aufgezeichnet werden. Sollte nun eine weitere Aufzeichnung einer
                 anderen Quellgruppe hinzugefügt werden, so hat der VCR.NET Recording Service verschiedene
                 Strategien, die programmierten Wünsche so gut wie möglich zu
-                erfüllen. <InternalLink view="faq;customschedule">Die genauen Regeln</InternalLink> sind
+                erfüllen. <InternalLink view={`${page.route};customschedule`}>Die genauen Regeln</InternalLink> sind
                 etwas komplexer und berücksichtigen neben der programmierten Anfangszeit
                 der Aufzeichnungen unter anderem auch die mögliche Anzahl vollständig durchgeführter
                 Aufzeichnungen und den Gesamtverlust verspätet beginnender Aufzeichnungen.

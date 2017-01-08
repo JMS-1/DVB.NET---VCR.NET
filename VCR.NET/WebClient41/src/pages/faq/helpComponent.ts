@@ -4,6 +4,6 @@ namespace VCRNETClient {
     export abstract class HelpComponent {
         abstract getTitle(): string;
 
-        abstract render(): JSX.Element;
+        abstract render(page: App.NoUi.IPage): JSX.Element;
     }
 }

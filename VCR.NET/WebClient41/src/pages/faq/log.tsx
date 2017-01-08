@@ -6,14 +6,14 @@ namespace VCRNETClient.HelpPages {
             return "Protokolle";
         }
 
-        render(): JSX.Element {
+        render(page: App.NoUi.IPage): JSX.Element {
             return <div>
                 Der VCR.NET Recording Service erstellt für jede ausgeführte
                 Aktivität<InternalLink view="current" pict="devices" /> einen
                 gesonderten Protokolleintrag. Eine Aktivität ist hierbei
                 immer ein geschlossener Nutzungszeitraum eines DVB Gerätes. In diesem Zeitraum kann
                 entweder eine einzelne Sonderaufgabe oder
-                eine <InternalLink view="faq;parallelrecording">Gruppe von Aufzeichnungen</InternalLink> ausgeführt
+                eine <InternalLink view={`${page.route};parallelrecording`}>Gruppe von Aufzeichnungen</InternalLink> ausgeführt
                 worden sein. Die <InternalLink view="log">Protokolleinträge</InternalLink> können direkt über die Web 
                 Oberfläche abgerufen werden.
                 <br />
@@ -29,7 +29,7 @@ namespace VCRNETClient.HelpPages {
                 <br />
                 Erst einmal werden nur die Protokolleinträge angezeigt, die von Aufzeichnungen erzeugt
                 wurden. Auf Wunsch ist es möglich, auch die Einträge
-                der <InternalLink view="faq;tasks">Sonderaufgaben</InternalLink> hinzu
+                der <InternalLink view={`${page.route};tasks`}>Sonderaufgaben</InternalLink> hinzu
                 zu schalten - einzeln pro Art der Aufgabe.
                 <br />
                 <br />
@@ -38,7 +38,7 @@ namespace VCRNETClient.HelpPages {
                 sowie Beginn und Ende der Aktivität über alle enthaltenen Aufzeichnungen ablesen.
                 <br />
                 <br />
-                Sind die <InternalLink view="faq;filecontents">Aufzeichnungsdateien</InternalLink> zu einem Eintrag noch
+                Sind die <InternalLink view={`${page.route};filecontents`}>Aufzeichnungsdateien</InternalLink> zu einem Eintrag noch
                 vorhanden, so wird dies durch kleine Symbole <Pictogram name="recording" /> bei dem Eintrag visualisiert. 
                 Ist auf dem Rechner, von dem die Web Oberfläche aufgerufen wurde,
                 der <ExternalLink url="http://www.psimarron.net/DVBNETViewer/">DVB.NET / VCR.NET Viewer</ExternalLink> lokal

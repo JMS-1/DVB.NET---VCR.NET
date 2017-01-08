@@ -6,12 +6,12 @@ namespace VCRNETClient.HelpPages {
             return "Lebenszyklus von Aufträgen";
         }
 
-        render(): JSX.Element {
+        render(page: App.NoUi.IPage): JSX.Element {
             return <div>
                 Jede Aufzeichnung hat einen Zeitpunkt, an dem ihre letzte Ausführung abgeschlossen
                 ist. Für einzelne Aufzeichnungen ist dies einfach die Summe aus dem programmierten
                 Startzeitpunkt und der Aufzeichnungsdauer.
-                Für <InternalLink view="faq;repeatingschedules">Serienaufzeichnungen</InternalLink> ist
+                Für <InternalLink view={`${page.route};repeatingschedules`}>Serienaufzeichnungen</InternalLink> ist
                 das etwas komplizierter, da hier auch die Ausnahmeregelungen berücksichtigt
                 werden, das Prinzip ist aber sehr ähnlich.
                 <br />
@@ -19,7 +19,7 @@ namespace VCRNETClient.HelpPages {
                 Der VCR.NET Recording Service betrachtet eine Aufzeichnung als abgeschlossen, wenn
                 der Zeitpunkt der letzten Ausführung vor der aktuellen Zeit liegt. Dies hat erst
                 einmal keine Konsequenzen für die Aufzeichnung. Besitzt allerdings
-                ein <InternalLink view="faq;jobsandschedules">Auftrag</InternalLink> nur 
+                ein <InternalLink view={`${page.route};jobsandschedules`}>Auftrag</InternalLink> nur 
                 abgeschlossene Aufzeichnungen, so wird auch dieser als abgeschlossen
                 betrachtet. Der Auftrag wird dann aus der Liste der
                 vorhandenen <InternalLink view="jobs" pict="jobs" /> Aufträge
@@ -51,7 +51,7 @@ namespace VCRNETClient.HelpPages {
                 Unter gewissen Umständen werden Aufträge nicht sofort in das Archiv übertragen,
                 obwohl sie faktisch abgeschlossen sind. Das betrifft einfache Aufzeichnungen, die
                 während der Ausführung vorzeitig durch den
-                Anwender <InternalLink view="faq;editcurrent">abgebrochen</InternalLink> wurden. 
+                Anwender <InternalLink view={`${page.route};editcurrent`}>abgebrochen</InternalLink> wurden. 
                 Sie wandern erst ins Archiv, wenn die programmierte Endzeit überschritten
                 wird - umgekehrt kann die Verlängerung einer laufenden Aufzeichnung auch dazu führen,
                 dass ein Auftrag im Archiv erscheint, obwohl eine zugehörige Aufzeichnung noch aktiv

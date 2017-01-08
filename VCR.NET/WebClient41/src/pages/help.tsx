@@ -12,7 +12,7 @@ namespace VCRNETClient {
             var element = this.props.topics.getHelpComponent(this.props.noui.section);
 
             return <div className="vcrnet-faq">
-                {(element && element.render()) || null}
+                {(element && element.render(this.props.noui)) || null}
             </div>;
         }
     }
