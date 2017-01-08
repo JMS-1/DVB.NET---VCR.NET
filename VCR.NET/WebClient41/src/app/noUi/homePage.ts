@@ -3,7 +3,7 @@
 namespace VCRNETClient.App.NoUi {
 
     // Die Anwendungslogik für die Startseite.
-    export class HomePage extends Page<IPageSite> {
+    export class HomePage extends Page<INoUiSite> {
         // Erstellt die Anwendungslogik.
         constructor(application: Application) {
             super("home", application);

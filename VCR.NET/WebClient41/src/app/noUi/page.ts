@@ -37,7 +37,7 @@
     }
 
     // Basisklasse zur Implementierung von Seiten.
-    export abstract class Page<TSiteType extends IPageSite> implements IPage {
+    export abstract class Page<TSiteType extends INoUiSite> implements IPage {
         // Das zugehörige Oberflächenelement.
         private _site: TSiteType;
 

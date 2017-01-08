@@ -1,4 +1,4 @@
-﻿namespace VCRNETClient.App {
+﻿namespace VCRNETClient.App.NoUi {
 
     // Erweiterte Schnittstelle (View Model) zur Anzeige eines Eintrags des Aufzeichnunsplans.
     export interface IPlanEntry extends VCRServer.PlanActivityContract {
@@ -24,7 +24,7 @@
         showException: boolean;
 
         // Schaltet die Detailanzeige um.
-        toggleDetail: (epg: boolean) => void;
+        toggleDetail(epg: boolean): void;
 
         // Anwendungsverweis zum Ändern dieses Eintrags.
         editLink: string;
@@ -35,8 +35,7 @@
         if (!entry)
             return null;
 
-        // Das Model vom Server wird nur gekapselt und ist unveränderlich - eine JSON Serialisierung ist so allerdings nicht mehr möglich.
-        var enriched = <IPlanEntry>{ ["__proto__"]: entry };
+        var enriched = <IPlanEntry>entry;
 
         // Defaultwerte einsetzen
         if (enriched.station == null)
@@ -45,7 +44,7 @@
             enriched.device = '';
 
         // Zeiten umrechnen
-        var duration = 1000 * <any>enriched.duration;
+        var duration = 1000 * (enriched.duration as any);
         var start = new Date(enriched.start);
         var end = new Date(start.getTime() + duration);
 

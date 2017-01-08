@@ -39,7 +39,7 @@ namespace VCRNETClient {
                                     </DetailRow> : null,
                                 job.showException ?
                                     <DetailRow prefixColumns={1} dataColumns={5} key={`${index}Exceptions`}>
-                                        [EXTENSIONEDIT]
+                                        <Ui.EditException noui={job.exception} page={this.props.noui} />
                                     </DetailRow> : null
                             ])}
                         </tbody>

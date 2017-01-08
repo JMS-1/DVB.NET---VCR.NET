@@ -12,7 +12,7 @@
         getHelpComponentProvider<TComponentType extends NoUi.IHelpComponent>(): NoUi.IHelpComponentProvider<TComponentType>;
     }
 
-    export interface IApplicationSite extends NoUi.IPageSite {
+    export interface IApplicationSite extends NoUi.INoUiSite {
         onFirstStart(): void;
 
         goto(page: string);

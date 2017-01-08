@@ -1,7 +1,7 @@
 ﻿/// <reference path="noUi/page.ts" />
 
 namespace VCRNETClient.App {
-    export class EditPage extends NoUi.Page<NoUi.IPageSite> {
+    export class EditPage extends NoUi.Page<NoUi.INoUiSite> {
         private _raw: VCRServer.JobScheduleInfoContract;
 
         private _job: NoUi.JobEditor;

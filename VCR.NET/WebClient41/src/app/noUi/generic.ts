@@ -56,7 +56,7 @@
 
     // Basisklasse zur Pflege des Wertes einer einzelnen Eigenschaft.
     export abstract class ValueHolderWithSite<TValueType> extends ValueHolder<TValueType> implements INoUiWithSite {
-        private _site: IPageSite;
+        private _site: INoUiSite;
 
         // Benachrichtigt die Oberfläche zur Aktualisierung der Anzeige.
         protected refresh(): void {
@@ -65,7 +65,7 @@
         }
 
         // Meldet die Oberfläche an.
-        setSite(site: IPageSite): void {
+        setSite(site: INoUiSite): void {
             this._site = site;
 
             if (this._site)

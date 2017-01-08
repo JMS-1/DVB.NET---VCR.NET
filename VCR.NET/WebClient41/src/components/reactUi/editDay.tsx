@@ -2,7 +2,7 @@
 
 namespace VCRNETClient.Ui {
 
-    export class EditDay extends NoUiViewWithSite<App.NoUi.IDaySelector> implements App.NoUi.IPageSite {
+    export class EditDay extends NoUiViewWithSite<App.NoUi.IDaySelector> implements App.NoUi.INoUiSite {
         // Anzeige erstellen.
         render(): JSX.Element {
             return <div className="vcrnet-editday">
