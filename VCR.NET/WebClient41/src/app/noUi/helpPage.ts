@@ -8,7 +8,7 @@ namespace VCRNETClient.App.NoUi {
 
     // Ermittelt Informationen zu einzelnen Aspekten der Hilfe.
     export interface IHelpComponentProvider<TComponentType extends IHelpComponent> {
-        [section: string]: TComponentType;
+        readonly [section: string]: TComponentType;
     }
 
     // Wird von der Oberfläche zur Verfügung gestellt - die Aspekte der Hilfe sind nur dort und nicht in der Anwendungslogik abgebildet.

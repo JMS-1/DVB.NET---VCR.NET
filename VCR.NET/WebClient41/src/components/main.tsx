@@ -5,18 +5,18 @@ namespace VCRNETClient {
     }
 
     export class Main extends React.Component<IMainStatic, INoDynamicState> implements App.IApplicationSite, App.NoUi.IHelpSite {
-        private static _topics: App.NoUi.IHelpComponentProvider<App.NoUi.IHelpComponent>;
+        private static _topics: { [section: string]: App.NoUi.IHelpComponent; };
 
         private static initStatic(): void {
-            Main._topics = {};
-
-            Main._topics["parallelrecording"] = new HelpPages.ParallelRecording();
-            Main._topics["epgconfig"] = new HelpPages.AdminProgramGuide();
-            Main._topics["psiconfig"] = new HelpPages.AdminSourceScan();
-            Main._topics["overview"] = new HelpPages.Overview();
-            Main._topics["epg"] = new HelpPages.ProgramGuide();
-            Main._topics["archive"] = new HelpPages.Archive();
-            Main._topics["log"] = new HelpPages.Log();
+            Main._topics = {
+                ["parallelrecording"]: new HelpPages.ParallelRecording(),
+                ["epgconfig"]: new HelpPages.AdminProgramGuide(),
+                ["psiconfig"]: new HelpPages.AdminSourceScan(),
+                ["overview"]: new HelpPages.Overview(),
+                ["epg"]: new HelpPages.ProgramGuide(),
+                ["archive"]: new HelpPages.Archive(),
+                ["log"]: new HelpPages.Log()
+            };
         }
 
         private _application = new App.Application(this);
