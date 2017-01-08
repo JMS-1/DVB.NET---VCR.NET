@@ -2,6 +2,15 @@
 
 namespace VCRNETClient.App.NoUi {
 
+    // Informationen zu einzelnen Aspekten der Hilfe.
+    export interface IHelpComponent {
+    }
+
+    // Ermittelt Informationen zu einzelnen Aspekten der Hilfe.
+    export interface IHelpComponentProvider<TComponentType extends IHelpComponent> {
+        [section: string]: TComponentType;
+    }
+
     // Wird von der Oberfläche zur Verfügung gestellt - die Aspekte der Hilfe sind nur dort und nicht in der Anwendungslogik abgebildet.
     export interface IHelpSite extends NoUi.IPageSite {
         // Ermittelt die aktuelle Überschrift.
@@ -11,7 +20,7 @@ namespace VCRNETClient.App.NoUi {
     // Schnittstelle zum Zugriff auf die Hilfeseite.
     export interface IHelpPage extends IPage {
         // Der aktuell ausgewählte Aspekt.
-        readonly section: string;
+        getHelpComponent<TComponentType extends IHelpComponent>(): TComponentType;
     }
 
     // Präsentationsdaten zur Darstellung eines Aspektes der Hilfe.
@@ -38,6 +47,13 @@ namespace VCRNETClient.App.NoUi {
 
             // Das weiß in dieser Implementierung nur die Oberfläche.
             return site && site.getCurrentHelpTitle(this.section);
+        }
+
+        // Der aktuell ausgewählte Aspekt.
+        getHelpComponent<TComponentType extends IHelpComponent>(): TComponentType {
+            var provider = this.application.getHelpComponentProvider<TComponentType>();
+
+            return provider && provider[this.section];
         }
     }
 }

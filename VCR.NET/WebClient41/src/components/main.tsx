@@ -1,15 +1,11 @@
 ﻿/// <reference path="../vcrnet.tsx" />
 
 namespace VCRNETClient {
-    export interface IHelpComponentProvider {
-        getHelpComponent(section: string): HelpComponent;
-    }
-
     interface IMainStatic {
     }
 
     export class Main extends React.Component<IMainStatic, INoDynamicState> implements App.IApplicationSite, App.NoUi.IHelpSite {
-        private static _topics: { [section: string]: HelpComponent };
+        private static _topics: App.NoUi.IHelpComponentProvider<App.NoUi.IHelpComponent>;
 
         private static initStatic(): void {
             Main._topics = {};
@@ -71,7 +67,7 @@ namespace VCRNETClient {
                 return <div className="vcrnet-main">
                     <h1>{page ? page.getTitle() : title}</h1>
                     <Navigation noui={page} />
-                    <View page={page} topics={this} />
+                    <View noui={page} />
                 </div>;
         }
 
@@ -99,14 +95,15 @@ namespace VCRNETClient {
             window.location.href = `#${name}`;
         }
 
-        getHelpComponent(section: string): HelpComponent {
-            return Main._topics[section];
-        }
-
         getCurrentHelpTitle(section: string): string {
-            var topic = this.getHelpComponent(section);
+            var topic = this.getHelpComponentProvider<HelpComponent>()[section];
 
             return topic && topic.getTitle();
         }
+
+        getHelpComponentProvider<TComponentType extends App.NoUi.IHelpComponent>(): App.NoUi.IHelpComponentProvider<TComponentType> {
+            return Main._topics as App.NoUi.IHelpComponentProvider<TComponentType>;
+        }
+
     }
 }

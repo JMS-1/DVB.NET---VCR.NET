@@ -8,12 +8,16 @@
         readonly planPage: NoUi.IPage;
 
         readonly editPage: NoUi.IPage;
+
+        getHelpComponentProvider<TComponentType extends NoUi.IHelpComponent>(): NoUi.IHelpComponentProvider<TComponentType>;
     }
 
     export interface IApplicationSite extends NoUi.IPageSite {
         onFirstStart(): void;
 
         goto(page: string);
+
+        getHelpComponentProvider<TComponentType extends NoUi.IHelpComponent>(): NoUi.IHelpComponentProvider<TComponentType>;
     }
 
     export class Application implements IApplication {
@@ -89,7 +93,7 @@
             var page = this._pageMapper[name] || this.homePage;
 
             // Aktivieren.
-            this.page = page;                
+            this.page = page;
 
             // Zustand wie beim Erstaufruf vorbereiten.
             page.reset(section);
@@ -115,6 +119,10 @@
                 return `${title} ${version.version}`;
             else
                 return title;
+        }
+
+        getHelpComponentProvider<TComponentType extends NoUi.IHelpComponent>(): NoUi.IHelpComponentProvider<TComponentType> {
+            return this._site && this._site.getHelpComponentProvider<TComponentType>();
         }
     }
 }
