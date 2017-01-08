@@ -19,23 +19,23 @@ namespace VCRNETClient.Ui {
                         </tr>
                         <tr>
                             <td>Ende</td>
-                            <td>...</td>
+                            <td>{this.props.noui.getEnd()}</td>
                             <td>&nbsp;</td>
                         </tr>
                         <tr>
                             <td>Dauer</td>
-                            <td>...</td>
+                            <td>{`${this.props.noui.getDuration()} Minute(n)`}</td>
                             <td>&nbsp;</td>
                         </tr>
                         <tr>
                             <td>Startverschiebung</td>
-                            <td>... Minute(n)</td>
-                            <td>&nbsp;</td>
+                            <td>{`${this.props.noui.startShift} Minute(n)`}</td>
+                            <td><EditNumberWithSlider noui={this.props.noui.startSlider} /></td>
                         </tr>
                         <tr>
                             <td>Laufzeitanpassung</td>
-                            <td>... Minute(n)</td>
-                            <td>&nbsp;</td>
+                            <td>{`${this.props.noui.timeDelta} Minute(n)`}</td>
+                            <td><EditNumberWithSlider noui={this.props.noui.durationSlider} /></td>
                         </tr>
                     </tbody>
                 </table>
