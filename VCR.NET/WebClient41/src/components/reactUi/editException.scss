@@ -1,6 +1,8 @@
 ﻿@import "../../../content/vars";
 
 .vcrnet-editexception {
+    @include no-select();
+
     > table {
         width: 100%;
 

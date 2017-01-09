@@ -40,8 +40,8 @@ namespace VCRNETClient.Ui {
                     </tbody>
                 </table>
                 <div>
-                    <button>Ursprüngliche Planung</button>
-                    <button>Nicht aufzeichnen</button>
+                    <button onClick={() => this.props.noui.reset()}>Ursprüngliche Planung</button>
+                    <button onClick={() => this.props.noui.disable()}>Nicht aufzeichnen</button>
                     <button>Einstellungen übernehmen</button>
                 </div>
             </fieldset>;

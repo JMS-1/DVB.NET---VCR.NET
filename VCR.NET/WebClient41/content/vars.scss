@@ -41,3 +41,13 @@ $textHighlightColor: #111111;
 // Zeit eine Warnung an.
 $warning: #FFFF00;
 
+// Benutzerauswahl deaktivieren.
+@mixin no-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
