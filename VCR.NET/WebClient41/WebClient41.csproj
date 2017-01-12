@@ -153,7 +153,7 @@
     <Content Include="FAQ\configuration.html" />
     <Content Include="FAQ\controlcenter.html" />
     <Content Include="ui\images\faq\recover.png" />
-    <Content Include="FAQ\webserver.png" />
+    <Content Include="ui\images\faq\webserver.png" />
     <Content Include="FAQ\websettings.html" />
     <Content Include="FAQ\tsplayer.html" />
     <Content Include="FAQ\tasks.html" />
@@ -169,8 +169,8 @@
     <Content Include="FAQ\dvbnet.html" />
     <Content Include="FAQ\decryption.html" />
     <Content Include="FAQ\currentstream.html" />
-    <Content Include="FAQ\decryptlimit.png" />
-    <Content Include="FAQ\endchange.png" />
+    <Content Include="ui\images\faq\decryptlimit.png" />
+    <Content Include="ui\images\faq\endchange.png" />
     <None Include="src\components\reactUi\editJob.scss" />
     <None Include="src\components\reactUi\editField.scss" />
     <None Include="src\components\reactUi\editText.scss" />
@@ -198,17 +198,17 @@
     <Content Include="ui\images\faq\epgsources.png" />
     <Content Include="ui\images\faq\epgtimes.png" />
     <Content Include="ui\images\faq\exceptions.png" />
-    <Content Include="FAQ\hibernate.png" />
-    <Content Include="FAQ\hibernatevcc.png" />
-    <Content Include="FAQ\jobsandschedules.png" />
-    <Content Include="FAQ\manualsleep.png" />
+    <Content Include="ui\images\faq\hibernate.png" />
+    <Content Include="ui\images\faq\hibernatevcc.png" />
+    <Content Include="ui\images\faq\jobsandschedules.png" />
+    <Content Include="ui\images\faq\manualsleep.png" />
     <Content Include="ui\images\faq\psi.png" />
     <Content Include="ui\images\faq\repeating.png" />
-    <Content Include="FAQ\sendtonetwork.png" />
-    <Content Include="FAQ\sourcelimit.png" />
-    <Content Include="FAQ\sources.png" />
-    <Content Include="FAQ\streamoptions.png" />
-    <Content Include="FAQ\streamprotection.png" />
+    <Content Include="ui\images\faq\sendtonetwork.png" />
+    <Content Include="ui\images\faq\sourcelimit.png" />
+    <Content Include="ui\images\faq\sources.png" />
+    <Content Include="ui\images\faq\streamoptions.png" />
+    <Content Include="ui\images\faq\streamprotection.png" />
     <Content Include="gulpfile.js" />
     <TypeScriptCompile Include="..\typings\index.d.ts">
       <Link>src\index.d.ts</Link>
