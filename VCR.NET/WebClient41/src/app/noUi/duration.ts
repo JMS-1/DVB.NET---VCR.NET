@@ -20,7 +20,7 @@ namespace VCRNETClient.App.NoUi {
 
             var end = new Date(new Date(this.startTime.val()).getTime() + 60000 * this.val());
 
-            this.endTime = new TimeEditor({ time: end.toISOString() }, "time", this._onChanged, this.checkLimit.bind(this));
+            this.endTime = new TimeEditor({ time: end.toISOString() }, "time", this._onChanged, undefined, this.checkLimit.bind(this));
         }
 
         private readonly _onChanged = this.onChanged.bind(this);

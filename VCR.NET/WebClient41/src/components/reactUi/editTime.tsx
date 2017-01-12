@@ -15,8 +15,6 @@ namespace VCRNETClient.Ui {
         private readonly _onChanged = this.onChanged.bind(this);
 
         private onChanged(ev: React.FormEvent): void {
-            ev.preventDefault();
-
             this.props.noui.time((ev.target as HTMLInputElement).value);
         }
     }

@@ -28,8 +28,6 @@ namespace VCRNETClient.Ui {
         private readonly _onChange = this.onChange.bind(this);
 
         private onChange(ev: React.FormEvent): any {
-            ev.preventDefault();
-
             this.props.noui.val((ev.target as HTMLInputElement).value);
         }
     }

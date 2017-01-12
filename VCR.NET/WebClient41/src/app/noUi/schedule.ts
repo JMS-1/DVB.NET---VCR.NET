@@ -60,11 +60,16 @@
         // Ende der Wiederholung
         readonly lastDay: DayEditor;
 
+        // Hilfsmethode zum Arbeiten mit Datumswerten.
+        public static makePureDate(date: Date): Date {
+            return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+        }
+
         // Der kleinste erlaubte Datumswert.
-        static minimumDate: Date = new Date(1963, 8, 29);
+        static readonly minimumDate: Date = new Date(1963, 8, 29);
 
         // Der höchste erlaubte Datumswert.
-        static maximumDate: Date = new Date(2999, 11, 31);
+        static readonly maximumDate: Date = new Date(2999, 11, 31);
 
         // Das Bit für Montag.
         private static flagMonday: number = 0x01;
