@@ -801,12 +801,8 @@ module VCRServer {
         });
     }
 
-    export function updateException(legacyId: string, referenceDay: string, startDelta: number, durationDelta: number): JQueryPromise<any> {
-        return $.ajax({
-            url: restRoot + 'exception/' + legacyId + '?when=' + referenceDay + '&startDelta=' + startDelta + '&durationDelta=' + durationDelta,
-            dataType: 'json',
-            type: 'PUT'
-        });
+    export function updateException(legacyId: string, referenceDay: string, startDelta: number, durationDelta: number): VCRNETClient.App.Thenable<void, XMLHttpRequest> {
+        return doUrlCall<void, void>(`exception/${legacyId}?when=${referenceDay}&startDelta=${startDelta}&durationDelta=${durationDelta}`, 'PUT');
     }
 
     export function triggerTask(taskName: string): JQueryPromise<any> {

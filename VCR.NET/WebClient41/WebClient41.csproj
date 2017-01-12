@@ -152,7 +152,7 @@
     <Content Include="FAQ\customschedule.html" />
     <Content Include="FAQ\configuration.html" />
     <Content Include="FAQ\controlcenter.html" />
-    <Content Include="FAQ\recover.png" />
+    <Content Include="ui\images\faq\recover.png" />
     <Content Include="FAQ\webserver.png" />
     <Content Include="FAQ\websettings.html" />
     <Content Include="FAQ\tsplayer.html" />
@@ -160,7 +160,6 @@
     <Content Include="FAQ\streaming.html" />
     <Content Include="FAQ\sourcelimit.html" />
     <Content Include="FAQ\sourcechooser.html" />
-    <Content Include="FAQ\repeatingschedules.html" />
     <Content Include="FAQ\numberoffiles.html" />
     <Content Include="FAQ\nexus.html" />
     <Content Include="FAQ\jobsandschedules.html" />
@@ -198,13 +197,13 @@
     <Content Include="ui\images\faq\epgonoff.png" />
     <Content Include="ui\images\faq\epgsources.png" />
     <Content Include="ui\images\faq\epgtimes.png" />
-    <Content Include="FAQ\exceptions.png" />
+    <Content Include="ui\images\faq\exceptions.png" />
     <Content Include="FAQ\hibernate.png" />
     <Content Include="FAQ\hibernatevcc.png" />
     <Content Include="FAQ\jobsandschedules.png" />
     <Content Include="FAQ\manualsleep.png" />
     <Content Include="ui\images\faq\psi.png" />
-    <Content Include="FAQ\repeating.png" />
+    <Content Include="ui\images\faq\repeating.png" />
     <Content Include="FAQ\sendtonetwork.png" />
     <Content Include="FAQ\sourcelimit.png" />
     <Content Include="FAQ\sources.png" />
@@ -365,6 +364,7 @@
     <TypeScriptCompile Include="src\pages\faq\helpComponent.ts" />
     <TypeScriptCompile Include="src\pages\faq\home.tsx" />
     <TypeScriptCompile Include="src\pages\faq\log.tsx" />
+    <TypeScriptCompile Include="src\pages\faq\repeatingSchedules.tsx" />
     <TypeScriptCompile Include="src\pages\faq\parallelRecording.tsx" />
     <TypeScriptCompile Include="src\pages\help.tsx" />
     <TypeScriptCompile Include="src\pages\home.tsx" />

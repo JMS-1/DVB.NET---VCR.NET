@@ -130,8 +130,9 @@ namespace VCRNETClient.App.NoUi {
             // Zusätzlich beschränken wir uns auf maximal 500 Einträge
             VCRServer.getPlan(500, endOfTime).then(plan => {
                 var toggleDetail = this.toggleDetail.bind(this);
+                var reload = this.reload.bind(this);
 
-                this._jobs = plan.map(job => enrichPlanEntry(job, toggleDetail, this.application));
+                this._jobs = plan.map(job => enrichPlanEntry(job, toggleDetail, this.application, reload));
 
                 this.fireRefresh();
 

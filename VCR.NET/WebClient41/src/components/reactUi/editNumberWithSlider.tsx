@@ -42,7 +42,6 @@ namespace VCRNETClient.Ui {
 
         // Zur Feinsteuerung setzen wir auch die Pfeiltasten nach links und rechts um.
         private doKey(ev: React.KeyboardEvent): void {
-            console.log(ev.keyCode);
             if (ev.keyCode === 37)
                 this.props.noui.delta(-1);
             else if (ev.keyCode === 39)

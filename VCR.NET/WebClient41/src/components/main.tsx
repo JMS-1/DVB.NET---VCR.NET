@@ -9,6 +9,7 @@ namespace VCRNETClient {
 
         private static initStatic(): void {
             Main._topics = {
+                ["repeatingschedules"]: new HelpPages.RepeatingSchedules(),
                 ["parallelrecording"]: new HelpPages.ParallelRecording(),
                 ["epgconfig"]: new HelpPages.AdminProgramGuide(),
                 ["psiconfig"]: new HelpPages.AdminSourceScan(),

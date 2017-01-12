@@ -31,7 +31,7 @@
     }
 
     // Initialisiert ein View Model für einen Eintrag des Aufzeichnungsplans.
-    export function enrichPlanEntry(entry: VCRServer.PlanActivityContract, toggleDetail: (entry: IPlanEntry, epg: boolean) => void, application: App.Application): IPlanEntry {
+    export function enrichPlanEntry(entry: VCRServer.PlanActivityContract, toggleDetail: (entry: IPlanEntry, epg: boolean) => void, application: App.Application, reload: () => void): IPlanEntry {
         if (!entry)
             return null;
 
@@ -54,7 +54,7 @@
         enriched.duration = duration / 1000;
 
         // Ausnahmen auswerten
-        enriched.exception = enrichPlanException(enriched.exception);
+        enriched.exception = enrichPlanException(enriched.exception, enriched.id, reload);
 
         // Aufzeichungsmodus ermitteln
         if (enriched.station !== 'PSI')

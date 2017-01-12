@@ -1301,7 +1301,7 @@ class PlanException {
 
     // Sendet die aktuellen Daten der Ausnahme an den VCR.NET Recording Service.
     update(planEntryLegacyId: string, onSuccess: () => void): void {
-        VCRServer.updateException(planEntryLegacyId, this.referenceDay, this.startDelta, this.durationDelta).done(onSuccess);
+        VCRServer.updateException(planEntryLegacyId, this.referenceDay, this.startDelta, this.durationDelta).then(onSuccess);
     }
 
     // Bereitet das Formular für Änderungen vor.
