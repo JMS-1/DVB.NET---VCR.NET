@@ -7,7 +7,12 @@
     }
 
     // Verteiler für asynchron ermittelte Daten.
-    export class PromiseHelper<TResponseType, TErrorType> implements Thenable<TResponseType, TErrorType>{
+    export class Promise<TResponseType, TErrorType> implements Thenable<TResponseType, TErrorType>{
+        // Neu erstellen.
+        constructor(executor: (onFulfilled: (value: TResponseType | Thenable<TResponseType, TErrorType> | void) => void, onRejected: (error: TErrorType | Thenable<TResponseType, TErrorType> | void) => void) => void) {
+            executor(value => this.success(value), error => this.failure(error));
+        }
+
         // Wird im Erfolgsfall aufgerufen.
         private _success: ((value: TResponseType) => void)[] = [];
 
@@ -20,13 +25,13 @@
         // Meldet die Ergebnisauswertung an.
         then<TProjectedType>(onFulfilled?: (value: TResponseType) => TProjectedType | Thenable<TProjectedType, TErrorType> | void, onRejected?: (error: TErrorType) => TErrorType | Thenable<TProjectedType, TErrorType> | void): Thenable<TProjectedType, TErrorType> {
             // Nachfolger erstellen.
-            var next = new PromiseHelper<TProjectedType, TErrorType>();
-
-            // Nachfoler einbinden.
-            if (onFulfilled)
-                this._success.push(v => next.success(onFulfilled(v)));
-            if (onRejected)
-                this._failure.push(e => next.failure(onRejected(e)));
+            var next = new Promise<TProjectedType, TErrorType>((success, failure) => {
+                // Nachfoler einbinden.
+                if (onFulfilled)
+                    this._success.push(v => success(onFulfilled(v)));
+                if (onRejected)
+                    this._failure.push(e => failure(onRejected(e)));
+            });
 
             // Eventuell vorhandenes Ergebnis direkt verteilen.
             this.dispatch();
@@ -47,7 +52,7 @@
             else
                 this._success.splice(0).forEach(c => c(this._result.data));
         }
-       
+
         // Prüft, ob eine Weiterleitung verwendet werden soll.
         private getThenable(test: any): Thenable<any, TErrorType> {
             if (!test)
@@ -65,7 +70,7 @@
         }
 
         // Daten melden.
-        success(value: TResponseType | Thenable<TResponseType, TErrorType> | void): void {
+        private success(value: TResponseType | Thenable<TResponseType, TErrorType> | void): void {
             // Das geht immer nur einmal.
             if (this._result)
                 throw "Ein Promise kann nur einmal benachrichtigt werden";
@@ -84,7 +89,7 @@
         }
 
         // Fehler melden.
-        failure(error: TErrorType | Thenable<TResponseType, TErrorType> | void): void {
+        private failure(error: TErrorType | Thenable<TResponseType, TErrorType> | void): void {
             // Das geht immer nur einmal.
             if (this._result)
                 throw "Ein Promise kann nur einmal benachrichtigt werden";

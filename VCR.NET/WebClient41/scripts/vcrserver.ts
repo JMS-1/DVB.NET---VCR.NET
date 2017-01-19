@@ -19,33 +19,31 @@ module VCRServer {
 
     // Führt eine Web Anfrage aus.
     function doUrlCall<TResponseType, TRequestType>(url: string, method: string = 'GET', request?: TRequestType): VCRNETClient.App.Thenable<TResponseType, XMLHttpRequest> {
-        var thenable = new VCRNETClient.App.PromiseHelper<TResponseType, XMLHttpRequest>();
-        var xhr = new XMLHttpRequest();
+        return new VCRNETClient.App.Promise<TResponseType, XMLHttpRequest>((success, failure) => {
+            var xhr = new XMLHttpRequest();
 
-        xhr.addEventListener("load", () => {
-            if (xhr.status < 400)
-                if (xhr.status === 204)
-                    thenable.success(undefined);
+            xhr.addEventListener("load", () => {
+                if (xhr.status < 400)
+                    if (xhr.status === 204)
+                        success(undefined);
+                    else
+                        success(JSON.parse(xhr.responseText));
                 else
-                    thenable.success(JSON.parse(xhr.responseText));
-            else
-                thenable.failure(xhr);
+                    failure(xhr);
+            });
+
+            xhr.open(method, restRoot + url);
+            xhr.setRequestHeader("accept", "application/json");
+
+            if (request === undefined) {
+                xhr.send();
+            }
+            else {
+                xhr.setRequestHeader("content-type", "application/json");
+
+                xhr.send(JSON.stringify(request));
+            }
         });
-
-        xhr.open(method, restRoot + url);
-        xhr.setRequestHeader("accept", "application/json");
-
-        if (request === undefined) {
-            xhr.send();
-        }
-        else {
-            xhr.setRequestHeader("content-type", "application/json");
-
-            xhr.send(JSON.stringify(request));
-        }
-
-
-        return thenable;
     }
 
     // Repräsentiert die Klasse InfoService
@@ -891,7 +889,7 @@ module VCRServer {
     // Verwaltet die Aufzeichnungsverzeichnisse
     export class RecordingDirectoryCache {
         // Die zwischengespeicherten Verzeichnisse
-        private static promise: VCRNETClient.App.PromiseHelper<string[], XMLHttpRequest>;
+        private static promise: VCRNETClient.App.Promise<string[], XMLHttpRequest>;
 
         // Vergisst alles, was wir wissen
         static reset(): void {
@@ -903,13 +901,9 @@ module VCRServer {
             // Erstmalig laden
             if (!RecordingDirectoryCache.promise) {
                 // Verwaltung erzeugen.
-                var promise = new VCRNETClient.App.PromiseHelper<string[], XMLHttpRequest>();
-
-                // Ladevorgang anstossen.
-                getRecordingDirectories().then(data => promise.success(data));
-
-                // Verwaltung benutzen.
-                RecordingDirectoryCache.promise = promise;
+                RecordingDirectoryCache.promise = new VCRNETClient.App.Promise<string[], XMLHttpRequest>((success, failure) => {
+                    getRecordingDirectories().then(data => success(data));
+                });
             }
 
             // Verwaltung melden.
@@ -920,16 +914,16 @@ module VCRServer {
     // Verwaltet die Geräteprofile
     export class ProfileCache {
         // Die zwischengespeicherten Geräte
-        private static promise: VCRNETClient.App.PromiseHelper<ProfileInfoContract[], XMLHttpRequest>;
+        private static promise: VCRNETClient.App.Promise<ProfileInfoContract[], XMLHttpRequest>;
 
         // Ruft die Profile ab
         static getPromise(): VCRNETClient.App.Thenable<ProfileInfoContract[], XMLHttpRequest> {
             // Einmalig erzeugen.
             if (!ProfileCache.promise) {
-                ProfileCache.promise = new VCRNETClient.App.PromiseHelper<ProfileInfoContract[], XMLHttpRequest>();
-
-                // Ladevorgang anstossen.
-                getProfileInfos().then(data => ProfileCache.promise.success(data));
+                ProfileCache.promise = new VCRNETClient.App.Promise<ProfileInfoContract[], XMLHttpRequest>((success, failure) => {
+                    // Ladevorgang anstossen.
+                    getProfileInfos().then(data => success(data));
+                });
             }
 
             // Verwaltung melden.
@@ -998,7 +992,7 @@ module VCRServer {
     // Verwaltet Listen von Quellen zu Geräteprofilen
     export class ProfileSourcesCache {
         // Verwaltet alle Quellen zu allen Geräten als Nachschlageliste
-        private static promises: { [device: string]: VCRNETClient.App.PromiseHelper<SourceEntry[], XMLHttpRequest> } = {};
+        private static promises: { [device: string]: VCRNETClient.App.Promise<SourceEntry[], XMLHttpRequest> } = {};
 
         // Fordert die Quellen eines Geräteprofils an.
         static getPromise(profileName: string): VCRNETClient.App.Thenable<SourceEntry[], XMLHttpRequest> {
@@ -1006,13 +1000,10 @@ module VCRServer {
             var promise = ProfileSourcesCache.promises[profileName];
             if (!promise) {
                 // Verwaltung erzeugen.
-                promise = new VCRNETClient.App.PromiseHelper<SourceEntry[], XMLHttpRequest>();
-
-                // Ladevorgang anstossen.
-                getProfileSources(profileName).then(data => promise.success($.map(data, rawData => new SourceEntry(rawData))));
-
-                // Für Folgezugriffe merken.
-                ProfileSourcesCache.promises[profileName] = promise;
+                ProfileSourcesCache.promises[profileName] = promise = new VCRNETClient.App.Promise<SourceEntry[], XMLHttpRequest>((success, failure) => {
+                    // Ladevorgang anstossen.
+                    getProfileSources(profileName).then(data => success($.map(data, rawData => new SourceEntry(rawData))));
+                });
             }
 
             // Verwaltung melden.
