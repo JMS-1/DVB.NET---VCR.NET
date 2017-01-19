@@ -1,7 +1,13 @@
 ﻿namespace VCRNETClient.App.NoUi {
 
     // Erweiterte Schnittstelle zur Pflege einer einzelnen Ausnahmeregel.
-    export interface IPlanException extends VCRServer.PlanExceptionContract, INoUiWithSite {
+    export interface IPlanException extends INoUiWithSite {
+        // Die aktuelle Verschiebung des Startzeitpunktes in Minuten
+        readonly startShift: number;
+
+        // Die aktuelle Veränderung der Laufzeit in Minuten
+        readonly timeDelta: number;
+
         // Der Regler zur Einstellung der Startzeitverschiebung.
         readonly startSlider: INumberSlider;
 
@@ -30,67 +36,101 @@
         update(): void;
     }
 
-    // Interne Schnittstelle zur Pflege der nach außen nur lesbaren Felder-.
-    interface IPlanExceptionEx extends IPlanException {
+    // Erweiterte Schnittstelle zur Pflege einer einzelnen Ausnahmeregel.
+    export class PlanException implements IPlanException {
+        constructor(exception: VCRServer.PlanExceptionContract, private _entryId: string, private _reload: () => void) {
+            this.originalDuration = exception.originalDuration;
+            this.referenceDay = exception.referenceDay;
+            this.startShift = exception.startShift;
+            this.timeDelta = exception.timeDelta;
+
+            // Rohdaten wandeln.
+            this.exceptionMode = ((exception.startShift !== 0) || (exception.timeDelta !== 0)) ? "exceptOn" : "exceptOff";
+            this.referenceDayDisplay = parseInt(exception.referenceDayDisplay as string, 10);
+            this.originalStart = new Date(exception.originalStart as string);
+
+            // Editierfunktionen anbieten.
+            this.startSlider = new NumberSlider(this, "startShift", () => this.refresh(), -480, +480);
+            this.durationSlider = new NumberSlider(this, "timeDelta", () => this.refresh(), -this.originalDuration, +480);
+        }
+
+        // Der zugehörige Tag als interner Schlüssel, der unverändert zwischen Client und Service ausgetauscht wird
+        referenceDay: string;
+
+        // Der zugehörige Tag repräsentiert Date.getTime() Repräsentation
+        referenceDayDisplay: number;
+
+        // Die aktuelle Verschiebung des Startzeitpunktes in Minuten
+        startShift: number;
+
+        // Die aktuelle Veränderung der Laufzeit in Minuten
+        timeDelta: number;
+
+        // Der ursprüngliche Startzeitpunkt in ISO Notation
+        originalStart: Date;
+
+        // Die ursprüngliche Dauer in Minuten
+        originalDuration: number;
+
         // Der Regler zur Einstellung der Startzeitverschiebung.
-        startSlider: NumberSlider;
+        readonly startSlider: NumberSlider;
 
         // Der Regler zur Einstellung der Laufzeitveränderung.
-        durationSlider: NumberSlider;
+        readonly durationSlider: NumberSlider;
 
         // Die Darstellung für den Zustand der Ausnahme.
-        exceptionMode: string;
-    }
+        readonly exceptionMode: string;
 
-    // Bereitet die Rohdaten zur Pflege im Aufzeichnungsplan auf.
-    export function enrichPlanException(exception: VCRServer.PlanExceptionContract, entryId: string, reload: () => void): IPlanException {
-        // Keine sich wiederholende Aufnahme.
-        if (!exception)
-            return null;
+        // Meldet den Startzeitpunkt als Text.
+        private start(): Date {
+            return new Date((this.originalStart as Date).getTime() + 60 * this.startShift * 1000);
+        }
 
-        // Interne Schnittstelle verwenden.
-        var enriched = <IPlanExceptionEx>exception;
+        getStart(): string {
+            return JMSLib.DateFormatter.getStartTime(this.start());
+        }
 
-        // Rohdaten wandeln.
-        enriched.exceptionMode = ((enriched.startShift !== 0) || (enriched.timeDelta !== 0)) ? "exceptOn" : "exceptOff";
-        enriched.referenceDayDisplay = parseInt(enriched.referenceDayDisplay as string, 10);
-        enriched.originalStart = new Date(enriched.originalStart as string);
+        // Meldet den Endzeitpunkt als Text.
+        private end(): Date {
+            return new Date(this.start().getTime() + 60 * (this.originalDuration + this.timeDelta) * 1000);
+        }
+
+        getEnd(): string {
+            return JMSLib.DateFormatter.getEndTime(this.end());
+        }
+
+        // Meldet die aktuelle Dauer.
+        getDuration(): number {
+            return this.originalDuration + this.timeDelta;
+        }
+
+        // Verwendet die ursprüngliche Aufzeichnungsdaten.
+        reset(): void {
+            this.startSlider.sync(0);
+            this.durationSlider.sync(0);
+        }
+
+        // Deaktiviert die Aufzeichnung vollständig.
+        disable(): void {
+            this.startSlider.sync(0);
+            this.durationSlider.sync(-this.originalDuration);
+        }
+
+        // Aktualisiert die Aufzeichnung.
+        update(): void {
+            VCRServer.updateException(this._entryId, this.referenceDay, this.startShift, this.timeDelta).then(this._reload);
+        }
 
         // Beachrichtigungen einrichten.
-        var site: INoUiSite;
+        private m_site: INoUiSite;
 
-        enriched.setSite = newSite => site = newSite;
-
-        function refresh(): void {
-            if (site)
-                site.refreshUi();
+        setSite(newSite: INoUiSite): void {
+            this.m_site = newSite;
         }
 
-        // Editierfunktionen anbieten.
-        var startSlider = new NumberSlider(enriched, "startShift", refresh, -480, +480);
-        var durationSlider = new NumberSlider(enriched, "timeDelta", refresh, -enriched.originalDuration, +480);
-
-        enriched.startSlider = startSlider;
-        enriched.durationSlider = durationSlider;
-
-        // Methoden ergänzen.
-        function start(): Date {
-            return new Date((enriched.originalStart as Date).getTime() + 60 * enriched.startShift * 1000);
+        refresh(): void {
+            if (this.m_site)
+                this.m_site.refreshUi();
         }
-
-        function end(): Date {
-            return new Date(start().getTime() + 60 * (enriched.originalDuration + enriched.timeDelta) * 1000);
-        }
-
-        enriched.getEnd = () => JMSLib.DateFormatter.getEndTime(end());
-        enriched.getStart = () => JMSLib.DateFormatter.getStartTime(start());
-        enriched.getDuration = () => enriched.originalDuration + enriched.timeDelta;
-
-        enriched.reset = () => { startSlider.sync(0); durationSlider.sync(0); };
-        enriched.disable = () => { startSlider.sync(0); durationSlider.sync(-enriched.originalDuration); };
-        enriched.update = () => VCRServer.updateException(entryId, enriched.referenceDay, enriched.startShift, enriched.timeDelta).then(reload);
-
-        // Erweitertes Model melden.
-        return enriched;
     }
 }

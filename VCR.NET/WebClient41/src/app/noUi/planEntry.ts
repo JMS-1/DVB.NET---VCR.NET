@@ -15,7 +15,7 @@
         displayEnd: string;
 
         // Die zugehörige Ausnahmeregel.
-        exception: IPlanException;
+        planException: IPlanException;
 
         // Zeigt die Programmzeitschrift an.
         showEpg: boolean;
@@ -54,7 +54,7 @@
         enriched.duration = duration / 1000;
 
         // Ausnahmen auswerten
-        enriched.exception = enrichPlanException(enriched.exception, enriched.id, reload);
+        enriched.planException = enriched.exception && new PlanException(enriched.exception, enriched.id, reload);
 
         // Aufzeichungsmodus ermitteln
         if (enriched.station !== 'PSI')
