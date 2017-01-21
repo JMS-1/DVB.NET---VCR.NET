@@ -18,7 +18,7 @@ namespace VCRNETClient.App.NoUi {
         }
 
         // Meldet die Überschrift der Startseite.
-        getTitle(): string {
+        get title(): string {
             // Der Titel wird dem aktuellen Kenntnisstand angepasst.
             var version = this.application.version;
             var title = this.application.getTitle();

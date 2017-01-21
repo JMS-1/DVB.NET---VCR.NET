@@ -9,7 +9,7 @@
         readonly route: string;
 
         // Die Überschrift der Seite.
-        getTitle(): string;
+        readonly title: string;
 
         // Der Navigationsbereich.
         readonly navigation: {
@@ -68,7 +68,7 @@
         abstract reset(section: string): void;
 
         // Meldet die Überschrift der Seite.
-        abstract getTitle(): string;
+        abstract get title(): string;
 
         // Initialisiert den Navigationsbereich.
         navigation = {

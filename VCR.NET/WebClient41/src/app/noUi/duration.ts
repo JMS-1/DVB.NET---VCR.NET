@@ -26,12 +26,12 @@ namespace VCRNETClient.App.NoUi {
         private readonly _onChanged = this.onChanged.bind(this);
 
         private onChanged(): void {
-            var start = DateFormatter.parseTime(this.startTime.time());
+            var start = DateFormatter.parseTime(this.startTime.time);
 
             if (start === null)
                 return;
 
-            var end = DateFormatter.parseTime(this.endTime.time());
+            var end = DateFormatter.parseTime(this.endTime.time);
 
             if (end === null)
                 return;

@@ -5,17 +5,17 @@ namespace VCRNETClient.App.NoUi {
     // Schnitstelle zur Pflege der Senderauswahl.
     export interface IChannelSelector extends IValidatableValue<string>, INoUiWithSite {
         // Die Vorauswahl der Quellen vor allem nach dem ersten Zeichen des Namens.
-        section(newSection?: string): string;
+        section: string;
 
         readonly sections: string[];
 
         // Die Vorauswahl der Quellen über die Art (Fernsehen oder Radio).
-        type(newType?: string): string;
+        type: string;
 
         readonly types: string[];
 
         // Die Vorauswahl der Quellen über die Verschlüsselung.
-        encryption(newEncryption?: string): string;
+        encryption: string;
 
         readonly encryptions: string[];
 
@@ -61,18 +61,17 @@ namespace VCRNETClient.App.NoUi {
         encryptions = ChannelEditor._encryptions;
 
         // Meldet oder ändert die aktuelle Auswahl der Verschlüsselung.
-        encryption(newEncryption?: string): string {
-            var oldEncryption = this._encryption;
+        get encryption(): string {
+            return this._encryption;
+        }
 
-            if (newEncryption !== undefined)
-                if (newEncryption !== oldEncryption)
-                    if (this.encryptions.indexOf(newEncryption) >= 0) {
-                        this._encryption = newEncryption;
+        set encryption(newEncryption: string) {
+            if (newEncryption !== this._encryption)
+                if (this.encryptions.indexOf(newEncryption) >= 0) {
+                    this._encryption = newEncryption;
 
-                        this.refreshFilter();
-                    }
-
-            return oldEncryption;
+                    this.refreshFilter();
+                }
         }
 
         // Die Auswahlmöglichkeiten zur Art der Quelle.
@@ -107,18 +106,17 @@ namespace VCRNETClient.App.NoUi {
         types = ChannelEditor._types;
 
         // Meldet oder ändert die Auswahl der Art der Quellen.
-        type(newType?: string): string {
-            var oldType = this._type;
+        get type(): string {
+            return this._type;
+        }
 
-            if (newType !== undefined)
-                if (newType !== oldType)
-                    if (this.types.indexOf(newType) >= 0) {
-                        this._type = newType;
+        set type(newType: string) {
+            if (newType !== this._type)
+                if (this.types.indexOf(newType) >= 0) {
+                    this._type = newType;
 
-                        this.refreshFilter();
-                    }
-
-            return oldType;
+                    this.refreshFilter();
+                }
         }
 
         // Alle möglichen Einschränkungen auf die Namen der Quellen.
@@ -181,22 +179,21 @@ namespace VCRNETClient.App.NoUi {
         sections = ChannelEditor._sections;
 
         // Meldet oder ändert die Auswahl für die Einschränkung auf den Namen der Quellen.
-        section(newSection?: string): string {
-            var oldSection = this._section;
+        get section(): string {
+            return this._section;
+        }
 
-            if (newSection !== undefined)
-                if (newSection !== oldSection) {
-                    var sectionIndex = this.sections.indexOf(newSection);
+        set section(newSection: string) {
+            if (newSection !== this._section) {
+                var sectionIndex = this.sections.indexOf(newSection);
 
-                    if (sectionIndex >= 0) {
-                        this.showFilter = (sectionIndex > 0);
-                        this._section = newSection;
+                if (sectionIndex >= 0) {
+                    this.showFilter = (sectionIndex > 0);
+                    this._section = newSection;
 
-                        this.refreshFilter();
-                    }
+                    this.refreshFilter();
                 }
-
-            return oldSection;
+            }
         }
 
         // Alle aktuell bezüglich aller Einschränkungen relevanten Quellen.

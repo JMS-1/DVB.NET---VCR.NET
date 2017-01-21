@@ -66,7 +66,7 @@ namespace VCRNETClient {
                 </div>;
             else
                 return <div className="vcrnet-main">
-                    <h1>{page ? page.getTitle() : title}</h1>
+                    <h1>{page ? page.title : title}</h1>
                     <Navigation noui={page} />
                     <View noui={page} />
                 </div>;

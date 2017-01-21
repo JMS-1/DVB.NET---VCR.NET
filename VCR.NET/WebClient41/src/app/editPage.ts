@@ -138,7 +138,7 @@ namespace VCRNETClient.App {
             });
         }
 
-        getTitle(): string {
+        get title(): string {
             return `Aufzeichnung bearbeiten`;
         }
 

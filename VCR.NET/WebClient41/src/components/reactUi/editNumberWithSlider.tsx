@@ -9,14 +9,14 @@ namespace VCRNETClient.Ui {
             return <div className="vcrnet-slider">
                 <div></div>
                 <div>
-                    <div className={this.props.noui.isDragging() ? "vcrnet-slider-selected" : undefined}
-                        style={{ left: `${100 * this.props.noui.position()}%` }}>
+                    <div className={this.props.noui.isDragging ? "vcrnet-slider-selected" : undefined}
+                        style={{ left: `${100 * this.props.noui.position}%` }}>
                     </div>
                 </div>
                 <div 
-                    onMouseDown={ev => this.props.noui.isDragging(ev.buttons === 1)}
+                    onMouseDown={ev => this.props.noui.isDragging = (ev.buttons === 1)}
                     onMouseMove={ev => this.doMove(ev)}
-                    onMouseUp={ev => this.props.noui.isDragging(false)} onMouseLeave={ev => this.props.noui.isDragging(false)}
+                    onMouseUp={ev => this.props.noui.isDragging = false} onMouseLeave={ev => this.props.noui.isDragging = false}
                     onKeyUp={ev => this.doKey(ev)} tabIndex={0}
                     draggable={false} onDragStart={() => false}>
                 </div>
@@ -26,7 +26,7 @@ namespace VCRNETClient.Ui {
         // Überwacht Bewegungen mit der Maus und gibe diese an die Anwendungslogik weiter.
         private doMove(ev: React.MouseEvent): void {
             // Zurzeit sind Änderungen nicht gestattet.
-            if (!this.props.noui.isDragging())
+            if (!this.props.noui.isDragging)
                 return;
 
             // Der äußere Bereich des Reglers.
@@ -37,7 +37,7 @@ namespace VCRNETClient.Ui {
             var relX = absX - bounds.left;
             
             // Als relativen Wert zwischen 0 und 1 an die Anwendungslogik melden.
-            this.props.noui.position(relX / bounds.width);
+            this.props.noui.position = relX / bounds.width;
         }
 
         // Zur Feinsteuerung setzen wir auch die Pfeiltasten nach links und rechts um.

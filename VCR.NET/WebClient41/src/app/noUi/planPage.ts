@@ -183,7 +183,7 @@ namespace VCRNETClient.App.NoUi {
         }
 
         // Meldet die Überschrift der Seite.
-        getTitle(): string {
+        get title(): string {
             var days = this.application.profile.planDays;
 
             return `Geplante Aufzeichnungen für ${days} Tag${(days === 1) ? "" : "e"}`;

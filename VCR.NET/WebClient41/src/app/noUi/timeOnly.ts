@@ -3,9 +3,9 @@
 namespace VCRNETClient.App.NoUi {
 
     export interface ITimeEditor extends INoUiWithSite {
-        time(newTime?: string): string;
+        time: string;
 
-        error(): string;
+        readonly error: string;
     }
 
     export class TimeEditor extends ValueHolderWithSite<string> implements ITimeEditor {
@@ -19,31 +19,30 @@ namespace VCRNETClient.App.NoUi {
             super(data, prop, onChange, name);
         }
 
-        time(newTime?: string): string {
-            var oldValue = this._time;
-
-            if (newTime !== undefined)
-                if (newTime !== oldValue) {
-                    this._time = newTime;
-
-                    var parsed = DateFormatter.parseTime(newTime);
-
-                    if (parsed !== null) {
-                        parsed /= 60000;
-
-                        var oldDay = new Date(this.value);
-                        var newDate = new Date(oldDay.getFullYear(), oldDay.getMonth(), oldDay.getDate(), Math.floor(parsed / 60), parsed % 60);
-
-                        this.value = newDate.toISOString();
-                    }
-
-                    this.refresh();
-                }
-
-            return oldValue;
+        get time(): string {
+            return this._time;
         }
 
-        error(): string {
+        set time(newTime: string) {
+            if (newTime !== this._time) {
+                this._time = newTime;
+
+                var parsed = DateFormatter.parseTime(newTime);
+
+                if (parsed !== null) {
+                    parsed /= 60000;
+
+                    var oldDay = new Date(this.value);
+                    var newDate = new Date(oldDay.getFullYear(), oldDay.getMonth(), oldDay.getDate(), Math.floor(parsed / 60), parsed % 60);
+
+                    this.value = newDate.toISOString();
+                }
+
+                this.refresh();
+            }
+        }
+
+        get error(): string {
             this.validate();
 
             return this.message;
