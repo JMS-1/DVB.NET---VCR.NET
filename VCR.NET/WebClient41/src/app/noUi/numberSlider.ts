@@ -44,9 +44,14 @@ namespace VCRNETClient.App.NoUi {
             super.setSite(newSite);
 
             // Zurück auf den Anfang.
-            this.sync(this._initial);
+            this.reset();
 
             this._moving = false;
+        }
+
+        // Grundeinstellungen vornehmen.
+        reset(): void {
+            this.sync(this._initial);
         }
 
         // Synchronisiert den Regeler mit dem aktuellen Wert.

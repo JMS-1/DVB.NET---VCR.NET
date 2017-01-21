@@ -170,10 +170,10 @@ module VCRServer {
     // Beschreibt einen Eintrag im Aufzeichnungsplan.
     export interface PlanActivityContract {
         // Beginn der Aufzeichnung im ISO Format.
-        start?: string | Date;
+        start?: string;
 
         // Dauer der Aufzeichung in Sekunden.
-        duration: string | number;
+        duration: string;
 
         // Name der Aufzeichnung.
         name: string;

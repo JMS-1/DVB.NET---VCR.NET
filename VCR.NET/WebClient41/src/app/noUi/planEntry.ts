@@ -1,78 +1,141 @@
 ﻿namespace VCRNETClient.App.NoUi {
 
     // Erweiterte Schnittstelle (View Model) zur Anzeige eines Eintrags des Aufzeichnunsplans.
-    export interface IPlanEntry extends VCRServer.PlanActivityContract {
+    export interface IPlanEntry {
         // Ein Kürzel für die Qualität der Aufzeichnung, etwa ob dieser verspätet beginnt.
-        mode: string;
+        readonly mode: string;
 
-        // Der Zeitpunkt, an dem die Aufzeichnung enden wird.
-        end: Date;
-
-        // Der Startzeitpunkt formatiert für die Darstellung.
-        displayStart: string;
-
-        // Der Endzeitpunkt, formatiert für die Darstellung - es werden nur Stunden und Minuten angezeigt.
-        displayEnd: string;
+        // Anwendungsverweis zum Ändern dieses Eintrags.
+        readonly editLink: string;
 
         // Die zugehörige Ausnahmeregel.
-        planException: IPlanException;
+        readonly exception: IPlanException;
+
+        // Das verwendete Gerät.
+        readonly device: string;
+
+        // Der zugehörige Sender.
+        readonly station: string;
+
+        // Der Startzeitpunkt formatiert für die Darstellung.
+        readonly displayStart: string;
+
+        // Der Endzeitpunkt, formatiert für die Darstellung - es werden nur Stunden und Minuten angezeigt.
+        readonly displayEnd: string;
+
+        // Die Dauer der Aufzeichnung.
+        readonly duration: number;
+
+        // Der Name der Aufzeichnung.
+        readonly name: string;
 
         // Zeigt die Programmzeitschrift an.
-        showEpg: boolean;
+        readonly showEpg: boolean;
 
         // Zeigt die Pflege der Ausnahmeregel an.
-        showException: boolean;
+        readonly showException: boolean;
 
         // Schaltet die Detailanzeige um.
         toggleDetail(epg: boolean): void;
-
-        // Anwendungsverweis zum Ändern dieses Eintrags.
-        editLink: string;
     }
 
-    // Initialisiert ein View Model für einen Eintrag des Aufzeichnungsplans.
-    export function enrichPlanEntry(entry: VCRServer.PlanActivityContract, toggleDetail: (entry: IPlanEntry, epg: boolean) => void, application: App.Application, reload: () => void): IPlanEntry {
-        if (!entry)
-            return null;
+    export class PlanEntry implements IPlanEntry {
+        constructor(private _entry: VCRServer.PlanActivityContract, private _toggleDetail: (entry: PlanEntry, epg: boolean) => void, application: App.Application, reload: () => void) {
+            // Zeiten umrechnen
+            this.duration = parseInt(_entry.duration);
+            this.start = new Date(_entry.start);
+            this.end = new Date(this.start.getTime() + 1000 * this.duration);
 
-        var enriched = <IPlanEntry>entry;
+            // Ausnahmen auswerten
+            if (_entry.exception)
+                this.exception = new PlanException(_entry.exception, _entry.id, reload);
+        }
 
-        // Defaultwerte einsetzen
-        if (enriched.station == null)
-            enriched.station = '(unbekannt)';
-        if (enriched.device == null)
-            enriched.device = '';
+        // Zeigt die Programmzeitschrift an.
+        private _showEpg = false;
 
-        // Zeiten umrechnen
-        var duration = 1000 * (enriched.duration as any);
-        var start = new Date(enriched.start);
-        var end = new Date(start.getTime() + duration);
+        get showEpg(): boolean {
+            return this._showEpg;
+        }
 
-        // Daten aus der Rohdarstellung in das Modell kopieren
-        enriched.displayStart = DateFormatter.getStartTime(enriched.start = start);
-        enriched.displayEnd = DateFormatter.getEndTime(enriched.end = end);
-        enriched.duration = duration / 1000;
+        set showEpg(newValue: boolean) {
+            this._showEpg = newValue;
+        }
 
-        // Ausnahmen auswerten
-        enriched.planException = enriched.exception && new PlanException(enriched.exception, enriched.id, reload);
+        // Zeigt die Pflege der Ausnahmeregel an.
+        private _showException = false;
 
-        // Aufzeichungsmodus ermitteln
-        if (enriched.station !== 'PSI')
-            if (enriched.station !== 'EPG')
-                if (enriched.lost)
-                    enriched.mode = 'lost';
-                else if (enriched.late)
-                    enriched.mode = 'late';
-                else
-                    enriched.mode = 'intime';
+        get showException(): boolean {
+            return this._showException;
+        }
 
-        // Verweise.
-        if (enriched.mode)
-            enriched.editLink = `edit;id=${enriched.id}`;
+        set showException(newValue: boolean) {
+            if (this.exception)
+                this.exception.reset();
 
-        // Methoden.
-        enriched.toggleDetail = epg => toggleDetail(enriched, epg);
+            this._showException = newValue;
+        }
 
-        return enriched;
+        // Die Dauer der Aufzeichnung.
+        readonly duration: number;
+
+        // Der Zeitpunkt, an dem die Aufzeichnung beginnen wird.
+        readonly start: Date;
+
+        // Der Zeitpunkt, an dem die Aufzeichnung enden wird.
+        readonly end: Date;
+
+        // Der Name der Aufzeichnung.
+        get name(): string {
+            return this._entry.name;
+        }
+
+        // Der Startzeitpunkt formatiert für die Darstellung.
+        get displayStart(): string {
+            return DateFormatter.getStartTime(this.start);
+        }
+
+        // Der Endzeitpunkt, formatiert für die Darstellung - es werden nur Stunden und Minuten angezeigt.
+        get displayEnd(): string {
+            return DateFormatter.getEndTime(this.end);
+        }
+
+        // Die zugehörige Ausnahmeregel.
+        readonly exception: PlanException;
+
+        // Das verwendete Gerät.
+        get device(): string {
+            return this._entry.device || '';
+        }
+
+        // Der zugehörige Sender.
+        get station(): string {
+            return this._entry.station || '(unbekannt)';
+        }
+
+        // Ein Kürzel für die Qualität der Aufzeichnung, etwa ob dieser verspätet beginnt.
+        get mode(): string {
+            if (this._entry.station === 'PSI')
+                return undefined;
+            if (this._entry.station === 'EPG')
+                return undefined;
+
+            if (this._entry.lost)
+                return 'lost';
+            else if (this._entry.late)
+                return 'late';
+            else
+                return 'intime';
+        }
+
+        // Anwendungsverweis zum Ändern dieses Eintrags.
+        get editLink(): string {
+            return this.mode && `edit;id=${this._entry.id}`;
+        }
+
+        // Schaltet die Detailanzeige um.
+        toggleDetail(epg: boolean): void {
+            return this._toggleDetail(this, epg);
+        }
     }
 }

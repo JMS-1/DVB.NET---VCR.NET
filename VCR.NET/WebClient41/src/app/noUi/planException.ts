@@ -21,10 +21,10 @@
         readonly currentDuration: number;
 
         // Verwendet die ursprüngliche Aufzeichnungsdaten.
-        reset(): void;
+        setToOriginal(): void;
 
         // Deaktiviert die Aufzeichnung vollständig.
-        disable(): void;
+        setToDisable(): void;
 
         // Aktualisiert die Aufzeichnung.
         update(): void;
@@ -75,14 +75,20 @@
             return this._exception.originalDuration + this._exception.timeDelta;
         }
 
-        // Verwendet die ursprüngliche Aufzeichnungsdaten.
+        // Setzt alles auf den Eingangszustand zurück.
         reset(): void {
+            this.startSlider.reset()
+            this.durationSlider.reset();
+        }
+
+        // Verwendet die ursprüngliche Aufzeichnungsdaten.
+        setToOriginal(): void {
             this.startSlider.sync(0);
             this.durationSlider.sync(0);
         }
 
         // Deaktiviert die Aufzeichnung vollständig.
-        disable(): void {
+        setToDisable(): void {
             this.startSlider.sync(0);
             this.durationSlider.sync(-this._exception.originalDuration);
         }

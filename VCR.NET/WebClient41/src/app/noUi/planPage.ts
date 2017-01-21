@@ -35,7 +35,7 @@ namespace VCRNETClient.App.NoUi {
     // Steuert die Anzeige des Aufzeichnungsplan.
     export class PlanPage extends Page<INoUiSite> {
         // Alle aktuell bekannten Aufträge
-        private _jobs: IPlanEntry[] = [];
+        private _jobs: PlanEntry[] = [];
 
         // Ermittelt die aktuell anzuzeigenden Aufräge.
         getJobs(): IPlanEntry[] {
@@ -104,7 +104,7 @@ namespace VCRNETClient.App.NoUi {
         }
 
         // Prüft, ob ein Auftrag den aktuellen Einschränkungen entspricht.
-        private filterJob(job: IPlanEntry, startIndex: number): boolean {
+        private filterJob(job: PlanEntry, startIndex: number): boolean {
             // Datumsfilter.
             var startDay = this._startFilter[startIndex].date;
             var endDay = this._startFilter[startIndex + 1].date;
@@ -132,7 +132,7 @@ namespace VCRNETClient.App.NoUi {
                 var toggleDetail = this.toggleDetail.bind(this);
                 var reload = this.reload.bind(this);
 
-                this._jobs = plan.map(job => enrichPlanEntry(job, toggleDetail, this.application, reload));
+                this._jobs = plan.map(job => new PlanEntry(job, toggleDetail, this.application, reload));
 
                 this.fireRefresh();
 
@@ -141,7 +141,7 @@ namespace VCRNETClient.App.NoUi {
         }
 
         // Schaltet die Detailanzeige für einen Auftrag um.
-        private toggleDetail(job: IPlanEntry, epg: boolean): void {
+        private toggleDetail(job: PlanEntry, epg: boolean): void {
             // Anzeige einfach nur ausblenden.
             if (job.showEpg && epg)
                 job.showEpg = false;

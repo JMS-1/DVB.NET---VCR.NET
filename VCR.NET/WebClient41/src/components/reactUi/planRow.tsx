@@ -10,7 +10,7 @@ namespace VCRNETClient.Ui {
                 <td>{this.props.noui.station}</td>
                 <td className="vcrnet-planrow-name">
                     <div>{this.props.noui.editLink ? <InternalLink view={this.props.noui.editLink}>{this.props.noui.name}</InternalLink> : <span>{this.props.noui.name}</span>}</div>
-                    <div>{this.props.noui.planException ? <a href="javascript:void(0)" onClick={() => this.props.noui.toggleDetail(false)}><Pictogram name={this.props.noui.planException.exceptionMode} /></a> : null}</div>
+                    <div>{this.props.noui.exception ? <a href="javascript:void(0)" onClick={() => this.props.noui.toggleDetail(false)}><Pictogram name={this.props.noui.exception.exceptionMode} /></a> : null}</div>
                 </td>
                 <td>{this.props.noui.device}</td>
             </tr>;
