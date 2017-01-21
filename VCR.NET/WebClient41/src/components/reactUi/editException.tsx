@@ -18,27 +18,27 @@ namespace VCRNETClient.Ui {
                     <tbody>
                         <tr>
                             <td>Start</td>
-                            <td>{this.props.noui.getStart()}</td>
+                            <td>{this.props.noui.currentStart}</td>
                             <td>&nbsp;</td>
                         </tr>
                         <tr>
                             <td>Ende</td>
-                            <td>{this.props.noui.getEnd()}</td>
+                            <td>{this.props.noui.currentEnd}</td>
                             <td>&nbsp;</td>
                         </tr>
                         <tr>
                             <td>Dauer</td>
-                            <td>{`${this.props.noui.getDuration()} Minute${(this.props.noui.getDuration() === 1) ? '' : 'n'}`}</td>
+                            <td>{`${this.props.noui.currentDuration} Minute${(this.props.noui.currentDuration === 1) ? '' : 'n'}`}</td>
                             <td>&nbsp;</td>
                         </tr>
                         <tr>
                             <td>Startverschiebung</td>
-                            <td>{`${this.props.noui.startShift} Minute${(Math.abs(this.props.noui.startShift) === 1) ? '' : 'n'}`}</td>
+                            <td>{`${this.props.noui.startSlider.val()} Minute${(Math.abs(this.props.noui.startSlider.val()) === 1) ? '' : 'n'}`}</td>
                             <td><EditNumberWithSlider noui={this.props.noui.startSlider} /></td>
                         </tr>
                         <tr>
                             <td>Laufzeitanpassung</td>
-                            <td>{`${this.props.noui.timeDelta} Minute${(Math.abs(this.props.noui.timeDelta) === 1) ? '' : 'n'}`}</td>
+                            <td>{`${this.props.noui.durationSlider.val()} Minute${(Math.abs(this.props.noui.durationSlider.val()) === 1) ? '' : 'n'}`}</td>
                             <td><EditNumberWithSlider noui={this.props.noui.durationSlider} /></td>
                         </tr>
                     </tbody>

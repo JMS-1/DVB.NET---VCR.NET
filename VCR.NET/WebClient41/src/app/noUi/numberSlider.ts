@@ -12,6 +12,9 @@ namespace VCRNETClient.App.NoUi {
 
         // Erlaubt eine Feineinstellung des zugrundeliegenden Wertes.
         delta(delta: number): void;
+
+        // Meldet den aktuellen Wert.
+        val(): number;
     }
 
     // Steuerung für einen Schieberegeler für die Auswahl eines Wertes.

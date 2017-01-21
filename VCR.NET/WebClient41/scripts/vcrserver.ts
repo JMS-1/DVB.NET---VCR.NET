@@ -287,7 +287,7 @@ module VCRServer {
         referenceDay: string;
 
         // Der zugehörige Tag repräsentiert Date.getTime() Repräsentation
-        referenceDayDisplay: string | number;
+        referenceDayDisplay: string;
 
         // Die aktuelle Verschiebung des Startzeitpunktes in Minuten
         startShift: number;
@@ -296,7 +296,7 @@ module VCRServer {
         timeDelta: number;
 
         // Der ursprüngliche Startzeitpunkt in ISO Notation
-        originalStart: string | Date;
+        originalStart: string;
 
         // Die ursprüngliche Dauer in Minuten
         originalDuration: number;
