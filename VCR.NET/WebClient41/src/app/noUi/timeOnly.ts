@@ -12,7 +12,7 @@ namespace VCRNETClient.App.NoUi {
         private _time: string;
 
         protected onSiteChanged(): void {
-            this._time = DateFormatter.getEndTime(new Date(this.val()));
+            this._time = DateFormatter.getEndTime(new Date(this.value));
         }
 
         constructor(data: any, prop: string, onChange: () => void, name?: string, private _externalValidator?: () => string) {
@@ -31,10 +31,10 @@ namespace VCRNETClient.App.NoUi {
                     if (parsed !== null) {
                         parsed /= 60000;
 
-                        var oldDay = new Date(this.val());
+                        var oldDay = new Date(this.value);
                         var newDate = new Date(oldDay.getFullYear(), oldDay.getMonth(), oldDay.getDate(), Math.floor(parsed / 60), parsed % 60);
 
-                        this.val(newDate.toISOString());
+                        this.value = newDate.toISOString();
                     }
 
                     this.refresh();

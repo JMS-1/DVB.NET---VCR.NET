@@ -24,24 +24,21 @@ namespace VCRNETClient.App.NoUi {
         }
 
         // Meldet den aktuellen Wert oder verändert diesen.
-        val(newValue?: boolean): boolean {
-            // Ursprüngliches Bitfeld auslesen.
-            var oldValue = this._flags.val();
+        get value(): boolean {
+            return ((this._flags.value & this._mask) !== 0);
+        }
 
+        set value(newValue: boolean) {
             // Änderung bitweise an die eigentliche Eigenschaft übertragen.
-            if (newValue !== undefined)
-                if (newValue)
-                    this._flags.val(oldValue | this._mask);
-                else
-                    this._flags.val(oldValue & ~this._mask);
-
-            // Zustand gemäß des ursprünglichen Bitfelds auslesen.
-            return ((oldValue & this._mask) !== 0);
+            if (newValue)
+                this._flags.value |= this._mask;
+            else
+                this._flags.value &= ~this._mask;
         }
 
         // Gesetzt, wenn der Wert der Eigenschaft nicht verändert werden darf.
-        isReadonly(): boolean {
-            return this._flags.isReadonly();
+        get isReadonly(): boolean {
+            return this._flags.isReadonly;
         }
     }
 }

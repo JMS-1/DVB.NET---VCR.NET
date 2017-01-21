@@ -136,7 +136,7 @@ namespace VCRNETClient.App.NoUi {
         days: ISelectableDay[];
 
         private day(newDay?: Date): Date {
-            var oldDay = new Date(this.val());
+            var oldDay = new Date(this.value);
 
             if (this._utc)
                 oldDay = new Date(oldDay.getUTCFullYear(), oldDay.getUTCMonth(), oldDay.getUTCDate());
@@ -145,7 +145,7 @@ namespace VCRNETClient.App.NoUi {
                 if (this._utc)
                     newDay = new Date(Date.UTC(newDay.getFullYear(), newDay.getMonth(), newDay.getDate()));
 
-                this.val(newDay.toISOString());
+                this.value = newDay.toISOString();
             }
 
             return oldDay;

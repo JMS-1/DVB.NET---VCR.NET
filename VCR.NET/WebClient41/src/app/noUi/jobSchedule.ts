@@ -33,7 +33,7 @@
     // Bietet die gemeinsamen Daten eines Auftrags oder einer Aufzeichnung zur Pflege an.
     export abstract class JobScheduleEditor<TModelType extends VCRServer.EditJobScheduleCommonContract> implements IJobScheduleEditor {
         constructor(public readonly page: IPage, protected model: TModelType, mustHaveName: boolean, favoriteSources: string[], onChange: () => void) {
-            var noSource = () => (this.source.val() || "").trim().length < 1;
+            var noSource = () => (this.source.value || "").trim().length < 1;
 
             // Pflegekomponenten erstellen
             this.name = new StringEditor(this.model, "name", onChange, "Name", mustHaveName, "Ein Auftrag muss einen Namen haben.");

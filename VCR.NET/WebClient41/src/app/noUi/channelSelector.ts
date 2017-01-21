@@ -243,7 +243,7 @@ namespace VCRNETClient.App.NoUi {
             }).map(s => <ISelectableValue<string>>{ value: s.name, display: s.name });
 
             // Aktuelle Quelle zusätzliche in die Liste einmischen, so dass immer eine korrekte Auswahl existiert.
-            var source = this.val();
+            var source = this.value;
             var hasSource = ((source || "").trim().length > 0);
 
             if (hasSource && !this.sourceNames.some(s => s.value === source)) {
@@ -308,7 +308,7 @@ namespace VCRNETClient.App.NoUi {
                 return;
 
             // Quelle prüfen.
-            var value = (this.val() || "").trim();
+            var value = (this.value || "").trim();
 
             if (value.length < 1)
                 this.message = "Entweder für die Aufzeichnung oder für den Auftrag muss eine Quelle angegeben werden.";

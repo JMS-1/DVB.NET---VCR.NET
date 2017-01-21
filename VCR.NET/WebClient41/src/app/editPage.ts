@@ -122,14 +122,14 @@ namespace VCRNETClient.App {
         }
 
         private loadSources(): Thenable<VCRServer.SourceEntry[], XMLHttpRequest> {
-            var profile = this._job.device.val();
+            var profile = this._job.device.value;
 
             return VCRServer.ProfileSourcesCache.getPromise(profile).then(sources => {
-                if (this._job.device.val() === profile) {
+                if (this._job.device.value === profile) {
                     this._sources = sources;
 
                     this._job.validate(sources);
-                    this._schedule.validate(sources, (this._job.source.val() || "").trim().length < 1);
+                    this._schedule.validate(sources, (this._job.source.value || "").trim().length < 1);
 
                     this._isValid = this._job.isValid() && this._schedule.isValid();
                 }

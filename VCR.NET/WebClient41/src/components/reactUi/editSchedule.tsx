@@ -34,7 +34,7 @@ namespace VCRNETClient.Ui {
                     <Ui.EditBoolean noui={this.props.noui.onFriday} />
                     <Ui.EditBoolean noui={this.props.noui.onSaturday} />
                     <Ui.EditBoolean noui={this.props.noui.onSunday} />
-                    {(this.props.noui.repeat.val() !== 0) ? <div>
+                    {(this.props.noui.repeat.value !== 0) ? <div>
                         {this.props.noui.lastDay.text}
                         <Ui.EditDay noui={this.props.noui.lastDay} />
                     </div> : null}

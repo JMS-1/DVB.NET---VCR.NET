@@ -27,7 +27,7 @@ namespace VCRNETClient.App.NoUi {
                 return;
 
             // Der Wert darf nicht die leere Zeichenkette sein - und auch nicht nur aus Leerzeichen et al bestehen.
-            var value = (this.val() || "").trim();
+            var value = (this.value || "").trim();
 
             if (value.length < 1)
                 this.message = this._message || "Es muss ein Wert angegeben werden.";

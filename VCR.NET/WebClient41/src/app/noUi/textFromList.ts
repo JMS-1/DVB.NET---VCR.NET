@@ -34,7 +34,7 @@ namespace VCRNETClient.App.NoUi {
                 return;
 
             // Der Wert muss in der Liste sein.
-            var value = (this.val() || "").trim();
+            var value = (this.value || "").trim();
 
             if (!this.allowedValues.some(av => av.value === value))
                 this.message = "Der Wert ist nicht in der Liste der möglichen Werte enthalten.";

@@ -14,7 +14,7 @@ namespace VCRNETClient.App.NoUi {
         delta(delta: number): void;
 
         // Meldet den aktuellen Wert.
-        val(): number;
+        readonly value: number;
     }
 
     // Steuerung für einen Schieberegeler für die Auswahl eines Wertes.
@@ -33,7 +33,7 @@ namespace VCRNETClient.App.NoUi {
             super(data, prop, onChange, null);
 
             // Anfangswert merken.
-            this._initial = this.val();
+            this._initial = this.value;
 
             // Synchronisiert den Regler mit dem aktuellen Wert.
             this.sync();
@@ -58,16 +58,16 @@ namespace VCRNETClient.App.NoUi {
         sync(newValue?: number): void {
             // Auf Wunsch kann direkt ein neuer Wert eingestellt werden.
             if (newValue !== undefined)
-                this.val(newValue);
+                this.value = newValue;
 
             // In eine relative Position umsetzen.
-            this.position((this.val() - this._min) / (this._max - this._min));
+            this.position((this.value - this._min) / (this._max - this._min));
         }
 
         // Nimmt eine Feineinstellung vor.
         delta(delta: number): void {
             // Relative Position setzen, der Wert gleicht sich dann automatisch mit an.
-            this.position((this.val() + delta - this._min) / (this._max - this._min));
+            this.position((this.value + delta - this._min) / (this._max - this._min));
         }
 
         // Meldet oder ändert die aktuelle Position des Schiebereglers.
@@ -91,7 +91,7 @@ namespace VCRNETClient.App.NoUi {
                     this.refresh();
 
                     // Tatsächlichen Wert direkt mit ändern.
-                    this.val(Math.round(this._min + newPosition * (this._max - this._min)));
+                    this.value = Math.round(this._min + newPosition * (this._max - this._min));
                 }
             }
 

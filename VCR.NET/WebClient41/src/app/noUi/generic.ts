@@ -3,10 +3,10 @@
     // Bietet den Wert einer Eigenschaft zur Pflege in der Oberfläche an-
     export interface IValueHolder<TValueType> extends IDisplayText {
         // Meldet den aktuellen Wert oder verändert diesen - gemeldet wird immer der ursprüngliche Wert.
-        val(newValue?: TValueType): TValueType;
+        value: TValueType;
 
         // Gesetzt, wenn der Wert der Eigenschaft nicht verändert werden darf.
-        isReadonly(): boolean;
+        readonly isReadonly: boolean;
     }
 
     // Ergänzt den Zugriff auf den Wert einer Eigenschaft um Prüfinformationen.
@@ -19,26 +19,24 @@
     export abstract class ValueHolder<TValueType> implements IValidatableValue<TValueType> {
 
         // Meldet den aktuellen Wert oder verändert diesen - gemeldet wird immer der ursprüngliche Wert.
-        val(newValue?: TValueType): TValueType {
-            // Ursprünglichen Wert auslesen.
-            var oldValue = this._data[this._prop] as TValueType;
+        get value(): TValueType {
+            return this._data[this._prop] as TValueType;
+        }
 
+        set value(newValue: TValueType) {
             // Prüfen, ob der aktuelle Wert durch einen anderen ersetzt werden soll.
-            if (newValue !== undefined)
-                if (newValue !== oldValue) {
-                    // Neuen Wert ins Modell übertragen.
-                    this._data[this._prop] = newValue;
+            if (newValue === this._data[this._prop])
+                return;
 
-                    // Modelländerung melden.
-                    this._onChange();
-                }
+            // Neuen Wert ins Modell übertragen.
+            this._data[this._prop] = newValue;
 
-            // Ursprünglichen Wert meldet.
-            return oldValue;
+            // Modelländerung melden.
+            this._onChange();
         }
 
         // Meldet, ob der Wert der Eigenschaft nicht verändert werden darf.
-        isReadonly(): boolean {
+        get isReadonly(): boolean {
             return this._testReadOnly && this._testReadOnly();
         }
 

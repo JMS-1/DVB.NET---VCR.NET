@@ -19,7 +19,7 @@ namespace VCRNETClient.Ui {
                 type="TEXT"                
                 size={this.props.chars}
                 onChange={this._onChange}
-                value={this.props.noui.val()}
+                value={this.props.noui.value}
                 placeholder={this.props.hint}
                 title={this.props.noui.message} />;
         }
@@ -28,7 +28,7 @@ namespace VCRNETClient.Ui {
         private readonly _onChange = this.onChange.bind(this);
 
         private onChange(ev: React.FormEvent): any {
-            this.props.noui.val((ev.target as HTMLInputElement).value);
+            this.props.noui.value = (ev.target as HTMLInputElement).value;
         }
     }
 }

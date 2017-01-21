@@ -18,7 +18,7 @@ namespace VCRNETClient.App.NoUi {
 
             this.startTime = new TimeEditor(data, propTime, this._onChanged);
 
-            var end = new Date(new Date(this.startTime.val()).getTime() + 60000 * this.val());
+            var end = new Date(new Date(this.startTime.value).getTime() + 60000 * this.value);
 
             this.endTime = new TimeEditor({ time: end.toISOString() }, "time", this._onChanged, undefined, this.checkLimit.bind(this));
         }
@@ -41,11 +41,11 @@ namespace VCRNETClient.App.NoUi {
             if (duration <= 0)
                 duration += 24 * 60;
 
-            this.val(duration);
+            this.value = duration;
         }
 
         private checkLimit(): string {
-            return (this.val() >= 24 * 60) ? "Die Aufzeichnungsdauer muss kleiner als ein Tag sein." : undefined;
+            return (this.value >= 24 * 60) ? "Die Aufzeichnungsdauer muss kleiner als ein Tag sein." : undefined;
         }
 
         validate(): void {

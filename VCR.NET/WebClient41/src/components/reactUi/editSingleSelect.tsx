@@ -6,7 +6,7 @@ namespace VCRNETClient.Ui {
     export class EditTextWithList extends NoUiView<App.NoUi.IStringFromListEditor>  {
         // Erstellt die Anzeige für die Komponente.
         render(): JSX.Element {
-            return <select className="vcrnet-editlist" value={this.props.noui.val()} onChange={this._onChange}>
+            return <select className="vcrnet-editlist" value={this.props.noui.value} onChange={this._onChange}>
                 {this.props.noui.allowedValues.map(av => <option key={av.display} value={`${av.value}`}>{av.display}</option>)}
             </select>;
         }
@@ -15,7 +15,7 @@ namespace VCRNETClient.Ui {
         private readonly _onChange = this.onChange.bind(this);
 
         private onChange(ev: React.FormEvent): any {
-            this.props.noui.val((ev.target as HTMLSelectElement).value);
+            this.props.noui.value = (ev.target as HTMLSelectElement).value;
         }
     }
 }
