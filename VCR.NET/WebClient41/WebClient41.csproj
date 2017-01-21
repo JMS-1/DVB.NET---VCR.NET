@@ -183,7 +183,7 @@
     <None Include="src\components\reactUi\editTime.scss" />
     <None Include="src\components\reactUi\editDuration.scss" />
     <None Include="src\components\reactUi\command.scss" />
-    <None Include="src\components\reactUi\editException.scss" />
+    <None Include="src\components\reactUi\planException.scss" />
     <None Include="src\components\reactUi\editNumberWithSlider.scss" />
     <Content Include="src\components\reactUi\styles.css">
       <DependentUpon>styles.scss</DependentUpon>
@@ -346,7 +346,7 @@
     <TypeScriptCompile Include="src\components\reactUi\editChannelFlags.tsx" />
     <TypeScriptCompile Include="src\components\reactUi\editDay.tsx" />
     <TypeScriptCompile Include="src\components\reactUi\editDuration.tsx" />
-    <TypeScriptCompile Include="src\components\reactUi\editException.tsx" />
+    <TypeScriptCompile Include="src\components\reactUi\planException.tsx" />
     <TypeScriptCompile Include="src\components\reactUi\editField.tsx" />
     <TypeScriptCompile Include="src\components\reactUi\editJob.tsx" />
     <TypeScriptCompile Include="src\components\externalLink.tsx" />

@@ -3,13 +3,13 @@
 namespace VCRNETClient.Ui {
 
     // Schnittstelle zur Pflege einer Ausnahmeregel.
-    interface IEditExceptionStatic extends INoUiComponent<App.NoUi.IPlanException> {
+    interface IPlanExceptionStatic extends INoUiComponent<App.NoUi.IPlanException> {
         // Die aktuell angezeigte Seite.
         page: App.NoUi.IPage;
     }
 
     // React.Js Komponente zur Pflege einer einzelnen Ausnahmeregel.
-    export class EditException extends NoUiViewExWithSite<App.NoUi.IPlanException, IEditExceptionStatic> {
+    export class PlanException extends NoUiViewExWithSite<App.NoUi.IPlanException, IPlanExceptionStatic> {
         // Erstellt die Oberflächenelemente zur Pflege.
         render(): JSX.Element {
             return <fieldset className="vcrnet-editexception">
