@@ -326,6 +326,7 @@
     <TypeScriptCompile Include="src\app\noUi\generic.ts" />
     <TypeScriptCompile Include="src\app\noUi\jobSchedule.ts" />
     <TypeScriptCompile Include="src\app\noUi\numberSlider.ts" />
+    <TypeScriptCompile Include="src\app\noUi\scheduleException.ts" />
     <TypeScriptCompile Include="src\app\noUi\simpleNumber.ts" />
     <TypeScriptCompile Include="src\app\noUi\simpleFlag.ts" />
     <TypeScriptCompile Include="src\app\noUi\simpleText.ts" />

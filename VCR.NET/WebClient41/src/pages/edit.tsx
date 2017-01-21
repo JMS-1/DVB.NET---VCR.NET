@@ -4,6 +4,8 @@ namespace VCRNETClient {
     export class Edit extends NoUiViewWithSite<App.EditPage>
     {
         render(): JSX.Element {
+            const schedule = this.props.noui.getSchedule();
+
             return <div className="vcrnet-edit">
                 <div>
                     Mit diesem Formular werden alle Daten erfasst, die für die Ausführung einer Aufzeichnung benötigt werden. Im
@@ -18,12 +20,31 @@ namespace VCRNETClient {
                 </form>
                 {this.renderScheduleHelp()}
                 <form>
-                    <Ui.ScheduleData noui={this.props.noui.getSchedule()} />
+                    <Ui.ScheduleData noui={schedule} />
                 </form>
-                {this.renderExceptionHelp()}
-                <form>
-                    <fieldset><legend>Aktive Ausnahmeregeln</legend>[TBD]</fieldset>
-                </form>
+                {schedule.hasExceptions ? this.renderExceptionHelp() : null}
+                {schedule.hasExceptions ? <form>
+                    <fieldset><legend>Aktive Ausnahmeregeln</legend>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Aktiv</td>
+                                    <td>Datum</td>
+                                    <td>Startverschiebung</td>
+                                    <td>Laufzeitanpassung</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {schedule.exceptions.map((e, index) => <tr key={index}>
+                                    <td><Ui.EditBoolean noui={e.isActive} /></td>
+                                    <td>{e.dayDisplay}</td>
+                                    <td>{e.startShift} Minute<span>{(e.startShift === 1) ? '' : 'n'}</span></td>
+                                    <td>{e.timeDelta} Minute<span>{(e.timeDelta === 1) ? '' : 'n'}</span></td>
+                                </tr>)}
+                            </tbody>
+                        </table>
+                    </fieldset>
+                </form> : null}
                 {this.renderButtonHelp()}
                 <div>
                     <Ui.Command noui={this.props.noui.getSaveCommand()} />

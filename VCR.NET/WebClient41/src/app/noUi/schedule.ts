@@ -19,8 +19,13 @@
         readonly onSaturday: IBooleanEditor;
         readonly onSunday: IBooleanEditor;
 
-        // Ende der Wiederholung
+        // Ende der Wiederholung.
         readonly lastDay: IDaySelector;
+
+        // Bekannte Ausnahmen der Wiederholungsregel.
+        readonly hasExceptions: boolean;
+
+        readonly exceptions: IScheduleException[];
     }
 
     // Beschreibt die Daten einer Aufzeichnung.
@@ -42,10 +47,9 @@
             this.onSaturday = new BooleanSetEditor(ScheduleEditor.flagSaturday, this.repeat, DateFormatter.germanDays[6]);
             this.onSunday = new BooleanSetEditor(ScheduleEditor.flagSunday, this.repeat, DateFormatter.germanDays[0]);
 
-            /*
-            // Übernehmen
-            this.exceptionInfos = $.map(rawData.exceptions, (rawException: VCRServer.PlanExceptionContract) => new PlanException(rawException));
-            */
+            // Ausnahmeregeln.
+            this.exceptions = (model.exceptions || []).map(e => new ScheduleException(e, () => this.onExceptionsChanged(onChange)));
+            this.hasExceptions = (this.exceptions.length > 0);
         }
 
         // Datum der ersten Aufzeichnung.
@@ -59,6 +63,11 @@
 
         // Ende der Wiederholung
         readonly lastDay: DayEditor;
+
+        // Bekannte Ausnahmen der Wiederholungsregel.
+        readonly hasExceptions: boolean;
+
+        readonly exceptions: ScheduleException[];
 
         // Hilfsmethode zum Arbeiten mit Datumswerten.
         public static makePureDate(date: Date): Date {
@@ -128,6 +137,13 @@
                 return false;
 
             return true;
+        }
+
+        private onExceptionsChanged(onChange: () => void): void {
+            this.model.exceptions = this.exceptions.filter(e => e.isActive.value).map(e => e.model);
+
+            // Anzeige aktualisieren.
+            onChange();
         }
     }
 

@@ -7,15 +7,13 @@ namespace VCRNETClient.Ui {
         // Erstellt die Anzeige der Komponente.
         render(): JSX.Element {
             return <label className="vcrnet-editflag">
-                <input type="CHECKBOX" disabled={this.props.noui.isReadonly} checked={this.props.noui.value} onChange={ev => this.onChange(ev)} />
+                <input
+                    type="CHECKBOX"
+                    disabled={this.props.noui.isReadonly}
+                    checked={this.props.noui.value}
+                    onChange={ev => this.props.noui.value = (ev.target as HTMLInputElement).checked} />
                 {this.props.noui.text}
             </label>;
-        }
-
-        // Überträgt einen veränderten Wert in das Modell.
-        private onChange(ev: React.FormEvent): any {
-            // Veränderten Wert übertragen.
-            this.props.noui.value = (ev.target as HTMLInputElement).checked;
         }
     }
 }

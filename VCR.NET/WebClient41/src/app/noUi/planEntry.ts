@@ -40,15 +40,15 @@
     }
 
     export class PlanEntry implements IPlanEntry {
-        constructor(private _entry: VCRServer.PlanActivityContract, private _toggleDetail: (entry: PlanEntry, epg: boolean) => void, application: App.Application, reload: () => void) {
+        constructor(private model: VCRServer.PlanActivityContract, private _toggleDetail: (entry: PlanEntry, epg: boolean) => void, application: App.Application, reload: () => void) {
             // Zeiten umrechnen
-            this.duration = parseInt(_entry.duration);
-            this.start = new Date(_entry.start);
+            this.duration = parseInt(model.duration);
+            this.start = new Date(model.start);
             this.end = new Date(this.start.getTime() + 1000 * this.duration);
 
             // Ausnahmen auswerten
-            if (_entry.exception)
-                this.exception = new PlanException(_entry.exception, _entry.id, reload);
+            if (model.exception)
+                this.exception = new PlanException(model.exception, model.id, reload);
         }
 
         // Zeigt die Programmzeitschrift an.
@@ -87,7 +87,7 @@
 
         // Der Name der Aufzeichnung.
         get name(): string {
-            return this._entry.name;
+            return this.model.name;
         }
 
         // Der Startzeitpunkt formatiert für die Darstellung.
@@ -105,24 +105,24 @@
 
         // Das verwendete Gerät.
         get device(): string {
-            return this._entry.device || '';
+            return this.model.device || '';
         }
 
         // Der zugehörige Sender.
         get station(): string {
-            return this._entry.station || '(unbekannt)';
+            return this.model.station || '(unbekannt)';
         }
 
         // Ein Kürzel für die Qualität der Aufzeichnung, etwa ob dieser verspätet beginnt.
         get mode(): string {
-            if (this._entry.station === 'PSI')
+            if (this.model.station === 'PSI')
                 return undefined;
-            if (this._entry.station === 'EPG')
+            if (this.model.station === 'EPG')
                 return undefined;
 
-            if (this._entry.lost)
+            if (this.model.lost)
                 return 'lost';
-            else if (this._entry.late)
+            else if (this.model.late)
                 return 'late';
             else
                 return 'intime';
@@ -130,7 +130,7 @@
 
         // Anwendungsverweis zum Ändern dieses Eintrags.
         get editLink(): string {
-            return this.mode && `edit;id=${this._entry.id}`;
+            return this.mode && `edit;id=${this.model.id}`;
         }
 
         // Schaltet die Detailanzeige um.

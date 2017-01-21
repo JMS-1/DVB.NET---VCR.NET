@@ -32,10 +32,10 @@
 
     // Erweiterte Schnittstelle zur Pflege einer einzelnen Ausnahmeregel.
     export class PlanException implements IPlanException {
-        constructor(private _exception: VCRServer.PlanExceptionContract, private _entryId: string, private _reload: () => void) {
-            this._originalStart = new Date(_exception.originalStart as string);
-            this.startSlider = new NumberSlider(_exception, "startShift", () => this.refresh(), -480, +480);
-            this.durationSlider = new NumberSlider(_exception, "timeDelta", () => this.refresh(), -_exception.originalDuration, +480);
+        constructor(private model: VCRServer.PlanExceptionContract, private _entryId: string, private _reload: () => void) {
+            this._originalStart = new Date(model.originalStart as string);
+            this.startSlider = new NumberSlider(model, "startShift", () => this.refresh(), -480, +480);
+            this.durationSlider = new NumberSlider(model, "timeDelta", () => this.refresh(), -model.originalDuration, +480);
         }
 
         // Der ursprüngliche Startzeitpunkt
@@ -49,12 +49,12 @@
 
         // Die Darstellung für den Zustand der Ausnahme.
         get exceptionMode(): string {
-            return ((this._exception.startShift !== 0) || (this._exception.timeDelta !== 0)) ? "exceptOn" : "exceptOff";
+            return ((this.model.startShift !== 0) || (this.model.timeDelta !== 0)) ? "exceptOn" : "exceptOff";
         }
 
         // Meldet den Startzeitpunkt als Text.
         private start(): Date {
-            return new Date(this._originalStart.getTime() + 60 * this._exception.startShift * 1000);
+            return new Date(this._originalStart.getTime() + 60 * this.model.startShift * 1000);
         }
 
         get currentStart(): string {
@@ -63,7 +63,7 @@
 
         // Meldet den Endzeitpunkt als Text.
         private end(): Date {
-            return new Date(this.start().getTime() + 60 * (this._exception.originalDuration + this._exception.timeDelta) * 1000);
+            return new Date(this.start().getTime() + 60 * (this.model.originalDuration + this.model.timeDelta) * 1000);
         }
 
         get currentEnd(): string {
@@ -72,7 +72,7 @@
 
         // Meldet die aktuelle Dauer.
         get currentDuration(): number {
-            return this._exception.originalDuration + this._exception.timeDelta;
+            return this.model.originalDuration + this.model.timeDelta;
         }
 
         // Setzt alles auf den Eingangszustand zurück.
@@ -90,12 +90,12 @@
         // Deaktiviert die Aufzeichnung vollständig.
         setToDisable(): void {
             this.startSlider.sync(0);
-            this.durationSlider.sync(-this._exception.originalDuration);
+            this.durationSlider.sync(-this.model.originalDuration);
         }
 
         // Aktualisiert die Aufzeichnung.
         update(): void {
-            VCRServer.updateException(this._entryId, this._exception.referenceDay, this._exception.startShift, this._exception.timeDelta).then(this._reload);
+            VCRServer.updateException(this._entryId, this.model.referenceDay, this.model.startShift, this.model.timeDelta).then(this._reload);
         }
 
         // Beachrichtigungen einrichten.
