@@ -48,7 +48,7 @@
             this.onSunday = new BooleanSetEditor(ScheduleEditor.flagSunday, this.repeat, DateFormatter.germanDays[0]);
 
             // Ausnahmeregeln.
-            this.exceptions = (model.exceptions || []).map(e => new ScheduleException(e, () => this.onExceptionsChanged(onChange)));
+            this.exceptions = (model.exceptions || []).map(e => new ScheduleException(e, () => this.onExceptionsChanged()));
             this.hasExceptions = (this.exceptions.length > 0);
         }
 
@@ -139,11 +139,8 @@
             return true;
         }
 
-        private onExceptionsChanged(onChange: () => void): void {
+        private onExceptionsChanged(): void {
             this.model.exceptions = this.exceptions.filter(e => e.isActive.value).map(e => e.model);
-
-            // Anzeige aktualisieren.
-            onChange();
         }
     }
 

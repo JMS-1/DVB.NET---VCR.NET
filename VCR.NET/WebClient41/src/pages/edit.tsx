@@ -34,14 +34,7 @@ namespace VCRNETClient {
                                     <td>Laufzeitanpassung</td>
                                 </tr>
                             </thead>
-                            <tbody>
-                                {schedule.exceptions.map((e, index) => <tr key={index}>
-                                    <td><Ui.EditBoolean noui={e.isActive} /></td>
-                                    <td>{e.dayDisplay}</td>
-                                    <td>{e.startShift} Minute<span>{(e.startShift === 1) ? '' : 'n'}</span></td>
-                                    <td>{e.timeDelta} Minute<span>{(e.timeDelta === 1) ? '' : 'n'}</span></td>
-                                </tr>)}
-                            </tbody>
+                            <tbody>{schedule.exceptions.map((e, index) => <Ui.EditException key={index} noui={e} />)}</tbody>
                         </table>
                     </fieldset>
                 </form> : null}

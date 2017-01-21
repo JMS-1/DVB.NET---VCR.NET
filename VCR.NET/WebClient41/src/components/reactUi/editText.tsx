@@ -12,11 +12,11 @@ namespace VCRNETClient.Ui {
     }
 
     // Texteingabe für React.Js - die NoUi Schicht stellt den Wert und das Prüfergebnis zur Verfügung.
-    export class EditText extends React.Component<IEditTextStatic, INoDynamicState>  {
+    export class EditText extends NoUiViewEx<App.NoUi.IStringEditor, IEditTextStatic>  {
         // Erstellt die Anzeige der Komponente.
         render(): JSX.Element {
             return <input className="vcrnet-edittext"
-                type="TEXT"                
+                type="TEXT"
                 size={this.props.chars}
                 onChange={this._onChange}
                 value={this.props.noui.value}

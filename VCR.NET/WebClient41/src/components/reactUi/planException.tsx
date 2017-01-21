@@ -12,7 +12,7 @@ namespace VCRNETClient.Ui {
     export class PlanException extends NoUiViewExWithSite<App.NoUi.IPlanException, IPlanExceptionStatic> {
         // Erstellt die Oberflächenelemente zur Pflege.
         render(): JSX.Element {
-            return <fieldset className="vcrnet-editexception">
+            return <fieldset className="vcrnet-planexception">
                 <legend>Ausnahmeregel bearbeiten<HelpLink page={this.props.page} topic="repeatingschedules" /></legend>
                 <table>
                     <tbody>
