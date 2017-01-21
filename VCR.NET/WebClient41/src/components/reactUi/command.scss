@@ -1,4 +1,8 @@
 ﻿@import "../../../content/vars";
 
 .vcrnet-command {
+    &.vcrnet-dangerous {
+        border-color: red;
+        font-weight: bold;
+    }
 }

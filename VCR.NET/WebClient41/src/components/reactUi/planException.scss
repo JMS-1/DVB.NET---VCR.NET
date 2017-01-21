@@ -7,12 +7,16 @@
         width: 100%;
 
         > tbody > tr {
-            > td:first-child {
+            > td:nth-child(1) {
                 width: 10rem;
             }
 
             > td:nth-child(2) {
                 width: 12rem;
+            }
+
+            > td:nth-child(3) {
+                width: auto;
             }
         }
     }

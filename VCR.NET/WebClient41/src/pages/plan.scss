@@ -1,6 +1,27 @@
 ﻿@import "../../content/vars";
 
 .vcrnet-plan {
-    .vcrnet-plan-filter {
+    > table {
+        width: 80%;
+
+        td:nth-child(1) {
+            width: 20px;
+        }
+
+        td:nth-child(2) {
+            width: 11rem;
+        }
+
+        td:nth-child(3) {
+            width: 4rem;
+        }
+
+        td:nth-child(4) {
+            width: 15rem;
+        }
+
+        td:nth-child(6) {
+            width: 10rem;
+        }
     }
 }

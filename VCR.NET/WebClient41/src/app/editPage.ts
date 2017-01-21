@@ -6,25 +6,29 @@ namespace VCRNETClient.App {
 
         private _job: NoUi.JobEditor;
 
-        getJob(): NoUi.IJobEditor {
+        get job(): NoUi.IJobEditor {
             return this._job;
         }
 
         private _schedule: NoUi.ScheduleEditor;
 
-        getSchedule(): NoUi.IScheduleEditor {
+        get schedule(): NoUi.IScheduleEditor {
             return this._schedule;
         }
 
-        getSaveCommand(): NoUi.ICommand {
+        get save(): NoUi.ICommand {
             return this._save;
+        }
+
+        get del(): NoUi.ICommand {
+            return this._delete;
         }
 
         private _onChanged = this.onChanged.bind(this);
 
-        private _refreshSite = this.refreshSite.bind(this);
+        private _save = new NoUi.Command(() => this.onSave(), "Übernehmen", () => this._isValid);
 
-        private _save = new NoUi.Command(() => this.onSave(), () => this._isValid, this._refreshSite, "Übernehmen");
+        private _delete = new NoUi.Command(() => this.onDelete(), "Löschen");
 
         private _sources: VCRServer.SourceEntry[];
 
@@ -38,9 +42,10 @@ namespace VCRNETClient.App {
 
         // Wird jedesmal beim Aufruf der Änderungsseite aufgerufen.
         reset(section: string): void {
-            this._jobScheduleInfo = undefined;
             this._job = undefined;
             this._schedule = undefined;
+            this._delete.isDangerous = false;
+            this._jobScheduleInfo = undefined;
 
             // Zuerst die Liste der Aufzeichnungsverzeichnisse abfragen.
             VCRServer.RecordingDirectoryCache.getPromise().then(dirs => this.setDirectories(dirs, section));
@@ -142,20 +147,27 @@ namespace VCRNETClient.App {
             return `Aufzeichnung bearbeiten`;
         }
 
-        private refreshSite(): void {
-            this.refreshUi();
-        }
-
         private onChanged(): void {
-            this.loadSources().then(this._refreshSite);
+            this.loadSources().then(() => this.refreshUi());
 
-            this.refreshSite();
+            this.refreshUi();
         }
 
         private onSave(): Thenable<void, XMLHttpRequest> {
             return VCRServer
                 .updateSchedule(this._jobScheduleInfo.jobId, this._jobScheduleInfo.scheduleId, { job: this._jobScheduleInfo.job, schedule: this._jobScheduleInfo.schedule })
                 .then(() => this.application.gotoPage(this.application.planPage.route));
+        }
+
+        private onDelete(): Thenable<void, XMLHttpRequest> {
+            if (this._delete.isDangerous)
+                return VCRServer
+                    .deleteSchedule(this._jobScheduleInfo.jobId, this._jobScheduleInfo.scheduleId)
+                    .then(() => this.application.gotoPage(this.application.planPage.route));
+
+            this._delete.isDangerous = true;
+
+            return new Promise<void, XMLHttpRequest>(onSuccess => onSuccess(undefined));
         }
     }
 }

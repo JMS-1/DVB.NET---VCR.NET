@@ -4,7 +4,7 @@ namespace VCRNETClient {
     export class Edit extends NoUiViewWithSite<App.EditPage>
     {
         render(): JSX.Element {
-            const schedule = this.props.noui.getSchedule();
+            const schedule = this.props.noui.schedule;
 
             return <div className="vcrnet-edit">
                 <div>
@@ -16,7 +16,7 @@ namespace VCRNETClient {
                 </div>
                 {this.renderJobHelp()}
                 <form>
-                    <Ui.JobData noui={this.props.noui.getJob()} />
+                    <Ui.JobData noui={this.props.noui.job} />
                 </form>
                 {this.renderScheduleHelp()}
                 <form>
@@ -40,7 +40,8 @@ namespace VCRNETClient {
                 </form> : null}
                 {this.renderButtonHelp()}
                 <div>
-                    <Ui.Command noui={this.props.noui.getSaveCommand()} />
+                    <Ui.Command noui={this.props.noui.save} />
+                    <Ui.Command noui={this.props.noui.del} />
                 </div>
             </div>;
         }
