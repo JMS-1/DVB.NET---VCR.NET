@@ -1,6 +1,4 @@
-﻿/// <reference path="../../vcrnet.tsx" />
-
-namespace VCRNETClient.Ui {
+﻿namespace VCRNETClient.Ui {
 
     // Die Konfiguration eines Eingabefeldes.
     interface IFieldStatic {

@@ -153,7 +153,7 @@
     <Content Include="FAQ\customschedule.html" />
     <Content Include="FAQ\configuration.html" />
     <Content Include="FAQ\controlcenter.html" />
-    <None Include="src\components\reactUi\editException.scss" />
+    <None Include="src\components\editException.scss" />
     <Content Include="src\lib\styles.css">
       <DependentUpon>styles.scss</DependentUpon>
     </Content>
@@ -177,23 +177,20 @@
     <Content Include="FAQ\currentstream.html" />
     <Content Include="ui\images\faq\decryptlimit.png" />
     <Content Include="ui\images\faq\endchange.png" />
-    <None Include="src\components\reactUi\editJob.scss" />
-    <None Include="src\components\reactUi\editField.scss" />
+    <None Include="src\components\editJob.scss" />
+    <None Include="src\components\editField.scss" />
     <None Include="src\lib\edit\text\text.scss" />
     <None Include="src\lib\edit\text\singleSelect.scss" />
     <None Include="src\lib\edit\boolean\flag.scss" />
-    <None Include="src\components\reactUi\editChannel.scss" />
-    <None Include="src\components\reactUi\editChannelFlags.scss" />
-    <None Include="src\components\reactUi\editSchedule.scss" />
+    <None Include="src\components\editChannel.scss" />
+    <None Include="src\components\editChannelFlags.scss" />
+    <None Include="src\components\editSchedule.scss" />
     <None Include="src\lib\edit\datetime\day.scss" />
     <None Include="src\lib\edit\datetime\time.scss" />
-    <None Include="src\components\reactUi\editDuration.scss" />
+    <None Include="src\components\editDuration.scss" />
     <None Include="src\lib\command\command.scss" />
-    <None Include="src\components\reactUi\planException.scss" />
+    <None Include="src\components\planException.scss" />
     <None Include="src\lib\edit\number\slider.scss" />
-    <Content Include="src\components\reactUi\styles.css">
-      <DependentUpon>styles.scss</DependentUpon>
-    </Content>
     <Content Include="src\components\styles.css">
       <DependentUpon>styles.scss</DependentUpon>
     </Content>
@@ -254,7 +251,6 @@
     <None Include="src\components\detailRow.scss" />
     <None Include="src\components\inlineHelp.scss" />
     <None Include="src\lib\command\checkbox.scss" />
-    <Content Include="src\components\reactUi\styles.scss" />
     <Content Include="src\components\styles.scss" />
     <Content Include="src\lib\styles.scss" />
     <Content Include="src\lib\router.scss" />
@@ -263,7 +259,7 @@
     <Content Include="src\pages\plan.scss" />
     <Content Include="src\pages\home.scss" />
     <Content Include="src\components\main.scss" />
-    <None Include="src\components\reactUi\planRow.scss" />
+    <None Include="src\components\planRow.scss" />
     <None Include="src\lib\command\radio.scss" />
     <None Include="src\lib\command\radioGroup.scss" />
     <Content Include="ui\admin.html" />
@@ -349,19 +345,19 @@
     <TypeScriptCompile Include="src\lib\command\checkbox.tsx" />
     <TypeScriptCompile Include="src\components\detailRow.tsx" />
     <TypeScriptCompile Include="src\lib\command\command.tsx" />
-    <TypeScriptCompile Include="src\components\reactUi\editChannel.tsx" />
-    <TypeScriptCompile Include="src\components\reactUi\editChannelFlags.tsx" />
+    <TypeScriptCompile Include="src\components\editChannel.tsx" />
+    <TypeScriptCompile Include="src\components\editChannelFlags.tsx" />
     <TypeScriptCompile Include="src\lib\edit\datetime\day.tsx" />
-    <TypeScriptCompile Include="src\components\reactUi\editDuration.tsx" />
-    <TypeScriptCompile Include="src\components\reactUi\editException.tsx" />
-    <TypeScriptCompile Include="src\components\reactUi\planException.tsx" />
-    <TypeScriptCompile Include="src\components\reactUi\editField.tsx" />
-    <TypeScriptCompile Include="src\components\reactUi\editJob.tsx" />
+    <TypeScriptCompile Include="src\components\editDuration.tsx" />
+    <TypeScriptCompile Include="src\components\editException.tsx" />
+    <TypeScriptCompile Include="src\components\planException.tsx" />
+    <TypeScriptCompile Include="src\components\editField.tsx" />
+    <TypeScriptCompile Include="src\components\editJob.tsx" />
     <TypeScriptCompile Include="src\components\externalLink.tsx" />
     <TypeScriptCompile Include="src\components\helpLink.tsx" />
     <TypeScriptCompile Include="src\lib\edit\boolean\flag.tsx" />
     <TypeScriptCompile Include="src\lib\edit\number\slider.tsx" />
-    <TypeScriptCompile Include="src\components\reactUi\editSchedule.tsx" />
+    <TypeScriptCompile Include="src\components\editSchedule.tsx" />
     <TypeScriptCompile Include="src\lib\edit\text\singleSelect.tsx" />
     <TypeScriptCompile Include="src\lib\edit\text\text.tsx" />
     <TypeScriptCompile Include="src\lib\edit\datetime\time.tsx" />
@@ -386,7 +382,7 @@
     <TypeScriptCompile Include="src\components\navigation.tsx" />
     <TypeScriptCompile Include="src\lib\command\pictogram.tsx" />
     <TypeScriptCompile Include="src\pages\plan.tsx" />
-    <TypeScriptCompile Include="src\components\reactUi\planRow.tsx" />
+    <TypeScriptCompile Include="src\components\planRow.tsx" />
     <TypeScriptCompile Include="src\lib\command\radio.tsx" />
     <TypeScriptCompile Include="src\lib\command\radioGroup.tsx" />
     <TypeScriptCompile Include="src\components\view.ts" />
