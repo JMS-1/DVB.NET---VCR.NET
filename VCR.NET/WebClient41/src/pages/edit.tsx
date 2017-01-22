@@ -1,4 +1,4 @@
-﻿/// <reference path="../lib/site.tsx" />
+﻿/// <reference path="../lib/reactUi.tsx" />
 
 namespace VCRNETClient {
     export class Edit extends JMSLib.ReactUi.NoUiViewWithSite<App.EditPage>

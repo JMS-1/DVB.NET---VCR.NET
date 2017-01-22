@@ -1,4 +1,4 @@
-﻿/// <reference path="../site.tsx" />
+﻿/// <reference path="../reactUi.tsx" />
 
 namespace JMSLib.ReactUi {
 

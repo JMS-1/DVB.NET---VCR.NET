@@ -1,4 +1,4 @@
-﻿/// <reference path="../lib/site.tsx" />
+﻿/// <reference path="../lib/reactUi.tsx" />
 
 namespace VCRNETClient {
     export class View extends JMSLib.ReactUi.NoUiView<App.NoUi.IPage>{

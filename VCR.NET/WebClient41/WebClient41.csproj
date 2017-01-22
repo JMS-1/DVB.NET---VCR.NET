@@ -363,7 +363,7 @@
     <TypeScriptCompile Include="src\components\reactUi\editSingleSelect.tsx" />
     <TypeScriptCompile Include="src\components\reactUi\editText.tsx" />
     <TypeScriptCompile Include="src\components\reactUi\editTime.tsx" />
-    <TypeScriptCompile Include="src\lib\site.tsx" />
+    <TypeScriptCompile Include="src\lib\reactUi.tsx" />
     <TypeScriptCompile Include="src\pages\edit.tsx" />
     <TypeScriptCompile Include="src\pages\faq\adminGuide.tsx" />
     <TypeScriptCompile Include="src\pages\faq\adminScan.tsx" />
