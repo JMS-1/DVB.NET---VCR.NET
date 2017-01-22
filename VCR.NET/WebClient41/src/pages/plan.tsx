@@ -2,19 +2,19 @@
 
 namespace VCRNETClient.Ui {
 
-    export class Plan extends JMSLib.ReactUi.ComponentWithSite<App.PlanPage> {
+    export class Plan extends JMSLib.ReactUi.ComponentWithSite<App.IPlanPage> {
         render(): JSX.Element {
-            var jobs = this.props.noui.getJobs();
+            var jobs = this.props.noui.jobs;
 
             return <div className="vcrnet-plan">
                 Hier sieht man einen Ausschnitt der geplanten Aufzeichnungen für die nächsten Wochen.<HelpLink page={this.props.noui} topic="parallelrecording" />
                 {this.getHelp()}
                 <div className="vcrnet-plan-filter">
                     <JMSLib.ReactUi.RadioGroup>
-                        {this.props.noui.getStartFilter().map((f, index) =>
+                        {this.props.noui.startFilter.map((f, index) =>
                             <JMSLib.ReactUi.RadioCommand key={index} groupName="filterStart" isChecked={f.active} onClick={() => f.activate()}>{f.text}</JMSLib.ReactUi.RadioCommand>)}
                     </JMSLib.ReactUi.RadioGroup>
-                    <JMSLib.ReactUi.CheckBoxCommand onToggle={() => this.props.noui.toggleTaskFilter()} isChecked={this.props.noui.showTasks()}>
+                    <JMSLib.ReactUi.CheckBoxCommand onToggle={() => this.props.noui.toggleTaskFilter()} isChecked={this.props.noui.showTasks}>
                         Aufgaben einblenden
                     </JMSLib.ReactUi.CheckBoxCommand>
                 </div>

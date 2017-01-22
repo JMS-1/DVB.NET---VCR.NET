@@ -1,15 +1,15 @@
 ﻿namespace VCRNETClient.App {
 
     export interface IApplication {
-        readonly homePage: IPage;
+        readonly homePage: IHomePage;
 
-        readonly helpPage: IPage;
+        readonly helpPage: IHelpPage;
 
-        readonly planPage: IPage;
+        readonly planPage: IPlanPage;
 
-        readonly editPage: IPage;
+        readonly editPage: IEditPage;
 
-        readonly guidePage: IPage;
+        readonly guidePage: IGuidePage;
 
         getHelpComponentProvider<TComponentType extends IHelpComponent>(): IHelpComponentProvider<TComponentType>;
     }
@@ -23,15 +23,15 @@
     }
 
     export class Application implements IApplication {
-        readonly homePage = new HomePage(this);
+        readonly homePage: HomePage;
 
-        readonly helpPage = new HelpPage(this);
+        readonly helpPage: HelpPage;
 
-        readonly planPage = new PlanPage(this);
+        readonly planPage: PlanPage;
 
-        readonly editPage = new EditPage(this);
+        readonly editPage: EditPage;
 
-        readonly guidePage = new GuidePage(this);
+        readonly guidePage: GuidePage;
 
         private _pageMapper: { [name: string]: Page<any> } = {};
 
@@ -54,22 +54,25 @@
 
         constructor(private _site: IApplicationSite) {
             // Alle bekannten Seiten.
-            var pages: Page<any>[] = [
-                this.homePage,
-                this.helpPage,
-                this.planPage,
-                this.editPage,
-                this.guidePage,
-            ];
-
-            // Abbildung erstellen.
-            pages.forEach(p => this._pageMapper[p.route] = p);
-
-            var testStart = this.testStart.bind(this);
+            this.homePage = this.addPage(HomePage);
+            this.helpPage = this.addPage(HelpPage);
+            this.planPage = this.addPage(PlanPage);
+            this.editPage = this.addPage(EditPage);
+            this.guidePage = this.addPage(GuidePage);
 
             // Alle Startvorgänge einleiten.
+            var testStart = this.testStart.bind(this);
+
             VCRServer.getServerVersion().then(info => this.version = info).then(testStart);
             VCRServer.getUserProfile().then(profile => this.profile = profile).then(testStart);
+        }
+
+        private addPage<TPageType extends Page<any>>(factory: { new (application: Application): TPageType }): TPageType {
+            var page = new factory(this);
+
+            this._pageMapper[page.route] = page;
+
+            return page;
         }
 
         private testStart(): void {

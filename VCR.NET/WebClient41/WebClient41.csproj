@@ -99,6 +99,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <TypeScriptCompile Include="src\app\pages\guidePage.ts" />
+    <TypeScriptCompile Include="src\app\pages\guide\guideEntry.ts" />
     <TypeScriptCompile Include="src\lib\command\command.ts" />
     <TypeScriptCompile Include="src\lib\localizable.ts" />
   </ItemGroup>
@@ -385,7 +386,7 @@
     <TypeScriptCompile Include="src\components\planRow.tsx" />
     <TypeScriptCompile Include="src\lib\command\radio.tsx" />
     <TypeScriptCompile Include="src\lib\command\radioGroup.tsx" />
-    <TypeScriptCompile Include="src\components\view.ts" />
+    <TypeScriptCompile Include="src\components\view.tsx" />
     <TypeScriptCompile Include="src\vcrnet.tsx" />
   </ItemGroup>
   <ItemGroup>

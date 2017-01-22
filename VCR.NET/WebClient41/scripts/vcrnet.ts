@@ -434,7 +434,7 @@ class GuideFilter implements VCRServer.GuideFilterContract {
     execute(whenLoaded: (items: GuideItem[]) => void): void {
         this.cancelTimeout();
 
-        VCRServer.queryProgramGuide(this, GuideFilter.filterProperties).done((data: VCRServer.GuideItemContract[]) => {
+        VCRServer.queryProgramGuide(this).then(data => {
             var items = $.map(data, (rawData: VCRServer.GuideItemContract) => new GuideItem(rawData));
 
             // Wir erhalten immer einen Eintrag mehr als angefordert, falls noch mehr Einträge existieren

@@ -3,7 +3,7 @@
 namespace VCRNETClient.Ui {
 
     // Die React.Js Komponente zur Anzeige der Startseite.
-    export class Home extends JMSLib.ReactUi.Component<App.HomePage>{
+    export class Home extends JMSLib.ReactUi.Component<App.IHomePage>{
         render(): JSX.Element {
             var application = this.props.noui.application;
 

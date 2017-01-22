@@ -770,13 +770,8 @@ module VCRServer {
         });
     }
 
-    export function queryProgramGuide(filter: GuideFilterContract, protocolFilter: (key: string, value: any) => any): JQueryPromise<any> {
-        return $.ajax({
-            data: JSON.stringify(filter, protocolFilter),
-            contentType: 'application/json',
-            url: restRoot + 'guide',
-            type: 'POST',
-        });
+    export function queryProgramGuide(filter: GuideFilterContract): JMSLib.App.Thenable<GuideItemContract[], XMLHttpRequest> {
+        return doUrlCall("guide", "POST", filter);
     }
 
     export function countProgramGuide(filter: GuideFilterContract, protocolFilter: (key: string, value: any) => any): JQueryPromise<any> {

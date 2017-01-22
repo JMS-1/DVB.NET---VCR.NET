@@ -1,34 +1,29 @@
 ﻿/// <reference path="page.ts" />
 
 namespace VCRNETClient.App {
-    export class EditPage extends Page<JMSLib.App.ISite> {
+
+    export interface IEditPage extends IPage {
+        readonly job: IJobEditor;
+
+        readonly schedule: IScheduleEditor;
+
+        readonly save: JMSLib.App.ICommand;
+
+        readonly del: JMSLib.App.ICommand;
+    }
+
+    export class EditPage extends Page<JMSLib.App.ISite> implements IEditPage {
         private _jobScheduleInfo: VCRServer.JobScheduleInfoContract;
 
-        private _job: JobEditor;
+        job: JobEditor;
 
-        get job(): IJobEditor {
-            return this._job;
-        }
-
-        private _schedule: ScheduleEditor;
-
-        get schedule(): IScheduleEditor {
-            return this._schedule;
-        }
-
-        get save(): JMSLib.App.ICommand {
-            return this._save;
-        }
-
-        get del(): JMSLib.App.ICommand {
-            return this._delete;
-        }
+        schedule: ScheduleEditor;
 
         private _onChanged = this.onChanged.bind(this);
 
-        private _save = new JMSLib.App.Command(() => this.onSave(), "Übernehmen", () => this._isValid);
+        save = new JMSLib.App.Command(() => this.onSave(), "Übernehmen", () => this._isValid);
 
-        private _delete = new JMSLib.App.Command(() => this.onDelete(), "Löschen");
+        del = new JMSLib.App.Command(() => this.onDelete(), "Löschen");
 
         private _sources: VCRServer.SourceEntry[];
 
@@ -42,9 +37,9 @@ namespace VCRNETClient.App {
 
         // Wird jedesmal beim Aufruf der Änderungsseite aufgerufen.
         reset(section: string): void {
-            this._job = undefined;
-            this._schedule = undefined;
-            this._delete.isDangerous = false;
+            this.job = undefined;
+            this.schedule = undefined;
+            this.del.isDangerous = false;
             this._jobScheduleInfo = undefined;
 
             // Zuerst die Liste der Aufzeichnungsverzeichnisse abfragen.
@@ -119,24 +114,24 @@ namespace VCRNETClient.App {
 
             // Pflegemodelle anlegen.
             this._jobScheduleInfo = info;
-            this._job = new JobEditor(this, info.job, profiles, favorites, folders, this._onChanged);
-            this._schedule = new ScheduleEditor(this, info.schedule, favorites, this._onChanged);
+            this.job = new JobEditor(this, info.job, profiles, favorites, folders, this._onChanged);
+            this.schedule = new ScheduleEditor(this, info.schedule, favorites, this._onChanged);
 
             // Quellen für das aktuelle Geräteprofil laden und die Seite für den Anwender freigeben.
             this.loadSources().then(() => this.application.setBusy(false));
         }
 
         private loadSources(): JMSLib.App.Thenable<VCRServer.SourceEntry[], XMLHttpRequest> {
-            var profile = this._job.device.value;
+            var profile = this.job.device.value;
 
             return VCRServer.ProfileSourcesCache.getPromise(profile).then(sources => {
-                if (this._job.device.value === profile) {
+                if (this.job.device.value === profile) {
                     this._sources = sources;
 
-                    this._job.validate(sources);
-                    this._schedule.validate(sources, (this._job.source.value || "").trim().length < 1);
+                    this.job.validate(sources);
+                    this.schedule.validate(sources, (this.job.source.value || "").trim().length < 1);
 
-                    this._isValid = this._job.isValid() && this._schedule.isValid();
+                    this._isValid = this.job.isValid() && this.schedule.isValid();
                 }
 
                 return sources;
@@ -160,12 +155,12 @@ namespace VCRNETClient.App {
         }
 
         private onDelete(): JMSLib.App.Thenable<void, XMLHttpRequest> {
-            if (this._delete.isDangerous)
+            if (this.del.isDangerous)
                 return VCRServer
                     .deleteSchedule(this._jobScheduleInfo.jobId, this._jobScheduleInfo.scheduleId)
                     .then(() => this.application.gotoPage(this.application.planPage.route));
 
-            this._delete.isDangerous = true;
+            this.del.isDangerous = true;
 
             return new JMSLib.App.Promise<void, XMLHttpRequest>(onSuccess => onSuccess(undefined));
         }

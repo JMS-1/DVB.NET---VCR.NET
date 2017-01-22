@@ -32,13 +32,23 @@ namespace VCRNETClient.App {
         }
     }
 
+    export interface IPlanPage extends IPage {
+        readonly showTasks: boolean;
+
+        readonly jobs: IPlanEntry[];
+
+        readonly startFilter: IPlanStartFilter[];
+
+        toggleTaskFilter(): void;
+    }
+
     // Steuert die Anzeige des Aufzeichnungsplan.
-    export class PlanPage extends Page<JMSLib.App.ISite> {
+    export class PlanPage extends Page<JMSLib.App.ISite> implements IPlanPage {
         // Alle aktuell bekannten Aufträge
         private _jobs: PlanEntry[] = [];
 
         // Ermittelt die aktuell anzuzeigenden Aufräge.
-        getJobs(): IPlanEntry[] {
+        get jobs(): IPlanEntry[] {
             for (var i = 0; i < this._startFilter.length - 1; i++)
                 if (this._startFilter[i].active)
                     return this._jobs.filter(job => this.filterJob(job, i));
@@ -47,11 +57,7 @@ namespace VCRNETClient.App {
         }
 
         // Gesetzt, wenn auch alle Aufgaben angezeigt werden.
-        private _showTasks = false;
-
-        showTasks(): boolean {
-            return this._showTasks;
-        }
+        showTasks = false;
 
         // Alle bekannten Datumsfilter.
         private _startFilter: PlanStartFilter[];
@@ -96,7 +102,7 @@ namespace VCRNETClient.App {
             }
 
             // Internen Zustand zurück setzen
-            this._showTasks = false;
+            this.showTasks = false;
             this._jobs = [];
 
             // Daten erstmalig anfordern.
@@ -115,7 +121,7 @@ namespace VCRNETClient.App {
                 return false;
 
             // Aufgabenfilter.
-            if (!this._showTasks)
+            if (!this.showTasks)
                 if (!job.mode)
                     return false;
 
@@ -171,13 +177,13 @@ namespace VCRNETClient.App {
 
         // Schaltet die Anzeige der Aufgaben um.
         toggleTaskFilter(): void {
-            this._showTasks = !this._showTasks;
+            this.showTasks = !this.showTasks;
 
             this.fireRefresh();
         }
 
         // Ermittelt die Liste der Datumsfilter.
-        getStartFilter(): IPlanStartFilter[] {
+        get startFilter(): IPlanStartFilter[] {
             // Wir hängen immer am Ende einen unsichtbaren an, der die Prüfung auf Datumsbereich deutlich vereinfacht.
             return this._startFilter.slice(0, this._startFilter.length - 1);
         }
