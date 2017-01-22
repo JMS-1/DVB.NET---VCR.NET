@@ -1,6 +1,4 @@
-﻿@import "../../../../content/vars";
-
-.jmslib-edittime {
+﻿.jmslib-edittime {
     // Der Titel (Tooltip) eines Texteingabefeldes wird für die Anzeige von Fehlersituationen verwendet, das verstärken wird noch durch einen roten Rahmen.
     &:not([title=""]) {
         border: 2px solid red;

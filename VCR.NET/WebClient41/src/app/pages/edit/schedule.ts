@@ -1,4 +1,6 @@
-﻿namespace VCRNETClient.App {
+﻿/// <reference path="jobSchedule.ts" />
+
+namespace VCRNETClient.App {
 
     // Schnittstelle zur Pflege einer Aufzeichnung.
     export interface IScheduleEditor extends IJobScheduleEditor {
