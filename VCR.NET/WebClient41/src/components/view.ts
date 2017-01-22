@@ -1,6 +1,6 @@
 ﻿/// <reference path="../lib/router.tsx" />
 
-namespace VCRNETClient {
+namespace VCRNETClient.Ui {
 
     export class View extends JMSLib.ReactUi.Router<App.IPage> {
         protected getPages(page: App.IPage): JMSLib.ReactUi.IPageFactory<App.IPage> {

@@ -1,6 +1,6 @@
 ﻿/// <reference path="../lib/reactUi.tsx" />
 
-namespace VCRNETClient {
+namespace VCRNETClient.Ui {
 
     // React.Js Komponente zur Anzeige der Navigationsleiste.
     export class Navigation extends JMSLib.ReactUi.Component<App.IPage>

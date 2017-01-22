@@ -5,6 +5,6 @@
         JMSLib.ReactUi.Pictogram.imageRoot = `ui/images/`;
 
         // Anwendung starten.
-        ReactDOM.render(<Main />, document.querySelector(`vcrnet-spa`));
+        ReactDOM.render(<Ui.Main />, document.querySelector(`vcrnet-spa`));
     }
 }

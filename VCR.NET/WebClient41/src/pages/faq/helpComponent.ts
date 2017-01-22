@@ -1,6 +1,6 @@
 ﻿/// <reference path="../../vcrnet.tsx" />
 
-namespace VCRNETClient {
+namespace VCRNETClient.Ui {
     export abstract class HelpComponent implements App.IHelpComponent {
         abstract getTitle(): string;
 

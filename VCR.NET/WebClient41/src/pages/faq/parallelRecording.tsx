@@ -1,6 +1,6 @@
 ﻿/// <reference path="helpComponent.ts" />
 
-namespace VCRNETClient.HelpPages {
+namespace VCRNETClient.Ui.HelpPages {
     export class ParallelRecording extends HelpComponent {
         getTitle(): string {
             return "Planung von Aufzeichnungen";

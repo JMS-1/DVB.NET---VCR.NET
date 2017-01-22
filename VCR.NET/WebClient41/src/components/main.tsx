@@ -1,10 +1,7 @@
 ﻿/// <reference path="../vcrnet.tsx" />
 
-namespace VCRNETClient {
-    interface IMainStatic {
-    }
-
-    export class Main extends React.Component<IMainStatic, JMSLib.ReactUi.IEmpty> implements App.IApplicationSite, App.IHelpSite {
+namespace VCRNETClient.Ui {
+    export class Main extends React.Component<JMSLib.ReactUi.IEmpty, JMSLib.ReactUi.IEmpty> implements App.IApplicationSite, App.IHelpSite {
         private static _topics: { [section: string]: App.IHelpComponent; };
 
         private static initStatic(): void {

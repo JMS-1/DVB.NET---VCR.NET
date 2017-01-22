@@ -1,6 +1,6 @@
 ﻿/// <reference path="../lib/reactUi.tsx" />
 
-namespace VCRNETClient {
+namespace VCRNETClient.Ui {
 
     export class Plan extends JMSLib.ReactUi.ComponentWithSite<App.PlanPage> {
         render(): JSX.Element {
@@ -32,14 +32,14 @@ namespace VCRNETClient {
                         </thead>
                         <tbody>
                             {jobs.map((job, index) => [
-                                <Ui.PlanRow noui={job} key={index} />,
+                                <PlanRow noui={job} key={index} />,
                                 job.showEpg ?
                                     <DetailRow prefixColumns={1} dataColumns={5} key={`${index}Details`}>
                                         [EPGINFO]
                                     </DetailRow> : null,
                                 job.showException ?
                                     <DetailRow prefixColumns={1} dataColumns={5} key={`${index}Exceptions`}>
-                                        <Ui.PlanException noui={job.exception} page={this.props.noui} />
+                                        <PlanException noui={job.exception} page={this.props.noui} />
                                     </DetailRow> : null
                             ])}
                         </tbody>

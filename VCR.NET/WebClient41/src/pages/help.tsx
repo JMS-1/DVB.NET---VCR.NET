@@ -1,6 +1,6 @@
 ﻿/// <reference path="../lib/reactUi.tsx" />
 
-namespace VCRNETClient {
+namespace VCRNETClient.Ui {
 
     // React.Js Komponente zur Anzeige der Hilfeseite.
     export class Help extends JMSLib.ReactUi.Component<App.IHelpPage> {

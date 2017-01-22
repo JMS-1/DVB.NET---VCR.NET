@@ -1,6 +1,6 @@
 ﻿/// <reference path="helpComponent.ts" />
 
-namespace VCRNETClient.HelpPages {
+namespace VCRNETClient.Ui.HelpPages {
     export class AdminProgramGuide extends HelpComponent {
         getTitle(): string {
             return "Konfiguration der Programmzeitschrift";

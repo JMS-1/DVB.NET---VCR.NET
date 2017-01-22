@@ -6,26 +6,26 @@ namespace VCRNETClient.Ui {
             return <fieldset className="vcrnet-jobdata">
                 <legend>Daten zum Auftrag</legend>
 
-                <Ui.Field page={this.props.noui.page} label={`${this.props.noui.device.text}:`}>
+                <Field page={this.props.noui.page} label={`${this.props.noui.device.text}:`}>
                     <JMSLib.ReactUi.EditTextWithList noui={this.props.noui.device} />
                     <JMSLib.ReactUi.EditBoolean noui={this.props.noui.deviceLock} />
-                </Ui.Field>
+                </Field>
 
-                <Ui.Field page={this.props.noui.page} label={`${this.props.noui.name.text}:`} help="jobsandschedules">
+                <Field page={this.props.noui.page} label={`${this.props.noui.name.text}:`} help="jobsandschedules">
                     <JMSLib.ReactUi.EditText noui={this.props.noui.name} chars={100} hint="(Jeder Auftrag muss einen Namen haben)" />
-                </Ui.Field>
+                </Field>
 
-                <Ui.Field page={this.props.noui.page} label={`${this.props.noui.folder.text}:`}>
+                <Field page={this.props.noui.page} label={`${this.props.noui.folder.text}:`}>
                     <JMSLib.ReactUi.EditTextWithList noui={this.props.noui.folder} />
-                </Ui.Field>
+                </Field>
 
-                <Ui.Field page={this.props.noui.page} label={`${this.props.noui.source.text}:`} help="sourcechooser">
-                    <Ui.EditChannel noui={this.props.noui.source} />
-                </Ui.Field>
+                <Field page={this.props.noui.page} label={`${this.props.noui.source.text}:`} help="sourcechooser">
+                    <EditChannel noui={this.props.noui.source} />
+                </Field>
 
-                <Ui.Field page={this.props.noui.page} label={`${this.props.noui.sourceFlags.text}:`} help="filecontents">
-                    <Ui.EditChannelFlags noui={this.props.noui.sourceFlags} />
-                </Ui.Field>
+                <Field page={this.props.noui.page} label={`${this.props.noui.sourceFlags.text}:`} help="filecontents">
+                    <EditChannelFlags noui={this.props.noui.sourceFlags} />
+                </Field>
             </fieldset>;
         }
     }

@@ -1,6 +1,6 @@
 ﻿/// <reference path="../lib/reactUi.tsx" />
 
-namespace VCRNETClient {
+namespace VCRNETClient.Ui {
 
     // Die React.Js Komponente zur Anzeige der Startseite.
     export class Home extends JMSLib.ReactUi.Component<App.HomePage>{

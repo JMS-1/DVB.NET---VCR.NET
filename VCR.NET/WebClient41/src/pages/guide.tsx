@@ -1,6 +1,6 @@
 ﻿/// <reference path="../lib/reactUi.tsx" />
 
-namespace VCRNETClient {
+namespace VCRNETClient.Ui {
 
     export class Guide extends JMSLib.ReactUi.ComponentWithSite<App.GuidePage> {
         render(): JSX.Element {

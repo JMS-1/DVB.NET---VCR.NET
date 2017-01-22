@@ -1,6 +1,6 @@
 ﻿/// <reference path="../lib/reactUi.tsx" />
 
-namespace VCRNETClient {
+namespace VCRNETClient.Ui {
     export class Edit extends JMSLib.ReactUi.ComponentWithSite<App.EditPage>
     {
         render(): JSX.Element {
@@ -16,11 +16,11 @@ namespace VCRNETClient {
                 </div>
                 {this.renderJobHelp()}
                 <form>
-                    <Ui.JobData noui={this.props.noui.job} />
+                    <JobData noui={this.props.noui.job} />
                 </form>
                 {this.renderScheduleHelp()}
                 <form>
-                    <Ui.ScheduleData noui={schedule} />
+                    <ScheduleData noui={schedule} />
                 </form>
                 {schedule.hasExceptions ? this.renderExceptionHelp() : null}
                 {schedule.hasExceptions ? <form>
@@ -34,7 +34,7 @@ namespace VCRNETClient {
                                     <td>Laufzeitanpassung</td>
                                 </tr>
                             </thead>
-                            <tbody>{schedule.exceptions.map((e, index) => <Ui.EditException key={index} noui={e} />)}</tbody>
+                            <tbody>{schedule.exceptions.map((e, index) => <EditException key={index} noui={e} />)}</tbody>
                         </table>
                     </fieldset>
                 </form> : null}
