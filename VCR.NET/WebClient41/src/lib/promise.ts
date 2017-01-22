@@ -1,4 +1,4 @@
-﻿namespace VCRNETClient.App {
+﻿namespace JMSLib.App {
 
     // Schnittstelle zur Verteilung asnychron ermittelter Daten.
     export interface Thenable<TResponseType, TErrorType> {

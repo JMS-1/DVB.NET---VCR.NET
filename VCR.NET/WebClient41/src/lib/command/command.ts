@@ -1,6 +1,4 @@
-﻿/// <reference path="generic.ts" />
-
-namespace VCRNETClient.App.NoUi {
+﻿namespace JMSLib.App {
 
     export interface ICommand extends IDisplayText, INoUiWithSite {
         readonly isEnabled: boolean;

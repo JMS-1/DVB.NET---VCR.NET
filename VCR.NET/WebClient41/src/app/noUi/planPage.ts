@@ -3,7 +3,7 @@
 namespace VCRNETClient.App.NoUi {
 
     // Die Auswahl eines Datumsfilters.
-    export interface IPlanStartFilter extends IDisplayText {
+    export interface IPlanStartFilter extends JMSLib.App.IDisplayText {
         // Gesetzt, wenn der Filter aktiv ist.
         readonly active: boolean;
 
@@ -33,7 +33,7 @@ namespace VCRNETClient.App.NoUi {
     }
 
     // Steuert die Anzeige des Aufzeichnungsplan.
-    export class PlanPage extends Page<INoUiSite> {
+    export class PlanPage extends Page<JMSLib.App.INoUiSite> {
         // Alle aktuell bekannten Aufträge
         private _jobs: PlanEntry[] = [];
 

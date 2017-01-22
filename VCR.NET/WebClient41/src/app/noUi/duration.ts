@@ -2,7 +2,7 @@
 
 namespace VCRNETClient.App.NoUi {
 
-    export interface IDurationEditor extends IDisplayText {
+    export interface IDurationEditor extends JMSLib.App.IDisplayText {
         readonly startTime: ITimeEditor;
 
         readonly endTime: ITimeEditor;

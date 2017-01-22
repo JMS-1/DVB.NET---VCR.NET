@@ -16,7 +16,7 @@ namespace VCRNETClient.App.NoUi {
         select(): void;
     }
 
-    export interface IDaySelector extends IDisplayText, INoUiWithSite {
+    export interface IDaySelector extends JMSLib.App.IDisplayText, JMSLib.App.INoUiWithSite {
         monthBackward(): void;
 
         monthForward(): void;

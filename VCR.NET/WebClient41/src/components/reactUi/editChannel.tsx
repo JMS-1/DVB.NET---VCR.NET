@@ -1,9 +1,9 @@
-﻿/// <reference path="../../vcrnet.tsx" />
+﻿/// <reference path="../../lib/site.tsx" />
 
 namespace VCRNETClient.Ui {
 
     // Die React.Js Anzeige zur Senderauswahl.
-    export class EditChannel extends NoUiViewWithSite<App.NoUi.IChannelSelector> implements App.NoUi.INoUiSite {
+    export class EditChannel extends JMSLib.ReactUi.NoUiViewWithSite<App.NoUi.IChannelSelector> implements JMSLib.App.INoUiSite {
         // Anzeige erstellen.
         render(): JSX.Element {
             return <div className="vcrnet-editchannel">

@@ -12,7 +12,7 @@ namespace VCRNETClient.App.NoUi {
     }
 
     // Wird von der Oberfläche zur Verfügung gestellt - die Aspekte der Hilfe sind nur dort und nicht in der Anwendungslogik abgebildet.
-    export interface IHelpSite extends NoUi.INoUiSite {
+    export interface IHelpSite extends JMSLib.App.INoUiSite {
         // Ermittelt die aktuelle Überschrift.
         getCurrentHelpTitle(section: string): string;
     }

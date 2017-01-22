@@ -1,7 +1,7 @@
 ﻿namespace VCRNETClient.App.NoUi {
 
     // Bietet den Wert einer Eigenschaft zur Pflege in der Oberfläche an-
-    export interface IValueHolder<TValueType> extends IDisplayText {
+    export interface IValueHolder<TValueType> extends JMSLib.App.IDisplayText {
         // Meldet den aktuellen Wert oder verändert diesen - gemeldet wird immer der ursprüngliche Wert.
         value: TValueType;
 
@@ -53,8 +53,8 @@
     }
 
     // Basisklasse zur Pflege des Wertes einer einzelnen Eigenschaft.
-    export abstract class ValueHolderWithSite<TValueType> extends ValueHolder<TValueType> implements INoUiWithSite {
-        private _site: INoUiSite;
+    export abstract class ValueHolderWithSite<TValueType> extends ValueHolder<TValueType> implements JMSLib.App.INoUiWithSite {
+        private _site: JMSLib.App.INoUiSite;
 
         // Benachrichtigt die Oberfläche zur Aktualisierung der Anzeige.
         protected refresh(): void {
@@ -63,7 +63,7 @@
         }
 
         // Meldet die Oberfläche an.
-        setSite(site: INoUiSite): void {
+        setSite(site: JMSLib.App.INoUiSite): void {
             this._site = site;
 
             if (this._site)

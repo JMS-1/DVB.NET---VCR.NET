@@ -1,4 +1,4 @@
-﻿namespace VCRNETClient.App.NoUi {
+﻿namespace JMSLib.App {
 
     // Beschreibt ein Oberflächenelement mit einem Anzeigetext, der eventuell sprachabhängig ist.
     export interface IDisplayText {

@@ -4,7 +4,7 @@ namespace VCRNETClient {
     interface IMainStatic {
     }
 
-    export class Main extends React.Component<IMainStatic, INoDynamicState> implements App.IApplicationSite, App.NoUi.IHelpSite {
+    export class Main extends React.Component<IMainStatic, JMSLib.ReactUi.INoDynamicState> implements App.IApplicationSite, App.NoUi.IHelpSite {
         private static _topics: { [section: string]: App.NoUi.IHelpComponent; };
 
         private static initStatic(): void {

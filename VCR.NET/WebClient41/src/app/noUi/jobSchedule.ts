@@ -1,7 +1,7 @@
 ﻿namespace VCRNETClient.App.NoUi {
 
     // Schnittstelle zur Pflege der gemeinsamen Daten eines Auftrags oder einer Aufzeichnung.
-    export interface ISourceFlagsEditor extends IDisplayText {
+    export interface ISourceFlagsEditor extends JMSLib.App.IDisplayText {
         // Gesetzt um alle Sprachen aufzuzeichnen
         readonly allLanguages: IBooleanEditor;
 

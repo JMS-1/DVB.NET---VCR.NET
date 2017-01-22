@@ -18,8 +18,8 @@ module VCRServer {
     var restRoot = serverRoot + '/vcr.net/';
 
     // Führt eine Web Anfrage aus.
-    function doUrlCall<TResponseType, TRequestType>(url: string, method: string = 'GET', request?: TRequestType): VCRNETClient.App.Thenable<TResponseType, XMLHttpRequest> {
-        return new VCRNETClient.App.Promise<TResponseType, XMLHttpRequest>((success, failure) => {
+    function doUrlCall<TResponseType, TRequestType>(url: string, method: string = 'GET', request?: TRequestType): JMSLib.App.Thenable<TResponseType, XMLHttpRequest> {
+        return new JMSLib.App.Promise<TResponseType, XMLHttpRequest>((success, failure) => {
             var xhr = new XMLHttpRequest();
 
             xhr.addEventListener("load", () => {
@@ -655,15 +655,15 @@ module VCRServer {
         return deviceUrl;
     }
 
-    export function getServerVersion(): VCRNETClient.App.Thenable<InfoServiceContract, XMLHttpRequest> {
+    export function getServerVersion(): JMSLib.App.Thenable<InfoServiceContract, XMLHttpRequest> {
         return doUrlCall('info');
     }
 
-    export function getProfileInfos(): VCRNETClient.App.Thenable<ProfileInfoContract[], XMLHttpRequest> {
+    export function getProfileInfos(): JMSLib.App.Thenable<ProfileInfoContract[], XMLHttpRequest> {
         return doUrlCall('profile');
     }
 
-    export function getUserProfile(): VCRNETClient.App.Thenable<UserProfileContract, XMLHttpRequest> {
+    export function getUserProfile(): JMSLib.App.Thenable<UserProfileContract, XMLHttpRequest> {
         return doUrlCall('userprofile');
     }
 
@@ -685,7 +685,7 @@ module VCRServer {
         });
     }
 
-    export function getPlanCurrent(): VCRNETClient.App.Thenable<PlanCurrentContract[], XMLHttpRequest> {
+    export function getPlanCurrent(): JMSLib.App.Thenable<PlanCurrentContract[], XMLHttpRequest> {
         return doUrlCall('plan');
     }
 
@@ -710,7 +710,7 @@ module VCRServer {
         });
     }
 
-    export function getProfileSources(device: string): VCRNETClient.App.Thenable<ProfileSourceContract[], XMLHttpRequest> {
+    export function getProfileSources(device: string): JMSLib.App.Thenable<ProfileSourceContract[], XMLHttpRequest> {
         return doUrlCall(`profile/${device}`);
     }
 
@@ -788,7 +788,7 @@ module VCRServer {
         });
     }
 
-    export function getRecordingDirectories(): VCRNETClient.App.Thenable<string[], XMLHttpRequest> {
+    export function getRecordingDirectories(): JMSLib.App.Thenable<string[], XMLHttpRequest> {
         return doUrlCall('info?directories');
     }
 
@@ -799,7 +799,7 @@ module VCRServer {
         });
     }
 
-    export function updateException(legacyId: string, referenceDay: string, startDelta: number, durationDelta: number): VCRNETClient.App.Thenable<void, XMLHttpRequest> {
+    export function updateException(legacyId: string, referenceDay: string, startDelta: number, durationDelta: number): JMSLib.App.Thenable<void, XMLHttpRequest> {
         return doUrlCall<void, void>(`exception/${legacyId}?when=${referenceDay}&startDelta=${startDelta}&durationDelta=${durationDelta}`, 'PUT');
     }
 
@@ -860,15 +860,15 @@ module VCRServer {
         });
     }
 
-    export function createScheduleFromGuide(legacyId: string, epgId: string): VCRNETClient.App.Thenable<JobScheduleInfoContract, XMLHttpRequest> {
+    export function createScheduleFromGuide(legacyId: string, epgId: string): JMSLib.App.Thenable<JobScheduleInfoContract, XMLHttpRequest> {
         return doUrlCall(`edit/${legacyId}${epgId}`);
     }
 
-    export function getPlan(limit: number, end: Date): VCRNETClient.App.Thenable<PlanActivityContract[], XMLHttpRequest> {
+    export function getPlan(limit: number, end: Date): JMSLib.App.Thenable<PlanActivityContract[], XMLHttpRequest> {
         return doUrlCall(`plan?limit=${limit}&end=${end.toISOString()}`);
     }
 
-    export function updateSchedule(jobId: string, scheduleId: string, data: JobScheduleDataContract): VCRNETClient.App.Thenable<void, XMLHttpRequest> {
+    export function updateSchedule(jobId: string, scheduleId: string, data: JobScheduleDataContract): JMSLib.App.Thenable<void, XMLHttpRequest> {
         var method = "POST";
         var url = "edit";
 
@@ -889,7 +889,7 @@ module VCRServer {
     // Verwaltet die Aufzeichnungsverzeichnisse
     export class RecordingDirectoryCache {
         // Die zwischengespeicherten Verzeichnisse
-        private static promise: VCRNETClient.App.Promise<string[], XMLHttpRequest>;
+        private static promise: JMSLib.App.Promise<string[], XMLHttpRequest>;
 
         // Vergisst alles, was wir wissen
         static reset(): void {
@@ -897,11 +897,11 @@ module VCRServer {
         }
 
         // Ruft die Verzeichnisse ab
-        static getPromise(): VCRNETClient.App.Thenable<string[], XMLHttpRequest> {
+        static getPromise(): JMSLib.App.Thenable<string[], XMLHttpRequest> {
             // Erstmalig laden
             if (!RecordingDirectoryCache.promise) {
                 // Verwaltung erzeugen.
-                RecordingDirectoryCache.promise = new VCRNETClient.App.Promise<string[], XMLHttpRequest>((success, failure) => {
+                RecordingDirectoryCache.promise = new JMSLib.App.Promise<string[], XMLHttpRequest>((success, failure) => {
                     getRecordingDirectories().then(data => success(data));
                 });
             }
@@ -914,13 +914,13 @@ module VCRServer {
     // Verwaltet die Geräteprofile
     export class ProfileCache {
         // Die zwischengespeicherten Geräte
-        private static promise: VCRNETClient.App.Promise<ProfileInfoContract[], XMLHttpRequest>;
+        private static promise: JMSLib.App.Promise<ProfileInfoContract[], XMLHttpRequest>;
 
         // Ruft die Profile ab
-        static getPromise(): VCRNETClient.App.Thenable<ProfileInfoContract[], XMLHttpRequest> {
+        static getPromise(): JMSLib.App.Thenable<ProfileInfoContract[], XMLHttpRequest> {
             // Einmalig erzeugen.
             if (!ProfileCache.promise) {
-                ProfileCache.promise = new VCRNETClient.App.Promise<ProfileInfoContract[], XMLHttpRequest>((success, failure) => {
+                ProfileCache.promise = new JMSLib.App.Promise<ProfileInfoContract[], XMLHttpRequest>((success, failure) => {
                     // Ladevorgang anstossen.
                     getProfileInfos().then(data => success(data));
                 });
@@ -992,15 +992,15 @@ module VCRServer {
     // Verwaltet Listen von Quellen zu Geräteprofilen
     export class ProfileSourcesCache {
         // Verwaltet alle Quellen zu allen Geräten als Nachschlageliste
-        private static promises: { [device: string]: VCRNETClient.App.Promise<SourceEntry[], XMLHttpRequest> } = {};
+        private static promises: { [device: string]: JMSLib.App.Promise<SourceEntry[], XMLHttpRequest> } = {};
 
         // Fordert die Quellen eines Geräteprofils an.
-        static getPromise(profileName: string): VCRNETClient.App.Thenable<SourceEntry[], XMLHttpRequest> {
+        static getPromise(profileName: string): JMSLib.App.Thenable<SourceEntry[], XMLHttpRequest> {
             // Eventuell haben wir das schon einmal gemacht
             var promise = ProfileSourcesCache.promises[profileName];
             if (!promise) {
                 // Verwaltung erzeugen.
-                ProfileSourcesCache.promises[profileName] = promise = new VCRNETClient.App.Promise<SourceEntry[], XMLHttpRequest>((success, failure) => {
+                ProfileSourcesCache.promises[profileName] = promise = new JMSLib.App.Promise<SourceEntry[], XMLHttpRequest>((success, failure) => {
                     // Ladevorgang anstossen.
                     getProfileSources(profileName).then(data => success($.map(data, rawData => new SourceEntry(rawData))));
                 });

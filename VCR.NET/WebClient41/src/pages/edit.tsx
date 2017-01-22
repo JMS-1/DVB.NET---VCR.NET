@@ -1,7 +1,7 @@
-﻿/// <reference path="../vcrnet.tsx" />
+﻿/// <reference path="../lib/site.tsx" />
 
 namespace VCRNETClient {
-    export class Edit extends NoUiViewWithSite<App.EditPage>
+    export class Edit extends JMSLib.ReactUi.NoUiViewWithSite<App.EditPage>
     {
         render(): JSX.Element {
             const schedule = this.props.noui.schedule;
@@ -40,8 +40,8 @@ namespace VCRNETClient {
                 </form> : null}
                 {this.renderButtonHelp()}
                 <div>
-                    <Ui.Command noui={this.props.noui.save} />
-                    <Ui.Command noui={this.props.noui.del} />
+                    <JMSLib.ReactUi.Command noui={this.props.noui.save} />
+                    <JMSLib.ReactUi.Command noui={this.props.noui.del} />
                 </div>
             </div>;
         }

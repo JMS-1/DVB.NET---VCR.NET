@@ -7,7 +7,7 @@ namespace VCRNETClient {
         pict?: string
     }
 
-    export class InternalLink extends React.Component<IInternalLinkStatic, INoDynamicState>{
+    export class InternalLink extends React.Component<IInternalLinkStatic, JMSLib.ReactUi.INoDynamicState>{
         render(): JSX.Element {
             var target = "javascript:void(0)";
             var click = undefined;

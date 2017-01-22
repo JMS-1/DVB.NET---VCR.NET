@@ -1,7 +1,7 @@
 ﻿/// <reference path="../../vcrnet.tsx" />
 
 namespace VCRNETClient.Ui {
-    export class ScheduleData extends NoUiView<App.NoUi.IScheduleEditor>{
+    export class ScheduleData extends JMSLib.ReactUi.NoUiView<App.NoUi.IScheduleEditor>{
         render(): JSX.Element {
             return <fieldset className="vcrnet-scheduledata">
                 <legend>Daten zur Aufzeichnung</legend>

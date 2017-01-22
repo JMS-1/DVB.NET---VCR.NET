@@ -1,15 +1,15 @@
-﻿/// <reference path="../../vcrnet.tsx" />
+﻿/// <reference path="../../lib/site.tsx" />
 
 namespace VCRNETClient.Ui {
 
     // Schnittstelle zur Pflege einer Ausnahmeregel.
-    interface IPlanExceptionStatic extends INoUiComponent<App.NoUi.IPlanException> {
+    interface IPlanExceptionStatic extends JMSLib.ReactUi.INoUiComponent<App.NoUi.IPlanException> {
         // Die aktuell angezeigte Seite.
         page: App.NoUi.IPage;
     }
 
     // React.Js Komponente zur Pflege einer einzelnen Ausnahmeregel.
-    export class PlanException extends NoUiViewExWithSite<App.NoUi.IPlanException, IPlanExceptionStatic> {
+    export class PlanException extends JMSLib.ReactUi.NoUiViewExWithSite<App.NoUi.IPlanException, IPlanExceptionStatic> {
         // Erstellt die Oberflächenelemente zur Pflege.
         render(): JSX.Element {
             return <fieldset className="vcrnet-planexception">

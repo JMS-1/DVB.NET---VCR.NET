@@ -4,7 +4,7 @@ namespace VCRNETClient {
     interface IRadioGroupStatic {
     }
 
-    export class RadioGroup extends React.Component<IRadioGroupStatic, INoDynamicState>{
+    export class RadioGroup extends React.Component<IRadioGroupStatic, JMSLib.ReactUi.INoDynamicState>{
         render(): JSX.Element {
             return <div className="vcrnet-radioGroup">{this.props.children}</div>
         }

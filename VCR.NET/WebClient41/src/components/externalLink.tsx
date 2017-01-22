@@ -5,7 +5,7 @@ namespace VCRNETClient {
         url: string;
     }
 
-    export class ExternalLink extends React.Component<IExternalLinkStatic, INoDynamicState>{
+    export class ExternalLink extends React.Component<IExternalLinkStatic, JMSLib.ReactUi.INoDynamicState>{
         render(): JSX.Element {
             return <a className="vcrnet-externalLink" href={this.props.url} target="_blank">{this.props.children}</a>;
         }

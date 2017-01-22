@@ -1,8 +1,8 @@
-﻿/// <reference path="../vcrnet.tsx" />
+﻿/// <reference path="../lib/site.tsx" />
 
 namespace VCRNETClient {
 
-    export class Plan extends NoUiViewWithSite<App.NoUi.PlanPage> {
+    export class Plan extends JMSLib.ReactUi.NoUiViewWithSite<App.NoUi.PlanPage> {
         render(): JSX.Element {
             var jobs = this.props.noui.getJobs();
 

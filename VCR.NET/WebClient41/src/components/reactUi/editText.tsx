@@ -1,9 +1,9 @@
-﻿/// <reference path="../../vcrnet.tsx" />
+﻿/// <reference path="../../lib/site.tsx" />
 
 namespace VCRNETClient.Ui {
 
     // Konfiguration einer einfachen Texteingabe.
-    interface IEditTextStatic extends INoUiComponent<App.NoUi.IStringEditor> {
+    interface IEditTextStatic extends JMSLib.ReactUi.INoUiComponent<App.NoUi.IStringEditor> {
         // Die Anzahl der darzustellenden Zeichen.
         chars: number;
 
@@ -12,7 +12,7 @@ namespace VCRNETClient.Ui {
     }
 
     // Texteingabe für React.Js - die NoUi Schicht stellt den Wert und das Prüfergebnis zur Verfügung.
-    export class EditText extends NoUiViewEx<App.NoUi.IStringEditor, IEditTextStatic>  {
+    export class EditText extends JMSLib.ReactUi.NoUiViewEx<App.NoUi.IStringEditor, IEditTextStatic>  {
         // Erstellt die Anzeige der Komponente.
         render(): JSX.Element {
             return <input className="vcrnet-edittext"

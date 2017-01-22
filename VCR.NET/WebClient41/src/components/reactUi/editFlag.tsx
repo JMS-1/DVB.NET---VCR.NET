@@ -3,7 +3,7 @@
 namespace VCRNETClient.Ui {
 
     // React.Js Komponente zur visuellen Pflege eines Wahrheitswertes.
-    export class EditBoolean extends NoUiView<App.NoUi.IBooleanEditor>  {
+    export class EditBoolean extends JMSLib.ReactUi.NoUiView<App.NoUi.IBooleanEditor>  {
         // Erstellt die Anzeige der Komponente.
         render(): JSX.Element {
             return <label className="vcrnet-editflag">

@@ -1,9 +1,9 @@
-﻿/// <reference path="../vcrnet.tsx" />
+﻿/// <reference path="../lib/site.tsx" />
 
 namespace VCRNETClient {
 
     // React.Js Komponente zur Anzeige der Navigationsleiste.
-    export class Navigation extends NoUiView<App.NoUi.IPage>
+    export class Navigation extends JMSLib.ReactUi.NoUiView<App.NoUi.IPage>
     {
         // Erstellt die Anzeige.
         render(): JSX.Element {

@@ -1,8 +1,8 @@
-﻿/// <reference path="../../vcrnet.tsx" />
+﻿/// <reference path="../../lib/site.tsx" />
 
 namespace VCRNETClient.Ui {
 
-    export class EditDay extends NoUiViewWithSite<App.NoUi.IDaySelector> implements App.NoUi.INoUiSite {
+    export class EditDay extends JMSLib.ReactUi.NoUiViewWithSite<App.NoUi.IDaySelector> implements JMSLib.App.INoUiSite {
         // Anzeige erstellen.
         render(): JSX.Element {
             return <div className="vcrnet-editday">

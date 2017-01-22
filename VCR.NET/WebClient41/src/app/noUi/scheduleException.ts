@@ -1,6 +1,6 @@
 ﻿namespace VCRNETClient.App.NoUi {
 
-    export interface IScheduleException extends INoUiWithSite {
+    export interface IScheduleException extends JMSLib.App.INoUiWithSite {
         readonly isActive: IBooleanEditor;
 
         readonly dayDisplay: string;
@@ -19,9 +19,9 @@
 
         private _active = true;
 
-        private _site: INoUiSite;
+        private _site: JMSLib.App.INoUiSite;
 
-        setSite(newSite: INoUiSite): void {
+        setSite(newSite: JMSLib.App.INoUiSite): void {
             this._site = newSite;
         }
 

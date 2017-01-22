@@ -1,7 +1,7 @@
 ﻿/// <reference path="noUi/page.ts" />
 
 namespace VCRNETClient.App {
-    export class EditPage extends NoUi.Page<NoUi.INoUiSite> {
+    export class EditPage extends NoUi.Page<JMSLib.App.INoUiSite> {
         private _jobScheduleInfo: VCRServer.JobScheduleInfoContract;
 
         private _job: NoUi.JobEditor;
@@ -16,19 +16,19 @@ namespace VCRNETClient.App {
             return this._schedule;
         }
 
-        get save(): NoUi.ICommand {
+        get save(): JMSLib.App.ICommand {
             return this._save;
         }
 
-        get del(): NoUi.ICommand {
+        get del(): JMSLib.App.ICommand {
             return this._delete;
         }
 
         private _onChanged = this.onChanged.bind(this);
 
-        private _save = new NoUi.Command(() => this.onSave(), "Übernehmen", () => this._isValid);
+        private _save = new JMSLib.App.Command(() => this.onSave(), "Übernehmen", () => this._isValid);
 
-        private _delete = new NoUi.Command(() => this.onDelete(), "Löschen");
+        private _delete = new JMSLib.App.Command(() => this.onDelete(), "Löschen");
 
         private _sources: VCRServer.SourceEntry[];
 
@@ -126,7 +126,7 @@ namespace VCRNETClient.App {
             this.loadSources().then(() => this.application.setBusy(false));
         }
 
-        private loadSources(): Thenable<VCRServer.SourceEntry[], XMLHttpRequest> {
+        private loadSources(): JMSLib.App.Thenable<VCRServer.SourceEntry[], XMLHttpRequest> {
             var profile = this._job.device.value;
 
             return VCRServer.ProfileSourcesCache.getPromise(profile).then(sources => {
@@ -153,13 +153,13 @@ namespace VCRNETClient.App {
             this.refreshUi();
         }
 
-        private onSave(): Thenable<void, XMLHttpRequest> {
+        private onSave(): JMSLib.App.Thenable<void, XMLHttpRequest> {
             return VCRServer
                 .updateSchedule(this._jobScheduleInfo.jobId, this._jobScheduleInfo.scheduleId, { job: this._jobScheduleInfo.job, schedule: this._jobScheduleInfo.schedule })
                 .then(() => this.application.gotoPage(this.application.planPage.route));
         }
 
-        private onDelete(): Thenable<void, XMLHttpRequest> {
+        private onDelete(): JMSLib.App.Thenable<void, XMLHttpRequest> {
             if (this._delete.isDangerous)
                 return VCRServer
                     .deleteSchedule(this._jobScheduleInfo.jobId, this._jobScheduleInfo.scheduleId)
@@ -167,7 +167,7 @@ namespace VCRNETClient.App {
 
             this._delete.isDangerous = true;
 
-            return new Promise<void, XMLHttpRequest>(onSuccess => onSuccess(undefined));
+            return new JMSLib.App.Promise<void, XMLHttpRequest>(onSuccess => onSuccess(undefined));
         }
     }
 }

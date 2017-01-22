@@ -1,9 +1,9 @@
-﻿/// <reference path="../vcrnet.tsx" />
+﻿/// <reference path="../lib/site.tsx" />
 
 namespace VCRNETClient {
 
     // React.Js Komponente zur Anzeige der Hilfeseite.
-    export class Help extends NoUiView<App.NoUi.IHelpPage> {
+    export class Help extends JMSLib.ReactUi.NoUiView<App.NoUi.IHelpPage> {
         // Erstellt die Anzeigeelemente der Oberfläche.
         render(): JSX.Element {
             // Ermittelt die Anzeige des gewählten Aspektes.
