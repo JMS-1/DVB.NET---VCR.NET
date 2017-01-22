@@ -320,7 +320,7 @@
     <Content Include="default_old.html" />
     <None Include="content\jmslib.scss" />
     <TypeScriptCompile Include="src\app\app.ts" />
-    <TypeScriptCompile Include="src\lib\edit\datetime\dateFormatter.ts" />
+    <TypeScriptCompile Include="src\lib\dateTimeFormatter.ts" />
     <TypeScriptCompile Include="src\app\pages\editPage.ts" />
     <TypeScriptCompile Include="src\app\pages\helpPage.ts" />
     <TypeScriptCompile Include="src\app\pages\homePage.ts" />
