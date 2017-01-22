@@ -8,10 +8,10 @@ namespace VCRNETClient.Ui {
         // Erzeugt die visuelle Darstellung.
         render(): JSX.Element {
             return <div className="vcrnet-editchannelflags">
-                <EditBoolean noui={this.props.noui.includeDolby} />
-                <EditBoolean noui={this.props.noui.allLanguages} />
-                <EditBoolean noui={this.props.noui.withVideotext} />
-                <EditBoolean noui={this.props.noui.withSubtitles} />
+                <JMSLib.ReactUi.EditBoolean noui={this.props.noui.includeDolby} />
+                <JMSLib.ReactUi.EditBoolean noui={this.props.noui.allLanguages} />
+                <JMSLib.ReactUi.EditBoolean noui={this.props.noui.withVideotext} />
+                <JMSLib.ReactUi.EditBoolean noui={this.props.noui.withSubtitles} />
             </div>;
         }
 

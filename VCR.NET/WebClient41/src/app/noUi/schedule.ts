@@ -9,15 +9,15 @@
         readonly duration: IDurationEditor;
 
         // Wiederholungsmuster als Ganzes und aufgespalten als Wahrheitswert pro Wochentag.
-        readonly repeat: INumberEditor;
+        readonly repeat: JMSLib.App.IValidatedNumber;
 
-        readonly onMonday: IBooleanEditor;
-        readonly onTuesday: IBooleanEditor;
-        readonly onWednesday: IBooleanEditor;
-        readonly onThursday: IBooleanEditor;
-        readonly onFriday: IBooleanEditor;
-        readonly onSaturday: IBooleanEditor;
-        readonly onSunday: IBooleanEditor;
+        readonly onMonday: JMSLib.App.IValidateFlag;
+        readonly onTuesday: JMSLib.App.IValidateFlag;
+        readonly onWednesday: JMSLib.App.IValidateFlag;
+        readonly onThursday: JMSLib.App.IValidateFlag;
+        readonly onFriday: JMSLib.App.IValidateFlag;
+        readonly onSaturday: JMSLib.App.IValidateFlag;
+        readonly onSunday: JMSLib.App.IValidateFlag;
 
         // Ende der Wiederholung.
         readonly lastDay: IDaySelector;
@@ -35,17 +35,17 @@
 
             // Pflegbare Eigenschaften anlegen.
             this.firstStart = new DayEditor(model, "firstStart", onChange, "Datum", false);
-            this.repeat = new NumberEditor(model, "repeatPattern", onChange, "Wiederholung");
+            this.repeat = new JMSLib.App.EditNumber(model, "repeatPattern", onChange, "Wiederholung");
             this.lastDay = new DayEditor(model, "lastDay", onChange, "wiederholen bis zum", true);
             this.duration = new DurationEditor(model, "firstStart", "duration", onChange, "Zeitraum");
 
-            this.onMonday = new BooleanSetEditor(ScheduleEditor.flagMonday, this.repeat, DateFormatter.germanDays[1]);
-            this.onTuesday = new BooleanSetEditor(ScheduleEditor.flagTuesday, this.repeat, DateFormatter.germanDays[2]);
-            this.onWednesday = new BooleanSetEditor(ScheduleEditor.flagWednesday, this.repeat, DateFormatter.germanDays[3]);
-            this.onThursday = new BooleanSetEditor(ScheduleEditor.flagThursday, this.repeat, DateFormatter.germanDays[4]);
-            this.onFriday = new BooleanSetEditor(ScheduleEditor.flagFriday, this.repeat, DateFormatter.germanDays[5]);
-            this.onSaturday = new BooleanSetEditor(ScheduleEditor.flagSaturday, this.repeat, DateFormatter.germanDays[6]);
-            this.onSunday = new BooleanSetEditor(ScheduleEditor.flagSunday, this.repeat, DateFormatter.germanDays[0]);
+            this.onMonday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagMonday, this.repeat, DateFormatter.germanDays[1]);
+            this.onTuesday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagTuesday, this.repeat, DateFormatter.germanDays[2]);
+            this.onWednesday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagWednesday, this.repeat, DateFormatter.germanDays[3]);
+            this.onThursday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagThursday, this.repeat, DateFormatter.germanDays[4]);
+            this.onFriday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagFriday, this.repeat, DateFormatter.germanDays[5]);
+            this.onSaturday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagSaturday, this.repeat, DateFormatter.germanDays[6]);
+            this.onSunday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagSunday, this.repeat, DateFormatter.germanDays[0]);
 
             // Ausnahmeregeln.
             this.exceptions = (model.exceptions || []).map(e => new ScheduleException(e, () => this.onExceptionsChanged()));
@@ -59,7 +59,7 @@
         readonly duration: DurationEditor;
 
         // Muster zur Wiederholung.
-        readonly repeat: NumberEditor;
+        readonly repeat: JMSLib.App.EditNumber;
 
         // Ende der Wiederholung
         readonly lastDay: DayEditor;
@@ -83,37 +83,37 @@
         // Das Bit für Montag.
         private static flagMonday: number = 0x01;
 
-        readonly onMonday: BooleanSetEditor;
+        readonly onMonday: JMSLib.App.FlagSetEditor;
 
         // Das Bit für Dienstag.
         private static flagTuesday: number = 0x02;
 
-        readonly onTuesday: BooleanSetEditor;
+        readonly onTuesday: JMSLib.App.FlagSetEditor;
 
         // Das Bit für Mittwoch.
         private static flagWednesday: number = 0x04;
 
-        readonly onWednesday: BooleanSetEditor;
+        readonly onWednesday: JMSLib.App.FlagSetEditor;
 
         // Das Bit für Donnerstag.
         private static flagThursday: number = 0x08;
 
-        readonly onThursday: BooleanSetEditor;
+        readonly onThursday: JMSLib.App.FlagSetEditor;
 
         // Das Bit für Freitag.
         private static flagFriday: number = 0x10;
 
-        readonly onFriday: BooleanSetEditor;
+        readonly onFriday: JMSLib.App.FlagSetEditor;
 
         // Das Bit für Samstag.
         private static flagSaturday: number = 0x20;
 
-        readonly onSaturday: BooleanSetEditor;
+        readonly onSaturday: JMSLib.App.FlagSetEditor;
 
         // Das Bit für Sonntag.
         private static flagSunday: number = 0x40;
 
-        readonly onSunday: BooleanSetEditor;
+        readonly onSunday: JMSLib.App.FlagSetEditor;
 
         validate(sources: VCRServer.SourceEntry[], sourceIsRequired: boolean): void {
             super.validate(sources, sourceIsRequired);

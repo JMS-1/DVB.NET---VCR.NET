@@ -1,13 +1,13 @@
-﻿/// <reference path="../../lib/edit.ts" />
+﻿/// <reference path="../../edit.ts" />
 
-namespace VCRNETClient.App.NoUi {
+namespace JMSLib.App {
 
     // Beschreibt eine Eigenschaft mit einer Zahl mit Prüfergebnissen.
-    export interface INumberEditor extends JMSLib.App.IValidatedValue<number> {
+    export interface IValidatedNumber extends IValidatedValue<number> {
     }
 
     // Verwaltet eine Eigenschaft mit einer Zahl.
-    export class NumberEditor extends JMSLib.App.EditValue<number> implements INumberEditor {
+    export class EditNumber extends EditValue<number> implements IValidatedNumber {
         // Legt eine neue Verwaltung an.
         constructor(data: any, prop: string, onChange: () => void, name: string) {
             super(data, prop, onChange, name);

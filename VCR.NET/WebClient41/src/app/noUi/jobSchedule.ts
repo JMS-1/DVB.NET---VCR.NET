@@ -3,16 +3,16 @@
     // Schnittstelle zur Pflege der gemeinsamen Daten eines Auftrags oder einer Aufzeichnung.
     export interface ISourceFlagsEditor extends JMSLib.App.IDisplayText {
         // Gesetzt um alle Sprachen aufzuzeichnen
-        readonly allLanguages: IBooleanEditor;
+        readonly allLanguages: JMSLib.App.IValidateFlag;
 
         // Gesetzt, um die Dolby Digital Tonspur aufzuzeichnen
-        readonly includeDolby: IBooleanEditor;
+        readonly includeDolby: JMSLib.App.IValidateFlag;
 
         // Gesetzt, um den Videotext aufzuzeichnen
-        readonly withVideotext: IBooleanEditor;
+        readonly withVideotext: JMSLib.App.IValidateFlag;
 
         // Gesetzt, um die Untertitel aufzuzeichnen
-        readonly withSubtitles: IBooleanEditor;
+        readonly withSubtitles: JMSLib.App.IValidateFlag;
     }
 
     // Schnittstelle zur Pflege der gemeinsamen Daten eines Auftrags oder einer Aufzeichnung.
@@ -39,10 +39,10 @@
             this.name = new JMSLib.App.EditString(this.model, "name", onChange, "Name", mustHaveName, "Ein Auftrag muss einen Namen haben.");
             this.source = new ChannelEditor(this.model, "sourceName", favoriteSources, onChange);
             this.sourceFlags = {
-                includeDolby: new BooleanEditor(this.model, "includeDolby", onChange, "Dolby Digital (AC3)", noSource),
-                withSubtitles: new BooleanEditor(this.model, "withSubtitles", onChange, "DVB Untertitel", noSource),
-                allLanguages: new BooleanEditor(this.model, "allLanguages", onChange, "Alle Sprachen", noSource),
-                withVideotext: new BooleanEditor(this.model, "withVideotext", onChange, "Videotext", noSource),
+                includeDolby: new JMSLib.App.FlagEditor(this.model, "includeDolby", onChange, "Dolby Digital (AC3)", noSource),
+                withSubtitles: new JMSLib.App.FlagEditor(this.model, "withSubtitles", onChange, "DVB Untertitel", noSource),
+                allLanguages: new JMSLib.App.FlagEditor(this.model, "allLanguages", onChange, "Alle Sprachen", noSource),
+                withVideotext: new JMSLib.App.FlagEditor(this.model, "withVideotext", onChange, "Videotext", noSource),
                 text: "Besonderheiten"
             };
         }
@@ -56,10 +56,10 @@
         // Aufzeichnungsoptionen.
         readonly sourceFlags: {
             readonly text: string;
-            readonly allLanguages: BooleanEditor;
-            readonly includeDolby: BooleanEditor;
-            readonly withVideotext: BooleanEditor;
-            readonly withSubtitles: BooleanEditor;
+            readonly allLanguages: JMSLib.App.FlagEditor;
+            readonly includeDolby: JMSLib.App.FlagEditor;
+            readonly withVideotext: JMSLib.App.FlagEditor;
+            readonly withSubtitles: JMSLib.App.FlagEditor;
         };
 
         // Prüft alle Daten.

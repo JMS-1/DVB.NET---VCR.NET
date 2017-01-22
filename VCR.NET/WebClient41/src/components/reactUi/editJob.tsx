@@ -8,7 +8,7 @@ namespace VCRNETClient.Ui {
 
                 <Ui.Field page={this.props.noui.page} label={`${this.props.noui.device.text}:`}>
                     <JMSLib.ReactUi.EditTextWithList noui={this.props.noui.device} />
-                    <Ui.EditBoolean noui={this.props.noui.deviceLock} />
+                    <JMSLib.ReactUi.EditBoolean noui={this.props.noui.deviceLock} />
                 </Ui.Field>
 
                 <Ui.Field page={this.props.noui.page} label={`${this.props.noui.name.text}:`} help="jobsandschedules">

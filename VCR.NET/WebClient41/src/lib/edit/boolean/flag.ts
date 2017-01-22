@@ -1,13 +1,13 @@
-﻿/// <reference path="../../lib/edit.ts" />
+﻿/// <reference path="../../edit.ts" />
 
-namespace VCRNETClient.App.NoUi {
+namespace JMSLib.App {
 
     // Schnittstelle zur Pflege einer Eigenschaft mit einem Wahrheitswert.
-    export interface IBooleanEditor extends JMSLib.App.IValidatedValue<boolean> {
+    export interface IValidateFlag extends IValidatedValue<boolean> {
     }
 
     // Verwaltet den Wahrheitswert in einer Eigenschaft - hier können wir uns vollständig auf die Implementierung der Basisklasse verlassen.
-    export class BooleanEditor extends JMSLib.App.EditValue<boolean> implements IBooleanEditor {
+    export class FlagEditor extends EditValue<boolean> implements IValidateFlag {
         // Legt eine neue Verwaltung an.
         constructor(data: any, prop: string, onChange: () => void, name: string, testReadOnly?: () => boolean) {
             super(data, prop, onChange, name, testReadOnly);
@@ -15,12 +15,12 @@ namespace VCRNETClient.App.NoUi {
     }
 
     // Verwaltet ein Bitfeld von Wahrheitswerten in einer Eigenschaft mit einer Zahl als Wert.
-    export class BooleanSetEditor implements IBooleanEditor {
+    export class FlagSetEditor implements IValidateFlag {
         // Prüfungen werden hierbei nicht individuell unterstützt.
         readonly message = "";
 
         // Erstelle eine Verwaltungsinstanz auf Basis der Verwaltung der elementaren Zahl.
-        constructor(private _mask: number, private readonly _flags: NumberEditor, public text: string) {
+        constructor(private _mask: number, private readonly _flags: EditNumber, public text: string) {
         }
 
         // Meldet den aktuellen Wert oder verändert diesen.

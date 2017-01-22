@@ -1,9 +1,9 @@
-﻿/// <reference path="../../vcrnet.tsx" />
+﻿/// <reference path="../../reactUi.tsx" />
 
-namespace VCRNETClient.Ui {
+namespace JMSLib.ReactUi {
 
     // React.Js Komponente zur visuellen Pflege eines Wahrheitswertes.
-    export class EditBoolean extends JMSLib.ReactUi.Component<App.NoUi.IBooleanEditor>  {
+    export class EditBoolean extends Component<App.IValidateFlag>  {
         // Erstellt die Anzeige der Komponente.
         render(): JSX.Element {
             return <label className="vcrnet-editflag">

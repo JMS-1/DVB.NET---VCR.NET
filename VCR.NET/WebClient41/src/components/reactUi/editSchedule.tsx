@@ -27,13 +27,13 @@ namespace VCRNETClient.Ui {
                 </Ui.Field>
 
                 <Ui.Field page={this.props.noui.page} label={`${this.props.noui.repeat.text}:`} help="repeatingschedules">
-                    <Ui.EditBoolean noui={this.props.noui.onMonday} />
-                    <Ui.EditBoolean noui={this.props.noui.onTuesday} />
-                    <Ui.EditBoolean noui={this.props.noui.onWednesday} />
-                    <Ui.EditBoolean noui={this.props.noui.onThursday} />
-                    <Ui.EditBoolean noui={this.props.noui.onFriday} />
-                    <Ui.EditBoolean noui={this.props.noui.onSaturday} />
-                    <Ui.EditBoolean noui={this.props.noui.onSunday} />
+                    <JMSLib.ReactUi.EditBoolean noui={this.props.noui.onMonday} />
+                    <JMSLib.ReactUi.EditBoolean noui={this.props.noui.onTuesday} />
+                    <JMSLib.ReactUi.EditBoolean noui={this.props.noui.onWednesday} />
+                    <JMSLib.ReactUi.EditBoolean noui={this.props.noui.onThursday} />
+                    <JMSLib.ReactUi.EditBoolean noui={this.props.noui.onFriday} />
+                    <JMSLib.ReactUi.EditBoolean noui={this.props.noui.onSaturday} />
+                    <JMSLib.ReactUi.EditBoolean noui={this.props.noui.onSunday} />
                     {(this.props.noui.repeat.value !== 0) ? <div>
                         {this.props.noui.lastDay.text}
                         <Ui.EditDay noui={this.props.noui.lastDay} />
