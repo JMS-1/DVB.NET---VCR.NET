@@ -4,7 +4,7 @@ namespace JMSLib.ReactUi {
 
     export class EditTime extends ComponentWithSite<App.IEditTime> {
         render(): JSX.Element {
-            return <input className="vcrnet-edittime"
+            return <input className="jmslib-edittime"
                 type="TEXT"
                 value={this.props.noui.time}
                 title={this.props.noui.error}

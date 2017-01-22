@@ -520,10 +520,10 @@ fieldset {
   .sideBySide > div {
     display: table-cell; }
 
-.vcrnet-radioGroup {
+.jmslib-radioGroup {
   display: inline-block; }
 
-.vcrnet-pict {
+.jmslib-pict {
   margin-right: 4px;
   padding-bottom: 2px;
   vertical-align: middle; }
@@ -543,7 +543,7 @@ fieldset {
     padding: 4px;
     margin: 0; }
 
-.vcrnet-navigation .vcrnet-pict {
+.vcrnet-navigation .jmslib-pict {
   margin-right: 2px; }
 
 .vcrnet-navigation .vcrnet-internalLink:last-child {
@@ -576,55 +576,55 @@ fieldset {
   .vcrnet-editchannelflags > label:first-child input {
     margin-left: 0; }
 
-.vcrnet-editday {
+.jmslib-editday {
   vertical-align: top;
   display: inline-block;
   border: 1px solid black;
   border-radius: 2px;
   font-size: smaller;
   padding: 4px; }
-  .vcrnet-editday > div:first-child {
+  .jmslib-editday > div:first-child {
     position: relative;
     z-index: 0; }
-    .vcrnet-editday > div:first-child > img {
+    .jmslib-editday > div:first-child > img {
       cursor: pointer;
       z-index: 1; }
-      .vcrnet-editday > div:first-child > img:first-child {
+      .jmslib-editday > div:first-child > img:first-child {
         float: left; }
-      .vcrnet-editday > div:first-child > img:last-child {
+      .jmslib-editday > div:first-child > img:last-child {
         float: right; }
-    .vcrnet-editday > div:first-child > div {
+    .jmslib-editday > div:first-child > div {
       position: absolute;
       display: inline-block;
       text-align: center;
       z-index: -1;
       right: 0;
       left: 0; }
-      .vcrnet-editday > div:first-child > div > select {
+      .jmslib-editday > div:first-child > div > select {
         margin-left: 5px;
         margin-right: 5px; }
-  .vcrnet-editday > div:last-child > button:first-child {
+  .jmslib-editday > div:last-child > button:first-child {
     float: left; }
-  .vcrnet-editday > div:last-child > button:last-child {
+  .jmslib-editday > div:last-child > button:last-child {
     float: right; }
-  .vcrnet-editday > table {
+  .jmslib-editday > table {
     display: block;
     clear: both; }
-    .vcrnet-editday > table td {
+    .jmslib-editday > table td {
       width: 2rem;
       text-align: center; }
-    .vcrnet-editday > table > thead {
+    .jmslib-editday > table > thead {
       font-weight: bold; }
-    .vcrnet-editday > table > tbody td {
+    .jmslib-editday > table > tbody td {
       background: lightgray;
       border: 1px solid darkgray;
       cursor: pointer; }
-      .vcrnet-editday > table > tbody td:not(.vcrnet-editday-month) {
+      .jmslib-editday > table > tbody td:not(.jmslib-editday-month) {
         color: darkgray; }
-      .vcrnet-editday > table > tbody td.vcrnet-editday-selected {
+      .jmslib-editday > table > tbody td.jmslib-editday-selected {
         font-weight: bold;
         cursor: default; }
-      .vcrnet-editday > table > tbody td.vcrnet-editday-today {
+      .jmslib-editday > table > tbody td.jmslib-editday-today {
         background: antiquewhite; }
 
 .vcrnet-editduration {
@@ -641,10 +641,10 @@ fieldset {
 .vcrnet-scheduledata > div:last-child > div:last-child > label:first-child input {
   margin-left: 0; }
 
-.vcrnet-edittext:not([title=""]) {
+.jmslib-edittext:not([title=""]) {
   border: 2px solid red; }
 
-.vcrnet-edittime:not([title=""]) {
+.jmslib-edittime:not([title=""]) {
   border: 2px solid red; }
 
 .vcrnet-edit .vcrnet-inline-help table {
@@ -657,13 +657,13 @@ fieldset {
 vcrnet-spa {
   display: block; }
 
-.vcrnet-toggleButton {
+.jmslib-toggleButton {
   margin: 0px 4px;
   padding: 1px 2px;
   font-size: small;
   border: 1px solid black; }
-  .vcrnet-toggleButton input {
+  .jmslib-toggleButton input {
     display: none; }
-  .vcrnet-toggleButton[data-vcrnet-checked] {
+  .jmslib-toggleButton[data-jmslib-checked] {
     font-weight: bold;
     background: white; }

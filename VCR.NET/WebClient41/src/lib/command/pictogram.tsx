@@ -16,7 +16,7 @@ namespace JMSLib.ReactUi {
 
         render(): JSX.Element {
             return <img
-                className="vcrnet-pict"
+                className="jmslib-pict"
                 alt={this.props.description}
                 src={`${Pictogram.imageRoot}${this.props.name}.${this.props.type || "png"}`}
                 onClick={this.props.onClick}></img>;

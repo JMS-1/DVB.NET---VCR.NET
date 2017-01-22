@@ -6,10 +6,10 @@ namespace JMSLib.ReactUi {
     export class EditNumberWithSlider extends ComponentWithSite<App.IEditNumberWithSlider>  {
         // Erstellt die Oberflächenelement - hier gibt es eine ganze Menge Kleinigkeiten im CSS zu beachten, esp. die Positionierung.
         render(): JSX.Element {
-            return <div className="vcrnet-slider">
+            return <div className="jmslib-slider">
                 <div></div>
                 <div>
-                    <div className={this.props.noui.isDragging ? "vcrnet-slider-selected" : undefined}
+                    <div className={this.props.noui.isDragging ? "jmslib-slider-selected" : undefined}
                         style={{ left: `${100 * this.props.noui.position}%` }}>
                     </div>
                 </div>

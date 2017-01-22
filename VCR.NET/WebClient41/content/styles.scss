@@ -12,7 +12,7 @@ vcrnet-spa {
     display: block;
 }
 
-.vcrnet-toggleButton {
+.jmslib-toggleButton {
     margin: 0px 4px;
     padding: 1px 2px;
     font-size: small;
@@ -22,7 +22,7 @@ vcrnet-spa {
         display: none;
     }
 
-    &[data-vcrnet-checked] {
+    &[data-jmslib-checked] {
         font-weight: bold;
         background: white;
     }

@@ -9,7 +9,7 @@ namespace JMSLib.ReactUi {
 
     export class CheckBoxCommand extends React.Component<ICheckBoxCommand, IEmpty>{
         render(): JSX.Element {
-            return <label className="vcrnet-checkbox vcrnet-toggleButton" data-vcrnet-checked={this.props.isChecked ? "yes" : null}>
+            return <label className="jmslib-checkbox jmslib-toggleButton" data-jmslib-checked={this.props.isChecked ? "yes" : null}>
                 <input
                     type="CHECKBOX"
                     defaultChecked={this.props.isChecked}

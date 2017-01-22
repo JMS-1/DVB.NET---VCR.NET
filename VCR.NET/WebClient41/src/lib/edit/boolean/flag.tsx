@@ -6,7 +6,7 @@ namespace JMSLib.ReactUi {
     export class EditBoolean extends Component<App.IValidateFlag>  {
         // Erstellt die Anzeige der Komponente.
         render(): JSX.Element {
-            return <label className="vcrnet-editflag">
+            return <label className="jmslib-editflag">
                 <input
                     type="CHECKBOX"
                     disabled={this.props.noui.isReadonly}

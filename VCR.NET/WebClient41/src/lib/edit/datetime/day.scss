@@ -1,6 +1,6 @@
 ﻿@import "../../../../content/vars";
 
-.vcrnet-editday {
+.jmslib-editday {
     vertical-align: top;
     display: inline-block;
     border: 1px solid black;
@@ -69,16 +69,16 @@
                 border: 1px solid darkgray;
                 cursor: pointer;
 
-                &:not(.vcrnet-editday-month) {
+                &:not(.jmslib-editday-month) {
                     color: darkgray;
                 }
 
-                &.vcrnet-editday-selected {
+                &.jmslib-editday-selected {
                     font-weight: bold;
                     cursor: default;
                 }
 
-                &.vcrnet-editday-today {
+                &.jmslib-editday-today {
                     background: antiquewhite;
                 }
             }

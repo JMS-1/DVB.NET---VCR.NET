@@ -15,7 +15,7 @@ namespace JMSLib.ReactUi {
     export class EditText extends ComponentEx<App.IValidatedString, IEditText>  {
         // Erstellt die Anzeige der Komponente.
         render(): JSX.Element {
-            return <input className="vcrnet-edittext"
+            return <input className="jmslib-edittext"
                 type="TEXT"
                 size={this.props.chars}
                 value={this.props.noui.value}

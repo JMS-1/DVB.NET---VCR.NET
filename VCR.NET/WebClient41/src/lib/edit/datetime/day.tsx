@@ -5,7 +5,7 @@ namespace JMSLib.ReactUi {
     export class EditDay extends ComponentWithSite<App.IDaySelector> {
         // Anzeige erstellen.
         render(): JSX.Element {
-            return <div className="vcrnet-editday">
+            return <div className="jmslib-editday">
                 <div>
                     <Pictogram name="prev" type="gif" onClick={this._prevMonth} />
                     <div>
@@ -81,11 +81,11 @@ namespace JMSLib.ReactUi {
                 var classes: string[] = [];
 
                 if (day.isCurrentMonth)
-                    classes.push("vcrnet-editday-month");
+                    classes.push("jmslib-editday-month");
                 if (day.isCurrentDay)
-                    classes.push("vcrnet-editday-selected");
+                    classes.push("jmslib-editday-selected");
                 if (day.isToday)
-                    classes.push("vcrnet-editday-today");
+                    classes.push("jmslib-editday-today");
 
                 return <td onClick={day.select} key={`${index}`} className={classes.join(" ")}>{day.display}</td>;
             })}</tr>;
