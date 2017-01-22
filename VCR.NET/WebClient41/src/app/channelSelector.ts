@@ -1,4 +1,4 @@
-﻿/// <reference path="../lib/edit.ts" />
+﻿/// <reference path="../lib/edit/edit.ts" />
 
 namespace VCRNETClient.App {
 

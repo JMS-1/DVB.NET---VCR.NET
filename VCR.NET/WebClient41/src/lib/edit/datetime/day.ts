@@ -1,4 +1,4 @@
-﻿/// <reference path="../../edit.ts" />
+﻿/// <reference path="../edit.ts" />
 
 namespace JMSLib.App {
 

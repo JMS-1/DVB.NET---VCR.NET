@@ -320,7 +320,7 @@
     <Content Include="default_old.html" />
     <None Include="content\jmslib.scss" />
     <TypeScriptCompile Include="src\app\app.ts" />
-    <TypeScriptCompile Include="src\lib\dateFormatter.ts" />
+    <TypeScriptCompile Include="src\lib\edit\datetime\dateFormatter.ts" />
     <TypeScriptCompile Include="src\app\pages\editPage.ts" />
     <TypeScriptCompile Include="src\app\pages\helpPage.ts" />
     <TypeScriptCompile Include="src\app\pages\homePage.ts" />
@@ -328,7 +328,7 @@
     <TypeScriptCompile Include="src\app\duration.ts" />
     <TypeScriptCompile Include="src\app\job.ts" />
     <TypeScriptCompile Include="src\app\channelSelector.ts" />
-    <TypeScriptCompile Include="src\lib\edit.ts" />
+    <TypeScriptCompile Include="src\lib\edit\edit.ts" />
     <TypeScriptCompile Include="src\app\jobSchedule.ts" />
     <TypeScriptCompile Include="src\lib\edit\number\slider.ts" />
     <TypeScriptCompile Include="src\app\scheduleException.ts" />
