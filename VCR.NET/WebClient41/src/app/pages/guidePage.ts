@@ -2,7 +2,15 @@
 
 namespace VCRNETClient.App {
 
-    export interface IGuidePage extends IPage {
+    export interface IGuidePageNavigation {
+        readonly firstPage: JMSLib.App.ICommand;
+
+        readonly prevPage: JMSLib.App.ICommand;
+
+        readonly nextPage: JMSLib.App.ICommand;
+    }
+
+    export interface IGuidePage extends IPage, IGuidePageNavigation {
         readonly entries: GuideEntry[];
     }
 
@@ -24,7 +32,15 @@ namespace VCRNETClient.App {
             index: 0
         };
 
+        readonly firstPage = new JMSLib.App.Command(() => this.changePage(-this._filter.index), "Erste Seite", () => this._filter.index > 0);
+
+        readonly prevPage = new JMSLib.App.Command(() => this.changePage(-1), "Vorherige Seite", () => this._filter.index > 0);
+
+        readonly nextPage = new JMSLib.App.Command(() => this.changePage(+1), "Nächste Seite", () => this._hasMore);
+
         entries: GuideEntry[] = [];
+
+        private _hasMore = false;
 
         constructor(application: Application) {
             super("guide", application);
@@ -37,6 +53,7 @@ namespace VCRNETClient.App {
         reset(section: string): void {
             this._queryId++;
             this.entries = [];
+            this._hasMore = false;
 
             this._filter.size = this.application.profile.guideRows;
 
@@ -60,9 +77,20 @@ namespace VCRNETClient.App {
                     return;
 
                 this.entries = (items || []).slice(0, this._filter.size).map(i => new GuideEntry(i));
+                this._hasMore = items && (items.length > this._filter.size);
 
                 this.application.setBusy(false);
+
+                this.refreshUi();
             });
+        }
+
+        private changePage(delta: number): JMSLib.App.Thenable<void, XMLHttpRequest> {
+            this._filter.index += delta;
+
+            this.query();
+
+            return new JMSLib.App.Promise<void, XMLHttpRequest>(success => success(undefined));
         }
     }
 }

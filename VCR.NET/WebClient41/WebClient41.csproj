@@ -100,6 +100,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <TypeScriptCompile Include="src\app\pages\guidePage.ts" />
     <TypeScriptCompile Include="src\app\pages\guide\guideEntry.ts" />
+    <TypeScriptCompile Include="src\components\guideNavigator.tsx" />
     <TypeScriptCompile Include="src\lib\command\command.ts" />
     <TypeScriptCompile Include="src\lib\localizable.ts" />
   </ItemGroup>
@@ -155,6 +156,7 @@
     <Content Include="FAQ\configuration.html" />
     <Content Include="FAQ\controlcenter.html" />
     <None Include="src\components\editException.scss" />
+    <None Include="src\components\guideNavigator.scss" />
     <Content Include="src\lib\styles.css">
       <DependentUpon>styles.scss</DependentUpon>
     </Content>

@@ -1,6 +1,4 @@
-﻿/// <reference path="../vcrnet.tsx" />
-
-namespace VCRNETClient.Ui {
+﻿namespace VCRNETClient.Ui {
     interface IDetailRowStatic {
         prefixColumns?: number;
 

@@ -26,7 +26,7 @@
         then<TProjectedType>(onFulfilled?: (value: TResponseType) => TProjectedType | Thenable<TProjectedType, TErrorType> | void, onRejected?: (error: TErrorType) => TErrorType | Thenable<TProjectedType, TErrorType> | void): Thenable<TProjectedType, TErrorType> {
             // Nachfolger erstellen.
             var next = new Promise<TProjectedType, TErrorType>((success, failure) => {
-                // Nachfoler einbinden.
+                // Nachfolger einbinden.
                 if (onFulfilled)
                     this._success.push(v => success(onFulfilled(v)));
                 if (onRejected)

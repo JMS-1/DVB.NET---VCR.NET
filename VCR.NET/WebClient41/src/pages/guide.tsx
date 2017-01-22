@@ -14,6 +14,7 @@ namespace VCRNETClient.Ui {
                 <fieldset>
                     <legend>Einschränkungen festlegen</legend>
                 </fieldset>
+                <GuideNavigation noui={this.props.noui} />
                 <table>
                     <thead>
                         <tr>
@@ -32,6 +33,7 @@ namespace VCRNETClient.Ui {
                         </tr>)}
                     </tbody>
                 </table>
+                <GuideNavigation noui={this.props.noui} />
             </div >;
         }
 
