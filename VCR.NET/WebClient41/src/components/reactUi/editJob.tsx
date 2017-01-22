@@ -1,7 +1,7 @@
 ﻿/// <reference path="../../vcrnet.tsx" />
 
 namespace VCRNETClient.Ui {
-    export class JobData extends JMSLib.ReactUi.NoUiView<App.NoUi.IJobEditor>{
+    export class JobData extends JMSLib.ReactUi.Component<App.NoUi.IJobEditor>{
         render(): JSX.Element {
             return <fieldset className="vcrnet-jobdata">
                 <legend>Daten zum Auftrag</legend>

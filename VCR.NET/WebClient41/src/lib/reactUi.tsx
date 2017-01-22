@@ -5,26 +5,26 @@ import ReactDOM = __React.__DOM;
 namespace JMSLib.ReactUi {
 
     // Beschreibt eine React.Js Komponente für ein NoUi Präsentationsmodell.
-    export interface INoUiComponent<TViewModelType> {
+    export interface IComponent<TViewModelType> {
         // Das Präsentationsmodell.
         noui: TViewModelType;
     }
 
     // Beschreibt einen nicht vorhandenen Zustand einer React.Js Komponente.
-    export interface INoDynamicState {
+    export interface IEmpty {
     }
 
     // Implementierung einer React.Js Komponente für ein NoUi Präsentationsmodell.
-    export abstract class NoUiViewEx<TViewModelType, TConfigType extends INoUiComponent<TViewModelType>> extends React.Component<TConfigType, INoDynamicState>
+    export abstract class ComponentEx<TViewModelType, TConfigType extends IComponent<TViewModelType>> extends React.Component<TConfigType, IEmpty>
     {
     }
 
-    export abstract class NoUiView<TViewModelType> extends NoUiViewEx<TViewModelType, INoUiComponent<TViewModelType>>
+    export abstract class Component<TViewModelType> extends ComponentEx<TViewModelType, IComponent<TViewModelType>>
     {
     }
 
     // Implementierung einer React.Js Komponente für ein NoUi Präsentationsmodell.
-    export abstract class NoUiViewExWithSite<TViewModelType extends App.IUi, TConfigType extends INoUiComponent<TViewModelType>> extends NoUiViewEx<TViewModelType, TConfigType> implements App.ISite {
+    export abstract class ComponentExWithSite<TViewModelType extends App.IUi, TConfigType extends IComponent<TViewModelType>> extends ComponentEx<TViewModelType, TConfigType> implements App.ISite {
         // Führt die Anmeldung auf Benachrichtigungen aus.
         componentWillMount(): void {
             this.props.noui.setSite(this);
@@ -41,6 +41,6 @@ namespace JMSLib.ReactUi {
         }
     }
 
-    export abstract class NoUiViewWithSite<TViewModelType extends App.IUi> extends NoUiViewExWithSite<TViewModelType, INoUiComponent<TViewModelType>> {
+    export abstract class ComponentWithSite<TViewModelType extends App.IUi> extends ComponentExWithSite<TViewModelType, IComponent<TViewModelType>> {
     }
 }

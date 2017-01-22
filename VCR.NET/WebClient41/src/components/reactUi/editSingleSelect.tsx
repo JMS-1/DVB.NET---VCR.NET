@@ -3,7 +3,7 @@
 namespace VCRNETClient.Ui {
 
     // Verwaltete eine Zeichenkette, die über eine einfache Auswahlliste festgelegt wird.
-    export class EditTextWithList extends JMSLib.ReactUi.NoUiView<App.NoUi.IStringFromListEditor>  {
+    export class EditTextWithList extends JMSLib.ReactUi.Component<App.NoUi.IStringFromListEditor>  {
         // Erstellt die Anzeige für die Komponente.
         render(): JSX.Element {
             return <select className="vcrnet-editlist" value={this.props.noui.value} onChange={this._onChange}>

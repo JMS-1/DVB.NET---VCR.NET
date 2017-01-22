@@ -1,7 +1,7 @@
 ﻿/// <reference path="../lib/reactUi.tsx" />
 
 namespace VCRNETClient {
-    export class Edit extends JMSLib.ReactUi.NoUiViewWithSite<App.EditPage>
+    export class Edit extends JMSLib.ReactUi.ComponentWithSite<App.EditPage>
     {
         render(): JSX.Element {
             const schedule = this.props.noui.schedule;
