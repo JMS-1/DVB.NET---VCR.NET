@@ -6,7 +6,7 @@ namespace VCRNETClient.HelpPages {
             return "Konfiguration der Programmzeitschrift";
         }
 
-        render(page: App.NoUi.IPage): JSX.Element {
+        render(page: App.IPage): JSX.Element {
             return <div>
                 Damit der VCR.NET Recording Service eine <InternalLink view={`${page.route};epg`}>Programmzeitschrift</InternalLink> zur
                 Programmierung neuer Aufzeichnungen zur Verfügung stellen kann muss erst einmal

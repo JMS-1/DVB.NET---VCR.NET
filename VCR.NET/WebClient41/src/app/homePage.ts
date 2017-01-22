@@ -1,6 +1,6 @@
 ﻿/// <reference path="page.ts" />
 
-namespace VCRNETClient.App.NoUi {
+namespace VCRNETClient.App {
 
     // Die Anwendungslogik für die Startseite.
     export class HomePage extends Page<JMSLib.App.ISite> {

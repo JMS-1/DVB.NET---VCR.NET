@@ -6,7 +6,7 @@ namespace VCRNETClient.HelpPages {
             return "Quellen aktualisieren (Sendersuchlauf)";
         }
 
-        render(page: App.NoUi.IPage): JSX.Element {
+        render(page: App.IPage): JSX.Element {
             return <div>
                 Zur Programmierung von Aufzeichnungen bietet der VCR.NET Recording Service für jedes
                 DVB Gerät die <InternalLink view={`${page.route};sourcechooser`}>Quellen (Sender)</InternalLink> an, die im

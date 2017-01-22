@@ -4,8 +4,8 @@ namespace VCRNETClient {
     interface IMainStatic {
     }
 
-    export class Main extends React.Component<IMainStatic, JMSLib.ReactUi.IEmpty> implements App.IApplicationSite, App.NoUi.IHelpSite {
-        private static _topics: { [section: string]: App.NoUi.IHelpComponent; };
+    export class Main extends React.Component<IMainStatic, JMSLib.ReactUi.IEmpty> implements App.IApplicationSite, App.IHelpSite {
+        private static _topics: { [section: string]: App.IHelpComponent; };
 
         private static initStatic(): void {
             Main._topics = {
@@ -102,8 +102,8 @@ namespace VCRNETClient {
             return topic && topic.getTitle();
         }
 
-        getHelpComponentProvider<TComponentType extends App.NoUi.IHelpComponent>(): App.NoUi.IHelpComponentProvider<TComponentType> {
-            return Main._topics as App.NoUi.IHelpComponentProvider<TComponentType>;
+        getHelpComponentProvider<TComponentType extends App.IHelpComponent>(): App.IHelpComponentProvider<TComponentType> {
+            return Main._topics as App.IHelpComponentProvider<TComponentType>;
         }
 
     }

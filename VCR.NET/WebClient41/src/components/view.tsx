@@ -1,8 +1,8 @@
 ﻿/// <reference path="../lib/reactUi.tsx" />
 
 namespace VCRNETClient {
-    export class View extends JMSLib.ReactUi.Component<App.NoUi.IPage>{
-        private static _pages: { [route: string]: { new (props?: JMSLib.ReactUi.IComponent<any>, context?: any): JMSLib.ReactUi.Component<App.NoUi.IPage> } };
+    export class View extends JMSLib.ReactUi.Component<App.IPage>{
+        private static _pages: { [route: string]: { new (props?: JMSLib.ReactUi.IComponent<any>, context?: any): JMSLib.ReactUi.Component<App.IPage> } };
 
         private static initializePages(application: App.IApplication): void {
             View._pages = {

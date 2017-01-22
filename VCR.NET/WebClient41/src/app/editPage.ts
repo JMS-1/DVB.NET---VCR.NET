@@ -1,18 +1,18 @@
-﻿/// <reference path="noUi/page.ts" />
+﻿/// <reference path="page.ts" />
 
 namespace VCRNETClient.App {
-    export class EditPage extends NoUi.Page<JMSLib.App.ISite> {
+    export class EditPage extends Page<JMSLib.App.ISite> {
         private _jobScheduleInfo: VCRServer.JobScheduleInfoContract;
 
-        private _job: NoUi.JobEditor;
+        private _job: JobEditor;
 
-        get job(): NoUi.IJobEditor {
+        get job(): IJobEditor {
             return this._job;
         }
 
-        private _schedule: NoUi.ScheduleEditor;
+        private _schedule: ScheduleEditor;
 
-        get schedule(): NoUi.IScheduleEditor {
+        get schedule(): IScheduleEditor {
             return this._schedule;
         }
 
@@ -73,7 +73,7 @@ namespace VCRNETClient.App {
 
                 var newSchedule = <VCRServer.EditScheduleContract>{
                     firstStart: new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes()).toISOString(),
-                    lastDay: NoUi.ScheduleEditor.makePureDate(NoUi.ScheduleEditor.maximumDate).toISOString(),
+                    lastDay: ScheduleEditor.makePureDate(ScheduleEditor.maximumDate).toISOString(),
                     withSubtitles: this.application.profile.subtitles,
                     withVideotext: this.application.profile.videotext,
                     allLanguages: this.application.profile.languages,
@@ -119,8 +119,8 @@ namespace VCRNETClient.App {
 
             // Pflegemodelle anlegen.
             this._jobScheduleInfo = info;
-            this._job = new NoUi.JobEditor(this, info.job, profiles, favorites, folders, this._onChanged);
-            this._schedule = new NoUi.ScheduleEditor(this, info.schedule, favorites, this._onChanged);
+            this._job = new JobEditor(this, info.job, profiles, favorites, folders, this._onChanged);
+            this._schedule = new ScheduleEditor(this, info.schedule, favorites, this._onChanged);
 
             // Quellen für das aktuelle Geräteprofil laden und die Seite für den Anwender freigeben.
             this.loadSources().then(() => this.application.setBusy(false));

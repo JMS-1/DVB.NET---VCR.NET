@@ -1,6 +1,6 @@
 ﻿/// <reference path="page.ts" />
 
-namespace VCRNETClient.App.NoUi {
+namespace VCRNETClient.App {
 
     // Die Auswahl eines Datumsfilters.
     export interface IPlanStartFilter extends JMSLib.App.IDisplayText {

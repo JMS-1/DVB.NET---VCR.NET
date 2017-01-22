@@ -2,7 +2,7 @@
 
 namespace VCRNETClient {
 
-    export class Plan extends JMSLib.ReactUi.ComponentWithSite<App.NoUi.PlanPage> {
+    export class Plan extends JMSLib.ReactUi.ComponentWithSite<App.PlanPage> {
         render(): JSX.Element {
             var jobs = this.props.noui.getJobs();
 

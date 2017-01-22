@@ -2,7 +2,7 @@
 
 namespace VCRNETClient {
     interface IHelpLinkStatic {
-        page: App.NoUi.IPage;
+        page: App.IPage;
           
         topic: string;
     }

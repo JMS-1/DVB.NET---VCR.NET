@@ -6,7 +6,7 @@ namespace VCRNETClient.HelpPages {
             return "Lebenszyklus von Aufträgen";
         }
 
-        render(page: App.NoUi.IPage): JSX.Element {
+        render(page: App.IPage): JSX.Element {
             return <div>
                 Jede Aufzeichnung hat einen Zeitpunkt, an dem ihre letzte Ausführung abgeschlossen
                 ist. Für einzelne Aufzeichnungen ist dies einfach die Summe aus dem programmierten

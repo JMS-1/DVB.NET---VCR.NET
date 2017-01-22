@@ -6,7 +6,7 @@ namespace VCRNETClient.HelpPages {
             return "Serienaufzeichnungen und Ausnahmeregelungen";
         }
 
-        render(page: App.NoUi.IPage): JSX.Element {
+        render(page: App.IPage): JSX.Element {
             return <div>
                 Für eine Aufzeichnung kann angegeben werden, ob diese periodisch wiederholt werden
                 soll. Der VCR.NET Recording Service bietet hier die Möglichkeit, die Wochentage

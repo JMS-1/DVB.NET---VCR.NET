@@ -1,7 +1,7 @@
 ﻿/// <reference path="../../vcrnet.tsx" />
 
 namespace VCRNETClient.Ui {
-    export class PlanRow extends JMSLib.ReactUi.Component<App.NoUi.IPlanEntry>  {
+    export class PlanRow extends JMSLib.ReactUi.Component<App.IPlanEntry>  {
         render(): JSX.Element {
             return <tr className="vcrnet-planrow">
                 <td>{this.props.noui.mode ? <Pictogram name={this.props.noui.mode} type="gif" /> : <span>&nbsp;</span>}</td>

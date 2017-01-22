@@ -6,7 +6,7 @@ namespace VCRNETClient.HelpPages {
             return "Planung von Aufzeichnungen";
         }
 
-        render(page: App.NoUi.IPage): JSX.Element {
+        render(page: App.IPage): JSX.Element {
             return <div>
                 Selbstverständlich ist es keine Problem unabhängig Aufzeichnungen auf mehreren DVB
                 Karten zu programmieren, wenn diese dem VCR.NET Recording Service zur Nutzung

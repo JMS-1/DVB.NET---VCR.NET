@@ -1,6 +1,6 @@
-﻿/// <reference path="../../lib/edit.ts" />
+﻿/// <reference path="../lib/edit.ts" />
 
-namespace VCRNETClient.App.NoUi {
+namespace VCRNETClient.App {
 
     // Steuert die Pflege einer Zahl über einen Schieberegler.
     export interface INumberSlider extends JMSLib.App.IConnectable {

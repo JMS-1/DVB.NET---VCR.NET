@@ -6,7 +6,7 @@ namespace VCRNETClient.HelpPages {
             return "Fragen und Antworten";
         }
 
-        render(page: App.NoUi.IPage): JSX.Element {
+        render(page: App.IPage): JSX.Element {
             return <div>
                 <p>
                     Wie jede andere Anwendung auch arbeitet der VCR.NET Recording Service nach gewissen

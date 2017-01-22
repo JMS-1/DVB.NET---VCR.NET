@@ -1,4 +1,4 @@
-﻿namespace VCRNETClient.App.NoUi {
+﻿namespace VCRNETClient.App {
 
     // Erweiterte Schnittstelle (View Model) zur Anzeige eines Eintrags des Aufzeichnunsplans.
     export interface IPlanEntry {

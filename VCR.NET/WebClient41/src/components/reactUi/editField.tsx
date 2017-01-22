@@ -5,7 +5,7 @@ namespace VCRNETClient.Ui {
     // Die Konfiguration eines Eingabefeldes.
     interface IFieldStatic {
         // Die übergeordnete Seite.
-        page: App.NoUi.IPage;
+        page: App.IPage;
 
         // Der Anzeigename des Feldes.
         label: string;

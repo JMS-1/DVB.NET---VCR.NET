@@ -1,6 +1,6 @@
-﻿/// <reference path="../../lib/edit.ts" />
+﻿/// <reference path="../lib/edit.ts" />
 
-namespace VCRNETClient.App.NoUi {
+namespace VCRNETClient.App {
 
     export interface ISelectableDay {
         readonly date: Date;

@@ -2,7 +2,7 @@
 
 namespace VCRNETClient.Ui {
 
-    export class EditDay extends JMSLib.ReactUi.ComponentWithSite<App.NoUi.IDaySelector> implements JMSLib.App.ISite {
+    export class EditDay extends JMSLib.ReactUi.ComponentWithSite<App.IDaySelector> implements JMSLib.App.ISite {
         // Anzeige erstellen.
         render(): JSX.Element {
             return <div className="vcrnet-editday">
@@ -73,7 +73,7 @@ namespace VCRNETClient.Ui {
             this.props.noui.year((ev.target as HTMLSelectElement).value);
         }
 
-        private getRow(days: App.NoUi.ISelectableDay[], rowKey: number): JSX.Element {
+        private getRow(days: App.ISelectableDay[], rowKey: number): JSX.Element {
             if (days.length !== 7)
                 return null;
 
@@ -91,7 +91,7 @@ namespace VCRNETClient.Ui {
             })}</tr>;
         }
 
-        private getRows(days: App.NoUi.ISelectableDay[]): JSX.Element[] {
+        private getRows(days: App.ISelectableDay[]): JSX.Element[] {
             var rows: JSX.Element[] = [];
 
             for (var ix = 0; ix < days.length; ix += 7)

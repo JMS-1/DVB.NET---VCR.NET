@@ -1,6 +1,6 @@
-﻿/// <reference path="../../lib/edit.ts" />
+﻿/// <reference path="../lib/edit.ts" />
 
-namespace VCRNETClient.App.NoUi {
+namespace VCRNETClient.App {
 
     // Schnitstelle zur Pflege der Senderauswahl.
     export interface IChannelSelector extends JMSLib.App.IValidatedValue<string>, JMSLib.App.IConnectable {

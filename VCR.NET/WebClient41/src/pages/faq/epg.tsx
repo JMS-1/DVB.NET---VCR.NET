@@ -6,7 +6,7 @@ namespace VCRNETClient.HelpPages {
             return "Die Programmzeitschrift";
         }
 
-        render(page: App.NoUi.IPage): JSX.Element {
+        render(page: App.IPage): JSX.Element {
             return <div>
                 Die elektronische Programmzeitschrift (EPG) ist ein optionales Leistungsmerkmal,
                 dass von vielen Sendeanstalten angeboten wird. Zusätzlich zur digitalen Ausstrahlung

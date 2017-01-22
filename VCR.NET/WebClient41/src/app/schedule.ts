@@ -1,4 +1,4 @@
-﻿namespace VCRNETClient.App.NoUi {
+﻿namespace VCRNETClient.App {
 
     // Schnittstelle zur Pflege einer Aufzeichnung.
     export interface IScheduleEditor extends IJobScheduleEditor {

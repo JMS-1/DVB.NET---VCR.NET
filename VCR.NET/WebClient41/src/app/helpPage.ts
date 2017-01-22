@@ -1,6 +1,6 @@
 ﻿/// <reference path="page.ts" />
 
-namespace VCRNETClient.App.NoUi {
+namespace VCRNETClient.App {
 
     // Informationen zu einzelnen Aspekten der Hilfe.
     export interface IHelpComponent {
@@ -24,7 +24,7 @@ namespace VCRNETClient.App.NoUi {
     }
 
     // Präsentationsdaten zur Darstellung eines Aspektes der Hilfe.
-    export class HelpPage extends NoUi.Page<IHelpSite> implements IHelpPage {
+    export class HelpPage extends Page<IHelpSite> implements IHelpPage {
         // Erstellt ein neues Modell.
         constructor(application: Application) {
             super("faq", application);

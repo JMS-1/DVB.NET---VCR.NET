@@ -1,4 +1,4 @@
-﻿namespace VCRNETClient.App.NoUi {
+﻿namespace VCRNETClient.App {
 
     // Die äußere Sicht auf eine Seite der Anwendung.
     export interface IPage extends JMSLib.App.IConnectable {

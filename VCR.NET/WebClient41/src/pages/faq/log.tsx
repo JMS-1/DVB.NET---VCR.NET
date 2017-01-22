@@ -6,7 +6,7 @@ namespace VCRNETClient.HelpPages {
             return "Protokolle";
         }
 
-        render(page: App.NoUi.IPage): JSX.Element {
+        render(page: App.IPage): JSX.Element {
             return <div>
                 Der VCR.NET Recording Service erstellt für jede ausgeführte
                 Aktivität<InternalLink view="current" pict="devices" /> einen

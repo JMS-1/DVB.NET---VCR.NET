@@ -1,15 +1,15 @@
 ﻿namespace VCRNETClient.App {
 
     export interface IApplication {
-        readonly homePage: NoUi.IPage;
+        readonly homePage: IPage;
 
-        readonly helpPage: NoUi.IPage;
+        readonly helpPage: IPage;
 
-        readonly planPage: NoUi.IPage;
+        readonly planPage: IPage;
 
-        readonly editPage: NoUi.IPage;
+        readonly editPage: IPage;
 
-        getHelpComponentProvider<TComponentType extends NoUi.IHelpComponent>(): NoUi.IHelpComponentProvider<TComponentType>;
+        getHelpComponentProvider<TComponentType extends IHelpComponent>(): IHelpComponentProvider<TComponentType>;
     }
 
     export interface IApplicationSite extends JMSLib.App.ISite {
@@ -17,26 +17,26 @@
 
         goto(page: string);
 
-        getHelpComponentProvider<TComponentType extends NoUi.IHelpComponent>(): NoUi.IHelpComponentProvider<TComponentType>;
+        getHelpComponentProvider<TComponentType extends IHelpComponent>(): IHelpComponentProvider<TComponentType>;
     }
 
     export class Application implements IApplication {
-        readonly homePage = new NoUi.HomePage(this);
+        readonly homePage = new HomePage(this);
 
-        readonly helpPage = new NoUi.HelpPage(this);
+        readonly helpPage = new HelpPage(this);
 
-        readonly planPage = new NoUi.PlanPage(this);
+        readonly planPage = new PlanPage(this);
 
         readonly editPage = new EditPage(this);
 
-        private _pageMapper: { [name: string]: NoUi.Page<any> } = {};
+        private _pageMapper: { [name: string]: Page<any> } = {};
 
         // Nach aussen hin sichtbarer globaler Zustand.
         version: VCRServer.InfoServiceContract;
 
         profile: VCRServer.UserProfileContract;
 
-        page: App.NoUi.IPage;
+        page: App.IPage;
 
         // Initial sind wir gesperrt.
         private _busy = true;
@@ -50,7 +50,7 @@
 
         constructor(private _site: IApplicationSite) {
             // Alle bekannten Seiten.
-            var pages: NoUi.Page<any>[] = [
+            var pages: Page<any>[] = [
                 this.homePage,
                 this.helpPage,
                 this.planPage,
@@ -121,7 +121,7 @@
                 return title;
         }
 
-        getHelpComponentProvider<TComponentType extends NoUi.IHelpComponent>(): NoUi.IHelpComponentProvider<TComponentType> {
+        getHelpComponentProvider<TComponentType extends IHelpComponent>(): IHelpComponentProvider<TComponentType> {
             return this._site && this._site.getHelpComponentProvider<TComponentType>();
         }
     }
