@@ -56,7 +56,7 @@ namespace VCRNETClient.App {
         // Alle bekannten Datumsfilter.
         private _startFilter: PlanStartFilter[];
 
-        // Erzeugt eine neuie Steuerung.
+        // Erzeugt eine neue Steuerung.
         constructor(application: Application) {
             super("plan", application);
 

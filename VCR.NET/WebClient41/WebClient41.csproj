@@ -98,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <TypeScriptCompile Include="src\app\pages\guidePage.ts" />
     <TypeScriptCompile Include="src\lib\command\command.ts" />
     <TypeScriptCompile Include="src\lib\localizable.ts" />
   </ItemGroup>
@@ -156,6 +157,7 @@
     <Content Include="src\lib\styles.css">
       <DependentUpon>styles.scss</DependentUpon>
     </Content>
+    <None Include="src\pages\guide.scss" />
     <Content Include="ui\images\faq\recover.png" />
     <Content Include="ui\images\faq\webserver.png" />
     <Content Include="FAQ\websettings.html" />
@@ -375,6 +377,7 @@
     <TypeScriptCompile Include="src\pages\faq\log.tsx" />
     <TypeScriptCompile Include="src\pages\faq\repeatingSchedules.tsx" />
     <TypeScriptCompile Include="src\pages\faq\parallelRecording.tsx" />
+    <TypeScriptCompile Include="src\pages\guide.tsx" />
     <TypeScriptCompile Include="src\pages\help.tsx" />
     <TypeScriptCompile Include="src\pages\home.tsx" />
     <TypeScriptCompile Include="src\components\inlineHelp.tsx" />

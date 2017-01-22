@@ -8,7 +8,8 @@ namespace VCRNETClient {
                 [page.application.homePage.route]: Home,
                 [page.application.planPage.route]: Plan,
                 [page.application.editPage.route]: Edit,
-                [page.application.helpPage.route]: Help
+                [page.application.helpPage.route]: Help,
+                [page.application.guidePage.route]: Guide,
             };
         }
     }

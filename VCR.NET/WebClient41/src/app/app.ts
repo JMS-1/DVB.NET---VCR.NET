@@ -9,6 +9,8 @@
 
         readonly editPage: IPage;
 
+        readonly guidePage: IPage;
+
         getHelpComponentProvider<TComponentType extends IHelpComponent>(): IHelpComponentProvider<TComponentType>;
     }
 
@@ -28,6 +30,8 @@
         readonly planPage = new PlanPage(this);
 
         readonly editPage = new EditPage(this);
+
+        readonly guidePage = new GuidePage(this);
 
         private _pageMapper: { [name: string]: Page<any> } = {};
 
@@ -55,6 +59,7 @@
                 this.helpPage,
                 this.planPage,
                 this.editPage,
+                this.guidePage,
             ];
 
             // Abbildung erstellen.
