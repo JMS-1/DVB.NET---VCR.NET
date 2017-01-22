@@ -1,7 +1,7 @@
 ﻿namespace VCRNETClient.App.NoUi {
 
     // Erweiterte Schnittstelle zur Pflege einer einzelnen Ausnahmeregel.
-    export interface IPlanException extends JMSLib.App.IUi {
+    export interface IPlanException extends JMSLib.App.IConnectable {
         // Der Regler zur Einstellung der Startzeitverschiebung.
         readonly startSlider: INumberSlider;
 

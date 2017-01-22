@@ -1,14 +1,14 @@
-﻿/// <reference path="generic.ts" />
+﻿/// <reference path="../../lib/edit.ts" />
 
 namespace VCRNETClient.App.NoUi {
 
-    export interface ITimeEditor extends JMSLib.App.IUi {
+    export interface ITimeEditor extends JMSLib.App.IConnectable {
         time: string;
 
         readonly error: string;
     }
 
-    export class TimeEditor extends ValueHolderWithSite<string> implements ITimeEditor {
+    export class TimeEditor extends JMSLib.App.EditValueWithSite<string> implements ITimeEditor {
         private _time: string;
 
         protected onSiteChanged(): void {

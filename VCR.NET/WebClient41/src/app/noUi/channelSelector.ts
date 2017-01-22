@@ -1,9 +1,9 @@
-﻿/// <reference path="generic.ts" />
+﻿/// <reference path="../../lib/edit.ts" />
 
 namespace VCRNETClient.App.NoUi {
 
     // Schnitstelle zur Pflege der Senderauswahl.
-    export interface IChannelSelector extends IValidatableValue<string>, JMSLib.App.IUi {
+    export interface IChannelSelector extends JMSLib.App.IValidatedValue<string>, JMSLib.App.IConnectable {
         // Die Vorauswahl der Quellen vor allem nach dem ersten Zeichen des Namens.
         section: string;
 
@@ -27,7 +27,7 @@ namespace VCRNETClient.App.NoUi {
     }
 
     // Stellt die Logik zur Auswahl eines Senders zur Verfügung.
-    export class ChannelEditor extends ValueHolderWithSite<string> implements IChannelSelector {
+    export class ChannelEditor extends JMSLib.App.EditValueWithSite<string> implements IChannelSelector {
 
         // Die Auswahl der Verschlüsselung.
         private static readonly _encryptions = [

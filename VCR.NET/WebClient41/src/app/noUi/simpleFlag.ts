@@ -1,13 +1,13 @@
-﻿/// <reference path="generic.ts" />
+﻿/// <reference path="../../lib/edit.ts" />
 
 namespace VCRNETClient.App.NoUi {
 
     // Schnittstelle zur Pflege einer Eigenschaft mit einem Wahrheitswert.
-    export interface IBooleanEditor extends IValidatableValue<boolean> {
+    export interface IBooleanEditor extends JMSLib.App.IValidatedValue<boolean> {
     }
 
     // Verwaltet den Wahrheitswert in einer Eigenschaft - hier können wir uns vollständig auf die Implementierung der Basisklasse verlassen.
-    export class BooleanEditor extends ValueHolder<boolean> implements IBooleanEditor {
+    export class BooleanEditor extends JMSLib.App.EditValue<boolean> implements IBooleanEditor {
         // Legt eine neue Verwaltung an.
         constructor(data: any, prop: string, onChange: () => void, name: string, testReadOnly?: () => boolean) {
             super(data, prop, onChange, name, testReadOnly);

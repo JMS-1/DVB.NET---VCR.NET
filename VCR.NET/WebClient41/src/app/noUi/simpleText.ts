@@ -1,13 +1,13 @@
-﻿/// <reference path="generic.ts" />
+﻿/// <reference path="../../lib/edit.ts" />
 
 namespace VCRNETClient.App.NoUi {
 
     // Beschreibt eine Eigenschaft der Art Zeichenkette mit Prüfergebnissen.
-    export interface IStringEditor extends IValidatableValue<string> {
+    export interface IStringEditor extends JMSLib.App.IValidatedValue<string> {
     }
 
     // Verwaltet eine Eigenschaft der Art Zeichenkette.
-    export class StringEditor extends ValueHolder<string> implements IStringEditor {
+    export class StringEditor extends JMSLib.App.EditValue<string> implements IStringEditor {
 
         // Legt eine neue Verwaltung an.
         constructor(data: any, prop: string, onChange: () => void, name: string, private readonly _isRequired: boolean, private _message?: string) {

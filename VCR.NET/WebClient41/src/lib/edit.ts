@@ -1,7 +1,7 @@
-﻿namespace VCRNETClient.App.NoUi {
+﻿namespace JMSLib.App {
 
     // Bietet den Wert einer Eigenschaft zur Pflege in der Oberfläche an-
-    export interface IValueHolder<TValueType> extends JMSLib.App.IDisplayText {
+    export interface IEditValue<TValueType> extends IDisplayText {
         // Meldet den aktuellen Wert oder verändert diesen - gemeldet wird immer der ursprüngliche Wert.
         value: TValueType;
 
@@ -10,13 +10,13 @@
     }
 
     // Ergänzt den Zugriff auf den Wert einer Eigenschaft um Prüfinformationen.
-    export interface IValidatableValue<TValueType> extends IValueHolder<TValueType> {
+    export interface IValidatedValue<TValueType> extends IEditValue<TValueType> {
         // Die zuletzt ermittelten Prüfinformationen. Eine leere Zeichenkette bedeutet, dass die Eigenschaft einen gültigen Wert besitzt.
         readonly message: string;
     }
 
     // Basisklasse zur Pflege des Wertes einer einzelnen Eigenschaft.
-    export abstract class ValueHolder<TValueType> implements IValidatableValue<TValueType> {
+    export abstract class EditValue<TValueType> implements IValidatedValue<TValueType> {
 
         // Meldet den aktuellen Wert oder verändert diesen - gemeldet wird immer der ursprüngliche Wert.
         get value(): TValueType {
@@ -53,8 +53,8 @@
     }
 
     // Basisklasse zur Pflege des Wertes einer einzelnen Eigenschaft.
-    export abstract class ValueHolderWithSite<TValueType> extends ValueHolder<TValueType> implements JMSLib.App.IUi {
-        private _site: JMSLib.App.ISite;
+    export abstract class EditValueWithSite<TValueType> extends EditValue<TValueType> implements IConnectable {
+        private _site: ISite;
 
         // Benachrichtigt die Oberfläche zur Aktualisierung der Anzeige.
         protected refresh(): void {
@@ -63,7 +63,7 @@
         }
 
         // Meldet die Oberfläche an.
-        setSite(site: JMSLib.App.ISite): void {
+        setSite(site: ISite): void {
             this._site = site;
 
             if (this._site)

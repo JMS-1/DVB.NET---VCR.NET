@@ -1,4 +1,4 @@
-﻿/// <reference path="generic.ts" />
+﻿/// <reference path="../../lib/edit.ts" />
 
 namespace VCRNETClient.App.NoUi {
 
@@ -16,7 +16,7 @@ namespace VCRNETClient.App.NoUi {
         select(): void;
     }
 
-    export interface IDaySelector extends JMSLib.App.IDisplayText, JMSLib.App.IUi {
+    export interface IDaySelector extends JMSLib.App.IDisplayText, JMSLib.App.IConnectable {
         monthBackward(): void;
 
         monthForward(): void;
@@ -38,7 +38,7 @@ namespace VCRNETClient.App.NoUi {
         readonly days: ISelectableDay[];
     }
 
-    export class DayEditor extends ValueHolderWithSite<string> implements IDaySelector {
+    export class DayEditor extends JMSLib.App.EditValueWithSite<string> implements IDaySelector {
         private static _dayNames = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
         readonly dayNames = DayEditor._dayNames;

@@ -1,7 +1,7 @@
 ﻿namespace VCRNETClient.App.NoUi {
 
     // Die äußere Sicht auf eine Seite der Anwendung.
-    export interface IPage extends JMSLib.App.IUi {
+    export interface IPage extends JMSLib.App.IConnectable {
         // Rückgriff auf die Anwendung als Ganzes.
         readonly application: IApplication;
 

@@ -1,6 +1,6 @@
 ﻿namespace VCRNETClient.App.NoUi {
 
-    export interface IScheduleException extends JMSLib.App.IUi {
+    export interface IScheduleException extends JMSLib.App.IConnectable {
         readonly isActive: IBooleanEditor;
 
         readonly dayDisplay: string;

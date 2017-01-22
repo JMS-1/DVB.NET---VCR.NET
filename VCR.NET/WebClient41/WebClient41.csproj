@@ -328,7 +328,7 @@
     <TypeScriptCompile Include="src\app\noUi\duration.ts" />
     <TypeScriptCompile Include="src\app\noUi\job.ts" />
     <TypeScriptCompile Include="src\app\noUi\channelSelector.ts" />
-    <TypeScriptCompile Include="src\app\noUi\generic.ts" />
+    <TypeScriptCompile Include="src\lib\edit.ts" />
     <TypeScriptCompile Include="src\app\noUi\jobSchedule.ts" />
     <TypeScriptCompile Include="src\app\noUi\numberSlider.ts" />
     <TypeScriptCompile Include="src\app\noUi\scheduleException.ts" />

@@ -7,7 +7,7 @@
     }
 
     // Schnittstelle für NoUi Komponenten die über Änderungen benachrichtigen.
-    export interface IUi {
+    export interface IConnectable {
         setSite(site: ISite): void;
     }
 }

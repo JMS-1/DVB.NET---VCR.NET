@@ -1,6 +1,6 @@
 ﻿namespace JMSLib.App {
 
-    export interface ICommand extends IDisplayText, IUi {
+    export interface ICommand extends IDisplayText, IConnectable {
         readonly isEnabled: boolean;
 
         readonly isDangerous: boolean;

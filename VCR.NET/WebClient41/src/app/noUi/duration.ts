@@ -1,4 +1,4 @@
-﻿/// <reference path="generic.ts" />
+﻿/// <reference path="../../lib/edit.ts" />
 
 namespace VCRNETClient.App.NoUi {
 
@@ -8,7 +8,7 @@ namespace VCRNETClient.App.NoUi {
         readonly endTime: ITimeEditor;
     }
 
-    export class DurationEditor extends ValueHolder<number> implements IDurationEditor {
+    export class DurationEditor extends JMSLib.App.EditValue<number> implements IDurationEditor {
         readonly startTime: TimeEditor;
 
         readonly endTime: TimeEditor;
