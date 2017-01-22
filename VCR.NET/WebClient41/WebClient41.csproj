@@ -188,7 +188,7 @@
     <None Include="src\components\reactUi\editDuration.scss" />
     <None Include="src\lib\command\command.scss" />
     <None Include="src\components\reactUi\planException.scss" />
-    <None Include="src\components\reactUi\editNumberWithSlider.scss" />
+    <None Include="src\lib\edit\number\slider.scss" />
     <Content Include="src\components\reactUi\styles.css">
       <DependentUpon>styles.scss</DependentUpon>
     </Content>
@@ -330,7 +330,7 @@
     <TypeScriptCompile Include="src\app\channelSelector.ts" />
     <TypeScriptCompile Include="src\lib\edit.ts" />
     <TypeScriptCompile Include="src\app\jobSchedule.ts" />
-    <TypeScriptCompile Include="src\app\numberSlider.ts" />
+    <TypeScriptCompile Include="src\lib\edit\number\slider.ts" />
     <TypeScriptCompile Include="src\app\scheduleException.ts" />
     <TypeScriptCompile Include="src\lib\edit\number\number.ts" />
     <TypeScriptCompile Include="src\lib\edit\boolean\flag.ts" />
@@ -358,7 +358,7 @@
     <TypeScriptCompile Include="src\components\externalLink.tsx" />
     <TypeScriptCompile Include="src\components\helpLink.tsx" />
     <TypeScriptCompile Include="src\lib\edit\boolean\flag.tsx" />
-    <TypeScriptCompile Include="src\components\reactUi\editNumberWithSlider.tsx" />
+    <TypeScriptCompile Include="src\lib\edit\number\slider.tsx" />
     <TypeScriptCompile Include="src\components\reactUi\editSchedule.tsx" />
     <TypeScriptCompile Include="src\lib\edit\text\singleSelect.tsx" />
     <TypeScriptCompile Include="src\lib\edit\text\text.tsx" />

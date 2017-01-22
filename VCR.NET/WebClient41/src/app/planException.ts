@@ -3,10 +3,10 @@
     // Erweiterte Schnittstelle zur Pflege einer einzelnen Ausnahmeregel.
     export interface IPlanException extends JMSLib.App.IConnectable {
         // Der Regler zur Einstellung der Startzeitverschiebung.
-        readonly startSlider: INumberSlider;
+        readonly startSlider: JMSLib.App.IEditNumberWithSlider;
 
         // Der Regler zur Einstellung der Laufzeitveränderung.
-        readonly durationSlider: INumberSlider;
+        readonly durationSlider: JMSLib.App.IEditNumberWithSlider;
 
         // Die Darstellung für den Zustand der Ausnahme.
         readonly exceptionMode: string;
@@ -34,18 +34,18 @@
     export class PlanException implements IPlanException {
         constructor(private model: VCRServer.PlanExceptionContract, private _entryId: string, private _reload: () => void) {
             this._originalStart = new Date(model.originalStart as string);
-            this.startSlider = new NumberSlider(model, "startShift", () => this.refresh(), -480, +480);
-            this.durationSlider = new NumberSlider(model, "timeDelta", () => this.refresh(), -model.originalDuration, +480);
+            this.startSlider = new JMSLib.App.EditNumberWithSlider(model, "startShift", () => this.refresh(), -480, +480);
+            this.durationSlider = new JMSLib.App.EditNumberWithSlider(model, "timeDelta", () => this.refresh(), -model.originalDuration, +480);
         }
 
         // Der ursprüngliche Startzeitpunkt
         private _originalStart: Date;
 
         // Der Regler zur Einstellung der Startzeitverschiebung.
-        readonly startSlider: NumberSlider;
+        readonly startSlider: JMSLib.App.EditNumberWithSlider;
 
         // Der Regler zur Einstellung der Laufzeitveränderung.
-        readonly durationSlider: NumberSlider;
+        readonly durationSlider: JMSLib.App.EditNumberWithSlider;
 
         // Die Darstellung für den Zustand der Ausnahme.
         get exceptionMode(): string {

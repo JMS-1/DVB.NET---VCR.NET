@@ -34,12 +34,12 @@ namespace VCRNETClient.Ui {
                         <tr>
                             <td>Startverschiebung</td>
                             <td>{`${this.props.noui.startSlider.value} Minute${(Math.abs(this.props.noui.startSlider.value) === 1) ? '' : 'n'}`}</td>
-                            <td><EditNumberWithSlider noui={this.props.noui.startSlider} /></td>
+                            <td><JMSLib.ReactUi.EditNumberWithSlider noui={this.props.noui.startSlider} /></td>
                         </tr>
                         <tr>
                             <td>Laufzeitanpassung</td>
                             <td>{`${this.props.noui.durationSlider.value} Minute${(Math.abs(this.props.noui.durationSlider.value) === 1) ? '' : 'n'}`}</td>
-                            <td><EditNumberWithSlider noui={this.props.noui.durationSlider} /></td>
+                            <td><JMSLib.ReactUi.EditNumberWithSlider noui={this.props.noui.durationSlider} /></td>
                         </tr>
                     </tbody>
                 </table>

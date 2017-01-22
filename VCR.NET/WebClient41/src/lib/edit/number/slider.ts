@@ -1,9 +1,9 @@
-﻿/// <reference path="../lib/edit.ts" />
+﻿/// <reference path="../../edit.ts" />
 
-namespace VCRNETClient.App {
+namespace JMSLib.App {
 
     // Steuert die Pflege einer Zahl über einen Schieberegler.
-    export interface INumberSlider extends JMSLib.App.IConnectable {
+    export interface IEditNumberWithSlider extends IConnectable {
         // Meldet oder ändert die relative (0..1) Position des Reglers.
         position: number;
 
@@ -18,7 +18,7 @@ namespace VCRNETClient.App {
     }
 
     // Steuerung für einen Schieberegeler für die Auswahl eines Wertes.
-    export class NumberSlider extends JMSLib.App.EditValueWithSite<number> implements INumberSlider {
+    export class EditNumberWithSlider extends EditValueWithSite<number> implements IEditNumberWithSlider {
         // Die aktuelle relative (0..1) Position des Reglers.
         private _position = 0;
 
@@ -40,7 +40,7 @@ namespace VCRNETClient.App {
         }
 
         // Bei der Anzeige werden immer alle Einstellungen auf den Grundwert zurückgesetzt.
-        setSite(newSite: JMSLib.App.ISite): void {
+        setSite(newSite: ISite): void {
             super.setSite(newSite);
 
             // Zurück auf den Anfang.

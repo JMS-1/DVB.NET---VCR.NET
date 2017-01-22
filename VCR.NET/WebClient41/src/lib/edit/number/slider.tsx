@@ -1,9 +1,9 @@
-﻿/// <reference path="../../lib/reactUi.tsx" />
+﻿/// <reference path="../../reactUi.tsx" />
 
-namespace VCRNETClient.Ui {
+namespace JMSLib.ReactUi {
 
     // React.Js Komponente zur Auswahl einer Zahl über einen Schieberegler.
-    export class EditNumberWithSlider extends JMSLib.ReactUi.ComponentWithSite<App.INumberSlider>  {
+    export class EditNumberWithSlider extends ComponentWithSite<App.IEditNumberWithSlider>  {
         // Erstellt die Oberflächenelement - hier gibt es eine ganze Menge Kleinigkeiten im CSS zu beachten, esp. die Positionierung.
         render(): JSX.Element {
             return <div className="vcrnet-slider">
