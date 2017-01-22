@@ -23,7 +23,7 @@ namespace VCRNETClient.App {
         constructor(first: boolean, public readonly date: Date, private _activate: (filter: PlanStartFilter) => void) {
             // Sonderbehandlung für die Anzeige der ersten Auswahl. die zugleich auf vorgewählt ist.
             this.active = first;
-            this.text = first ? "Jetzt" : DateFormatter.getShortDate(date);
+            this.text = first ? "Jetzt" : JMSLib.App.DateFormatter.getShortDate(date);
         }
 
         // Aktiviert diesen Filter - und deaktiviert alle anderen.

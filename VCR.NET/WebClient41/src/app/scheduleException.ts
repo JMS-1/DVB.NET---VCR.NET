@@ -12,7 +12,7 @@
 
     export class ScheduleException implements IScheduleException {
         constructor(public readonly model: VCRServer.PlanExceptionContract, onChange: () => void) {
-            this.dayDisplay = DateFormatter.getStartDate(new Date(parseInt(model.referenceDayDisplay, 10)));
+            this.dayDisplay = JMSLib.App.DateFormatter.getStartDate(new Date(parseInt(model.referenceDayDisplay, 10)));
 
             this.isActive = new JMSLib.App.FlagEditor(this, "_active", () => this.onChange(onChange), null);
         }

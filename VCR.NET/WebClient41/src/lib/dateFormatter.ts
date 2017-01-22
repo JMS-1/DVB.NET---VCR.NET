@@ -1,4 +1,4 @@
-﻿namespace VCRNETClient.App {
+﻿namespace JMSLib.App {
     // Formatiert Datum und Uhrzeit
     export class DateFormatter {
         // Die Kürzel für die Wochentage

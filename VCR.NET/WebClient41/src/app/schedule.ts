@@ -39,13 +39,13 @@
             this.lastDay = new DayEditor(model, "lastDay", onChange, "wiederholen bis zum", true);
             this.duration = new DurationEditor(model, "firstStart", "duration", onChange, "Zeitraum");
 
-            this.onMonday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagMonday, this.repeat, DateFormatter.germanDays[1]);
-            this.onTuesday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagTuesday, this.repeat, DateFormatter.germanDays[2]);
-            this.onWednesday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagWednesday, this.repeat, DateFormatter.germanDays[3]);
-            this.onThursday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagThursday, this.repeat, DateFormatter.germanDays[4]);
-            this.onFriday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagFriday, this.repeat, DateFormatter.germanDays[5]);
-            this.onSaturday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagSaturday, this.repeat, DateFormatter.germanDays[6]);
-            this.onSunday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagSunday, this.repeat, DateFormatter.germanDays[0]);
+            this.onMonday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagMonday, this.repeat, JMSLib.App.DateFormatter.germanDays[1]);
+            this.onTuesday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagTuesday, this.repeat, JMSLib.App.DateFormatter.germanDays[2]);
+            this.onWednesday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagWednesday, this.repeat, JMSLib.App.DateFormatter.germanDays[3]);
+            this.onThursday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagThursday, this.repeat, JMSLib.App.DateFormatter.germanDays[4]);
+            this.onFriday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagFriday, this.repeat, JMSLib.App.DateFormatter.germanDays[5]);
+            this.onSaturday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagSaturday, this.repeat, JMSLib.App.DateFormatter.germanDays[6]);
+            this.onSunday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagSunday, this.repeat, JMSLib.App.DateFormatter.germanDays[0]);
 
             // Ausnahmeregeln.
             this.exceptions = (model.exceptions || []).map(e => new ScheduleException(e, () => this.onExceptionsChanged()));
