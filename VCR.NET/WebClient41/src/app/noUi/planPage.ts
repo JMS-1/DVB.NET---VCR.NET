@@ -33,7 +33,7 @@ namespace VCRNETClient.App.NoUi {
     }
 
     // Steuert die Anzeige des Aufzeichnungsplan.
-    export class PlanPage extends Page<JMSLib.App.INoUiSite> {
+    export class PlanPage extends Page<JMSLib.App.ISite> {
         // Alle aktuell bekannten Aufträge
         private _jobs: PlanEntry[] = [];
 

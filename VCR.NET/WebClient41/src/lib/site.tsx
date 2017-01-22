@@ -24,7 +24,7 @@ namespace JMSLib.ReactUi {
     }
 
     // Implementierung einer React.Js Komponente für ein NoUi Präsentationsmodell.
-    export abstract class NoUiViewExWithSite<TViewModelType extends App.INoUiWithSite, TConfigType extends INoUiComponent<TViewModelType>> extends NoUiViewEx<TViewModelType, TConfigType> implements App.INoUiSite {
+    export abstract class NoUiViewExWithSite<TViewModelType extends App.IUi, TConfigType extends INoUiComponent<TViewModelType>> extends NoUiViewEx<TViewModelType, TConfigType> implements App.ISite {
         // Führt die Anmeldung auf Benachrichtigungen aus.
         componentWillMount(): void {
             this.props.noui.setSite(this);
@@ -41,6 +41,6 @@ namespace JMSLib.ReactUi {
         }
     }
 
-    export abstract class NoUiViewWithSite<TViewModelType extends App.INoUiWithSite> extends NoUiViewExWithSite<TViewModelType, INoUiComponent<TViewModelType>> {
+    export abstract class NoUiViewWithSite<TViewModelType extends App.IUi> extends NoUiViewExWithSite<TViewModelType, INoUiComponent<TViewModelType>> {
     }
 }

@@ -1,7 +1,7 @@
 ﻿namespace VCRNETClient.App.NoUi {
 
     // Die äußere Sicht auf eine Seite der Anwendung.
-    export interface IPage extends JMSLib.App.INoUiWithSite {
+    export interface IPage extends JMSLib.App.IUi {
         // Rückgriff auf die Anwendung als Ganzes.
         readonly application: IApplication;
 
@@ -37,7 +37,7 @@
     }
 
     // Basisklasse zur Implementierung von Seiten.
-    export abstract class Page<TSiteType extends JMSLib.App.INoUiSite> implements IPage {
+    export abstract class Page<TSiteType extends JMSLib.App.ISite> implements IPage {
         // Das zugehörige Oberflächenelement.
         private _site: TSiteType;
 

@@ -3,7 +3,7 @@
 namespace VCRNETClient.App.NoUi {
 
     // Steuert die Pflege einer Zahl über einen Schieberegler.
-    export interface INumberSlider extends JMSLib.App.INoUiWithSite {
+    export interface INumberSlider extends JMSLib.App.IUi {
         // Meldet oder ändert die relative (0..1) Position des Reglers.
         position: number;
 
@@ -40,7 +40,7 @@ namespace VCRNETClient.App.NoUi {
         }
 
         // Bei der Anzeige werden immer alle Einstellungen auf den Grundwert zurückgesetzt.
-        setSite(newSite: JMSLib.App.INoUiSite): void {
+        setSite(newSite: JMSLib.App.ISite): void {
             super.setSite(newSite);
 
             // Zurück auf den Anfang.

@@ -1,6 +1,6 @@
 ﻿namespace JMSLib.App {
 
-    export interface ICommand extends IDisplayText, INoUiWithSite {
+    export interface ICommand extends IDisplayText, IUi {
         readonly isEnabled: boolean;
 
         readonly isDangerous: boolean;
@@ -14,9 +14,9 @@
         constructor(private _begin: () => Thenable<TResponseType, XMLHttpRequest>, public text: string, private _test?: () => boolean) {
         }
 
-        private _site: INoUiSite;
+        private _site: ISite;
 
-        setSite(newSite: INoUiSite): void {
+        setSite(newSite: ISite): void {
             this._site = newSite;
         }
 

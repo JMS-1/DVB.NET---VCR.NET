@@ -2,7 +2,7 @@
 
 namespace VCRNETClient.Ui {
 
-    export class EditTime extends JMSLib.ReactUi.NoUiViewWithSite<App.NoUi.ITimeEditor> implements JMSLib.App.INoUiSite {
+    export class EditTime extends JMSLib.ReactUi.NoUiViewWithSite<App.NoUi.ITimeEditor> implements JMSLib.App.ISite {
         render(): JSX.Element {
             return <input className="vcrnet-edittime"
                 type="TEXT"

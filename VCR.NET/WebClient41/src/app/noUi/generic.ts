@@ -53,8 +53,8 @@
     }
 
     // Basisklasse zur Pflege des Wertes einer einzelnen Eigenschaft.
-    export abstract class ValueHolderWithSite<TValueType> extends ValueHolder<TValueType> implements JMSLib.App.INoUiWithSite {
-        private _site: JMSLib.App.INoUiSite;
+    export abstract class ValueHolderWithSite<TValueType> extends ValueHolder<TValueType> implements JMSLib.App.IUi {
+        private _site: JMSLib.App.ISite;
 
         // Benachrichtigt die Oberfläche zur Aktualisierung der Anzeige.
         protected refresh(): void {
@@ -63,7 +63,7 @@
         }
 
         // Meldet die Oberfläche an.
-        setSite(site: JMSLib.App.INoUiSite): void {
+        setSite(site: JMSLib.App.ISite): void {
             this._site = site;
 
             if (this._site)

@@ -2,7 +2,7 @@
 
 namespace VCRNETClient.App.NoUi {
 
-    export interface ITimeEditor extends JMSLib.App.INoUiWithSite {
+    export interface ITimeEditor extends JMSLib.App.IUi {
         time: string;
 
         readonly error: string;

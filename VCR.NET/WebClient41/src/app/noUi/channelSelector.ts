@@ -3,7 +3,7 @@
 namespace VCRNETClient.App.NoUi {
 
     // Schnitstelle zur Pflege der Senderauswahl.
-    export interface IChannelSelector extends IValidatableValue<string>, JMSLib.App.INoUiWithSite {
+    export interface IChannelSelector extends IValidatableValue<string>, JMSLib.App.IUi {
         // Die Vorauswahl der Quellen vor allem nach dem ersten Zeichen des Namens.
         section: string;
 

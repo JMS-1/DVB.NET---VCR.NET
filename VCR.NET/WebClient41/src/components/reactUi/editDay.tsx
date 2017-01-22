@@ -2,7 +2,7 @@
 
 namespace VCRNETClient.Ui {
 
-    export class EditDay extends JMSLib.ReactUi.NoUiViewWithSite<App.NoUi.IDaySelector> implements JMSLib.App.INoUiSite {
+    export class EditDay extends JMSLib.ReactUi.NoUiViewWithSite<App.NoUi.IDaySelector> implements JMSLib.App.ISite {
         // Anzeige erstellen.
         render(): JSX.Element {
             return <div className="vcrnet-editday">
