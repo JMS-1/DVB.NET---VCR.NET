@@ -39,7 +39,7 @@ namespace VCRNETClient.HelpPages {
                 <br />
                 <br />
                 Sind die <InternalLink view={`${page.route};filecontents`}>Aufzeichnungsdateien</InternalLink> zu einem Eintrag noch
-                vorhanden, so wird dies durch kleine Symbole <Pictogram name="recording" /> bei dem Eintrag visualisiert. 
+                vorhanden, so wird dies durch kleine Symbole <JMSLib.ReactUi.Pictogram name="recording" /> bei dem Eintrag visualisiert. 
                 Ist auf dem Rechner, von dem die Web Oberfläche aufgerufen wurde,
                 der <ExternalLink url="http://www.psimarron.net/DVBNETViewer/">DVB.NET / VCR.NET Viewer</ExternalLink> lokal
                 installiert, so kann durch Klicken auf ein

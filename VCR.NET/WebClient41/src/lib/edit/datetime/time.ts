@@ -1,18 +1,18 @@
-﻿/// <reference path="../lib/edit.ts" />
+﻿/// <reference path="../../edit.ts" />
 
-namespace VCRNETClient.App {
+namespace JMSLib.App {
 
-    export interface ITimeEditor extends JMSLib.App.IConnectable {
+    export interface IEditTime extends IConnectable {
         time: string;
 
         readonly error: string;
     }
 
-    export class TimeEditor extends JMSLib.App.EditValueWithSite<string> implements ITimeEditor {
+    export class EditTime extends EditValueWithSite<string> implements IEditTime {
         private _time: string;
 
         protected onSiteChanged(): void {
-            this._time = JMSLib.App.DateFormatter.getEndTime(new Date(this.value));
+            this._time = DateFormatter.getEndTime(new Date(this.value));
         }
 
         constructor(data: any, prop: string, onChange: () => void, name?: string, private _externalValidator?: () => string) {
@@ -27,7 +27,7 @@ namespace VCRNETClient.App {
             if (newTime !== this._time) {
                 this._time = newTime;
 
-                var parsed = JMSLib.App.DateFormatter.parseTime(newTime);
+                var parsed = DateFormatter.parseTime(newTime);
 
                 if (parsed !== null) {
                     parsed /= 60000;
@@ -53,7 +53,7 @@ namespace VCRNETClient.App {
 
             if (external.length > 0)
                 this.message = external;
-            else if ((this._time === undefined) || (JMSLib.App.DateFormatter.parseTime(this._time) !== null))
+            else if ((this._time === undefined) || (DateFormatter.parseTime(this._time) !== null))
                 super.validate();
             else
                 this.message = "Ungültige Uhrzeit."

@@ -19,7 +19,7 @@ namespace VCRNETClient.Ui {
                 </Ui.Field>
 
                 <Ui.Field page={this.props.noui.page} label={`${this.props.noui.firstStart.text}:`}>
-                    <Ui.EditDay noui={this.props.noui.firstStart} />
+                    <JMSLib.ReactUi.EditDay noui={this.props.noui.firstStart} />
                 </Ui.Field>
 
                 <Ui.Field page={this.props.noui.page} label={`${this.props.noui.duration.text}:`}>
@@ -36,7 +36,7 @@ namespace VCRNETClient.Ui {
                     <JMSLib.ReactUi.EditBoolean noui={this.props.noui.onSunday} />
                     {(this.props.noui.repeat.value !== 0) ? <div>
                         {this.props.noui.lastDay.text}
-                        <Ui.EditDay noui={this.props.noui.lastDay} />
+                        <JMSLib.ReactUi.EditDay noui={this.props.noui.lastDay} />
                     </div> : null}
                 </Ui.Field>
             </fieldset>;

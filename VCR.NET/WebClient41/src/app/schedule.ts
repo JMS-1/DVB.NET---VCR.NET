@@ -3,7 +3,7 @@
     // Schnittstelle zur Pflege einer Aufzeichnung.
     export interface IScheduleEditor extends IJobScheduleEditor {
         // Datum der ersten Aufzeichnung.
-        readonly firstStart: IDaySelector;
+        readonly firstStart: JMSLib.App.IDaySelector;
 
         // Laufzeit der Aufzeichnung.
         readonly duration: IDurationEditor;
@@ -20,7 +20,7 @@
         readonly onSunday: JMSLib.App.IValidateFlag;
 
         // Ende der Wiederholung.
-        readonly lastDay: IDaySelector;
+        readonly lastDay: JMSLib.App.IDaySelector;
 
         // Bekannte Ausnahmen der Wiederholungsregel.
         readonly hasExceptions: boolean;
@@ -34,9 +34,9 @@
             super(page, model, false, favoriteSources, onChange);
 
             // Pflegbare Eigenschaften anlegen.
-            this.firstStart = new DayEditor(model, "firstStart", onChange, "Datum", false);
+            this.firstStart = new JMSLib.App.DayEditor(model, "firstStart", onChange, "Datum", false);
             this.repeat = new JMSLib.App.EditNumber(model, "repeatPattern", onChange, "Wiederholung");
-            this.lastDay = new DayEditor(model, "lastDay", onChange, "wiederholen bis zum", true);
+            this.lastDay = new JMSLib.App.DayEditor(model, "lastDay", onChange, "wiederholen bis zum", true);
             this.duration = new DurationEditor(model, "firstStart", "duration", onChange, "Zeitraum");
 
             this.onMonday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagMonday, this.repeat, JMSLib.App.DateFormatter.germanDays[1]);
@@ -53,7 +53,7 @@
         }
 
         // Datum der ersten Aufzeichnung.
-        readonly firstStart: DayEditor;
+        readonly firstStart: JMSLib.App.DayEditor;
 
         // Uhrzeit der ersten Aufzeichnung.
         readonly duration: DurationEditor;
@@ -62,7 +62,7 @@
         readonly repeat: JMSLib.App.EditNumber;
 
         // Ende der Wiederholung
-        readonly lastDay: DayEditor;
+        readonly lastDay: JMSLib.App.DayEditor;
 
         // Bekannte Ausnahmen der Wiederholungsregel.
         readonly hasExceptions: boolean;

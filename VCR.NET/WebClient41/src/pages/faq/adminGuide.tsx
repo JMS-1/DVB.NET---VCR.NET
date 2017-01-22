@@ -17,7 +17,7 @@ namespace VCRNETClient.HelpPages {
                 einmal die Sammlung der Informationen an sich aktiviert werden.
                 <br />
                 <br />
-                <Pictogram description="Sammlung aktivieren" name="FAQ/epgonoff" />
+                <JMSLib.ReactUi.Pictogram description="Sammlung aktivieren" name="FAQ/epgonoff" />
                 <br />
                 <br />
                 Die wesentliche Information ist dann, für welche Quellen der VCR.NET Recording Service
@@ -30,7 +30,7 @@ namespace VCRNETClient.HelpPages {
                 natürlich können Quellen auch wieder aus der Liste entfernt werden.
                 <br />
                 <br />
-                <Pictogram description="Quellen konfigurieren" name="FAQ/epgsources" />
+                <JMSLib.ReactUi.Pictogram description="Quellen konfigurieren" name="FAQ/epgsources" />
                 <br />
                 <br />
                 Sind unter den Quellen auch englische Sender von Astra 2, so muss die <em>FreeSat UK</em> Option 
@@ -60,7 +60,7 @@ namespace VCRNETClient.HelpPages {
                 sich dann leicht feststellen, was ein typischer Wert für die Laufzeit ist.
                 <br />
                 <br />
-                <Pictogram description="Aktualisierungszeitpunkte" name="FAQ/epgtimes" />
+                <JMSLib.ReactUi.Pictogram description="Aktualisierungszeitpunkte" name="FAQ/epgtimes" />
                 <br />
                 <br />
                 In manchen Fällen ist die Einstellung von vier festen Uhrzeiten unzureichend, daher

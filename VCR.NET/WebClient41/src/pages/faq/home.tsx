@@ -17,7 +17,7 @@ namespace VCRNETClient.HelpPages {
                 Service installiert wird und auch ohne Online Verbindung jederzeit zur Verfügung
                 steht, sind einige der wesentlichen Aspekte der Bedienung unter Oberbegriffen zusammengefasst.
                 Zusätzlich findet man in den einzelnen Bereichen der Anwendung oft das kleine
-                Symbol <Pictogram name="info" />, über das direkt zu einer passenden
+                Symbol <JMSLib.ReactUi.Pictogram name="info" />, über das direkt zu einer passenden
                 Erklärung gesprungen werden kann.
                 </p>
                 <p>

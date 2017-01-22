@@ -1,8 +1,8 @@
-﻿/// <reference path="../../vcrnet.tsx" />
+﻿/// <reference path="../../reactUi.tsx" />
 
-namespace VCRNETClient.Ui {
+namespace JMSLib.ReactUi {
 
-    export class EditTime extends JMSLib.ReactUi.ComponentWithSite<App.ITimeEditor> implements JMSLib.App.ISite {
+    export class EditTime extends ComponentWithSite<App.IEditTime> {
         render(): JSX.Element {
             return <input className="vcrnet-edittime"
                 type="TEXT"

@@ -18,7 +18,7 @@ namespace VCRNETClient {
                 target = "#" + this.props.view;
 
             return <span>
-                {this.props.pict ? <a className="vcrnet-internalLink" href={target} onClick={click}><Pictogram name={this.props.pict} /></a> : null}
+                {this.props.pict ? <a className="vcrnet-internalLink" href={target} onClick={click}><JMSLib.ReactUi.Pictogram name={this.props.pict} /></a> : null}
                 {this.props.children ? <a className="vcrnet-internalLink" href={target} onClick={click}>{this.props.children}</a> : null}
             </span>;
         }

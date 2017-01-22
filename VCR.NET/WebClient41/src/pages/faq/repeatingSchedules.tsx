@@ -17,7 +17,7 @@ namespace VCRNETClient.HelpPages {
                 zur Wiederholung aktiviert ist.
                 <br />
                 <br />
-                <Pictogram name="faq/repeating" />
+                <JMSLib.ReactUi.Pictogram name="faq/repeating" />
                 <br />
                 <br />
                 Als Besonderheit ist zu erwähnen, dass nur die Kombination aus dem Zeitpunktder ersten Aufzeichnung und den gewählten Wochentagen die Tage der Aufzeichnung
@@ -37,7 +37,7 @@ namespace VCRNETClient.HelpPages {
                 entfallen.
                 <br />
                 <br />
-                <Pictogram name="faq/exceptions" />
+                <JMSLib.ReactUi.Pictogram name="faq/exceptions" />
                 <br />
                 <br />
                 Wurde eine Aufzeichnung auf diesem Weg aus dem Aufzeichnungsplan entfernt, so kann sie nur über die
@@ -48,7 +48,7 @@ namespace VCRNETClient.HelpPages {
                 heraus.
                 <br />
                 <br />
-                <Pictogram name="faq/recover" />
+                <JMSLib.ReactUi.Pictogram name="faq/recover" />
             </div>;
         }
     }

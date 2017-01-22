@@ -23,7 +23,7 @@ namespace VCRNETClient.HelpPages {
                 Aktualisierung <InternalLink view="admin;sources" pict="admin" /> periodisch auszuführen.
                 <br />
                 <br />
-                <Pictogram description="Aktualisierung konfigurieren" name="FAQ/psi" />
+                <JMSLib.ReactUi.Pictogram description="Aktualisierung konfigurieren" name="FAQ/psi" />
                 <br />
                 <br />
                 Im Endeffekt erfolgt die Konfiguration ganz analog

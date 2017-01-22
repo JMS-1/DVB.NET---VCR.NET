@@ -3,24 +3,24 @@
 namespace VCRNETClient.App {
 
     export interface IDurationEditor extends JMSLib.App.IDisplayText {
-        readonly startTime: ITimeEditor;
+        readonly startTime: JMSLib.App.IEditTime;
 
-        readonly endTime: ITimeEditor;
+        readonly endTime: JMSLib.App.IEditTime;
     }
 
     export class DurationEditor extends JMSLib.App.EditValue<number> implements IDurationEditor {
-        readonly startTime: TimeEditor;
+        readonly startTime: JMSLib.App.EditTime;
 
-        readonly endTime: TimeEditor;
+        readonly endTime: JMSLib.App.EditTime;
 
         constructor(data: any, propTime: string, propDuration: string, onChange: () => void, text: string) {
             super(data, propDuration, onChange, text);
 
-            this.startTime = new TimeEditor(data, propTime, this._onChanged);
+            this.startTime = new JMSLib.App.EditTime(data, propTime, this._onChanged);
 
             var end = new Date(new Date(this.startTime.value).getTime() + 60000 * this.value);
 
-            this.endTime = new TimeEditor({ time: end.toISOString() }, "time", this._onChanged, undefined, this.checkLimit.bind(this));
+            this.endTime = new JMSLib.App.EditTime({ time: end.toISOString() }, "time", this._onChanged, undefined, this.checkLimit.bind(this));
         }
 
         private readonly _onChanged = this.onChanged.bind(this);
