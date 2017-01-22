@@ -54,18 +54,18 @@ namespace VCRNETClient.App {
         // Die Liste der Aufzeichnungsverzeichnisse steht bereit.
         private setDirectories(folders: string[], section: string): void {
             // Auswahlliste für den Anwender aufbauen.
-            var folderSelection = folders.map(f => <NoUi.ISelectableValue<string>>{ value: f, display: f });
+            var folderSelection = folders.map(f => <JMSLib.App.IUiValue<string>>{ value: f, display: f });
 
-            folderSelection.unshift(<NoUi.ISelectableValue<string>>{ value: "", display: "(Voreinstellung verwenden)" });
+            folderSelection.unshift(<JMSLib.App.IUiValue<string>>{ value: "", display: "(Voreinstellung verwenden)" });
 
             // Geräteprofile anfordern.
             VCRServer.ProfileCache.getPromise().then(profiles => this.setProfiles(profiles, section, folderSelection));
         }
 
         // Die Liste der Geräteprofile steht bereit.
-        private setProfiles(profiles: VCRServer.ProfileInfoContract[], section: string, folders: NoUi.ISelectableValue<string>[]): void {
+        private setProfiles(profiles: VCRServer.ProfileInfoContract[], section: string, folders: JMSLib.App.IUiValue<string>[]): void {
             // Auswahl für den Anwender vorbereiten.
-            var profileSelection = profiles.map(p => <NoUi.ISelectableValue<string>>{ value: p.name, display: p.name });
+            var profileSelection = profiles.map(p => <JMSLib.App.IUiValue<string>>{ value: p.name, display: p.name });
 
             // Auf das Neuanlegen prüfen.
             if (section.length < 1) {
@@ -113,7 +113,7 @@ namespace VCRNETClient.App {
         }
 
         // Die Daten einer existierenden Aufzeichnung stehen bereit.
-        private setJobSchedule(info: VCRServer.JobScheduleInfoContract, profiles: NoUi.ISelectableValue<string>[], folders: NoUi.ISelectableValue<string>[]): void {
+        private setJobSchedule(info: VCRServer.JobScheduleInfoContract, profiles: JMSLib.App.IUiValue<string>[], folders: JMSLib.App.IUiValue<string>[]): void {
             // Liste der zuletzt verwendeten Quellen abrufen.
             var favorites = this.application.profile.recentSources || [];
 

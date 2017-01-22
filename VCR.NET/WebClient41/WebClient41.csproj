@@ -177,8 +177,8 @@
     <Content Include="ui\images\faq\endchange.png" />
     <None Include="src\components\reactUi\editJob.scss" />
     <None Include="src\components\reactUi\editField.scss" />
-    <None Include="src\components\reactUi\editText.scss" />
-    <None Include="src\components\reactUi\editSingleSelect.scss" />
+    <None Include="src\lib\edit\text\text.scss" />
+    <None Include="src\lib\edit\text\singleSelect.scss" />
     <None Include="src\components\reactUi\editFlag.scss" />
     <None Include="src\components\reactUi\editChannel.scss" />
     <None Include="src\components\reactUi\editChannelFlags.scss" />
@@ -334,9 +334,9 @@
     <TypeScriptCompile Include="src\app\noUi\scheduleException.ts" />
     <TypeScriptCompile Include="src\app\noUi\simpleNumber.ts" />
     <TypeScriptCompile Include="src\app\noUi\simpleFlag.ts" />
-    <TypeScriptCompile Include="src\app\noUi\simpleText.ts" />
+    <TypeScriptCompile Include="src\lib\edit\text\text.ts" />
     <TypeScriptCompile Include="src\lib\site.ts" />
-    <TypeScriptCompile Include="src\app\noUi\textFromList.ts" />
+    <TypeScriptCompile Include="src\lib\edit\text\textList.ts" />
     <TypeScriptCompile Include="src\app\noUi\timeOnly.ts" />
     <TypeScriptCompile Include="src\app\noUi\page.ts" />
     <TypeScriptCompile Include="src\app\noUi\planEntry.ts" />
@@ -360,8 +360,8 @@
     <TypeScriptCompile Include="src\components\reactUi\editFlag.tsx" />
     <TypeScriptCompile Include="src\components\reactUi\editNumberWithSlider.tsx" />
     <TypeScriptCompile Include="src\components\reactUi\editSchedule.tsx" />
-    <TypeScriptCompile Include="src\components\reactUi\editSingleSelect.tsx" />
-    <TypeScriptCompile Include="src\components\reactUi\editText.tsx" />
+    <TypeScriptCompile Include="src\lib\edit\text\singleSelect.tsx" />
+    <TypeScriptCompile Include="src\lib\edit\text\text.tsx" />
     <TypeScriptCompile Include="src\components\reactUi\editTime.tsx" />
     <TypeScriptCompile Include="src\lib\reactUi.tsx" />
     <TypeScriptCompile Include="src\pages\edit.tsx" />

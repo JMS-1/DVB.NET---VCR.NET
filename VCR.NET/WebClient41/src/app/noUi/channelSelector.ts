@@ -20,7 +20,7 @@ namespace VCRNETClient.App.NoUi {
         readonly encryptions: string[];
 
         // Die komplette Liste aller verfügbaren Quellen.
-        sourceNames: ISelectableValue<string>[];
+        sourceNames: JMSLib.App.IUiValue<string>[];
 
         // Gesetzt, wenn die zusätzlichen Filter angezeigt werden sollen.
         readonly showFilter: boolean;
@@ -197,7 +197,7 @@ namespace VCRNETClient.App.NoUi {
         }
 
         // Alle aktuell bezüglich aller Einschränkungen relevanten Quellen.
-        sourceNames: ISelectableValue<string>[];
+        sourceNames: JMSLib.App.IUiValue<string>[];
 
         // Sämtliche bekannten Quellen.
         private _sources: VCRServer.SourceEntry[] = [];
@@ -237,7 +237,7 @@ namespace VCRNETClient.App.NoUi {
                     return false;
 
                 return true;
-            }).map(s => <ISelectableValue<string>>{ value: s.name, display: s.name });
+            }).map(s => <JMSLib.App.IUiValue<string>>{ value: s.name, display: s.name });
 
             // Aktuelle Quelle zusätzliche in die Liste einmischen, so dass immer eine korrekte Auswahl existiert.
             var source = this.value;

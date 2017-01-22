@@ -7,16 +7,16 @@ namespace VCRNETClient.Ui {
                 <legend>Daten zum Auftrag</legend>
 
                 <Ui.Field page={this.props.noui.page} label={`${this.props.noui.device.text}:`}>
-                    <Ui.EditTextWithList noui={this.props.noui.device} />
+                    <JMSLib.ReactUi.EditTextWithList noui={this.props.noui.device} />
                     <Ui.EditBoolean noui={this.props.noui.deviceLock} />
                 </Ui.Field>
 
                 <Ui.Field page={this.props.noui.page} label={`${this.props.noui.name.text}:`} help="jobsandschedules">
-                    <Ui.EditText noui={this.props.noui.name} chars={100} hint="(Jeder Auftrag muss einen Namen haben)" />
+                    <JMSLib.ReactUi.EditText noui={this.props.noui.name} chars={100} hint="(Jeder Auftrag muss einen Namen haben)" />
                 </Ui.Field>
 
                 <Ui.Field page={this.props.noui.page} label={`${this.props.noui.folder.text}:`}>
-                    <Ui.EditTextWithList noui={this.props.noui.folder} />
+                    <JMSLib.ReactUi.EditTextWithList noui={this.props.noui.folder} />
                 </Ui.Field>
 
                 <Ui.Field page={this.props.noui.page} label={`${this.props.noui.source.text}:`} help="sourcechooser">

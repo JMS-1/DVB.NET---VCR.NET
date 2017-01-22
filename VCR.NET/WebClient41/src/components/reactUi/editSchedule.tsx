@@ -7,7 +7,7 @@ namespace VCRNETClient.Ui {
                 <legend>Daten zur Aufzeichnung</legend>
 
                 <Ui.Field page={this.props.noui.page} label={`${this.props.noui.name.text}:`} help="jobsandschedules">
-                    <Ui.EditText noui={this.props.noui.name} chars={100} hint="(Optionaler Name der Aufzeichnung)" />
+                    <JMSLib.ReactUi.EditText noui={this.props.noui.name} chars={100} hint="(Optionaler Name der Aufzeichnung)" />
                 </Ui.Field>
 
                 <Ui.Field page={this.props.noui.page} label={`${this.props.noui.source.text}:`} help="sourcechooser">

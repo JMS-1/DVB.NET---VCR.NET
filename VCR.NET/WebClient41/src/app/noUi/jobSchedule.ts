@@ -21,7 +21,7 @@
         readonly page: IPage;
 
         // Der Name des Auftrags.
-        readonly name: IStringEditor;
+        readonly name: JMSLib.App.IValidatedString;
 
         // Der Name der Quelle, die aufgezeichnet werden soll.
         readonly source: IChannelSelector;
@@ -36,7 +36,7 @@
             var noSource = () => (this.source.value || "").trim().length < 1;
 
             // Pflegekomponenten erstellen
-            this.name = new StringEditor(this.model, "name", onChange, "Name", mustHaveName, "Ein Auftrag muss einen Namen haben.");
+            this.name = new JMSLib.App.EditString(this.model, "name", onChange, "Name", mustHaveName, "Ein Auftrag muss einen Namen haben.");
             this.source = new ChannelEditor(this.model, "sourceName", favoriteSources, onChange);
             this.sourceFlags = {
                 includeDolby: new BooleanEditor(this.model, "includeDolby", onChange, "Dolby Digital (AC3)", noSource),
@@ -48,7 +48,7 @@
         }
 
         // Der Name des Auftrags.
-        readonly name: StringEditor;
+        readonly name: JMSLib.App.EditString;
 
         // Der Name der Quelle, die aufgezeichnet werden soll.
         readonly source: ChannelEditor;
