@@ -3,6 +3,7 @@
 namespace VCRNETClient.App {
 
     export interface IGuidePage extends IPage {
+        readonly entries: GuideEntry[];
     }
 
     export class GuidePage extends Page<JMSLib.App.ISite> implements IGuidePage {
@@ -23,11 +24,7 @@ namespace VCRNETClient.App {
             index: 0
         };
 
-        private _rows: GuideEntry[];
-
-        get entries(): GuideEntry[] {
-            return this._rows;
-        }
+        entries: GuideEntry[] = [];
 
         constructor(application: Application) {
             super("guide", application);
@@ -39,6 +36,7 @@ namespace VCRNETClient.App {
 
         reset(section: string): void {
             this._queryId++;
+            this.entries = [];
 
             this._filter.size = this.application.profile.guideRows;
 
@@ -61,7 +59,7 @@ namespace VCRNETClient.App {
                 if (this._queryId !== queryId)
                     return;
 
-                this._rows = (items || []).slice(0, this._filter.size).map(i => new GuideEntry(i));
+                this.entries = (items || []).slice(0, this._filter.size).map(i => new GuideEntry(i));
 
                 this.application.setBusy(false);
             });

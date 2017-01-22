@@ -91,10 +91,6 @@
         }
 
         switchPage(name: string, section: string): boolean {
-            // Wir sind noch in einem Übergang oder beim Starten
-            if (this._busy)
-                return false;
-
             this.setBusy(true);
 
             // Den Singleton der gewünschten Seite ermitteln.
