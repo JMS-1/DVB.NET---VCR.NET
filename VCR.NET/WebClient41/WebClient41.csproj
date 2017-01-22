@@ -251,7 +251,7 @@
     <None Include="src\components\pictogram.scss" />
     <None Include="src\components\detailRow.scss" />
     <None Include="src\components\inlineHelp.scss" />
-    <None Include="src\components\checkbox.scss" />
+    <None Include="src\lib\command\checkbox.scss" />
     <Content Include="src\components\reactUi\styles.scss" />
     <Content Include="src\components\styles.scss" />
     <Content Include="src\lib\styles.scss" />
@@ -262,8 +262,8 @@
     <Content Include="src\components\main.scss" />
     <None Include="src\components\view.scss" />
     <None Include="src\components\reactUi\planRow.scss" />
-    <None Include="src\components\radio.scss" />
-    <None Include="src\components\radioGroup.scss" />
+    <None Include="src\lib\command\radio.scss" />
+    <None Include="src\lib\command\radioGroup.scss" />
     <Content Include="ui\admin.html" />
     <Content Include="ui\faq.html" />
     <Content Include="ui\favorites.html" />
@@ -344,7 +344,7 @@
     <TypeScriptCompile Include="src\app\noUi\planPage.ts" />
     <TypeScriptCompile Include="src\lib\promise.ts" />
     <TypeScriptCompile Include="src\app\noUi\schedule.ts" />
-    <TypeScriptCompile Include="src\components\checkbox.tsx" />
+    <TypeScriptCompile Include="src\lib\command\checkbox.tsx" />
     <TypeScriptCompile Include="src\components\detailRow.tsx" />
     <TypeScriptCompile Include="src\lib\command\command.tsx" />
     <TypeScriptCompile Include="src\components\reactUi\editChannel.tsx" />
@@ -383,8 +383,8 @@
     <TypeScriptCompile Include="src\components\pictogram.tsx" />
     <TypeScriptCompile Include="src\pages\plan.tsx" />
     <TypeScriptCompile Include="src\components\reactUi\planRow.tsx" />
-    <TypeScriptCompile Include="src\components\radio.tsx" />
-    <TypeScriptCompile Include="src\components\radioGroup.tsx" />
+    <TypeScriptCompile Include="src\lib\command\radio.tsx" />
+    <TypeScriptCompile Include="src\lib\command\radioGroup.tsx" />
     <TypeScriptCompile Include="src\components\view.tsx" />
     <TypeScriptCompile Include="src\vcrnet.tsx" />
   </ItemGroup>

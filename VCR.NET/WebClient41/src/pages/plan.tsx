@@ -10,13 +10,13 @@ namespace VCRNETClient {
                 Hier sieht man einen Ausschnitt der geplanten Aufzeichnungen für die nächsten Wochen.<HelpLink page={this.props.noui} topic="parallelrecording" />
                 {this.getHelp()}
                 <div className="vcrnet-plan-filter">
-                    <RadioGroup>
+                    <JMSLib.ReactUi.RadioGroup>
                         {this.props.noui.getStartFilter().map((f, index) =>
-                            <Radio key={index} groupName="filterStart" isChecked={f.active} onClick={() => f.activate()}>{f.text}</Radio>)}
-                    </RadioGroup>
-                    <CheckBox onToggle={() => this.props.noui.toggleTaskFilter()} isChecked={this.props.noui.showTasks()}>
+                            <JMSLib.ReactUi.RadioCommand key={index} groupName="filterStart" isChecked={f.active} onClick={() => f.activate()}>{f.text}</JMSLib.ReactUi.RadioCommand>)}
+                    </JMSLib.ReactUi.RadioGroup>
+                    <JMSLib.ReactUi.CheckBoxCommand onToggle={() => this.props.noui.toggleTaskFilter()} isChecked={this.props.noui.showTasks()}>
                         Aufgaben einblenden
-                    </CheckBox>
+                    </JMSLib.ReactUi.CheckBoxCommand>
                 </div>
                 {
                     jobs ? <table>

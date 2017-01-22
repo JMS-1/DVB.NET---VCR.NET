@@ -40,8 +40,8 @@ namespace VCRNETClient {
                 </form> : null}
                 {this.renderButtonHelp()}
                 <div>
-                    <JMSLib.ReactUi.Command noui={this.props.noui.save} />
-                    <JMSLib.ReactUi.Command noui={this.props.noui.del} />
+                    <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.save} />
+                    <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.del} />
                 </div>
             </div>;
         }
