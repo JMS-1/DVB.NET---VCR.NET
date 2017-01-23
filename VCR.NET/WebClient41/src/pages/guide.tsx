@@ -11,9 +11,19 @@ namespace VCRNETClient.Ui {
                 Über diese Ansicht ist es nicht nur möglich, sich die Details einzelner Sendungen anzeigen
                 zu lassen. Vielmehr ist es dabei auch sofort möglich, eine neue Aufzeichnung anzulegen.
                 {this.getHelp()}
-                <fieldset>
-                    <legend>Einschränkungen festlegen</legend>
-                </fieldset>
+                <form>
+                    <fieldset>
+                        <legend>Einschränkungen festlegen</legend>
+                        <div>
+                            <Field page={this.props.noui} label={`${this.props.noui.profiles.text}:`}>
+                                <JMSLib.ReactUi.EditTextWithList noui={this.props.noui.profiles} />
+                            </Field>
+                            <Field page={this.props.noui} label={`${this.props.noui.sources.text}:`}>
+                                <JMSLib.ReactUi.EditTextWithList noui={this.props.noui.sources} />
+                            </Field>
+                        </div>
+                    </fieldset>
+                </form>
                 <GuideNavigation noui={this.props.noui} />
                 <table>
                     <thead>

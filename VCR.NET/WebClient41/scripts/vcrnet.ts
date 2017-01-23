@@ -3841,7 +3841,7 @@ class guidePage extends Page implements IPage {
             this.jobs = jobs;
 
             // Infomationen zum Gerät anfordern
-            VCRServer.GuideInfoCache.getInfo(newDevice).done((data: VCRServer.GuideInfoContract) => {
+            VCRServer.GuideInfoCache.getPromise(newDevice).then(data => {
                 // Eventuell gibt es das Gerät schon nicht mehr
                 if (data == null)
                     return;

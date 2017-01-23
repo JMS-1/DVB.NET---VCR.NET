@@ -696,11 +696,8 @@ module VCRServer {
         });
     }
 
-    export function getGuideInfo(device: string): JQueryPromise<any> {
-        return $.ajax({
-            url: restRoot + 'guide/' + device,
-            dataType: 'json',
-        });
+    export function getGuideInfo(device: string): JMSLib.App.Thenable<GuideInfoContract, XMLHttpRequest> {
+        return doUrlCall(`guide/${device}`);
     }
 
     export function getInfoJobs(): JQueryPromise<any> {
@@ -946,17 +943,17 @@ module VCRServer {
 
     // Verwaltet die Zusammenfassung der Daten der Programmzeitschrift für einzelne Geräte
     export class GuideInfoCache {
-        private static guideInfoCache = {};
+        private static promises: { [device: string]: JMSLib.App.Promise<GuideInfoContract, XMLHttpRequest> } = {};
 
-        // Meldet die Daten zu einem Gerät
-        static getInfo(profileName: string): JQueryPromise<any> {
-            var info: GuideInfoContract = GuideInfoCache.guideInfoCache[profileName];
+        static getPromise(profileName: string): JMSLib.App.Thenable<GuideInfoContract, XMLHttpRequest> {
+            // Eventuell haben wir das schon einmal gemacht
+            var promise = GuideInfoCache.promises[profileName];
+            if (!promise)
+                GuideInfoCache.promises[profileName] =
+                    promise = new JMSLib.App.Promise<GuideInfoContract, XMLHttpRequest>(success => getGuideInfo(profileName).then(success));
 
-            // Einmal laden reicht
-            if (info != undefined)
-                return $.Deferred().resolve(info)
-            else
-                return getGuideInfo(profileName).done((data: GuideInfoContract) => GuideInfoCache.guideInfoCache[profileName] = data);
+            // Verwaltung melden.
+            return promise;
         }
     }
 

@@ -21,7 +21,7 @@ namespace JMSLib.App {
     export class EditStringFromList extends EditString implements IValidateStringFromList {
 
         // Legt eine neue Verwaltung an.
-        constructor(data: any, prop: string, onChange: () => void, name: string, isRequired: boolean, public readonly allowedValues: IUiValue<string>[]) {
+        constructor(data: any, prop: string, onChange: () => void, name: string, isRequired: boolean, public allowedValues: IUiValue<string>[]) {
             super(data, prop, onChange, name, isRequired);
         }
 

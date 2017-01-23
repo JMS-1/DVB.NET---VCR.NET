@@ -8,6 +8,10 @@ namespace VCRNETClient.App {
         readonly prevPage: JMSLib.App.ICommand;
 
         readonly nextPage: JMSLib.App.ICommand;
+
+        readonly profiles: JMSLib.App.IValidateStringFromList;
+
+        readonly sources: JMSLib.App.IValidateStringFromList;
     }
 
     export interface IGuidePage extends IPage, IGuidePageNavigation {
@@ -16,8 +20,6 @@ namespace VCRNETClient.App {
 
     export class GuidePage extends Page<JMSLib.App.ISite> implements IGuidePage {
         private _queryId = 0;
-
-        private _profiles: VCRServer.ProfileInfoContract[];
 
         private _filter: VCRServer.GuideFilterContract =
         {
@@ -31,6 +33,10 @@ namespace VCRNETClient.App {
             size: 20,
             index: 0
         };
+
+        readonly profiles = new JMSLib.App.EditStringFromList(this._filter, "device", () => this.onDeviceChanged(true), "Gerät", false, []);
+
+        readonly sources = new JMSLib.App.EditStringFromList(this._filter, "station", () => this.query(), "Quelle", false, []);
 
         readonly firstPage = new JMSLib.App.Command(() => this.changePage(-this._filter.index), "Erste Seite", () => this._filter.index > 0);
 
@@ -58,15 +64,41 @@ namespace VCRNETClient.App {
             this._filter.size = this.application.profile.guideRows;
 
             VCRServer.ProfileCache.getPromise().then(profiles => {
-                this._profiles = profiles || [];
-                this._filter.device = this._profiles[0].name;
+                this.profiles.allowedValues = (profiles || []).map(p => <JMSLib.App.IUiValue<string>>{ display: p.name, value: p.name });
 
-                this.query();
+                this._filter.device = this.profiles.allowedValues[0].value;
+
+                this.onDeviceChanged(false);
             });
         }
 
         get title(): string {
             return "Programmzeitschrift";
+        }
+
+        private resetFilter(): void {
+            this._filter.cryptFilter = VCRServer.GuideEncryption.ALL;
+            this._filter.typeFilter = VCRServer.GuideSource.ALL;
+            this._filter.station = null;
+            this._filter.content = null;
+            this._filter.start = null;
+            this._filter.title = null;
+            this._filter.index = 0;
+        }
+
+        private onDeviceChanged(resetFilter: boolean) {
+            VCRServer.GuideInfoCache.getPromise(this._filter.device).then(info => {
+                var sources = (info.stations || []).map(s => <JMSLib.App.IUiValue<string>>{ display: s, value: s });
+
+                sources.unshift({ display: "(Alle Sender)", value: null });
+
+                this.sources.allowedValues = sources;
+
+                if (resetFilter)
+                    this.resetFilter();
+
+                this.query();
+            });
         }
 
         private query(): void {
