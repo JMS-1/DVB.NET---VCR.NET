@@ -100,7 +100,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <TypeScriptCompile Include="src\app\pages\guidePage.ts" />
     <TypeScriptCompile Include="src\app\pages\guide\guideEntry.ts" />
-    <TypeScriptCompile Include="src\components\guideNavigator.tsx" />
+    <TypeScriptCompile Include="src\pages\guide\navigator.tsx" />
     <TypeScriptCompile Include="src\lib\command\command.ts" />
     <TypeScriptCompile Include="src\lib\edit\boolean\flagButton.tsx" />
     <TypeScriptCompile Include="src\lib\edit\list.ts" />
@@ -159,7 +159,7 @@
     <Content Include="FAQ\configuration.html" />
     <Content Include="FAQ\controlcenter.html" />
     <None Include="src\pages\edit\exception.scss" />
-    <None Include="src\components\guideNavigator.scss" />
+    <None Include="src\pages\guide\navigator.scss" />
     <None Include="src\lib\edit\boolean\flagButton.scss" />
     <Content Include="src\lib\styles.css">
       <DependentUpon>styles.scss</DependentUpon>
@@ -186,7 +186,7 @@
     <Content Include="ui\images\faq\decryptlimit.png" />
     <Content Include="ui\images\faq\endchange.png" />
     <None Include="src\pages\edit\job.scss" />
-    <None Include="src\components\editField.scss" />
+    <None Include="src\common\editField.scss" />
     <None Include="src\lib\edit\text\text.scss" />
     <None Include="src\lib\edit\text\singleSelectText.scss" />
     <None Include="src\lib\edit\boolean\flag.scss" />
@@ -199,7 +199,7 @@
     <None Include="src\lib\command\command.scss" />
     <None Include="src\pages\plan\exception.scss" />
     <None Include="src\lib\edit\number\slider.scss" />
-    <Content Include="src\components\styles.css">
+    <Content Include="src\common\styles.css">
       <DependentUpon>styles.scss</DependentUpon>
     </Content>
     <Content Include="src\pages\styles.css">
@@ -251,22 +251,22 @@
     <Content Include="scripts\vcrnet.js.map">
       <DependentUpon>vcrnet.js</DependentUpon>
     </Content>
-    <None Include="src\components\internalLink.scss" />
-    <None Include="src\components\helpLink.scss" />
-    <None Include="src\components\externalLink.scss" />
-    <None Include="src\components\navigation.scss" />
+    <None Include="src\common\internalLink.scss" />
+    <None Include="src\common\helpLink.scss" />
+    <None Include="src\common\externalLink.scss" />
+    <None Include="src\common\navigation.scss" />
     <None Include="src\lib\command\pictogram.scss" />
-    <None Include="src\components\detailRow.scss" />
-    <None Include="src\components\inlineHelp.scss" />
+    <None Include="src\common\detailRow.scss" />
+    <None Include="src\common\inlineHelp.scss" />
     <None Include="src\lib\command\checkbox.scss" />
-    <Content Include="src\components\styles.scss" />
+    <Content Include="src\common\styles.scss" />
     <Content Include="src\lib\styles.scss" />
     <Content Include="src\lib\router.scss" />
     <None Include="src\pages\edit.scss" />
     <None Include="src\pages\help.scss" />
     <Content Include="src\pages\plan.scss" />
     <Content Include="src\pages\home.scss" />
-    <Content Include="src\components\main.scss" />
+    <Content Include="src\common\main.scss" />
     <None Include="src\pages\plan\row.scss" />
     <None Include="src\lib\command\radio.scss" />
     <None Include="src\lib\command\radioGroup.scss" />
@@ -351,7 +351,7 @@
     <TypeScriptCompile Include="src\lib\promise.ts" />
     <TypeScriptCompile Include="src\app\pages\edit\schedule.ts" />
     <TypeScriptCompile Include="src\lib\command\checkbox.tsx" />
-    <TypeScriptCompile Include="src\components\detailRow.tsx" />
+    <TypeScriptCompile Include="src\common\detailRow.tsx" />
     <TypeScriptCompile Include="src\lib\command\command.tsx" />
     <TypeScriptCompile Include="src\pages\edit\channel.tsx" />
     <TypeScriptCompile Include="src\pages\edit\channelFlags.tsx" />
@@ -359,10 +359,10 @@
     <TypeScriptCompile Include="src\pages\edit\duration.tsx" />
     <TypeScriptCompile Include="src\pages\edit\exception.tsx" />
     <TypeScriptCompile Include="src\pages\plan\exception.tsx" />
-    <TypeScriptCompile Include="src\components\editField.tsx" />
+    <TypeScriptCompile Include="src\common\editField.tsx" />
     <TypeScriptCompile Include="src\pages\edit\job.tsx" />
-    <TypeScriptCompile Include="src\components\externalLink.tsx" />
-    <TypeScriptCompile Include="src\components\helpLink.tsx" />
+    <TypeScriptCompile Include="src\common\externalLink.tsx" />
+    <TypeScriptCompile Include="src\common\helpLink.tsx" />
     <TypeScriptCompile Include="src\lib\edit\boolean\flag.tsx" />
     <TypeScriptCompile Include="src\lib\edit\number\slider.tsx" />
     <TypeScriptCompile Include="src\pages\edit\schedule.tsx" />
@@ -384,16 +384,16 @@
     <TypeScriptCompile Include="src\pages\guide.tsx" />
     <TypeScriptCompile Include="src\pages\help.tsx" />
     <TypeScriptCompile Include="src\pages\home.tsx" />
-    <TypeScriptCompile Include="src\components\inlineHelp.tsx" />
-    <TypeScriptCompile Include="src\components\internalLink.tsx" />
-    <TypeScriptCompile Include="src\components\main.tsx" />
-    <TypeScriptCompile Include="src\components\navigation.tsx" />
+    <TypeScriptCompile Include="src\common\inlineHelp.tsx" />
+    <TypeScriptCompile Include="src\common\internalLink.tsx" />
+    <TypeScriptCompile Include="src\common\main.tsx" />
+    <TypeScriptCompile Include="src\common\navigation.tsx" />
     <TypeScriptCompile Include="src\lib\command\pictogram.tsx" />
     <TypeScriptCompile Include="src\pages\plan.tsx" />
     <TypeScriptCompile Include="src\pages\plan\row.tsx" />
     <TypeScriptCompile Include="src\lib\command\radio.tsx" />
     <TypeScriptCompile Include="src\lib\command\radioGroup.tsx" />
-    <TypeScriptCompile Include="src\components\view.tsx" />
+    <TypeScriptCompile Include="src\common\view.tsx" />
     <TypeScriptCompile Include="src\vcrnet.tsx" />
   </ItemGroup>
   <ItemGroup>

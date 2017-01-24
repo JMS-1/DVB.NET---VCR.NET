@@ -20,4 +20,22 @@
             width: auto;
         }
     }
+
+    > table {
+        width: 80%;
+
+        > tbody > tr {
+            > td:nth-child(1) {
+                width: 11rem;
+            }
+
+            > td:nth-child(2) {
+                width: 4rem;
+            }
+
+            > td:nth-child(3) {
+                width: 20rem;
+            }
+        }
+    }
 }
