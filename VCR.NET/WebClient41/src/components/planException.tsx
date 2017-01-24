@@ -44,11 +44,29 @@ namespace VCRNETClient.Ui {
                     </tbody>
                 </table>
                 <div>
-                    <button onClick={() => this.props.noui.setToOriginal()}>Ursprüngliche Planung</button>
-                    <button onClick={() => this.props.noui.setToDisable()}>Nicht aufzeichnen</button>
-                    <button onClick={() => this.props.noui.update()}>Einstellungen übernehmen</button>
+                    <button onClick={ev => this.onOriginal(ev)}>Ursprüngliche Planung</button>
+                    <button onClick={ev => this.onDisable(ev)}>Nicht aufzeichnen</button>
+                    <button onClick={ev => this.onSave(ev)}>Einstellungen übernehmen</button>
                 </div>
             </fieldset>;
+        }
+
+        private onOriginal(ev: React.FormEvent): void {
+            ev.preventDefault();
+
+            this.props.noui.setToOriginal();
+        }
+
+        private onDisable(ev: React.FormEvent): void {
+            ev.preventDefault();
+
+            this.props.noui.setToDisable();
+        }
+
+        private onSave(ev: React.FormEvent): void {
+            ev.preventDefault();
+
+            this.props.noui.update();
         }
     }
 }

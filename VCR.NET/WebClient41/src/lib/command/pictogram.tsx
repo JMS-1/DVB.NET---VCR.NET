@@ -8,7 +8,7 @@ namespace JMSLib.ReactUi {
 
         type?: string;
 
-        onClick?: () => void;
+        onClick?: (ev: React.FormEvent) => void;
     }
 
     export class Pictogram extends React.Component<IPictogram, IEmpty>{

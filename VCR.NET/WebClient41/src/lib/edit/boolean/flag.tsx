@@ -3,7 +3,7 @@
 namespace JMSLib.ReactUi {
 
     // React.Js Komponente zur visuellen Pflege eines Wahrheitswertes.
-    export class EditBoolean extends Component<App.IValidateFlag>  {
+    export class EditBoolean extends Component<App.IValidatedFlag>  {
         // Erstellt die Anzeige der Komponente.
         render(): JSX.Element {
             return <label className="jmslib-editflag">

@@ -1,7 +1,7 @@
 ﻿namespace VCRNETClient.App {
 
     export interface IScheduleException extends JMSLib.App.IConnectable {
-        readonly isActive: JMSLib.App.IValidateFlag;
+        readonly isActive: JMSLib.App.IValidatedFlag;
 
         readonly dayDisplay: string;
 

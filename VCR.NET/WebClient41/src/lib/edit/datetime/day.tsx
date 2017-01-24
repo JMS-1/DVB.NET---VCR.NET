@@ -7,16 +7,16 @@ namespace JMSLib.ReactUi {
         render(): JSX.Element {
             return <div className="jmslib-editday">
                 <div>
-                    <Pictogram name="prev" type="gif" onClick={this._prevMonth} />
+                    <Pictogram name="prev" type="gif" onClick={ev => this.props.noui.monthBackward()} />
                     <div>
-                        <select value={this.props.noui.month()} onChange={this._selectMonth} >
+                        <select value={this.props.noui.month()} onChange={ev => this.props.noui.month((ev.target as HTMLSelectElement).value)} >
                             {this.props.noui.months.map(m => <option key={m} value={m}>{m}</option>)}
                         </select>
-                        <select value={this.props.noui.year()} onChange={this._selectYear} >
+                        <select value={this.props.noui.year()} onChange={ev => this.props.noui.year((ev.target as HTMLSelectElement).value)} >
                             {this.props.noui.years.map(m => <option key={m} value={m}>{m}</option>)}
                         </select>
                     </div>
-                    <Pictogram name="next" type="gif" onClick={this._nextMonth} />
+                    <Pictogram name="next" type="gif" onClick={ev => this.props.noui.monthForward()} />
                 </div>
                 <table>
                     <thead>
@@ -27,13 +27,11 @@ namespace JMSLib.ReactUi {
                     </tbody>
                 </table>
                 <div>
-                    <button onClick={this._today} disabled={this.props.noui.days.some(d => d.isToday)}>Heute</button>
-                    <button onClick={this._reset} disabled={this.props.noui.days.some(d => d.isCurrentDay)}>Zurück</button>
+                    <button onClick={ev => this.today(ev)} disabled={this.props.noui.days.some(d => d.isToday)}>Heute</button>
+                    <button onClick={ev => this.reset(ev)} disabled={this.props.noui.days.some(d => d.isCurrentDay)}>Zurück</button>
                 </div>
             </div>;
         }
-
-        private readonly _reset = this.reset.bind(this);
 
         private reset(ev: React.FormEvent): void {
             ev.preventDefault();
@@ -41,36 +39,10 @@ namespace JMSLib.ReactUi {
             this.props.noui.reset();
         }
 
-        private readonly _today = this.today.bind(this);
-
         private today(ev: React.FormEvent): void {
             ev.preventDefault();
 
             this.props.noui.today();
-        }
-
-        private readonly _nextMonth = this.nextMonth.bind(this);
-
-        private nextMonth(ev: React.FormEvent): void {
-            this.props.noui.monthForward();
-        }
-
-        private readonly _prevMonth = this.prevMonth.bind(this);
-
-        private prevMonth(ev: React.FormEvent): void {
-            this.props.noui.monthBackward();
-        }
-
-        private readonly _selectMonth = this.selectMonth.bind(this);
-
-        private selectMonth(ev: React.FormEvent): void {
-            this.props.noui.month((ev.target as HTMLSelectElement).value);
-        }
-
-        private readonly _selectYear = this.selectYear.bind(this);
-
-        private selectYear(ev: React.FormEvent): void {
-            this.props.noui.year((ev.target as HTMLSelectElement).value);
         }
 
         private getRow(days: App.ISelectableDay[], rowKey: number): JSX.Element {

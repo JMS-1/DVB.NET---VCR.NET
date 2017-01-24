@@ -11,7 +11,7 @@ namespace VCRNETClient.App {
         readonly device: JMSLib.App.IValidateStringFromList;
 
         // Gesetzt, wenn die Aufzeichnung immer auf dem Gerät stattfinden soll.
-        readonly deviceLock: JMSLib.App.IValidateFlag;
+        readonly deviceLock: JMSLib.App.IValidatedFlag;
     }
 
     // Bietet die Daten eines Auftrags zur Pflege an.

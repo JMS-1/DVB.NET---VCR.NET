@@ -13,13 +13,13 @@ namespace VCRNETClient.App {
         // Wiederholungsmuster als Ganzes und aufgespalten als Wahrheitswert pro Wochentag.
         readonly repeat: JMSLib.App.IValidatedNumber;
 
-        readonly onMonday: JMSLib.App.IValidateFlag;
-        readonly onTuesday: JMSLib.App.IValidateFlag;
-        readonly onWednesday: JMSLib.App.IValidateFlag;
-        readonly onThursday: JMSLib.App.IValidateFlag;
-        readonly onFriday: JMSLib.App.IValidateFlag;
-        readonly onSaturday: JMSLib.App.IValidateFlag;
-        readonly onSunday: JMSLib.App.IValidateFlag;
+        readonly onMonday: JMSLib.App.IValidatedFlag;
+        readonly onTuesday: JMSLib.App.IValidatedFlag;
+        readonly onWednesday: JMSLib.App.IValidatedFlag;
+        readonly onThursday: JMSLib.App.IValidatedFlag;
+        readonly onFriday: JMSLib.App.IValidatedFlag;
+        readonly onSaturday: JMSLib.App.IValidatedFlag;
+        readonly onSunday: JMSLib.App.IValidatedFlag;
 
         // Ende der Wiederholung.
         readonly lastDay: JMSLib.App.IDaySelector;

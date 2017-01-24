@@ -102,6 +102,7 @@
     <TypeScriptCompile Include="src\app\pages\guide\guideEntry.ts" />
     <TypeScriptCompile Include="src\components\guideNavigator.tsx" />
     <TypeScriptCompile Include="src\lib\command\command.ts" />
+    <TypeScriptCompile Include="src\lib\edit\boolean\flagButton.tsx" />
     <TypeScriptCompile Include="src\lib\edit\list.ts" />
     <TypeScriptCompile Include="src\lib\edit\singleSelect.tsx" />
     <TypeScriptCompile Include="src\lib\localizable.ts" />
@@ -159,6 +160,7 @@
     <Content Include="FAQ\controlcenter.html" />
     <None Include="src\components\editException.scss" />
     <None Include="src\components\guideNavigator.scss" />
+    <None Include="src\lib\edit\boolean\flagButton.scss" />
     <Content Include="src\lib\styles.css">
       <DependentUpon>styles.scss</DependentUpon>
     </Content>

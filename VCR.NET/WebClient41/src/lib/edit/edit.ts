@@ -41,7 +41,7 @@
         }
 
         // Verwaltung des Prüfergebnisses - die Basisimplementierung meldet die Eigenschaft immer als gültig (leere Zeichenkette).
-        message: string;
+        message = "";
 
         validate(): void {
             this.message = "";

@@ -25,6 +25,12 @@ namespace VCRNETClient.App {
         readonly days: JMSLib.App.IValidateStringFromList;
 
         readonly hours: JMSLib.App.IValueFromList<number>;
+
+        readonly queryString: JMSLib.App.IValidatedString;
+
+        readonly withContent: JMSLib.App.IValidatedFlag;
+
+        readonly resetFilter: JMSLib.App.ICommand;
     }
 
     export interface IGuidePage extends IPage, IGuidePageNavigation {
@@ -82,11 +88,23 @@ namespace VCRNETClient.App {
 
         readonly hours = new JMSLib.App.EditFromList<number>(this, "_hour", () => this.query(), "Start ab", GuidePage._hours);
 
+        private _query = "";
+
+        private _timeout: number;
+
+        readonly queryString = new JMSLib.App.EditString(this, "_query", () => this.delayedQuery(), "Suche nach", false);
+
+        private _withContent = true;
+
+        readonly withContent = new JMSLib.App.FlagEditor(this, "_withContent", () => this.query(), "Auch in Beschreibung suchen");
+
         readonly firstPage = new JMSLib.App.Command(() => this.changePage(-this._filter.index), "Erste Seite", () => this._filter.index > 0);
 
         readonly prevPage = new JMSLib.App.Command(() => this.changePage(-1), "Vorherige Seite", () => this._filter.index > 0);
 
         readonly nextPage = new JMSLib.App.Command(() => this.changePage(+1), "Nächste Seite", () => this._hasMore);
+
+        readonly resetFilter = new JMSLib.App.Command(() => this.newQuery(), "Neue Suche");
 
         get showEncryption(): boolean {
             return !this._filter.station;
@@ -130,14 +148,16 @@ namespace VCRNETClient.App {
             return "Programmzeitschrift";
         }
 
-        private resetFilter(): void {
+        private clearFilter(): void {
             this._filter.cryptFilter = VCRServer.GuideEncryption.ALL;
             this._filter.typeFilter = VCRServer.GuideSource.ALL;
             this._filter.content = null;
             this._filter.station = "";
             this._filter.start = null;
             this._filter.title = null;
+            this._withContent = true;
             this._filter.index = 0;
+            this._query = "";
             this._hour = -1;
         }
 
@@ -148,10 +168,7 @@ namespace VCRNETClient.App {
                 this.refreshSources();
                 this.refreshDays();
 
-                if (resetFilter)
-                    this.resetFilter();
-
-                this.query();
+                this.query(resetFilter);
             });
         }
 
@@ -188,15 +205,55 @@ namespace VCRNETClient.App {
             this.days.allowedValues = days;
         }
 
-        private query(): void {
+        private clearTimeout(): void {
+            if (this._timeout === undefined)
+                return;
+
+            clearTimeout(this._timeout);
+
+            this._timeout = undefined;
+        }
+
+        private delayedQuery(): void {
+            this.clearTimeout();
+
+            var queryId = ++this._queryId;
+
+            this._timeout = setTimeout(() => {
+                if (this._queryId === queryId)
+                    if (this.getSite())
+                        this.query();
+            }, 250);
+
+            this.refreshUi();
+        }
+
+        private newQuery(): JMSLib.App.Thenable<void, XMLHttpRequest> {
+            this.query(true);
+
+            return new JMSLib.App.Promise<void, XMLHttpRequest>(success => success(undefined));
+        }
+
+        private query(resetFilter: boolean = false): void {
+            if (resetFilter)
+                this.clearFilter();
+
+            this.clearTimeout();
+
             var queryId = ++this._queryId;
 
             if (this._hour >= 0) {
                 var start = this._filter.start ? new Date(this._filter.start) : new Date();
 
                 this._filter.start = new Date(start.getFullYear(), start.getMonth(), start.getDate(), this._hour).toISOString();
+
                 this._hour = -1;
             }
+
+            var query = this._query.trim();
+
+            this._filter.title = (query === "") ? null : `*${query}`;
+            this._filter.content = this._withContent ? this._filter.title : null;
 
             VCRServer.queryProgramGuide(this._filter).then(items => {
                 if (this._queryId !== queryId)

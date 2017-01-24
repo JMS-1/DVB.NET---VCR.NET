@@ -25,6 +25,13 @@ namespace VCRNETClient.Ui {
                             {this.props.noui.showEncryption ? <JMSLib.ReactUi.EditWithButtonList noui={this.props.noui.encrpytion} /> : null}
                         </div>
                         <div>
+                            <Field page={this.props.noui} label={`${this.props.noui.queryString.text}:`}>
+                                <JMSLib.ReactUi.EditText noui={this.props.noui.queryString} chars={30} />
+                            </Field>
+                            <JMSLib.ReactUi.EditBooleanWithButton noui={this.props.noui.withContent} />
+                            <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.resetFilter} />
+                        </div>
+                        <div>
                             <Field page={this.props.noui} label={`${this.props.noui.days.text}:`}>
                                 <JMSLib.ReactUi.EditWithButtonList noui={this.props.noui.days} />
                             </Field>

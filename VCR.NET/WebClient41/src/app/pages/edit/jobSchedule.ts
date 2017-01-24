@@ -3,16 +3,16 @@
     // Schnittstelle zur Pflege der gemeinsamen Daten eines Auftrags oder einer Aufzeichnung.
     export interface ISourceFlagsEditor extends JMSLib.App.IDisplayText {
         // Gesetzt um alle Sprachen aufzuzeichnen
-        readonly allLanguages: JMSLib.App.IValidateFlag;
+        readonly allLanguages: JMSLib.App.IValidatedFlag;
 
         // Gesetzt, um die Dolby Digital Tonspur aufzuzeichnen
-        readonly includeDolby: JMSLib.App.IValidateFlag;
+        readonly includeDolby: JMSLib.App.IValidatedFlag;
 
         // Gesetzt, um den Videotext aufzuzeichnen
-        readonly withVideotext: JMSLib.App.IValidateFlag;
+        readonly withVideotext: JMSLib.App.IValidatedFlag;
 
         // Gesetzt, um die Untertitel aufzuzeichnen
-        readonly withSubtitles: JMSLib.App.IValidateFlag;
+        readonly withSubtitles: JMSLib.App.IValidatedFlag;
     }
 
     // Schnittstelle zur Pflege der gemeinsamen Daten eines Auftrags oder einer Aufzeichnung.
