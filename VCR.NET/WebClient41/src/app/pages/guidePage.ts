@@ -16,7 +16,15 @@ namespace VCRNETClient.App {
 
         readonly encrpytion: JMSLib.App.IValueFromList<VCRServer.GuideEncryption>;
 
+        readonly showEncryption: boolean;
+
         readonly sourceType: JMSLib.App.IValueFromList<VCRServer.GuideSource>;
+
+        readonly showSourceType: boolean;
+
+        readonly days: JMSLib.App.IValidateStringFromList;
+
+        readonly hours: JMSLib.App.IValueFromList<number>;
     }
 
     export interface IGuidePage extends IPage, IGuidePageNavigation {
@@ -36,17 +44,26 @@ namespace VCRNETClient.App {
             { display: "Alle Quellen", value: VCRServer.GuideSource.ALL }
         ];
 
+        private static _hours: JMSLib.App.IUiValue<number>[] = [
+            { display: "00:00", value: 0 },
+            { display: "06:00", value: 6 },
+            { display: "12:00", value: 12 },
+            { display: "18:00", value: 18 },
+            { display: "20:00", value: 20 },
+            { display: "22:00", value: 22 },
+        ];
+
         private _queryId = 0;
 
         private _filter: VCRServer.GuideFilterContract =
         {
             cryptFilter: VCRServer.GuideEncryption.ALL,
             typeFilter: VCRServer.GuideSource.ALL,
-            station: null,
             content: null,
             device: null,
             start: null,
             title: null,
+            station: "",
             size: 20,
             index: 0
         };
@@ -59,15 +76,31 @@ namespace VCRNETClient.App {
 
         readonly sourceType = new JMSLib.App.EditFromList<VCRServer.GuideSource>(this._filter, "typeFilter", () => this.query(), null, GuidePage._typeOptions);
 
+        readonly days = new JMSLib.App.EditStringFromList(this._filter, "start", () => this.query(), "Datum", false, []);
+
+        private _hour = -1;
+
+        readonly hours = new JMSLib.App.EditFromList<number>(this, "_hour", () => this.query(), "Start ab", GuidePage._hours);
+
         readonly firstPage = new JMSLib.App.Command(() => this.changePage(-this._filter.index), "Erste Seite", () => this._filter.index > 0);
 
         readonly prevPage = new JMSLib.App.Command(() => this.changePage(-1), "Vorherige Seite", () => this._filter.index > 0);
 
         readonly nextPage = new JMSLib.App.Command(() => this.changePage(+1), "Nächste Seite", () => this._hasMore);
 
+        get showEncryption(): boolean {
+            return !this._filter.station;
+        }
+
+        get showSourceType(): boolean {
+            return this.showEncryption;
+        }
+
         entries: GuideEntry[] = [];
 
         private _hasMore = false;
+
+        private _profileInfo: VCRServer.GuideInfoContract;
 
         constructor(application: Application) {
             super("guide", application);
@@ -100,20 +133,20 @@ namespace VCRNETClient.App {
         private resetFilter(): void {
             this._filter.cryptFilter = VCRServer.GuideEncryption.ALL;
             this._filter.typeFilter = VCRServer.GuideSource.ALL;
-            this._filter.station = null;
             this._filter.content = null;
+            this._filter.station = "";
             this._filter.start = null;
             this._filter.title = null;
             this._filter.index = 0;
+            this._hour = -1;
         }
 
         private onDeviceChanged(resetFilter: boolean) {
             VCRServer.GuideInfoCache.getPromise(this._filter.device).then(info => {
-                var sources = (info.stations || []).map(s => <JMSLib.App.IUiValue<string>>{ display: s, value: s });
+                this._profileInfo = info;
 
-                sources.unshift({ display: "(Alle Sender)", value: null });
-
-                this.sources.allowedValues = sources;
+                this.refreshSources();
+                this.refreshDays();
 
                 if (resetFilter)
                     this.resetFilter();
@@ -122,8 +155,48 @@ namespace VCRNETClient.App {
             });
         }
 
+        private refreshSources(): void {
+            var sources = (this._profileInfo.stations || []).map(s => <JMSLib.App.IUiValue<string>>{ display: s, value: s });
+
+            sources.unshift({ display: "(Alle Sender)", value: "" });
+
+            this.sources.allowedValues = sources;
+        }
+
+        private refreshDays(): void {
+            var days: JMSLib.App.IUiValue<string>[] = [];
+
+            if (this._profileInfo.first && this._profileInfo.last) {
+                days.push({ display: "Jetzt", value: null });
+
+                var firstUtc = new Date(this._profileInfo.first);
+                var first = new Date(firstUtc.getUTCFullYear(), firstUtc.getUTCMonth(), firstUtc.getUTCDate());
+
+                var lastUtc = new Date(this._profileInfo.last);
+                var last = new Date(lastUtc.getUTCFullYear(), lastUtc.getUTCMonth(), lastUtc.getUTCDate());
+
+                for (var i = 0; (i < 14) && (first.getTime() <= last.getTime()); i++) {
+                    var display = JMSLib.App.DateFormatter.getShortDate(first);
+                    var value = first.toISOString();
+
+                    days.push({ display: display, value: value });
+
+                    first = new Date(first.getTime() + 86400000);
+                }
+            }
+
+            this.days.allowedValues = days;
+        }
+
         private query(): void {
             var queryId = ++this._queryId;
+
+            if (this._hour >= 0) {
+                var start = this._filter.start ? new Date(this._filter.start) : new Date();
+
+                this._filter.start = new Date(start.getFullYear(), start.getMonth(), start.getDate(), this._hour).toISOString();
+                this._hour = -1;
+            }
 
             VCRServer.queryProgramGuide(this._filter).then(items => {
                 if (this._queryId !== queryId)

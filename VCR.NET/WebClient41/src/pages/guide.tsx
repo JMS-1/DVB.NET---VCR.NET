@@ -21,8 +21,18 @@ namespace VCRNETClient.Ui {
                             <Field page={this.props.noui} label={`${this.props.noui.sources.text}:`}>
                                 <JMSLib.ReactUi.EditTextWithList noui={this.props.noui.sources} />
                             </Field>
-                            <JMSLib.ReactUi.EditWithButtonList noui={this.props.noui.sourceType} />
-                            <JMSLib.ReactUi.EditWithButtonList noui={this.props.noui.encrpytion} />
+                            {this.props.noui.showSourceType ? <JMSLib.ReactUi.EditWithButtonList noui={this.props.noui.sourceType} /> : null}
+                            {this.props.noui.showEncryption ? <JMSLib.ReactUi.EditWithButtonList noui={this.props.noui.encrpytion} /> : null}
+                        </div>
+                        <div>
+                            <Field page={this.props.noui} label={`${this.props.noui.days.text}:`}>
+                                <JMSLib.ReactUi.EditWithButtonList noui={this.props.noui.days} />
+                            </Field>
+                        </div>
+                        <div>
+                            <Field page={this.props.noui} label={`${this.props.noui.hours.text}:`}>
+                                <JMSLib.ReactUi.EditWithButtonList noui={this.props.noui.hours} />
+                            </Field>
                         </div>
                     </fieldset>
                 </form>
