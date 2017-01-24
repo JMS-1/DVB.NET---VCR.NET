@@ -1,0 +1,10 @@
+﻿.jmslib-editlist {
+    display: inline-block;
+    margin: 0 4px;
+
+    > button {
+        &[data-jmslib-checked=yes] {
+            font-weight: bold;
+        }
+    }
+}

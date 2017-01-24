@@ -1,4 +1,5 @@
 ﻿/// <reference path="page.ts" />
+/// <reference path="../../../scripts/VCRServer.ts" />
 
 namespace VCRNETClient.App {
 
@@ -12,6 +13,10 @@ namespace VCRNETClient.App {
         readonly profiles: JMSLib.App.IValidateStringFromList;
 
         readonly sources: JMSLib.App.IValidateStringFromList;
+
+        readonly encrpytion: JMSLib.App.IValueFromList<VCRServer.GuideEncryption>;
+
+        readonly sourceType: JMSLib.App.IValueFromList<VCRServer.GuideSource>;
     }
 
     export interface IGuidePage extends IPage, IGuidePageNavigation {
@@ -19,6 +24,18 @@ namespace VCRNETClient.App {
     }
 
     export class GuidePage extends Page<JMSLib.App.ISite> implements IGuidePage {
+        private static _cryptOptions: JMSLib.App.IUiValue<VCRServer.GuideEncryption>[] = [
+            { display: "Nur unverschlüsselt", value: VCRServer.GuideEncryption.FREE },
+            { display: "Nur verschlüsselt", value: VCRServer.GuideEncryption.PAY },
+            { display: "Alle Quellen", value: VCRServer.GuideEncryption.ALL }
+        ];
+
+        private static _typeOptions: JMSLib.App.IUiValue<VCRServer.GuideSource>[] = [
+            { display: "Nur Fernsehen", value: VCRServer.GuideSource.TV },
+            { display: "Nur Radio", value: VCRServer.GuideSource.RADIO },
+            { display: "Alle Quellen", value: VCRServer.GuideSource.ALL }
+        ];
+
         private _queryId = 0;
 
         private _filter: VCRServer.GuideFilterContract =
@@ -37,6 +54,10 @@ namespace VCRNETClient.App {
         readonly profiles = new JMSLib.App.EditStringFromList(this._filter, "device", () => this.onDeviceChanged(true), "Gerät", false, []);
 
         readonly sources = new JMSLib.App.EditStringFromList(this._filter, "station", () => this.query(), "Quelle", false, []);
+
+        readonly encrpytion = new JMSLib.App.EditFromList<VCRServer.GuideEncryption>(this._filter, "cryptFilter", () => this.query(), null, GuidePage._cryptOptions);
+
+        readonly sourceType = new JMSLib.App.EditFromList<VCRServer.GuideSource>(this._filter, "typeFilter", () => this.query(), null, GuidePage._typeOptions);
 
         readonly firstPage = new JMSLib.App.Command(() => this.changePage(-this._filter.index), "Erste Seite", () => this._filter.index > 0);
 

@@ -21,6 +21,8 @@ namespace VCRNETClient.Ui {
                             <Field page={this.props.noui} label={`${this.props.noui.sources.text}:`}>
                                 <JMSLib.ReactUi.EditTextWithList noui={this.props.noui.sources} />
                             </Field>
+                            <JMSLib.ReactUi.EditWithButtonList noui={this.props.noui.sourceType} />
+                            <JMSLib.ReactUi.EditWithButtonList noui={this.props.noui.encrpytion} />
                         </div>
                     </fieldset>
                 </form>

@@ -1,6 +1,16 @@
 ﻿@import "../../content/vars";
 
 .vcrnet-guide {
+    > form {
+        > fieldset, select, button {
+            font-size: small;
+        }
+
+        button {
+            font-size: x-small;
+        }
+    }
+
     .vcrnet-editfield {
         display: inline-block;
         margin-right: 10px;

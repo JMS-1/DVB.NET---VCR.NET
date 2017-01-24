@@ -2,15 +2,6 @@
 
 namespace JMSLib.App {
 
-    // Beschreibt einen Wert zur Auswahl durch den Anwender.
-    export interface IUiValue<TValueType> {
-        // Der tatsächlich gespeicherte Wert.
-        readonly value: TValueType;
-
-        // Der Wert zur Anzeige.
-        readonly display: string;
-    }
-
     // Beschreibt eine Eigenschaft der Art Zeichenkette mit einer festen Liste von möglichen Werten.
     export interface IValidateStringFromList extends IValidatedString {
         // Die Liste der erlaubten Werten.

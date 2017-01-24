@@ -7,7 +7,7 @@ namespace JMSLib.ReactUi {
         // Erstellt die Anzeige für die Komponente.
         render(): JSX.Element {
             return <select
-                className="jmslib-editlist"
+                className="jmslib-edittextlist"
                 value={this.props.noui.value}
                 onChange={ev => this.props.noui.value = (ev.target as HTMLSelectElement).value}>
                 {this.props.noui.allowedValues.map(av => <option key={av.display} value={`${av.value}`}>{av.display}</option>)}
