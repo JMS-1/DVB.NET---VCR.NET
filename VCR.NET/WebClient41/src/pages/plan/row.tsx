@@ -1,4 +1,4 @@
-﻿/// <reference path="../lib/reactUi.tsx" />
+﻿/// <reference path="../../lib/reactUi.tsx" />
 
 namespace VCRNETClient.Ui {
     export class PlanRow extends JMSLib.ReactUi.Component<App.IPlanEntry>  {
