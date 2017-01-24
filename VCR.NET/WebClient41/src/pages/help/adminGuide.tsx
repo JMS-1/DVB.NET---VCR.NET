@@ -8,11 +8,11 @@ namespace VCRNETClient.Ui.HelpPages {
 
         render(page: App.IPage): JSX.Element {
             return <div>
-                Damit der VCR.NET Recording Service eine <InternalLink view={`${page.route};epg`}>Programmzeitschrift</InternalLink> zur
+                Damit der VCR.NET Recording Service eine <JMSLib.ReactUi.InternalLink view={`${page.route};epg`}>Programmzeitschrift</JMSLib.ReactUi.InternalLink> zur
                 Programmierung neuer Aufzeichnungen zur Verfügung stellen kann muss erst einmal
                 festgelegt werden, mit welchem Inhalt diese zu füllen ist. Im Administrationsbereich
                 der Web Oberfläche gibt es dazu eine gesonderten
-                Seite <InternalLink view="admin;guide" pict="admin" />.
+                Seite <JMSLib.ReactUi.InternalLink view="admin;guide" pict="admin" />.
                 Damit die Programmzeitschrift überhaupt erstellt wird, muss erst
                 einmal die Sammlung der Informationen an sich aktiviert werden.
                 <br />
@@ -25,7 +25,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 1 mehr als 1,000 Radio- und Fernsehsender angeboten werden, so macht eine Einschränkungen
                 auf die eigenen Lieblingssender durchaus Sinn. Nach Vorauswahl eines der vom VCR.NET
                 Recording Service verwendeten DVB Geräte können mit
-                den <InternalLink view={`${page.route};sourcechooser`}>üblichen Methoden</InternalLink> Quellen
+                den <JMSLib.ReactUi.InternalLink view={`${page.route};sourcechooser`}>üblichen Methoden</JMSLib.ReactUi.InternalLink> Quellen
                 ausgewählt und zur Liste hinzugefügt werden -
                 natürlich können Quellen auch wieder aus der Liste entfernt werden.
                 <br />
@@ -46,7 +46,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 zu aktualisieren ist. Dazu können bis zu die Stunden pro Tag angegeben werden,
                 zu dem eine entsprechende Aktivität gestartet werden soll - wie bei normalen Aufzeichnung
                 wird der Rechner dazu wenn notwendig aus
-                dem <InternalLink view={`${page.route};hibernation`}>Schlafzustand</InternalLink> aufgeweckt.
+                dem <JMSLib.ReactUi.InternalLink view={`${page.route};hibernation`}>Schlafzustand</JMSLib.ReactUi.InternalLink> aufgeweckt.
                 Damit diese Sammlung auch in der Planung der Aufzeichnungen berücksichtigt
                 werden kann, muss auch immer eine maximale Laufzeit für die Aktualisierung angegeben
                 werden. Ist diese zu kurz eingestellt, so wird der VCR.NET Recording Service die
@@ -54,9 +54,9 @@ namespace VCRNETClient.Ui.HelpPages {
                 Der genaue Wert ist abhängig von den ausgewählten Quellen und kann nur individuell
                 selbst bestimmt werden. Ist die Aktualisierung doch vorzeitig abgeschlossen, so
                 wird auch die
-                Aktivität <InternalLink view="current" pict="devices" /> auf
+                Aktivität <JMSLib.ReactUi.InternalLink view="current" pict="devices" /> auf
                 dem DVB Gerät beendet.
-                Mit Hilfe der <InternalLink view={`${page.route};log`}>Protokollliste</InternalLink> lässt
+                Mit Hilfe der <JMSLib.ReactUi.InternalLink view={`${page.route};log`}>Protokollliste</JMSLib.ReactUi.InternalLink> lässt
                 sich dann leicht feststellen, was ein typischer Wert für die Laufzeit ist.
                 <br />
                 <br />
@@ -73,7 +73,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 <br />
                 <br />
                 Ergänzend ist es jederzeit möglich, eine Aktualisierung
-                manuell <InternalLink view="home" pict="home" /> anzufordern.
+                manuell <JMSLib.ReactUi.InternalLink view="home" pict="home" /> anzufordern.
                 Der VCR.NET Recording Service wird
                 dann zum nächstmöglichen Zeitpunkt die gewünschte Aktion ausführen. Hier gilt wie
                 grundsätzlich für alle Sonderaufgaben: ist eine programmiert Aufzeichnung aktiv

@@ -9,8 +9,8 @@ namespace VCRNETClient.Ui.HelpPages {
         render(page: App.IPage): JSX.Element {
             return <div>
                 Zur Programmierung von Aufzeichnungen bietet der VCR.NET Recording Service für jedes
-                DVB Gerät die <InternalLink view={`${page.route};sourcechooser`}>Quellen (Sender)</InternalLink> an, die im
-                zugehörigen <InternalLink view={`${page.route};dvbnet`}>DVB.NET</InternalLink> Geräteprofil
+                DVB Gerät die <JMSLib.ReactUi.InternalLink view={`${page.route};sourcechooser`}>Quellen (Sender)</JMSLib.ReactUi.InternalLink> an, die im
+                zugehörigen <JMSLib.ReactUi.InternalLink view={`${page.route};dvbnet`}>DVB.NET</JMSLib.ReactUi.InternalLink> Geräteprofil
                 hinterlegt sind. Diese Liste ändert
                 sich je nach Empfangsart von Zeit zu Zeit und es macht dann Sinn, eine Aktualisierung
                 durchzuführen. Das kann manuell mit dem <em>DVB.NET Konfigurations- und Administrationswerkzeug</em>
@@ -20,19 +20,19 @@ namespace VCRNETClient.Ui.HelpPages {
                 <br />
                 Alternativ ist es aber auch möglich, dem VCR.NET Recording Service dafür einzurichten,
                 für alle DVB Geräte eine entsprechende
-                Aktualisierung <InternalLink view="admin;sources" pict="admin" /> periodisch auszuführen.
+                Aktualisierung <JMSLib.ReactUi.InternalLink view="admin;sources" pict="admin" /> periodisch auszuführen.
                 <br />
                 <br />
                 <JMSLib.ReactUi.Pictogram description="Aktualisierung konfigurieren" name="FAQ/psi" />
                 <br />
                 <br />
                 Im Endeffekt erfolgt die Konfiguration ganz analog
-                zur <InternalLink view={`${page.route};epgconfig`}>Programmzeitschrift</InternalLink>.
+                zur <JMSLib.ReactUi.InternalLink view={`${page.route};epgconfig`}>Programmzeitschrift</JMSLib.ReactUi.InternalLink>.
                 Die Aktualisierung kann gänzlich deaktiviert werden, nur manuell erfolgen oder wie
                 im Bild gezeigt einem Zeitplan folgen. Zuerst einmal erfolgt die Angabe der vollen
                 Stunden, an denen eine Aktualisierung stattfinden darf - je nach Planung
                 der Aufzeichnungen kann dieser Zeitpunkt auch nach hinten geschoben werden,
-                da <InternalLink view={`${page.route};tasks`}>Sonderaufgaben</InternalLink> wie
+                da <JMSLib.ReactUi.InternalLink view={`${page.route};tasks`}>Sonderaufgaben</JMSLib.ReactUi.InternalLink> wie
                 die Aktualisierung der Liste der Quellen
                 eine niedrigere Priorität als reguläre Aufzeichnungen haben. Es macht hier durchaus
                 Sinn, mindestens zwei Zeiten zu verwenden, wobei die eine im Nachtbereich und die
@@ -52,7 +52,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 übernommen. Diesbezüglich ist ein zu großer Wert kein Problem, da die Aktualisierung
                 dann einfach zu früh beendet wird. Es wird aber empfohlen, immer einen sinnvollen
                 Erfahrungswert zu verwenden, der knapp über dem tatsächlichen Bedürfnis liegt -
-                dieser Wert kann den <InternalLink view="log">Protokollen</InternalLink> entnommen werden.
+                dieser Wert kann den <JMSLib.ReactUi.InternalLink view="log">Protokollen</JMSLib.ReactUi.InternalLink> entnommen werden.
                 <br />
                 <br />
                 Normalerweise wird die neue Liste mit der vorherigen zusammen geführt. Das ist gerade

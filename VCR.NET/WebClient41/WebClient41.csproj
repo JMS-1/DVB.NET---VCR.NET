@@ -251,9 +251,9 @@
     <Content Include="scripts\vcrnet.js.map">
       <DependentUpon>vcrnet.js</DependentUpon>
     </Content>
-    <None Include="src\common\internalLink.scss" />
+    <None Include="src\lib\command\internalLink.scss" />
     <None Include="src\common\helpLink.scss" />
-    <None Include="src\common\externalLink.scss" />
+    <None Include="src\lib\command\externalLink.scss" />
     <None Include="src\common\navigation.scss" />
     <None Include="src\lib\command\pictogram.scss" />
     <None Include="src\common\detailRow.scss" />
@@ -361,7 +361,7 @@
     <TypeScriptCompile Include="src\pages\plan\exception.tsx" />
     <TypeScriptCompile Include="src\common\editField.tsx" />
     <TypeScriptCompile Include="src\pages\edit\job.tsx" />
-    <TypeScriptCompile Include="src\common\externalLink.tsx" />
+    <TypeScriptCompile Include="src\lib\command\externalLink.tsx" />
     <TypeScriptCompile Include="src\common\helpLink.tsx" />
     <TypeScriptCompile Include="src\lib\edit\boolean\flag.tsx" />
     <TypeScriptCompile Include="src\lib\edit\number\slider.tsx" />
@@ -385,7 +385,7 @@
     <TypeScriptCompile Include="src\pages\help.tsx" />
     <TypeScriptCompile Include="src\pages\home.tsx" />
     <TypeScriptCompile Include="src\common\inlineHelp.tsx" />
-    <TypeScriptCompile Include="src\common\internalLink.tsx" />
+    <TypeScriptCompile Include="src\lib\command\internalLink.tsx" />
     <TypeScriptCompile Include="src\common\main.tsx" />
     <TypeScriptCompile Include="src\common\navigation.tsx" />
     <TypeScriptCompile Include="src\lib\command\pictogram.tsx" />

@@ -20,10 +20,10 @@ namespace VCRNETClient.Ui.HelpPages {
                 Tage.
                 <br />
                 <br />
-                Der VCR.NET Recording Service kann dazu <InternalLink view={`${page.route};epgconfig`}>konfiguriert</InternalLink> werden,
+                Der VCR.NET Recording Service kann dazu <JMSLib.ReactUi.InternalLink view={`${page.route};epgconfig`}>konfiguriert</JMSLib.ReactUi.InternalLink> werden,
                 für eine ausgewählte Liste von Quellen die Programmzeitschrift periodisch
                 zu aktualisieren - üblich ist ein oder zweimal am Tag. Auf Basis dieser Daten lassen
-                sich dann Aufzeichnungen programmieren. Zur Auswahl<InternalLink view="guide" pict="guide" /> stehen
+                sich dann Aufzeichnungen programmieren. Zur Auswahl<JMSLib.ReactUi.InternalLink view="guide" pict="guide" /> stehen
                 dabei erst einmal alle Informationen aller Quellen aller DVB Geräte, die der VCR.NET Recording
                 Service verwenden darf. Um die richtige Sendung zu finden gibt es neben der Inhaltssuche
                 auf einen Freitext weitere Filtermöglichkeiten. So ist es möglich, sich auf die Sendungen
@@ -35,10 +35,10 @@ namespace VCRNETClient.Ui.HelpPages {
                 Normalerweise wird nach der Auswahl eine neue Aufzeichnung angelegt - auf Wunsch
                 kann auch eine Aufzeichnung zu einem existierenden Auftrag ergänzt werden. Die Zeiten
                 aus der Programmzeitschrift werden um Vor- und Nachlaufzeiten gemäß den
-                Voreinstellungen<InternalLink view="settings" pict="settings" /> des
+                Voreinstellungen<JMSLib.ReactUi.InternalLink view="settings" pict="settings" /> des
                 Anwenders erweitert. Die eigentliche Programmierung muss noch einmal bestätigt werden,
                 wobei dann auch noch Detailänderungen möglich sind - zum Beispiel um direkt
-                eine <InternalLink view={`${page.route};repeatingschedules`}>Serienaufzeichnung</InternalLink> anzulegen.
+                eine <JMSLib.ReactUi.InternalLink view={`${page.route};repeatingschedules`}>Serienaufzeichnung</JMSLib.ReactUi.InternalLink> anzulegen.
             </div>;
         }
     }

@@ -15,13 +15,13 @@ namespace VCRNETClient.Ui {
             var application = page.application;
 
             return <div className="vcrnet-navigation">
-                {page.navigation.refresh ? <InternalLink view={() => page.reload()} pict="refresh">Aktualisieren</InternalLink> : null}
-                <InternalLink view={application.homePage.route} pict="home">Startseite</InternalLink>
-                {page.navigation.favorites ? <InternalLink view="favorites" pict="fav">Favoriten</InternalLink> : null}
-                {page.navigation.guide ? <InternalLink view="guide" pict="guide">Programmzeitschrift</InternalLink> : null}
-                {page.navigation.plan ? <InternalLink view={application.planPage.route} pict="plan">Aufzeichnungsplan</InternalLink> : null}
-                {page.navigation.new ? <InternalLink view={application.editPage.route} pict="new">Neue Aufzeichnung</InternalLink> : null}
-                {page.navigation.current ? <InternalLink view="current" pict="devices">Geräte</InternalLink> : null}
+                {page.navigation.refresh ? <JMSLib.ReactUi.InternalLink view={() => page.reload()} pict="refresh">Aktualisieren</JMSLib.ReactUi.InternalLink> : null}
+                <JMSLib.ReactUi.InternalLink view={application.homePage.route} pict="home">Startseite</JMSLib.ReactUi.InternalLink>
+                {page.navigation.favorites ? <JMSLib.ReactUi.InternalLink view="favorites" pict="fav">Favoriten</JMSLib.ReactUi.InternalLink> : null}
+                {page.navigation.guide ? <JMSLib.ReactUi.InternalLink view="guide" pict="guide">Programmzeitschrift</JMSLib.ReactUi.InternalLink> : null}
+                {page.navigation.plan ? <JMSLib.ReactUi.InternalLink view={application.planPage.route} pict="plan">Aufzeichnungsplan</JMSLib.ReactUi.InternalLink> : null}
+                {page.navigation.new ? <JMSLib.ReactUi.InternalLink view={application.editPage.route} pict="new">Neue Aufzeichnung</JMSLib.ReactUi.InternalLink> : null}
+                {page.navigation.current ? <JMSLib.ReactUi.InternalLink view="current" pict="devices">Geräte</JMSLib.ReactUi.InternalLink> : null}
             </div>;
         }
     }

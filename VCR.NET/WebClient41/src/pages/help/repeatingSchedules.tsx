@@ -30,7 +30,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 zum exakt gleichen Zeitpunkt stattfinden. Kleinere Abweichungen lassen sich durch
                 vergrößerte Vor- und Nachlaufzeiten kompensieren. Manchmal kann es aber durch Sondersendungen
                 vor der gewünschten Ausstrahlung einmalig zu deutlichen Verschiebungen kommen. Der
-                VCR.NET Recording Service bietet hier im Aufzeichnungsplan<InternalLink view={page.application.planPage.route} pict="plan" />
+                VCR.NET Recording Service bietet hier im Aufzeichnungsplan<JMSLib.ReactUi.InternalLink view={page.application.planPage.route} pict="plan" />
                 die Möglichkeit, Ausnahmeregelungen für die einzelnen Aufzeichnungstage zu definieren. Dabei
                 kann der Startzeitpunkt verschoben oder die Laufzeit und damit das Ende der Aufzeichnung
                 pro geplanter Aufzeichnung individuell verändert werden - auf Wunsch kann auch eine Aufzeichnung ganz

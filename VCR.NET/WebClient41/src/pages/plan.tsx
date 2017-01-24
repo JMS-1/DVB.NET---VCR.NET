@@ -53,7 +53,7 @@ namespace VCRNETClient.Ui {
                 <p>
                     Über die Datumsauswahl im linken Bereich kann
                         der zeitliche Anfang des angezeigten Ausschnitts festgelegt werden. Das Ende des Ausschnitts ergibt sich daraus
-                        und aus der gewünschten Anzahl von zu berücksichtigenden Tagen.<InternalLink view="settings" pict="settings" />
+                        und aus der gewünschten Anzahl von zu berücksichtigenden Tagen.<JMSLib.ReactUi.InternalLink view="settings" pict="settings" />
                 </p>
                 <p>
                     Die beiden Schaltflächen direkt rechts neben der Datumsauswahl erlauben es zusätzlich zu

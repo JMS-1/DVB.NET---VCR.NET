@@ -27,74 +27,74 @@ namespace VCRNETClient.Ui.HelpPages {
                 </p>
                 <h3>Aufzeichnungen</h3>
                 <ul>
-                    <li><InternalLink view={`${page.route};filecontents`}>Was</InternalLink> wird aufgezeichnet?</li>
+                    <li><JMSLib.ReactUi.InternalLink view={`${page.route};filecontents`}>Was</JMSLib.ReactUi.InternalLink> wird aufgezeichnet?</li>
                     <li>
-                        Wann kann es <InternalLink view={`${page.route};numberoffiles`}>mehr als eine</InternalLink> Aufzeichnungsdatei für
+                        Wann kann es <JMSLib.ReactUi.InternalLink view={`${page.route};numberoffiles`}>mehr als eine</JMSLib.ReactUi.InternalLink> Aufzeichnungsdatei für
                         eine einzige Aufzeichnung geben?
                     </li>
-                    <li>Welche Aufzeichnungen können <InternalLink view={`${page.route};parallelrecording`}>gleichzeitig</InternalLink> erfolgen?</li>
-                    <li>Warum gibt es <InternalLink view={`${page.route};jobsandschedules`}>Aufträge</InternalLink> und Aufzeichnungen?</li>
+                    <li>Welche Aufzeichnungen können <JMSLib.ReactUi.InternalLink view={`${page.route};parallelrecording`}>gleichzeitig</JMSLib.ReactUi.InternalLink> erfolgen?</li>
+                    <li>Warum gibt es <JMSLib.ReactUi.InternalLink view={`${page.route};jobsandschedules`}>Aufträge</JMSLib.ReactUi.InternalLink> und Aufzeichnungen?</li>
                     <li>
-                        Wie geht das mit einer <InternalLink view={`${page.route};repeatingschedules`}>Serienaufzeichnung</InternalLink>
+                        Wie geht das mit einer <JMSLib.ReactUi.InternalLink view={`${page.route};repeatingschedules`}>Serienaufzeichnung</JMSLib.ReactUi.InternalLink>
                         und den Ausnahmeregeln?
                     </li>
-                    <li>Wie wird eine Quelle (ein Sender) für eine Aufzeichnung <InternalLink view={`${page.route};sourcechooser`}>ausgewählt</InternalLink>?</li>
+                    <li>Wie wird eine Quelle (ein Sender) für eine Aufzeichnung <JMSLib.ReactUi.InternalLink view={`${page.route};sourcechooser`}>ausgewählt</JMSLib.ReactUi.InternalLink>?</li>
                     <li>
-                        Wie wird die <InternalLink view={`${page.route};epg`}>Programmzeitschrift</InternalLink> für die Programmierung von
+                        Wie wird die <JMSLib.ReactUi.InternalLink view={`${page.route};epg`}>Programmzeitschrift</JMSLib.ReactUi.InternalLink> für die Programmierung von
                         Aufzeichnungen eingesetzt?
                     </li>
-                    <li>Wann werden Aufzeichnungen gelöscht und was ist das <InternalLink view={`${page.route};archive`}>Archiv</InternalLink>?</li>
+                    <li>Wann werden Aufzeichnungen gelöscht und was ist das <JMSLib.ReactUi.InternalLink view={`${page.route};archive`}>Archiv</JMSLib.ReactUi.InternalLink>?</li>
                     <li>
-                        Was gibt es bei der Aufzeichnung <InternalLink view={`${page.route};decryption`}>verschlüsselter</InternalLink> Quellen
+                        Was gibt es bei der Aufzeichnung <JMSLib.ReactUi.InternalLink view={`${page.route};decryption`}>verschlüsselter</JMSLib.ReactUi.InternalLink> Quellen
                         zu beachten?
                     </li>
                     <li>
-                        Wie kommt eine Aufzeichnung zu einem <InternalLink view="admin;directories">Dateinamen</InternalLink> für
+                        Wie kommt eine Aufzeichnung zu einem <JMSLib.ReactUi.InternalLink view="admin;directories">Dateinamen</JMSLib.ReactUi.InternalLink> für
                         die Aufzeichnungsdatei?
                     </li>
-                    <li>Was fängt man mit einer <InternalLink view={`${page.route};tsplayer`}>Aufzeichnungsdatei</InternalLink> an?</li>
-                    <li>Wie wird <InternalLink view={`${page.route};customschedule`}>entschieden</InternalLink>, welche Aufzeichnung
+                    <li>Was fängt man mit einer <JMSLib.ReactUi.InternalLink view={`${page.route};tsplayer`}>Aufzeichnungsdatei</JMSLib.ReactUi.InternalLink> an?</li>
+                    <li>Wie wird <JMSLib.ReactUi.InternalLink view={`${page.route};customschedule`}>entschieden</JMSLib.ReactUi.InternalLink>, welche Aufzeichnung
                         von welcher DVB Karte ausgeführt wird?
                     </li>
                 </ul>
                 <h3>Aktivitäten</h3>
                 <ul>
-                    <li>Wofür wird eine DVB Karte <InternalLink view="current">gerade eingesetzt</InternalLink>?</li>
-                    <li>Was sind <InternalLink view={`${page.route};tasks`}>Sonderaufgaben</InternalLink>?</li>
+                    <li>Wofür wird eine DVB Karte <JMSLib.ReactUi.InternalLink view="current">gerade eingesetzt</JMSLib.ReactUi.InternalLink>?</li>
+                    <li>Was sind <JMSLib.ReactUi.InternalLink view={`${page.route};tasks`}>Sonderaufgaben</JMSLib.ReactUi.InternalLink>?</li>
                     <li>
-                        Wie können laufende Aufzeichnungen <InternalLink view={`${page.route};currentstream`}>beeinflusst</InternalLink> werden?
+                        Wie können laufende Aufzeichnungen <JMSLib.ReactUi.InternalLink view={`${page.route};currentstream`}>beeinflusst</JMSLib.ReactUi.InternalLink> werden?
                     </li>
-                    <li>Was passiert, wenn die Programmierung einer laufenden Aufzeichnung <InternalLink view={`${page.route};editcurrent`}>verändert</InternalLink> wird?</li>
-                    <li>Was kann man mit einer laufenden Aufzeichnung alles <InternalLink view={`${page.route};streaming`}>anstellen</InternalLink>?</li>
-                    <li>Was enthalten die <InternalLink view={`${page.route};log`}>Aufzeichnungsprotokolle</InternalLink>?</li>
+                    <li>Was passiert, wenn die Programmierung einer laufenden Aufzeichnung <JMSLib.ReactUi.InternalLink view={`${page.route};editcurrent`}>verändert</JMSLib.ReactUi.InternalLink> wird?</li>
+                    <li>Was kann man mit einer laufenden Aufzeichnung alles <JMSLib.ReactUi.InternalLink view={`${page.route};streaming`}>anstellen</JMSLib.ReactUi.InternalLink>?</li>
+                    <li>Was enthalten die <JMSLib.ReactUi.InternalLink view={`${page.route};log`}>Aufzeichnungsprotokolle</JMSLib.ReactUi.InternalLink>?</li>
                 </ul>
                 <h3>Hauppauge Nexus / TechnoTrend 2300</h3>
                 <ul>
-                    <li>Was ist an dieser DVB Hardware so <InternalLink view={`${page.route};nexus`}>besonders</InternalLink>?</li>
+                    <li>Was ist an dieser DVB Hardware so <JMSLib.ReactUi.InternalLink view={`${page.route};nexus`}>besonders</JMSLib.ReactUi.InternalLink>?</li>
                     <li>
                         Wie kann die Aufzeichnungsplanung auf eine bestimmte Anzahl gleichzeitiger
-                        Quellen <InternalLink view={`${page.route};sourcelimit`}>beschränkt</InternalLink> werden?
+                        Quellen <JMSLib.ReactUi.InternalLink view={`${page.route};sourcelimit`}>beschränkt</JMSLib.ReactUi.InternalLink> werden?
                     </li>
                 </ul>
                 <h3>Betriebsumgebung und Konfiguration</h3>
                 <ul>
-                    <li>Wie ist das mit dem <InternalLink view={`${page.route};hibernation`}>Schlafzustand</InternalLink>?</li>
-                    <li>Welche Rolle spielt das <InternalLink view={`${page.route};controlcenter`}>VCR.NET Kontrollzentrum</InternalLink>?</li>
-                    <li>Wie konfiguriert man die Aktualisierung der <InternalLink view={`${page.route};epgconfig`}>Programmzeitschrift</InternalLink>?</li>
+                    <li>Wie ist das mit dem <JMSLib.ReactUi.InternalLink view={`${page.route};hibernation`}>Schlafzustand</JMSLib.ReactUi.InternalLink>?</li>
+                    <li>Welche Rolle spielt das <JMSLib.ReactUi.InternalLink view={`${page.route};controlcenter`}>VCR.NET Kontrollzentrum</JMSLib.ReactUi.InternalLink>?</li>
+                    <li>Wie konfiguriert man die Aktualisierung der <JMSLib.ReactUi.InternalLink view={`${page.route};epgconfig`}>Programmzeitschrift</JMSLib.ReactUi.InternalLink>?</li>
                     <li>
-                        Wie konfiguriert man die Aktualisierung der <InternalLink view={`${page.route};psiconfig`}>Liste der Quellen</InternalLink> (Sendersuchlauf)?
+                        Wie konfiguriert man die Aktualisierung der <JMSLib.ReactUi.InternalLink view={`${page.route};psiconfig`}>Liste der Quellen</JMSLib.ReactUi.InternalLink> (Sendersuchlauf)?
                     </li>
                     <li>
-                        Welche sonstigen <InternalLink view={`${page.route};configuration`}>Konfigurationen</InternalLink> bietet der VCR.NET
+                        Welche sonstigen <JMSLib.ReactUi.InternalLink view={`${page.route};configuration`}>Konfigurationen</JMSLib.ReactUi.InternalLink> bietet der VCR.NET
                         Recording Service an?
                     </li>
                     <li>
-                        Welche Rolle spielen <InternalLink view={`${page.route};dvbnet`}>DVB.NET</InternalLink> und die darüber definierten
+                        Welche Rolle spielen <JMSLib.ReactUi.InternalLink view={`${page.route};dvbnet`}>DVB.NET</JMSLib.ReactUi.InternalLink> und die darüber definierten
                         Geräteprofile?
                     </li>
                     <li>
                         Was sind die Web Dienste und
-                        welche <InternalLink view={`${page.route};websettings`}>erweiterten Einstellungen</InternalLink> werden angeboten?
+                        welche <JMSLib.ReactUi.InternalLink view={`${page.route};websettings`}>erweiterten Einstellungen</JMSLib.ReactUi.InternalLink> werden angeboten?
                     </li>
                 </ul>
             </div>;
