@@ -24,10 +24,12 @@
         readonly longDescription: string;
 
         toggleDetail(): void;
+
+        readonly jobSelector: JMSLib.App.IValidateStringFromList;
     }
 
     export class GuideEntry implements IGuideEntry {
-        constructor(private _model: VCRServer.GuideItemContract, private _toggleDetails: (entry: GuideEntry) => void) {
+        constructor(private _model: VCRServer.GuideItemContract, private _toggleDetails: (entry: GuideEntry) => void, public jobSelector: JMSLib.App.IValidateStringFromList) {
             var start = new Date(_model.start);
             var end = new Date(start.getTime() + 1000 * _model.duration);
 

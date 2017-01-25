@@ -159,6 +159,12 @@ namespace VCRNETClient.App {
         // Der aktuell anzuzeigende Ausschnitt aus der Ergebnisliste.
         entries: GuideEntry[] = [];
 
+        // Der aktuell ausgewählte Auftrag.
+        private _selectedJob = "*";
+
+        // Die aktuelle Liste der für das Gerät angelegten Aufträg.
+        private _jobSelector = new JMSLib.App.EditStringFromList(this, "_selectedJob", null, "zum Auftrag", true, []);
+
         // Gesetzt, wenn eine nächste Seite der Ergebnisliste existiert.
         private _hasMore = false;
 
@@ -229,6 +235,16 @@ namespace VCRNETClient.App {
                 // Daraus die Liste der Quellen und möglichen Starttage ermitteln.
                 this.refreshSources();
                 this.refreshDays();
+
+                // Liste der Aufträge laden.
+                return VCRServer.getProfileJobInfos(this._filter.device);
+            }).then(jobs => {
+                // Liste der bekannten Aufträge aktualisieren.
+                var selection = jobs.map(job => <JMSLib.App.IUiValue<string>>{ display: job.name, value: job.id });
+
+                selection.unshift(<JMSLib.App.IUiValue<string>>{ display: "(neuen Auftrag anlegen)", value: "*" });
+
+                this._jobSelector.allowedValues = selection;
 
                 // Ergebnisliste neu laden - bei Wechsel des Gerätes werden alle Einschränkungen entfernt.
                 if (deviceHasChanged)
@@ -349,7 +365,7 @@ namespace VCRNETClient.App {
                 // Einträge im Auszug auswerten.
                 var toggleDetails = this.toggleDetails.bind(this);
 
-                this.entries = (items || []).slice(0, this._filter.size).map(i => new GuideEntry(i, toggleDetails));
+                this.entries = (items || []).slice(0, this._filter.size).map(i => new GuideEntry(i, toggleDetails, this._jobSelector));
                 this._hasMore = items && (items.length > this._filter.size);
 
                 // Anwendung zur Bedienung freischalten.
@@ -370,6 +386,8 @@ namespace VCRNETClient.App {
             entry.showDetails = !show;
 
             // Oberfläche aktualisieren.
+            this._selectedJob = "*";
+
             this.refreshUi();
         }
 

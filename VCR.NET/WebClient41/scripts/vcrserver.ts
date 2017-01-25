@@ -689,11 +689,8 @@ module VCRServer {
         return doUrlCall('plan');
     }
 
-    export function getProfileJobInfos(device: string): JQueryPromise<any> {
-        return $.ajax({
-            url: restRoot + 'profile/' + device + '?activeJobs',
-            dataType: 'json',
-        });
+    export function getProfileJobInfos(device: string): JMSLib.App.Thenable<ProfileJobInfoContract[], XMLHttpRequest> {
+        return doUrlCall(`profile/${device}?activeJobs`);
     }
 
     export function getGuideInfo(device: string): JMSLib.App.Thenable<GuideInfoContract, XMLHttpRequest> {

@@ -3837,7 +3837,7 @@ class guidePage extends Page implements IPage {
         this.jobs = new Array();
 
         // Aufträge zum Gerät anfordern
-        VCRServer.getProfileJobInfos(newDevice).done((jobs: VCRServer.ProfileJobInfoContract[]) => {
+        VCRServer.getProfileJobInfos(newDevice).then(jobs => {
             this.jobs = jobs;
 
             // Infomationen zum Gerät anfordern

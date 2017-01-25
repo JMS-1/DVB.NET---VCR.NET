@@ -57,7 +57,7 @@ namespace VCRNETClient.Ui {
                         <GuideEntry key={index} noui={e} />,
                         e.showDetails ?
                             <JMSLib.ReactUi.DetailRow dataColumns={4} key={`${index}Details`}>
-                                <GuideDetails noui={e} />
+                                <GuideDetails noui={e} page={this.props.noui} />
                             </JMSLib.ReactUi.DetailRow> : null
                     ])}</tbody>
                 </table>

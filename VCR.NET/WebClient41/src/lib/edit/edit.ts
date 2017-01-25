@@ -52,7 +52,8 @@
             this._data[this._prop] = newValue;
 
             // Modelländerung melden.
-            this._onChange();
+            if (this._onChange)
+                this._onChange();
 
             // Oberfläche aktualisieren.
             this.refresh();

@@ -2,9 +2,13 @@
 
 namespace VCRNETClient.Ui {
 
-    export class GuideDetails extends JMSLib.ReactUi.Component<App.IGuideEntry> {
+    interface IGuideDetails extends JMSLib.ReactUi.IComponent<App.IGuideEntry> {
+        page: App.IPage;
+    }
+
+    export class GuideDetails extends JMSLib.ReactUi.ComponentEx<App.IGuideEntry, IGuideDetails> {
         render(): JSX.Element {
-            return <div className="vcrnet-guideentrydetails">
+            return <form className="vcrnet-guideentrydetails">
                 <fieldset>
                     <table>
                         <tbody>
@@ -51,7 +55,8 @@ namespace VCRNETClient.Ui {
                         </tbody>
                     </table>
                 </fieldset>
-            </div>;
+                <Field page={this.props.page} label={`(${this.props.noui.jobSelector.text}:`}><JMSLib.ReactUi.EditTextWithList noui={this.props.noui.jobSelector} />)</Field>
+            </form>;
         }
     }
 
