@@ -8,7 +8,7 @@ namespace VCRNETClient.Ui {
                 <td>{this.props.noui.startDisplay}</td>
                 <td>{this.props.noui.endDisplay}</td>
                 <td>{this.props.noui.source}</td>
-                <td>{this.props.noui.name}</td>
+                <td><a href="javascript:void(0)" onClick={() => this.props.noui.toggleDetail()}>{this.props.noui.name}</a></td>
             </tr>;
         }
     }

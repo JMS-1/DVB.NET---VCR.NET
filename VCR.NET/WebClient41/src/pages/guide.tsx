@@ -53,10 +53,16 @@ namespace VCRNETClient.Ui {
                             <td>Name</td>
                         </tr>
                     </thead>
-                    <tbody>{this.props.noui.entries.map((e, index) => <GuideEntry key={index} noui={e} />)}</tbody>
+                    <tbody>{this.props.noui.entries.map((e, index) => [
+                        <GuideEntry key={index} noui={e} />,
+                        e.showDetails ?
+                            <JMSLib.ReactUi.DetailRow dataColumns={4} key={`${index}Details`}>
+                                <GuideDetails noui={e} />
+                            </JMSLib.ReactUi.DetailRow> : null
+                    ])}</tbody>
                 </table>
                 <GuideNavigation noui={this.props.noui} />
-            </div >;
+            </div>;
         }
 
         private getHelp(): JSX.Element {

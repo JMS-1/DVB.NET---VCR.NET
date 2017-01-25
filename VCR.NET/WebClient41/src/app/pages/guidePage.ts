@@ -347,7 +347,9 @@ namespace VCRNETClient.App {
                     return;
 
                 // Einträge im Auszug auswerten.
-                this.entries = (items || []).slice(0, this._filter.size).map(i => new GuideEntry(i));
+                var toggleDetails = this.toggleDetails.bind(this);
+
+                this.entries = (items || []).slice(0, this._filter.size).map(i => new GuideEntry(i, toggleDetails));
                 this._hasMore = items && (items.length > this._filter.size);
 
                 // Anwendung zur Bedienung freischalten.
@@ -356,6 +358,19 @@ namespace VCRNETClient.App {
                 // Anzeige aktualisieren.
                 this.refreshUi();
             });
+        }
+
+        // Aktualisiert die Detailanzeige für einen Eintrag.
+        private toggleDetails(entry: GuideEntry): void {
+            // Anzeige umschalten.
+            var show = entry.showDetails;
+
+            this.entries.forEach(e => e.showDetails = false);
+
+            entry.showDetails = !show;
+
+            // Oberfläche aktualisieren.
+            this.refreshUi();
         }
 
         // In der Ergebnisliste bättern.
