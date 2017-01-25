@@ -18,7 +18,7 @@ namespace JMSLib.App {
     }
 
     // Steuerung für einen Schieberegeler für die Auswahl eines Wertes.
-    export class EditNumberWithSlider extends EditValueWithSite<number> implements IEditNumberWithSlider {
+    export class EditNumberWithSlider extends EditValue<number> implements IEditNumberWithSlider {
         // Die aktuelle relative (0..1) Position des Reglers.
         private _position = 0;
 

@@ -27,7 +27,7 @@ namespace VCRNETClient.App {
     }
 
     // Stellt die Logik zur Auswahl eines Senders zur Verfügung.
-    export class ChannelEditor extends JMSLib.App.EditValueWithSite<string> implements IChannelSelector {
+    export class ChannelEditor extends JMSLib.App.EditValue<string> implements IChannelSelector {
 
         // Die Auswahl der Verschlüsselung.
         private static readonly _encryptions = [

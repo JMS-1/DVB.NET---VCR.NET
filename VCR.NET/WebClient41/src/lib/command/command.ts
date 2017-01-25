@@ -11,7 +11,7 @@
     export class Command<TResponseType> implements ICommand {
         private _busy = false;
 
-        constructor(private _begin: () => Thenable<TResponseType, XMLHttpRequest>, public text: string, private _test?: () => boolean) {
+        constructor(private _begin: () => (Thenable<TResponseType, XMLHttpRequest> | void), public text: string, private _test?: () => boolean) {
         }
 
         private _site: ISite;
@@ -64,7 +64,12 @@
 
             this.setBusy(true);
 
-            this._begin().then(() => this.setBusy(false), () => this.setBusy(false));
+            var begin = this._begin();
+
+            if (begin)
+                begin.then(() => this.setBusy(false), () => this.setBusy(false));
+            else
+                this.setBusy(false);
         }
     }
 }

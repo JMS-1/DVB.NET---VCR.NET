@@ -38,7 +38,7 @@ namespace JMSLib.App {
         readonly days: ISelectableDay[];
     }
 
-    export class DayEditor extends EditValueWithSite<string> implements IDaySelector {
+    export class DayEditor extends EditValue<string> implements IDaySelector {
         private static _dayNames = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
         readonly dayNames = DayEditor._dayNames;

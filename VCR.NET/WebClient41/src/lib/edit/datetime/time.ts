@@ -8,7 +8,7 @@ namespace JMSLib.App {
         readonly error: string;
     }
 
-    export class EditTime extends EditValueWithSite<string> implements IEditTime {
+    export class EditTime extends EditValue<string> implements IEditTime {
         private _time: string;
 
         protected onSiteChanged(): void {

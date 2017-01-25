@@ -154,15 +154,13 @@ namespace VCRNETClient.App {
                 .then(() => this.application.gotoPage(this.application.planPage.route));
         }
 
-        private onDelete(): JMSLib.App.Thenable<void, XMLHttpRequest> {
+        private onDelete(): (JMSLib.App.Thenable<void, XMLHttpRequest> | void) {
             if (this.del.isDangerous)
                 return VCRServer
                     .deleteSchedule(this._jobScheduleInfo.jobId, this._jobScheduleInfo.scheduleId)
                     .then(() => this.application.gotoPage(this.application.planPage.route));
 
             this.del.isDangerous = true;
-
-            return new JMSLib.App.Promise<void, XMLHttpRequest>(onSuccess => onSuccess(undefined));
         }
     }
 }

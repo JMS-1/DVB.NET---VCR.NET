@@ -23,6 +23,14 @@ namespace JMSLib.App {
         constructor(private _mask: number, private readonly _flags: EditNumber, public text: string) {
         }
 
+        // Das zugehörige Oberflächenelement.
+        private _site: ISite;
+
+        // Meldet das zugehörige Oberflächenelement an.
+        setSite(newSite: ISite): void {
+            this._site = newSite;
+        }
+
         // Meldet den aktuellen Wert oder verändert diesen.
         get value(): boolean {
             return ((this._flags.value & this._mask) !== 0);
@@ -30,10 +38,18 @@ namespace JMSLib.App {
 
         set value(newValue: boolean) {
             // Änderung bitweise an die eigentliche Eigenschaft übertragen.
-            if (newValue)
-                this._flags.value |= this._mask;
-            else
-                this._flags.value &= ~this._mask;
+            var flags = newValue ? (this._flags.value | this._mask) : (this._flags.value & ~this._mask);
+
+            // Keine Änderung.
+            if (flags === this._flags.value)
+                return;
+
+            // Änderung durchführen.
+            this._flags.value = flags;
+
+            // Oberfläche aktualisieren.
+            if (this._site)
+                this._site.refreshUi();
         }
 
         // Gesetzt, wenn der Wert der Eigenschaft nicht verändert werden darf.

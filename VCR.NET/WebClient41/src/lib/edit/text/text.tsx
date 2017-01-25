@@ -12,7 +12,7 @@ namespace JMSLib.ReactUi {
     }
 
     // Texteingabe für React.Js - die NoUi Schicht stellt den Wert und das Prüfergebnis zur Verfügung.
-    export class EditText extends ComponentEx<App.IValidatedString, IEditText>  {
+    export class EditText extends ComponentExWithSite<App.IValidatedString, IEditText>  {
         // Erstellt die Anzeige der Komponente.
         render(): JSX.Element {
             return <input className="jmslib-edittext"
