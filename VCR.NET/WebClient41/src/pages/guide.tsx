@@ -53,14 +53,7 @@ namespace VCRNETClient.Ui {
                             <td>Name</td>
                         </tr>
                     </thead>
-                    <tbody>
-                        {this.props.noui.entries.map((e, index) => <tr key={index}>
-                            <td>{e.startDisplay}</td>
-                            <td>{e.endDisplay}</td>
-                            <td>{e.source}</td>
-                            <td>{e.name}</td>
-                        </tr>)}
-                    </tbody>
+                    <tbody>{this.props.noui.entries.map((e, index) => <GuideEntry key={index} noui={e} />)}</tbody>
                 </table>
                 <GuideNavigation noui={this.props.noui} />
             </div >;

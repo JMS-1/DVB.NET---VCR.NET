@@ -23,6 +23,7 @@
 
     > table {
         width: 80%;
+        white-space: nowrap;
 
         > tbody > tr {
             > td:nth-child(1) {

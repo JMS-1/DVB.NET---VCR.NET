@@ -100,6 +100,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <TypeScriptCompile Include="src\app\pages\guidePage.ts" />
     <TypeScriptCompile Include="src\app\pages\guide\guideEntry.ts" />
+    <TypeScriptCompile Include="src\pages\guide.tsx" />
     <TypeScriptCompile Include="src\pages\guide\navigator.tsx" />
     <TypeScriptCompile Include="src\lib\command\command.ts" />
     <TypeScriptCompile Include="src\lib\edit\boolean\flagButton.tsx" />
@@ -159,13 +160,14 @@
     <Content Include="FAQ\configuration.html" />
     <Content Include="FAQ\controlcenter.html" />
     <None Include="src\pages\edit\exception.scss" />
+    <Content Include="src\pages\guide.scss" />
     <None Include="src\pages\guide\navigator.scss" />
     <None Include="src\lib\edit\boolean\flagButton.scss" />
     <Content Include="src\lib\styles.css">
       <DependentUpon>styles.scss</DependentUpon>
     </Content>
     <Content Include="src\lib\edit\singleSelect.scss" />
-    <None Include="src\pages\guide.scss" />
+    <None Include="src\pages\guide\entry.scss" />
     <Content Include="ui\images\faq\recover.png" />
     <Content Include="ui\images\faq\webserver.png" />
     <Content Include="FAQ\websettings.html" />
@@ -381,7 +383,7 @@
     <TypeScriptCompile Include="src\pages\help\log.tsx" />
     <TypeScriptCompile Include="src\pages\help\repeatingSchedules.tsx" />
     <TypeScriptCompile Include="src\pages\help\parallelRecording.tsx" />
-    <TypeScriptCompile Include="src\pages\guide.tsx" />
+    <TypeScriptCompile Include="src\pages\guide\entry.tsx" />
     <TypeScriptCompile Include="src\pages\help.tsx" />
     <TypeScriptCompile Include="src\pages\home.tsx" />
     <TypeScriptCompile Include="src\common\inlineHelp.tsx" />
