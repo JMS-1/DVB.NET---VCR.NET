@@ -258,7 +258,7 @@
     <None Include="src\lib\command\externalLink.scss" />
     <None Include="src\common\navigation.scss" />
     <None Include="src\lib\command\pictogram.scss" />
-    <None Include="src\common\detailRow.scss" />
+    <None Include="src\lib\detailRow.scss" />
     <None Include="src\common\inlineHelp.scss" />
     <None Include="src\lib\command\checkbox.scss" />
     <Content Include="src\common\styles.scss" />
@@ -353,7 +353,7 @@
     <TypeScriptCompile Include="src\lib\promise.ts" />
     <TypeScriptCompile Include="src\app\pages\edit\schedule.ts" />
     <TypeScriptCompile Include="src\lib\command\checkbox.tsx" />
-    <TypeScriptCompile Include="src\common\detailRow.tsx" />
+    <TypeScriptCompile Include="src\lib\detailRow.tsx" />
     <TypeScriptCompile Include="src\lib\command\command.tsx" />
     <TypeScriptCompile Include="src\pages\edit\channel.tsx" />
     <TypeScriptCompile Include="src\pages\edit\channelFlags.tsx" />

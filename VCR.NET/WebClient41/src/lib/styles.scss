@@ -1,18 +1,19 @@
 ﻿@import "router";
+@import "detailRow";
 
-@import "command/command.scss";
-@import "command/checkbox.scss";
-@import "command/radio.scss";
-@import "command/radioGroup.scss";
-@import "command/pictogram.scss";
-@import "command/internalLink.scss";
-@import "command/externalLink.scss";
+@import "command/command";
+@import "command/checkbox";
+@import "command/radio";
+@import "command/radioGroup";
+@import "command/pictogram";
+@import "command/internalLink";
+@import "command/externalLink";
 
-@import "edit/singleSelect.scss";
-@import "edit/text/singleSelectText.scss";
-@import "edit/text/text.scss";
-@import "edit/boolean/flag.scss";
-@import "edit/boolean/flagButton.scss";
-@import "edit/number/slider.scss";
-@import "edit/datetime/time.scss";
-@import "edit/datetime/day.scss";
+@import "edit/singleSelect";
+@import "edit/text/singleSelectText";
+@import "edit/text/text";
+@import "edit/boolean/flag";
+@import "edit/boolean/flagButton";
+@import "edit/number/slider";
+@import "edit/datetime/time";
+@import "edit/datetime/day";

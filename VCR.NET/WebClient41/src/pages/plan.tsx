@@ -34,13 +34,13 @@ namespace VCRNETClient.Ui {
                             {jobs.map((job, index) => [
                                 <PlanRow noui={job} key={index} />,
                                 job.showEpg ?
-                                    <DetailRow prefixColumns={1} dataColumns={5} key={`${index}Details`}>
+                                    <JMSLib.ReactUi.DetailRow prefixColumns={1} dataColumns={5} key={`${index}Details`}>
                                         [EPGINFO]
-                                    </DetailRow> : null,
+                                    </JMSLib.ReactUi.DetailRow> : null,
                                 job.showException ?
-                                    <DetailRow prefixColumns={1} dataColumns={5} key={`${index}Exceptions`}>
+                                    <JMSLib.ReactUi.DetailRow prefixColumns={1} dataColumns={5} key={`${index}Exceptions`}>
                                         <PlanException noui={job.exception} page={this.props.noui} />
-                                    </DetailRow> : null
+                                    </JMSLib.ReactUi.DetailRow> : null
                             ])}
                         </tbody>
                     </table> : null
