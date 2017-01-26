@@ -181,7 +181,7 @@ namespace VCRNETClient.App {
         }
 
         // Wird aufgerufen wenn in der Oberfläche die Programmzeitschrift angezeigt werden soll.
-        reset(section: string): void {
+        reset(sections: string[]): void {
             // Sicherstellen, dass alte Serveranfragen verworfen werden.
             this._queryId++;
 
@@ -242,7 +242,7 @@ namespace VCRNETClient.App {
                 // Liste der bekannten Aufträge aktualisieren.
                 var selection = jobs.map(job => <JMSLib.App.IUiValue<string>>{ display: job.name, value: job.id });
 
-                selection.unshift(<JMSLib.App.IUiValue<string>>{ display: "(neuen Auftrag anlegen)", value: "*" });
+                selection.unshift(<JMSLib.App.IUiValue<string>>{ display: "(neuen Auftrag anlegen)", value: "" });
 
                 this._jobSelector.allowedValues = selection;
 
@@ -364,8 +364,9 @@ namespace VCRNETClient.App {
 
                 // Einträge im Auszug auswerten.
                 var toggleDetails = this.toggleDetails.bind(this);
+                var createNew = this.createNewSchedule.bind(this);
 
-                this.entries = (items || []).slice(0, this._filter.size).map(i => new GuideEntry(i, toggleDetails, this._jobSelector));
+                this.entries = (items || []).slice(0, this._filter.size).map(i => new GuideEntry(i, toggleDetails, createNew, this._jobSelector));
                 this._hasMore = items && (items.length > this._filter.size);
 
                 // Anwendung zur Bedienung freischalten.
@@ -374,6 +375,12 @@ namespace VCRNETClient.App {
                 // Anzeige aktualisieren.
                 this.refreshUi();
             });
+        }
+
+        // Legt eine neue Aufzeichnung an.
+        private createNewSchedule(entry: GuideEntry): void {
+            // Seite wechseln.
+            this.application.gotoPage(`${this.application.editPage.route};id=*${entry.jobSelector.value};epgid=${entry.model.id}`);
         }
 
         // Aktualisiert die Detailanzeige für einen Eintrag.
@@ -386,7 +393,7 @@ namespace VCRNETClient.App {
             entry.showDetails = !show;
 
             // Oberfläche aktualisieren.
-            this._selectedJob = "*";
+            this._selectedJob = "";
 
             this.refreshUi();
         }

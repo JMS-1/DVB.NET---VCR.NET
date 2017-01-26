@@ -90,7 +90,7 @@
             this._site.goto(name);
         }
 
-        switchPage(name: string, section: string): boolean {
+        switchPage(name: string, sections: string[]): boolean {
             this.setBusy(true);
 
             // Den Singleton der gewünschten Seite ermitteln.
@@ -100,7 +100,7 @@
             this.page = page;
 
             // Zustand wie beim Erstaufruf vorbereiten.
-            page.reset(section);
+            page.reset(sections || []);
 
             return true;
         }

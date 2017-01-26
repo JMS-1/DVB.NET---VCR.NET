@@ -26,16 +26,22 @@
         toggleDetail(): void;
 
         readonly jobSelector: JMSLib.App.IValidateStringFromList;
+
+        readonly createNew: JMSLib.App.ICommand;
     }
 
     export class GuideEntry implements IGuideEntry {
-        constructor(private _model: VCRServer.GuideItemContract, private _toggleDetails: (entry: GuideEntry) => void, public jobSelector: JMSLib.App.IValidateStringFromList) {
-            var start = new Date(_model.start);
-            var end = new Date(start.getTime() + 1000 * _model.duration);
+        constructor(public readonly model: VCRServer.GuideItemContract, private _toggleDetails: (entry: GuideEntry) => void, createNew: (entry: GuideEntry) => void, public jobSelector: JMSLib.App.IValidateStringFromList) {
+            var start = new Date(model.start);
+            var end = new Date(start.getTime() + 1000 * model.duration);
 
             this.startDisplay = JMSLib.DateFormatter.getStartTime(start);
             this.endDisplay = JMSLib.DateFormatter.getEndTime(end);
+
+            this.createNew = new JMSLib.App.Command(() => createNew(this), "Aufzeichnung anlegen", () => end > new Date());
         }
+
+        readonly createNew: JMSLib.App.ICommand;
 
         readonly startDisplay: string;
 
@@ -44,11 +50,11 @@
         showDetails = false;
 
         get source(): string {
-            return this._model.station;
+            return this.model.station;
         }
 
         get name(): string {
-            return this._model.name;
+            return this.model.name;
         }
 
         toggleDetail(): void {
@@ -56,27 +62,27 @@
         }
 
         get language(): string {
-            return this._model.language;
+            return this.model.language;
         }
 
         get shortDescription(): string {
-            return this._model.shortDescription;
+            return this.model.shortDescription;
         }
 
         get longDescription(): string {
-            return this._model.description;
+            return this.model.description;
         }
 
         get duration(): string {
-            return JMSLib.DateFormatter.getDuration(new Date(1000 * this._model.duration));
+            return JMSLib.DateFormatter.getDuration(new Date(1000 * this.model.duration));
         }
 
         get rating(): string {
-            return (this._model.ratings || []).join(" ");
+            return (this.model.ratings || []).join(" ");
         }
 
         get content(): string {
-            return (this._model.categories || []).join(" ");
+            return (this.model.categories || []).join(" ");
         }
 
     }

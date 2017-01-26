@@ -34,8 +34,8 @@ namespace VCRNETClient.App {
         section: string;
 
         // Initialisiert die Hilfeseite mit einem Aspekt.
-        reset(section: string): void {
-            this.section = section;
+        reset(sections: string[]): void {
+            this.section = sections[0];
 
             // Daten werden dabei nicht benötigt.
             setTimeout(() => this.application.setBusy(false), 0);

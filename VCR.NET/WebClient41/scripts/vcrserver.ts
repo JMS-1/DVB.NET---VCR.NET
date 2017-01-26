@@ -850,7 +850,7 @@ module VCRServer {
     }
 
     export function createScheduleFromGuide(legacyId: string, epgId: string): JMSLib.App.Thenable<JobScheduleInfoContract, XMLHttpRequest> {
-        return doUrlCall(`edit/${legacyId}${epgId}`);
+        return doUrlCall(`edit/${legacyId}?epg=${epgId}`);
     }
 
     export function getPlan(limit: number, end: Date): JMSLib.App.Thenable<PlanActivityContract[], XMLHttpRequest> {

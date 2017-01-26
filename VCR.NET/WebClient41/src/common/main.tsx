@@ -77,16 +77,14 @@ namespace VCRNETClient.Ui {
             if (hash.length < 1)
                 this.setPage();
             else {
-                var sep = hash.indexOf(";");
-                if (sep < 0)
-                    this.setPage(hash);
-                else
-                    this.setPage(hash.substr(0, sep), hash.substr(sep + 1));
+                var sections = hash.split(";");
+
+                this.setPage(sections[0], sections.slice(1));
             }
         }
 
-        private setPage(name: string = "", section: string = "") {
-            this._application.switchPage(name, section);
+        private setPage(name: string = "", sections?: string[]) {
+            this._application.switchPage(name, sections);
         }
 
         goto(name: string): void {

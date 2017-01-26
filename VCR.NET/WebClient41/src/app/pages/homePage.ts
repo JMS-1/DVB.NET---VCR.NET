@@ -16,7 +16,7 @@ namespace VCRNETClient.App {
         }
 
         // Zeigt die Startseite (erneut) an.
-        reset(section: string): void {
+        reset(sections: string[]): void {
             setTimeout(() => this.application.setBusy(false), 0);
         }
 

@@ -84,7 +84,7 @@ namespace VCRNETClient.App {
         }
 
         // Wird beim Aufruf der Seite aktiviert.
-        reset(section: string): void {
+        reset(sections: string[]): void {
             // Aktuelles Dateum ermitteln.
             var now = new Date();
 

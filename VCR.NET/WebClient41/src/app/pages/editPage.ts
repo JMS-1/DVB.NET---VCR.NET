@@ -36,34 +36,34 @@ namespace VCRNETClient.App {
         }
 
         // Wird jedesmal beim Aufruf der Änderungsseite aufgerufen.
-        reset(section: string): void {
+        reset(sections: string[]): void {
             this.job = undefined;
             this.schedule = undefined;
             this.del.isDangerous = false;
             this._jobScheduleInfo = undefined;
 
             // Zuerst die Liste der Aufzeichnungsverzeichnisse abfragen.
-            VCRServer.RecordingDirectoryCache.getPromise().then(dirs => this.setDirectories(dirs, section));
+            VCRServer.RecordingDirectoryCache.getPromise().then(dirs => this.setDirectories(dirs, sections));
         }
 
         // Die Liste der Aufzeichnungsverzeichnisse steht bereit.
-        private setDirectories(folders: string[], section: string): void {
+        private setDirectories(folders: string[], sections: string[]): void {
             // Auswahlliste für den Anwender aufbauen.
             var folderSelection = folders.map(f => <JMSLib.App.IUiValue<string>>{ value: f, display: f });
 
             folderSelection.unshift(<JMSLib.App.IUiValue<string>>{ value: "", display: "(Voreinstellung verwenden)" });
 
             // Geräteprofile anfordern.
-            VCRServer.ProfileCache.getPromise().then(profiles => this.setProfiles(profiles, section, folderSelection));
+            VCRServer.ProfileCache.getPromise().then(profiles => this.setProfiles(profiles, sections, folderSelection));
         }
 
         // Die Liste der Geräteprofile steht bereit.
-        private setProfiles(profiles: VCRServer.ProfileInfoContract[], section: string, folders: JMSLib.App.IUiValue<string>[]): void {
+        private setProfiles(profiles: VCRServer.ProfileInfoContract[], sections: string[], folders: JMSLib.App.IUiValue<string>[]): void {
             // Auswahl für den Anwender vorbereiten.
             var profileSelection = profiles.map(p => <JMSLib.App.IUiValue<string>>{ value: p.name, display: p.name });
 
             // Auf das Neuanlegen prüfen.
-            if (section.length < 1) {
+            if (sections.length < 1) {
                 var now = new Date(Date.now());
 
                 var newSchedule = <VCRServer.EditScheduleContract>{
@@ -103,7 +103,7 @@ namespace VCRNETClient.App {
             }
             else {
                 // Existierende Aufzeichnung abrufen.
-                VCRServer.createScheduleFromGuide(section.substr(3), "").then(info => this.setJobSchedule(info, profileSelection, folders));
+                VCRServer.createScheduleFromGuide(sections[0].substr(3), (sections[1] || "epgid=").substr(6)).then(info => this.setJobSchedule(info, profileSelection, folders));
             }
         }
 

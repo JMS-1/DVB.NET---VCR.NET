@@ -65,7 +65,7 @@
         }
 
         // Initialisiert die Seite zur erneuten Anzeige.
-        abstract reset(section: string): void;
+        abstract reset(sections: string[]): void;
 
         // Meldet die Überschrift der Seite.
         abstract get title(): string;

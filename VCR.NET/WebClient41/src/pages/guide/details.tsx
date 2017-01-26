@@ -55,7 +55,10 @@ namespace VCRNETClient.Ui {
                         </tbody>
                     </table>
                 </fieldset>
-                <Field page={this.props.page} label={`(${this.props.noui.jobSelector.text}:`}><JMSLib.ReactUi.EditTextWithList noui={this.props.noui.jobSelector} />)</Field>
+                <div>
+                    <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.createNew} />
+                    <Field page={this.props.page} label={`(${this.props.noui.jobSelector.text}:`}><JMSLib.ReactUi.EditTextWithList noui={this.props.noui.jobSelector} />)</Field>
+                </div>
             </form>;
         }
     }

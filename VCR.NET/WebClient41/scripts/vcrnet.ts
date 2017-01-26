@@ -3676,7 +3676,7 @@ class editPage extends Page implements IPage {
         var epgId: string = '';
 
         if (this.fromGuide = (epgIndex >= 0)) {
-            epgId = '?epg=' + jobScheduleId.substr(epgIndex + 7);
+            epgId = jobScheduleId.substr(epgIndex + 7);
             jobScheduleId = jobScheduleId.substr(0, epgIndex);
         }
 
