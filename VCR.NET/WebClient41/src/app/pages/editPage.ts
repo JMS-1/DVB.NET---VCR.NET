@@ -23,7 +23,7 @@ namespace VCRNETClient.App {
 
         save = new JMSLib.App.Command(() => this.onSave(), "Übernehmen", () => this._isValid);
 
-        del = new JMSLib.App.Command(() => this.onDelete(), "Löschen");
+        del = new JMSLib.App.Command(() => this.onDelete(), "Löschen", null, false);
 
         private _sources: VCRServer.SourceEntry[];
 
@@ -98,12 +98,17 @@ namespace VCRNETClient.App {
                     scheduleId: null,
                     schedule: newSchedule
                 }
-
+                
                 this.setJobSchedule(info, profileSelection, folders);
             }
             else {
+                // Auf existierende Aufzeichnung prüfen.
+                var id = sections[0].substr(3);
+
+                this.del.isVisible = (id !== "*");
+
                 // Existierende Aufzeichnung abrufen.
-                VCRServer.createScheduleFromGuide(sections[0].substr(3), (sections[1] || "epgid=").substr(6)).then(info => this.setJobSchedule(info, profileSelection, folders));
+                VCRServer.createScheduleFromGuide(id, (sections[1] || "epgid=").substr(6)).then(info => this.setJobSchedule(info, profileSelection, folders));
             }
         }
 
@@ -139,7 +144,7 @@ namespace VCRNETClient.App {
         }
 
         get title(): string {
-            return `Aufzeichnung bearbeiten`;
+            return this.del.isVisible ? `Aufzeichnung bearbeiten` : `Neue Aufzeichnung anlegen`;
         }
 
         private onChanged(): void {

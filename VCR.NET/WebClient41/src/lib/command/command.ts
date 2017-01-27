@@ -1,6 +1,8 @@
 ﻿namespace JMSLib.App {
 
     export interface ICommand extends IDisplayText, IConnectable {
+        readonly isVisible: boolean;
+
         readonly isEnabled: boolean;
 
         readonly isDangerous: boolean;
@@ -11,7 +13,7 @@
     export class Command<TResponseType> implements ICommand {
         private _busy = false;
 
-        constructor(private _begin: () => (Thenable<TResponseType, XMLHttpRequest> | void), public text: string, private _test?: () => boolean) {
+        constructor(private _begin: () => (Thenable<TResponseType, XMLHttpRequest> | void), public text: string, private _test?: () => boolean, public isVisible: boolean = true) {
         }
 
         private _site: ISite;

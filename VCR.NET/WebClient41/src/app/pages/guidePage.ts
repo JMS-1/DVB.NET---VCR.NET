@@ -379,8 +379,7 @@ namespace VCRNETClient.App {
 
         // Legt eine neue Aufzeichnung an.
         private createNewSchedule(entry: GuideEntry): void {
-            // Seite wechseln.
-            this.application.gotoPage(`${this.application.editPage.route};id=*${entry.jobSelector.value};epgid=${entry.model.id}`);
+            this.application.gotoPage(`${this.application.editPage.route};id=*${entry.jobSelector.value};epgid=${entry.id}`);
         }
 
         // Aktualisiert die Detailanzeige für einen Eintrag.
