@@ -23,7 +23,7 @@ namespace VCRNETClient.App {
 
         save = new JMSLib.App.Command(() => this.onSave(), "Übernehmen", () => this._isValid);
 
-        del = new JMSLib.App.Command(() => this.onDelete(), "Löschen", null, false);
+        del = new JMSLib.App.Command(() => this.onDelete(), "Löschen", null);
 
         private _sources: VCRServer.SourceEntry[];
 
@@ -64,6 +64,10 @@ namespace VCRNETClient.App {
 
             // Auf das Neuanlegen prüfen.
             if (sections.length < 1) {
+                // Löschen geht sicher nicht.
+                this.del.isVisible = false;
+
+                // Leere Aufzeichnung angelegen.
                 var now = new Date(Date.now());
 
                 var newSchedule = <VCRServer.EditScheduleContract>{
@@ -104,6 +108,7 @@ namespace VCRNETClient.App {
                 // Auf existierende Aufzeichnung prüfen.
                 var id = sections[0].substr(3);
 
+                // Bei neuen Aufzeichnungen brauchen wir auch kein Löschen.
                 this.del.isVisible = (id !== "*");
 
                 // Existierende Aufzeichnung abrufen.

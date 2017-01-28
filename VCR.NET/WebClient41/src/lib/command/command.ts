@@ -22,7 +22,7 @@
         private _busy = false;
 
         // Erstellt eine neue Repräsentation.
-        constructor(private _begin: () => (IHttpPromise<TResponseType> | void), public text: string, private _test?: () => boolean, public isVisible: boolean = true) {
+        constructor(private _begin: () => (IHttpPromise<TResponseType> | void), public text: string, private _test?: () => boolean) {
         }
 
         // Die zugehörige Anzeige.
@@ -45,6 +45,23 @@
                 return;
 
             this._dangerous = newValue;
+
+            this.refreshUi();
+        }
+
+        // Gesetzt, wenn es sich um eine kritische Änderung handelt.
+        private _visible = true;
+
+        get isVisible(): boolean {
+            return this._visible;
+        }
+
+        set isVisible(newValue: boolean) {
+            // Nur Aktualisieren, wenn auch tatsächlich eine Umschaltung erfolgt ist.
+            if (newValue === this._visible)
+                return;
+
+            this._visible = newValue;
 
             this.refreshUi();
         }
