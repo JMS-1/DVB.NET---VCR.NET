@@ -100,6 +100,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <TypeScriptCompile Include="src\app\pages\guidePage.ts" />
     <TypeScriptCompile Include="src\app\pages\guide\guideEntry.ts" />
+    <TypeScriptCompile Include="src\lib\http\browser.ts" />
+    <TypeScriptCompile Include="src\lib\http\config.ts" />
     <TypeScriptCompile Include="src\pages\guide.tsx" />
     <TypeScriptCompile Include="src\pages\guide\details.tsx" />
     <TypeScriptCompile Include="src\pages\guide\navigator.tsx" />

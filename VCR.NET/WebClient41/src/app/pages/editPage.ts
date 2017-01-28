@@ -125,7 +125,7 @@ namespace VCRNETClient.App {
             this.loadSources().then(() => this.application.setBusy(false));
         }
 
-        private loadSources(): JMSLib.App.Thenable<VCRServer.SourceEntry[], XMLHttpRequest> {
+        private loadSources(): JMSLib.App.IHttpPromise<VCRServer.SourceEntry[]> {
             var profile = this.job.device.value;
 
             return VCRServer.ProfileSourcesCache.getPromise(profile).then(sources => {
@@ -152,13 +152,13 @@ namespace VCRNETClient.App {
             this.refreshUi();
         }
 
-        private onSave(): JMSLib.App.Thenable<void, XMLHttpRequest> {
+        private onSave(): JMSLib.App.IHttpPromise<void> {
             return VCRServer
                 .updateSchedule(this._jobScheduleInfo.jobId, this._jobScheduleInfo.scheduleId, { job: this._jobScheduleInfo.job, schedule: this._jobScheduleInfo.schedule })
                 .then(() => this.application.gotoPage(this.application.planPage.route));
         }
 
-        private onDelete(): (JMSLib.App.Thenable<void, XMLHttpRequest> | void) {
+        private onDelete(): (JMSLib.App.IHttpPromise<void> | void) {
             if (this.del.isDangerous)
                 return VCRServer
                     .deleteSchedule(this._jobScheduleInfo.jobId, this._jobScheduleInfo.scheduleId)

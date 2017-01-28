@@ -22,7 +22,7 @@
         private _busy = false;
 
         // Erstellt eine neue Repräsentation.
-        constructor(private _begin: () => (Thenable<TResponseType, XMLHttpRequest> | void), public text: string, private _test?: () => boolean, public isVisible: boolean = true) {
+        constructor(private _begin: () => (IHttpPromise<TResponseType> | void), public text: string, private _test?: () => boolean, public isVisible: boolean = true) {
         }
 
         // Die zugehörige Anzeige.

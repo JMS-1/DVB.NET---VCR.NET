@@ -1,4 +1,5 @@
 ﻿/// <reference path='jmslib.ts' />
+/// <reference path='../src/lib/http/config.ts' />
 
 module VCRServer {
     // Normalerweise sind wir das selbst
@@ -17,33 +18,11 @@ module VCRServer {
     // Der Präfix für alle REST Zugiffe
     var restRoot = serverRoot + '/vcr.net/';
 
-    // Führt eine Web Anfrage aus.
-    function doUrlCall<TResponseType, TRequestType>(url: string, method: string = 'GET', request?: TRequestType): JMSLib.App.Thenable<TResponseType, XMLHttpRequest> {
-        return new JMSLib.App.Promise<TResponseType, XMLHttpRequest>((success, failure) => {
-            var xhr = new XMLHttpRequest();
+    // Bibliothek konfigurieren.
+    JMSLib.App.webCallRoot = restRoot;
 
-            xhr.addEventListener("load", () => {
-                if (xhr.status < 400)
-                    if (xhr.status === 204)
-                        success(undefined);
-                    else
-                        success(JSON.parse(xhr.responseText));
-                else
-                    failure(xhr);
-            });
-
-            xhr.open(method, restRoot + url);
-            xhr.setRequestHeader("accept", "application/json");
-
-            if (request === undefined) {
-                xhr.send();
-            }
-            else {
-                xhr.setRequestHeader("content-type", "application/json");
-
-                xhr.send(JSON.stringify(request));
-            }
-        });
+    function doUrlCall<TResponseType, TRequestType>(url: string, method: string = 'GET', request?: TRequestType): JMSLib.App.IHttpPromise<TResponseType> {
+        return JMSLib.App.browserWebCall(url, method, request);
     }
 
     // Repräsentiert die Klasse InfoService
@@ -655,15 +634,15 @@ module VCRServer {
         return deviceUrl;
     }
 
-    export function getServerVersion(): JMSLib.App.Thenable<InfoServiceContract, XMLHttpRequest> {
+    export function getServerVersion(): JMSLib.App.IHttpPromise<InfoServiceContract> {
         return doUrlCall('info');
     }
 
-    export function getProfileInfos(): JMSLib.App.Thenable<ProfileInfoContract[], XMLHttpRequest> {
+    export function getProfileInfos(): JMSLib.App.IHttpPromise<ProfileInfoContract[]> {
         return doUrlCall('profile');
     }
 
-    export function getUserProfile(): JMSLib.App.Thenable<UserProfileContract, XMLHttpRequest> {
+    export function getUserProfile(): JMSLib.App.IHttpPromise<UserProfileContract> {
         return doUrlCall('userprofile');
     }
 
@@ -685,15 +664,15 @@ module VCRServer {
         });
     }
 
-    export function getPlanCurrent(): JMSLib.App.Thenable<PlanCurrentContract[], XMLHttpRequest> {
+    export function getPlanCurrent(): JMSLib.App.IHttpPromise<PlanCurrentContract[]> {
         return doUrlCall('plan');
     }
 
-    export function getProfileJobInfos(device: string): JMSLib.App.Thenable<ProfileJobInfoContract[], XMLHttpRequest> {
+    export function getProfileJobInfos(device: string): JMSLib.App.IHttpPromise<ProfileJobInfoContract[]> {
         return doUrlCall(`profile/${device}?activeJobs`);
     }
 
-    export function getGuideInfo(device: string): JMSLib.App.Thenable<GuideInfoContract, XMLHttpRequest> {
+    export function getGuideInfo(device: string): JMSLib.App.IHttpPromise<GuideInfoContract> {
         return doUrlCall(`guide/${device}`);
     }
 
@@ -704,7 +683,7 @@ module VCRServer {
         });
     }
 
-    export function getProfileSources(device: string): JMSLib.App.Thenable<ProfileSourceContract[], XMLHttpRequest> {
+    export function getProfileSources(device: string): JMSLib.App.IHttpPromise<ProfileSourceContract[]> {
         return doUrlCall(`profile/${device}`);
     }
 
@@ -764,7 +743,7 @@ module VCRServer {
         });
     }
 
-    export function queryProgramGuide(filter: GuideFilterContract): JMSLib.App.Thenable<GuideItemContract[], XMLHttpRequest> {
+    export function queryProgramGuide(filter: GuideFilterContract): JMSLib.App.IHttpPromise<GuideItemContract[]> {
         return doUrlCall("guide", "POST", filter);
     }
 
@@ -777,7 +756,7 @@ module VCRServer {
         });
     }
 
-    export function getRecordingDirectories(): JMSLib.App.Thenable<string[], XMLHttpRequest> {
+    export function getRecordingDirectories(): JMSLib.App.IHttpPromise<string[]> {
         return doUrlCall('info?directories');
     }
 
@@ -788,7 +767,7 @@ module VCRServer {
         });
     }
 
-    export function updateException(legacyId: string, referenceDay: string, startDelta: number, durationDelta: number): JMSLib.App.Thenable<void, XMLHttpRequest> {
+    export function updateException(legacyId: string, referenceDay: string, startDelta: number, durationDelta: number): JMSLib.App.IHttpPromise<void> {
         return doUrlCall<void, void>(`exception/${legacyId}?when=${referenceDay}&startDelta=${startDelta}&durationDelta=${durationDelta}`, 'PUT');
     }
 
@@ -849,15 +828,15 @@ module VCRServer {
         });
     }
 
-    export function createScheduleFromGuide(legacyId: string, epgId: string): JMSLib.App.Thenable<JobScheduleInfoContract, XMLHttpRequest> {
+    export function createScheduleFromGuide(legacyId: string, epgId: string): JMSLib.App.IHttpPromise<JobScheduleInfoContract> {
         return doUrlCall(`edit/${legacyId}?epg=${epgId}`);
     }
 
-    export function getPlan(limit: number, end: Date): JMSLib.App.Thenable<PlanActivityContract[], XMLHttpRequest> {
+    export function getPlan(limit: number, end: Date): JMSLib.App.IHttpPromise<PlanActivityContract[]> {
         return doUrlCall(`plan?limit=${limit}&end=${end.toISOString()}`);
     }
 
-    export function updateSchedule(jobId: string, scheduleId: string, data: JobScheduleDataContract): JMSLib.App.Thenable<void, XMLHttpRequest> {
+    export function updateSchedule(jobId: string, scheduleId: string, data: JobScheduleDataContract): JMSLib.App.IHttpPromise<void> {
         var method = "POST";
         var url = "edit";
 
@@ -878,7 +857,7 @@ module VCRServer {
     // Verwaltet die Aufzeichnungsverzeichnisse
     export class RecordingDirectoryCache {
         // Die zwischengespeicherten Verzeichnisse
-        private static promise: JMSLib.App.Promise<string[], XMLHttpRequest>;
+        private static promise: JMSLib.App.Promise<string[], JMSLib.App.IHttpErrorInformation>;
 
         // Vergisst alles, was wir wissen
         static reset(): void {
@@ -886,11 +865,11 @@ module VCRServer {
         }
 
         // Ruft die Verzeichnisse ab
-        static getPromise(): JMSLib.App.Thenable<string[], XMLHttpRequest> {
+        static getPromise(): JMSLib.App.IHttpPromise<string[]> {
             // Erstmalig laden
             if (!RecordingDirectoryCache.promise) {
                 // Verwaltung erzeugen.
-                RecordingDirectoryCache.promise = new JMSLib.App.Promise<string[], XMLHttpRequest>((success, failure) => {
+                RecordingDirectoryCache.promise = new JMSLib.App.Promise<string[], JMSLib.App.IHttpErrorInformation>((success, failure) => {
                     getRecordingDirectories().then(data => success(data));
                 });
             }
@@ -903,13 +882,13 @@ module VCRServer {
     // Verwaltet die Geräteprofile
     export class ProfileCache {
         // Die zwischengespeicherten Geräte
-        private static promise: JMSLib.App.Promise<ProfileInfoContract[], XMLHttpRequest>;
+        private static promise: JMSLib.App.Promise<ProfileInfoContract[], JMSLib.App.IHttpErrorInformation>;
 
         // Ruft die Profile ab
-        static getPromise(): JMSLib.App.Thenable<ProfileInfoContract[], XMLHttpRequest> {
+        static getPromise(): JMSLib.App.IHttpPromise<ProfileInfoContract[]> {
             // Einmalig erzeugen.
             if (!ProfileCache.promise) {
-                ProfileCache.promise = new JMSLib.App.Promise<ProfileInfoContract[], XMLHttpRequest>((success, failure) => {
+                ProfileCache.promise = new JMSLib.App.Promise<ProfileInfoContract[], JMSLib.App.IHttpErrorInformation>((success, failure) => {
                     // Ladevorgang anstossen.
                     getProfileInfos().then(data => success(data));
                 });
@@ -940,14 +919,14 @@ module VCRServer {
 
     // Verwaltet die Zusammenfassung der Daten der Programmzeitschrift für einzelne Geräte
     export class GuideInfoCache {
-        private static promises: { [device: string]: JMSLib.App.Promise<GuideInfoContract, XMLHttpRequest> } = {};
+        private static promises: { [device: string]: JMSLib.App.Promise<GuideInfoContract, JMSLib.App.IHttpErrorInformation> } = {};
 
-        static getPromise(profileName: string): JMSLib.App.Thenable<GuideInfoContract, XMLHttpRequest> {
+        static getPromise(profileName: string): JMSLib.App.IHttpPromise<GuideInfoContract> {
             // Eventuell haben wir das schon einmal gemacht
             var promise = GuideInfoCache.promises[profileName];
             if (!promise)
                 GuideInfoCache.promises[profileName] =
-                    promise = new JMSLib.App.Promise<GuideInfoContract, XMLHttpRequest>(success => getGuideInfo(profileName).then(success));
+                    promise = new JMSLib.App.Promise<GuideInfoContract, JMSLib.App.IHttpErrorInformation>(success => getGuideInfo(profileName).then(success));
 
             // Verwaltung melden.
             return promise;
@@ -981,15 +960,15 @@ module VCRServer {
     // Verwaltet Listen von Quellen zu Geräteprofilen
     export class ProfileSourcesCache {
         // Verwaltet alle Quellen zu allen Geräten als Nachschlageliste
-        private static promises: { [device: string]: JMSLib.App.Promise<SourceEntry[], XMLHttpRequest> } = {};
+        private static promises: { [device: string]: JMSLib.App.Promise<SourceEntry[], JMSLib.App.IHttpErrorInformation> } = {};
 
         // Fordert die Quellen eines Geräteprofils an.
-        static getPromise(profileName: string): JMSLib.App.Thenable<SourceEntry[], XMLHttpRequest> {
+        static getPromise(profileName: string): JMSLib.App.IHttpPromise<SourceEntry[]> {
             // Eventuell haben wir das schon einmal gemacht
             var promise = ProfileSourcesCache.promises[profileName];
             if (!promise) {
                 // Verwaltung erzeugen.
-                ProfileSourcesCache.promises[profileName] = promise = new JMSLib.App.Promise<SourceEntry[], XMLHttpRequest>((success, failure) => {
+                ProfileSourcesCache.promises[profileName] = promise = new JMSLib.App.Promise<SourceEntry[], JMSLib.App.IHttpErrorInformation>((success, failure) => {
                     // Ladevorgang anstossen.
                     getProfileSources(profileName).then(data => success($.map(data, rawData => new SourceEntry(rawData))));
                 });
