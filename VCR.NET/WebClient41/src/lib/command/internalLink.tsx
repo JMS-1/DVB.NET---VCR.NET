@@ -1,14 +1,21 @@
 ﻿/// <reference path="../reactUi.tsx" />
 
 namespace JMSLib.ReactUi {
+
+    // Konfigurationzur Anzeige eines internen Verweises.
     interface IInternalLink {
+        // Der Name einer Seite oder eine Funktion zur Durchführung eines Übergangs.
         view: string | (() => void);
 
+        // Optional ein Symbol für den Verweis.
         pict?: string
     }
 
+    // React.Js Komponente zur Anzeige eines internen Verweises.
     export class InternalLink extends React.Component<IInternalLink, IEmpty>{
+        // Erstellt die Oberflächenelemente.
         render(): JSX.Element {
+            // Konfiguration des HTML A Verweises je nach Parameter der Komponente.
             var target = "javascript:void(0)";
             var click = undefined;
 
@@ -17,10 +24,11 @@ namespace JMSLib.ReactUi {
             else
                 target = "#" + this.props.view;
 
-            return <span>
-                {this.props.pict ? <a className="vcrnet-jmslib" href={target} onClick={click}><Pictogram name={this.props.pict} /></a> : null}
-                {this.props.children ? <a className="vcrnet-jmslib" href={target} onClick={click}>{this.props.children}</a> : null}
-            </span>;
+            // Verweis mit optionalem Symbol erstellen.
+            return <div className="jmslib-internalLink">
+                {this.props.pict ? <a href={target} onClick={click}><Pictogram name={this.props.pict} /></a> : null}
+                {this.props.children ? <a href={target} onClick={click}>{this.props.children}</a> : null}
+            </div>;
         }
     }
 }

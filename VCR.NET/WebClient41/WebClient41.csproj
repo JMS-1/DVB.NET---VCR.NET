@@ -273,7 +273,6 @@
     <Content Include="src\common\main.scss" />
     <None Include="src\pages\plan\row.scss" />
     <None Include="src\lib\command\radio.scss" />
-    <None Include="src\lib\command\radioGroup.scss" />
     <Content Include="ui\admin.html" />
     <Content Include="ui\faq.html" />
     <Content Include="ui\favorites.html" />
@@ -396,7 +395,6 @@
     <TypeScriptCompile Include="src\pages\plan.tsx" />
     <TypeScriptCompile Include="src\pages\plan\row.tsx" />
     <TypeScriptCompile Include="src\lib\command\radio.tsx" />
-    <TypeScriptCompile Include="src\lib\command\radioGroup.tsx" />
     <TypeScriptCompile Include="src\common\view.tsx" />
     <TypeScriptCompile Include="src\vcrnet.tsx" />
   </ItemGroup>
