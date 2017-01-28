@@ -35,19 +35,23 @@ namespace VCRNETClient.App {
         constructor(page: IPage, model: VCRServer.EditScheduleContract, favoriteSources: string[], onChange: () => void) {
             super(page, model, false, favoriteSources, onChange);
 
+            // Anpassungen.
+            if (!model.lastDay)
+                model.lastDay = ScheduleEditor.makePureDate(ScheduleEditor.maximumDate).toISOString();
+
             // Pflegbare Eigenschaften anlegen.
             this.firstStart = new JMSLib.App.DayEditor(model, "firstStart", onChange, "Datum", false);
             this.repeat = new JMSLib.App.EditNumber(model, "repeatPattern", onChange, "Wiederholung");
             this.lastDay = new JMSLib.App.DayEditor(model, "lastDay", onChange, "wiederholen bis zum", true);
             this.duration = new DurationEditor(model, "firstStart", "duration", onChange, "Zeitraum");
 
-            this.onMonday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagMonday, this.repeat, JMSLib.App.DateFormatter.germanDays[1]);
-            this.onTuesday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagTuesday, this.repeat, JMSLib.App.DateFormatter.germanDays[2]);
-            this.onWednesday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagWednesday, this.repeat, JMSLib.App.DateFormatter.germanDays[3]);
-            this.onThursday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagThursday, this.repeat, JMSLib.App.DateFormatter.germanDays[4]);
-            this.onFriday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagFriday, this.repeat, JMSLib.App.DateFormatter.germanDays[5]);
-            this.onSaturday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagSaturday, this.repeat, JMSLib.App.DateFormatter.germanDays[6]);
-            this.onSunday = new JMSLib.App.FlagSetEditor(ScheduleEditor.flagSunday, this.repeat, JMSLib.App.DateFormatter.germanDays[0]);
+            this.onMonday = new JMSLib.App.EditFlagSet(ScheduleEditor.flagMonday, this.repeat, JMSLib.App.DateFormatter.germanDays[1]);
+            this.onTuesday = new JMSLib.App.EditFlagSet(ScheduleEditor.flagTuesday, this.repeat, JMSLib.App.DateFormatter.germanDays[2]);
+            this.onWednesday = new JMSLib.App.EditFlagSet(ScheduleEditor.flagWednesday, this.repeat, JMSLib.App.DateFormatter.germanDays[3]);
+            this.onThursday = new JMSLib.App.EditFlagSet(ScheduleEditor.flagThursday, this.repeat, JMSLib.App.DateFormatter.germanDays[4]);
+            this.onFriday = new JMSLib.App.EditFlagSet(ScheduleEditor.flagFriday, this.repeat, JMSLib.App.DateFormatter.germanDays[5]);
+            this.onSaturday = new JMSLib.App.EditFlagSet(ScheduleEditor.flagSaturday, this.repeat, JMSLib.App.DateFormatter.germanDays[6]);
+            this.onSunday = new JMSLib.App.EditFlagSet(ScheduleEditor.flagSunday, this.repeat, JMSLib.App.DateFormatter.germanDays[0]);
 
             // Ausnahmeregeln.
             this.exceptions = (model.exceptions || []).map(e => new ScheduleException(e, () => this.onExceptionsChanged()));
@@ -80,42 +84,42 @@ namespace VCRNETClient.App {
         static readonly minimumDate: Date = new Date(1963, 8, 29);
 
         // Der höchste erlaubte Datumswert.
-        static readonly maximumDate: Date = new Date(2999, 11, 31);
+        static readonly maximumDate: Date = new Date(2099, 11, 31);
 
         // Das Bit für Montag.
         private static flagMonday: number = 0x01;
 
-        readonly onMonday: JMSLib.App.FlagSetEditor;
+        readonly onMonday: JMSLib.App.EditFlagSet;
 
         // Das Bit für Dienstag.
         private static flagTuesday: number = 0x02;
 
-        readonly onTuesday: JMSLib.App.FlagSetEditor;
+        readonly onTuesday: JMSLib.App.EditFlagSet;
 
         // Das Bit für Mittwoch.
         private static flagWednesday: number = 0x04;
 
-        readonly onWednesday: JMSLib.App.FlagSetEditor;
+        readonly onWednesday: JMSLib.App.EditFlagSet;
 
         // Das Bit für Donnerstag.
         private static flagThursday: number = 0x08;
 
-        readonly onThursday: JMSLib.App.FlagSetEditor;
+        readonly onThursday: JMSLib.App.EditFlagSet;
 
         // Das Bit für Freitag.
         private static flagFriday: number = 0x10;
 
-        readonly onFriday: JMSLib.App.FlagSetEditor;
+        readonly onFriday: JMSLib.App.EditFlagSet;
 
         // Das Bit für Samstag.
         private static flagSaturday: number = 0x20;
 
-        readonly onSaturday: JMSLib.App.FlagSetEditor;
+        readonly onSaturday: JMSLib.App.EditFlagSet;
 
         // Das Bit für Sonntag.
         private static flagSunday: number = 0x40;
 
-        readonly onSunday: JMSLib.App.FlagSetEditor;
+        readonly onSunday: JMSLib.App.EditFlagSet;
 
         validate(sources: VCRServer.SourceEntry[], sourceIsRequired: boolean): void {
             super.validate(sources, sourceIsRequired);

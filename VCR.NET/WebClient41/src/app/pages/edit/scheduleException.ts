@@ -14,7 +14,7 @@
         constructor(public readonly model: VCRServer.PlanExceptionContract, onChange: () => void) {
             this.dayDisplay = JMSLib.App.DateFormatter.getStartDate(new Date(parseInt(model.referenceDayDisplay, 10)));
 
-            this.isActive = new JMSLib.App.FlagEditor(this, "_active", () => this.onChange(onChange), null);
+            this.isActive = new JMSLib.App.EditFlag(this, "_active", () => this.onChange(onChange), null);
         }
 
         private _active = true;
@@ -25,7 +25,7 @@
             this._site = newSite;
         }
 
-        readonly isActive: JMSLib.App.FlagEditor;
+        readonly isActive: JMSLib.App.EditFlag;
 
         readonly dayDisplay: string;
 

@@ -20,7 +20,7 @@ namespace VCRNETClient.App {
             super(page, model, true, favoriteSources, onChange);
 
             // Pflegekomponenten erstellen
-            this.deviceLock = new JMSLib.App.FlagEditor(this.model, "lockedToDevice", onChange, "(auf diesem Gerät aufzeichnen)");
+            this.deviceLock = new JMSLib.App.EditFlag(this.model, "lockedToDevice", onChange, "(auf diesem Gerät aufzeichnen)");
             this.device = new JMSLib.App.EditStringFromList(this.model, "device", onChange, "DVB.NET Geräteprofil", true, devices);
             this.folder = new JMSLib.App.EditStringFromList(this.model, "directory", onChange, "Verzeichnis", false, folders);
         }
@@ -32,7 +32,7 @@ namespace VCRNETClient.App {
         readonly device: JMSLib.App.EditStringFromList;
 
         // Gesetzt, wenn die Aufzeichnung immer auf dem Gerät stattfinden soll.
-        readonly deviceLock: JMSLib.App.FlagEditor;
+        readonly deviceLock: JMSLib.App.EditFlag;
 
         // Prüft alle Daten.
         validate(sources: VCRServer.SourceEntry[]): void {

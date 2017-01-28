@@ -17,3 +17,19 @@
 @import "edit/number/slider";
 @import "edit/datetime/time";
 @import "edit/datetime/day";
+
+.jmslib-toggleButton {
+    margin: 0px 4px;
+    padding: 1px 2px;
+    font-size: small;
+    border: 1px solid black;
+
+    input {
+        display: none;
+    }
+
+    &[data-jmslib-checked] {
+        font-weight: bold;
+        background: white;
+    }
+}

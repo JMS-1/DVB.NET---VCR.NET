@@ -129,7 +129,7 @@ namespace VCRNETClient.App {
         private _withContent = true;
 
         // Schnittstelle zur Pflege der Auswahl der Freitextsuche auf die Beschreibung.
-        readonly withContent = new JMSLib.App.FlagEditor(this, "_withContent", () => this.query(), "Auch in Beschreibung suchen");
+        readonly withContent = new JMSLib.App.EditFlag(this, "_withContent", () => this.query(), "Auch in Beschreibung suchen");
 
         // Aktuelle Anmeldung für verzögerte Suchanfragen.
         private _timeout: number;

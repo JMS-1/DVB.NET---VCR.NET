@@ -7,7 +7,7 @@ namespace JMSLib.App {
     }
 
     // Verwaltet den Wahrheitswert in einer Eigenschaft - hier können wir uns vollständig auf die Implementierung der Basisklasse verlassen.
-    export class FlagEditor extends EditValue<boolean> implements IValidatedFlag {
+    export class EditFlag extends EditValue<boolean> implements IValidatedFlag {
         // Legt eine neue Verwaltung an.
         constructor(data: any, prop: string, onChange: () => void, name: string, testReadOnly?: () => boolean) {
             super(data, prop, onChange, name, testReadOnly);
@@ -15,7 +15,7 @@ namespace JMSLib.App {
     }
 
     // Verwaltet ein Bitfeld von Wahrheitswerten in einer Eigenschaft mit einer Zahl als Wert.
-    export class FlagSetEditor implements IValidatedFlag {
+    export class EditFlagSet implements IValidatedFlag {
         // Prüfungen werden hierbei nicht individuell unterstützt.
         readonly message = "";
 

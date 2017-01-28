@@ -68,7 +68,6 @@ namespace VCRNETClient.App {
 
                 var newSchedule = <VCRServer.EditScheduleContract>{
                     firstStart: new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes()).toISOString(),
-                    lastDay: ScheduleEditor.makePureDate(ScheduleEditor.maximumDate).toISOString(),
                     withSubtitles: this.application.profile.subtitles,
                     withVideotext: this.application.profile.videotext,
                     allLanguages: this.application.profile.languages,

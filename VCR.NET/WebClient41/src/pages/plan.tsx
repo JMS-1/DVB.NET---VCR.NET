@@ -14,9 +14,7 @@ namespace VCRNETClient.Ui {
                         {this.props.noui.startFilter.map((f, index) =>
                             <JMSLib.ReactUi.RadioCommand key={index} groupName="filterStart" isChecked={f.active} onClick={() => f.activate()}>{f.text}</JMSLib.ReactUi.RadioCommand>)}
                     </JMSLib.ReactUi.RadioGroup>
-                    <JMSLib.ReactUi.CheckBoxCommand onToggle={() => this.props.noui.toggleTaskFilter()} isChecked={this.props.noui.showTasks}>
-                        Aufgaben einblenden
-                    </JMSLib.ReactUi.CheckBoxCommand>
+                    <JMSLib.ReactUi.CheckBoxCommand noui={this.props.noui.showTasks} />
                 </div>
                 {
                     jobs ? <table>

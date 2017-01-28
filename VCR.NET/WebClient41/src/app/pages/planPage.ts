@@ -33,13 +33,11 @@ namespace VCRNETClient.App {
     }
 
     export interface IPlanPage extends IPage {
-        readonly showTasks: boolean;
+        readonly showTasks: JMSLib.App.IValidatedFlag;
 
         readonly jobs: IPlanEntry[];
 
         readonly startFilter: IPlanStartFilter[];
-
-        toggleTaskFilter(): void;
     }
 
     // Steuert die Anzeige des Aufzeichnungsplan.
@@ -56,8 +54,8 @@ namespace VCRNETClient.App {
             return null;
         }
 
-        // Gesetzt, wenn auch alle Aufgaben angezeigt werden.
-        showTasks = false;
+        // Pflegt die Anzeige der Aufgaben.
+        readonly showTasks = new JMSLib.App.EditFlag({}, "value", () => this.fireRefresh(false), "Aufgaben einblenden");
 
         // Alle bekannten Datumsfilter.
         private _startFilter: PlanStartFilter[];
@@ -102,7 +100,7 @@ namespace VCRNETClient.App {
             }
 
             // Internen Zustand zurück setzen
-            this.showTasks = false;
+            this.showTasks.value = false;
             this._jobs = [];
 
             // Daten erstmalig anfordern.
@@ -121,7 +119,7 @@ namespace VCRNETClient.App {
                 return false;
 
             // Aufgabenfilter.
-            if (!this.showTasks)
+            if (!this.showTasks.value)
                 if (!job.mode)
                     return false;
 
@@ -173,13 +171,6 @@ namespace VCRNETClient.App {
                 this._jobs.forEach(j => j.showEpg = j.showException = false);
 
             this.refreshUi();
-        }
-
-        // Schaltet die Anzeige der Aufgaben um.
-        toggleTaskFilter(): void {
-            this.showTasks = !this.showTasks;
-
-            this.fireRefresh();
         }
 
         // Ermittelt die Liste der Datumsfilter.

@@ -39,10 +39,10 @@
             this.name = new JMSLib.App.EditString(this.model, "name", onChange, "Name", mustHaveName, "Ein Auftrag muss einen Namen haben.");
             this.source = new ChannelEditor(this.model, "sourceName", favoriteSources, onChange);
             this.sourceFlags = {
-                includeDolby: new JMSLib.App.FlagEditor(this.model, "includeDolby", onChange, "Dolby Digital (AC3)", noSource),
-                withSubtitles: new JMSLib.App.FlagEditor(this.model, "withSubtitles", onChange, "DVB Untertitel", noSource),
-                allLanguages: new JMSLib.App.FlagEditor(this.model, "allLanguages", onChange, "Alle Sprachen", noSource),
-                withVideotext: new JMSLib.App.FlagEditor(this.model, "withVideotext", onChange, "Videotext", noSource),
+                includeDolby: new JMSLib.App.EditFlag(this.model, "includeDolby", onChange, "Dolby Digital (AC3)", noSource),
+                withSubtitles: new JMSLib.App.EditFlag(this.model, "withSubtitles", onChange, "DVB Untertitel", noSource),
+                allLanguages: new JMSLib.App.EditFlag(this.model, "allLanguages", onChange, "Alle Sprachen", noSource),
+                withVideotext: new JMSLib.App.EditFlag(this.model, "withVideotext", onChange, "Videotext", noSource),
                 text: "Besonderheiten"
             };
         }
@@ -56,10 +56,10 @@
         // Aufzeichnungsoptionen.
         readonly sourceFlags: {
             readonly text: string;
-            readonly allLanguages: JMSLib.App.FlagEditor;
-            readonly includeDolby: JMSLib.App.FlagEditor;
-            readonly withVideotext: JMSLib.App.FlagEditor;
-            readonly withSubtitles: JMSLib.App.FlagEditor;
+            readonly allLanguages: JMSLib.App.EditFlag;
+            readonly includeDolby: JMSLib.App.EditFlag;
+            readonly withVideotext: JMSLib.App.EditFlag;
+            readonly withSubtitles: JMSLib.App.EditFlag;
         };
 
         // Prüft alle Daten.
