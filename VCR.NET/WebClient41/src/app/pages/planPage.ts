@@ -2,42 +2,16 @@
 
 namespace VCRNETClient.App {
 
-    // Die Auswahl eines Datumsfilters.
-    export interface IPlanStartFilter extends JMSLib.App.IDisplayText {
-        // Gesetzt, wenn der Filter aktiv ist.
-        readonly active: boolean;
-
-        // Aktiviert den Filter.
-        activate(): void;
-    }
-
-    // Die Implementierung der Auswahl eines Datumsfilters.
-    class PlanStartFilter implements IPlanStartFilter {
-        // Gesetzt, wenn der Filter aktiv ist.
-        active: boolean;
-
-        // Der Anzeigetext des Filters.
-        readonly text: string;
-
-        // Erstellt einen neuen Filter.
-        constructor(first: boolean, public readonly date: Date, private _activate: (filter: PlanStartFilter) => void) {
-            // Sonderbehandlung für die Anzeige der ersten Auswahl. die zugleich auf vorgewählt ist.
-            this.active = first;
-            this.text = first ? "Jetzt" : JMSLib.App.DateFormatter.getShortDate(date);
-        }
-
-        // Aktiviert diesen Filter - und deaktiviert alle anderen.
-        activate(): void {
-            this._activate(this);
-        }
-    }
-
+    // Schnittstelle zur Anzeige des Aufzeichnungsplans.
     export interface IPlanPage extends IPage {
-        readonly showTasks: JMSLib.App.IValidatedFlag;
-
+        // Die aktuell anzuzeigende Liste der Aufzeichnungen.
         readonly jobs: IPlanEntry[];
 
-        readonly startFilter: IPlanStartFilter[];
+        // Auswahl des Datums für die erste anzuzeigende Aufzeichnung.
+        readonly startFilter: JMSLib.App.IValueFromList<Date>;
+
+        // Auswahl für die Anzeige der Aufgaben zusätzlich zu den Aufzeichnungen.
+        readonly showTasks: JMSLib.App.IValidatedFlag;
     }
 
     // Steuert die Anzeige des Aufzeichnungsplan.
@@ -47,18 +21,14 @@ namespace VCRNETClient.App {
 
         // Ermittelt die aktuell anzuzeigenden Aufräge.
         get jobs(): IPlanEntry[] {
-            for (var i = 0; i < this._startFilter.length - 1; i++)
-                if (this._startFilter[i].active)
-                    return this._jobs.filter(job => this.filterJob(job, i));
-
-            return null;
+            return this._jobs.filter(job => this.filterJob(job));
         }
 
         // Pflegt die Anzeige der Aufgaben.
-        readonly showTasks = new JMSLib.App.EditFlag({}, "value", () => this.fireRefresh(false), "Aufgaben einblenden");
+        readonly showTasks = new JMSLib.App.EditFlag({}, "value", () => this.fireRefresh(), "Aufgaben einblenden");
 
         // Alle bekannten Datumsfilter.
-        private _startFilter: PlanStartFilter[];
+        readonly startFilter = new JMSLib.App.EditFromList<Date>({}, "value", () => this.fireRefresh(true), null, []);
 
         // Erzeugt eine neue Steuerung.
         constructor(application: Application) {
@@ -74,30 +44,27 @@ namespace VCRNETClient.App {
             this.query();
         }
 
-        // Wählt einen bestimmten Datumsbereich aus.
-        private activateFilter(filter: PlanStartFilter): void {
-            this._startFilter.forEach(f => f.active = (f === filter));
-
-            this.fireRefresh();
-        }
-
         // Wird beim Aufruf der Seite aktiviert.
         reset(sections: string[]): void {
-            // Aktuelles Dateum ermitteln.
+            // Sicherstellen, dass veraltete Informationen nicht mehr berücksichtigt werden.
+            this._requestId++;
+
+            // Aktuelles Dateum ermitteln - ohne Berücksichtigung der Uhrzeit.
             var now = new Date();
 
             now = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
             // Datumsfilter basierend darauf erstellen.
-            this._startFilter = []
+            var start: JMSLib.App.IUiValue<Date>[] = [];
 
-            var activate = this.activateFilter.bind(this);
-
-            for (var i = 0; i < 8; i++) {
-                this._startFilter.push(new PlanStartFilter(i === 0, now, activate));
+            for (var i = 0; i < 7; i++) {
+                start.push({ display: (i === 0) ? "Jetzt" : JMSLib.DateFormatter.getShortDate(now), value: now });
 
                 now = new Date(now.getFullYear(), now.getMonth(), now.getDate() + this.application.profile.planDays);
             }
+
+            this.startFilter.allowedValues = start;
+            this.startFilter.value = start[0].value;
 
             // Internen Zustand zurück setzen
             this.showTasks.value = false;
@@ -108,10 +75,10 @@ namespace VCRNETClient.App {
         }
 
         // Prüft, ob ein Auftrag den aktuellen Einschränkungen entspricht.
-        private filterJob(job: PlanEntry, startIndex: number): boolean {
+        private filterJob(job: PlanEntry): boolean {
             // Datumsfilter.
-            var startDay = this._startFilter[startIndex].date;
-            var endDay = this._startFilter[startIndex + 1].date;
+            var startDay = this.startFilter.value;
+            var endDay = new Date(startDay.getFullYear(), startDay.getMonth(), startDay.getDate() + this.application.profile.planDays);
 
             if (job.start >= endDay)
                 return false;
@@ -126,20 +93,33 @@ namespace VCRNETClient.App {
             return true;
         }
 
+        // Ein Aufrufzähler.
+        private _requestId = 0;
+
         // Ermittelt die aktuell gültigen Aufträge.
         private query(): void {
+            // Sicherstellen, dass alte Anfragen ignoriert werden.
+            const requestId = ++this._requestId;
+
             // Wir schauen maximal 13 Wochen in die Zukunft
             var endOfTime = new Date(Date.now() + 13 * 7 * 86400000);
 
             // Zusätzlich beschränken wir uns auf maximal 500 Einträge
             VCRServer.getPlan(500, endOfTime).then(plan => {
+                // Veraltete Antwort.
+                if (this._requestId !== requestId)
+                    return;
+
+                // Anzeigedarstellung für alle Aufträge erstellen.
                 var toggleDetail = this.toggleDetail.bind(this);
                 var reload = this.reload.bind(this);
 
                 this._jobs = plan.map(job => new PlanEntry(job, toggleDetail, this.application, reload));
 
+                // Anzeige aktualisieren.
                 this.fireRefresh();
 
+                // Die Seite kann nun normal verwendet werden.
                 this.application.setBusy(false);
             });
         }
@@ -162,21 +142,17 @@ namespace VCRNETClient.App {
             }
 
             // Anzeige aktualisieren.
-            this.fireRefresh(false);
+            this.fireRefresh();
         }
 
         // Anzeige aktualisieren.
-        private fireRefresh(full = true): void {
+        private fireRefresh(full = false): void {
+            // Alle Details zuklappen.
             if (full && this._jobs)
                 this._jobs.forEach(j => j.showEpg = j.showException = false);
 
+            // Anzeige aktualisieren.
             this.refreshUi();
-        }
-
-        // Ermittelt die Liste der Datumsfilter.
-        get startFilter(): IPlanStartFilter[] {
-            // Wir hängen immer am Ende einen unsichtbaren an, der die Prüfung auf Datumsbereich deutlich vereinfacht.
-            return this._startFilter.slice(0, this._startFilter.length - 1);
         }
 
         // Meldet die Überschrift der Seite.
