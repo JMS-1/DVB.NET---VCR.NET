@@ -587,7 +587,7 @@
     // Formatiert Datum und Uhrzeit
     export class DateFormatter {
         // Die Kürzel für die Wochentage
-        static germanDays: string[] = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+        static readonly germanDays: string[] = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
 
         // Stellt sicher, dass eine Zahl immer zweistellig ist
         static formatNumber(num: number): string {

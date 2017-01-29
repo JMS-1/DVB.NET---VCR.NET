@@ -68,20 +68,6 @@ namespace VCRNETClient.App {
                 this.del.isVisible = false;
 
                 // Leere Aufzeichnung angelegen.
-                var now = new Date(Date.now());
-
-                var newSchedule = <VCRServer.EditScheduleContract>{
-                    firstStart: new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes()).toISOString(),
-                    withSubtitles: this.application.profile.subtitles,
-                    withVideotext: this.application.profile.videotext,
-                    allLanguages: this.application.profile.languages,
-                    includeDolby: this.application.profile.dolby,
-                    repeatPattern: 0,
-                    exceptions: null,
-                    sourceName: '',
-                    duration: 120,
-                    name: ''
-                };
 
                 var newJob = <VCRServer.EditJobContract>{
                     withSubtitles: this.application.profile.subtitles,
@@ -99,9 +85,9 @@ namespace VCRNETClient.App {
                     job: newJob,
                     jobId: null,
                     scheduleId: null,
-                    schedule: newSchedule
+                    schedule: this.createEmptySchedule()
                 }
-                
+
                 this.setJobSchedule(info, profileSelection, folders);
             }
             else {
@@ -116,8 +102,30 @@ namespace VCRNETClient.App {
             }
         }
 
+        // Erstellt eine neue Aufzeichnung.
+        private createEmptySchedule(): VCRServer.EditScheduleContract {
+            var now = new Date(Date.now());
+
+            return <VCRServer.EditScheduleContract>{
+                firstStart: new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes()).toISOString(),
+                withSubtitles: this.application.profile.subtitles,
+                withVideotext: this.application.profile.videotext,
+                allLanguages: this.application.profile.languages,
+                includeDolby: this.application.profile.dolby,
+                repeatPattern: 0,
+                exceptions: null,
+                sourceName: '',
+                duration: 120,
+                name: ''
+            };
+        }
+
         // Die Daten einer existierenden Aufzeichnung stehen bereit.
         private setJobSchedule(info: VCRServer.JobScheduleInfoContract, profiles: JMSLib.App.IUiValue<string>[], folders: JMSLib.App.IUiValue<string>[]): void {
+            // Leere Aufzeichnung eintragen.
+            if (!info.schedule)
+                info.schedule = this.createEmptySchedule();
+
             // Liste der zuletzt verwendeten Quellen abrufen.
             var favorites = this.application.profile.recentSources || [];
 

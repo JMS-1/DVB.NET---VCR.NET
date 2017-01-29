@@ -87,37 +87,37 @@ namespace VCRNETClient.App {
         static readonly maximumDate: Date = new Date(2099, 11, 31);
 
         // Das Bit für Montag.
-        private static flagMonday: number = 0x01;
+        static readonly flagMonday: number = 0x01;
 
         readonly onMonday: JMSLib.App.EditFlagSet;
 
         // Das Bit für Dienstag.
-        private static flagTuesday: number = 0x02;
+        static readonly flagTuesday: number = 0x02;
 
         readonly onTuesday: JMSLib.App.EditFlagSet;
 
         // Das Bit für Mittwoch.
-        private static flagWednesday: number = 0x04;
+        static readonly flagWednesday: number = 0x04;
 
         readonly onWednesday: JMSLib.App.EditFlagSet;
 
         // Das Bit für Donnerstag.
-        private static flagThursday: number = 0x08;
+        static readonly flagThursday: number = 0x08;
 
         readonly onThursday: JMSLib.App.EditFlagSet;
 
         // Das Bit für Freitag.
-        private static flagFriday: number = 0x10;
+        static readonly flagFriday: number = 0x10;
 
         readonly onFriday: JMSLib.App.EditFlagSet;
 
         // Das Bit für Samstag.
-        private static flagSaturday: number = 0x20;
+        static readonly flagSaturday: number = 0x20;
 
         readonly onSaturday: JMSLib.App.EditFlagSet;
 
         // Das Bit für Sonntag.
-        private static flagSunday: number = 0x40;
+        static readonly flagSunday: number = 0x40;
 
         readonly onSunday: JMSLib.App.EditFlagSet;
 
