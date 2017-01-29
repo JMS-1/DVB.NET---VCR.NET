@@ -7,7 +7,7 @@ namespace VCRNETClient.Ui {
         render(): JSX.Element {
             var application = this.props.noui.application;
 
-            return <div>
+            return <div className="vcrnet-home">
                 <div>
                     Willkommen zur Benutzeroberfläche des VCR.NET Recording Service. Von hier aus geht es direkt zu:
                     <ul>
