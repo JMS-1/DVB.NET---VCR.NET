@@ -193,7 +193,7 @@ namespace VCRNETClient.App {
             this._filter.size = this.application.profile.guideRows;
 
             // Die Liste aller bekannten Geräte ermitteln.
-            VCRServer.ProfileCache.getPromise().then(profiles => {
+            VCRServer.ProfileCache.getAllProfiles().then(profiles => {
                 // Auswahl aktualisieren.
                 this.profiles.allowedValues = (profiles || []).map(p => <JMSLib.App.IUiValue<string>>{ display: p.name, value: p.name });
                 this.profiles.validate();

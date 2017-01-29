@@ -101,6 +101,7 @@
     <TypeScriptCompile Include="src\app\pages\guidePage.ts" />
     <TypeScriptCompile Include="src\app\pages\guide\guideEntry.ts" />
     <TypeScriptCompile Include="src\app\pages\jobPage.ts" />
+    <TypeScriptCompile Include="src\app\pages\logPage.ts" />
     <TypeScriptCompile Include="src\lib\http\browser.ts" />
     <TypeScriptCompile Include="src\lib\http\config.ts" />
     <TypeScriptCompile Include="src\pages\guide.tsx" />
@@ -174,6 +175,7 @@
     <None Include="src\pages\guide\entry.scss" />
     <None Include="src\pages\guide\details.scss" />
     <None Include="src\pages\jobs.scss" />
+    <None Include="src\pages\log.scss" />
     <Content Include="ui\images\faq\recover.png" />
     <Content Include="ui\images\faq\webserver.png" />
     <Content Include="FAQ\websettings.html" />
@@ -366,6 +368,7 @@
     <TypeScriptCompile Include="src\pages\edit\duration.tsx" />
     <TypeScriptCompile Include="src\pages\edit\exception.tsx" />
     <TypeScriptCompile Include="src\pages\jobs.tsx" />
+    <TypeScriptCompile Include="src\pages\log.tsx" />
     <TypeScriptCompile Include="src\pages\plan\exception.tsx" />
     <TypeScriptCompile Include="src\common\editField.tsx" />
     <TypeScriptCompile Include="src\pages\edit\job.tsx" />

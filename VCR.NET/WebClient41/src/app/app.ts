@@ -13,6 +13,8 @@
 
         readonly jobPage: IJobPage;
 
+        readonly logPage: ILogPage;
+
         getHelpComponentProvider<TComponentType extends IHelpComponent>(): IHelpComponentProvider<TComponentType>;
     }
 
@@ -36,6 +38,8 @@
         readonly guidePage: GuidePage;
 
         readonly jobPage: JobPage;
+
+        readonly logPage: LogPage;
 
         private _pageMapper: { [name: string]: Page<any> } = {};
 
@@ -64,6 +68,7 @@
             this.editPage = this.addPage(EditPage);
             this.guidePage = this.addPage(GuidePage);
             this.jobPage = this.addPage(JobPage);
+            this.logPage = this.addPage(LogPage);
 
             // Alle Startvorgänge einleiten.
             var testStart = this.testStart.bind(this);

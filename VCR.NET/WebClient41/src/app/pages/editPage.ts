@@ -54,7 +54,7 @@ namespace VCRNETClient.App {
             folderSelection.unshift(<JMSLib.App.IUiValue<string>>{ value: "", display: "(Voreinstellung verwenden)" });
 
             // Geräteprofile anfordern.
-            VCRServer.ProfileCache.getPromise().then(profiles => this.setProfiles(profiles, sections, folderSelection));
+            VCRServer.ProfileCache.getAllProfiles().then(profiles => this.setProfiles(profiles, sections, folderSelection));
         }
 
         // Die Liste der Geräteprofile steht bereit.

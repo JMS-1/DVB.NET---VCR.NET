@@ -563,7 +563,7 @@ class Page {
     loadProfiles(target: JQuery): void {
         var whenDone = this.registerAsyncCall();
 
-        VCRServer.ProfileCache.getPromise().then(profiles => {
+        VCRServer.ProfileCache.getAllProfiles().then(profiles => {
             $.each(profiles, (index: number, profile: VCRServer.ProfileInfoContract) => {
                 target.append(new Option(profile.name));
 
@@ -4057,7 +4057,7 @@ class guidePage extends Page implements IPage {
         this.details = new JMSLib.DetailManager(2, 'guideDetails');
 
         // Liste der Geräteprofile laden
-        VCRServer.ProfileCache.getPromise().then(data => {
+        VCRServer.ProfileCache.getAllProfiles().then(data => {
             this.profiles = data;
 
             profilesLoaded();
@@ -4160,7 +4160,7 @@ class logPage extends Page implements IPage {
         var endDay = new Date($('#selDate').val());
         var startDay = new Date(endDay.getTime() - 7 * 86400000);
 
-        VCRServer.getProtocolEntries(profile, startDay, endDay).done((entries: VCRServer.ProtocolEntryContract[]) => {
+        VCRServer.getProtocolEntries(profile, startDay, endDay).then(entries => {
             // Wir zeigen den neuesten oben 
             entries.reverse();
 
@@ -4233,7 +4233,7 @@ class logPage extends Page implements IPage {
         filter.click(() => this.refresh());
 
         // Geräte ermitteln
-        VCRServer.ProfileCache.getPromise().then(profiles => {
+        VCRServer.ProfileCache.getAllProfiles().then(profiles => {
             var list = $('#selProfile');
 
             // Alle Namen eintragen

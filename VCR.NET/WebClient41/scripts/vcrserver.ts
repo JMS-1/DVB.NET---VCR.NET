@@ -733,11 +733,8 @@ module VCRServer {
         });
     }
 
-    export function getProtocolEntries(device: string, startDay: Date, endDay: Date): JQueryPromise<any> {
-        return $.ajax({
-            url: restRoot + 'protocol/' + device + '?start=' + startDay.toISOString() + '&end=' + endDay.toISOString(),
-            dataType: 'json',
-        });
+    export function getProtocolEntries(device: string, startDay: Date, endDay: Date): JMSLib.App.IHttpPromise<ProtocolEntryContract[]> {
+        return doUrlCall(`protocol/${device}?start=${startDay.toISOString()}&end=${endDay.toISOString()}`);
     }
 
     export function queryProgramGuide(filter: GuideFilterContract): JMSLib.App.IHttpPromise<GuideItemContract[]> {
@@ -882,7 +879,7 @@ module VCRServer {
         private static promise: JMSLib.App.Promise<ProfileInfoContract[], JMSLib.App.IHttpErrorInformation>;
 
         // Ruft die Profile ab
-        static getPromise(): JMSLib.App.IHttpPromise<ProfileInfoContract[]> {
+        static getAllProfiles(): JMSLib.App.IHttpPromise<ProfileInfoContract[]> {
             // Einmalig erzeugen.
             if (!ProfileCache.promise) {
                 ProfileCache.promise = new JMSLib.App.Promise<ProfileInfoContract[], JMSLib.App.IHttpErrorInformation>((success, failure) => {
