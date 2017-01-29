@@ -109,7 +109,7 @@
     <TypeScriptCompile Include="src\lib\command\command.ts" />
     <TypeScriptCompile Include="src\lib\edit\boolean\flagButton.tsx" />
     <TypeScriptCompile Include="src\lib\edit\list.ts" />
-    <TypeScriptCompile Include="src\lib\edit\singleSelect.tsx" />
+    <TypeScriptCompile Include="src\lib\edit\list.tsx" />
     <TypeScriptCompile Include="src\lib\localizable.ts" />
   </ItemGroup>
   <ItemGroup>
@@ -170,7 +170,7 @@
     <Content Include="src\lib\styles.css">
       <DependentUpon>styles.scss</DependentUpon>
     </Content>
-    <Content Include="src\lib\edit\singleSelect.scss" />
+    <Content Include="src\lib\edit\list.scss" />
     <None Include="src\pages\guide\entry.scss" />
     <None Include="src\pages\guide\details.scss" />
     <None Include="src\pages\jobs.scss" />
@@ -196,7 +196,7 @@
     <None Include="src\pages\edit\job.scss" />
     <None Include="src\common\editField.scss" />
     <None Include="src\lib\edit\text\text.scss" />
-    <None Include="src\lib\edit\text\singleSelectText.scss" />
+    <None Include="src\lib\edit\text\list.scss" />
     <None Include="src\lib\edit\boolean\flag.scss" />
     <None Include="src\pages\edit\channel.scss" />
     <None Include="src\pages\edit\channelFlags.scss" />
@@ -374,7 +374,7 @@
     <TypeScriptCompile Include="src\lib\edit\boolean\flag.tsx" />
     <TypeScriptCompile Include="src\lib\edit\number\slider.tsx" />
     <TypeScriptCompile Include="src\pages\edit\schedule.tsx" />
-    <TypeScriptCompile Include="src\lib\edit\text\singleSelectText.tsx" />
+    <TypeScriptCompile Include="src\lib\edit\text\list.tsx" />
     <TypeScriptCompile Include="src\lib\edit\text\text.tsx" />
     <TypeScriptCompile Include="src\lib\edit\datetime\time.tsx" />
     <TypeScriptCompile Include="src\lib\reactUi.tsx" />

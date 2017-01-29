@@ -2634,7 +2634,7 @@ class InfoJob implements IInfoRow {
 
     // Aktualisiert die Liste der Aufträge
     static load(whenLoaded: (rows: IInfoRow[]) => void): void {
-        VCRServer.getInfoJobs().done((data: VCRServer.InfoJobContract[]) => {
+        VCRServer.getInfoJobs().then(data => {
             // Wandeln
             var rows: IInfoRow[] = new Array();
 

@@ -2,7 +2,7 @@
 
 namespace JMSLib.ReactUi {
 
-    export class EditWithButtonList extends Component<App.IValueFromList<any>>  {
+    export class EditWithButtonList extends ComponentWithSite<App.IValueFromList<any>>  {
         // Erstellt die Anzeige für die Komponente.
         render(): JSX.Element {
             var value = this.props.noui.value;

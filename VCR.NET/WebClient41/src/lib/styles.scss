@@ -8,9 +8,9 @@
 @import "command/internalLink";
 @import "command/externalLink";
 
-@import "edit/singleSelect";
-@import "edit/text/singleSelectText";
+@import "edit/list";
 @import "edit/text/text";
+@import "edit/text/list";
 @import "edit/boolean/flag";
 @import "edit/boolean/flagButton";
 @import "edit/number/slider";

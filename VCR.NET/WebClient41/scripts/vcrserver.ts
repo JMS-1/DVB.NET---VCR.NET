@@ -676,11 +676,8 @@ module VCRServer {
         return doUrlCall(`guide/${device}`);
     }
 
-    export function getInfoJobs(): JQueryPromise<any> {
-        return $.ajax({
-            url: restRoot + 'info?jobs',
-            dataType: 'json',
-        });
+    export function getInfoJobs(): JMSLib.App.IHttpPromise<VCRServer.InfoJobContract[]> {
+        return doUrlCall(`info?jobs`);
     }
 
     export function getProfileSources(device: string): JMSLib.App.IHttpPromise<ProfileSourceContract[]> {
