@@ -99,9 +99,10 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <TypeScriptCompile Include="src\app\pages\guidePage.ts" />
-    <TypeScriptCompile Include="src\app\pages\guide\guideEntry.ts" />
+    <TypeScriptCompile Include="src\app\pages\guide\entry.ts" />
     <TypeScriptCompile Include="src\app\pages\jobPage.ts" />
     <TypeScriptCompile Include="src\app\pages\logPage.ts" />
+    <TypeScriptCompile Include="src\app\pages\log\entry.ts" />
     <TypeScriptCompile Include="src\lib\http\browser.ts" />
     <TypeScriptCompile Include="src\lib\http\config.ts" />
     <TypeScriptCompile Include="src\pages\guide.tsx" />
@@ -176,6 +177,7 @@
     <None Include="src\pages\guide\details.scss" />
     <None Include="src\pages\jobs.scss" />
     <None Include="src\pages\log.scss" />
+    <None Include="src\pages\log\details.scss" />
     <Content Include="ui\images\faq\recover.png" />
     <Content Include="ui\images\faq\webserver.png" />
     <Content Include="FAQ\websettings.html" />
@@ -342,11 +344,11 @@
     <TypeScriptCompile Include="src\lib\edit\datetime\day.ts" />
     <TypeScriptCompile Include="src\app\pages\edit\duration.ts" />
     <TypeScriptCompile Include="src\app\pages\edit\job.ts" />
-    <TypeScriptCompile Include="src\app\pages\edit\channelSelector.ts" />
+    <TypeScriptCompile Include="src\app\pages\edit\channel.ts" />
     <TypeScriptCompile Include="src\lib\edit\edit.ts" />
     <TypeScriptCompile Include="src\app\pages\edit\jobSchedule.ts" />
     <TypeScriptCompile Include="src\lib\edit\number\slider.ts" />
-    <TypeScriptCompile Include="src\app\pages\edit\scheduleException.ts" />
+    <TypeScriptCompile Include="src\app\pages\edit\exception.ts" />
     <TypeScriptCompile Include="src\lib\edit\number\number.ts" />
     <TypeScriptCompile Include="src\lib\edit\boolean\flag.ts" />
     <TypeScriptCompile Include="src\lib\edit\text\text.ts" />
@@ -354,8 +356,8 @@
     <TypeScriptCompile Include="src\lib\edit\text\textList.ts" />
     <TypeScriptCompile Include="src\lib\edit\datetime\time.ts" />
     <TypeScriptCompile Include="src\app\pages\page.ts" />
-    <TypeScriptCompile Include="src\app\pages\plan\planEntry.ts" />
-    <TypeScriptCompile Include="src\app\pages\plan\planException.ts" />
+    <TypeScriptCompile Include="src\app\pages\plan\entry.ts" />
+    <TypeScriptCompile Include="src\app\pages\plan\exception.ts" />
     <TypeScriptCompile Include="src\app\pages\planPage.ts" />
     <TypeScriptCompile Include="src\lib\promise.ts" />
     <TypeScriptCompile Include="src\app\pages\edit\schedule.ts" />
@@ -369,6 +371,7 @@
     <TypeScriptCompile Include="src\pages\edit\exception.tsx" />
     <TypeScriptCompile Include="src\pages\jobs.tsx" />
     <TypeScriptCompile Include="src\pages\log.tsx" />
+    <TypeScriptCompile Include="src\pages\log\details.tsx" />
     <TypeScriptCompile Include="src\pages\plan\exception.tsx" />
     <TypeScriptCompile Include="src\common\editField.tsx" />
     <TypeScriptCompile Include="src\pages\edit\job.tsx" />
