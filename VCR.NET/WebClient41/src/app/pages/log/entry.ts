@@ -5,7 +5,17 @@
 
         readonly end: string;
 
+        readonly endTime: string;
+
         readonly source: string;
+
+        readonly size: string;
+
+        readonly primary: string;
+
+        readonly hasFiles: boolean;
+
+        readonly files: string[];
 
         readonly showDetail: boolean;
 
@@ -19,7 +29,27 @@
         }
 
         get end(): string {
+            return JMSLib.App.DateFormatter.getStartTime(new Date(this._model.end));
+        }
+
+        get endTime(): string {
             return JMSLib.App.DateFormatter.getEndTime(new Date(this._model.end));
+        }
+
+        get size(): string {
+            return this._model.size;
+        }
+
+        get primary(): string {
+            return this._model.primaryFile;
+        }
+
+        get hasFiles(): boolean {
+            return this._model.files && (this._model.files.length > 0);
+        }
+
+        get files(): string[] {
+            return (this._model.files || []).map(VCRServer.getFilePlayUrl);
         }
 
         readonly source: string;

@@ -626,8 +626,8 @@ module VCRServer {
         return serverRoot;
     }
 
-    export function getFileRoot(): string {
-        return playUrl;
+    export function getFilePlayUrl(path: string): string {
+        return `${playUrl}${encodeURIComponent(path)}`;
     }
 
     export function getDeviceRoot(): string {

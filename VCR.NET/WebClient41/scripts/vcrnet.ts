@@ -2679,7 +2679,7 @@ class ProtocolEntry {
             default: this.displaySource = this.source; break;
         }
 
-        this.files = $.map(rawEntry.files, (file: string) => VCRServer.getFileRoot() + encodeURIComponent(file));
+        this.files = $.map(rawEntry.files, VCRServer.getFilePlayUrl);
     }
 
     // Der Startzeitpunkt in der üblichen Kurzanzeige

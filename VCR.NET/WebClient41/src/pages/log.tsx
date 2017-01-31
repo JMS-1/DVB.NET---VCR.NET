@@ -26,7 +26,7 @@ namespace VCRNETClient.Ui {
                         {this.props.noui.entries.map((e, index) => [
                             <tr key={index}>
                                 <td><a href="javascript:void(0)" onClick={() => e.toggleDetail()}>{e.start}</a></td>
-                                <td>{e.end}</td>
+                                <td>{e.endTime}</td>
                                 <td>{e.source}</td>
                             </tr>,
                             e.showDetail ? <JMSLib.ReactUi.DetailRow key={`${index}Detail`} dataColumns={3}>

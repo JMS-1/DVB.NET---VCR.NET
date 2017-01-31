@@ -5,6 +5,8 @@ namespace JMSLib.ReactUi {
     // Konfiguration eines externen Verweises.
     interface IExternalLink {
         url: string;
+
+        sameWindow?: boolean;
     }
 
     // React.Js Komponente zur Anzeige eines externen Verweises.
@@ -14,7 +16,7 @@ namespace JMSLib.ReactUi {
             return <a
                 className="jmslib-externalLink"
                 href={this.props.url}
-                target="_blank">{this.props.children}</a>;
+                target={this.props.sameWindow ? undefined : "_blank"}>{this.props.children}</a>;
         }
     }
 
