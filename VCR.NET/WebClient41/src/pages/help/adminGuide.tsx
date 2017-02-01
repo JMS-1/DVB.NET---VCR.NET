@@ -12,7 +12,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 Programmierung neuer Aufzeichnungen zur Verfügung stellen kann muss erst einmal
                 festgelegt werden, mit welchem Inhalt diese zu füllen ist. Im Administrationsbereich
                 der Web Oberfläche gibt es dazu eine gesonderten
-                Seite <JMSLib.ReactUi.InternalLink view="admin;guide" pict="admin" />.
+                Seite <JMSLib.ReactUi.InternalLink view={`${page.application.adminPage.route};guide`} pict="admin" />.
                 Damit die Programmzeitschrift überhaupt erstellt wird, muss erst
                 einmal die Sammlung der Informationen an sich aktiviert werden.
                 <br />
@@ -33,7 +33,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 <JMSLib.ReactUi.Pictogram description="Quellen konfigurieren" name="FAQ/epgsources" />
                 <br />
                 <br />
-                Sind unter den Quellen auch englische Sender von Astra 2, so muss die <em>FreeSat UK</em> Option 
+                Sind unter den Quellen auch englische Sender von Astra 2, so muss die <em>FreeSat UK</em> Option
                 aktiviert werden. Die Programmzeitschrift der BBC, ITV et al Sender wird
                 auf einem anderen Wege übertragen als bei uns üblich. Ohne die Aktivierung der Option
                 würden immer nur die Sendungsbeschreibungen in der Programmzeitschrift des VCR.NET
@@ -66,14 +66,14 @@ namespace VCRNETClient.Ui.HelpPages {
                 In manchen Fällen ist die Einstellung von vier festen Uhrzeiten unzureichend, daher
                 bietet der VCR.NET Recording Service zwei weitere Konfigurationswerte an. Die <em>Wartezeit
                 zwischen zwei Aktualisierungen</em> stellt sicher, dass zwischen zwei Aktualisierungen
-                mindestens die angegebene Anzahl von Stunden verstreicht. Umgekehrt erlaubt es 
+                mindestens die angegebene Anzahl von Stunden verstreicht. Umgekehrt erlaubt es
                 die <em>Latenzzeit</em> das Vorziehen einer Aktualisierung, wenn der Rechner sowieso
                 gerade für eine Aufzeichnung oder Sonderaufgabe aktiviert wurde und ansonsten in
                 den Schlafzustand versetzt würde.
                 <br />
                 <br />
                 Ergänzend ist es jederzeit möglich, eine Aktualisierung
-                manuell <JMSLib.ReactUi.InternalLink view="home" pict="home" /> anzufordern.
+                manuell <JMSLib.ReactUi.InternalLink view={page.application.homePage.route} pict="home" /> anzufordern.
                 Der VCR.NET Recording Service wird
                 dann zum nächstmöglichen Zeitpunkt die gewünschte Aktion ausführen. Hier gilt wie
                 grundsätzlich für alle Sonderaufgaben: ist eine programmiert Aufzeichnung aktiv

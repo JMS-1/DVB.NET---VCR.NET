@@ -10,7 +10,7 @@ namespace VCRNETClient.Ui.HelpPages {
             return <div>
                 Selbstverständlich ist es keine Problem unabhängig Aufzeichnungen auf mehreren DVB
                 Karten zu programmieren, wenn diese dem VCR.NET Recording Service zur Nutzung
-                zur Verfügung<JMSLib.ReactUi.InternalLink view="admin;devices" pict="admin" />gestellt
+                zur Verfügung<JMSLib.ReactUi.InternalLink view={`${page.application.adminPage.route};devices`} pict="admin" />gestellt
                 wurden. Hier soll allerdings
                 beschrieben werden, unter welchen Bedingungen es möglich ist, mit einer DVB Hardware
                 zum gleichen Zeitpunkt mehrere Quellen aufzuzeichnen.
@@ -66,7 +66,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 <br />
                 <br />
                 Das Ergebnis einer Planung wird im
-                Aufzeichnungsplan<JMSLib.ReactUi.InternalLink view="plan" pict="plan" />durch 
+                Aufzeichnungsplan<JMSLib.ReactUi.InternalLink view={page.application.planPage.route} pict="plan" />durch 
                 entsprechende farbige Symbole dargestellt.
             </div>;
         }

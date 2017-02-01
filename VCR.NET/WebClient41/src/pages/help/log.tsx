@@ -14,14 +14,14 @@ namespace VCRNETClient.Ui.HelpPages {
                 immer ein geschlossener Nutzungszeitraum eines DVB Gerätes. In diesem Zeitraum kann
                 entweder eine einzelne Sonderaufgabe oder
                 eine <JMSLib.ReactUi.InternalLink view={`${page.route};parallelrecording`}>Gruppe von Aufzeichnungen</JMSLib.ReactUi.InternalLink> ausgeführt
-                worden sein. Die <JMSLib.ReactUi.InternalLink view="log">Protokolleinträge</JMSLib.ReactUi.InternalLink> können direkt über die Web 
-                Oberfläche abgerufen werden.
+                worden sein. Die <JMSLib.ReactUi.InternalLink view={page.application.logPage.route}>Protokolleinträge</JMSLib.ReactUi.InternalLink> können 
+                direkt über die Web Oberfläche abgerufen werden.
                 <br />
                 <br />
                 In der Liste sieht man immer die Einträge einer Woche für ein einzelnes DVB Geräte.
                 Über Auswahllisten ist es möglich, sowohl den Zeitraum als auch das betrachtete
                 Gerät festzulegen. Die
-                Konfiguration<JMSLib.ReactUi.InternalLink view="admin;other" pict="admin" /> des
+                Konfiguration<JMSLib.ReactUi.InternalLink view={`${page.application.adminPage.route};other`} pict="admin" /> des
                 VCR.NET Recording Service sieht vor, dass veraltete Protokolleinträge automatisch
                 entfernt werden. Man beachte aber, dass dies nicht periodisch geschieht, sondern
                 nur bei Aufruf der Liste über die Web Oberfläche.

@@ -98,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <TypeScriptCompile Include="src\app\pages\adminPage.ts" />
     <TypeScriptCompile Include="src\app\pages\guidePage.ts" />
     <TypeScriptCompile Include="src\app\pages\guide\entry.ts" />
     <TypeScriptCompile Include="src\app\pages\jobPage.ts" />
@@ -105,6 +106,7 @@
     <TypeScriptCompile Include="src\app\pages\log\entry.ts" />
     <TypeScriptCompile Include="src\lib\http\browser.ts" />
     <TypeScriptCompile Include="src\lib\http\config.ts" />
+    <TypeScriptCompile Include="src\pages\admin.tsx" />
     <TypeScriptCompile Include="src\pages\guide.tsx" />
     <TypeScriptCompile Include="src\pages\guide\details.tsx" />
     <TypeScriptCompile Include="src\pages\guide\navigator.tsx" />
@@ -166,6 +168,7 @@
     <Content Include="FAQ\configuration.html" />
     <Content Include="FAQ\controlcenter.html" />
     <None Include="src\pages\edit\exception.scss" />
+    <None Include="src\pages\admin.scss" />
     <Content Include="src\pages\guide.scss" />
     <None Include="src\pages\guide\navigator.scss" />
     <None Include="src\lib\edit\boolean\flagButton.scss" />

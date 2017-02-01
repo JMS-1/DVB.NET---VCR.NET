@@ -15,6 +15,8 @@
 
         readonly logPage: ILogPage;
 
+        readonly adminPage: IAdminPage;
+
         getHelpComponentProvider<TComponentType extends IHelpComponent>(): IHelpComponentProvider<TComponentType>;
     }
 
@@ -41,6 +43,8 @@
 
         readonly logPage: LogPage;
 
+        readonly adminPage: AdminPage;
+
         private _pageMapper: { [name: string]: Page<any> } = {};
 
         // Nach aussen hin sichtbarer globaler Zustand.
@@ -62,11 +66,12 @@
 
         constructor(private _site: IApplicationSite) {
             // Alle bekannten Seiten.
-            this.homePage = this.addPage(HomePage);
-            this.helpPage = this.addPage(HelpPage);
-            this.planPage = this.addPage(PlanPage);
-            this.editPage = this.addPage(EditPage);
+            this.adminPage = this.addPage(AdminPage);
             this.guidePage = this.addPage(GuidePage);
+            this.editPage = this.addPage(EditPage);
+            this.helpPage = this.addPage(HelpPage);
+            this.homePage = this.addPage(HomePage);
+            this.planPage = this.addPage(PlanPage);
             this.jobPage = this.addPage(JobPage);
             this.logPage = this.addPage(LogPage);
 

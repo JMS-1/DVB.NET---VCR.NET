@@ -49,7 +49,7 @@ namespace VCRNETClient.Ui.HelpPages {
                         zu beachten?
                     </li>
                     <li>
-                        Wie kommt eine Aufzeichnung zu einem <JMSLib.ReactUi.InternalLink view="admin;directories">Dateinamen</JMSLib.ReactUi.InternalLink> für
+                        Wie kommt eine Aufzeichnung zu einem <JMSLib.ReactUi.InternalLink view={`${page.application.adminPage.route};directories`}>Dateinamen</JMSLib.ReactUi.InternalLink> für
                         die Aufzeichnungsdatei?
                     </li>
                     <li>Was fängt man mit einer <JMSLib.ReactUi.InternalLink view={`${page.route};tsplayer`}>Aufzeichnungsdatei</JMSLib.ReactUi.InternalLink> an?</li>

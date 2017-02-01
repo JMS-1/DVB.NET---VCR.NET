@@ -23,7 +23,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 Der VCR.NET Recording Service kann dazu <JMSLib.ReactUi.InternalLink view={`${page.route};epgconfig`}>konfiguriert</JMSLib.ReactUi.InternalLink> werden,
                 für eine ausgewählte Liste von Quellen die Programmzeitschrift periodisch
                 zu aktualisieren - üblich ist ein oder zweimal am Tag. Auf Basis dieser Daten lassen
-                sich dann Aufzeichnungen programmieren. Zur Auswahl<JMSLib.ReactUi.InternalLink view="guide" pict="guide" /> stehen
+                sich dann Aufzeichnungen programmieren. Zur Auswahl<JMSLib.ReactUi.InternalLink view={page.application.guidePage.route} pict="guide" /> stehen
                 dabei erst einmal alle Informationen aller Quellen aller DVB Geräte, die der VCR.NET Recording
                 Service verwenden darf. Um die richtige Sendung zu finden gibt es neben der Inhaltssuche
                 auf einen Freitext weitere Filtermöglichkeiten. So ist es möglich, sich auf die Sendungen

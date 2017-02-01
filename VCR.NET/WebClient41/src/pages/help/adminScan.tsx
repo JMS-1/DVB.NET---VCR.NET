@@ -20,7 +20,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 <br />
                 Alternativ ist es aber auch möglich, dem VCR.NET Recording Service dafür einzurichten,
                 für alle DVB Geräte eine entsprechende
-                Aktualisierung <JMSLib.ReactUi.InternalLink view="admin;sources" pict="admin" /> periodisch auszuführen.
+                Aktualisierung <JMSLib.ReactUi.InternalLink view={`${page.application.adminPage.route};sources`} pict="admin" /> periodisch auszuführen.
                 <br />
                 <br />
                 <JMSLib.ReactUi.Pictogram description="Aktualisierung konfigurieren" name="FAQ/psi" />
@@ -52,7 +52,8 @@ namespace VCRNETClient.Ui.HelpPages {
                 übernommen. Diesbezüglich ist ein zu großer Wert kein Problem, da die Aktualisierung
                 dann einfach zu früh beendet wird. Es wird aber empfohlen, immer einen sinnvollen
                 Erfahrungswert zu verwenden, der knapp über dem tatsächlichen Bedürfnis liegt -
-                dieser Wert kann den <JMSLib.ReactUi.InternalLink view="log">Protokollen</JMSLib.ReactUi.InternalLink> entnommen werden.
+                dieser Wert kann den <JMSLib.ReactUi.InternalLink view={page.application.logPage.route}>Protokollen</JMSLib.ReactUi.InternalLink> entnommen 
+                werden.
                 <br />
                 <br />
                 Normalerweise wird die neue Liste mit der vorherigen zusammen geführt. Das ist gerade

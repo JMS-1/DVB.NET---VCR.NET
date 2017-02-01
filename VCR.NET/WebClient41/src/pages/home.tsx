@@ -13,13 +13,13 @@ namespace VCRNETClient.Ui {
                     <ul>
                         <li><JMSLib.ReactUi.InternalLink pict="plan" view={application.planPage.route}>dem Aufzeichnungsplan</JMSLib.ReactUi.InternalLink> mit den anstehenden Aufzeichnungen<HelpLink page={this.props.noui} topic="parallelrecording" /></li>
                         <li><JMSLib.ReactUi.InternalLink pict="devices" view="current">den laufenden Aufzeichnungen</JMSLib.ReactUi.InternalLink> mit den Aktivitäten der einzelnen DVB Geräte</li>
-                        <li><JMSLib.ReactUi.InternalLink pict="guide" view="guide">der Programmzeitschrift</JMSLib.ReactUi.InternalLink> zum Anlegen neuer Aufzeichnungen<HelpLink page={this.props.noui} topic="epg" /></li>
+                        <li><JMSLib.ReactUi.InternalLink pict="guide" view={application.guidePage.route}>der Programmzeitschrift</JMSLib.ReactUi.InternalLink> zum Anlegen neuer Aufzeichnungen<HelpLink page={this.props.noui} topic="epg" /></li>
                         <li><JMSLib.ReactUi.InternalLink pict="new" view={application.editPage.route}>einer neuen Aufzeichnung</JMSLib.ReactUi.InternalLink></li>
                     </ul>
                     <ul>
-                        <li><JMSLib.ReactUi.InternalLink pict="jobs" view="jobs">den vorhandenen Aufzeichnungen</JMSLib.ReactUi.InternalLink>, um diese zu verändern oder ins Archiv zu übertragen</li>
-                        <li><JMSLib.ReactUi.InternalLink view="jobs;archive">den archivierten Aufzeichnungen</JMSLib.ReactUi.InternalLink>, um diese anzusehen, zu verändern, zu reaktivieren oder endgültig zu löschen<HelpLink page={this.props.noui} topic="archive" /></li>
-                        <li><JMSLib.ReactUi.InternalLink view="log">den Protokollen</JMSLib.ReactUi.InternalLink> von bereits durchgeführten Aufzeichnungen<HelpLink page={this.props.noui} topic="log" /></li>
+                        <li><JMSLib.ReactUi.InternalLink pict="jobs" view={application.jobPage.route}>den vorhandenen Aufzeichnungen</JMSLib.ReactUi.InternalLink>, um diese zu verändern oder ins Archiv zu übertragen</li>
+                        <li><JMSLib.ReactUi.InternalLink view={`${application.jobPage.route};archive`}>den archivierten Aufzeichnungen</JMSLib.ReactUi.InternalLink>, um diese anzusehen, zu verändern, zu reaktivieren oder endgültig zu löschen<HelpLink page={this.props.noui} topic="archive" /></li>
+                        <li><JMSLib.ReactUi.InternalLink view={application.logPage.route}>den Protokollen</JMSLib.ReactUi.InternalLink> von bereits durchgeführten Aufzeichnungen<HelpLink page={this.props.noui} topic="log" /></li>
                     </ul>
                     <ul>
                         <li><JMSLib.ReactUi.InternalLink pict="settings" view="settings">den individuellen Anpassungen</JMSLib.ReactUi.InternalLink> der Web Oberfläche</li>
@@ -31,7 +31,7 @@ namespace VCRNETClient.Ui {
                         <li><JMSLib.ReactUi.InternalLink view="">die Programmzeitschrift sobald wie möglich aktualisieren</JMSLib.ReactUi.InternalLink><HelpLink page={this.props.noui} topic="epgconfig" /></li>
                         <li><JMSLib.ReactUi.InternalLink view="">einen Sendersuchlauf sobald wie möglich durchführen</JMSLib.ReactUi.InternalLink><HelpLink page={this.props.noui} topic="psiconfig" /></li>
                         <li>prüfen, ob inzwischen eine <JMSLib.ReactUi.InternalLink view="">neuere Version</JMSLib.ReactUi.InternalLink> des VCR.NET Recording Service angeboten wird</li>
-                        <li><JMSLib.ReactUi.InternalLink pict="admin" view="admin">die Konfiguration des VCR.NET Recording Service verändern</JMSLib.ReactUi.InternalLink></li>
+                        <li><JMSLib.ReactUi.InternalLink pict="admin" view={application.adminPage.route}>die Konfiguration des VCR.NET Recording Service verändern</JMSLib.ReactUi.InternalLink></li>
                     </ul>
                 </div>
                 <div>
