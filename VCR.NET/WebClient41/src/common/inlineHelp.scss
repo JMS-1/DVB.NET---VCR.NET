@@ -1,16 +1,29 @@
 ﻿@import "../../content/vars";
 
 .vcrnet-inline-help {
-    border: 1px solid black;
-    background: lightgrey;
-    border-radius: 2px;
+    margin: 5px 0;
+    cursor: default;
 
     > h1 {
-        font-size: small;
+        border: 1px solid black;
+        border-radius: 2px;
         font-weight: normal;
         color: white;
         background: cornflowerblue;
         padding: 4px;
         margin: 0;
+        font-size: 0.9rem;
+    }
+
+    > div {
+        border: 1px solid black;
+        border-top: none;
+        border-radius: 2px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        background: lightgrey;
+        margin: 0 5rem 0 1rem;
+        padding: 5px 10px;
+        font-size: 0.9rem;
     }
 }

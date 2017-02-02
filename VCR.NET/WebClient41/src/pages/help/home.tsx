@@ -8,7 +8,7 @@ namespace VCRNETClient.Ui.HelpPages {
 
         render(page: App.IPage): JSX.Element {
             return <div>
-                <p>
+                <div>
                     Wie jede andere Anwendung auch arbeitet der VCR.NET Recording Service nach gewissen
                 Prinzipien, die man für einen erfolgreichen Einsatz verstanden haben sollte. Letztlich
                 soll VCR.NET ja genau das tun, was man eigentlich will. Auch wenn die Web Oberfläche
@@ -19,12 +19,12 @@ namespace VCRNETClient.Ui.HelpPages {
                 Zusätzlich findet man in den einzelnen Bereichen der Anwendung oft das kleine
                 Symbol <JMSLib.ReactUi.Pictogram name="info" />, über das direkt zu einer passenden
                 Erklärung gesprungen werden kann.
-                </p>
-                <p>
+                </div>
+                <div>
                     In einigen Fällen führen die im Folgenden aufgeführten Verweise unmittelbar
                 zu entsprechenden Seiten der Web Anwendung. Diese bieten dann die Option an, die gewünschten Erläuterungen direkt
                 in die Seite einzublenden.
-                </p>
+                </div>
                 <h3>Aufzeichnungen</h3>
                 <ul>
                     <li><JMSLib.ReactUi.InternalLink view={`${page.route};filecontents`}>Was</JMSLib.ReactUi.InternalLink> wird aufgezeichnet?</li>

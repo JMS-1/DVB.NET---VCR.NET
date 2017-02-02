@@ -45,21 +45,21 @@ namespace VCRNETClient.Ui {
 
         private getHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zur Bedienung">
-                <p>
-                    Über die Datumsauswahl im linken Bereich kann
-                        der zeitliche Anfang des angezeigten Ausschnitts festgelegt werden. Das Ende des Ausschnitts ergibt sich daraus
-                        und aus der gewünschten Anzahl von zu berücksichtigenden Tagen.<JMSLib.ReactUi.InternalLink view="settings" pict="settings" />
-                </p>
-                <p>
-                    Die beiden Schaltflächen direkt rechts neben der Datumsauswahl erlauben es zusätzlich zu
-                        den regulären Aufzeichnungen auch die vorgesehenen Zeiten für die Aktualisierung<HelpLink page={this.props.noui} topic="tasks" />
-                    der Programmzeitschrift oder der
-                        Senderliste in der Liste darzustellen.
-                    </p>
-                <p>
-                    Links vor jeder Aufzeichnung in der Liste befindet sich ein kleines Symbol, dass darüber informiert, ob die
-                        Aufzeichnung wie gewünscht ausgeführt werden kann oder nicht.
-                    </p>
+                Über die Datumsauswahl im linken Bereich kann
+                der zeitliche Anfang des angezeigten Ausschnitts festgelegt werden. Das Ende des Ausschnitts ergibt sich daraus
+                und aus der gewünschten Anzahl von zu berücksichtigenden Tagen.<JMSLib.ReactUi.InternalLink view="settings" pict="settings" />
+                <br />
+                <br />
+                Die beiden Schaltflächen direkt rechts neben der Datumsauswahl erlauben es zusätzlich zu
+                den regulären Aufzeichnungen auch die vorgesehenen Zeiten für die Aktualisierung<HelpLink page={this.props.noui} topic="tasks" />
+                der Programmzeitschrift oder der
+                Senderliste in der Liste darzustellen.
+                <br />
+                <br />
+                Links vor jeder Aufzeichnung in der Liste befindet sich ein kleines Symbol, dass darüber informiert, ob die
+                Aufzeichnung wie gewünscht ausgeführt werden kann oder nicht.
+                <br />
+                <br />
                 <table>
                     <tbody>
                         <tr>
@@ -82,15 +82,16 @@ namespace VCRNETClient.Ui {
                         </tr>
                     </tbody>
                 </table>
-                <p>
-                    Direkt rechts neben dem Symbol wird der Beginn der
-                        Aufzeichnung als Verweis angezeigt. Wird dieser Verweis angeklickt, so werden weitere Details zur Aufzeichnung
-                        sichtbar. Je nach vorhandenen Daten wird auch der zugehörige Eintrag der Programmzeitschrift<HelpLink page={this.props.noui} topic="epg" />
-                    abgerufen und angezeigt.
-                    </p>
-                <p>
-                    Durch Anwählen des Verweises auf den Namen der Aufzeichnung kann diese bearbeitet werden.
-                    </p>
+                <br />
+                Direkt rechts neben dem Symbol wird der Beginn der
+                Aufzeichnung als Verweis angezeigt. Wird dieser Verweis angeklickt, so werden weitere Details zur Aufzeichnung
+                sichtbar. Je nach vorhandenen Daten wird auch der zugehörige Eintrag der Programmzeitschrift<HelpLink page={this.props.noui} topic="epg" />
+                abgerufen und angezeigt.
+                <br />
+                <br />
+                Durch Anwählen des Verweises auf den Namen der Aufzeichnung kann diese bearbeitet werden.
+                <br />
+                <br />
                 <table>
                     <tbody>
                         <tr>

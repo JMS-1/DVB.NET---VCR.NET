@@ -2,12 +2,8 @@
 
 namespace VCRNETClient.App {
 
-    export interface IAdminSecurityPage extends IPage {
-        readonly userGroups: JMSLib.App.IValidateStringFromList;
-
-        readonly adminGroups: JMSLib.App.IValidateStringFromList;
-
-        readonly saveSecurity: JMSLib.App.ICommand;
+    export interface IAdminSection {
+        readonly page: IAdminPage;
     }
 
     export interface IAdminDirectoriesPage extends IPage {
@@ -28,22 +24,23 @@ namespace VCRNETClient.App {
     export interface IAdminOtherPage extends IPage {
     }
 
-    export interface IAdminSectionInfo<TPageType extends IPage> {
+    export interface IAdminSectionInfo<TPageType extends IAdminSection> {
         readonly display: string;
 
         readonly page: TPageType;
     }
 
-    interface IInternalAdminSectionInfo extends IAdminSectionInfo<any> {
-        readonly init: () => void;
+    interface IInternalAdminSectionInfo<TPageType extends IAdminSection> extends IAdminSectionInfo<TPageType> {
+        readonly factory: { new (page: AdminPage): IAdminSection };
+
+        page: TPageType;
     }
 
-    export interface IAdminSectionInfos {
-        readonly[section: string]: IAdminSectionInfo<any>;
+    export interface IAdminSectionInfos<TInterface extends IAdminSectionInfo<any>> {
+        readonly[section: string]: TInterface;
     }
 
-    interface IInternalAdminSectionInfos extends IAdminSectionInfos {
-        readonly[section: string]: IInternalAdminSectionInfo;
+    interface IInternalAdminSectionInfos extends IAdminSectionInfos<IInternalAdminSectionInfo<any>> {
     }
 
     export interface IAdminPage extends IPage {
@@ -51,7 +48,7 @@ namespace VCRNETClient.App {
 
         readonly sectionNames: string[];
 
-        readonly sections: IAdminSectionInfos;
+        readonly sections: IAdminSectionInfos<IAdminSectionInfo<any>>;
     }
 
     export class AdminPage extends Page<JMSLib.App.ISite> implements IAdminPage {
@@ -68,21 +65,15 @@ namespace VCRNETClient.App {
             "other",
         ];
 
-        private readonly _sections: IInternalAdminSectionInfos = {
-            security: { display: "Sicherheit", page: this, init: this.initSecurity },
-            directories: { display: "Verzeichnisse", page: this, init: null },
-            guide: { display: "Programmzeitschrift", page: this, init: null },
-            rules: { display: "Planungsregeln", page: this, init: null },
-            other: { display: "Sonstiges", page: this, init: null },
-            sources: { display: "Quellen", page: this, init: null },
-            devices: { display: "Geräte", page: this, init: null },
+        readonly sections: IInternalAdminSectionInfos = {
+            security: { display: "Sicherheit", page: null, factory: SecuritySection },
+            directories: { display: "Verzeichnisse", page: null, factory: null },
+            guide: { display: "Programmzeitschrift", page: null, factory: null },
+            rules: { display: "Planungsregeln", page: null, factory: null },
+            other: { display: "Sonstiges", page: null, factory: null },
+            sources: { display: "Quellen", page: null, factory: null },
+            devices: { display: "Geräte", page: null, factory: null },
         };
-
-        readonly userGroups = new JMSLib.App.EditStringFromList({}, "value", null, "Benutzer:", false, []);
-
-        readonly adminGroups = new JMSLib.App.EditStringFromList({}, "value", null, "Administratoren:", false, []);
-
-        readonly saveSecurity = new JMSLib.App.Command(() => this.updateSecurity(), "Ändern");
 
         constructor(application: Application) {
             super("admin", application);
@@ -98,57 +89,23 @@ namespace VCRNETClient.App {
             return AdminPage._sectionNames;
         }
 
-        get sections(): IAdminSectionInfos {
-            return this._sections;
-        }
-
         reset(sections: string[]): void {
             this._section = sections[0];
 
-            var sectionInfo = this._sections[this.section];
+            var sectionInfo = this.sections[this.section];
 
-            if (sectionInfo && sectionInfo.init)
-                sectionInfo.init.bind(this)();
+            if (!sectionInfo)
+                return;
+
+            if (!sectionInfo.page && sectionInfo.factory)
+                sectionInfo.page = new sectionInfo.factory(this);
+
+            if (sectionInfo.page)
+                sectionInfo.page.reset();
         }
 
-        private update(promise: JMSLib.App.IHttpPromise<boolean>): void {
+        update(promise: JMSLib.App.IHttpPromise<boolean>): void {
             promise.then(restartRequired => this.application.gotoPage(null));
-        }
-
-        private initSecurity(): void {
-            if (!AdminPage._windowsGroups)
-                AdminPage._windowsGroups = VCRServer.getWindowsGroups().then(names => {
-                    var groups = [<JMSLib.App.IUiValue<string>>{ display: "(Alle Benutzer)", value: "" }];
-
-                    groups.push(...names.map(name => <JMSLib.App.IUiValue<string>>{ display: name, value: name }));
-
-                    return groups;
-                });
-
-            AdminPage._windowsGroups.then(groups => this.setWindowsGroups(groups));
-        }
-
-        private updateSecurity(): void {
-            var settings: VCRServer.SecuritySettingsContract = {
-                users: this.userGroups.value,
-                admins: this.adminGroups.value
-            };
-
-            this.update(VCRServer.setSecuritySettings(settings));
-        }
-
-        private setWindowsGroups(groups: JMSLib.App.IUiValue<string>[]): void {
-            this.userGroups.allowedValues = groups;
-            this.adminGroups.allowedValues = groups;
-
-            VCRServer.getSecuritySettings().then(settings => this.setSecurity(settings));
-        }
-
-        private setSecurity(security: VCRServer.SecuritySettingsContract): void {
-            this.userGroups.value = security.users;
-            this.adminGroups.value = security.admins;
-
-            this.application.setBusy(false);
         }
 
         get title(): string {

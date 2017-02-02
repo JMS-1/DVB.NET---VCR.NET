@@ -99,6 +99,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <TypeScriptCompile Include="src\app\pages\adminPage.ts" />
+    <TypeScriptCompile Include="src\app\pages\admin\security.ts" />
     <TypeScriptCompile Include="src\app\pages\guidePage.ts" />
     <TypeScriptCompile Include="src\app\pages\guide\entry.ts" />
     <TypeScriptCompile Include="src\app\pages\jobPage.ts" />
