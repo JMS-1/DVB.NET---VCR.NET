@@ -684,11 +684,12 @@ module VCRServer {
         return doUrlCall(`profile/${device}`);
     }
 
-    export function getSecuritySettings(): JQueryPromise<any> {
-        return $.ajax({
-            url: restRoot + 'configuration?security',
-            dataType: 'json',
-        });
+    export function getSecuritySettings(): JMSLib.App.IHttpPromise<VCRServer.SecuritySettingsContract> {
+        return doUrlCall(`configuration?security`);
+    }
+
+    export function setSecuritySettings(data: VCRServer.SecuritySettingsContract): JMSLib.App.IHttpPromise<boolean> {
+        return doUrlCall(`configuration?security`, `PUT`, data);
     }
 
     export function getDirectorySettings(): JQueryPromise<any> {
@@ -796,11 +797,8 @@ module VCRServer {
         });
     }
 
-    export function getWindowsGroups(): JQueryPromise<any> {
-        return $.ajax({
-            url: restRoot + 'info?groups',
-            dataType: 'json',
-        });
+    export function getWindowsGroups(): JMSLib.App.IHttpPromise<string[]> {
+        return doUrlCall(`info?groups`);
     }
 
     export function updateConfiguration(type: string, contract: SettingsContract, protocolFilter: (key: string, value: any) => any = null): JQueryPromise<any> {

@@ -9,34 +9,35 @@ namespace VCRNETClient.Ui {
             return <div className="vcrnet-admin">
                 <div className="vcrnet-admin-tabs">
                     <div>
-                        {this.props.noui.sections.map(s => <div key={s} data-jmslib-checked={(s === section) ? "yes" : null}>
-                            <JMSLib.ReactUi.InternalLink view={`${this.props.noui.route};${s}`}>{this.props.noui.sectionNames[s]}</JMSLib.ReactUi.InternalLink>
+                        {this.props.noui.sectionNames.map(s => <div key={s} data-jmslib-checked={(s === section) ? "yes" : null}>
+                            <JMSLib.ReactUi.InternalLink view={`${this.props.noui.route};${s}`}>{this.props.noui.sections[s].display}</JMSLib.ReactUi.InternalLink>
                         </div>)}
                     </div>
                     <div>
                         {this.renderSection()}
                     </div>
-                    <div />
                 </div>
             </div>;
         }
 
         private renderSection(): JSX.Element {
+            const page = this.props.noui.sections[this.props.noui.section].page;
+
             switch (this.props.noui.section) {
                 case "security":
-                    return <AdminSecurity noui={this.props.noui} />;
+                    return <AdminSecurity noui={page} />;
                 case "directories":
-                    return <AdminDirectories noui={this.props.noui} />;
+                    return <AdminDirectories noui={page} />;
                 case "guide":
-                    return <AdminGuide noui={this.props.noui} />;
+                    return <AdminGuide noui={page} />;
                 case "devices":
-                    return <AdminDevices noui={this.props.noui} />;
+                    return <AdminDevices noui={page} />;
                 case "sources":
-                    return <AdminSources noui={this.props.noui} />;
+                    return <AdminSources noui={page} />;
                 case "rules":
-                    return <AdminRules noui={this.props.noui} />;
+                    return <AdminRules noui={page} />;
                 case "other":
-                    return <AdminOther noui={this.props.noui} />;
+                    return <AdminOther noui={page} />;
                 default:
                     return null;
             }

@@ -3175,7 +3175,7 @@ class adminPage extends Page implements IPage {
         if (adminPage.groups == null) {
             var groupsLoaded = this.registerAsyncCall();
 
-            VCRServer.getWindowsGroups().done((data: string[]) => { adminPage.groups = data; groupsLoaded(); });
+            VCRServer.getWindowsGroups().then(data => { adminPage.groups = data; groupsLoaded(); });
         }
 
         // Alles nacheinander laden - die Zahl der gleichzeitig offenen Requests ist beschränkt!

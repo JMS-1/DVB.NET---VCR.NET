@@ -5,10 +5,12 @@
     width: 90%;
 
     > .vcrnet-admin-tabs {
-        > div {
-            float: left;
+        white-space: nowrap;
 
-            &:nth-child(1) {
+        > div {
+            display: inline-block;
+
+            &:first-child {
                 > div {
                     margin: 10px;
                     border: 1px solid black;
@@ -36,17 +38,15 @@
                 }
             }
 
-            &:nth-child(2) {
+            &:last-child {
+                vertical-align: top;
+                white-space: normal;
                 margin: 0px 20px;
+                width: 90%;
 
                 h2 {
                     margin: 10px 0 0 0;
                 }
-            }
-
-            &:nth-child(3) {
-                clear: both;
-                float: none;
             }
         }
     }
