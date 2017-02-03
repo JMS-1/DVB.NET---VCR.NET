@@ -676,7 +676,7 @@ module VCRServer {
         return doUrlCall(`guide/${device}`);
     }
 
-    export function getInfoJobs(): JMSLib.App.IHttpPromise<VCRServer.InfoJobContract[]> {
+    export function getInfoJobs(): JMSLib.App.IHttpPromise<InfoJobContract[]> {
         return doUrlCall(`info?jobs`);
     }
 
@@ -684,19 +684,16 @@ module VCRServer {
         return doUrlCall(`profile/${device}`);
     }
 
-    export function getSecuritySettings(): JMSLib.App.IHttpPromise<VCRServer.SecuritySettingsContract> {
+    export function getSecuritySettings(): JMSLib.App.IHttpPromise<SecuritySettingsContract> {
         return doUrlCall(`configuration?security`);
     }
 
-    export function setSecuritySettings(data: VCRServer.SecuritySettingsContract): JMSLib.App.IHttpPromise<boolean> {
+    export function setSecuritySettings(data: SecuritySettingsContract): JMSLib.App.IHttpPromise<boolean> {
         return doUrlCall(`configuration?security`, `PUT`, data);
     }
 
-    export function getDirectorySettings(): JQueryPromise<any> {
-        return $.ajax({
-            url: restRoot + 'configuration?directory',
-            dataType: 'json',
-        });
+    export function getDirectorySettings(): JMSLib.App.IHttpPromise<DirectorySettingsContract> {
+        return doUrlCall(`configuration?directory`);
     }
 
     export function getGuideSettings(): JQueryPromise<any> {
@@ -755,7 +752,7 @@ module VCRServer {
         return doUrlCall('info?directories');
     }
 
-    export function getGuideItem(device: string, source: string, start: Date, end: Date): JQueryPromise<VCRServer.GuideItemContract> {
+    export function getGuideItem(device: string, source: string, start: Date, end: Date): JQueryPromise<GuideItemContract> {
         return $.ajax({
             url: restRoot + 'guide?profile=' + encodeURIComponent(device) + '&source=' + source + '&pattern=' + start.getTime() + '-' + end.getTime(),
             dataType: 'json',
