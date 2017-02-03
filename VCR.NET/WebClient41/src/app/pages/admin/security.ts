@@ -19,10 +19,10 @@
         private static _windowsGroups: JMSLib.App.IHttpPromise<JMSLib.App.IUiValue<string>[]>;
 
         // Die Gruppe der normalen Benutzer mit Auswahl.
-        readonly userGroups = new JMSLib.App.EditStringFromList({}, `value`, null, `Benutzer`, false, []);
+        readonly userGroups = new JMSLib.App.EditStringFromList({}, `users`, null, `Benutzer`, false, []);
 
         // Die Gruppe der Administratoren mit Auswahl.
-        readonly adminGroups = new JMSLib.App.EditStringFromList({}, `value`, null, `Administratoren`, false, []);
+        readonly adminGroups = new JMSLib.App.EditStringFromList({}, `admins`, null, `Administratoren`, false, []);
 
         // Befehl zum Aktualisieren der Konfiguration.
         readonly update = new JMSLib.App.Command(() => this.save(), `Ändern`);
@@ -51,14 +51,7 @@
 
         // Benutzergruppen speichern.
         private save(): void {
-            // Informationen aus der Oberfläche übernehmen.
-            var settings: VCRServer.SecuritySettingsContract = {
-                users: this.userGroups.value,
-                admins: this.adminGroups.value
-            };
-
-            // Aktualisierung durchführen.
-            this.page.update(VCRServer.setSecuritySettings(settings));
+            this.page.update(VCRServer.setSecuritySettings(this.userGroups.data));
         }
 
         // Windows Kontogruppen in die Auswahllisten übernehmen.
@@ -72,8 +65,7 @@
 
         // Aktuelle Benutzergruppen in den Auswahhlisten vorwählen.
         private setSecurity(security: VCRServer.SecuritySettingsContract): void {
-            this.userGroups.value = security.users || ``;
-            this.adminGroups.value = security.admins || ``;
+            this.userGroups.data = this.adminGroups.data = security;
 
             // Bedienung durch den Anwender freischalten.
             this.page.application.setBusy(false);

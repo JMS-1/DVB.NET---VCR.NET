@@ -40,16 +40,16 @@
 
         // Meldet den aktuellen Wert oder verändert diesen - gemeldet wird immer der ursprüngliche Wert.
         get value(): TValueType {
-            return this._data[this._prop] as TValueType;
+            return this.data[this._prop] as TValueType;
         }
 
         set value(newValue: TValueType) {
             // Prüfen, ob der aktuelle Wert durch einen anderen ersetzt werden soll.
-            if (newValue === this._data[this._prop])
+            if (newValue === this.data[this._prop])
                 return;
 
             // Neuen Wert ins Modell übertragen.
-            this._data[this._prop] = newValue;
+            this.data[this._prop] = newValue;
 
             // Modelländerung melden.
             if (this._onChange)
@@ -72,7 +72,7 @@
         }
 
         // Initialisiert die Verwaltung des Wertes einer einzelnen Eigenschaft (_prop) im Modell (_data).
-        protected constructor(private readonly _data: any, private readonly _prop: string, private readonly _onChange: () => void, public readonly text: string, private _testReadOnly?: () => boolean) {
+        protected constructor(public data: any, private readonly _prop: string, private readonly _onChange: () => void, public readonly text: string, private _testReadOnly?: () => boolean) {
         }
     }
 
