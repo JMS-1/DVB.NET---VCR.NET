@@ -1,4 +1,4 @@
-﻿namespace VCRNETClient.App {
+﻿namespace VCRNETClient.App.Log {
 
     export interface ILogEntry {
         readonly start: string;

@@ -18,7 +18,7 @@ namespace VCRNETClient.App {
     // Schnittstelle zur Anzeige der Programmzeitschrift.
     export interface IGuidePage extends IPage, IGuidePageNavigation {
         // Der anzuzeigende Ausschnitt der aktuellen Ergebnisliste.
-        readonly entries: GuideEntry[];
+        readonly entries: Guide.GuideEntry[];
 
         // Alle bekannten Geräte.
         readonly profiles: JMSLib.App.IValidateStringFromList;
@@ -157,7 +157,7 @@ namespace VCRNETClient.App {
         }
 
         // Der aktuell anzuzeigende Ausschnitt aus der Ergebnisliste.
-        entries: GuideEntry[] = [];
+        entries: Guide.GuideEntry[] = [];
 
         // Der aktuell ausgewählte Auftrag.
         private _selectedJob = "*";
@@ -366,7 +366,7 @@ namespace VCRNETClient.App {
                 var toggleDetails = this.toggleDetails.bind(this);
                 var createNew = this.createNewSchedule.bind(this);
 
-                this.entries = (items || []).slice(0, this._filter.size).map(i => new GuideEntry(i, toggleDetails, createNew, this._jobSelector));
+                this.entries = (items || []).slice(0, this._filter.size).map(i => new Guide.GuideEntry(i, toggleDetails, createNew, this._jobSelector));
                 this._hasMore = items && (items.length > this._filter.size);
 
                 // Anwendung zur Bedienung freischalten.
@@ -378,12 +378,12 @@ namespace VCRNETClient.App {
         }
 
         // Legt eine neue Aufzeichnung an.
-        private createNewSchedule(entry: GuideEntry): void {
+        private createNewSchedule(entry: Guide.GuideEntry): void {
             this.application.gotoPage(`${this.application.editPage.route};id=*${entry.jobSelector.value};epgid=${entry.id}`);
         }
 
         // Aktualisiert die Detailanzeige für einen Eintrag.
-        private toggleDetails(entry: GuideEntry): void {
+        private toggleDetails(entry: Guide.GuideEntry): void {
             // Anzeige umschalten.
             var show = entry.showDetails;
 

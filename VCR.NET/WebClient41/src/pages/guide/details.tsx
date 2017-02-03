@@ -2,11 +2,11 @@
 
 namespace VCRNETClient.Ui {
 
-    interface IGuideDetails extends JMSLib.ReactUi.IComponent<App.IGuideEntry> {
+    interface IGuideDetails extends JMSLib.ReactUi.IComponent<App.Guide.IGuideEntry> {
         page: App.IPage;
     }
 
-    export class GuideDetails extends JMSLib.ReactUi.ComponentEx<App.IGuideEntry, IGuideDetails> {
+    export class GuideDetails extends JMSLib.ReactUi.ComponentEx<App.Guide.IGuideEntry, IGuideDetails> {
         render(): JSX.Element {
             return <form className="vcrnet-guideentrydetails">
                 <fieldset>

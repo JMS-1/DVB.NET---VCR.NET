@@ -3,9 +3,9 @@
 namespace VCRNETClient.App {
 
     export interface IEditPage extends IPage {
-        readonly job: IJobEditor;
+        readonly job: Edit.IJobEditor;
 
-        readonly schedule: IScheduleEditor;
+        readonly schedule: Edit.IScheduleEditor;
 
         readonly save: JMSLib.App.ICommand;
 
@@ -15,9 +15,9 @@ namespace VCRNETClient.App {
     export class EditPage extends Page<JMSLib.App.ISite> implements IEditPage {
         private _jobScheduleInfo: VCRServer.JobScheduleInfoContract;
 
-        job: JobEditor;
+        job: Edit.JobEditor;
 
-        schedule: ScheduleEditor;
+        schedule: Edit.ScheduleEditor;
 
         private _onChanged = this.onChanged.bind(this);
 
@@ -131,8 +131,8 @@ namespace VCRNETClient.App {
 
             // Pflegemodelle anlegen.
             this._jobScheduleInfo = info;
-            this.job = new JobEditor(this, info.job, profiles, favorites, folders, this._onChanged);
-            this.schedule = new ScheduleEditor(this, info.schedule, favorites, this._onChanged);
+            this.job = new Edit.JobEditor(this, info.job, profiles, favorites, folders, this._onChanged);
+            this.schedule = new Edit.ScheduleEditor(this, info.schedule, favorites, this._onChanged);
 
             // Quellen für das aktuelle Geräteprofil laden und die Seite für den Anwender freigeben.
             this.loadSources().then(() => this.application.setBusy(false));

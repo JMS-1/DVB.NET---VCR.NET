@@ -2,10 +2,10 @@
 
 namespace VCRNETClient.Ui {
 
-    interface ILogDetails extends JMSLib.ReactUi.IComponent<App.ILogEntry> {
+    interface ILogDetails extends JMSLib.ReactUi.IComponent<App.Log.ILogEntry> {
     }
 
-    export class LogDetails extends JMSLib.ReactUi.ComponentEx<App.ILogEntry, ILogDetails> {
+    export class LogDetails extends JMSLib.ReactUi.ComponentEx<App.Log.ILogEntry, ILogDetails> {
         render(): JSX.Element {
             return <form className="vcrnet-logentrydetails">
                 <fieldset>

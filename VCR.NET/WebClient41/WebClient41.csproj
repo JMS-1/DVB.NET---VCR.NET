@@ -98,12 +98,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <TypeScriptCompile Include="src\app\pages\adminPage.ts" />
+    <TypeScriptCompile Include="src\app\pages\admin.ts" />
+    <TypeScriptCompile Include="src\app\pages\admin\directories.ts" />
     <TypeScriptCompile Include="src\app\pages\admin\security.ts" />
-    <TypeScriptCompile Include="src\app\pages\guidePage.ts" />
+    <TypeScriptCompile Include="src\app\pages\guide.ts" />
     <TypeScriptCompile Include="src\app\pages\guide\entry.ts" />
-    <TypeScriptCompile Include="src\app\pages\jobPage.ts" />
-    <TypeScriptCompile Include="src\app\pages\logPage.ts" />
+    <TypeScriptCompile Include="src\app\pages\jobs.ts" />
+    <TypeScriptCompile Include="src\app\pages\log.ts" />
     <TypeScriptCompile Include="src\app\pages\log\entry.ts" />
     <TypeScriptCompile Include="src\lib\http\browser.ts" />
     <TypeScriptCompile Include="src\lib\http\config.ts" />
@@ -356,9 +357,9 @@
     <None Include="content\jmslib.scss" />
     <TypeScriptCompile Include="src\app\app.ts" />
     <TypeScriptCompile Include="src\lib\dateTimeFormatter.ts" />
-    <TypeScriptCompile Include="src\app\pages\editPage.ts" />
-    <TypeScriptCompile Include="src\app\pages\helpPage.ts" />
-    <TypeScriptCompile Include="src\app\pages\homePage.ts" />
+    <TypeScriptCompile Include="src\app\pages\edit.ts" />
+    <TypeScriptCompile Include="src\app\pages\help.ts" />
+    <TypeScriptCompile Include="src\app\pages\home.ts" />
     <TypeScriptCompile Include="src\lib\edit\datetime\day.ts" />
     <TypeScriptCompile Include="src\app\pages\edit\duration.ts" />
     <TypeScriptCompile Include="src\app\pages\edit\job.ts" />
@@ -376,7 +377,7 @@
     <TypeScriptCompile Include="src\app\pages\page.ts" />
     <TypeScriptCompile Include="src\app\pages\plan\entry.ts" />
     <TypeScriptCompile Include="src\app\pages\plan\exception.ts" />
-    <TypeScriptCompile Include="src\app\pages\planPage.ts" />
+    <TypeScriptCompile Include="src\app\pages\plan.ts" />
     <TypeScriptCompile Include="src\lib\promise.ts" />
     <TypeScriptCompile Include="src\app\pages\edit\schedule.ts" />
     <TypeScriptCompile Include="src\lib\command\checkbox.tsx" />

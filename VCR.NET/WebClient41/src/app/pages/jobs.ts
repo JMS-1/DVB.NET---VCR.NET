@@ -70,19 +70,19 @@ namespace VCRNETClient.App {
             if (repeat === 0)
                 start = JMSLib.DateFormatter.getStartTime(new Date(schedule.start));
             else {
-                if (repeat & ScheduleEditor.flagMonday)
+                if (repeat & Edit.ScheduleEditor.flagMonday)
                     start += JMSLib.DateFormatter.germanDays[1];
-                if (repeat & ScheduleEditor.flagTuesday)
+                if (repeat & Edit.ScheduleEditor.flagTuesday)
                     start += JMSLib.DateFormatter.germanDays[2]
-                if (repeat & ScheduleEditor.flagWednesday)
+                if (repeat & Edit.ScheduleEditor.flagWednesday)
                     start += JMSLib.DateFormatter.germanDays[3];
-                if (repeat & ScheduleEditor.flagThursday)
+                if (repeat & Edit.ScheduleEditor.flagThursday)
                     start += JMSLib.DateFormatter.germanDays[4];
-                if (repeat & ScheduleEditor.flagFriday)
+                if (repeat & Edit.ScheduleEditor.flagFriday)
                     start += JMSLib.DateFormatter.germanDays[5];
-                if (repeat & ScheduleEditor.flagSaturday)
+                if (repeat & Edit.ScheduleEditor.flagSaturday)
                     start += JMSLib.DateFormatter.germanDays[6];
-                if (repeat & ScheduleEditor.flagSunday)
+                if (repeat & Edit.ScheduleEditor.flagSunday)
                     start += JMSLib.DateFormatter.germanDays[0];
 
                 start += ` ${JMSLib.DateFormatter.getEndTime(new Date(schedule.start))}`;

@@ -1,4 +1,4 @@
-﻿namespace VCRNETClient.App {
+﻿namespace VCRNETClient.App.Plan {
 
     // Erweiterte Schnittstelle zur Pflege einer einzelnen Ausnahmeregel.
     export interface IPlanException extends JMSLib.App.IConnectable {

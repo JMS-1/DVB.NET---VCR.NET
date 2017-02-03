@@ -1,4 +1,4 @@
-﻿namespace VCRNETClient.App {
+﻿namespace VCRNETClient.App.Edit {
 
     export interface IScheduleException extends JMSLib.App.IConnectable {
         readonly isActive: JMSLib.App.IValidatedFlag;

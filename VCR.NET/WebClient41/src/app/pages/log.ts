@@ -13,7 +13,7 @@ namespace VCRNETClient.App {
 
         readonly showLive: JMSLib.App.IValidatedFlag;
 
-        readonly entries: ILogEntry[];
+        readonly entries: Log.ILogEntry[];
     }
 
     export class LogPage extends Page<JMSLib.App.ISite> implements ILogPage {
@@ -30,9 +30,9 @@ namespace VCRNETClient.App {
 
         readonly startDay: JMSLib.App.EditStringFromList;
 
-        private _entries: LogEntry[] = [];
+        private _entries: Log.LogEntry[] = [];
 
-        get entries(): ILogEntry[] {
+        get entries(): Log.ILogEntry[] {
             return this._entries.filter(e => {
                 if (e.isGuide)
                     return this.showGuide.value;
@@ -102,7 +102,7 @@ namespace VCRNETClient.App {
 
                 var toggleDetail = this.toggleDetail.bind(this);
 
-                this._entries = entries.map(e => new LogEntry(e, toggleDetail));
+                this._entries = entries.map(e => new Log.LogEntry(e, toggleDetail));
 
                 this.application.setBusy(false);
 
@@ -110,7 +110,7 @@ namespace VCRNETClient.App {
             });
         }
 
-        private toggleDetail(entry: LogEntry): void {
+        private toggleDetail(entry: Log.LogEntry): void {
             var show = !entry.showDetail;
 
             this._entries.forEach(e => e.showDetail = false);

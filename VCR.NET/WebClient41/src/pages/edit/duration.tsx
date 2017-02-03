@@ -2,7 +2,7 @@
 
 namespace VCRNETClient.Ui {
 
-    export class EditDuration extends JMSLib.ReactUi.Component<App.IDurationEditor>  {
+    export class EditDuration extends JMSLib.ReactUi.Component<App.Edit.IDurationEditor>  {
         render(): JSX.Element {
             return <div className="vcrnet-editduration">
                 <JMSLib.ReactUi.EditTime noui={this.props.noui.startTime} />

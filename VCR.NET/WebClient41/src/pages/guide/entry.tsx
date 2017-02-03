@@ -2,7 +2,7 @@
 
 namespace VCRNETClient.Ui {
 
-    export class GuideEntry extends JMSLib.ReactUi.Component<App.IGuideEntry> {
+    export class GuideEntry extends JMSLib.ReactUi.Component<App.Guide.IGuideEntry> {
         render(): JSX.Element {
             return <tr className="vcrnet-guideentry">
                 <td>{this.props.noui.startDisplay}</td>

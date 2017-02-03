@@ -1,6 +1,6 @@
 ﻿/// <reference path="../../../lib/edit/edit.ts" />
 
-namespace VCRNETClient.App {
+namespace VCRNETClient.App.Edit {
 
     export interface IDurationEditor extends JMSLib.App.IDisplayText {
         readonly startTime: JMSLib.App.IEditTime;

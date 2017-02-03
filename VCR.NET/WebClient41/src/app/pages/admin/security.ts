@@ -1,4 +1,4 @@
-﻿namespace VCRNETClient.App {
+﻿namespace VCRNETClient.App.Admin {
 
     // Schnittstelle zur Konfiguration der Benutzergruppen.
     export interface IAdminSecurityPage extends IAdminSection {

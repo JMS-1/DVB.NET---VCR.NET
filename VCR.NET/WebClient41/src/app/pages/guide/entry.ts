@@ -1,4 +1,4 @@
-﻿namespace VCRNETClient.App {
+﻿namespace VCRNETClient.App.Guide {
 
     // Schnittstelle zur Anzeige eines Eintrags in der Programmzeitschrift.
     export interface IGuideEntry {

@@ -3,7 +3,7 @@
 namespace VCRNETClient.Ui {
 
     // React.Js Komponente zur visuellen Darstellung der Aufzeichnungsoptionen.
-    export class EditChannelFlags extends JMSLib.ReactUi.Component<App.ISourceFlagsEditor>  {
+    export class EditChannelFlags extends JMSLib.ReactUi.Component<App.Edit.ISourceFlagsEditor>  {
 
         // Erzeugt die visuelle Darstellung.
         render(): JSX.Element {

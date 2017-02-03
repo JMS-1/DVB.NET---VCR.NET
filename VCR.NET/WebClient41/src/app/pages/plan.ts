@@ -5,7 +5,7 @@ namespace VCRNETClient.App {
     // Schnittstelle zur Anzeige des Aufzeichnungsplans.
     export interface IPlanPage extends IPage {
         // Die aktuell anzuzeigende Liste der Aufzeichnungen.
-        readonly jobs: IPlanEntry[];
+        readonly jobs: Plan.IPlanEntry[];
 
         // Auswahl des Datums für die erste anzuzeigende Aufzeichnung.
         readonly startFilter: JMSLib.App.IValueFromList<Date>;
@@ -17,10 +17,10 @@ namespace VCRNETClient.App {
     // Steuert die Anzeige des Aufzeichnungsplan.
     export class PlanPage extends Page<JMSLib.App.ISite> implements IPlanPage {
         // Alle aktuell bekannten Aufträge
-        private _jobs: PlanEntry[] = [];
+        private _jobs: Plan.PlanEntry[] = [];
 
         // Ermittelt die aktuell anzuzeigenden Aufräge.
-        get jobs(): IPlanEntry[] {
+        get jobs(): Plan.IPlanEntry[] {
             return this._jobs.filter(job => this.filterJob(job));
         }
 
@@ -75,7 +75,7 @@ namespace VCRNETClient.App {
         }
 
         // Prüft, ob ein Auftrag den aktuellen Einschränkungen entspricht.
-        private filterJob(job: PlanEntry): boolean {
+        private filterJob(job: Plan.PlanEntry): boolean {
             // Datumsfilter.
             var startDay = this.startFilter.value;
             var endDay = new Date(startDay.getFullYear(), startDay.getMonth(), startDay.getDate() + this.application.profile.planDays);
@@ -114,7 +114,7 @@ namespace VCRNETClient.App {
                 var toggleDetail = this.toggleDetail.bind(this);
                 var reload = this.reload.bind(this);
 
-                this._jobs = plan.map(job => new PlanEntry(job, toggleDetail, this.application, reload));
+                this._jobs = plan.map(job => new Plan.PlanEntry(job, toggleDetail, this.application, reload));
 
                 // Anzeige aktualisieren.
                 this.fireRefresh();
@@ -125,7 +125,7 @@ namespace VCRNETClient.App {
         }
 
         // Schaltet die Detailanzeige für einen Auftrag um.
-        private toggleDetail(job: PlanEntry, epg: boolean): void {
+        private toggleDetail(job: Plan.PlanEntry, epg: boolean): void {
             // Anzeige einfach nur ausblenden.
             if (job.showEpg && epg)
                 job.showEpg = false;

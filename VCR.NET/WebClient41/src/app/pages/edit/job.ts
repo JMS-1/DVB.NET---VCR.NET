@@ -1,6 +1,6 @@
 ﻿/// <reference path="jobSchedule.ts" />
 
-namespace VCRNETClient.App {
+namespace VCRNETClient.App.Edit {
 
     // Schnittstelle zur Pflege eines Auftrags.
     export interface IJobEditor extends IJobScheduleEditor {

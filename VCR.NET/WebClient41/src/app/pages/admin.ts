@@ -6,9 +6,6 @@ namespace VCRNETClient.App {
         readonly page: IAdminPage;
     }
 
-    export interface IAdminDirectoriesPage extends IPage {
-    }
-
     export interface IAdminDevicesPage extends IPage {
     }
 
@@ -66,8 +63,8 @@ namespace VCRNETClient.App {
         ];
 
         readonly sections: IInternalAdminSectionInfos = {
-            security: { display: "Sicherheit", page: null, factory: SecuritySection },
-            directories: { display: "Verzeichnisse", page: null, factory: null },
+            directories: { display: "Verzeichnisse", page: null, factory: Admin.DirectoriesSection },
+            security: { display: "Sicherheit", page: null, factory: Admin.SecuritySection },
             guide: { display: "Programmzeitschrift", page: null, factory: null },
             rules: { display: "Planungsregeln", page: null, factory: null },
             other: { display: "Sonstiges", page: null, factory: null },
