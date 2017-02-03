@@ -696,6 +696,10 @@ module VCRServer {
         return doUrlCall(`configuration?directory`);
     }
 
+    export function setDirectorySettings(data: DirectorySettingsContract): JMSLib.App.IHttpPromise<boolean> {
+        return doUrlCall(`configuration?directory`, `PUT`, data);
+    }
+
     export function getGuideSettings(): JQueryPromise<any> {
         return $.ajax({
             url: restRoot + 'configuration?guide',

@@ -9,6 +9,10 @@
         }
 
         reset(): void {
+            VCRServer.getDirectorySettings().then(settings => this.setSettings(settings));
+        }
+
+        private setSettings(settings: VCRServer.DirectorySettingsContract): void {
             this.page.application.setBusy(false);
         }
     }
