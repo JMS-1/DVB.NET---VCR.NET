@@ -17,6 +17,11 @@ namespace VCRNETClient.App {
             this._site = newSite;
         }
 
+        protected refreshUi(): void {
+            if (this._site)
+                this._site.refreshUi();
+        }
+
         abstract reset(): void;
     }
 
