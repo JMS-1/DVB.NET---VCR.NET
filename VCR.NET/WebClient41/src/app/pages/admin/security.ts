@@ -1,4 +1,6 @@
-﻿namespace VCRNETClient.App.Admin {
+﻿/// <reference path="../admin.ts" />
+
+namespace VCRNETClient.App.Admin {
 
     // Schnittstelle zur Konfiguration der Benutzergruppen.
     export interface IAdminSecurityPage extends IAdminSection {
@@ -13,7 +15,7 @@
     }
 
     // Instanz zur Pflege der Konfiguration der Benutzergruppen.
-    export class SecuritySection implements IAdminSecurityPage {
+    export class SecuritySection extends AdminSection implements IAdminSecurityPage {
 
         // Alle bekannten Windows Kontogruppen.
         private static _windowsGroups: JMSLib.App.IHttpPromise<JMSLib.App.IUiValue<string>[]>;
@@ -26,10 +28,6 @@
 
         // Befehl zum Aktualisieren der Konfiguration.
         readonly update = new JMSLib.App.Command(() => this.save(), `Ändern`);
-
-        // Erstellt eine neue Pflegeumgebung.
-        constructor(public readonly page: AdminPage) {
-        }
 
         // Initialisiert die Pflegeumgebung.
         reset(): void {

@@ -3,7 +3,7 @@
 namespace VCRNETClient.Ui {
 
     // ReacJs Komponente zur Pflege der Sicherheitskonfiguration.
-    export class AdminSecurity extends JMSLib.ReactUi.Component<App.Admin.IAdminSecurityPage>{
+    export class AdminSecurity extends JMSLib.ReactUi.ComponentWithSite<App.Admin.IAdminSecurityPage>{
 
         // Oberflächenelemente erstellen.
         render(): JSX.Element {

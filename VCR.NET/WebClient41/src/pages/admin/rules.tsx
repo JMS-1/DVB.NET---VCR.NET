@@ -2,7 +2,7 @@
 
 namespace VCRNETClient.Ui {
 
-    export class AdminRules extends JMSLib.ReactUi.Component<App.IAdminRulesPage>{
+    export class AdminRules extends JMSLib.ReactUi.ComponentWithSite<App.IAdminRulesPage>{
         render(): JSX.Element {
             return <div className="vcrnet-admin-rules">
                 <h2>Regeln für die Planung von Aufzeichnungen</h2>

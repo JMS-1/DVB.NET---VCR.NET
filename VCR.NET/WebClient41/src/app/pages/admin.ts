@@ -2,8 +2,22 @@
 
 namespace VCRNETClient.App {
 
-    export interface IAdminSection {
+    export interface IAdminSection extends JMSLib.App.IConnectable {
         readonly page: IAdminPage;
+    }
+
+    export abstract class AdminSection implements IAdminSection {
+
+        constructor(public readonly page: AdminPage) {
+        }
+
+        private _site: JMSLib.App.ISite;
+
+        setSite(newSite: JMSLib.App.ISite): void {
+            this._site = newSite;
+        }
+
+        abstract reset(): void;
     }
 
     export interface IAdminDevicesPage extends IPage {
@@ -28,7 +42,7 @@ namespace VCRNETClient.App {
     }
 
     interface IInternalAdminSectionInfo<TPageType extends IAdminSection> extends IAdminSectionInfo<TPageType> {
-        readonly factory: { new (page: AdminPage): IAdminSection };
+        readonly factory: { new (page: AdminPage): AdminSection };
 
         page: TPageType;
     }
