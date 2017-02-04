@@ -29,7 +29,7 @@
     <add key="LogLifeTime" value="5" />
     <!-- Paths -->
     <add key="FileNamePattern" value="%SortableStart% %Job% (%Schedule%)" />
-    <add key="AdditionalRecorderPaths" value="" />
+    <add key="AdditionalRecorderPaths" value="V:\Audio und Video\Für andere\,V:\Audio und Video\Eigene\" />
     <add key="VideoRecorderDirectory" value="V:\Audio und Video\Aufzeichnungen\" />
     <!-- Hibernation -->
     <add key="SuppressDelayAfterForcedHibernation" value="True" />

@@ -38,7 +38,7 @@
             this.setSite(site);
         }
 
-        get Site(): ISite {
+        get site(): ISite {
             return this._site;
         }
 
@@ -80,7 +80,23 @@
         }
 
         // Initialisiert die Verwaltung des Wertes einer einzelnen Eigenschaft (_prop) im Modell (_data).
-        protected constructor(public data: any, private readonly _prop: string, private readonly _onChange: () => void, public readonly text: string, private _testReadOnly?: () => boolean) {
+        protected constructor(private _data: any, private readonly _prop: string, private readonly _onChange: () => void, public readonly text: string, private _testReadOnly?: () => boolean) {
+        }
+
+        protected getData(): any {
+            return this._data;
+        }
+
+        get data(): any {
+            return this.getData();
+        }
+
+        protected setData(newValue: any): void {
+            this._data = newValue;
+        }
+
+        set data(newValue: any) {
+            this.setData(newValue);
         }
     }
 

@@ -15,10 +15,21 @@ namespace JMSLib.App {
         readonly allowedValues: IUiValue<TValueType>[];
     }
 
+    export interface IMultiValueFromList<TValueType> extends IEditValue<TValueType[]> {
+        readonly values: IUiValue<TValueType>[];
+    }
+
     export class EditFromList<TValueType> extends EditValue<TValueType> implements IValueFromList<TValueType> {
 
         // Legt eine neue Verwaltung an.
         constructor(data: any, prop: string, onChange: () => void, name: string, public allowedValues: IUiValue<TValueType>[]) {
+            super(data, prop, onChange, name);
+        }
+    }
+
+    export class SelectFromList<TValueType> extends EditValue<TValueType[]> implements IMultiValueFromList<TValueType> {
+
+        constructor(data: any, prop: string, onChange: () => void, name: string, public values: IUiValue<TValueType>[]) {
             super(data, prop, onChange, name);
         }
     }

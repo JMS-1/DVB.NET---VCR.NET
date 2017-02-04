@@ -106,6 +106,7 @@
     <TypeScriptCompile Include="src\app\pages\jobs.ts" />
     <TypeScriptCompile Include="src\app\pages\log.ts" />
     <TypeScriptCompile Include="src\app\pages\log\entry.ts" />
+    <TypeScriptCompile Include="src\lib\edit\multiList.tsx" />
     <TypeScriptCompile Include="src\lib\http\browser.ts" />
     <TypeScriptCompile Include="src\lib\http\config.ts" />
     <TypeScriptCompile Include="src\pages\admin.tsx" />
@@ -176,6 +177,7 @@
     <Content Include="FAQ\customschedule.html" />
     <Content Include="FAQ\configuration.html" />
     <Content Include="FAQ\controlcenter.html" />
+    <None Include="src\lib\edit\multiList.scss" />
     <Content Include="src\pages\admin\directories.scss" />
     <Content Include="src\pages\admin\guide.scss" />
     <Content Include="src\pages\admin\other.scss" />
