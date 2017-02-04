@@ -99,15 +99,11 @@
         }
 
         // Beachrichtigungen einrichten.
-        private m_site: JMSLib.App.ISite;
-
-        setSite(newSite: JMSLib.App.ISite): void {
-            this.m_site = newSite;
-        }
+        site: JMSLib.App.ISite;
 
         refresh(): void {
-            if (this.m_site)
-                this.m_site.refreshUi();
+            if (this.site)
+                this.site.refreshUi();
         }
     }
 }

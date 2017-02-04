@@ -43,7 +43,7 @@ namespace VCRNETClient.App {
 
         // Meldet die aktuelle Überschrift.
         get title(): string {
-            var site = this.getSite();
+            var site = this.site;
 
             // Das weiß in dieser Implementierung nur die Oberfläche.
             return site && site.getCurrentHelpTitle(this.section);

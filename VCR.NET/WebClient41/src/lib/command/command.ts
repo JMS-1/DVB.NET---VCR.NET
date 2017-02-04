@@ -21,15 +21,11 @@
         // Gesetzt während die Aktion ausgeführt wird.
         private _busy = false;
 
+        // Die zugehörige Anzeige.
+        site: ISite;
+
         // Erstellt eine neue Repräsentation.
         constructor(private _begin: () => (IHttpPromise<TResponseType> | void), public text: string, private _test?: () => boolean) {
-        }
-
-        // Die zugehörige Anzeige.
-        private _site: ISite;
-
-        setSite(newSite: ISite): void {
-            this._site = newSite;
         }
 
         // Gesetzt, wenn es sich um eine kritische Änderung handelt.
@@ -91,8 +87,8 @@
 
         // Oberfläche aktualiseren.
         private refreshUi(): void {
-            if (this._site)
-                this._site.refreshUi();
+            if (this.site)
+                this.site.refreshUi();
         }
 
         // Befehl ausführen.

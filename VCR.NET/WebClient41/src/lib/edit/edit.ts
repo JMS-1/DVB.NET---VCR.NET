@@ -27,11 +27,19 @@
         }
 
         // Meldet die Oberfläche an.
-        setSite(site: ISite): void {
+        protected setSite(site: ISite): void {
             this._site = site;
 
             if (this._site)
                 this.onSiteChanged();
+        }
+
+        set site(site: ISite) {
+            this.setSite(site);
+        }
+
+        get Site(): ISite {
+            return this._site;
         }
 
         // Wird ausgelöst, wenn eine Anmeldung der Oberfläche erfolgt ist.

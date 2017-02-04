@@ -11,15 +11,11 @@ namespace VCRNETClient.App {
         constructor(public readonly page: AdminPage) {
         }
 
-        private _site: JMSLib.App.ISite;
-
-        setSite(newSite: JMSLib.App.ISite): void {
-            this._site = newSite;
-        }
+        site: JMSLib.App.ISite;
 
         protected refreshUi(): void {
-            if (this._site)
-                this._site.refreshUi();
+            if (this.site)
+                this.site.refreshUi();
         }
 
         abstract reset(): void;

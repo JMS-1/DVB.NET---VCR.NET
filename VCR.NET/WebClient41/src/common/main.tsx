@@ -31,7 +31,7 @@ namespace VCRNETClient.Ui {
         }
 
         componentDidMount(): void {
-            this._application.helpPage.setSite(this);
+            this._application.helpPage.site = this;
 
             window.addEventListener("hashchange", this._onhashchange);
         }
@@ -39,7 +39,7 @@ namespace VCRNETClient.Ui {
         componentWillUnmount(): void {
             window.removeEventListener("hashchange", this._onhashchange);
 
-            this._application.helpPage.setSite(undefined);
+            this._application.helpPage.site = undefined;
         }
 
         refreshUi(): void {

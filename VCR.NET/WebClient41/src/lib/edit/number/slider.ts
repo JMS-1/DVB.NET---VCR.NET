@@ -40,7 +40,7 @@ namespace JMSLib.App {
         }
 
         // Bei der Anzeige werden immer alle Einstellungen auf den Grundwert zurückgesetzt.
-        setSite(newSite: ISite): void {
+        set site(newSite: ISite) {
             super.setSite(newSite);
 
             // Zurück auf den Anfang.

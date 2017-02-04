@@ -27,12 +27,12 @@ namespace JMSLib.ReactUi {
     export abstract class ComponentExWithSite<TViewModelType extends App.IConnectable, TConfigType extends IComponent<TViewModelType>> extends ComponentEx<TViewModelType, TConfigType> implements App.ISite {
         // Führt die Anmeldung auf Benachrichtigungen aus.
         componentWillMount(): void {
-            this.props.noui.setSite(this);
+            this.props.noui.site = this;
         }
 
         // Meldet sich von Benachrichtigungen ab.
         componentWillUnmount(): void {
-            this.props.noui.setSite(undefined);
+            this.props.noui.site = undefined;
         }
 
         // Fordert eine Aktualisierung der Anzeige an.

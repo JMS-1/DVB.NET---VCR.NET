@@ -19,11 +19,7 @@
 
         private _active = true;
 
-        private _site: JMSLib.App.ISite;
-
-        setSite(newSite: JMSLib.App.ISite): void {
-            this._site = newSite;
-        }
+        site: JMSLib.App.ISite;
 
         readonly isActive: JMSLib.App.EditFlag;
 
@@ -40,8 +36,8 @@
         private onChange(onChange: () => void): void {
             onChange();
 
-            if (this._site)
-                this._site.refreshUi();
+            if (this.site)
+                this.site.refreshUi();
         }
     }
 }

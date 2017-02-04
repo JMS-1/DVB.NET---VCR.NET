@@ -314,7 +314,7 @@ namespace VCRNETClient.App {
             this._timeout = setTimeout(() => {
                 // Suchanfrage starten, falls die Programmzeitschrift noch aktiv ist und inzwischen keine anderen Anfragen gestartet wurden.
                 if (this._queryId === queryId)
-                    if (this.getSite())
+                    if (this.site)
                         this.query();
             }, 250);
         }

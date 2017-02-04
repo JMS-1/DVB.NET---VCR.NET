@@ -42,7 +42,7 @@
         private _site: TSiteType;
 
         // Legt das zugehörige Oberflächenelement fest.
-        setSite(newSite: TSiteType): void {
+        set site(newSite: TSiteType) {
             this._site = newSite;
 
             if (this._site)
@@ -50,7 +50,7 @@
         }
 
         // Meldet das zugehörige Oberflächenelement.
-        protected getSite(): TSiteType {
+        get site(): TSiteType {
             return this._site;
         }
 

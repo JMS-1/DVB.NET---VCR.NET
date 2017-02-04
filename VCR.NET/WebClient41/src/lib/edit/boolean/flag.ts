@@ -24,12 +24,7 @@ namespace JMSLib.App {
         }
 
         // Das zugehörige Oberflächenelement.
-        private _site: ISite;
-
-        // Meldet das zugehörige Oberflächenelement an.
-        setSite(newSite: ISite): void {
-            this._site = newSite;
-        }
+        site: ISite;
 
         // Meldet den aktuellen Wert oder verändert diesen.
         get value(): boolean {
@@ -48,8 +43,8 @@ namespace JMSLib.App {
             this._flags.value = flags;
 
             // Oberfläche aktualisieren.
-            if (this._site)
-                this._site.refreshUi();
+            if (this.site)
+                this.site.refreshUi();
         }
 
         // Gesetzt, wenn der Wert der Eigenschaft nicht verändert werden darf.
