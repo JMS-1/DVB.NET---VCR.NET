@@ -1,4 +1,8 @@
 ﻿@import "../../../content/vars";
 
 .vcrnet-admin-directories {
+    > div > select {
+        width: 40rem;
+        height: 10rem;
+    }
 }

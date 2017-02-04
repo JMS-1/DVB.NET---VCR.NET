@@ -6,10 +6,17 @@ namespace VCRNETClient.Ui {
         render(): JSX.Element {
             return <div className="vcrnet-admin-directories">
                 <h2>Aufzeichnungsverzeichnisse und Dateinamen</h2>
-                <JMSLib.ReactUi.EditMultiValueList noui={this.props.noui.directories} />
-                <Field page={this.props.noui.page} label={this.props.noui.pattern.text}>
-                    <JMSLib.ReactUi.EditText noui={this.props.noui.pattern} chars={40} />
-                </Field>
+                <div>
+                    <JMSLib.ReactUi.EditMultiValueList noui={this.props.noui.directories} />
+                    <div>
+                        <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.remove} />
+                    </div>
+                </div>
+                <form>
+                    <Field page={this.props.noui.page} label={this.props.noui.pattern.text}>
+                        <JMSLib.ReactUi.EditText noui={this.props.noui.pattern} chars={40} />
+                    </Field>
+                </form>
             </div>;
         }
     }
