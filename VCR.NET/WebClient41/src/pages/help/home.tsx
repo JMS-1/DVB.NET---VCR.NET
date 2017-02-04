@@ -2,9 +2,7 @@
 
 namespace VCRNETClient.Ui.HelpPages {
     export class Overview extends HelpComponent {
-        getTitle(): string {
-            return "Fragen und Antworten";
-        }
+        readonly title = "Fragen und Antworten";
 
         render(page: App.IPage): JSX.Element {
             return <div>

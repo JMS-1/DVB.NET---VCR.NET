@@ -2,9 +2,7 @@
 
 namespace VCRNETClient.Ui.HelpPages {
     export class ParallelRecording extends HelpComponent {
-        getTitle(): string {
-            return "Planung von Aufzeichnungen";
-        }
+        readonly title = "Planung von Aufzeichnungen";
 
         render(page: App.IPage): JSX.Element {
             return <div>
@@ -66,7 +64,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 <br />
                 <br />
                 Das Ergebnis einer Planung wird im
-                Aufzeichnungsplan<JMSLib.ReactUi.InternalLink view={page.application.planPage.route} pict="plan" />durch 
+                Aufzeichnungsplan<JMSLib.ReactUi.InternalLink view={page.application.planPage.route} pict="plan" />durch
                 entsprechende farbige Symbole dargestellt.
             </div>;
         }

@@ -4,17 +4,12 @@ namespace VCRNETClient.App {
 
     // Informationen zu einzelnen Aspekten der Hilfe.
     export interface IHelpComponent {
+        readonly title: string;
     }
 
     // Ermittelt Informationen zu einzelnen Aspekten der Hilfe.
     export interface IHelpComponentProvider<TComponentType extends IHelpComponent> {
-        readonly [section: string]: TComponentType;
-    }
-
-    // Wird von der Oberfläche zur Verfügung gestellt - die Aspekte der Hilfe sind nur dort und nicht in der Anwendungslogik abgebildet.
-    export interface IHelpSite extends JMSLib.App.ISite {
-        // Ermittelt die aktuelle Überschrift.
-        getCurrentHelpTitle(section: string): string;
+        readonly[section: string]: TComponentType;
     }
 
     // Schnittstelle zum Zugriff auf die Hilfeseite.
@@ -24,7 +19,7 @@ namespace VCRNETClient.App {
     }
 
     // Präsentationsdaten zur Darstellung eines Aspektes der Hilfe.
-    export class HelpPage extends Page<IHelpSite> implements IHelpPage {
+    export class HelpPage extends Page implements IHelpPage {
         // Erstellt ein neues Modell.
         constructor(application: Application) {
             super("faq", application);
@@ -43,10 +38,9 @@ namespace VCRNETClient.App {
 
         // Meldet die aktuelle Überschrift.
         get title(): string {
-            var site = this.site;
+            var topic = this.getHelpComponent<IHelpComponent>();
 
-            // Das weiß in dieser Implementierung nur die Oberfläche.
-            return site && site.getCurrentHelpTitle(this.section);
+            return topic && topic.title;
         }
 
         // Der aktuell ausgewählte Aspekt.

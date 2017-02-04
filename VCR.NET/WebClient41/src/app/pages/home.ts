@@ -6,7 +6,7 @@ namespace VCRNETClient.App {
     }
 
     // Die Anwendungslogik für die Startseite.
-    export class HomePage extends Page<JMSLib.App.ISite> implements IHomePage {
+    export class HomePage extends Page implements IHomePage {
         // Erstellt die Anwendungslogik.
         constructor(application: Application) {
             super("home", application);

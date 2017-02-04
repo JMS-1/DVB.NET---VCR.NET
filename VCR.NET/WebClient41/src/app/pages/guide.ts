@@ -55,7 +55,7 @@ namespace VCRNETClient.App {
     }
 
     // Ui View Model zur Anzeige der Programmzeitschrift.
-    export class GuidePage extends Page<JMSLib.App.ISite> implements IGuidePage {
+    export class GuidePage extends Page implements IGuidePage {
 
         // Optionen zur Auswahl der Einschränkung auf die Verschlüsselung.
         private static _cryptOptions: JMSLib.App.IUiValue<VCRServer.GuideEncryption>[] = [

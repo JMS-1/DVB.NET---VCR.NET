@@ -45,7 +45,7 @@
 
         readonly adminPage: AdminPage;
 
-        private _pageMapper: { [name: string]: Page<any> } = {};
+        private _pageMapper: { [name: string]: Page } = {};
 
         // Nach aussen hin sichtbarer globaler Zustand.
         version: VCRServer.InfoServiceContract;
@@ -82,7 +82,7 @@
             VCRServer.getUserProfile().then(profile => this.profile = profile).then(testStart);
         }
 
-        private addPage<TPageType extends Page<any>>(factory: { new (application: Application): TPageType }): TPageType {
+        private addPage<TPageType extends Page>(factory: { new (application: Application): TPageType }): TPageType {
             var page = new factory(this);
 
             this._pageMapper[page.route] = page;

@@ -1,7 +1,7 @@
 ﻿/// <reference path="../vcrnet.tsx" />
 
 namespace VCRNETClient.Ui {
-    export class Main extends React.Component<JMSLib.ReactUi.IEmpty, JMSLib.ReactUi.IEmpty> implements App.IApplicationSite, App.IHelpSite {
+    export class Main extends React.Component<JMSLib.ReactUi.IEmpty, JMSLib.ReactUi.IEmpty> implements App.IApplicationSite {
         private static _topics: { [section: string]: App.IHelpComponent; };
 
         private static initStatic(): void {
@@ -31,15 +31,11 @@ namespace VCRNETClient.Ui {
         }
 
         componentDidMount(): void {
-            this._application.helpPage.site = this;
-
             window.addEventListener("hashchange", this._onhashchange);
         }
 
         componentWillUnmount(): void {
             window.removeEventListener("hashchange", this._onhashchange);
-
-            this._application.helpPage.site = undefined;
         }
 
         refreshUi(): void {
@@ -89,12 +85,6 @@ namespace VCRNETClient.Ui {
 
         goto(name: string): void {
             window.location.href = `#${name}`;
-        }
-
-        getCurrentHelpTitle(section: string): string {
-            var topic = this.getHelpComponentProvider<HelpComponent>()[section];
-
-            return topic && topic.getTitle();
         }
 
         getHelpComponentProvider<TComponentType extends App.IHelpComponent>(): App.IHelpComponentProvider<TComponentType> {

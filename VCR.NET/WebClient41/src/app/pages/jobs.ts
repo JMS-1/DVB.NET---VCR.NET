@@ -24,7 +24,7 @@ namespace VCRNETClient.App {
         readonly jobs: IJobPageJob[];
     }
 
-    export class JobPage extends Page<JMSLib.App.ISite> implements IJobPage {
+    export class JobPage extends Page implements IJobPage {
 
         private static readonly _types: JMSLib.App.IUiValue<boolean>[] = [
             { display: "Aktiv", value: false },

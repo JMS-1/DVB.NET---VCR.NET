@@ -2,9 +2,7 @@
 
 namespace VCRNETClient.Ui.HelpPages {
     export class ProgramGuide extends HelpComponent {
-        getTitle(): string {
-            return "Die Programmzeitschrift";
-        }
+        readonly title = "Die Programmzeitschrift";
 
         render(page: App.IPage): JSX.Element {
             return <div>

@@ -16,7 +16,7 @@ namespace VCRNETClient.App {
         readonly entries: Log.ILogEntry[];
     }
 
-    export class LogPage extends Page<JMSLib.App.ISite> implements ILogPage {
+    export class LogPage extends Page implements ILogPage {
 
         readonly profiles = new JMSLib.App.EditStringFromList({}, "value", () => this.load(), "Protokollbereich", false, []);
 

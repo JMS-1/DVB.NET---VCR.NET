@@ -15,7 +15,7 @@ namespace VCRNETClient.App {
     }
 
     // Steuert die Anzeige des Aufzeichnungsplan.
-    export class PlanPage extends Page<JMSLib.App.ISite> implements IPlanPage {
+    export class PlanPage extends Page implements IPlanPage {
         // Alle aktuell bekannten Aufträge
         private _jobs: Plan.PlanEntry[] = [];
 

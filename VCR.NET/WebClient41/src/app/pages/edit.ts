@@ -12,7 +12,7 @@ namespace VCRNETClient.App {
         readonly del: JMSLib.App.ICommand;
     }
 
-    export class EditPage extends Page<JMSLib.App.ISite> implements IEditPage {
+    export class EditPage extends Page implements IEditPage {
         private _jobScheduleInfo: VCRServer.JobScheduleInfoContract;
 
         job: Edit.JobEditor;

@@ -2,9 +2,7 @@
 
 namespace VCRNETClient.Ui.HelpPages {
     export class Log extends HelpComponent {
-        getTitle(): string {
-            return "Protokolle";
-        }
+        readonly title = "Protokolle";
 
         render(page: App.IPage): JSX.Element {
             return <div>
@@ -14,7 +12,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 immer ein geschlossener Nutzungszeitraum eines DVB Gerätes. In diesem Zeitraum kann
                 entweder eine einzelne Sonderaufgabe oder
                 eine <JMSLib.ReactUi.InternalLink view={`${page.route};parallelrecording`}>Gruppe von Aufzeichnungen</JMSLib.ReactUi.InternalLink> ausgeführt
-                worden sein. Die <JMSLib.ReactUi.InternalLink view={page.application.logPage.route}>Protokolleinträge</JMSLib.ReactUi.InternalLink> können 
+                worden sein. Die <JMSLib.ReactUi.InternalLink view={page.application.logPage.route}>Protokolleinträge</JMSLib.ReactUi.InternalLink> können
                 direkt über die Web Oberfläche abgerufen werden.
                 <br />
                 <br />
@@ -39,7 +37,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 <br />
                 <br />
                 Sind die <JMSLib.ReactUi.InternalLink view={`${page.route};filecontents`}>Aufzeichnungsdateien</JMSLib.ReactUi.InternalLink> zu einem Eintrag noch
-                vorhanden, so wird dies durch kleine Symbole <JMSLib.ReactUi.Pictogram name="recording" /> bei dem Eintrag visualisiert. 
+                vorhanden, so wird dies durch kleine Symbole <JMSLib.ReactUi.Pictogram name="recording" /> bei dem Eintrag visualisiert.
                 Ist auf dem Rechner, von dem die Web Oberfläche aufgerufen wurde,
                 der <JMSLib.ReactUi.ExternalLink url="http://www.psimarron.net/DVBNETViewer/">DVB.NET / VCR.NET Viewer</JMSLib.ReactUi.ExternalLink> lokal
                 installiert, so kann durch Klicken auf ein

@@ -2,9 +2,7 @@
 
 namespace VCRNETClient.Ui.HelpPages {
     export class AdminSourceScan extends HelpComponent {
-        getTitle(): string {
-            return "Quellen aktualisieren (Sendersuchlauf)";
-        }
+        readonly title = "Quellen aktualisieren (Sendersuchlauf)";
 
         render(page: App.IPage): JSX.Element {
             return <div>
@@ -52,7 +50,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 übernommen. Diesbezüglich ist ein zu großer Wert kein Problem, da die Aktualisierung
                 dann einfach zu früh beendet wird. Es wird aber empfohlen, immer einen sinnvollen
                 Erfahrungswert zu verwenden, der knapp über dem tatsächlichen Bedürfnis liegt -
-                dieser Wert kann den <JMSLib.ReactUi.InternalLink view={page.application.logPage.route}>Protokollen</JMSLib.ReactUi.InternalLink> entnommen 
+                dieser Wert kann den <JMSLib.ReactUi.InternalLink view={page.application.logPage.route}>Protokollen</JMSLib.ReactUi.InternalLink> entnommen
                 werden.
                 <br />
                 <br />

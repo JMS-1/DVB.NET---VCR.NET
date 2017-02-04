@@ -63,7 +63,7 @@ namespace VCRNETClient.App {
         readonly sections: IAdminSectionInfos<IAdminSectionInfo<any>>;
     }
 
-    export class AdminPage extends Page<JMSLib.App.ISite> implements IAdminPage {
+    export class AdminPage extends Page implements IAdminPage {
 
         private static _windowsGroups: JMSLib.App.IHttpPromise<JMSLib.App.IUiValue<string>[]>;
 

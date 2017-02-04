@@ -2,7 +2,7 @@
 
 namespace VCRNETClient.Ui {
     export abstract class HelpComponent implements App.IHelpComponent {
-        abstract getTitle(): string;
+        abstract readonly title: string;
 
         abstract render(page: App.IPage): JSX.Element;
     }

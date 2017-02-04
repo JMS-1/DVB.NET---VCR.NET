@@ -2,9 +2,7 @@
 
 namespace VCRNETClient.Ui.HelpPages {
     export class RepeatingSchedules extends HelpComponent {
-        getTitle(): string {
-            return "Serienaufzeichnungen und Ausnahmeregelungen";
-        }
+        readonly title = "Serienaufzeichnungen und Ausnahmeregelungen";
 
         render(page: App.IPage): JSX.Element {
             return <div>

@@ -37,12 +37,12 @@
     }
 
     // Basisklasse zur Implementierung von Seiten.
-    export abstract class Page<TSiteType extends JMSLib.App.ISite> implements IPage {
+    export abstract class Page implements IPage {
         // Das zugehörige Oberflächenelement.
-        private _site: TSiteType;
+        private _site: JMSLib.App.ISite;
 
         // Legt das zugehörige Oberflächenelement fest.
-        set site(newSite: TSiteType) {
+        set site(newSite: JMSLib.App.ISite) {
             this._site = newSite;
 
             if (this._site)
@@ -50,7 +50,7 @@
         }
 
         // Meldet das zugehörige Oberflächenelement.
-        get site(): TSiteType {
+        get site(): JMSLib.App.ISite {
             return this._site;
         }
 
