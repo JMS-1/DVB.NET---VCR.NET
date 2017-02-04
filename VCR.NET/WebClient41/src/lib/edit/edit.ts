@@ -97,6 +97,11 @@
 
         set data(newValue: any) {
             this.setData(newValue);
+
+            if (this._onChange)
+                this._onChange();
+
+            this.refresh();
         }
     }
 

@@ -219,7 +219,7 @@
     <Content Include="ui\images\faq\decryptlimit.png" />
     <Content Include="ui\images\faq\endchange.png" />
     <None Include="src\pages\edit\job.scss" />
-    <None Include="src\common\editField.scss" />
+    <None Include="src\common\field.scss" />
     <None Include="src\lib\edit\text\text.scss" />
     <None Include="src\lib\edit\text\list.scss" />
     <None Include="src\lib\edit\boolean\flag.scss" />
@@ -394,7 +394,7 @@
     <TypeScriptCompile Include="src\pages\log.tsx" />
     <TypeScriptCompile Include="src\pages\log\details.tsx" />
     <TypeScriptCompile Include="src\pages\plan\exception.tsx" />
-    <TypeScriptCompile Include="src\common\editField.tsx" />
+    <TypeScriptCompile Include="src\common\field.tsx" />
     <TypeScriptCompile Include="src\pages\edit\job.tsx" />
     <TypeScriptCompile Include="src\lib\command\externalLink.tsx" />
     <TypeScriptCompile Include="src\common\helpLink.tsx" />

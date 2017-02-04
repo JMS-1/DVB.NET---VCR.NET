@@ -13,10 +13,13 @@ namespace VCRNETClient.Ui {
                     </div>
                 </div>
                 <form>
-                    <Field page={this.props.noui.page} label={this.props.noui.pattern.text}>
-                        <JMSLib.ReactUi.EditText noui={this.props.noui.pattern} chars={40} />
+                    <Field page={this.props.noui.page} label={`${this.props.noui.pattern.text}:`}>
+                        <JMSLib.ReactUi.EditText noui={this.props.noui.pattern} chars={60} />
                     </Field>
                 </form>
+                <div>
+                    <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.save} />
+                </div>
             </div>;
         }
     }
