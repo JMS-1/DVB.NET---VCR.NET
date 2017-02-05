@@ -114,7 +114,14 @@ namespace VCRNETClient.App {
         }
 
         update(promise: JMSLib.App.IHttpPromise<boolean>): JMSLib.App.IHttpPromise<void> {
-            return promise.then(restartRequired => this.application.gotoPage(null));
+            return promise.then(restartRequired => {
+                if (restartRequired === true)
+                    alert(`RESTART`);
+                else if (restartRequired === false)
+                    alert(`FAILED`);
+
+                this.application.gotoPage(null);
+            });
         }
 
         get title(): string {

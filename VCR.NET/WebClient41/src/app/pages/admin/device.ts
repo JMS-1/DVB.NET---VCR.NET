@@ -44,5 +44,9 @@ namespace VCRNETClient.App.Admin {
                 if (this.name === defaultDevice)
                     this.active.message = `Das bevorzugte Geräteprofil muss auch für Aufzeichnungen verwendet werden.`;
         }
+
+        get isValid(): boolean {
+            return (this.active.message === ``) && (this.priority.message === ``) && (this.decryption.message === ``) && (this.sources.message === ``);
+        }
     }
 }

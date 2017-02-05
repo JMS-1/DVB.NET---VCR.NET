@@ -6,11 +6,15 @@ namespace VCRNETClient.App.Admin {
         readonly defaultDevice: JMSLib.App.IValidateStringFromList;
 
         readonly devices: IDevice[];
+
+        readonly update: JMSLib.App.ICommand;
     }
 
     export class DevicesSection extends AdminSection implements IAdminDevicesPage {
 
         readonly defaultDevice = new JMSLib.App.EditStringFromList({}, "defaultProfile", () => this.refreshUi(), "Bevorzugtes Gerät (zum Beispiel für neue Aufzeichnungen)", true, []);
+
+        readonly update = new JMSLib.App.Command(() => this.save(), "Ändern und neu Starten", () => this.isValid)
 
         devices: Device[] = [];
 
@@ -22,7 +26,9 @@ namespace VCRNETClient.App.Admin {
             this.devices = settings.profiles.map(p => new Device(p, () => this.refreshUi()));
 
             this.defaultDevice.allowedValues = settings.profiles.map(p => <JMSLib.App.IUiValue<string>>{ value: p.name, display: p.name });
-            this.defaultDevice.value = settings.defaultProfile;
+            this.defaultDevice.data = settings;
+
+            this.refreshUi();
 
             this.page.application.setBusy(false);
         }
@@ -33,6 +39,16 @@ namespace VCRNETClient.App.Admin {
             this.defaultDevice.message = this.devices.some(d => d.active.message !== ``) ? `Dieses Gerät ist nicht für Aufzeichnungen vorgesehen` : ``;
 
             super.refreshUi();
+        }
+
+        private get isValid(): boolean {
+            return this.devices.every(d => d.isValid);
+        }
+
+        private save(): JMSLib.App.IHttpPromise<void> {
+            var settings: VCRServer.ProfileSettingsContract = this.defaultDevice.data;
+
+            return this.page.update(VCRServer.setProfileSettings(settings));
         }
     }
 }
