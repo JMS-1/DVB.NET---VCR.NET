@@ -700,11 +700,12 @@ module VCRServer {
         return doUrlCall(`configuration?directory`, `PUT`, data);
     }
 
-    export function getGuideSettings(): JQueryPromise<any> {
-        return $.ajax({
-            url: restRoot + 'configuration?guide',
-            dataType: 'json',
-        });
+    export function getGuideSettings(): JMSLib.App.IHttpPromise<GuideSettingsContract> {
+        return doUrlCall(`configuration?guide`);
+    }
+
+    export function setGuideSettings(data: GuideSettingsContract): JMSLib.App.IHttpPromise<boolean> {
+        return doUrlCall(`configuration?guide`, `PUT`, data);
     }
 
     export function getSourceScanSettings(): JQueryPromise<any> {

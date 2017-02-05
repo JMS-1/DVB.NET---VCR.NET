@@ -17,6 +17,8 @@ namespace JMSLib.App {
 
     export interface IMultiValueFromList<TValueType> extends IEditValue<TValueType[]> {
         readonly values: IUiValue<TValueType>[];
+
+        toggle(value: TValueType): void;
     }
 
     export class EditFromList<TValueType> extends EditValue<TValueType> implements IValueFromList<TValueType> {
@@ -35,6 +37,14 @@ namespace JMSLib.App {
 
         get allValues(): TValueType[] {
             return this.values.map(v => v.value);
+        }
+
+        toggle(value: TValueType): void {
+            var list = this.value.filter(v => v !== value);
+
+            list.push(value);
+
+            this.value = list;
         }
     }
 }

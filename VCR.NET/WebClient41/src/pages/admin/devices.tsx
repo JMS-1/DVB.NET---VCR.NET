@@ -29,9 +29,9 @@ namespace VCRNETClient.Ui {
                             {this.props.noui.devices.map(d => <tr key={d.name}>
                                 <td><JMSLib.ReactUi.EditBoolean noui={d.active} /></td>
                                 <td>{d.name}</td>
-                                <td><JMSLib.ReactUi.EditNumber noui={d.priority} chars={7} /></td>
-                                <td><JMSLib.ReactUi.EditNumber noui={d.decryption} chars={7} /></td>
-                                <td><JMSLib.ReactUi.EditNumber noui={d.sources} chars={7} /></td>
+                                <td><JMSLib.ReactUi.EditNumber noui={d.priority} chars={5} /></td>
+                                <td><JMSLib.ReactUi.EditNumber noui={d.decryption} chars={5} /></td>
+                                <td><JMSLib.ReactUi.EditNumber noui={d.sources} chars={5} /></td>
                             </tr>)}
                         </tbody>
                     </table>
