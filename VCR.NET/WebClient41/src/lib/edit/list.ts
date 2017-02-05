@@ -32,5 +32,9 @@ namespace JMSLib.App {
         constructor(data: any, prop: string, onChange: () => void, name: string, public values: IUiValue<TValueType>[]) {
             super(data, prop, onChange, name);
         }
+
+        get allValues(): TValueType[] {
+            return this.values.map(v => v.value);
+        }
     }
 }

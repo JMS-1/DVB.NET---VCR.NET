@@ -18,7 +18,7 @@ namespace VCRNETClient.Ui {
                     </Field>
                 </form>
                 <div>
-                    <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.save} />
+                    <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.update} />
                 </div>
             </div>;
         }

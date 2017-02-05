@@ -9,7 +9,7 @@ namespace VCRNETClient.App.Admin {
 
         readonly pattern: JMSLib.App.IValidatedString;
 
-        readonly save: JMSLib.App.ICommand;
+        readonly update: JMSLib.App.ICommand;
     }
 
     export class DirectoriesSection extends AdminSection implements IAdminDirectoriesPage {
@@ -20,7 +20,7 @@ namespace VCRNETClient.App.Admin {
 
         readonly remove = new JMSLib.App.Command(() => this.removeDirectories(), "Verzeichnisse entfernen", () => this.directories.value.length > 0);
 
-        readonly save = new JMSLib.App.Command(() => { }, "Ändern", () => this.pattern.message === "");
+        readonly update = new JMSLib.App.Command(() => this.save(), "Ändern", () => this.pattern.message === "");
 
         reset(): void {
             VCRServer.getDirectorySettings().then(settings => this.setSettings(settings));
@@ -48,6 +48,14 @@ namespace VCRNETClient.App.Admin {
             this.pattern.validate();
 
             super.refreshUi();
+        }
+
+        private save(): void {
+            var settings: VCRServer.DirectorySettingsContract = this.pattern.data;
+
+            settings.directories = this.directories.allValues;
+
+            this.page.update(VCRServer.setDirectorySettings(settings));
         }
     }
 }
