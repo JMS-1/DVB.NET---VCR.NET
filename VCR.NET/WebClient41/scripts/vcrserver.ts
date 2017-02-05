@@ -775,11 +775,8 @@ module VCRServer {
         });
     }
 
-    export function browseDirectories(root: string, children: boolean): JQueryPromise<any> {
-        return $.ajax({
-            url: restRoot + 'configuration?browse&toParent=' + !children + '&root=' + encodeURIComponent(root),
-            dataType: 'json',
-        });
+    export function browseDirectories(root: string, children: boolean): JMSLib.App.IHttpPromise<string[]> {
+        return doUrlCall(`configuration?browse&toParent=${!children}&root=${encodeURIComponent(root)}`);
     }
 
     export function deleteSchedule(jobId: string, scheduleId: string): JQueryPromise<any> {
@@ -814,11 +811,8 @@ module VCRServer {
         });
     }
 
-    export function validateDirectory(path: string): JQueryPromise<any> {
-        return $.ajax({
-            url: restRoot + 'configuration?validate&directory=' + encodeURIComponent(path),
-            dataType: 'json',
-        });
+    export function validateDirectory(path: string): JMSLib.App.IHttpPromise<boolean> {
+        return doUrlCall(`configuration?validate&directory=${encodeURIComponent(path)}`);
     }
 
     export function createScheduleFromGuide(legacyId: string, epgId: string): JMSLib.App.IHttpPromise<JobScheduleInfoContract> {

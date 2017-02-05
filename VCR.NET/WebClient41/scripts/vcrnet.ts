@@ -3181,9 +3181,9 @@ class adminPage extends Page implements IPage {
         // Alles nacheinander laden - die Zahl der gleichzeitig offenen Requests ist beschränkt!
         VCRServer
             .browseDirectories('', true)
-            .then<any>((directories: string[]) => { this.fillDirectories(directories); return VCRServer.getSecuritySettings(); })
-            .then<any>((data: VCRServer.SecuritySettingsContract) => { this.security = data; return VCRServer.getDirectorySettings(); })
-            .then<any>((data: VCRServer.DirectorySettingsContract) => { this.directory = data; return VCRServer.getGuideSettings(); })
+            .then(directories => { this.fillDirectories(directories); return VCRServer.getSecuritySettings(); })
+            .then(data => { this.security = data; return VCRServer.getDirectorySettings(); })
+            .then(data => { this.directory = data; return VCRServer.getGuideSettings(); })
             .then<any>((data: VCRServer.GuideSettingsContract) => { this.guide = data; return VCRServer.getSourceScanSettings(); })
             .then<any>((data: VCRServer.SourceScanSettingsContract) => { this.scan = data; return VCRServer.getProfileSettings(); })
             .then<any>((data: VCRServer.ProfileSettingsContract) => { this.devices = data; return JMSLib.TemplateLoader.load('adminDevices'); })
@@ -3262,7 +3262,7 @@ class adminPage extends Page implements IPage {
         var share: string = shareInput.val();
         if (share != null)
             if (share.length > 0) {
-                VCRServer.validateDirectory(share).done((ok: boolean) => {
+                VCRServer.validateDirectory(share).then(ok => {
                     JMSLib.Bindings.setErrorIndicator(shareInput, ok ? null : 'Ungültiges Verzeichnis.');
 
                     if (!ok)
@@ -3322,7 +3322,7 @@ class adminPage extends Page implements IPage {
 
             VCRServer
                 .browseDirectories(root, false)
-                .done((directories: string[]) => this.fillDirectories(directories));
+                .then(directories => this.fillDirectories(directories));
         });
         this.directoryBrowser.change(() => {
             var dir: string = this.directoryBrowser.val();
@@ -3333,7 +3333,7 @@ class adminPage extends Page implements IPage {
 
             VCRServer
                 .browseDirectories(dir, true)
-                .done((directories: string[]) => this.fillDirectories(directories));
+                .then(directories => this.fillDirectories(directories));
         });
 
         // Speichern

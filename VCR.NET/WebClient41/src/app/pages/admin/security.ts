@@ -48,10 +48,10 @@ namespace VCRNETClient.App.Admin {
         }
 
         // Benutzergruppen speichern.
-        private save(): void {
+        private save(): JMSLib.App.IHttpPromise<void> {
             var settings: VCRServer.SecuritySettingsContract = this.userGroups.data;
 
-            this.page.update(VCRServer.setSecuritySettings(settings));
+            return this.page.update(VCRServer.setSecuritySettings(settings));
         }
 
         // Windows Kontogruppen in die Auswahllisten übernehmen.

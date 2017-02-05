@@ -13,6 +13,24 @@ namespace VCRNETClient.Ui {
                     </div>
                 </div>
                 <form>
+                    <fieldset>
+                        <legend>Neues Verzeichnis</legend>
+                        <Field page={this.props.noui.page} label={`${this.props.noui.share.text}:`}>
+                            <JMSLib.ReactUi.EditText noui={this.props.noui.share} chars={80} />
+                        </Field>
+                        {this.props.noui.showBrowse ? <div>
+                            <i>oder</i>
+                            <Field page={this.props.noui.page} label={`${this.props.noui.browse.text}:`}>
+                                <JMSLib.ReactUi.EditTextWithList noui={this.props.noui.browse} />
+                            </Field>
+                        </div> : null}
+                        <div>
+                            {this.props.noui.showBrowse ? <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.parent} /> : null}
+                            <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.add} />
+                        </div>
+                    </fieldset>
+                </form>
+                <form>
                     <Field page={this.props.noui.page} label={`${this.props.noui.pattern.text}:`}>
                         <JMSLib.ReactUi.EditText noui={this.props.noui.pattern} chars={60} />
                     </Field>
