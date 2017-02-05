@@ -714,11 +714,12 @@ module VCRServer {
         });
     }
 
-    export function getProfileSettings(): JQueryPromise<any> {
-        return $.ajax({
-            url: restRoot + 'configuration?devices',
-            dataType: 'json',
-        });
+    export function getProfileSettings(): JMSLib.App.IHttpPromise<ProfileSettingsContract> {
+        return doUrlCall(`configuration?devices`);
+    }
+
+    export function setProfileSettings(data: ProfileSettingsContract): JMSLib.App.IHttpPromise<boolean> {
+        return doUrlCall(`configuration?devices`, `PUT`, data);
     }
 
     export function getOtherSettings(): JQueryPromise<any> {

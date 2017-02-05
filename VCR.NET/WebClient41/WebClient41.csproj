@@ -99,6 +99,8 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <TypeScriptCompile Include="src\app\pages\admin.ts" />
+    <TypeScriptCompile Include="src\app\pages\admin\device.ts" />
+    <TypeScriptCompile Include="src\app\pages\admin\devices.ts" />
     <TypeScriptCompile Include="src\app\pages\admin\directories.ts" />
     <TypeScriptCompile Include="src\app\pages\admin\security.ts" />
     <TypeScriptCompile Include="src\app\pages\guide.ts" />
@@ -107,6 +109,7 @@
     <TypeScriptCompile Include="src\app\pages\log.ts" />
     <TypeScriptCompile Include="src\app\pages\log\entry.ts" />
     <TypeScriptCompile Include="src\lib\edit\multiList.tsx" />
+    <TypeScriptCompile Include="src\lib\edit\text\text.tsx" />
     <TypeScriptCompile Include="src\lib\http\browser.ts" />
     <TypeScriptCompile Include="src\lib\http\config.ts" />
     <TypeScriptCompile Include="src\pages\admin.tsx" />
@@ -184,6 +187,7 @@
     <Content Include="src\pages\admin\rules.scss" />
     <Content Include="src\pages\admin\security.scss" />
     <Content Include="src\pages\admin\sources.scss" />
+    <Content Include="src\lib\edit\text\text.scss" />
     <None Include="src\pages\edit\exception.scss" />
     <None Include="src\pages\admin.scss" />
     <None Include="src\pages\admin\devices.scss" />
@@ -220,7 +224,7 @@
     <Content Include="ui\images\faq\endchange.png" />
     <None Include="src\pages\edit\job.scss" />
     <None Include="src\common\field.scss" />
-    <None Include="src\lib\edit\text\text.scss" />
+    <None Include="src\lib\edit\number\number.scss" />
     <None Include="src\lib\edit\text\list.scss" />
     <None Include="src\lib\edit\boolean\flag.scss" />
     <None Include="src\pages\edit\channel.scss" />
@@ -402,7 +406,7 @@
     <TypeScriptCompile Include="src\lib\edit\number\slider.tsx" />
     <TypeScriptCompile Include="src\pages\edit\schedule.tsx" />
     <TypeScriptCompile Include="src\lib\edit\text\list.tsx" />
-    <TypeScriptCompile Include="src\lib\edit\text\text.tsx" />
+    <TypeScriptCompile Include="src\lib\edit\number\number.tsx" />
     <TypeScriptCompile Include="src\lib\edit\datetime\time.tsx" />
     <TypeScriptCompile Include="src\lib\reactUi.tsx" />
     <TypeScriptCompile Include="src\lib\router.tsx" />
