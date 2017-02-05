@@ -1,4 +1,7 @@
 ﻿@import "../../../content/vars";
 
 .vcrnet-admin-guide {
+    .vcrnet-editfield > div:first-child {
+        width: auto;
+    }
 }

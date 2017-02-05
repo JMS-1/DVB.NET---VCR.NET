@@ -1,2 +1,6 @@
 ﻿.jmslib-editmultibuttonlist {
+    button[data-jmslib-checked=yes] {
+        background-color: white;
+        font-weight: bold;
+    }
 }

@@ -51,7 +51,7 @@ namespace VCRNETClient.App.Admin {
         }
 
         private setSettings(settings: VCRServer.DirectorySettingsContract): void {
-            this.directories.values = settings.directories.map(d => <JMSLib.App.IUiValue<string>>{ display: d, value: d });
+            this.directories.setValues(settings.directories.map(d => <JMSLib.App.IUiValue<string>>{ display: d, value: d }));
             this.directories.value = [];
 
             this.pattern.data = settings;
@@ -92,7 +92,7 @@ namespace VCRNETClient.App.Admin {
 
             this.directories.value.forEach(v => selected[v] = true);
 
-            this.directories.values = this.directories.values.filter(v => !selected[v.value]);
+            this.directories.setValues(this.directories.values.filter(v => !selected[v.value]));
             this.directories.value = [];
         }
 
@@ -125,7 +125,11 @@ namespace VCRNETClient.App.Admin {
                         folder += `\\`;
 
                 if (!this.directories.values.some(v => v.value === folder)) {
-                    this.directories.values.push({ display: folder, value: folder });
+                    var values: JMSLib.App.IUiValue<string>[] = this.directories.values;
+
+                    values.push({ display: folder, value: folder });
+
+                    this.directories.setValues(values);
 
                     this.refreshUi();
                 }
