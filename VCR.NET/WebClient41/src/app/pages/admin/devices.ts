@@ -26,5 +26,13 @@ namespace VCRNETClient.App.Admin {
 
             this.page.application.setBusy(false);
         }
+
+        refreshUi(): void {
+            this.devices.forEach(d => d.validate(this.defaultDevice.value));
+
+            this.defaultDevice.message = this.devices.some(d => d.active.message !== ``) ? `Dieses Gerät ist nicht für Aufzeichnungen vorgesehen` : ``;
+
+            super.refreshUi();
+        }
     }
 }

@@ -29,9 +29,20 @@ namespace VCRNETClient.App.Admin {
         constructor(profile: VCRServer.ProfileContract, onChange: () => void) {
             this.name = profile.name;
             this.active = new JMSLib.App.EditFlag(profile, "active", onChange, null);
-            this.priority = new JMSLib.App.EditNumber(profile, "priority", null, null);
-            this.decryption = new JMSLib.App.EditNumber(profile, "ciLimit", null, null);
-            this.sources = new JMSLib.App.EditNumber(profile, "sourceLimit", null, null);
+            this.priority = new JMSLib.App.EditNumber(profile, "priority", null, null, 0, 100);
+            this.decryption = new JMSLib.App.EditNumber(profile, "ciLimit", null, null, 0, 16);
+            this.sources = new JMSLib.App.EditNumber(profile, "sourceLimit", null, null, 1, 32);
+        }
+
+        validate(defaultDevice: string): void {
+            this.active.validate();
+            this.priority.validate();
+            this.decryption.validate();
+            this.sources.validate();
+
+            if (!this.active.value)
+                if (this.name === defaultDevice)
+                    this.active.message = `Das bevorzugte Geräteprofil muss auch für Aufzeichnungen verwendet werden.`;
         }
     }
 }
