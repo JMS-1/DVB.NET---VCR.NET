@@ -110,6 +110,7 @@
     <TypeScriptCompile Include="src\app\pages\log.ts" />
     <TypeScriptCompile Include="src\app\pages\log\entry.ts" />
     <TypeScriptCompile Include="src\lib\edit\multiButtonList.tsx" />
+    <TypeScriptCompile Include="src\lib\edit\multiList.ts" />
     <TypeScriptCompile Include="src\lib\edit\multiList.tsx" />
     <TypeScriptCompile Include="src\lib\edit\text\text.tsx" />
     <TypeScriptCompile Include="src\lib\http\browser.ts" />

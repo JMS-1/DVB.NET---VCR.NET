@@ -88,12 +88,7 @@ namespace VCRNETClient.App.Admin {
         }
 
         private removeDirectories(): void {
-            var selected = {};
-
-            this.directories.value.forEach(v => selected[v] = true);
-
-            this.directories.setValues(this.directories.values.filter(v => !selected[v.value]));
-            this.directories.value = [];
+            this.directories.removeSelected();
         }
 
         private onShareChanged(): void {

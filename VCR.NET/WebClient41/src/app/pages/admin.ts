@@ -1,4 +1,5 @@
 ﻿/// <reference path="page.ts" />
+/// <reference path="../../lib/dateTimeFormatter.ts" />
 
 namespace VCRNETClient.App {
 
@@ -58,6 +59,15 @@ namespace VCRNETClient.App {
     }
 
     export class AdminPage extends Page implements IAdminPage {
+
+        static readonly hoursOfDay = (() => {
+            var hours: JMSLib.App.IUiValue<number>[] = [];
+
+            for (var i = 0; i < 24; i++)
+                hours.push({ value: i, display: JMSLib.App.DateFormatter.formatNumber(i) });
+
+            return hours;
+        })();
 
         private static _windowsGroups: JMSLib.App.IHttpPromise<JMSLib.App.IUiValue<string>[]>;
 

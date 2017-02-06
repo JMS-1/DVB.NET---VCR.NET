@@ -1,24 +1,18 @@
 ﻿/// <reference path="../admin.ts" />
-/// <reference path="../../../lib/dateTimeFormatter.ts" />
 
 namespace VCRNETClient.App.Admin {
 
     export interface IAdminGuidePage extends IAdminSection {
         readonly hours: JMSLib.App.IMultiValueFromList<number>;
+
+        readonly sources: JMSLib.App.IMultiValueFromList<string>;
     }
 
     export class GuideSection extends AdminSection implements IAdminGuidePage {
 
-        static readonly _hours = (() => {
-            var hours: JMSLib.App.IUiValue<number>[] = [];
+        readonly hours = new JMSLib.App.SelectFromList<number>({}, "hours", null, "Uhrzeiten", AdminPage.hoursOfDay);
 
-            for (var i = 0; i < 24; i++)
-                hours.push({ value: i, display: JMSLib.App.DateFormatter.formatNumber(i) });
-
-            return hours;
-        })();
-
-        readonly hours = new JMSLib.App.SelectFromList<number>({}, "hours", null, "Uhrzeiten", GuideSection._hours);
+        readonly sources = new JMSLib.App.SelectFromList<string>({ list: [] }, "list", null, null, []);
 
         reset(): void {
             VCRServer.getGuideSettings().then(settings => this.setSettings(settings));
@@ -26,6 +20,9 @@ namespace VCRNETClient.App.Admin {
 
         private setSettings(settings: VCRServer.GuideSettingsContract): void {
             this.hours.data = settings;
+
+            this.sources.setValues(settings.sources.map(s => <JMSLib.App.IUiValue<string>>{ value: s, display: s }));
+            this.sources.value = [];
 
             this.page.application.setBusy(false);
         }
