@@ -2,9 +2,13 @@
 
 namespace JMSLib.ReactUi {
 
-    export class EditMultiValueList extends ComponentWithSite<App.IMultiValueFromList<any>>  {
+    export interface IEditMultiValueList extends IComponent<App.IMultiValueFromList<any>> {
+        items: number;
+    }
+
+    export class EditMultiValueList extends ComponentExWithSite<App.IMultiValueFromList<any>, IEditMultiValueList>  {
         render(): JSX.Element {
-            return <select className="jmslib-editmultilist" multiple={true} value={this.props.noui.value} onChange={ev => this.onChange(ev)} >
+            return <select className="jmslib-editmultilist" multiple={true} size={this.props.items} value={this.props.noui.value} onChange={ev => this.onChange(ev)} >
                 {this.props.noui.values.map(v => <option key={v.display} value={v.value}>{v.display}</option>)}
             </select>;
         }

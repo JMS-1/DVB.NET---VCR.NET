@@ -1,6 +1,15 @@
 ﻿@import "../../../content/vars";
 
 .vcrnet-admin-guide {
+    .jmslib-editmultilist {
+        display: inline-block;
+        margin-right: 10px;
+
+        +button{
+            vertical-align:top;
+        }
+    }
+
     .vcrnet-editfield > div:first-child {
         width: auto;
     }

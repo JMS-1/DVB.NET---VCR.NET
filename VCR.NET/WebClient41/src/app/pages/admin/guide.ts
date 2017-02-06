@@ -6,13 +6,17 @@ namespace VCRNETClient.App.Admin {
         readonly hours: JMSLib.App.IMultiValueFromList<number>;
 
         readonly sources: JMSLib.App.IMultiValueFromList<string>;
+
+        readonly remove: JMSLib.App.ICommand;
     }
 
     export class GuideSection extends AdminSection implements IAdminGuidePage {
 
         readonly hours = new JMSLib.App.SelectFromList<number>({}, "hours", null, "Uhrzeiten", AdminPage.hoursOfDay);
 
-        readonly sources = new JMSLib.App.SelectFromList<string>({ list: [] }, "list", null, null, []);
+        readonly sources = new JMSLib.App.SelectFromList<string>({ list: [] }, "list", () => this.refreshUi(), null, []);
+
+        readonly remove = new JMSLib.App.Command(() => this.removeSources(), "Entfernen", () => this.sources.value.length > 0);
 
         reset(): void {
             VCRServer.getGuideSettings().then(settings => this.setSettings(settings));
@@ -25,6 +29,16 @@ namespace VCRNETClient.App.Admin {
             this.sources.value = [];
 
             this.page.application.setBusy(false);
+
+            this.refreshUi();
+        }
+
+        private removeSources(): void {
+            var settings = <VCRServer.GuideSettingsContract>this.hours.data;
+
+            this.sources.removeSelected();
+
+            settings.sources = this.sources.allValues;
         }
     }
 }

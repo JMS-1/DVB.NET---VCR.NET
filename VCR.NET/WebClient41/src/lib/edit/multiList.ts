@@ -54,9 +54,7 @@ namespace JMSLib.App {
         }
 
         removeSelected(): void {
-            var selected = this.value;
-
-            this.setValues(this.values.filter(v => selected.every(s => s !== v.value)));
+            this.setValues(this.values.filter(v => !v.selected));
 
             this.value = [];
         }
