@@ -11,7 +11,11 @@ namespace VCRNETClient.App.Admin {
 
         readonly device: JMSLib.App.IValidateStringFromList;
 
+        readonly source: IChannelSelector;
+
         readonly remove: JMSLib.App.ICommand;
+
+        readonly add: JMSLib.App.ICommand;
     }
 
     export class GuideSection extends AdminSection implements IAdminGuidePage {
@@ -26,7 +30,19 @@ namespace VCRNETClient.App.Admin {
 
         readonly device = new JMSLib.App.EditStringFromList({}, "value", () => this.onDeviceChanged(), "Quellen des Gerätes", true, []);
 
+        readonly source: ChannelEditor;
+
+        readonly add = new JMSLib.App.Command(() => this.addSource(), "Hinzufügen", () => this.source.value && (this.sources.allValues.indexOf(this.source.value) < 0));
+
+        constructor(page: AdminPage) {
+            super(page);
+
+            this.source = new ChannelEditor({}, "value", this.page.application.profile.recentSources || [], () => this.refreshUi());
+        }
+
         reset(): void {
+            this.source.setSources([], true);
+
             VCRServer.getGuideSettings().then(settings => this.setSettings(settings));
         }
 
@@ -46,20 +62,43 @@ namespace VCRNETClient.App.Admin {
             if (this.device.allowedValues.length > 0)
                 this.device.value = this.device.allowedValues[0].value;
 
-            this.page.application.isBusy = false;
-
-            this.refreshUi();
+            this.loadSources();
         }
 
         private onDeviceChanged(): void {
             if (this.page.application.isBusy)
                 return;
+
+            this.loadSources();
+        }
+
+        private loadSources(): void {
+            VCRServer.ProfileSourcesCache.getSources(this.device.value).then(sources => {
+                this.source.setSources(sources, false);
+                this.source.value = ``;
+
+                this.page.application.isBusy = false;
+
+                this.refreshUi();
+            });
         }
 
         private removeSources(): void {
+            this.sources.removeSelected();
+
             var settings = <VCRServer.GuideSettingsContract>this.hours.data;
 
-            this.sources.removeSelected();
+            settings.sources = this.sources.allValues;
+        }
+
+        private addSource(): void {
+            var source = this.source.value;
+
+            this.sources.addValue({ value: source, display: source });
+
+            this.source.value = ``;
+
+            var settings = <VCRServer.GuideSettingsContract>this.hours.data;
 
             settings.sources = this.sources.allValues;
         }

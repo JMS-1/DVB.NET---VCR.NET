@@ -141,7 +141,7 @@ namespace VCRNETClient.App {
         private loadSources(): JMSLib.App.IHttpPromise<VCRServer.SourceEntry[]> {
             var profile = this.job.device.value;
 
-            return VCRServer.ProfileSourcesCache.getPromise(profile).then(sources => {
+            return VCRServer.ProfileSourcesCache.getSources(profile).then(sources => {
                 if (this.job.device.value === profile) {
                     this._sources = sources;
 

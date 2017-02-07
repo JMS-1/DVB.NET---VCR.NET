@@ -952,7 +952,7 @@ module VCRServer {
         private static promises: { [device: string]: JMSLib.App.Promise<SourceEntry[], JMSLib.App.IHttpErrorInformation> } = {};
 
         // Fordert die Quellen eines Geräteprofils an.
-        static getPromise(profileName: string): JMSLib.App.IHttpPromise<SourceEntry[]> {
+        static getSources(profileName: string): JMSLib.App.IHttpPromise<SourceEntry[]> {
             // Eventuell haben wir das schon einmal gemacht
             var promise = ProfileSourcesCache.promises[profileName];
             if (!promise) {

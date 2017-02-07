@@ -49,6 +49,12 @@ namespace JMSLib.App {
             this._values = values.map(v => new SelectableValue<TValueType>(v, this));
         }
 
+        addValue(value: IUiValue<TValueType>): void {
+            this._values.push(new SelectableValue<TValueType>(value, this));
+
+            this.refresh();
+        }
+
         get allValues(): TValueType[] {
             return this.values.map(v => v.value);
         }

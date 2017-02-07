@@ -3,7 +3,7 @@
 namespace VCRNETClient.Ui {
 
     // Die React.Js Anzeige zur Senderauswahl.
-    export class EditChannel extends JMSLib.ReactUi.ComponentWithSite<App.Edit.IChannelSelector> implements JMSLib.App.ISite {
+    export class EditChannel extends JMSLib.ReactUi.ComponentWithSite<App.IChannelSelector> implements JMSLib.App.ISite {
         // Anzeige erstellen.
         render(): JSX.Element {
             return <div className="vcrnet-editchannel">

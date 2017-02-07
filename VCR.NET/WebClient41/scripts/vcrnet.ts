@@ -567,7 +567,7 @@ class Page {
             $.each(profiles, (index: number, profile: VCRServer.ProfileInfoContract) => {
                 target.append(new Option(profile.name));
 
-                VCRServer.ProfileSourcesCache.getPromise(profile.name).then(sources => this.registerAsyncCall());
+                VCRServer.ProfileSourcesCache.getSources(profile.name).then(sources => this.registerAsyncCall());
             });
 
             whenDone();
