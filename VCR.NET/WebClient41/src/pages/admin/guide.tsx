@@ -11,6 +11,10 @@ namespace VCRNETClient.Ui {
                         <JMSLib.ReactUi.EditMultiValueList noui={this.props.noui.sources} items={10} />
                         <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.remove} />
                     </div>
+                    <JMSLib.ReactUi.EditBoolean noui={this.props.noui.ukTv} />
+                    <Field page={this.props.noui.page} label={`${this.props.noui.device.text}:`}>
+                        <JMSLib.ReactUi.EditTextWithList noui={this.props.noui.device} />
+                    </Field>
                     <Field page={this.props.noui.page} label={`${this.props.noui.hours.text}:`} >
                         <JMSLib.ReactUi.EditMultiButtonList noui={this.props.noui.hours} />
                     </Field>
