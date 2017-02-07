@@ -3,6 +3,8 @@
 namespace VCRNETClient.App.Admin {
 
     export interface IAdminGuidePage extends IAdminSection {
+        readonly isActive: JMSLib.App.IValidatedFlag;
+
         readonly hours: JMSLib.App.IMultiValueFromList<number>;
 
         readonly sources: JMSLib.App.IMultiValueFromList<string>;
@@ -16,9 +18,17 @@ namespace VCRNETClient.App.Admin {
         readonly remove: JMSLib.App.ICommand;
 
         readonly add: JMSLib.App.ICommand;
+
+        readonly duration: JMSLib.App.IValidatedNumber;
+
+        readonly delay: JMSLib.App.IValidatedNumber;
+
+        readonly latency: JMSLib.App.IValidatedNumber;
     }
 
     export class GuideSection extends AdminSection implements IAdminGuidePage {
+
+        readonly isActive = new JMSLib.App.EditFlag({}, "value", () => this.refreshUi(), "Aktualisierung aktivieren");
 
         readonly hours = new JMSLib.App.SelectFromList<number>({}, "hours", null, "Uhrzeiten", AdminPage.hoursOfDay);
 
@@ -34,6 +44,12 @@ namespace VCRNETClient.App.Admin {
 
         readonly add = new JMSLib.App.Command(() => this.addSource(), "Hinzufügen", () => this.source.value && (this.sources.allValues.indexOf(this.source.value) < 0));
 
+        readonly duration = new JMSLib.App.EditNumber({}, "duration", null, "Maximale Laufzeit einer Aktualisierung in Minuten", true, 5, 55);
+
+        readonly delay = new JMSLib.App.EditNumber({}, "minDelay", null, "Wartezeit zwischen zwei Aktualisierungen in Stunden (optional)", false, 1, 23);
+
+        readonly latency = new JMSLib.App.EditNumber({}, "joinHours", null, "Latenzzeit für vorgezogene Aktualisierungen in Stunden (optional)", false, 1, 23);
+
         constructor(page: AdminPage) {
             super(page);
 
@@ -47,11 +63,20 @@ namespace VCRNETClient.App.Admin {
         }
 
         private setSettings(settings: VCRServer.GuideSettingsContract): void {
+            this.duration.data = settings;
+            this.latency.data = settings;
             this.hours.data = settings;
+            this.delay.data = settings;
             this.ukTv.data = settings;
 
             this.sources.setValues(settings.sources.map(s => <JMSLib.App.IUiValue<string>>{ value: s, display: s }));
             this.sources.value = [];
+
+            this.duration.validate();
+            this.latency.validate();
+            this.delay.validate();
+
+            this.isActive.value = (settings.duration > 0);
 
             VCRServer.ProfileCache.getAllProfiles().then(profiles => this.setProfiles(profiles));
         }

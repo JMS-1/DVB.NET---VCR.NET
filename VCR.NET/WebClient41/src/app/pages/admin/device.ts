@@ -29,9 +29,9 @@ namespace VCRNETClient.App.Admin {
         constructor(profile: VCRServer.ProfileContract, onChange: () => void) {
             this.name = profile.name;
             this.active = new JMSLib.App.EditFlag(profile, "active", onChange, null);
-            this.priority = new JMSLib.App.EditNumber(profile, "priority", null, null, 0, 100);
-            this.decryption = new JMSLib.App.EditNumber(profile, "ciLimit", null, null, 0, 16);
-            this.sources = new JMSLib.App.EditNumber(profile, "sourceLimit", null, null, 1, 32);
+            this.priority = new JMSLib.App.EditNumber(profile, "priority", null, null, true, 0, 100);
+            this.decryption = new JMSLib.App.EditNumber(profile, "ciLimit", null, null, true, 0, 16);
+            this.sources = new JMSLib.App.EditNumber(profile, "sourceLimit", null, null, true, 1, 32);
         }
 
         validate(defaultDevice: string): void {

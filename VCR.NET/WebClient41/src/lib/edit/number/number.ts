@@ -12,7 +12,7 @@ namespace JMSLib.App {
         private static readonly _positiveNumber = /^(0+|((0+)?[1-9][0-9]{0,5}))$/;
 
         // Legt eine neue Verwaltung an.
-        constructor(data: any, prop: string, onChange: () => void, name: string, private _min?: number, private _max?: number) {
+        constructor(data: any, prop: string, onChange: () => void, name: string, private _isRequired: boolean = true, private _min?: number, private _max?: number) {
             super(data, prop, onChange, name);
         }
 
@@ -20,7 +20,7 @@ namespace JMSLib.App {
 
         get rawValue(): string {
             if (this._rawInput === undefined)
-                return this.value.toString();
+                return (this.value === null) ? `` : this.value.toString();
             else
                 return this._rawInput;
         }
@@ -28,7 +28,11 @@ namespace JMSLib.App {
         set rawValue(newValue: string) {
             var test = (newValue || ``).trim();
 
-            if (EditNumber._positiveNumber.test(test)) {
+            if ((test.length < 1) && !this._isRequired) {
+                this._rawInput = undefined;
+                this.value = null;
+            }
+            else if (EditNumber._positiveNumber.test(test)) {
                 this._rawInput = undefined;
                 this.value = parseInt(test);
             }
@@ -47,11 +51,18 @@ namespace JMSLib.App {
                 return;
 
             if (this._rawInput !== undefined)
-                this.message = `Ungültige Eingabe`;
+                this.message = `Ungültige Zahl`;
+
+            else if (this.value === null) {
+                if (this._isRequired)
+                    this.message = `Es muss eine Zahl eingegeben werden`;
+            }
+
             else if ((this._min !== undefined) && (this.value < this._min))
-                this.message = `Der Wert muss mindestens ${this._min} sein`;
+                this.message = `Die Zahl muss mindestens ${this._min} sein`;
+
             else if ((this._max !== undefined) && (this.value > this._max))
-                this.message = `Der Wert darf höchstens ${this._max} sein`;
+                this.message = `Die Zahl darf höchstens ${this._max} sein`;
         }
     }
 }
