@@ -68,7 +68,7 @@ namespace VCRNETClient.App.Admin {
             this.userGroups.data = this.adminGroups.data = security;
 
             // Bedienung durch den Anwender freischalten.
-            this.page.application.setBusy(false);
+            this.page.application.isBusy = false;
         }
     }
 }

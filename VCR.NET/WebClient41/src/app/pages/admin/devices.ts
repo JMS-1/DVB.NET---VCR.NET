@@ -30,7 +30,7 @@ namespace VCRNETClient.App.Admin {
 
             this.refreshUi();
 
-            this.page.application.setBusy(false);
+            this.page.application.isBusy = false;
         }
 
         refreshUi(): void {

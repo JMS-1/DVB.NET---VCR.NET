@@ -47,13 +47,13 @@ namespace VCRNETClient.Ui {
         }
 
         render(): JSX.Element {
-            var title = this._application.getTitle();
+            var title = this._application.title;
             var page = this._application.page;
 
             if (document.title !== title)
                 document.title = title;
 
-            if (this._application.getIsBusy())
+            if (this._application.isBusy)
                 return <div className="vcrnet-main">
                     <h1>(Bitte etwas Geduld)</h1>
                 </div>;

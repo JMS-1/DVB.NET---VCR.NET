@@ -104,7 +104,7 @@ namespace VCRNETClient.App {
 
                 this._entries = entries.map(e => new Log.LogEntry(e, toggleDetail));
 
-                this.application.setBusy(false);
+                this.application.isBusy = false;
 
                 this.refreshUi();
             });

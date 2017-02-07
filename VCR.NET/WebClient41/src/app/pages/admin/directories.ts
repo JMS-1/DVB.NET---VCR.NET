@@ -69,7 +69,7 @@ namespace VCRNETClient.App.Admin {
 
             this.refreshUi();
 
-            this.page.application.setBusy(false);
+            this.page.application.isBusy = false;
         }
 
         private doBrowse(): void {

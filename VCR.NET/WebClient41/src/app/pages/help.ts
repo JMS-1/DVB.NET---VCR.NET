@@ -33,7 +33,7 @@ namespace VCRNETClient.App {
             this.section = sections[0];
 
             // Daten werden dabei nicht benötigt.
-            setTimeout(() => this.application.setBusy(false), 0);
+            setTimeout(() => this.application.isBusy = false, 0);
         }
 
         // Meldet die aktuelle Überschrift.

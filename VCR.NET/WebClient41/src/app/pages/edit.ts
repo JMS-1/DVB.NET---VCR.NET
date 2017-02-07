@@ -135,7 +135,7 @@ namespace VCRNETClient.App {
             this.schedule = new Edit.ScheduleEditor(this, info.schedule, favorites, this._onChanged);
 
             // Quellen für das aktuelle Geräteprofil laden und die Seite für den Anwender freigeben.
-            this.loadSources().then(() => this.application.setBusy(false));
+            this.loadSources().then(() => this.application.isBusy = false);
         }
 
         private loadSources(): JMSLib.App.IHttpPromise<VCRServer.SourceEntry[]> {

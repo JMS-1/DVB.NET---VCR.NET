@@ -46,13 +46,13 @@ namespace VCRNETClient.App.Admin {
             if (this.device.allowedValues.length > 0)
                 this.device.value = this.device.allowedValues[0].value;
 
-            this.page.application.setBusy(false);
+            this.page.application.isBusy = false;
 
             this.refreshUi();
         }
 
         private onDeviceChanged(): void {
-            if (this.page.application.getIsBusy())
+            if (this.page.application.isBusy)
                 return;
         }
 

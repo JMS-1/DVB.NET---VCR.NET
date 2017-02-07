@@ -57,7 +57,7 @@
         // Initial sind wir gesperrt.
         private _busy = true;
 
-        getIsBusy(): boolean {
+        get isBusy(): boolean {
             return this._busy;
         }
 
@@ -95,7 +95,7 @@
                 return;
 
             // Alle Startvorgänge sind abgeschlossen
-            this.setBusy(false);
+            this.isBusy = false;
 
             // Wir können nun die Standardseite aktivieren
             this._site.onFirstStart();
@@ -106,7 +106,7 @@
         }
 
         switchPage(name: string, sections: string[]): boolean {
-            this.setBusy(true);
+            this.isBusy = true;
 
             // Den Singleton der gewünschten Seite ermitteln.
             var page = this._pageMapper[name] || this.homePage;
@@ -120,7 +120,7 @@
             return true;
         }
 
-        setBusy(isBusy: boolean): void {
+        set isBusy(isBusy: boolean) {
             if (isBusy === this._busy)
                 return;
 
@@ -130,7 +130,7 @@
                 this._site.refreshUi();
         }
 
-        getTitle(): string {
+        get title(): string {
             var title = "VCR.NET Recording Service";
             var version = this.version;
 

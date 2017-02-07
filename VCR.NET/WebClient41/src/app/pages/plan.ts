@@ -120,7 +120,7 @@ namespace VCRNETClient.App {
                 this.fireRefresh();
 
                 // Die Seite kann nun normal verwendet werden.
-                this.application.setBusy(false);
+                this.application.isBusy = false;
             });
         }
 

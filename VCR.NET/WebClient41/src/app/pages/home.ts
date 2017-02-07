@@ -17,14 +17,14 @@ namespace VCRNETClient.App {
 
         // Zeigt die Startseite (erneut) an.
         reset(sections: string[]): void {
-            setTimeout(() => this.application.setBusy(false), 0);
+            setTimeout(() => this.application.isBusy = false, 0);
         }
 
         // Meldet die Überschrift der Startseite.
         get title(): string {
             // Der Titel wird dem aktuellen Kenntnisstand angepasst.
             var version = this.application.version;
-            var title = this.application.getTitle();
+            var title = this.application.title;
 
             if (version)
                 return `${title} (${version.msiVersion})`;

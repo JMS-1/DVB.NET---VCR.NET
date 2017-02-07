@@ -58,7 +58,7 @@ namespace VCRNETClient.App {
                     return job;
                 });
 
-                this.application.setBusy(false);
+                this.application.isBusy = false;
             });
         }
 

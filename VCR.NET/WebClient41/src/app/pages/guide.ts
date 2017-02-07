@@ -370,7 +370,7 @@ namespace VCRNETClient.App {
                 this._hasMore = items && (items.length > this._filter.size);
 
                 // Anwendung zur Bedienung freischalten.
-                this.application.setBusy(false);
+                this.application.isBusy = false;
 
                 // Anzeige aktualisieren.
                 this.refreshUi();
