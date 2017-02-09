@@ -103,6 +103,7 @@
     <TypeScriptCompile Include="src\app\pages\admin\devices.ts" />
     <TypeScriptCompile Include="src\app\pages\admin\directories.ts" />
     <TypeScriptCompile Include="src\app\pages\admin\guide.ts" />
+    <TypeScriptCompile Include="src\app\pages\admin\scan.ts" />
     <TypeScriptCompile Include="src\app\pages\admin\security.ts" />
     <TypeScriptCompile Include="src\app\pages\guide.ts" />
     <TypeScriptCompile Include="src\app\pages\guide\entry.ts" />

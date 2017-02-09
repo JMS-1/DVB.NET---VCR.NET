@@ -22,6 +22,9 @@
 
         // Benachrichtigt die Oberfläche zur Aktualisierung der Anzeige.
         protected refresh(): void {
+            if (this._onChange)
+                this._onChange();
+
             if (this._site)
                 this._site.refreshUi();
         }
@@ -59,11 +62,7 @@
             // Neuen Wert ins Modell übertragen.
             this.data[this._prop] = newValue;
 
-            // Modelländerung melden.
-            if (this._onChange)
-                this._onChange();
-
-            // Oberfläche aktualisieren.
+            // Modelländerung melden und Oberfläche aktualisieren.
             this.refresh();
         }
 
@@ -97,9 +96,6 @@
 
         set data(newValue: any) {
             this.setData(newValue);
-
-            if (this._onChange)
-                this._onChange();
 
             this.refresh();
         }

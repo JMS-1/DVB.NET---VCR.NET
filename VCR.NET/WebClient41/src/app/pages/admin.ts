@@ -22,9 +22,6 @@ namespace VCRNETClient.App {
         abstract reset(): void;
     }
 
-    export interface IAdminSourcesPage extends IPage {
-    }
-
     export interface IAdminRulesPage extends IPage {
     }
 
@@ -86,9 +83,9 @@ namespace VCRNETClient.App {
             guide: { display: "Programmzeitschrift", page: null, factory: Admin.GuideSection },
             security: { display: "Sicherheit", page: null, factory: Admin.SecuritySection },
             devices: { display: "Geräte", page: null, factory: Admin.DevicesSection },
+            sources: { display: "Quellen", page: null, factory: Admin.ScanSection },
             rules: { display: "Planungsregeln", page: null, factory: null },
             other: { display: "Sonstiges", page: null, factory: null },
-            sources: { display: "Quellen", page: null, factory: null },
         };
 
         constructor(application: Application) {
@@ -124,7 +121,7 @@ namespace VCRNETClient.App {
             return promise.then(restartRequired => {
                 if (restartRequired === true)
                     alert(`RESTART`);
-                else if (restartRequired === false)
+                else if (restartRequired !== false)
                     alert(`FAILED`);
 
                 this.application.gotoPage(null);

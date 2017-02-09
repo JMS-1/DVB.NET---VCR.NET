@@ -24,6 +24,8 @@ namespace VCRNETClient.App.Admin {
         readonly delay: JMSLib.App.IValidatedNumber;
 
         readonly latency: JMSLib.App.IValidatedNumber;
+
+        readonly update: JMSLib.App.ICommand;
     }
 
     export class GuideSection extends AdminSection implements IAdminGuidePage {
@@ -44,11 +46,13 @@ namespace VCRNETClient.App.Admin {
 
         readonly add = new JMSLib.App.Command(() => this.addSource(), "Hinzufügen", () => this.source.value && (this.sources.allValues.indexOf(this.source.value) < 0));
 
-        readonly duration = new JMSLib.App.EditNumber({}, "duration", null, "Maximale Laufzeit einer Aktualisierung in Minuten", true, 5, 55);
+        readonly duration = new JMSLib.App.EditNumber({}, "duration", () => this.refreshUi(), "Maximale Laufzeit einer Aktualisierung in Minuten", true, 5, 55);
 
-        readonly delay = new JMSLib.App.EditNumber({}, "minDelay", null, "Wartezeit zwischen zwei Aktualisierungen in Stunden (optional)", false, 1, 23);
+        readonly delay = new JMSLib.App.EditNumber({}, "minDelay", () => this.refreshUi(), "Wartezeit zwischen zwei Aktualisierungen in Stunden (optional)", false, 1, 23);
 
-        readonly latency = new JMSLib.App.EditNumber({}, "joinHours", null, "Latenzzeit für vorgezogene Aktualisierungen in Stunden (optional)", false, 1, 23);
+        readonly latency = new JMSLib.App.EditNumber({}, "joinHours", () => this.refreshUi(), "Latenzzeit für vorgezogene Aktualisierungen in Stunden (optional)", false, 1, 23);
+
+        readonly update = new JMSLib.App.Command(() => this.save(), "Ändern", () => this.isValid);
 
         constructor(page: AdminPage) {
             super(page);
@@ -79,6 +83,22 @@ namespace VCRNETClient.App.Admin {
             this.isActive.value = (settings.duration > 0);
 
             VCRServer.ProfileCache.getAllProfiles().then(profiles => this.setProfiles(profiles));
+        }
+
+        private get isValid(): boolean {
+            if (!this.isActive.value)
+                return true;
+
+            if (this.duration.message !== ``)
+                return false;
+
+            if (this.latency.message !== ``)
+                return false;
+
+            if (this.delay.message !== ``)
+                return false;
+
+            return true;
         }
 
         private setProfiles(profiles: VCRServer.ProfileInfoContract[]) {
@@ -126,6 +146,15 @@ namespace VCRNETClient.App.Admin {
             var settings = <VCRServer.GuideSettingsContract>this.hours.data;
 
             settings.sources = this.sources.allValues;
+        }
+
+        private save(): JMSLib.App.IHttpPromise<void> {
+            var settings = <VCRServer.GuideSettingsContract>this.hours.data;
+
+            if (!this.isActive.value)
+                settings.duration = 0;
+
+            return this.page.update(VCRServer.setGuideSettings(settings));
         }
     }
 }

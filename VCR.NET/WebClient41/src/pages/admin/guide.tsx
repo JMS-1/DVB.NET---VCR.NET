@@ -16,16 +16,19 @@ namespace VCRNETClient.Ui {
                 </div>
                 <JMSLib.ReactUi.EditBoolean noui={this.props.noui.isActive} />
                 {this.props.noui.isActive.value ? <form>
+                    {this.getSourceHelp()}
                     <div>
                         <JMSLib.ReactUi.EditMultiValueList noui={this.props.noui.sources} items={10} />
                         <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.remove} />
                     </div>
+                    {this.getUkHelp()}
                     <JMSLib.ReactUi.EditBoolean noui={this.props.noui.ukTv} />
                     <Field page={this.props.noui.page} label={`${this.props.noui.device.text}:`}>
                         <JMSLib.ReactUi.EditTextWithList noui={this.props.noui.device} />
                         <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.add} />
                     </Field>
                     <EditChannel noui={this.props.noui.source} />
+                    {this.getDurationHelp()}
                     <Field page={this.props.noui.page} label={`${this.props.noui.duration.text}:`} >
                         <JMSLib.ReactUi.EditNumber noui={this.props.noui.duration} chars={5} />
                     </Field>
@@ -39,7 +42,63 @@ namespace VCRNETClient.Ui {
                         <JMSLib.ReactUi.EditNumber noui={this.props.noui.latency} chars={5} />
                     </Field>
                 </form> : null}
+                {this.getUpdateHelp()}
+                <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.update} />
             </div>;
+        }
+
+        private getUpdateHelp(): JSX.Element {
+            return <InlineHelp title="Erläuterungen zur Bedienung">
+                Alle Änderungen müssen durch das explizite Betätigen der entsprechenden Schaltfläche
+                bestätigt werden und werden auch damit erst übernommen. Änderungen an der Konfiguration
+                der Aktualisierung der Programmzeitschrift erfordern keinen Neustart des VCR.NET Dienstes.
+            </InlineHelp>;
+        }
+
+        private getSourceHelp(): JSX.Element {
+            return <InlineHelp title="Erläuterungen zur Bedienung">
+                Der VCR.NET Recording Service verwaltet eine geräteübergreifende Liste von Quellen, die in der
+                Programmzeitschrift zu berücksichtigen sind. Nach Auswahl von Quellen aus der Liste können diese
+                einfach daraus entfernt werden.
+            </InlineHelp>;
+        }
+
+        private getUkHelp(): JSX.Element {
+            return <InlineHelp title="Erläuterungen zur Bedienung">
+                Wenn auch Quellen zu britischen Sendern in der Liste enthalten sind, so muss auch die Option
+                aktiviert werden um die zugehörigen Vorschaudaten mit einzusammeln. Dies ist notwendig, da
+                hierfür andere technische Voraussetzungen beim Emfpang der Elektronischen Programmzeitschrift
+                gelten.
+                <br />
+                <br />
+                Sollen Quellen zur Liste hinzugeführt werden, so ist zuerst einmal das Gerät auszuwählen,
+                über das die gewünschten Quellen empfangen werden können. Danach können die von der Programmierung
+                neuer Aufzeichnungen her bekannten Mechanismen zur schnellen Auswahl der Quelle verwendet
+                werden.<HelpLink topic="sourcechooser" page={this.props.noui.page} />
+            </InlineHelp>;
+        }
+
+        private getDurationHelp(): JSX.Element {
+            return <InlineHelp title="Erläuterungen zur Bedienung">
+                Zur Planung der Aktualisierungen zwischen regulären Aufzeichnungen benötigt der VCR.NET
+                Recording Service eine zeitliche Begrenzung für die Ausführung der Aktualisierung. Wird
+                diese erreicht, so wird die Aktualisierung vorzeitig beendet und die Programmzeitschrift
+                ist eventuell unvollständig. Zu große Werte können dazu führen, dass Aktualisierungen
+                durch zeitliche Kollisionen mit regulären Aufzeichnungen später als geplant ausgeführt
+                werden, da reguläre Aufzeichnung immer vorrangig ausgeführt werden. Ein realistischer
+                Wert für die Laufzeit macht hier immer Sinn - kann die Aktualisierung in kürzerer Zeit
+                abgeschlossen werden, so wird der VCR.NET Recording Service diese auch zeitnah beenden -
+                das nutzt aber für die Aufzeichnungsplanung nichts.
+                <br />
+                <br />
+                Für die Aktualisierungen werden oft eine Reihe fester Uhrzeiten vorgegeben. Ergänzend oder
+                alternativ kann auch ein Zeitintervall vorgegeben werden, in dem Aktualisierungen durchgeführt
+                werden sollen - etwa alle 4 Stunden. Eine Besonderheit ist die zusätzliche Latenzzeit: hat
+                der VCR.NET Recording Service gerade eine Aufzeichnung ausgeführt und würde nun keines
+                der Geräte mehr nutzen, so kann eine anstehende Aktualisierung vorzogen werden, wenn die
+                vorherige Aktualisierung bereits mehr als das konfigurierte Intervall in der Vergangenheit
+                liegt.
+            </InlineHelp>;
         }
     }
 
