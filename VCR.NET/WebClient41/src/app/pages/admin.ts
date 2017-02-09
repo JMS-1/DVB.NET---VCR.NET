@@ -22,9 +22,6 @@ namespace VCRNETClient.App {
         abstract reset(): void;
     }
 
-    export interface IAdminRulesPage extends IPage {
-    }
-
     export interface IAdminOtherPage extends IPage {
     }
 
@@ -82,9 +79,9 @@ namespace VCRNETClient.App {
             directories: { display: "Verzeichnisse", page: null, factory: Admin.DirectoriesSection },
             guide: { display: "Programmzeitschrift", page: null, factory: Admin.GuideSection },
             security: { display: "Sicherheit", page: null, factory: Admin.SecuritySection },
+            rules: { display: "Planungsregeln", page: null, factory: Admin.RulesSection },
             devices: { display: "Geräte", page: null, factory: Admin.DevicesSection },
             sources: { display: "Quellen", page: null, factory: Admin.ScanSection },
-            rules: { display: "Planungsregeln", page: null, factory: null },
             other: { display: "Sonstiges", page: null, factory: null },
         };
 

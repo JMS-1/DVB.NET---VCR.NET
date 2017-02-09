@@ -31,6 +31,9 @@ namespace VCRNETClient.App.Admin {
 
         // Initialisiert die Pflegeumgebung.
         reset(): void {
+            // Fehleranzeige zurücksetzen.
+            this.update.message = ``;
+
             // Windows Kontogruppen einmalig anfordern.
             if (!SecuritySection._windowsGroups)
                 SecuritySection._windowsGroups = VCRServer.getWindowsGroups().then(names => {

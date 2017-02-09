@@ -103,6 +103,7 @@
     <TypeScriptCompile Include="src\app\pages\admin\devices.ts" />
     <TypeScriptCompile Include="src\app\pages\admin\directories.ts" />
     <TypeScriptCompile Include="src\app\pages\admin\guide.ts" />
+    <TypeScriptCompile Include="src\app\pages\admin\rules.ts" />
     <TypeScriptCompile Include="src\app\pages\admin\scan.ts" />
     <TypeScriptCompile Include="src\app\pages\admin\security.ts" />
     <TypeScriptCompile Include="src\app\pages\guide.ts" />
@@ -114,6 +115,7 @@
     <TypeScriptCompile Include="src\lib\edit\multiList.ts" />
     <TypeScriptCompile Include="src\lib\edit\multiList.tsx" />
     <TypeScriptCompile Include="src\lib\edit\text\text.tsx" />
+    <TypeScriptCompile Include="src\lib\edit\text\textarea.tsx" />
     <TypeScriptCompile Include="src\lib\http\browser.ts" />
     <TypeScriptCompile Include="src\lib\http\config.ts" />
     <TypeScriptCompile Include="src\pages\admin.tsx" />
@@ -186,6 +188,7 @@
     <Content Include="FAQ\controlcenter.html" />
     <None Include="src\lib\edit\multiList.scss" />
     <None Include="src\lib\edit\multiButtonList.scss" />
+    <None Include="src\lib\edit\text\textarea.scss" />
     <Content Include="src\pages\admin\directories.scss" />
     <Content Include="src\pages\admin\guide.scss" />
     <Content Include="src\pages\admin\other.scss" />

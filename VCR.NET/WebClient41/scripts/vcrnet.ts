@@ -3186,10 +3186,10 @@ class adminPage extends Page implements IPage {
             .then(data => { this.directory = data; return VCRServer.getProfileSettings(); })
             .then(data => { this.devices = data; return VCRServer.getGuideSettings(); })
             .then(data => { this.guide = data; return VCRServer.getSourceScanSettings(); })
-            .then(data => { this.scan = data; return JMSLib.TemplateLoader.load('adminDevices'); })
+            .then(data => { this.scan = data; return VCRServer.getSchedulerRules(); })
+            .then(data => { this.rules = data; return JMSLib.TemplateLoader.load('adminDevices'); })
             .then<any>((template: string) => { $('#devices').append($(template).find('#template').children()); return VCRServer.getOtherSettings(); })
-            .then<any>((data: VCRServer.OtherSettingsContract) => { this.other = data; return VCRServer.getSchedulerRules(); })
-            .then<any>((data: VCRServer.SchedulerRulesContract) => { this.rules = data; return JMSLib.TemplateLoader.load('adminRules'); })
+            .then<any>((data: VCRServer.OtherSettingsContract) => { this.other = data; return JMSLib.TemplateLoader.load('adminRules'); })
             .then<any>((template: string) => { $('#rules').append($(template).find('#template').children()); loadFinished(); });
 
         // Geräte laden

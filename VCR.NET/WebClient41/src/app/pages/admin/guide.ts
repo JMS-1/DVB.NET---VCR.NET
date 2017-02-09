@@ -61,6 +61,7 @@ namespace VCRNETClient.App.Admin {
         }
 
         reset(): void {
+            this.update.message = ``;
             this.source.setSources([], true);
 
             VCRServer.getGuideSettings().then(settings => this.setSettings(settings));

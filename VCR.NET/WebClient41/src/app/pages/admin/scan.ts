@@ -58,6 +58,8 @@ namespace VCRNETClient.App.Admin {
         }
 
         reset(): void {
+            this.update.message = ``;
+
             VCRServer.getSourceScanSettings().then(settings => this.setSettings(settings));
         }
 

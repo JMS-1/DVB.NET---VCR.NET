@@ -731,11 +731,12 @@ module VCRServer {
         });
     }
 
-    export function getSchedulerRules(): JQueryPromise<any> {
-        return $.ajax({
-            url: restRoot + 'configuration?rules',
-            dataType: 'json',
-        });
+    export function getSchedulerRules(): JMSLib.App.IHttpPromise<SchedulerRulesContract> {
+        return doUrlCall(`configuration?rules`);
+    }
+
+    export function setSchedulerRules(data: SchedulerRulesContract): JMSLib.App.IHttpPromise<boolean> {
+        return doUrlCall(`configuration?rules`, `PUT`, data);
     }
 
     export function getProtocolEntries(device: string, startDay: Date, endDay: Date): JMSLib.App.IHttpPromise<ProtocolEntryContract[]> {

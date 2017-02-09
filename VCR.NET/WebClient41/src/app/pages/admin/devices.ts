@@ -19,6 +19,8 @@ namespace VCRNETClient.App.Admin {
         devices: Device[] = [];
 
         reset(): void {
+            this.update.message = ``;
+
             VCRServer.getProfileSettings().then(settings => this.setProfiles(settings));
         }
 
