@@ -12,8 +12,11 @@ namespace JMSLib.App {
                         success(undefined);
                     else
                         success(JSON.parse(xhr.responseText));
-                else
-                    failure(xhr);
+                else {
+                    var errorInfo = JSON.parse(xhr.responseText);
+
+                    failure(<IHttpErrorInformation>{ message: errorInfo.Message || errorInfo.ExceptionMessage, details: errorInfo.MessageDetails });
+                }
             });
 
             xhr.open(method, webCallRoot + url);

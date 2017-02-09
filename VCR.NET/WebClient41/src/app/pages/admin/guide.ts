@@ -154,7 +154,7 @@ namespace VCRNETClient.App.Admin {
             if (!this.isActive.value)
                 settings.duration = 0;
 
-            return this.page.update(VCRServer.setGuideSettings(settings));
+            return this.page.update(VCRServer.setGuideSettings(settings), this.update);
         }
     }
 }

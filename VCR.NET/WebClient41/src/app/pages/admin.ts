@@ -117,14 +117,20 @@ namespace VCRNETClient.App {
                 sectionInfo.page.reset();
         }
 
-        update(promise: JMSLib.App.IHttpPromise<boolean>): JMSLib.App.IHttpPromise<void> {
+        update<TResponseType>(promise: JMSLib.App.IHttpPromise<boolean>, command: JMSLib.App.Command<TResponseType>): JMSLib.App.IHttpPromise<void> {
+            command.message = ``;
+
             return promise.then(restartRequired => {
                 if (restartRequired === true)
                     alert(`RESTART`);
                 else if (restartRequired !== false)
-                    alert(`FAILED`);
+                    command.message = `Ausführung zurzeit nicht möglich`;
+                else
+                    this.application.gotoPage(null);
+            }, error => {
+                command.message = error.message;
 
-                this.application.gotoPage(null);
+                return error;
             });
         }
 

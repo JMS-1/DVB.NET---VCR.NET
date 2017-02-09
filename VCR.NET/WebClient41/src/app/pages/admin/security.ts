@@ -51,7 +51,7 @@ namespace VCRNETClient.App.Admin {
         private save(): JMSLib.App.IHttpPromise<void> {
             var settings: VCRServer.SecuritySettingsContract = this.userGroups.data;
 
-            return this.page.update(VCRServer.setSecuritySettings(settings));
+            return this.page.update(VCRServer.setSecuritySettings(settings), this.update);
         }
 
         // Windows Kontogruppen in die Auswahllisten übernehmen.

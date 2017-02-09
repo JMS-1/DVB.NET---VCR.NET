@@ -48,7 +48,7 @@ namespace VCRNETClient.App.Admin {
         private save(): JMSLib.App.IHttpPromise<void> {
             var settings: VCRServer.ProfileSettingsContract = this.defaultDevice.data;
 
-            return this.page.update(VCRServer.setProfileSettings(settings));
+            return this.page.update(VCRServer.setProfileSettings(settings), this.update);
         }
     }
 }

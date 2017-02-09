@@ -112,7 +112,7 @@ namespace VCRNETClient.App.Admin {
             else if (this.mode.value === ScanSection._scanManual)
                 settings.interval = -1;
 
-            return this.page.update(VCRServer.setSourceScanSettings(settings));
+            return this.page.update(VCRServer.setSourceScanSettings(settings), this.update);
         }
     }
 }

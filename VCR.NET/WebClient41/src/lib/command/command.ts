@@ -13,6 +13,9 @@
 
         // Führt die Aktion aus.
         execute(): void;
+
+        // Zugehörige Fehlermeldung.
+        readonly message: string;
     }
 
     // Ui View Model zur Anzeige einer Aktion.
@@ -23,6 +26,22 @@
 
         // Die zugehörige Anzeige.
         site: ISite;
+
+        // Zugehörige Fehlermeldung.
+        private _message = ``;
+
+        get message(): string {
+            return this._message;
+        }
+
+        set message(newMessage: string) {
+            if (newMessage === this._message)
+                return;
+
+            this._message = newMessage;
+
+            this.refreshUi();
+        }
 
         // Erstellt eine neue Repräsentation.
         constructor(private _begin: () => (IHttpPromise<TResponseType> | void), public text: string, private _test?: () => boolean) {

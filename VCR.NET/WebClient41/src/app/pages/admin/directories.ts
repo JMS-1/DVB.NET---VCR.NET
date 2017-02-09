@@ -108,7 +108,7 @@ namespace VCRNETClient.App.Admin {
 
             settings.directories = this.directories.allValues;
 
-            return this.page.update(VCRServer.setDirectorySettings(settings));
+            return this.page.update(VCRServer.setDirectorySettings(settings), this.update);
         }
 
         private addDirectory(folder?: string): JMSLib.App.IHttpPromise<void> {

@@ -43,14 +43,12 @@
     }
 
     // Wertet eine Fehlermeldung von einem Web Dienst aus
-    export function dispatchErrorMessage(onError: (message: string) => void): (result: JQueryXHR) => void {
-        return (result: JQueryXHR) => {
-            var info: any = $.parseJSON(result.responseText);
-
-            onError(info.ExceptionMessage);
+    export function dispatchErrorMessage(onError: (message: string) => void): (result: JMSLib.App.IHttpErrorInformation) => void {
+        return (result: JMSLib.App.IHttpErrorInformation) => {
+            onError(result.message);
         }
     }
-    
+
     // Bereitet die Anzeige der Hilfe vor
     export function activateHelp(): void {
         $('.' + CSSClass.inlineHelp).accordion({

@@ -9,7 +9,8 @@ namespace JMSLib.ReactUi {
             return this.props.noui.isVisible ? <button
                 className={`jmslib-command${this.props.noui.isDangerous ? " jmslib-dangerous" : ""}`}
                 disabled={!this.props.noui.isEnabled}
-                onClick={ev => this.onClick(ev)}>
+                onClick={ev => this.onClick(ev)}
+                title={this.props.noui.message}>
                 {this.props.noui.text}
             </button> : null;
         }
