@@ -22,9 +22,6 @@ namespace VCRNETClient.App {
         abstract reset(): void;
     }
 
-    export interface IAdminOtherPage extends IPage {
-    }
-
     export interface IAdminSectionInfo<TPageType extends IAdminSection> {
         readonly display: string;
 
@@ -81,8 +78,8 @@ namespace VCRNETClient.App {
             security: { display: "Sicherheit", page: null, factory: Admin.SecuritySection },
             rules: { display: "Planungsregeln", page: null, factory: Admin.RulesSection },
             devices: { display: "Geräte", page: null, factory: Admin.DevicesSection },
+            other: { display: "Sonstiges", page: null, factory: Admin.OtherSection },
             sources: { display: "Quellen", page: null, factory: Admin.ScanSection },
-            other: { display: "Sonstiges", page: null, factory: null },
         };
 
         constructor(application: Application) {

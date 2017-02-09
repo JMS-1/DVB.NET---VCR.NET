@@ -3187,9 +3187,9 @@ class adminPage extends Page implements IPage {
             .then(data => { this.devices = data; return VCRServer.getGuideSettings(); })
             .then(data => { this.guide = data; return VCRServer.getSourceScanSettings(); })
             .then(data => { this.scan = data; return VCRServer.getSchedulerRules(); })
-            .then(data => { this.rules = data; return JMSLib.TemplateLoader.load('adminDevices'); })
-            .then<any>((template: string) => { $('#devices').append($(template).find('#template').children()); return VCRServer.getOtherSettings(); })
-            .then<any>((data: VCRServer.OtherSettingsContract) => { this.other = data; return JMSLib.TemplateLoader.load('adminRules'); })
+            .then(data => { this.rules = data; return VCRServer.getOtherSettings(); })
+            .then(data => { this.other = data; return JMSLib.TemplateLoader.load('adminDevices'); })
+            .then<any>((template: string) => { $('#devices').append($(template).find('#template').children()); return JMSLib.TemplateLoader.load('adminRules'); })
             .then<any>((template: string) => { $('#rules').append($(template).find('#template').children()); loadFinished(); });
 
         // Geräte laden

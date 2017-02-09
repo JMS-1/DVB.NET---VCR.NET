@@ -724,11 +724,12 @@ module VCRServer {
         return doUrlCall(`configuration?devices`, `PUT`, data);
     }
 
-    export function getOtherSettings(): JQueryPromise<any> {
-        return $.ajax({
-            url: restRoot + 'configuration?other',
-            dataType: 'json',
-        });
+    export function getOtherSettings(): JMSLib.App.IHttpPromise<OtherSettingsContract> {
+        return doUrlCall(`configuration?other`);
+    }
+
+    export function setOtherSettings(data: OtherSettingsContract): JMSLib.App.IHttpPromise<boolean> {
+        return doUrlCall(`configuration?other`, `PUT`, data);
     }
 
     export function getSchedulerRules(): JMSLib.App.IHttpPromise<SchedulerRulesContract> {

@@ -10,7 +10,7 @@ namespace VCRNETClient.Ui {
                 Aufzeichnungen für den Fall, dass mehrere DVB.NET Geräteprofile verwendet werden. Hier ist es
                 möglich, dieses Regelwerk<HelpLink topic="customschedule" page={this.props.noui.page} />
                 anzupassen - auf eigene Gefahr, versteht sich.
-                <JMSLib.ReactUi.EditTextArea noui={this.props.noui.rules} columns={80} rows={30} />
+                <JMSLib.ReactUi.EditTextArea noui={this.props.noui.rules} columns={100} rows={25} />
                 {this.getHelp()}
                 <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.update} />
             </div>;
