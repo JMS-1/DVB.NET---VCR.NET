@@ -130,7 +130,7 @@
     <TypeScriptCompile Include="src\lib\command\command.ts" />
     <TypeScriptCompile Include="src\lib\edit\boolean\flagButton.tsx" />
     <TypeScriptCompile Include="src\lib\edit\list.ts" />
-    <TypeScriptCompile Include="src\lib\edit\list.tsx" />
+    <TypeScriptCompile Include="src\lib\edit\buttonList.tsx" />
     <TypeScriptCompile Include="src\lib\localizable.ts" />
   </ItemGroup>
   <ItemGroup>
@@ -202,7 +202,7 @@
     <Content Include="src\lib\styles.css">
       <DependentUpon>styles.scss</DependentUpon>
     </Content>
-    <Content Include="src\lib\edit\list.scss" />
+    <Content Include="src\lib\edit\buttonList.scss" />
     <None Include="src\pages\guide\entry.scss" />
     <None Include="src\pages\guide\details.scss" />
     <None Include="src\pages\jobs.scss" />

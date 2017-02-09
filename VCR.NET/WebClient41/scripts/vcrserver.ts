@@ -708,11 +708,12 @@ module VCRServer {
         return doUrlCall(`configuration?guide`, `PUT`, data);
     }
 
-    export function getSourceScanSettings(): JQueryPromise<any> {
-        return $.ajax({
-            url: restRoot + 'configuration?scan',
-            dataType: 'json',
-        });
+    export function getSourceScanSettings(): JMSLib.App.IHttpPromise<SourceScanSettingsContract> {
+        return doUrlCall(`configuration?scan`);
+    }
+
+    export function setSourceScanSettings(data: SourceScanSettingsContract): JMSLib.App.IHttpPromise<boolean> {
+        return doUrlCall(`configuration?scan`, `PUT`, data);
     }
 
     export function getProfileSettings(): JMSLib.App.IHttpPromise<ProfileSettingsContract> {
