@@ -18,6 +18,8 @@ namespace VCRNETClient.App.Admin {
         readonly gapDays: JMSLib.App.IValidatedNumber;
 
         readonly latency: JMSLib.App.IValidatedNumber;
+
+        readonly update: JMSLib.App.ICommand;
     }
 
     export class ScanSection extends AdminSection implements IAdminScanPage {
@@ -45,6 +47,8 @@ namespace VCRNETClient.App.Admin {
 
         readonly latency = new JMSLib.App.EditNumber({}, "joinDays", () => this.refreshUi(), "Latenzzeit für vorgezogene Aktualisierungen in Tagen (optional)", false, 1, 14);
 
+        readonly update = new JMSLib.App.Command(() => this.save(), "Ändern", () => this.isValid);
+
         get showConfiguration(): boolean {
             return this.mode.value !== ScanSection._scanDisabled;
         }
@@ -64,18 +68,51 @@ namespace VCRNETClient.App.Admin {
             this.hours.data = settings;
             this.merge.data = settings;
 
+            if (settings.interval === null)
+                this.mode.value = ScanSection._scanDisabled;
+            else if (settings.interval < 0) {
+                settings.interval = null;
+
+                this.mode.value = ScanSection._scanManual;
+            }
+            else
+                this.mode.value = ScanSection._scanAutomatic;
+
             this.duration.validate();
             this.gapDays.validate();
             this.latency.validate();
 
-            if (this.gapDays.value === null)
-                this.mode.value = ScanSection._scanDisabled;
-            else if (this.gapDays.value < 0)
-                this.mode.value = ScanSection._scanManual;
-            else
-                this.mode.value = ScanSection._scanAutomatic;
-
             this.page.application.isBusy = false;
+        }
+
+        private get isValid(): boolean {
+            if (this.mode.value === ScanSection._scanDisabled)
+                return true;
+
+            if (this.duration.message !== ``)
+                return false;
+
+            if (this.mode.value === ScanSection._scanManual)
+                return true;
+
+            if (this.gapDays.message !== ``)
+                return false;
+
+            if (this.latency.message !== ``)
+                return false;
+
+            return true;
+        }
+
+        private save(): JMSLib.App.IHttpPromise<void> {
+            var settings = <VCRServer.SourceScanSettingsContract>this.hours.data;
+
+            if (this.mode.value === ScanSection._scanDisabled)
+                settings.interval = 0;
+            else if (this.mode.value === ScanSection._scanManual)
+                settings.interval = -1;
+
+            return this.page.update(VCRServer.setSourceScanSettings(settings));
         }
     }
 }
