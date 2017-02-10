@@ -27,7 +27,7 @@ namespace VCRNETClient.App.Admin {
         private setProfiles(settings: VCRServer.ProfileSettingsContract): void {
             this.devices = settings.profiles.map(p => new Device(p, () => this.refreshUi()));
 
-            this.defaultDevice.allowedValues = settings.profiles.map(p => <JMSLib.App.IUiValue<string>>{ value: p.name, display: p.name });
+            this.defaultDevice.allowedValues = settings.profiles.map(p => JMSLib.App.uiValue(p.name));
             this.defaultDevice.data = settings;
 
             this.refreshUi();

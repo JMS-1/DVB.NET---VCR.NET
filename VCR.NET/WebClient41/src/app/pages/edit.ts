@@ -49,9 +49,9 @@ namespace VCRNETClient.App {
         // Die Liste der Aufzeichnungsverzeichnisse steht bereit.
         private setDirectories(folders: string[], sections: string[]): void {
             // Auswahlliste für den Anwender aufbauen.
-            var folderSelection = folders.map(f => <JMSLib.App.IUiValue<string>>{ value: f, display: f });
+            var folderSelection = folders.map(f => JMSLib.App.uiValue(f));
 
-            folderSelection.unshift(<JMSLib.App.IUiValue<string>>{ value: "", display: "(Voreinstellung verwenden)" });
+            folderSelection.unshift(JMSLib.App.uiValue("", "(Voreinstellung verwenden)"));
 
             // Geräteprofile anfordern.
             VCRServer.ProfileCache.getAllProfiles().then(profiles => this.setProfiles(profiles, sections, folderSelection));
@@ -60,7 +60,7 @@ namespace VCRNETClient.App {
         // Die Liste der Geräteprofile steht bereit.
         private setProfiles(profiles: VCRServer.ProfileInfoContract[], sections: string[], folders: JMSLib.App.IUiValue<string>[]): void {
             // Auswahl für den Anwender vorbereiten.
-            var profileSelection = profiles.map(p => <JMSLib.App.IUiValue<string>>{ value: p.name, display: p.name });
+            var profileSelection = profiles.map(p => JMSLib.App.uiValue(p.name));
 
             // Auf das Neuanlegen prüfen.
             if (sections.length < 1) {

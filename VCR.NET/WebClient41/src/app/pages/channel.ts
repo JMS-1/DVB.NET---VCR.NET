@@ -237,7 +237,7 @@ namespace VCRNETClient.App {
                     return false;
 
                 return true;
-            }).map(s => <JMSLib.App.IUiValue<string>>{ value: s.name, display: s.name });
+            }).map(s => JMSLib.App.uiValue(s.name));
 
             // Aktuelle Quelle zusätzliche in die Liste einmischen, so dass immer eine korrekte Auswahl existiert.
             var source = this.value;
@@ -256,13 +256,13 @@ namespace VCRNETClient.App {
 
                 // Bereits gewählte Quelle an der korrekten Position in der Liste eintragen.
                 if (insertAt < 0)
-                    this.sourceNames.push({ value: source, display: source });
+                    this.sourceNames.push(JMSLib.App.uiValue(source));
                 else
-                    this.sourceNames.splice(insertAt, 0, { value: source, display: source });
+                    this.sourceNames.splice(insertAt, 0, JMSLib.App.uiValue(source));
             }
 
             // Der erste Eintrag erlaubt es immer auch einfach mal keinen Sender auszuwählen.
-            this.sourceNames.unshift({ value: "", display: "(Keine Quelle)" });
+            this.sourceNames.unshift(JMSLib.App.uiValue("", "(Keine Quelle)"));
 
             // Schauen wir mal, ob wir die Quelle überhaupt kennen.
             this._hasChannel = (!hasSource || this._sources.some(s => s.name === source));

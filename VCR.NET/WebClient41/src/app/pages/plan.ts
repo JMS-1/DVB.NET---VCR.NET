@@ -58,7 +58,7 @@ namespace VCRNETClient.App {
             var start: JMSLib.App.IUiValue<Date>[] = [];
 
             for (var i = 0; i < 7; i++) {
-                start.push({ display: (i === 0) ? "Jetzt" : JMSLib.DateFormatter.getShortDate(now), value: now });
+                start.push(JMSLib.App.uiValue(now, (i === 0) ? "Jetzt" : JMSLib.DateFormatter.getShortDate(now)));
 
                 now = new Date(now.getFullYear(), now.getMonth(), now.getDate() + this.application.profile.planDays);
             }

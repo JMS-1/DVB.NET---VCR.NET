@@ -11,6 +11,10 @@ namespace JMSLib.App {
         readonly display: string;
     }
 
+    export function uiValue<TValueType>(value: TValueType, display?: string): IUiValue<TValueType> {
+        return { value: value, display: (display === undefined) ? ((value === null) ? `` : value.toString()) : display };
+    }
+
     export interface ISelectableUiValue<TValueType> extends IUiValue<TValueType> {
         selected: boolean;
     }

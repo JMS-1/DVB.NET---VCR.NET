@@ -26,9 +26,9 @@ namespace VCRNETClient.App {
 
     export class JobPage extends Page implements IJobPage {
 
-        private static readonly _types: JMSLib.App.IUiValue<boolean>[] = [
-            { display: "Aktiv", value: false },
-            { display: "Archiviert", value: true },
+        private static readonly _types = [
+            JMSLib.App.uiValue(false, "Aktiv"),
+            JMSLib.App.uiValue(true, "Archiviert"),
         ];
 
         readonly showArchived = new JMSLib.App.EditFromList<boolean>({}, "value", () => this.refreshUi(), null, false, JobPage._types);

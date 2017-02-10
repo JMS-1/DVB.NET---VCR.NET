@@ -1,9 +1,9 @@
 ﻿/// <reference path="../admin.ts" />
+/// <reference path="../../../lib/edit/list.ts" />
 
 namespace VCRNETClient.App.Admin {
 
-    export enum ScanConfigMode
-    {
+    export enum ScanConfigMode {
         disabled,
 
         manual,
@@ -38,10 +38,10 @@ namespace VCRNETClient.App.Admin {
 
         private static readonly  _scanAutomatic = "Aktualisieren nach Zeitplan";
 
-        private static readonly _scanModes: JMSLib.App.IUiValue<ScanConfigMode>[] = [
-            { value: ScanConfigMode.disabled, display: ScanSection._scanDisabled },
-            { value: ScanConfigMode.manual, display: ScanSection._scanManual },
-            { value: ScanConfigMode.automatic, display: ScanSection._scanAutomatic },
+        private static readonly _scanModes = [
+            JMSLib.App.uiValue(ScanConfigMode.disabled, ScanSection._scanDisabled),
+            JMSLib.App.uiValue(ScanConfigMode.manual, ScanSection._scanManual),
+            JMSLib.App.uiValue(ScanConfigMode.automatic, ScanSection._scanAutomatic),
         ];
 
         readonly mode = new JMSLib.App.EditFromList<ScanConfigMode>({}, "value", () => this.refreshUi(), null, true, ScanSection._scanModes);

@@ -57,10 +57,7 @@ namespace VCRNETClient.App {
             var days: JMSLib.App.IUiValue<string>[] = [];
 
             for (var i = 0; i < 10; i++) {
-                days.push({
-                    display: JMSLib.DateFormatter.formatNumber(start.getUTCDate()) + '.' + JMSLib.DateFormatter.formatNumber(1 + start.getUTCMonth()),
-                    value: start.toISOString()
-                });
+                days.push(JMSLib.App.uiValue(start.toISOString(), JMSLib.DateFormatter.formatNumber(start.getUTCDate()) + '.' + JMSLib.DateFormatter.formatNumber(1 + start.getUTCMonth())));
 
                 start = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate() - 7));
             }
@@ -76,7 +73,7 @@ namespace VCRNETClient.App {
         }
 
         private setProfiles(profiles: VCRServer.ProfileInfoContract[]): void {
-            this.profiles.allowedValues = profiles.map(p => <JMSLib.App.IUiValue<string>>{ display: p.name, value: p.name });
+            this.profiles.allowedValues = profiles.map(p => JMSLib.App.uiValue(p.name));
             this.profiles.value = profiles[0] && profiles[0].name;
 
             this.startDay.value = this.startDay.allowedValues[0].value;

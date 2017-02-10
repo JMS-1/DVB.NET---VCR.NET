@@ -74,7 +74,7 @@ namespace VCRNETClient.App.Admin {
             this.delay.data = settings;
             this.ukTv.data = settings;
 
-            this.sources.setValues(settings.sources.map(s => <JMSLib.App.IUiValue<string>>{ value: s, display: s }));
+            this.sources.setValues(settings.sources.map(s => JMSLib.App.uiValue(s)));
             this.sources.value = [];
 
             this.duration.validate();
@@ -103,7 +103,7 @@ namespace VCRNETClient.App.Admin {
         }
 
         private setProfiles(profiles: VCRServer.ProfileInfoContract[]) {
-            this.device.allowedValues = profiles.map(p => <JMSLib.App.IUiValue<string>>{ value: p.name, display: p.name });
+            this.device.allowedValues = profiles.map(p => JMSLib.App.uiValue(p.name));
 
             if (this.device.allowedValues.length > 0)
                 this.device.value = this.device.allowedValues[0].value;
@@ -140,7 +140,7 @@ namespace VCRNETClient.App.Admin {
         private addSource(): void {
             var source = this.source.value;
 
-            this.sources.addValue({ value: source, display: source });
+            this.sources.addValue(JMSLib.App.uiValue(source));
 
             this.source.value = ``;
 

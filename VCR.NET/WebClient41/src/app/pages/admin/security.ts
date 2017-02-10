@@ -38,10 +38,10 @@ namespace VCRNETClient.App.Admin {
             if (!SecuritySection._windowsGroups)
                 SecuritySection._windowsGroups = VCRServer.getWindowsGroups().then(names => {
                     // Immer die Leerauswahl ergänzen - damit werden automatisch alle Benutzer erfasst.
-                    var groups = [<JMSLib.App.IUiValue<string>>{ display: `(Alle Benutzer)`, value: `` }];
+                    var groups = [JMSLib.App.uiValue(``, `(Alle Benutzer)`)];
 
                     // Auswahlliste aufsetzen und melden.
-                    groups.push(...names.map(name => <JMSLib.App.IUiValue<string>>{ display: name, value: name }));
+                    groups.push(...names.map(name => JMSLib.App.uiValue(name)));
 
                     return groups;
                 });

@@ -58,27 +58,27 @@ namespace VCRNETClient.App {
     export class GuidePage extends Page implements IGuidePage {
 
         // Optionen zur Auswahl der Einschränkung auf die Verschlüsselung.
-        private static _cryptOptions: JMSLib.App.IUiValue<VCRServer.GuideEncryption>[] = [
-            { display: "Nur unverschlüsselt", value: VCRServer.GuideEncryption.FREE },
-            { display: "Nur verschlüsselt", value: VCRServer.GuideEncryption.PAY },
-            { display: "Alle Quellen", value: VCRServer.GuideEncryption.ALL }
+        private static _cryptOptions = [
+            JMSLib.App.uiValue(VCRServer.GuideEncryption.FREE, "Nur unverschlüsselt"),
+            JMSLib.App.uiValue(VCRServer.GuideEncryption.PAY, "Nur verschlüsselt"),
+            JMSLib.App.uiValue(VCRServer.GuideEncryption.ALL, "Alle Quellen")
         ];
 
         // Optionen zur Auswahl der Einschränkuzng auf die Art der Quelle.
-        private static _typeOptions: JMSLib.App.IUiValue<VCRServer.GuideSource>[] = [
-            { display: "Nur Fernsehen", value: VCRServer.GuideSource.TV },
-            { display: "Nur Radio", value: VCRServer.GuideSource.RADIO },
-            { display: "Alle Quellen", value: VCRServer.GuideSource.ALL }
+        private static _typeOptions = [
+            JMSLib.App.uiValue(VCRServer.GuideSource.TV, "Nur Fernsehen"),
+            JMSLib.App.uiValue(VCRServer.GuideSource.RADIO, "Nur Radio"),
+            JMSLib.App.uiValue(VCRServer.GuideSource.ALL, "Alle Quellen")
         ];
 
         // Für den Start der aktuellen Ergebnisliste verfügbaren Auswahloptionen für die Uhrzeit.
-        private static _hours: JMSLib.App.IUiValue<number>[] = [
-            { display: "00:00", value: 0 },
-            { display: "06:00", value: 6 },
-            { display: "12:00", value: 12 },
-            { display: "18:00", value: 18 },
-            { display: "20:00", value: 20 },
-            { display: "22:00", value: 22 },
+        private static _hours = [
+            JMSLib.App.uiValue(0, "00:00"),
+            JMSLib.App.uiValue(6, "06:00"),
+            JMSLib.App.uiValue(12, "12:00"),
+            JMSLib.App.uiValue(18, "18:00"),
+            JMSLib.App.uiValue(20, "20:00"),
+            JMSLib.App.uiValue(22, "22:00")
         ];
 
         // Laufende Nummer der aktuellen Serveranfrage.
@@ -195,7 +195,7 @@ namespace VCRNETClient.App {
             // Die Liste aller bekannten Geräte ermitteln.
             VCRServer.ProfileCache.getAllProfiles().then(profiles => {
                 // Auswahl aktualisieren.
-                this.profiles.allowedValues = (profiles || []).map(p => <JMSLib.App.IUiValue<string>>{ display: p.name, value: p.name });
+                this.profiles.allowedValues = (profiles || []).map(p => JMSLib.App.uiValue(p.name));
                 this.profiles.validate();
 
                 // Erstes Gerät vorauswählen.
@@ -240,9 +240,9 @@ namespace VCRNETClient.App {
                 return VCRServer.getProfileJobInfos(this._filter.device);
             }).then(jobs => {
                 // Liste der bekannten Aufträge aktualisieren.
-                var selection = jobs.map(job => <JMSLib.App.IUiValue<string>>{ display: job.name, value: job.id });
+                var selection = jobs.map(job => JMSLib.App.uiValue(job.id, job.name));
 
-                selection.unshift(<JMSLib.App.IUiValue<string>>{ display: "(neuen Auftrag anlegen)", value: "" });
+                selection.unshift(JMSLib.App.uiValue("", "(neuen Auftrag anlegen)"));
 
                 this._jobSelector.allowedValues = selection;
 
@@ -256,10 +256,10 @@ namespace VCRNETClient.App {
 
         // Die Liste der Quellen des aktuell ausgewählten Gerätes neu ermitteln.
         private refreshSources(): void {
-            var sources = (this._profileInfo.stations || []).map(s => <JMSLib.App.IUiValue<string>>{ display: s, value: s });
+            var sources = (this._profileInfo.stations || []).map(s => JMSLib.App.uiValue(s));
 
             // Der erste Eintrag erlaubt immer die Anzeige ohne vorausgewählter Quelle.
-            sources.unshift({ display: "(Alle Sender)", value: "" });
+            sources.unshift(JMSLib.App.uiValue("", "(Alle Sender)"));
 
             this.sources.allowedValues = sources;
         }
@@ -269,7 +269,7 @@ namespace VCRNETClient.App {
             var days: JMSLib.App.IUiValue<string>[] = [];
 
             // Als Basis kann immer die aktuelle Uhrzeit verwendet werden.
-            days.push({ display: "Jetzt", value: null });
+            days.push(JMSLib.App.uiValue(<string>null, "Jetzt"));
 
             // Das geht nur, wenn mindestens ein Eintrag in der Programmzeitschrift der aktuellen Quelle vorhanden ist.
             if (this._profileInfo.first && this._profileInfo.last) {
@@ -283,7 +283,7 @@ namespace VCRNETClient.App {
                     var start = new Date(first.getFullYear(), first.getMonth(), first.getDate());
 
                     // Auswahlelement anlegen.
-                    days.push({ display: JMSLib.App.DateFormatter.getShortDate(start), value: start.toISOString() });
+                    days.push(JMSLib.App.uiValue(start.toISOString(), JMSLib.App.DateFormatter.getShortDate(start)));
 
                     // Nächsten Tag auswählen.
                     first = new Date(start.getFullYear(), start.getMonth(), start.getDate() + 1);
