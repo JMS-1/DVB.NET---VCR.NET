@@ -3,7 +3,7 @@
 namespace VCRNETClient.App.Admin {
 
     export interface IAdminScanPage extends IAdminSection {
-        readonly mode: JMSLib.App.IValidateStringFromList;
+        readonly mode: JMSLib.App.IValueFromList<string>;
 
         readonly showConfiguration: boolean;
 

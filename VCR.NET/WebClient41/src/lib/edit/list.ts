@@ -15,7 +15,7 @@ namespace JMSLib.App {
         selected: boolean;
     }
 
-    export interface IValueFromList<TValueType> extends IEditValue<TValueType> {
+    export interface IValueFromList<TValueType> extends IValidatedValue<TValueType> {
         readonly allowedValues: IUiValue<TValueType>[];
     }
 

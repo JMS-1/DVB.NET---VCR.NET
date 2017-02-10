@@ -5,10 +5,10 @@ namespace VCRNETClient.App.Edit {
     // Schnittstelle zur Pflege eines Auftrags.
     export interface IJobEditor extends IJobScheduleEditor {
         // Das Aufzeichnungsverzeichnis.
-        readonly folder: JMSLib.App.IValidateStringFromList;
+        readonly folder: JMSLib.App.IValueFromList<string>;
 
         // Das zu verwendende DVB Gerät.
-        readonly device: JMSLib.App.IValidateStringFromList;
+        readonly device: JMSLib.App.IValueFromList<string>;
 
         // Gesetzt, wenn die Aufzeichnung immer auf dem Gerät stattfinden soll.
         readonly deviceLock: JMSLib.App.IValidatedFlag;

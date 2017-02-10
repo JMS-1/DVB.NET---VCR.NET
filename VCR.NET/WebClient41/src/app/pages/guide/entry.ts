@@ -42,7 +42,7 @@
         toggleDetail(): void;
 
         // Auswahlliste mit allen Aufträgen auf dem zugehörigen Gerät.
-        readonly jobSelector: JMSLib.App.IValidateStringFromList;
+        readonly jobSelector: JMSLib.App.IValueFromList<string>;
 
         // Methode zum Anlegen einer neuen Aufzeichnung.
         readonly createNew: JMSLib.App.ICommand;
@@ -52,7 +52,7 @@
     export class GuideEntry implements IGuideEntry {
 
         // Erstellt eine neue Beschreibung.
-        constructor(private readonly _model: VCRServer.GuideItemContract, private _toggleDetails: (entry: GuideEntry) => void, createNew: (entry: GuideEntry) => void, public jobSelector: JMSLib.App.IValidateStringFromList) {
+        constructor(private readonly _model: VCRServer.GuideItemContract, private _toggleDetails: (entry: GuideEntry) => void, createNew: (entry: GuideEntry) => void, public jobSelector: JMSLib.App.IValueFromList<string>) {
             // Zeitraum der Sendung.
             var start = new Date(_model.start);
             var end = new Date(start.getTime() + 1000 * _model.duration);

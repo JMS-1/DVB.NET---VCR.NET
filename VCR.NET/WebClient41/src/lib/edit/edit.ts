@@ -1,6 +1,6 @@
 ﻿namespace JMSLib.App {
 
-    // Bietet den Wert einer Eigenschaft zur Pflege in der Oberfläche an-
+    // Bietet den Wert einer Eigenschaft zur Pflege in der Oberfläche an.
     export interface IEditValue<TValueType> extends IDisplayText, IConnectable {
         // Meldet den aktuellen Wert oder verändert diesen - gemeldet wird immer der ursprüngliche Wert.
         value: TValueType;

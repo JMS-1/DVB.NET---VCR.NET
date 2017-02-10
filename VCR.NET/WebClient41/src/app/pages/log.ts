@@ -3,9 +3,9 @@
 namespace VCRNETClient.App {
 
     export interface ILogPage extends IPage {
-        readonly profiles: JMSLib.App.IValidateStringFromList;
+        readonly profiles: JMSLib.App.IValueFromList<string>;
 
-        readonly startDay: JMSLib.App.IValidateStringFromList;
+        readonly startDay: JMSLib.App.IValueFromList<string>;
 
         readonly showGuide: JMSLib.App.IValidatedFlag;
 

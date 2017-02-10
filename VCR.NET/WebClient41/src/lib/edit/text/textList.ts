@@ -2,14 +2,8 @@
 
 namespace JMSLib.App {
 
-    // Beschreibt eine Eigenschaft der Art Zeichenkette mit einer festen Liste von möglichen Werten.
-    export interface IValidateStringFromList extends IValidatedString {
-        // Die Liste der erlaubten Werten.
-        readonly allowedValues: IUiValue<string>[];
-    }
-
     // Verwaltete eine Eigenschaft der Art Zeichenkette, deren mögliche Werte festgelegt sind.
-    export class EditStringFromList extends EditString implements IValidateStringFromList {
+    export class EditStringFromList extends EditString implements IValueFromList<string> {
 
         // Legt eine neue Verwaltung an.
         constructor(data: any, prop: string, onChange: () => void, name: string, isRequired: boolean, public allowedValues: IUiValue<string>[]) {

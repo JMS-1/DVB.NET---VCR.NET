@@ -3,7 +3,7 @@
 namespace JMSLib.ReactUi {
 
     // Verwaltete eine Zeichenkette, die über eine einfache Auswahlliste festgelegt wird.
-    export class EditTextWithList extends ComponentWithSite<App.IValidateStringFromList>  {
+    export class EditTextWithList extends ComponentWithSite<App.IValueFromList<string>>  {
         // Erstellt die Anzeige für die Komponente.
         render(): JSX.Element {
             return <select

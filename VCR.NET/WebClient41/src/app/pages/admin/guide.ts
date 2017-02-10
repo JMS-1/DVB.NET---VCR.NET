@@ -11,7 +11,7 @@ namespace VCRNETClient.App.Admin {
 
         readonly ukTv: JMSLib.App.IValidatedFlag;
 
-        readonly device: JMSLib.App.IValidateStringFromList;
+        readonly device: JMSLib.App.IValueFromList<string>;
 
         readonly source: IChannelSelector;
 

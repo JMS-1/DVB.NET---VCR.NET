@@ -3,7 +3,7 @@
 namespace VCRNETClient.App.Admin {
 
     export interface IAdminDevicesPage extends IAdminSection {
-        readonly defaultDevice: JMSLib.App.IValidateStringFromList;
+        readonly defaultDevice: JMSLib.App.IValueFromList<string>;
 
         readonly devices: IDevice[];
 

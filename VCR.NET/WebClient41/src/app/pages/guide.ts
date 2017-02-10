@@ -21,10 +21,10 @@ namespace VCRNETClient.App {
         readonly entries: Guide.GuideEntry[];
 
         // Alle bekannten Geräte.
-        readonly profiles: JMSLib.App.IValidateStringFromList;
+        readonly profiles: JMSLib.App.IValueFromList<string>;
 
         // Alle Quellen auf dem aktuell ausgewählten Gerät.
-        readonly sources: JMSLib.App.IValidateStringFromList;
+        readonly sources: JMSLib.App.IValueFromList<string>;
 
         // Auswahl des Verschlüsselungsfilters.
         readonly encrpytion: JMSLib.App.IValueFromList<VCRServer.GuideEncryption>;
@@ -39,7 +39,7 @@ namespace VCRNETClient.App {
         readonly showSourceType: boolean;
 
         // Setzt den Anfang der Ergebnisliste auf ein bestimmtes Datum.
-        readonly days: JMSLib.App.IValidateStringFromList;
+        readonly days: JMSLib.App.IValueFromList<string>;
 
         // Setzt den Anfang der Ergebnisliste auf eine bestimmte Uhrzeit.
         readonly hours: JMSLib.App.IValueFromList<number>;

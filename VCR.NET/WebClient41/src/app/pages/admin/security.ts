@@ -5,10 +5,10 @@ namespace VCRNETClient.App.Admin {
     // Schnittstelle zur Konfiguration der Benutzergruppen.
     export interface IAdminSecurityPage extends IAdminSection {
         // Die Gruppe der normalen Benutzer.
-        readonly userGroups: JMSLib.App.IValidateStringFromList;
+        readonly userGroups: JMSLib.App.IValueFromList<string>;
 
         // Die Gruppe der Administratoren.
-        readonly adminGroups: JMSLib.App.IValidateStringFromList;
+        readonly adminGroups: JMSLib.App.IValueFromList<string>;
 
         // Befehl zur Aktualisierung der Konfiguration.
         readonly update: JMSLib.App.ICommand;

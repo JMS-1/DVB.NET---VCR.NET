@@ -9,7 +9,7 @@ namespace VCRNETClient.App.Admin {
 
         readonly showBrowse: boolean;
 
-        readonly browse: JMSLib.App.IValidateStringFromList;
+        readonly browse: JMSLib.App.IValueFromList<string>;
 
         readonly parent: JMSLib.App.ICommand;
 
