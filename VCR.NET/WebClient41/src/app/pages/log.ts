@@ -18,7 +18,7 @@ namespace VCRNETClient.App {
 
     export class LogPage extends Page implements ILogPage {
 
-        readonly profiles = new JMSLib.App.EditStringFromList({}, "value", () => this.load(), "Protokollbereich", false, []);
+        readonly profiles = new JMSLib.App.EditFromList<string>({}, "value", () => this.load(), "Protokollbereich", false, []);
 
         readonly showGuide = new JMSLib.App.EditFlag({}, "value", () => this.refreshUi(), "Programmzeitschrift");
 
@@ -28,7 +28,7 @@ namespace VCRNETClient.App {
 
         private _startDay: string;
 
-        readonly startDay: JMSLib.App.EditStringFromList;
+        readonly startDay: JMSLib.App.EditFromList<string>;
 
         private _entries: Log.LogEntry[] = [];
 
@@ -65,7 +65,7 @@ namespace VCRNETClient.App {
                 start = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate() - 7));
             }
 
-            this.startDay = new JMSLib.App.EditStringFromList(this, "_startDay", () => this.load(), null, false, days);
+            this.startDay = new JMSLib.App.EditFromList<string>(this, "_startDay", () => this.load(), null, false, days);
         }
 
         reset(sections: string[]): void {

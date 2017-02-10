@@ -10,7 +10,7 @@ namespace JMSLib.App {
     export class EditFlag extends EditValue<boolean> implements IValidatedFlag {
         // Legt eine neue Verwaltung an.
         constructor(data: any, prop: string, onChange: () => void, name: string, testReadOnly?: () => boolean) {
-            super(data, prop, onChange, name, testReadOnly);
+            super(data, prop, onChange, name, false, testReadOnly);
         }
     }
 

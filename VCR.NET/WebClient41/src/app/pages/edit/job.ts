@@ -21,15 +21,15 @@ namespace VCRNETClient.App.Edit {
 
             // Pflegekomponenten erstellen
             this.deviceLock = new JMSLib.App.EditFlag(this.model, "lockedToDevice", onChange, "(auf diesem Gerät aufzeichnen)");
-            this.device = new JMSLib.App.EditStringFromList(this.model, "device", onChange, "DVB.NET Geräteprofil", true, devices);
-            this.folder = new JMSLib.App.EditStringFromList(this.model, "directory", onChange, "Verzeichnis", false, folders);
+            this.device = new JMSLib.App.EditFromList<string>(this.model, "device", onChange, "DVB.NET Geräteprofil", true, devices);
+            this.folder = new JMSLib.App.EditFromList<string>(this.model, "directory", onChange, "Verzeichnis", false, folders);
         }
 
         // Das Aufzeichnungsverzeichnis.
-        readonly folder: JMSLib.App.EditStringFromList;
+        readonly folder: JMSLib.App.EditFromList<string>;
 
         // Das zu verwendende DVB Gerät.
-        readonly device: JMSLib.App.EditStringFromList;
+        readonly device: JMSLib.App.EditFromList<string>;
 
         // Gesetzt, wenn die Aufzeichnung immer auf dem Gerät stattfinden soll.
         readonly deviceLock: JMSLib.App.EditFlag;

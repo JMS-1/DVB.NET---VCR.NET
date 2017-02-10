@@ -79,7 +79,7 @@
         }
 
         // Initialisiert die Verwaltung des Wertes einer einzelnen Eigenschaft (_prop) im Modell (_data).
-        protected constructor(private _data: any, private readonly _prop: string, private readonly _onChange: () => void, public readonly text: string, private _testReadOnly?: () => boolean) {
+        protected constructor(private _data: any, private readonly _prop: string, private readonly _onChange: () => void, public readonly text: string, protected readonly isRequired?: boolean, private _testReadOnly?: () => boolean) {
         }
 
         protected getData(): any {

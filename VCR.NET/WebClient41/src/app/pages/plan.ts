@@ -28,7 +28,7 @@ namespace VCRNETClient.App {
         readonly showTasks = new JMSLib.App.EditFlag({}, "value", () => this.fireRefresh(), "Aufgaben einblenden");
 
         // Alle bekannten Datumsfilter.
-        readonly startFilter = new JMSLib.App.EditFromList<Date>({}, "value", () => this.fireRefresh(true), null, []);
+        readonly startFilter = new JMSLib.App.EditFromList<Date>({}, "value", () => this.fireRefresh(true), null, false, []);
 
         // Erzeugt eine neue Steuerung.
         constructor(application: Application) {

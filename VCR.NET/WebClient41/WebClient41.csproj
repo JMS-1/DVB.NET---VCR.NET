@@ -387,7 +387,6 @@
     <TypeScriptCompile Include="src\lib\edit\boolean\flag.ts" />
     <TypeScriptCompile Include="src\lib\edit\text\text.ts" />
     <TypeScriptCompile Include="src\lib\site.ts" />
-    <TypeScriptCompile Include="src\lib\edit\text\textList.ts" />
     <TypeScriptCompile Include="src\lib\edit\datetime\time.ts" />
     <TypeScriptCompile Include="src\app\pages\page.ts" />
     <TypeScriptCompile Include="src\app\pages\plan\entry.ts" />

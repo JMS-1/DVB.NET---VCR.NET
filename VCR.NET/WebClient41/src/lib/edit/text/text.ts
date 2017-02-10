@@ -10,8 +10,8 @@ namespace JMSLib.App {
     export class EditString extends EditValue<string> implements IValidatedString {
 
         // Legt eine neue Verwaltung an.
-        constructor(data: any, prop: string, onChange: () => void, name: string, private readonly _isRequired: boolean, private _message?: string) {
-            super(data, prop, onChange, name);
+        constructor(data: any, prop: string, onChange: () => void, name: string, isRequired: boolean, private _message?: string) {
+            super(data, prop, onChange, name, isRequired);
         }
 
         // Prüft den aktuellen Wert auf Gültigkeit.
@@ -23,7 +23,7 @@ namespace JMSLib.App {
                 return;
 
             // Es gibt eine Einschränkung auf die Werte der Eigenschaft.
-            if (!this._isRequired)
+            if (!this.isRequired)
                 return;
 
             // Der Wert darf nicht die leere Zeichenkette sein - und auch nicht nur aus Leerzeichen et al bestehen.

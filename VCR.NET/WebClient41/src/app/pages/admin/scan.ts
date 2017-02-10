@@ -35,7 +35,7 @@ namespace VCRNETClient.App.Admin {
             { value: ScanSection._scanAutomatic, display: ScanSection._scanAutomatic },
         ];
 
-        readonly mode = new JMSLib.App.EditStringFromList({}, "value", () => this.refreshUi(), null, true, ScanSection._scanModes);
+        readonly mode = new JMSLib.App.EditFromList<string>({}, "value", () => this.refreshUi(), null, true, ScanSection._scanModes);
 
         readonly hours = new JMSLib.App.SelectFromList<number>({}, "hours", null, "Uhrzeiten", AdminPage.hoursOfDay);
 

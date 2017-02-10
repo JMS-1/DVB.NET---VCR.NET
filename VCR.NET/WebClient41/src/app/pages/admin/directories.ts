@@ -38,7 +38,7 @@ namespace VCRNETClient.App.Admin {
             return (this.share.value || "").trim().length < 1;
         }
 
-        readonly browse = new JMSLib.App.EditStringFromList({}, "value", () => this.doBrowse(), "Server-Verzeichnis", false, []);
+        readonly browse = new JMSLib.App.EditFromList<string>({}, "value", () => this.doBrowse(), "Server-Verzeichnis", false, []);
 
         readonly parent = new JMSLib.App.Command(() => this.doBrowseUp(), "Übergeordnetes Verzeichnis", () => this.showBrowse && !!this.browse.value);
 

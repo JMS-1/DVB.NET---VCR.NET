@@ -40,7 +40,7 @@ namespace VCRNETClient.App.Admin {
 
         readonly remove = new JMSLib.App.Command(() => this.removeSources(), "Entfernen", () => this.sources.value.length > 0);
 
-        readonly device = new JMSLib.App.EditStringFromList({}, "value", () => this.onDeviceChanged(), "Quellen des Gerätes", true, []);
+        readonly device = new JMSLib.App.EditFromList<string>({}, "value", () => this.onDeviceChanged(), "Quellen des Gerätes", true, []);
 
         readonly source: ChannelEditor;
 
