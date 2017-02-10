@@ -2,8 +2,17 @@
 
 namespace VCRNETClient.App.Admin {
 
+    export enum ScanConfigMode
+    {
+        disabled,
+
+        manual,
+
+        automatic
+    }
+
     export interface IAdminScanPage extends IAdminSection {
-        readonly mode: JMSLib.App.IValueFromList<string>;
+        readonly mode: JMSLib.App.IValueFromList<ScanConfigMode>;
 
         readonly showConfiguration: boolean;
 
@@ -29,13 +38,13 @@ namespace VCRNETClient.App.Admin {
 
         private static readonly  _scanAutomatic = "Aktualisieren nach Zeitplan";
 
-        private static readonly _scanModes: JMSLib.App.IUiValue<string>[] = [
-            { value: ScanSection._scanDisabled, display: ScanSection._scanDisabled },
-            { value: ScanSection._scanManual, display: ScanSection._scanManual },
-            { value: ScanSection._scanAutomatic, display: ScanSection._scanAutomatic },
+        private static readonly _scanModes: JMSLib.App.IUiValue<ScanConfigMode>[] = [
+            { value: ScanConfigMode.disabled, display: ScanSection._scanDisabled },
+            { value: ScanConfigMode.manual, display: ScanSection._scanManual },
+            { value: ScanConfigMode.automatic, display: ScanSection._scanAutomatic },
         ];
 
-        readonly mode = new JMSLib.App.EditFromList<string>({}, "value", () => this.refreshUi(), null, true, ScanSection._scanModes);
+        readonly mode = new JMSLib.App.EditFromList<ScanConfigMode>({}, "value", () => this.refreshUi(), null, true, ScanSection._scanModes);
 
         readonly hours = new JMSLib.App.SelectFromList<number>({}, "hours", null, "Uhrzeiten", AdminPage.hoursOfDay);
 
@@ -50,11 +59,11 @@ namespace VCRNETClient.App.Admin {
         readonly update = new JMSLib.App.Command(() => this.save(), "Ändern", () => this.isValid);
 
         get showConfiguration(): boolean {
-            return this.mode.value !== ScanSection._scanDisabled;
+            return this.mode.value !== ScanConfigMode.disabled;
         }
 
         get configureAutomatic(): boolean {
-            return this.mode.value === ScanSection._scanAutomatic;
+            return this.mode.value === ScanConfigMode.automatic;
         }
 
         reset(): void {
@@ -71,14 +80,14 @@ namespace VCRNETClient.App.Admin {
             this.merge.data = settings;
 
             if (settings.interval === null)
-                this.mode.value = ScanSection._scanDisabled;
+                this.mode.value = ScanConfigMode.disabled;
             else if (settings.interval < 0) {
                 settings.interval = null;
 
-                this.mode.value = ScanSection._scanManual;
+                this.mode.value = ScanConfigMode.manual;
             }
             else
-                this.mode.value = ScanSection._scanAutomatic;
+                this.mode.value = ScanConfigMode.automatic;
 
             this.duration.validate();
             this.gapDays.validate();
@@ -88,13 +97,13 @@ namespace VCRNETClient.App.Admin {
         }
 
         private get isValid(): boolean {
-            if (this.mode.value === ScanSection._scanDisabled)
+            if (!this.showConfiguration)
                 return true;
 
             if (this.duration.message !== ``)
                 return false;
 
-            if (this.mode.value === ScanSection._scanManual)
+            if (!this.configureAutomatic)
                 return true;
 
             if (this.gapDays.message !== ``)
@@ -109,9 +118,9 @@ namespace VCRNETClient.App.Admin {
         private save(): JMSLib.App.IHttpPromise<void> {
             var settings = <VCRServer.SourceScanSettingsContract>this.hours.data;
 
-            if (this.mode.value === ScanSection._scanDisabled)
+            if (!this.showConfiguration)
                 settings.interval = 0;
-            else if (this.mode.value === ScanSection._scanManual)
+            else if (!this.configureAutomatic)
                 settings.interval = -1;
 
             return this.page.update(VCRServer.setSourceScanSettings(settings), this.update);

@@ -11,7 +11,7 @@ namespace JMSLib.ReactUi {
                 value={`${this.props.noui.displayValue}`}
                 title={this.props.noui.message}
                 onChange={ev => this.props.noui.displayValue = (ev.target as HTMLSelectElement).value}>
-                {this.props.noui.allowedValues.map(av => <option key={av.display} value={`${av.value}`}>{av.display}</option>)}
+                {this.props.noui.allowedValues.map(av => <option key={av.display} value={`${av.display}`}>{av.display}</option>)}
             </select>;
         }
     }
