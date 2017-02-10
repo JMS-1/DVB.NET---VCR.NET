@@ -13,7 +13,7 @@ namespace VCRNETClient.Ui {
                 {this.getHelp()}
                 <form>
                     <Field page={this.props.noui.page} label={`${this.props.noui.defaultDevice.text}:`}>
-                        <JMSLib.ReactUi.EditTextWithList noui={this.props.noui.defaultDevice} />
+                        <JMSLib.ReactUi.SelectSingleFromList noui={this.props.noui.defaultDevice} />
                     </Field>
                     <table>
                         <thead>

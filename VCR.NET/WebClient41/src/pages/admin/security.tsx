@@ -13,10 +13,10 @@ namespace VCRNETClient.Ui {
                 und Administratoren, die zusätzlich sämtliche Betriebsparameter verändern dürfen.
                 {this.getHelp()}
                 <Field label={`${this.props.noui.userGroups.text}:`} page={this.props.noui.page} >
-                    <JMSLib.ReactUi.EditTextWithList noui={this.props.noui.userGroups} />
+                    <JMSLib.ReactUi.SelectSingleFromList noui={this.props.noui.userGroups} />
                 </Field>
                 <Field label={`${this.props.noui.adminGroups.text}:`} page={this.props.noui.page} >
-                    <JMSLib.ReactUi.EditTextWithList noui={this.props.noui.adminGroups} />
+                    <JMSLib.ReactUi.SelectSingleFromList noui={this.props.noui.adminGroups} />
                 </Field>
                 <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.update} />
             </div>;

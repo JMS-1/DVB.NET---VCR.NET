@@ -7,8 +7,8 @@ namespace VCRNETClient.Ui {
             return <div className="vcrnet-log">
                 <form>
                     <Field page={this.props.noui} label={`${this.props.noui.profiles.text}:`}>
-                        <JMSLib.ReactUi.EditTextWithList noui={this.props.noui.profiles} />
-                        <JMSLib.ReactUi.EditTextWithList noui={this.props.noui.startDay} />
+                        <JMSLib.ReactUi.SelectSingleFromList noui={this.props.noui.profiles} />
+                        <JMSLib.ReactUi.SelectSingleFromList noui={this.props.noui.startDay} />
                         <JMSLib.ReactUi.EditBooleanWithButton noui={this.props.noui.showGuide} />
                         <JMSLib.ReactUi.EditBooleanWithButton noui={this.props.noui.showScan} />
                         <JMSLib.ReactUi.EditBooleanWithButton noui={this.props.noui.showLive} />

@@ -62,6 +62,9 @@
             // Neuen Wert ins Modell übertragen.
             this.data[this._prop] = newValue;
 
+            // Erneut prüfen.
+            this.validate();
+
             // Modelländerung melden und Oberfläche aktualisieren.
             this.refresh();
         }

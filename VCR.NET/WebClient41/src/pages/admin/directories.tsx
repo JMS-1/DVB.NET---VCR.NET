@@ -12,7 +12,7 @@ namespace VCRNETClient.Ui {
                 Namen von Aufzeichnungsdateien aus den Daten einer Aufzeichnung zusammensetzen sollen.
                 {this.getFolderHelp()}
                 <div>
-                    <JMSLib.ReactUi.EditMultiValueList noui={this.props.noui.directories} items={10} />
+                    <JMSLib.ReactUi.SelectMultipleFromList noui={this.props.noui.directories} items={10} />
                     <div>
                         <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.remove} />
                     </div>
@@ -27,7 +27,7 @@ namespace VCRNETClient.Ui {
                         {this.props.noui.showBrowse ? <div>
                             <i>oder</i>
                             <Field page={this.props.noui.page} label={`${this.props.noui.browse.text}:`}>
-                                <JMSLib.ReactUi.EditTextWithList noui={this.props.noui.browse} />
+                                <JMSLib.ReactUi.SelectSingleFromList noui={this.props.noui.browse} />
                             </Field>
                         </div> : null}
                         <div>

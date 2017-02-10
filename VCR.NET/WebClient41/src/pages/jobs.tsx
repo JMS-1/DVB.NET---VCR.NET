@@ -11,7 +11,7 @@ namespace VCRNETClient.Ui {
                 oder bereits ausgeführte Aufträge, die bereits in das Archiv übertragen wurden.
                 {this.getHelp()}
                 <div>
-                    <JMSLib.ReactUi.EditWithButtonList noui={this.props.noui.showArchived} />
+                    <JMSLib.ReactUi.ButtonFromList noui={this.props.noui.showArchived} />
                 </div>
                 <fieldset>
                     {this.props.noui.jobs.map((job, index) => <div key={index}>

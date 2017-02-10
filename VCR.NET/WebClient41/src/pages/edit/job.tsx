@@ -7,7 +7,7 @@ namespace VCRNETClient.Ui {
                 <legend>Daten zum Auftrag</legend>
 
                 <Field page={this.props.noui.page} label={`${this.props.noui.device.text}:`}>
-                    <JMSLib.ReactUi.EditTextWithList noui={this.props.noui.device} />
+                    <JMSLib.ReactUi.SelectSingleFromList noui={this.props.noui.device} />
                     <JMSLib.ReactUi.EditBoolean noui={this.props.noui.deviceLock} />
                 </Field>
 
@@ -16,7 +16,7 @@ namespace VCRNETClient.Ui {
                 </Field>
 
                 <Field page={this.props.noui.page} label={`${this.props.noui.folder.text}:`}>
-                    <JMSLib.ReactUi.EditTextWithList noui={this.props.noui.folder} />
+                    <JMSLib.ReactUi.SelectSingleFromList noui={this.props.noui.folder} />
                 </Field>
 
                 <Field page={this.props.noui.page} label={`${this.props.noui.source.text}:`} help="sourcechooser">

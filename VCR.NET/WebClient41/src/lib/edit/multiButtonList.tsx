@@ -2,7 +2,7 @@
 
 namespace JMSLib.ReactUi {
 
-    export class EditMultiButtonList extends ComponentWithSite<App.IMultiValueFromList<any>>  {
+    export class MultiButtonsFromList extends ComponentWithSite<App.IMultiValueFromList<any>>  {
         render(): JSX.Element {
             return <div className="jmslib-editmultibuttonlist">
                 {this.props.noui.values.map(v => <button key={v.display} data-jmslib-checked={v.selected ? "yes" : null} onClick={ev => this.onClick(ev, v)} >{v.display}</button>)}

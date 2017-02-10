@@ -2,12 +2,12 @@
 
 namespace JMSLib.ReactUi {
 
-    export class EditWithButtonList extends ComponentWithSite<App.IValueFromList<any>>  {
+    export class ButtonFromList extends ComponentWithSite<App.IValueFromList<any>>  {
         // Erstellt die Anzeige für die Komponente.
         render(): JSX.Element {
             var value = this.props.noui.value;
 
-            return <div className="jmslib-editlist">
+            return <div className="jmslib-editbuttonlist">
                 {this.props.noui.allowedValues.map(av => <button key={av.display} data-jmslib-checked={(av.value === value) ? "yes" : null} onClick={ev => this.applyValue(ev, av.value)}>{av.display}</button>)}
             </div>;
         }

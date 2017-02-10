@@ -16,13 +16,13 @@ namespace VCRNETClient.Ui {
                         <legend>Einschränkungen festlegen</legend>
                         <div>
                             <Field page={this.props.noui} label={`${this.props.noui.profiles.text}:`}>
-                                <JMSLib.ReactUi.EditTextWithList noui={this.props.noui.profiles} />
+                                <JMSLib.ReactUi.SelectSingleFromList noui={this.props.noui.profiles} />
                             </Field>
                             <Field page={this.props.noui} label={`${this.props.noui.sources.text}:`}>
-                                <JMSLib.ReactUi.EditTextWithList noui={this.props.noui.sources} />
+                                <JMSLib.ReactUi.SelectSingleFromList noui={this.props.noui.sources} />
                             </Field>
-                            {this.props.noui.showSourceType ? <JMSLib.ReactUi.EditWithButtonList noui={this.props.noui.sourceType} /> : null}
-                            {this.props.noui.showEncryption ? <JMSLib.ReactUi.EditWithButtonList noui={this.props.noui.encrpytion} /> : null}
+                            {this.props.noui.showSourceType ? <JMSLib.ReactUi.ButtonFromList noui={this.props.noui.sourceType} /> : null}
+                            {this.props.noui.showEncryption ? <JMSLib.ReactUi.ButtonFromList noui={this.props.noui.encrpytion} /> : null}
                         </div>
                         <div>
                             <Field page={this.props.noui} label={`${this.props.noui.queryString.text}:`}>
@@ -33,12 +33,12 @@ namespace VCRNETClient.Ui {
                         </div>
                         <div>
                             <Field page={this.props.noui} label={`${this.props.noui.days.text}:`}>
-                                <JMSLib.ReactUi.EditWithButtonList noui={this.props.noui.days} />
+                                <JMSLib.ReactUi.ButtonFromList noui={this.props.noui.days} />
                             </Field>
                         </div>
                         <div>
                             <Field page={this.props.noui} label={`${this.props.noui.hours.text}:`}>
-                                <JMSLib.ReactUi.EditWithButtonList noui={this.props.noui.hours} />
+                                <JMSLib.ReactUi.ButtonFromList noui={this.props.noui.hours} />
                             </Field>
                         </div>
                     </fieldset>

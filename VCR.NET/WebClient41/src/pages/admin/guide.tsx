@@ -18,13 +18,13 @@ namespace VCRNETClient.Ui {
                 {this.props.noui.isActive.value ? <form>
                     {this.getSourceHelp()}
                     <div>
-                        <JMSLib.ReactUi.EditMultiValueList noui={this.props.noui.sources} items={10} />
+                        <JMSLib.ReactUi.SelectMultipleFromList noui={this.props.noui.sources} items={10} />
                         <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.remove} />
                     </div>
                     {this.getUkHelp()}
                     <JMSLib.ReactUi.EditBoolean noui={this.props.noui.ukTv} />
                     <Field page={this.props.noui.page} label={`${this.props.noui.device.text}:`}>
-                        <JMSLib.ReactUi.EditTextWithList noui={this.props.noui.device} />
+                        <JMSLib.ReactUi.SelectSingleFromList noui={this.props.noui.device} />
                         <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.add} />
                     </Field>
                     <EditChannel noui={this.props.noui.source} />
@@ -33,7 +33,7 @@ namespace VCRNETClient.Ui {
                         <JMSLib.ReactUi.EditNumber noui={this.props.noui.duration} chars={5} />
                     </Field>
                     <Field page={this.props.noui.page} label={`${this.props.noui.hours.text}:`} >
-                        <JMSLib.ReactUi.EditMultiButtonList noui={this.props.noui.hours} />
+                        <JMSLib.ReactUi.MultiButtonsFromList noui={this.props.noui.hours} />
                     </Field>
                     <Field page={this.props.noui.page} label={`${this.props.noui.delay.text}:`} >
                         <JMSLib.ReactUi.EditNumber noui={this.props.noui.delay} chars={5} />

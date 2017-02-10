@@ -17,6 +17,8 @@ namespace JMSLib.App {
 
     export interface IValueFromList<TValueType> extends IValidatedValue<TValueType> {
         readonly allowedValues: IUiValue<TValueType>[];
+
+        displayValue: string;
     }
 
     export class EditFromList<TValueType> extends EditValue<TValueType> implements IValueFromList<TValueType> {
@@ -37,8 +39,31 @@ namespace JMSLib.App {
             // Der Wert muss in der Liste sein.
             var value = this.value;
 
+            if (value === null)
+                if (!this.isRequired)
+                    return;
+
             if (!this.allowedValues.some(av => av.value === value))
                 this.message = "Der Wert ist nicht in der Liste der möglichen Werte enthalten.";
+        }
+
+        get displayValue(): string {
+            var value = this.value;
+            var display = this.allowedValues.filter(v => v.value === value);
+
+            if (display.length === 1)
+                return display[0].display;
+            else
+                return (value === null) ? null : value.toString();
+        }
+
+        set displayValue(newDisplay: string) {
+            var value = this.allowedValues.filter(v => v.display === newDisplay);
+
+            if (value.length === 1)
+                this.value = value[0].value;
+            else
+                this.value = null;
         }
     }
 
