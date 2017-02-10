@@ -6,9 +6,20 @@ namespace VCRNETClient.App {
 
     export interface IAdminSection extends JMSLib.App.IConnectable {
         readonly page: IAdminPage;
+
+        readonly update: JMSLib.App.ICommand;
     }
 
-    export abstract class AdminSection implements IAdminSection {
+    export abstract class AdminSection<TSettingsType> implements IAdminSection {
+
+        private _update: JMSLib.App.Command<void>;
+
+        get update(): JMSLib.App.Command<void> {
+            if (!this._update)
+                this._update = new JMSLib.App.Command(() => this.save(), this.saveCaption, () => this.canSave)
+
+            return this._update;
+        }
 
         constructor(public readonly page: AdminPage) {
         }
@@ -21,6 +32,16 @@ namespace VCRNETClient.App {
         }
 
         abstract reset(): void;
+
+        protected readonly saveCaption: string = "Ändern";
+
+        protected readonly canSave: boolean = true;
+
+        protected abstract saveAsync(): JMSLib.App.IHttpPromise<boolean>;
+
+        private save(): JMSLib.App.IHttpPromise<void> {
+            return this.page.update(this.saveAsync(), this.update);
+        }
     }
 
     export interface IAdminSectionInfo<TPageType extends IAdminSection> {
@@ -30,7 +51,7 @@ namespace VCRNETClient.App {
     }
 
     interface IInternalAdminSectionInfo<TPageType extends IAdminSection> extends IAdminSectionInfo<TPageType> {
-        readonly factory: { new (page: AdminPage): AdminSection };
+        readonly factory: { new (page: AdminPage): AdminSection<any> };
 
         page: TPageType;
     }

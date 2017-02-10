@@ -9,13 +9,10 @@ namespace VCRNETClient.App.Admin {
 
         // Die Gruppe der Administratoren.
         readonly adminGroups: JMSLib.App.IValueFromList<string>;
-
-        // Befehl zur Aktualisierung der Konfiguration.
-        readonly update: JMSLib.App.ICommand;
     }
 
     // Instanz zur Pflege der Konfiguration der Benutzergruppen.
-    export class SecuritySection extends AdminSection implements IAdminSecurityPage {
+    export class SecuritySection extends AdminSection<VCRServer.SecuritySettingsContract> implements IAdminSecurityPage {
 
         // Alle bekannten Windows Kontogruppen.
         private static _windowsGroups: JMSLib.App.IHttpPromise<JMSLib.App.IUiValue<string>[]>;
@@ -25,9 +22,6 @@ namespace VCRNETClient.App.Admin {
 
         // Die Gruppe der Administratoren mit Auswahl.
         readonly adminGroups = new JMSLib.App.EditFromList<string>({}, `admins`, null, `Administratoren`, false, []);
-
-        // Befehl zum Aktualisieren der Konfiguration.
-        readonly update = new JMSLib.App.Command(() => this.save(), `Ändern`);
 
         // Initialisiert die Pflegeumgebung.
         reset(): void {
@@ -50,11 +44,8 @@ namespace VCRNETClient.App.Admin {
             SecuritySection._windowsGroups.then(groups => this.setWindowsGroups(groups));
         }
 
-        // Benutzergruppen speichern.
-        private save(): JMSLib.App.IHttpPromise<void> {
-            var settings: VCRServer.SecuritySettingsContract = this.userGroups.data;
-
-            return this.page.update(VCRServer.setSecuritySettings(settings), this.update);
+        protected saveAsync(): JMSLib.App.IHttpPromise<boolean> {
+            return VCRServer.setSecuritySettings(this.userGroups.data);
         }
 
         // Windows Kontogruppen in die Auswahllisten übernehmen.

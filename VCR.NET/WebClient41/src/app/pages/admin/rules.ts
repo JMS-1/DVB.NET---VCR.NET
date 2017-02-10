@@ -4,15 +4,11 @@ namespace VCRNETClient.App.Admin {
 
     export interface IAdminRulesPage extends IAdminSection {
         readonly rules: JMSLib.App.IValidatedString;
-
-        readonly update: JMSLib.App.ICommand;
     }
 
-    export class RulesSection extends AdminSection implements IAdminRulesPage {
+    export class RulesSection extends AdminSection<VCRServer.SchedulerRulesContract> implements IAdminRulesPage {
 
         readonly rules = new JMSLib.App.EditString({}, "rules", null, null, false);
-
-        readonly update = new JMSLib.App.Command(() => this.save(), "Ändern und neu Starten");
 
         reset(): void {
             this.update.message = ``;
@@ -26,10 +22,10 @@ namespace VCRNETClient.App.Admin {
             this.page.application.isBusy = false;
         }
 
-        private save(): JMSLib.App.IHttpPromise<void> {
-            var settings = <VCRServer.SchedulerRulesContract>this.rules.data;
+        protected readonly saveCaption = "Ändern und neu Starten";
 
-            return this.page.update(VCRServer.setSchedulerRules(settings), this.update);
+        protected saveAsync(): JMSLib.App.IHttpPromise<boolean> {
+            return VCRServer.setSchedulerRules(this.rules.data);
         }
      }
 }

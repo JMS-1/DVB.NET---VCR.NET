@@ -3,12 +3,9 @@
 namespace VCRNETClient.App.Admin {
 
     export interface IAdminOtherPage extends IAdminSection {
-        readonly update: JMSLib.App.ICommand;
     }
 
-    export class OtherSection extends AdminSection implements IAdminOtherPage {
-
-        readonly update = new JMSLib.App.Command(() => this.save(), "Ändern und eventuell neu Starten");
+    export class OtherSection extends AdminSection<VCRServer.OtherSettingsContract> implements IAdminOtherPage {
 
         reset(): void {
             this.update.message = ``;
@@ -24,10 +21,10 @@ namespace VCRNETClient.App.Admin {
             this.page.application.isBusy = false;
         }
 
-        private save(): JMSLib.App.IHttpPromise<void> {
-            var settings = <VCRServer.OtherSettingsContract>this._other;
+        protected readonly saveCaption = "Ändern und eventuell neu Starten";
 
-            return this.page.update(VCRServer.setOtherSettings(settings), this.update);
+        protected saveAsync(): JMSLib.App.IHttpPromise<boolean> {
+            return VCRServer.setOtherSettings(this._other);
         }
     }
 }

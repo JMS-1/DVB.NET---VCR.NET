@@ -6,15 +6,11 @@ namespace VCRNETClient.App.Admin {
         readonly defaultDevice: JMSLib.App.IValueFromList<string>;
 
         readonly devices: IDevice[];
-
-        readonly update: JMSLib.App.ICommand;
     }
 
-    export class DevicesSection extends AdminSection implements IAdminDevicesPage {
+    export class DevicesSection extends AdminSection<VCRServer.ProfileSettingsContract> implements IAdminDevicesPage {
 
         readonly defaultDevice = new JMSLib.App.EditFromList<string>({}, "defaultProfile", () => this.refreshUi(), "Bevorzugtes Gerät (zum Beispiel für neue Aufzeichnungen)", true, []);
-
-        readonly update = new JMSLib.App.Command(() => this.save(), "Ändern und neu Starten", () => this.isValid)
 
         devices: Device[] = [];
 
@@ -43,14 +39,14 @@ namespace VCRNETClient.App.Admin {
             super.refreshUi();
         }
 
-        private get isValid(): boolean {
+        protected readonly saveCaption = "Ändern und neu Starten";
+
+        protected get canSave(): boolean {
             return this.devices.every(d => d.isValid);
         }
 
-        private save(): JMSLib.App.IHttpPromise<void> {
-            var settings: VCRServer.ProfileSettingsContract = this.defaultDevice.data;
-
-            return this.page.update(VCRServer.setProfileSettings(settings), this.update);
+        protected saveAsync(): JMSLib.App.IHttpPromise<boolean> {
+            return VCRServer.setProfileSettings(this.defaultDevice.data);
         }
     }
 }

@@ -27,11 +27,9 @@ namespace VCRNETClient.App.Admin {
         readonly gapDays: JMSLib.App.IValidatedNumber;
 
         readonly latency: JMSLib.App.IValidatedNumber;
-
-        readonly update: JMSLib.App.ICommand;
     }
 
-    export class ScanSection extends AdminSection implements IAdminScanPage {
+    export class ScanSection extends AdminSection<VCRServer.SourceScanSettingsContract> implements IAdminScanPage {
         private static readonly  _scanDisabled = "Aktualisierung deaktivieren";
 
         private static readonly  _scanManual = "Manuell aktualisieren";
@@ -55,8 +53,6 @@ namespace VCRNETClient.App.Admin {
         readonly gapDays = new JMSLib.App.EditNumber({}, "interval", () => this.refreshUi(), "Minimale Anzahl von Tagen zwischen zwei Suchläufen", true, 1, 28);
 
         readonly latency = new JMSLib.App.EditNumber({}, "joinDays", () => this.refreshUi(), "Latenzzeit für vorgezogene Aktualisierungen in Tagen (optional)", false, 1, 14);
-
-        readonly update = new JMSLib.App.Command(() => this.save(), "Ändern", () => this.isValid);
 
         get showConfiguration(): boolean {
             return this.mode.value !== ScanConfigMode.disabled;
@@ -96,7 +92,7 @@ namespace VCRNETClient.App.Admin {
             this.page.application.isBusy = false;
         }
 
-        private get isValid(): boolean {
+        protected get canSave(): boolean {
             if (!this.showConfiguration)
                 return true;
 
@@ -115,7 +111,7 @@ namespace VCRNETClient.App.Admin {
             return true;
         }
 
-        private save(): JMSLib.App.IHttpPromise<void> {
+        protected saveAsync(): JMSLib.App.IHttpPromise<boolean> {
             var settings = <VCRServer.SourceScanSettingsContract>this.hours.data;
 
             if (!this.showConfiguration)
@@ -123,7 +119,7 @@ namespace VCRNETClient.App.Admin {
             else if (!this.configureAutomatic)
                 settings.interval = -1;
 
-            return this.page.update(VCRServer.setSourceScanSettings(settings), this.update);
+            return VCRServer.setSourceScanSettings(settings);
         }
     }
 }

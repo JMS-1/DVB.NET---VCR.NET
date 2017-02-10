@@ -18,19 +18,15 @@ namespace VCRNETClient.App.Admin {
         readonly remove: JMSLib.App.ICommand;
 
         readonly pattern: JMSLib.App.IValidatedString;
-
-        readonly update: JMSLib.App.ICommand;
     }
 
-    export class DirectoriesSection extends AdminSection implements IAdminDirectoriesPage {
+    export class DirectoriesSection extends AdminSection<VCRServer.DirectorySettingsContract> implements IAdminDirectoriesPage {
 
         readonly directories = new JMSLib.App.SelectFromList<string>({ value: [] }, "value", () => this.refreshUi(), null, []);
 
         readonly pattern = new JMSLib.App.EditString({}, "pattern", () => this.refreshUi(), "Muster für Dateinamen", true);
 
         readonly remove = new JMSLib.App.Command(() => this.removeDirectories(), "Verzeichnisse entfernen", () => this.directories.value.length > 0);
-
-        readonly update = new JMSLib.App.Command(() => this.save(), "Ändern", () => this.pattern.message === "");
 
         readonly share = new JMSLib.App.EditString({}, "value", () => this.onShareChanged(), "Netzwerk-Share", false);
 
@@ -105,12 +101,16 @@ namespace VCRNETClient.App.Admin {
             super.refreshUi();
         }
 
-        private save(): JMSLib.App.IHttpPromise<void> {
+        protected get canSave(): boolean {
+            return this.pattern.message === "";
+        }
+
+        protected saveAsync(): JMSLib.App.IHttpPromise<boolean> {
             var settings: VCRServer.DirectorySettingsContract = this.pattern.data;
 
             settings.directories = this.directories.allValues;
 
-            return this.page.update(VCRServer.setDirectorySettings(settings), this.update);
+            return VCRServer.setDirectorySettings(settings);
         }
 
         private addDirectory(folder?: string): JMSLib.App.IHttpPromise<void> {
