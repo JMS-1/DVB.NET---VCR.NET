@@ -2,22 +2,26 @@
 
 namespace JMSLib.App {
 
-    // Beschreibt eine Eigenschaft mit einer Zahl mit Prüfergebnissen.
+    // Beschreibt eine Eigenschaft mit einer Zahl.
     export interface IEditNumber extends IProperty<number> {
+        // Falls die Eingabe über einen Text erfolgt wird diese Eigenschaft zur Pflege verwendet.
         rawValue: string;
     }
 
-    // Verwaltet eine Eigenschaft mit einer Zahl.
+    // Verwaltet eine Eigenschaft mit einer (ganzen) Zahl (mit maximal 6 Ziffern - ohne führende Nullen).
     export class EditNumber extends Property<number> implements IEditNumber {
-        private static readonly _positiveNumber = /^(0+|((0+)?[1-9][0-9]{0,5}))$/;
+        // Erlaubt sind beliebige Sequenzen von Nullen oder maximal 6 Ziffern - mit einer beliebigen Anzahl von führenden Nullen.
+        private static readonly _positiveNumber = /^(0+|((0*)[1-9][0-9]{0,5}))$/;
 
         // Legt eine neue Verwaltung an.
-        constructor(data: any, prop: string, name: string, onChange: () => void, private _isRequired: boolean = true, private _min?: number, private _max?: number) {
-            super(data, prop, name, onChange);
+        constructor(data?: any, prop?: string, name?: string, onChange?: () => void, isRequired?: boolean, private readonly _min?: number, private readonly _max?: number) {
+            super(data, prop, name, onChange, isRequired);
         }
 
+        // Entählt die aktuelle Fehleingabe.
         private _rawInput: string;
 
+        // Meldet die aktuelle Eingabe - entweder eine Fehleingabe oder der Wert als Zeichenkette.
         get rawValue(): string {
             if (this._rawInput === undefined)
                 return (this.value === null) ? `` : this.value.toString();
@@ -25,10 +29,11 @@ namespace JMSLib.App {
                 return this._rawInput;
         }
 
+        // Übermittelt eine neue Eingabe.
         set rawValue(newValue: string) {
             var test = (newValue || ``).trim();
 
-            if ((test.length < 1) && !this._isRequired) {
+            if ((test.length < 1) && !this.isRequired) {
                 this._rawInput = undefined;
                 this.value = null;
             }
@@ -54,7 +59,7 @@ namespace JMSLib.App {
                 this.message = `Ungültige Zahl`;
 
             else if (this.value === null) {
-                if (this._isRequired)
+                if (this.isRequired)
                     this.message = `Es muss eine Zahl eingegeben werden`;
             }
 
