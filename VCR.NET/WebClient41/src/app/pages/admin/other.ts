@@ -1,4 +1,5 @@
 ﻿/// <reference path="../admin.ts" />
+/// <reference path="../../../lib/edit/list.ts" />
 
 namespace VCRNETClient.App.Admin {
 
@@ -40,6 +41,19 @@ namespace VCRNETClient.App.Admin {
 
     export class OtherSection extends AdminSection<VCRServer.OtherSettingsContract> implements IAdminOtherPage {
 
+        private static readonly _logging = [
+            JMSLib.App.uiValue("Errors", "Nur Fehler"),
+            JMSLib.App.uiValue("Security", "Nur Sicherheitsprobleme"),
+            JMSLib.App.uiValue("Schedules", "Aufzeichnungen"),
+            JMSLib.App.uiValue("Full", "Vollständig"),
+        ];
+
+        private static readonly _hibernation = [
+            JMSLib.App.uiValue(HibernationMode.disabled, "Nicht verwenden"),
+            JMSLib.App.uiValue(HibernationMode.standBy, "StandBy / Suspend (S3)"),
+            JMSLib.App.uiValue(HibernationMode.hibernate, "Hibernate (S4)"),
+        ];
+
         readonly port = new JMSLib.App.EditNumber({}, "webPort", () => this.refreshUi(), "TCP/IP Port für den Web Server", true, 1, 65635);
 
         readonly ssl = new JMSLib.App.EditFlag({}, "ssl", null, "Sichere Verbindung zusätzlich anbieten");
@@ -62,9 +76,9 @@ namespace VCRNETClient.App.Admin {
 
         readonly noMPEG2PCR = new JMSLib.App.EditFlag({}, "noMPEG2PCR", null, "Systemzeit (PCR) in Aufzeichnungsdateien nicht aus einem MPEG2 Bildsignal ableiten");
 
-        readonly hibernation = new JMSLib.App.EditFromList<HibernationMode>({ value: null }, "value", null, "Art des von VCR.NET ausgelösten Schlafzustands", false, []);
+        readonly hibernation = new JMSLib.App.EditFromList<HibernationMode>({ value: null }, "value", null, "Art des von VCR.NET ausgelösten Schlafzustands", false, OtherSection._hibernation);
 
-        readonly logging = new JMSLib.App.EditFromList<string>({}, "logging", null, "Umfang der Protokollierung in das Windows Ereignisprotokoll", false, []);
+        readonly logging = new JMSLib.App.EditFromList<string>({}, "logging", null, "Umfang der Protokollierung in das Windows Ereignisprotokoll", false, OtherSection._logging);
 
         reset(): void {
             this.update.message = ``;
@@ -86,17 +100,47 @@ namespace VCRNETClient.App.Admin {
             this.port.data = settings;
             this.ssl.data = settings;
 
+            if (settings.mayHibernate)
+                if (settings.useStandBy)
+                    this.hibernation.value = HibernationMode.standBy;
+                else
+                    this.hibernation.value = HibernationMode.hibernate;
+            else
+                this.hibernation.value = HibernationMode.disabled;
+
             this.page.application.isBusy = false;
         }
 
         protected readonly saveCaption = "Ändern und eventuell neu Starten";
 
         protected get canSave(): boolean {
-            return false;
+            if (this.port.message !== ``)
+                return false;
+            if (this.securePort.message !== ``)
+                return false;
+            if (this.hibernation.message !== ``)
+                return false;
+            if (this.preSleep.message !== ``)
+                return false;
+            if (this.minSleep.message !== ``)
+                return false;
+            if (this.logKeep.message !== ``)
+                return false;
+            if (this.jobKeep.message !== ``)
+                return false;
+            if (this.logging.message !== ``)
+                return false;
+
+            return true;
         }
 
         protected saveAsync(): JMSLib.App.IHttpPromise<boolean> {
-            return VCRServer.setOtherSettings(this.port.data);
+            var settings: VCRServer.OtherSettingsContract = this.port.data;
+
+            settings.mayHibernate = (this.hibernation.value !== HibernationMode.disabled);
+            settings.useStandBy = (this.hibernation.value === HibernationMode.standBy);
+
+            return VCRServer.setOtherSettings(settings);
         }
     }
 }
