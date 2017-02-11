@@ -1,7 +1,7 @@
 ﻿namespace JMSLib.App {
 
     // Schnittstelle zur Anzeige einer Aktion.
-    export interface ICommand extends IDisplayText, IConnectable {
+    export interface ICommand extends IDisplay, IConnectable {
         // Gesetzt, wenn die Aktion überhaupt angezeigt werden soll.
         readonly isVisible: boolean;
 

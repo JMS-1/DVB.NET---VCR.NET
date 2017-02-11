@@ -5,7 +5,7 @@ namespace VCRNETClient.App.Admin {
     export interface IAdminDirectoriesPage extends ISection {
         readonly directories: JMSLib.App.IMultiValueFromList<string>;
 
-        readonly share: JMSLib.App.IValidatedString;
+        readonly share: JMSLib.App.IEditString;
 
         readonly showBrowse: boolean;
 
@@ -17,24 +17,24 @@ namespace VCRNETClient.App.Admin {
 
         readonly remove: JMSLib.App.ICommand;
 
-        readonly pattern: JMSLib.App.IValidatedString;
+        readonly pattern: JMSLib.App.IEditString;
     }
 
     export class DirectoriesSection extends Section<VCRServer.DirectorySettingsContract> implements IAdminDirectoriesPage {
 
-        readonly directories = new JMSLib.App.SelectFromList<string>({ value: [] }, "value", () => this.refreshUi(), null, []);
+        readonly directories = new JMSLib.App.SelectFromList<string>({ value: [] }, "value", null, () => this.refreshUi(), []);
 
-        readonly pattern = new JMSLib.App.EditString({}, "pattern", () => this.refreshUi(), "Muster für Dateinamen", true);
+        readonly pattern = new JMSLib.App.EditString({}, "pattern", "Muster für Dateinamen", () => this.refreshUi(), true);
 
         readonly remove = new JMSLib.App.Command(() => this.removeDirectories(), "Verzeichnisse entfernen", () => this.directories.value.length > 0);
 
-        readonly share = new JMSLib.App.EditString({}, "value", () => this.onShareChanged(), "Netzwerk-Share", false);
+        readonly share = new JMSLib.App.EditString({}, "value", "Netzwerk-Share", () => this.onShareChanged(), false);
 
         get showBrowse(): boolean {
             return (this.share.value || "").trim().length < 1;
         }
 
-        readonly browse = new JMSLib.App.EditFromList<string>({}, "value", () => this.doBrowse(), "Server-Verzeichnis", false, []);
+        readonly browse = new JMSLib.App.EditFromList<string>({}, "value", "Server-Verzeichnis", () => this.doBrowse(), false, []);
 
         readonly parent = new JMSLib.App.Command(() => this.doBrowseUp(), "Übergeordnetes Verzeichnis", () => this.showBrowse && !!this.browse.value);
 

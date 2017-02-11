@@ -3,7 +3,7 @@
 namespace VCRNETClient.App.Admin {
 
     export interface IAdminRulesPage extends ISection {
-        readonly rules: JMSLib.App.IValidatedString;
+        readonly rules: JMSLib.App.IEditString;
     }
 
     export class RulesSection extends Section<VCRServer.SchedulerRulesContract> implements IAdminRulesPage {

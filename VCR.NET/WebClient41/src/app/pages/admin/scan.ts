@@ -18,15 +18,15 @@ namespace VCRNETClient.App.Admin {
 
         readonly configureAutomatic: boolean;
 
-        readonly duration: JMSLib.App.IValidatedNumber;
+        readonly duration: JMSLib.App.IEditNumber;
 
         readonly hours: JMSLib.App.IMultiValueFromList<number>;
 
-        readonly merge: JMSLib.App.IValidatedFlag;
+        readonly merge: JMSLib.App.IEditFlag;
 
-        readonly gapDays: JMSLib.App.IValidatedNumber;
+        readonly gapDays: JMSLib.App.IEditNumber;
 
-        readonly latency: JMSLib.App.IValidatedNumber;
+        readonly latency: JMSLib.App.IEditNumber;
     }
 
     export class ScanSection extends Section<VCRServer.SourceScanSettingsContract> implements IAdminScanPage {
@@ -43,17 +43,17 @@ namespace VCRNETClient.App.Admin {
             JMSLib.App.uiValue(ScanConfigMode.automatic, ScanSection._scanAutomatic),
         ];
 
-        readonly mode = new JMSLib.App.EditFromList<ScanConfigMode>({}, "value", () => this.refreshUi(), null, true, ScanSection._scanModes);
+        readonly mode = new JMSLib.App.EditFromList<ScanConfigMode>({}, "value", null, () => this.refreshUi(), true, ScanSection._scanModes);
 
-        readonly hours = new JMSLib.App.SelectFromList<number>({}, "hours", null, "Uhrzeiten", AdminPage.hoursOfDay);
+        readonly hours = new JMSLib.App.SelectFromList<number>({}, "hours", "Uhrzeiten", null, AdminPage.hoursOfDay);
 
-        readonly duration = new JMSLib.App.EditNumber({}, "duration", () => this.refreshUi(), "Maximale Laufzeit für einen Sendersuchlauf in Minuten", true, 5, 55);
+        readonly duration = new JMSLib.App.EditNumber({}, "duration", "Maximale Laufzeit für einen Sendersuchlauf in Minuten", () => this.refreshUi(), true, 5, 55);
 
-        readonly merge = new JMSLib.App.EditFlag({}, "merge", null, "Senderliste nach dem Suchlauf mit der vorherigen zusammenführen (empfohlen)");
+        readonly merge = new JMSLib.App.EditFlag({}, "merge", "Senderliste nach dem Suchlauf mit der vorherigen zusammenführen (empfohlen)", null);
 
-        readonly gapDays = new JMSLib.App.EditNumber({}, "interval", () => this.refreshUi(), "Minimale Anzahl von Tagen zwischen zwei Suchläufen", true, 1, 28);
+        readonly gapDays = new JMSLib.App.EditNumber({}, "interval", "Minimale Anzahl von Tagen zwischen zwei Suchläufen", () => this.refreshUi(), true, 1, 28);
 
-        readonly latency = new JMSLib.App.EditNumber({}, "joinDays", () => this.refreshUi(), "Latenzzeit für vorgezogene Aktualisierungen in Tagen (optional)", false, 1, 14);
+        readonly latency = new JMSLib.App.EditNumber({}, "joinDays", "Latenzzeit für vorgezogene Aktualisierungen in Tagen (optional)", () => this.refreshUi(), false, 1, 14);
 
         get showConfiguration(): boolean {
             return this.mode.value !== ScanConfigMode.disabled;

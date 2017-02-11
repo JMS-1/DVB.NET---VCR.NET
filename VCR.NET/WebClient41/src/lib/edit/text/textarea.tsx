@@ -2,13 +2,13 @@
 
 namespace JMSLib.ReactUi {
 
-    interface IEditTextArea extends IComponent<App.IValidatedString> {
+    interface IEditTextArea extends IComponent<App.IEditString> {
         rows: number;
 
         columns: number;
     }
 
-    export class EditTextArea extends ComponentExWithSite<App.IValidatedString, IEditTextArea>  {
+    export class EditTextArea extends ComponentExWithSite<App.IEditString, IEditTextArea>  {
         render(): JSX.Element {
             return <textarea className="jmslib-edittextarea"
                 rows={this.props.rows}

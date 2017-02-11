@@ -3,7 +3,7 @@
 namespace VCRNETClient.App {
 
     // Schnitstelle zur Pflege der Senderauswahl.
-    export interface IChannelSelector extends JMSLib.App.IValidatedValue<string>, JMSLib.App.IConnectable {
+    export interface IChannelSelector extends JMSLib.App.IProperty<string>, JMSLib.App.IConnectable {
         // Die Vorauswahl der Quellen vor allem nach dem ersten Zeichen des Namens.
         section: string;
 
@@ -27,7 +27,7 @@ namespace VCRNETClient.App {
     }
 
     // Stellt die Logik zur Auswahl eines Senders zur Verfügung.
-    export class ChannelEditor extends JMSLib.App.EditValue<string> implements IChannelSelector {
+    export class ChannelEditor extends JMSLib.App.Property<string> implements IChannelSelector {
 
         // Die Auswahl der Verschlüsselung.
         private static readonly _encryptions = [
@@ -216,7 +216,7 @@ namespace VCRNETClient.App {
 
         // Erstellt eine neue Logik zur Senderauswahl.
         constructor(data: any, prop: string, favoriteSources: string[], onChange: () => void) {
-            super(data, prop, onChange, "Quelle");
+            super(data, prop, "Quelle", onChange);
 
             // Übernimmt die lineare Liste aller bevorzugten Sender zur schnelleren Auswahl in ein Dictionary.
             if (this.showFilter = (favoriteSources.length < 1))

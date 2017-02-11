@@ -2,11 +2,11 @@
 
 namespace JMSLib.ReactUi {
 
-    interface IEditNumber extends IComponent<App.IValidatedNumber> {
+    interface IEditNumber extends IComponent<App.IEditNumber> {
         chars: number;
     }
 
-    export class EditNumber extends ComponentExWithSite<App.IValidatedNumber, IEditNumber>  {
+    export class EditNumber extends ComponentExWithSite<App.IEditNumber, IEditNumber>  {
         render(): JSX.Element {
             return <input className="jmslib-editnumber"
                 type="TEXT"

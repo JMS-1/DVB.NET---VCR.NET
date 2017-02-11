@@ -7,24 +7,24 @@ namespace VCRNETClient.App {
 
         readonly startDay: JMSLib.App.IValueFromList<string>;
 
-        readonly showGuide: JMSLib.App.IValidatedFlag;
+        readonly showGuide: JMSLib.App.IEditFlag;
 
-        readonly showScan: JMSLib.App.IValidatedFlag;
+        readonly showScan: JMSLib.App.IEditFlag;
 
-        readonly showLive: JMSLib.App.IValidatedFlag;
+        readonly showLive: JMSLib.App.IEditFlag;
 
         readonly entries: Log.ILogEntry[];
     }
 
     export class LogPage extends Page implements ILogPage {
 
-        readonly profiles = new JMSLib.App.EditFromList<string>({}, "value", () => this.load(), "Protokollbereich", false, []);
+        readonly profiles = new JMSLib.App.EditFromList<string>({}, "value", "Protokollbereich", () => this.load(), false, []);
 
-        readonly showGuide = new JMSLib.App.EditFlag({}, "value", () => this.refreshUi(), "Programmzeitschrift");
+        readonly showGuide = new JMSLib.App.EditFlag({}, "value", "Programmzeitschrift", () => this.refreshUi());
 
-        readonly showScan = new JMSLib.App.EditFlag({}, "value", () => this.refreshUi(), "Sendersuchlauf");
+        readonly showScan = new JMSLib.App.EditFlag({}, "value", "Sendersuchlauf", () => this.refreshUi());
 
-        readonly showLive = new JMSLib.App.EditFlag({}, "value", () => this.refreshUi(), "Zapping");
+        readonly showLive = new JMSLib.App.EditFlag({}, "value", "Zapping", () => this.refreshUi());
 
         private _startDay: string;
 
@@ -62,7 +62,7 @@ namespace VCRNETClient.App {
                 start = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate() - 7));
             }
 
-            this.startDay = new JMSLib.App.EditFromList<string>(this, "_startDay", () => this.load(), null, false, days);
+            this.startDay = new JMSLib.App.EditFromList<string>(this, "_startDay", null, () => this.load(), false, days);
         }
 
         reset(sections: string[]): void {

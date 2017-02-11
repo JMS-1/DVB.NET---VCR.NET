@@ -11,7 +11,7 @@ namespace VCRNETClient.App {
         readonly startFilter: JMSLib.App.IValueFromList<Date>;
 
         // Auswahl für die Anzeige der Aufgaben zusätzlich zu den Aufzeichnungen.
-        readonly showTasks: JMSLib.App.IValidatedFlag;
+        readonly showTasks: JMSLib.App.IEditFlag;
     }
 
     // Steuert die Anzeige des Aufzeichnungsplan.
@@ -25,10 +25,10 @@ namespace VCRNETClient.App {
         }
 
         // Pflegt die Anzeige der Aufgaben.
-        readonly showTasks = new JMSLib.App.EditFlag({}, "value", () => this.fireRefresh(), "Aufgaben einblenden");
+        readonly showTasks = new JMSLib.App.EditFlag({}, "value", "Aufgaben einblenden", () => this.fireRefresh());
 
         // Alle bekannten Datumsfilter.
-        readonly startFilter = new JMSLib.App.EditFromList<Date>({}, "value", () => this.fireRefresh(true), null, false, []);
+        readonly startFilter = new JMSLib.App.EditFromList<Date>({}, "value", null, () => this.fireRefresh(true), false, []);
 
         // Erzeugt eine neue Steuerung.
         constructor(application: Application) {

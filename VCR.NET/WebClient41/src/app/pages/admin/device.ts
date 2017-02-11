@@ -5,13 +5,13 @@ namespace VCRNETClient.App.Admin {
     export interface IDevice {
         readonly name: string;
 
-        readonly active: JMSLib.App.IValidatedFlag;
+        readonly active: JMSLib.App.IEditFlag;
 
-        readonly priority: JMSLib.App.IValidatedNumber;
+        readonly priority: JMSLib.App.IEditNumber;
 
-        readonly decryption: JMSLib.App.IValidatedNumber;
+        readonly decryption: JMSLib.App.IEditNumber;
 
-        readonly sources: JMSLib.App.IValidatedNumber;
+        readonly sources: JMSLib.App.IEditNumber;
     }
 
     export class Device implements IDevice {
@@ -28,7 +28,7 @@ namespace VCRNETClient.App.Admin {
 
         constructor(profile: VCRServer.ProfileContract, onChange: () => void) {
             this.name = profile.name;
-            this.active = new JMSLib.App.EditFlag(profile, "active", onChange, null);
+            this.active = new JMSLib.App.EditFlag(profile, "active", null, onChange);
             this.priority = new JMSLib.App.EditNumber(profile, "priority", null, null, true, 0, 100);
             this.decryption = new JMSLib.App.EditNumber(profile, "ciLimit", null, null, true, 0, 16);
             this.sources = new JMSLib.App.EditNumber(profile, "sourceLimit", null, null, true, 1, 32);

@@ -19,17 +19,26 @@ namespace JMSLib.App {
         selected: boolean;
     }
 
-    export interface IValueFromList<TValueType> extends IValidatedValue<TValueType> {
+    export interface IValueFromList<TValueType> extends IProperty<TValueType> {
         readonly allowedValues: IUiValue<TValueType>[];
 
         displayValue: string;
     }
 
-    export class EditFromList<TValueType> extends EditValue<TValueType> implements IValueFromList<TValueType> {
+    export class EditFromList<TValueType> extends Property<TValueType> implements IValueFromList<TValueType> {
 
         // Legt eine neue Verwaltung an.
-        constructor(data: any, prop: string, onChange: () => void, name: string, isRequired: boolean, public allowedValues: IUiValue<TValueType>[]) {
-            super(data, prop, onChange, name, isRequired);
+        constructor(data: any, prop: string, name: string, onChange: () => void, isRequired?: boolean, private _allowedValues: IUiValue<TValueType>[] = []) {
+            super(data, prop, name, onChange, isRequired);
+        }
+
+        get allowedValues(): IUiValue<TValueType>[] {
+            return this._allowedValues;
+        }
+
+        set allowedValues(values: IUiValue<TValueType>[]) {
+            this._allowedValues = values || [];
+            this.refresh();
         }
 
         // Prüft den aktuellen Wert.

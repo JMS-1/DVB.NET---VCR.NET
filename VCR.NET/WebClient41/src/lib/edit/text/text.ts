@@ -3,15 +3,15 @@
 namespace JMSLib.App {
 
     // Beschreibt eine Eigenschaft der Art Zeichenkette mit Prüfergebnissen.
-    export interface IValidatedString extends IValidatedValue<string> {
+    export interface IEditString extends IProperty<string> {
     }
 
     // Verwaltet eine Eigenschaft der Art Zeichenkette.
-    export class EditString extends EditValue<string> implements IValidatedString {
+    export class EditString extends Property<string> implements IEditString {
 
         // Legt eine neue Verwaltung an.
-        constructor(data: any, prop: string, onChange: () => void, name: string, isRequired: boolean, private _message?: string) {
-            super(data, prop, onChange, name, isRequired);
+        constructor(data: any, prop: string, name: string, onChange: () => void, isRequired?: boolean, private _message?: string) {
+            super(data, prop, name, onChange, isRequired);
         }
 
         // Prüft den aktuellen Wert auf Gültigkeit.

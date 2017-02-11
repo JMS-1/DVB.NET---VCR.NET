@@ -2,7 +2,7 @@
 
 namespace JMSLib.App {
 
-    export interface IMultiValueFromList<TValueType> extends IEditValue<TValueType[]> {
+    export interface IMultiValueFromList<TValueType> extends IProperty<TValueType[]> {
         readonly values: ISelectableUiValue<TValueType>[];
     }
 
@@ -31,10 +31,10 @@ namespace JMSLib.App {
         readonly value: TValueType;
     }
 
-    export class SelectFromList<TValueType> extends EditValue<TValueType[]> implements IMultiValueFromList<TValueType> {
+    export class SelectFromList<TValueType> extends Property<TValueType[]> implements IMultiValueFromList<TValueType> {
 
-        constructor(data: any, prop: string, onChange: () => void, name: string, values: IUiValue<TValueType>[]) {
-            super(data, prop, onChange, name);
+        constructor(data: any, prop: string, name: string, onChange: () => void, values: IUiValue<TValueType>[]) {
+            super(data, prop, name, onChange);
 
             this.setValues(values);
         }

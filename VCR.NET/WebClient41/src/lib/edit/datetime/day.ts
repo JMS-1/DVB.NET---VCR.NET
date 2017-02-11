@@ -16,7 +16,7 @@ namespace JMSLib.App {
         select(): void;
     }
 
-    export interface IDaySelector extends IDisplayText, IConnectable {
+    export interface IDaySelector extends IDisplay, IConnectable {
         monthBackward(): void;
 
         monthForward(): void;
@@ -38,7 +38,7 @@ namespace JMSLib.App {
         readonly days: ISelectableDay[];
     }
 
-    export class DayEditor extends EditValue<string> implements IDaySelector {
+    export class DayEditor extends Property<string> implements IDaySelector {
         private static _dayNames = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
         readonly dayNames = DayEditor._dayNames;
@@ -210,8 +210,8 @@ namespace JMSLib.App {
             while (current.getMonth() === month);
         }
 
-        constructor(data: any, prop: string, onChange: () => void, text: string, private _utc: boolean) {
-            super(data, prop, onChange, text);
+        constructor(data: any, prop: string, text: string, onChange: () => void, private _utc: boolean) {
+            super(data, prop, text, onChange);
         }
 
         private selectDay(day: ISelectableDay): void {

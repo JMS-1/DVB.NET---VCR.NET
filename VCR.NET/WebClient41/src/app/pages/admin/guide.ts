@@ -3,13 +3,13 @@
 namespace VCRNETClient.App.Admin {
 
     export interface IAdminGuidePage extends ISection {
-        readonly isActive: JMSLib.App.IValidatedFlag;
+        readonly isActive: JMSLib.App.IEditFlag;
 
         readonly hours: JMSLib.App.IMultiValueFromList<number>;
 
         readonly sources: JMSLib.App.IMultiValueFromList<string>;
 
-        readonly ukTv: JMSLib.App.IValidatedFlag;
+        readonly ukTv: JMSLib.App.IEditFlag;
 
         readonly device: JMSLib.App.IValueFromList<string>;
 
@@ -19,36 +19,36 @@ namespace VCRNETClient.App.Admin {
 
         readonly add: JMSLib.App.ICommand;
 
-        readonly duration: JMSLib.App.IValidatedNumber;
+        readonly duration: JMSLib.App.IEditNumber;
 
-        readonly delay: JMSLib.App.IValidatedNumber;
+        readonly delay: JMSLib.App.IEditNumber;
 
-        readonly latency: JMSLib.App.IValidatedNumber;
+        readonly latency: JMSLib.App.IEditNumber;
     }
 
     export class GuideSection extends Section<VCRServer.GuideSettingsContract> implements IAdminGuidePage {
 
-        readonly isActive = new JMSLib.App.EditFlag({}, "value", () => this.refreshUi(), "Aktualisierung aktivieren");
+        readonly isActive = new JMSLib.App.EditFlag({}, "value", "Aktualisierung aktivieren", () => this.refreshUi());
 
-        readonly hours = new JMSLib.App.SelectFromList<number>({}, "hours", null, "Uhrzeiten", AdminPage.hoursOfDay);
+        readonly hours = new JMSLib.App.SelectFromList<number>({}, "hours", "Uhrzeiten", null, AdminPage.hoursOfDay);
 
-        readonly sources = new JMSLib.App.SelectFromList<string>({ list: [] }, "list", () => this.refreshUi(), null, []);
+        readonly sources = new JMSLib.App.SelectFromList<string>({ list: [] }, "list", null, () => this.refreshUi(), []);
 
-        readonly ukTv = new JMSLib.App.EditFlag({}, "includeUK", null, "Sendungsvorschau englischer Sender (FreeSat UK) abrufen");
+        readonly ukTv = new JMSLib.App.EditFlag({}, "includeUK", "Sendungsvorschau englischer Sender (FreeSat UK) abrufen", null);
 
         readonly remove = new JMSLib.App.Command(() => this.removeSources(), "Entfernen", () => this.sources.value.length > 0);
 
-        readonly device = new JMSLib.App.EditFromList<string>({}, "value", () => this.onDeviceChanged(), "Quellen des Gerätes", true, []);
+        readonly device = new JMSLib.App.EditFromList<string>({}, "value", "Quellen des Gerätes", () => this.onDeviceChanged(), true, []);
 
         readonly source: ChannelEditor;
 
         readonly add = new JMSLib.App.Command(() => this.addSource(), "Hinzufügen", () => this.source.value && (this.sources.allValues.indexOf(this.source.value) < 0));
 
-        readonly duration = new JMSLib.App.EditNumber({}, "duration", () => this.refreshUi(), "Maximale Laufzeit einer Aktualisierung in Minuten", true, 5, 55);
+        readonly duration = new JMSLib.App.EditNumber({}, "duration", "Maximale Laufzeit einer Aktualisierung in Minuten", () => this.refreshUi(), true, 5, 55);
 
-        readonly delay = new JMSLib.App.EditNumber({}, "minDelay", () => this.refreshUi(), "Wartezeit zwischen zwei Aktualisierungen in Stunden (optional)", false, 1, 23);
+        readonly delay = new JMSLib.App.EditNumber({}, "minDelay", "Wartezeit zwischen zwei Aktualisierungen in Stunden (optional)", () => this.refreshUi(), false, 1, 23);
 
-        readonly latency = new JMSLib.App.EditNumber({}, "joinHours", () => this.refreshUi(), "Latenzzeit für vorgezogene Aktualisierungen in Stunden (optional)", false, 1, 23);
+        readonly latency = new JMSLib.App.EditNumber({}, "joinHours", "Latenzzeit für vorgezogene Aktualisierungen in Stunden (optional)", () => this.refreshUi(), false, 1, 23);
 
         constructor(page: AdminPage) {
             super(page);

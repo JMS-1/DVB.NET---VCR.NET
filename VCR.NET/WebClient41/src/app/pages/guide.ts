@@ -45,10 +45,10 @@ namespace VCRNETClient.App {
         readonly hours: JMSLib.App.IValueFromList<number>;
 
         // Der aktuelle Text zur Suche in allen Einträgen der Programmzeitschrift.
-        readonly queryString: JMSLib.App.IValidatedString;
+        readonly queryString: JMSLib.App.IEditString;
 
         // Gesetzt, wenn auch in der Beschreibung gesucht werden soll.
-        readonly withContent: JMSLib.App.IValidatedFlag;
+        readonly withContent: JMSLib.App.IEditFlag;
 
         // Befhel zum Zurücksetzen aller Einschränkungen.
         readonly resetFilter: JMSLib.App.ICommand;
@@ -99,37 +99,37 @@ namespace VCRNETClient.App {
         };
 
         // Schnittstelle zur Auswahl des zu betrachtenden Gerätes.
-        readonly profiles = new JMSLib.App.EditFromList<string>(this._filter, "device", () => this.onDeviceChanged(true), "Gerät", false, []);
+        readonly profiles = new JMSLib.App.EditFromList<string>(this._filter, "device", "Gerät", () => this.onDeviceChanged(true), false, []);
 
         // Schnittstelle zur Auswahl der Quelle.
-        readonly sources = new JMSLib.App.EditFromList<string>(this._filter, "station", () => this.query(), "Quelle", false, []);
+        readonly sources = new JMSLib.App.EditFromList<string>(this._filter, "station", "Quelle", () => this.query(), false, []);
 
         // Schnittstelle zur Auswahl der Einschränkung auf die Verschlüsselung.
-        readonly encrpytion = new JMSLib.App.EditFromList<VCRServer.GuideEncryption>(this._filter, "cryptFilter", () => this.query(), null, false, GuidePage._cryptOptions);
+        readonly encrpytion = new JMSLib.App.EditFromList<VCRServer.GuideEncryption>(this._filter, "cryptFilter", null, () => this.query(), false, GuidePage._cryptOptions);
 
         // Schnittstelle zur Auswahl der Einschränkung auf die Art der Quelle.
-        readonly sourceType = new JMSLib.App.EditFromList<VCRServer.GuideSource>(this._filter, "typeFilter", () => this.query(), null, false, GuidePage._typeOptions);
+        readonly sourceType = new JMSLib.App.EditFromList<VCRServer.GuideSource>(this._filter, "typeFilter", null, () => this.query(), false, GuidePage._typeOptions);
 
         // Schnittstelle zum Setzen eines bestimmten Tags für den Anfang der Ergebnisliste.
-        readonly days = new JMSLib.App.EditFromList<string>(this._filter, "start", () => this.resetIndexAndQuery(), "Datum", false, []);
+        readonly days = new JMSLib.App.EditFromList<string>(this._filter, "start", "Datum", () => this.resetIndexAndQuery(), false, []);
 
         // Bei der nächsten Abfrage zu setzende Uhrzeit für den Anfang der Ergebnisliste.
         private _hour = -1;
 
         // Schnittstelle zum Setzen einer bestimmten Uhrzeit für den Anfange der Ergebnisliste.
-        readonly hours = new JMSLib.App.EditFromList<number>(this, "_hour", () => this.resetIndexAndQuery(), "Start ab", false, GuidePage._hours);
+        readonly hours = new JMSLib.App.EditFromList<number>(this, "_hour", "Start ab", () => this.resetIndexAndQuery(), false, GuidePage._hours);
 
         // Die aktuelle Freitextsucheingabe.
         private _query = "";
 
         // Schnittstelle zur Pflege der Freitextsuchbedingung.
-        readonly queryString = new JMSLib.App.EditString(this, "_query", () => this.delayedQuery(), "Suche nach", false);
+        readonly queryString = new JMSLib.App.EditString(this, "_query", "Suche nach", () => this.delayedQuery(), false);
 
         // Gesetzt, wenn auch eine Suche auf die Beschreibung erfolgen soll.
         private _withContent = true;
 
         // Schnittstelle zur Pflege der Auswahl der Freitextsuche auf die Beschreibung.
-        readonly withContent = new JMSLib.App.EditFlag(this, "_withContent", () => this.query(), "Auch in Beschreibung suchen");
+        readonly withContent = new JMSLib.App.EditFlag(this, "_withContent", "Auch in Beschreibung suchen", () => this.query());
 
         // Aktuelle Anmeldung für verzögerte Suchanfragen.
         private _timeout: number;
@@ -163,7 +163,7 @@ namespace VCRNETClient.App {
         private _selectedJob = "*";
 
         // Die aktuelle Liste der für das Gerät angelegten Aufträg.
-        private _jobSelector = new JMSLib.App.EditFromList<string>(this, "_selectedJob", null, "zum Auftrag", true, []);
+        private _jobSelector = new JMSLib.App.EditFromList<string>(this, "_selectedJob", "zum Auftrag", null, true, []);
 
         // Gesetzt, wenn eine nächste Seite der Ergebnisliste existiert.
         private _hasMore = false;

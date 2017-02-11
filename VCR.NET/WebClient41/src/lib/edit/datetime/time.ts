@@ -8,15 +8,15 @@ namespace JMSLib.App {
         readonly error: string;
     }
 
-    export class EditTime extends EditValue<string> implements IEditTime {
+    export class EditTime extends Property<string> implements IEditTime {
         private _time: string;
 
         protected onSiteChanged(): void {
             this._time = DateFormatter.getEndTime(new Date(this.value));
         }
 
-        constructor(data: any, prop: string, onChange: () => void, name?: string, private _externalValidator?: () => string) {
-            super(data, prop, onChange, name);
+        constructor(data: any, prop: string, name?: string, onChange?: () => void, private _externalValidator?: () => string) {
+            super(data, prop, name, onChange);
         }
 
         get time(): string {

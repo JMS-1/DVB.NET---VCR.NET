@@ -2,19 +2,19 @@
 
 namespace VCRNETClient.App.Edit {
 
-    export interface IDurationEditor extends JMSLib.App.IDisplayText {
+    export interface IDurationEditor extends JMSLib.App.IDisplay {
         readonly startTime: JMSLib.App.IEditTime;
 
         readonly endTime: JMSLib.App.IEditTime;
     }
 
-    export class DurationEditor extends JMSLib.App.EditValue<number> implements IDurationEditor {
+    export class DurationEditor extends JMSLib.App.Property<number> implements IDurationEditor {
         readonly startTime: JMSLib.App.EditTime;
 
         readonly endTime: JMSLib.App.EditTime;
 
-        constructor(data: any, propTime: string, propDuration: string, onChange: () => void, text: string) {
-            super(data, propDuration, onChange, text);
+        constructor(data: any, propTime: string, propDuration: string, text: string, onChange: () => void) {
+            super(data, propDuration, text, onChange);
 
             this.startTime = new JMSLib.App.EditTime(data, propTime, this._onChanged);
 

@@ -3,7 +3,7 @@
 namespace JMSLib.ReactUi {
 
     // Konfiguration einer einfachen Texteingabe.
-    interface IEditText extends IComponent<App.IValidatedString> {
+    interface IEditText extends IComponent<App.IEditString> {
         // Die Anzahl der darzustellenden Zeichen.
         chars: number;
 
@@ -12,7 +12,7 @@ namespace JMSLib.ReactUi {
     }
 
     // Texteingabe für React.Js - die NoUi Schicht stellt den Wert und das Prüfergebnis zur Verfügung.
-    export class EditText extends ComponentExWithSite<App.IValidatedString, IEditText>  {
+    export class EditText extends ComponentExWithSite<App.IEditString, IEditText>  {
         // Erstellt die Anzeige der Komponente.
         render(): JSX.Element {
             return <input className="jmslib-edittext"

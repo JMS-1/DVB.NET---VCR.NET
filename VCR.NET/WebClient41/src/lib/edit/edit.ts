@@ -1,30 +1,37 @@
 ﻿namespace JMSLib.App {
 
     // Bietet den Wert einer Eigenschaft zur Pflege in der Oberfläche an.
-    export interface IEditValue<TValueType> extends IDisplayText, IConnectable {
+    export interface IProperty<TValueType> extends IDisplay, IConnectable {
         // Meldet den aktuellen Wert oder verändert diesen - gemeldet wird immer der ursprüngliche Wert.
         value: TValueType;
 
         // Gesetzt, wenn der Wert der Eigenschaft nicht verändert werden darf.
         readonly isReadonly: boolean;
-    }
 
-    // Ergänzt den Zugriff auf den Wert einer Eigenschaft um Prüfinformationen.
-    export interface IValidatedValue<TValueType> extends IEditValue<TValueType> {
         // Die zuletzt ermittelten Prüfinformationen. Eine leere Zeichenkette bedeutet, dass die Eigenschaft einen gültigen Wert besitzt.
         readonly message: string;
     }
 
     // Basisklasse zur Pflege des Wertes einer einzelnen Eigenschaft.
-    export abstract class EditValue<TValueType> implements IValidatedValue<TValueType> {
+    export abstract class Property<TValueType> implements IProperty<TValueType> {
+
+        // Initialisiert die Verwaltung des Wertes einer einzelnen Eigenschaft (_prop) im Modell (_data).
+        protected constructor(private _data: any = {}, private readonly _prop: string = `value`, public readonly text: string = null, private readonly _onChange?: () => void, protected readonly isRequired?: boolean, private _testReadOnly?: () => boolean) {
+        }
+
         // Das zugehörige Oberflächenelement.
         private _site: ISite;
 
         // Benachrichtigt die Oberfläche zur Aktualisierung der Anzeige.
         protected refresh(): void {
+            // Prüfergebnis aktualisieren.
+            this.validate();
+
+            // Präsentationsmodell über Änderungen informieren.
             if (this._onChange)
                 this._onChange();
 
+            // Unmittelbar verbundenes Oberflächenelement aktualisieren.
             if (this._site)
                 this._site.refreshUi();
         }
@@ -33,14 +40,17 @@
         protected setSite(site: ISite): void {
             this._site = site;
 
+            // Interne Benachrichtigung auslösen.
             if (this._site)
                 this.onSiteChanged();
         }
 
+        // Meldet die Oberfläche an.
         set site(site: ISite) {
             this.setSite(site);
         }
 
+        // Ermittelt das aktuell zugeordnete Oberflächenelement.
         get site(): ISite {
             return this._site;
         }
@@ -49,21 +59,19 @@
         protected onSiteChanged(): void {
         }
 
-        // Meldet den aktuellen Wert oder verändert diesen - gemeldet wird immer der ursprüngliche Wert.
+        // Meldet den aktuellen Wert.
         get value(): TValueType {
             return this.data[this._prop] as TValueType;
         }
 
+        // Verändert den aktuellen Wert.
         set value(newValue: TValueType) {
             // Prüfen, ob der aktuelle Wert durch einen anderen ersetzt werden soll.
-            if (newValue === this.data[this._prop])
+            if (newValue === this.value)
                 return;
 
             // Neuen Wert ins Modell übertragen.
             this.data[this._prop] = newValue;
-
-            // Erneut prüfen.
-            this.validate();
 
             // Modelländerung melden und Oberfläche aktualisieren.
             this.refresh();
@@ -75,31 +83,27 @@
         }
 
         // Verwaltung des Prüfergebnisses - die Basisimplementierung meldet die Eigenschaft immer als gültig (leere Zeichenkette).
-        message = "";
+        message = ``;
 
         validate(): void {
-            this.message = "";
+            this.message = ``;
         }
 
-        // Initialisiert die Verwaltung des Wertes einer einzelnen Eigenschaft (_prop) im Modell (_data).
-        protected constructor(private _data: any, private readonly _prop: string, private readonly _onChange: () => void, public readonly text: string, protected readonly isRequired?: boolean, private _testReadOnly?: () => boolean) {
-        }
-
-        protected getData(): any {
+        // Meldet das aktuell zugeordnete Modell.
+        get data(): any {
             return this._data;
         }
 
-        get data(): any {
-            return this.getData();
-        }
-
+        // Ändert das aktuell zugeordnete Modell.
         protected setData(newValue: any): void {
             this._data = newValue;
         }
 
+        // Ändert das aktuell zugeordnete Modell.
         set data(newValue: any) {
             this.setData(newValue);
 
+            // Dadurch kann sich natürlich der aktuelle Wert verändert haben.
             this.refresh();
         }
     }

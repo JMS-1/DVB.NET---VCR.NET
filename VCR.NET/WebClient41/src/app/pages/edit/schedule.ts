@@ -11,15 +11,15 @@ namespace VCRNETClient.App.Edit {
         readonly duration: IDurationEditor;
 
         // Wiederholungsmuster als Ganzes und aufgespalten als Wahrheitswert pro Wochentag.
-        readonly repeat: JMSLib.App.IValidatedNumber;
+        readonly repeat: JMSLib.App.IEditNumber;
 
-        readonly onMonday: JMSLib.App.IValidatedFlag;
-        readonly onTuesday: JMSLib.App.IValidatedFlag;
-        readonly onWednesday: JMSLib.App.IValidatedFlag;
-        readonly onThursday: JMSLib.App.IValidatedFlag;
-        readonly onFriday: JMSLib.App.IValidatedFlag;
-        readonly onSaturday: JMSLib.App.IValidatedFlag;
-        readonly onSunday: JMSLib.App.IValidatedFlag;
+        readonly onMonday: JMSLib.App.IEditFlag;
+        readonly onTuesday: JMSLib.App.IEditFlag;
+        readonly onWednesday: JMSLib.App.IEditFlag;
+        readonly onThursday: JMSLib.App.IEditFlag;
+        readonly onFriday: JMSLib.App.IEditFlag;
+        readonly onSaturday: JMSLib.App.IEditFlag;
+        readonly onSunday: JMSLib.App.IEditFlag;
 
         // Ende der Wiederholung.
         readonly lastDay: JMSLib.App.IDaySelector;
@@ -40,10 +40,10 @@ namespace VCRNETClient.App.Edit {
                 model.lastDay = ScheduleEditor.makePureDate(ScheduleEditor.maximumDate).toISOString();
 
             // Pflegbare Eigenschaften anlegen.
-            this.firstStart = new JMSLib.App.DayEditor(model, "firstStart", onChange, "Datum", false);
-            this.repeat = new JMSLib.App.EditNumber(model, "repeatPattern", onChange, "Wiederholung");
-            this.lastDay = new JMSLib.App.DayEditor(model, "lastDay", onChange, "wiederholen bis zum", true);
-            this.duration = new DurationEditor(model, "firstStart", "duration", onChange, "Zeitraum");
+            this.firstStart = new JMSLib.App.DayEditor(model, "firstStart", "Datum", onChange, false);
+            this.repeat = new JMSLib.App.EditNumber(model, "repeatPattern", "Wiederholung", onChange);
+            this.lastDay = new JMSLib.App.DayEditor(model, "lastDay", "wiederholen bis zum", onChange, true);
+            this.duration = new DurationEditor(model, "firstStart", "duration", "Zeitraum", onChange);
 
             this.onMonday = new JMSLib.App.EditFlagSet(ScheduleEditor.flagMonday, this.repeat, JMSLib.App.DateFormatter.germanDays[1]);
             this.onTuesday = new JMSLib.App.EditFlagSet(ScheduleEditor.flagTuesday, this.repeat, JMSLib.App.DateFormatter.germanDays[2]);

@@ -18,7 +18,7 @@ namespace JMSLib.App {
     }
 
     // Steuerung für einen Schieberegeler für die Auswahl eines Wertes.
-    export class EditNumberWithSlider extends EditValue<number> implements IEditNumberWithSlider {
+    export class EditNumberWithSlider extends Property<number> implements IEditNumberWithSlider {
         // Die aktuelle relative (0..1) Position des Reglers.
         private _position = 0;
 
@@ -30,7 +30,7 @@ namespace JMSLib.App {
 
         // Erstellt eine neue Steuerung.
         constructor(data: any, prop: string, onChange: () => void, private _min: number, private _max: number) {
-            super(data, prop, onChange, null);
+            super(data, prop, null, onChange);
 
             // Anfangswert merken.
             this._initial = this.value;

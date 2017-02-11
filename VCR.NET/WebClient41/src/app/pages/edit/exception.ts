@@ -1,7 +1,7 @@
 ﻿namespace VCRNETClient.App.Edit {
 
     export interface IScheduleException extends JMSLib.App.IConnectable {
-        readonly isActive: JMSLib.App.IValidatedFlag;
+        readonly isActive: JMSLib.App.IEditFlag;
 
         readonly dayDisplay: string;
 
@@ -14,7 +14,7 @@
         constructor(public readonly model: VCRServer.PlanExceptionContract, onChange: () => void) {
             this.dayDisplay = JMSLib.App.DateFormatter.getStartDate(new Date(parseInt(model.referenceDayDisplay, 10)));
 
-            this.isActive = new JMSLib.App.EditFlag(this, "_active", () => this.onChange(onChange), null);
+            this.isActive = new JMSLib.App.EditFlag(this, "_active", null, () => this.onChange(onChange));
         }
 
         private _active = true;

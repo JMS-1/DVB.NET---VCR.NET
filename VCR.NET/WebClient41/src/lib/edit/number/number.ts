@@ -3,17 +3,17 @@
 namespace JMSLib.App {
 
     // Beschreibt eine Eigenschaft mit einer Zahl mit Prüfergebnissen.
-    export interface IValidatedNumber extends IValidatedValue<number> {
+    export interface IEditNumber extends IProperty<number> {
         rawValue: string;
     }
 
     // Verwaltet eine Eigenschaft mit einer Zahl.
-    export class EditNumber extends EditValue<number> implements IValidatedNumber {
+    export class EditNumber extends Property<number> implements IEditNumber {
         private static readonly _positiveNumber = /^(0+|((0+)?[1-9][0-9]{0,5}))$/;
 
         // Legt eine neue Verwaltung an.
-        constructor(data: any, prop: string, onChange: () => void, name: string, private _isRequired: boolean = true, private _min?: number, private _max?: number) {
-            super(data, prop, onChange, name);
+        constructor(data: any, prop: string, name: string, onChange: () => void, private _isRequired: boolean = true, private _min?: number, private _max?: number) {
+            super(data, prop, name, onChange);
         }
 
         private _rawInput: string;
