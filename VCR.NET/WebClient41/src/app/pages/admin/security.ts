@@ -3,7 +3,7 @@
 namespace VCRNETClient.App.Admin {
 
     // Schnittstelle zur Konfiguration der Benutzergruppen.
-    export interface IAdminSecurityPage extends IAdminSection {
+    export interface IAdminSecurityPage extends ISection {
         // Die Gruppe der normalen Benutzer.
         readonly userGroups: JMSLib.App.IValueFromList<string>;
 
@@ -12,7 +12,9 @@ namespace VCRNETClient.App.Admin {
     }
 
     // Instanz zur Pflege der Konfiguration der Benutzergruppen.
-    export class SecuritySection extends AdminSection<VCRServer.SecuritySettingsContract> implements IAdminSecurityPage {
+    export class SecuritySection extends Section<VCRServer.SecuritySettingsContract> implements IAdminSecurityPage {
+
+        static readonly sectionName = "Sicherheit";
 
         // Alle bekannten Windows Kontogruppen.
         private static _windowsGroups: JMSLib.App.IHttpPromise<JMSLib.App.IUiValue<string>[]>;

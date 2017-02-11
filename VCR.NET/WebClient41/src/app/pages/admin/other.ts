@@ -1,4 +1,4 @@
-﻿/// <reference path="../admin.ts" />
+﻿/// <reference path="section.ts" />
 /// <reference path="../../../lib/edit/list.ts" />
 
 namespace VCRNETClient.App.Admin {
@@ -11,7 +11,7 @@ namespace VCRNETClient.App.Admin {
         hibernate
     }
 
-    export interface IAdminOtherPage extends IAdminSection {
+    export interface IAdminOtherPage extends ISection {
         readonly port: JMSLib.App.IValidatedNumber;
 
         readonly ssl: JMSLib.App.IValidatedFlag;
@@ -39,7 +39,9 @@ namespace VCRNETClient.App.Admin {
         readonly logging: JMSLib.App.IValueFromList<string>;
     }
 
-    export class OtherSection extends AdminSection<VCRServer.OtherSettingsContract> implements IAdminOtherPage {
+    export class OtherSection extends Section<VCRServer.OtherSettingsContract> implements IAdminOtherPage {
+
+        static readonly sectionName = "Sonstiges";
 
         private static readonly _logging = [
             JMSLib.App.uiValue("Errors", "Nur Fehler"),

@@ -1,12 +1,14 @@
-﻿/// <reference path="../admin.ts" />
+﻿/// <reference path="section.ts" />
 
 namespace VCRNETClient.App.Admin {
 
-    export interface IAdminRulesPage extends IAdminSection {
+    export interface IAdminRulesPage extends ISection {
         readonly rules: JMSLib.App.IValidatedString;
     }
 
-    export class RulesSection extends AdminSection<VCRServer.SchedulerRulesContract> implements IAdminRulesPage {
+    export class RulesSection extends Section<VCRServer.SchedulerRulesContract> implements IAdminRulesPage {
+
+        static readonly sectionName = "Planungsregeln";
 
         readonly rules = new JMSLib.App.EditString({}, "rules", null, null, false);
 

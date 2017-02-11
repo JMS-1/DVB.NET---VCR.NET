@@ -4,63 +4,22 @@
 
 namespace VCRNETClient.App {
 
-    export interface IAdminSection extends JMSLib.App.IConnectable {
-        readonly page: IAdminPage;
-
-        readonly update: JMSLib.App.ICommand;
-    }
-
-    export abstract class AdminSection<TSettingsType> implements IAdminSection {
-
-        private _update: JMSLib.App.Command<void>;
-
-        get update(): JMSLib.App.Command<void> {
-            if (!this._update)
-                this._update = new JMSLib.App.Command(() => this.save(), this.saveCaption, () => this.canSave)
-
-            return this._update;
+    class SectionInfo implements Admin.ISectionInfo<Admin.ISection> {
+        constructor(private readonly _factory: { new (page: AdminPage): Admin.ISection; readonly sectionName: string; }, private readonly _adminPage: AdminPage) {
         }
 
-        constructor(public readonly page: AdminPage) {
+        private _page: Admin.ISection;
+
+        get page(): Admin.ISection {
+            if (!this._page)
+                this._page = new (this._factory)(this._adminPage);
+
+            return this._page;
         }
 
-        site: JMSLib.App.ISite;
-
-        protected refreshUi(): void {
-            if (this.site)
-                this.site.refreshUi();
+        get display(): string {
+            return this._factory.sectionName;
         }
-
-        abstract reset(): void;
-
-        protected readonly saveCaption: string = "Ändern";
-
-        protected readonly canSave: boolean = true;
-
-        protected abstract saveAsync(): JMSLib.App.IHttpPromise<boolean>;
-
-        private save(): JMSLib.App.IHttpPromise<void> {
-            return this.page.update(this.saveAsync(), this.update);
-        }
-    }
-
-    export interface IAdminSectionInfo<TPageType extends IAdminSection> {
-        readonly display: string;
-
-        readonly page: TPageType;
-    }
-
-    interface IInternalAdminSectionInfo<TPageType extends IAdminSection> extends IAdminSectionInfo<TPageType> {
-        readonly factory: { new (page: AdminPage): AdminSection<any> };
-
-        page: TPageType;
-    }
-
-    export interface IAdminSectionInfos<TInterface extends IAdminSectionInfo<any>> {
-        readonly[section: string]: TInterface;
-    }
-
-    interface IInternalAdminSectionInfos extends IAdminSectionInfos<IInternalAdminSectionInfo<any>> {
     }
 
     export interface IAdminPage extends IPage {
@@ -68,7 +27,7 @@ namespace VCRNETClient.App {
 
         readonly sectionNames: string[];
 
-        readonly sections: IAdminSectionInfos<IAdminSectionInfo<any>>;
+        readonly sections: Admin.ISectionInfos<Admin.ISectionInfo<any>>;
     }
 
     export class AdminPage extends Page implements IAdminPage {
@@ -94,14 +53,14 @@ namespace VCRNETClient.App {
             "other",
         ];
 
-        readonly sections: IInternalAdminSectionInfos = {
-            directories: { display: "Verzeichnisse", page: null, factory: Admin.DirectoriesSection },
-            guide: { display: "Programmzeitschrift", page: null, factory: Admin.GuideSection },
-            security: { display: "Sicherheit", page: null, factory: Admin.SecuritySection },
-            rules: { display: "Planungsregeln", page: null, factory: Admin.RulesSection },
-            devices: { display: "Geräte", page: null, factory: Admin.DevicesSection },
-            other: { display: "Sonstiges", page: null, factory: Admin.OtherSection },
-            sources: { display: "Quellen", page: null, factory: Admin.ScanSection },
+        readonly sections = {
+            directories: new SectionInfo(Admin.DirectoriesSection, this),
+            security: new SectionInfo(Admin.SecuritySection, this),
+            devices: new SectionInfo(Admin.DevicesSection, this),
+            sources: new SectionInfo(Admin.ScanSection, this),
+            guide: new SectionInfo(Admin.GuideSection, this),
+            other: new SectionInfo(Admin.OtherSection, this),
+            rules: new SectionInfo(Admin.RulesSection, this),
         };
 
         constructor(application: Application) {

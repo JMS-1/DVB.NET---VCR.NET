@@ -1,14 +1,16 @@
-﻿/// <reference path="../admin.ts" />
+﻿/// <reference path="section.ts" />
 
 namespace VCRNETClient.App.Admin {
 
-    export interface IAdminDevicesPage extends IAdminSection {
+    export interface IAdminDevicesPage extends ISection {
         readonly defaultDevice: JMSLib.App.IValueFromList<string>;
 
         readonly devices: IDevice[];
     }
 
-    export class DevicesSection extends AdminSection<VCRServer.ProfileSettingsContract> implements IAdminDevicesPage {
+    export class DevicesSection extends Section<VCRServer.ProfileSettingsContract> implements IAdminDevicesPage {
+
+        static readonly sectionName = "Geräte";
 
         readonly defaultDevice = new JMSLib.App.EditFromList<string>({}, "defaultProfile", () => this.refreshUi(), "Bevorzugtes Gerät (zum Beispiel für neue Aufzeichnungen)", true, []);
 

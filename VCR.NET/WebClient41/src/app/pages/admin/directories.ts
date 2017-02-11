@@ -1,8 +1,8 @@
-﻿/// <reference path="../admin.ts" />
+﻿/// <reference path="section.ts" />
 
 namespace VCRNETClient.App.Admin {
 
-    export interface IAdminDirectoriesPage extends IAdminSection {
+    export interface IAdminDirectoriesPage extends ISection {
         readonly directories: JMSLib.App.IMultiValueFromList<string>;
 
         readonly share: JMSLib.App.IValidatedString;
@@ -20,7 +20,9 @@ namespace VCRNETClient.App.Admin {
         readonly pattern: JMSLib.App.IValidatedString;
     }
 
-    export class DirectoriesSection extends AdminSection<VCRServer.DirectorySettingsContract> implements IAdminDirectoriesPage {
+    export class DirectoriesSection extends Section<VCRServer.DirectorySettingsContract> implements IAdminDirectoriesPage {
+
+        static readonly sectionName = "Verzeichnisse";
 
         readonly directories = new JMSLib.App.SelectFromList<string>({ value: [] }, "value", () => this.refreshUi(), null, []);
 

@@ -1,4 +1,4 @@
-﻿/// <reference path="../admin.ts" />
+﻿/// <reference path="section.ts" />
 /// <reference path="../../../lib/edit/list.ts" />
 
 namespace VCRNETClient.App.Admin {
@@ -11,7 +11,7 @@ namespace VCRNETClient.App.Admin {
         automatic
     }
 
-    export interface IAdminScanPage extends IAdminSection {
+    export interface IAdminScanPage extends ISection {
         readonly mode: JMSLib.App.IValueFromList<ScanConfigMode>;
 
         readonly showConfiguration: boolean;
@@ -29,7 +29,10 @@ namespace VCRNETClient.App.Admin {
         readonly latency: JMSLib.App.IValidatedNumber;
     }
 
-    export class ScanSection extends AdminSection<VCRServer.SourceScanSettingsContract> implements IAdminScanPage {
+    export class ScanSection extends Section<VCRServer.SourceScanSettingsContract> implements IAdminScanPage {
+
+        static readonly sectionName = "Quellen";
+
         private static readonly  _scanDisabled = "Aktualisierung deaktivieren";
 
         private static readonly  _scanManual = "Manuell aktualisieren";

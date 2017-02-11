@@ -1,8 +1,8 @@
-﻿/// <reference path="../admin.ts" />
+﻿/// <reference path="section.ts" />
 
 namespace VCRNETClient.App.Admin {
 
-    export interface IAdminGuidePage extends IAdminSection {
+    export interface IAdminGuidePage extends ISection {
         readonly isActive: JMSLib.App.IValidatedFlag;
 
         readonly hours: JMSLib.App.IMultiValueFromList<number>;
@@ -26,7 +26,9 @@ namespace VCRNETClient.App.Admin {
         readonly latency: JMSLib.App.IValidatedNumber;
     }
 
-    export class GuideSection extends AdminSection<VCRServer.GuideSettingsContract> implements IAdminGuidePage {
+    export class GuideSection extends Section<VCRServer.GuideSettingsContract> implements IAdminGuidePage {
+
+        static readonly sectionName = "Programmzeitschrift";
 
         readonly isActive = new JMSLib.App.EditFlag({}, "value", () => this.refreshUi(), "Aktualisierung aktivieren");
 
