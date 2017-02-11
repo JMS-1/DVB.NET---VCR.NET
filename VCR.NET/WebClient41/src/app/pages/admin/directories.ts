@@ -22,8 +22,6 @@ namespace VCRNETClient.App.Admin {
 
     export class DirectoriesSection extends Section<VCRServer.DirectorySettingsContract> implements IAdminDirectoriesPage {
 
-        static readonly sectionName = "Verzeichnisse";
-
         readonly directories = new JMSLib.App.SelectFromList<string>({ value: [] }, "value", () => this.refreshUi(), null, []);
 
         readonly pattern = new JMSLib.App.EditString({}, "pattern", () => this.refreshUi(), "Muster für Dateinamen", true);
@@ -44,13 +42,11 @@ namespace VCRNETClient.App.Admin {
 
         private _disableBrowse = false;
 
-        reset(): void {
-            this.update.message = ``;
-
-            VCRServer.getDirectorySettings().then(settings => this.setSettings(settings));
+        protected loadAsync(): JMSLib.App.IHttpPromise<VCRServer.DirectorySettingsContract> {
+            return VCRServer.getDirectorySettings();
         }
 
-        private setSettings(settings: VCRServer.DirectorySettingsContract): void {
+        protected initialize(settings: VCRServer.DirectorySettingsContract): void {
             this.directories.setValues(settings.directories.map(d => JMSLib.App.uiValue(d)));
             this.directories.value = [];
 
@@ -103,7 +99,7 @@ namespace VCRNETClient.App.Admin {
             super.refreshUi();
         }
 
-        protected get canSave(): boolean {
+        protected get isValid(): boolean {
             return this.pattern.message === "";
         }
 

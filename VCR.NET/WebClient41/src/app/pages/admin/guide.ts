@@ -28,8 +28,6 @@ namespace VCRNETClient.App.Admin {
 
     export class GuideSection extends Section<VCRServer.GuideSettingsContract> implements IAdminGuidePage {
 
-        static readonly sectionName = "Programmzeitschrift";
-
         readonly isActive = new JMSLib.App.EditFlag({}, "value", () => this.refreshUi(), "Aktualisierung aktivieren");
 
         readonly hours = new JMSLib.App.SelectFromList<number>({}, "hours", null, "Uhrzeiten", AdminPage.hoursOfDay);
@@ -58,14 +56,13 @@ namespace VCRNETClient.App.Admin {
             this.source = new ChannelEditor({}, "value", this.page.application.profile.recentSources || [], () => this.refreshUi());
         }
 
-        reset(): void {
-            this.update.message = ``;
-            this.source.setSources([], true);
-
-            VCRServer.getGuideSettings().then(settings => this.setSettings(settings));
+        protected loadAsync(): JMSLib.App.IHttpPromise<VCRServer.GuideSettingsContract> {
+            return VCRServer.getGuideSettings();
         }
 
-        private setSettings(settings: VCRServer.GuideSettingsContract): void {
+        protected initialize(settings: VCRServer.GuideSettingsContract): void {
+            this.source.setSources([], true);
+
             this.duration.data = settings;
             this.latency.data = settings;
             this.hours.data = settings;
@@ -84,7 +81,7 @@ namespace VCRNETClient.App.Admin {
             VCRServer.ProfileCache.getAllProfiles().then(profiles => this.setProfiles(profiles));
         }
 
-        protected get canSave(): boolean {
+        protected get isValid(): boolean {
             if (!this.isActive.value)
                 return true;
 

@@ -8,17 +8,13 @@ namespace VCRNETClient.App.Admin {
 
     export class RulesSection extends Section<VCRServer.SchedulerRulesContract> implements IAdminRulesPage {
 
-        static readonly sectionName = "Planungsregeln";
-
         readonly rules = new JMSLib.App.EditString({}, "rules", null, null, false);
 
-        reset(): void {
-            this.update.message = ``;
-
-            VCRServer.getSchedulerRules().then(settings => this.setSettings(settings));
+        protected loadAsync(): JMSLib.App.IHttpPromise<VCRServer.SchedulerRulesContract> {
+            return VCRServer.getSchedulerRules();
         }
 
-        private setSettings(settings: VCRServer.SchedulerRulesContract): void {
+        protected initialize(settings: VCRServer.SchedulerRulesContract): void {
             this.rules.data = settings;
 
             this.page.application.isBusy = false;

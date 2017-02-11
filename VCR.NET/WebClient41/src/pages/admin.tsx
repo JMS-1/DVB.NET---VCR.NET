@@ -4,13 +4,13 @@ namespace VCRNETClient.Ui {
 
     export class Admin extends JMSLib.ReactUi.ComponentWithSite<App.IAdminPage>{
         render(): JSX.Element {
-            const section = this.props.noui.section;
+            const section = this.props.noui.sections.value;
 
             return <div className="vcrnet-admin">
                 <div className="vcrnet-admin-tabs">
                     <div>
-                        {this.props.noui.sectionNames.map(s => <div key={s} data-jmslib-checked={(s === section) ? "yes" : null}>
-                            <JMSLib.ReactUi.InternalLink view={`${this.props.noui.route};${s}`}>{this.props.noui.sections[s].display}</JMSLib.ReactUi.InternalLink>
+                        {this.props.noui.sections.allowedValues.map(si => <div key={si.display} data-jmslib-checked={(si.value === section) ? "yes" : null} >
+                            <JMSLib.ReactUi.InternalLink view={`${this.props.noui.route};${si.value.route}`}>{si.display}</JMSLib.ReactUi.InternalLink>
                         </div>)}
                     </div>
                     <div>
@@ -21,26 +21,30 @@ namespace VCRNETClient.Ui {
         }
 
         private renderSection(): JSX.Element {
-            const page = this.props.noui.sections[this.props.noui.section].page;
+            const page = this.props.noui.sections.value.page;
 
-            switch (this.props.noui.section) {
-                case "security":
-                    return <AdminSecurity noui={page} />;
-                case "directories":
-                    return <AdminDirectories noui={page} />;
-                case "guide":
-                    return <AdminGuide noui={page} />;
-                case "devices":
-                    return <AdminDevices noui={page} />;
-                case "sources":
-                    return <AdminSources noui={page} />;
-                case "rules":
-                    return <AdminRules noui={page} />;
-                case "other":
-                    return <AdminOther noui={page} />;
-                default:
-                    return null;
-            }
+            if (page instanceof App.Admin.DevicesSection)
+                return <AdminDevices noui={page} />;
+
+            if (page instanceof App.Admin.SecuritySection)
+                return <AdminSecurity noui={page} />;
+
+            if (page instanceof App.Admin.DirectoriesSection)
+                return <AdminDirectories noui={page} />;
+
+            if (page instanceof App.Admin.GuideSection)
+                return <AdminGuide noui={page} />;
+
+            if (page instanceof App.Admin.ScanSection)
+                return <AdminSources noui={page} />;
+
+            if (page instanceof App.Admin.RulesSection)
+                return <AdminRules noui={page} />;
+
+            if (page instanceof App.Admin.OtherSection)
+                return <AdminOther noui={page} />;
+
+            return null;
         }
     }
 

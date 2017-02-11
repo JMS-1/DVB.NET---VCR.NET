@@ -1,33 +1,32 @@
 ﻿/// <reference path="page.ts" />
-/// <reference path="../../lib/dateTimeFormatter.ts" />
 /// <reference path="../../lib/edit/list.ts" />
+/// <reference path="../../lib/dateTimeFormatter.ts" />
 
 namespace VCRNETClient.App {
 
+    // Interne Verwaltungseinheit für Konfigurationsbereiche.
     class SectionInfo implements Admin.ISectionInfo<Admin.ISection> {
-        constructor(private readonly _factory: { new (page: AdminPage): Admin.ISection; readonly sectionName: string; }, private readonly _adminPage: AdminPage) {
+
+        // Erstellt eine neue Verwaltung.
+        constructor(public readonly route: string, private readonly _factory: { new (page: AdminPage): Admin.Section<any> }, private readonly _adminPage: AdminPage) {
         }
 
-        private _page: Admin.ISection;
+        // Die Präsentationsinstanz des zugehörigen Konfigurationsbereichs.
+        private _page: Admin.Section<any>;
 
-        get page(): Admin.ISection {
+        // Meldet die Präsentation des zugehörigen Konfigurationsbereichs - bei Bedarf wird eine neue erstellt.
+        get page(): Admin.Section<any> {
+            // Beim ersten Aufruf eine neue Präsentationsinstanz anlegen.
             if (!this._page)
                 this._page = new (this._factory)(this._adminPage);
 
             return this._page;
         }
-
-        get display(): string {
-            return this._factory.sectionName;
-        }
     }
 
+    // Schnittstelle zur Anzeige der Administration.
     export interface IAdminPage extends IPage {
-        readonly section: string;
-
-        readonly sectionNames: string[];
-
-        readonly sections: Admin.ISectionInfos<Admin.ISectionInfo<any>>;
+        readonly sections: JMSLib.App.IValueFromList<Admin.ISectionInfo<any>>;
     }
 
     export class AdminPage extends Page implements IAdminPage {
@@ -43,53 +42,29 @@ namespace VCRNETClient.App {
 
         private static _windowsGroups: JMSLib.App.IHttpPromise<JMSLib.App.IUiValue<string>[]>;
 
-        private static readonly _sectionNames: string[] = [
-            "security",
-            "directories",
-            "devices",
-            "guide",
-            "sources",
-            "rules",
-            "other",
+        private readonly _sections: JMSLib.App.IUiValue<SectionInfo>[] = [
+            JMSLib.App.uiValue(new SectionInfo("security", Admin.SecuritySection, this), "Sicherheit"),
+            JMSLib.App.uiValue(new SectionInfo("directories", Admin.DirectoriesSection, this), "Verzeichnisse"),
+            JMSLib.App.uiValue(new SectionInfo("devices", Admin.DevicesSection, this), "Geräte"),
+            JMSLib.App.uiValue(new SectionInfo("guide", Admin.GuideSection, this), "Programmzeitschrift"),
+            JMSLib.App.uiValue(new SectionInfo("scan", Admin.ScanSection, this), "Quellen"),
+            JMSLib.App.uiValue(new SectionInfo("rules", Admin.RulesSection, this), "Planungsregeln"),
+            JMSLib.App.uiValue(new SectionInfo("other", Admin.OtherSection, this), "Sonstiges")
         ];
 
-        readonly sections = {
-            directories: new SectionInfo(Admin.DirectoriesSection, this),
-            security: new SectionInfo(Admin.SecuritySection, this),
-            devices: new SectionInfo(Admin.DevicesSection, this),
-            sources: new SectionInfo(Admin.ScanSection, this),
-            guide: new SectionInfo(Admin.GuideSection, this),
-            other: new SectionInfo(Admin.OtherSection, this),
-            rules: new SectionInfo(Admin.RulesSection, this),
-        };
+        readonly sections: JMSLib.App.EditFromList<SectionInfo> = new JMSLib.App.EditFromList<SectionInfo>({}, "value", null, null, false, this._sections);
 
         constructor(application: Application) {
             super("admin", application);
         }
 
-        private _section: string;
-
-        get section(): string {
-            return this._section || AdminPage._sectionNames[0];
-        }
-
-        get sectionNames(): string[] {
-            return AdminPage._sectionNames;
-        }
-
         reset(sections: string[]): void {
-            this._section = sections[0];
+            var allSections = this.sections.allowedValues;
+            var curSection = allSections.filter(v => v.value.route === sections[0])[0] || allSections[0];
 
-            var sectionInfo = this.sections[this.section];
+            this.sections.value = curSection.value;
 
-            if (!sectionInfo)
-                return;
-
-            if (!sectionInfo.page && sectionInfo.factory)
-                sectionInfo.page = new sectionInfo.factory(this);
-
-            if (sectionInfo.page)
-                sectionInfo.page.reset();
+            curSection.value.page.reset();
         }
 
         update<TResponseType>(promise: JMSLib.App.IHttpPromise<boolean>, command: JMSLib.App.Command<TResponseType>): JMSLib.App.IHttpPromise<void> {

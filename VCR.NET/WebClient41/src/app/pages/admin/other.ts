@@ -41,8 +41,6 @@ namespace VCRNETClient.App.Admin {
 
     export class OtherSection extends Section<VCRServer.OtherSettingsContract> implements IAdminOtherPage {
 
-        static readonly sectionName = "Sonstiges";
-
         private static readonly _logging = [
             JMSLib.App.uiValue("Errors", "Nur Fehler"),
             JMSLib.App.uiValue("Security", "Nur Sicherheitsprobleme"),
@@ -82,13 +80,11 @@ namespace VCRNETClient.App.Admin {
 
         readonly logging = new JMSLib.App.EditFromList<string>({}, "logging", null, "Umfang der Protokollierung in das Windows Ereignisprotokoll", false, OtherSection._logging);
 
-        reset(): void {
-            this.update.message = ``;
-
-            VCRServer.getOtherSettings().then(settings => this.setSettings(settings));
+        protected loadAsync(): JMSLib.App.IHttpPromise<VCRServer.OtherSettingsContract> {
+            return VCRServer.getOtherSettings();
         }
 
-        private setSettings(settings: VCRServer.OtherSettingsContract): void {
+        protected initialize(settings: VCRServer.OtherSettingsContract): void {
             this.ignoreMinSleep.data = settings;
             this.noMPEG2PCR.data = settings;
             this.securePort.data = settings;
@@ -115,7 +111,7 @@ namespace VCRNETClient.App.Admin {
 
         protected readonly saveCaption = "Ändern und eventuell neu Starten";
 
-        protected get canSave(): boolean {
+        protected get isValid(): boolean {
             if (this.port.message !== ``)
                 return false;
             if (this.securePort.message !== ``)

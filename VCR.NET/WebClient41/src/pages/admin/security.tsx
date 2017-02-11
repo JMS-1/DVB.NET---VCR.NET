@@ -18,7 +18,9 @@ namespace VCRNETClient.Ui {
                 <Field label={`${this.props.noui.adminGroups.text}:`} page={this.props.noui.page} >
                     <JMSLib.ReactUi.SelectSingleFromList noui={this.props.noui.adminGroups} />
                 </Field>
-                <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.update} />
+                <div>
+                    <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.update} />
+                </div>
             </div>;
         }
 

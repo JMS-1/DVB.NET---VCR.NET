@@ -191,6 +191,7 @@
     <None Include="src\lib\edit\multiList.scss" />
     <None Include="src\lib\edit\multiButtonList.scss" />
     <None Include="src\lib\edit\text\textarea.scss" />
+    <None Include="src\lib\constants.scss" />
     <Content Include="src\pages\admin\directories.scss" />
     <Content Include="src\pages\admin\guide.scss" />
     <Content Include="src\pages\admin\other.scss" />

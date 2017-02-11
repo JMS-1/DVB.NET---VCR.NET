@@ -31,8 +31,6 @@ namespace VCRNETClient.App.Admin {
 
     export class ScanSection extends Section<VCRServer.SourceScanSettingsContract> implements IAdminScanPage {
 
-        static readonly sectionName = "Quellen";
-
         private static readonly  _scanDisabled = "Aktualisierung deaktivieren";
 
         private static readonly  _scanManual = "Manuell aktualisieren";
@@ -65,13 +63,11 @@ namespace VCRNETClient.App.Admin {
             return this.mode.value === ScanConfigMode.automatic;
         }
 
-        reset(): void {
-            this.update.message = ``;
-
-            VCRServer.getSourceScanSettings().then(settings => this.setSettings(settings));
+        protected loadAsync(): JMSLib.App.IHttpPromise<VCRServer.SourceScanSettingsContract> {
+            return VCRServer.getSourceScanSettings();
         }
 
-        private setSettings(settings: VCRServer.SourceScanSettingsContract): void {
+        protected initialize(settings: VCRServer.SourceScanSettingsContract): void {
             this.duration.data = settings;
             this.gapDays.data = settings;
             this.latency.data = settings;
@@ -95,7 +91,7 @@ namespace VCRNETClient.App.Admin {
             this.page.application.isBusy = false;
         }
 
-        protected get canSave(): boolean {
+        protected get isValid(): boolean {
             if (!this.showConfiguration)
                 return true;
 

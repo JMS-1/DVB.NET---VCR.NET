@@ -1,10 +1,26 @@
-﻿.jmslib-command {
-    &.jmslib-dangerous {
-        border-color: red;
-        font-weight: bold;
+﻿@import "../constants.scss";
+
+.jmslib-command {
+    border: 1px solid black;
+    display: inline-block;
+    border-radius: 4px;
+    padding: 4px 8px;
+
+    &:hover {
+        background: $commandBackgroundColor;
+        cursor: pointer;
     }
-    // Der Titel (Tooltip) eines Texteingabefeldes wird für die Anzeige von Fehlersituationen verwendet, das verstärken wird noch durch einen roten Rahmen.
+
+    &:active {
+        background: $commandActiveColor;
+    }
+
+    &.jmslib-dangerous {
+        font-weight: $errorTextWeight;
+        color: $errorTextColor;
+    }
+
     &:not([title=""]) {
-        border: 2px solid red;
+        border-color: $commandErrorColor;
     }
 }

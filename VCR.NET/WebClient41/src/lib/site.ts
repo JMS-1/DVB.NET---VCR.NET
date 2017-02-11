@@ -6,8 +6,9 @@
         refreshUi(): void;
     }
 
-    // Schnittstelle für NoUi Komponenten die über Änderungen benachrichtigen.
+    // Schnittstelle für Ui View Modelle, die über Änderungen benachrichtigen können.
     export interface IConnectable {
+        // Das eindeutige aktuell zur Anzeige verwendete Oberflächenelement.
         site: ISite;
     }
 }
