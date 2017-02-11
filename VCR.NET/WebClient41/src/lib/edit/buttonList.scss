@@ -1,8 +1,10 @@
-﻿.jmslib-editbuttonlist {
+﻿@import "../command/command.scss";
+
+.jmslib-editbuttonlist {
     display: inline-block;
     margin: 0 4px;
 
-    > button {
+    > div {
         &[data-jmslib-checked=yes] {
             font-weight: bold;
         }

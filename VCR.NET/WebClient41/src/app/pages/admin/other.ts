@@ -54,11 +54,11 @@ namespace VCRNETClient.App.Admin {
             JMSLib.App.uiValue(HibernationMode.hibernate, "Hibernate (S4)"),
         ];
 
-        readonly port = new JMSLib.App.EditNumber({}, "webPort", "TCP/IP Port für den Web Server", () => this.refreshUi(), true, 1, 65635);
+        readonly port = new JMSLib.App.EditNumber({}, "webPort", "TCP/IP Port für den Web Server", () => this.refreshUi(), true, 1, 0xffff);
 
         readonly ssl = new JMSLib.App.EditFlag({}, "ssl", "Sichere Verbindung zusätzlich anbieten", null);
 
-        readonly securePort = new JMSLib.App.EditNumber({}, "sslPort", "TCP/IP Port für den sicheren Zugang", () => this.refreshUi(), true, 1, 65635);
+        readonly securePort = new JMSLib.App.EditNumber({}, "sslPort", "TCP/IP Port für den sicheren Zugang", () => this.refreshUi(), true, 1, 0xffff);
 
         readonly basicAuth = new JMSLib.App.EditFlag({}, "basicAuth", "Benutzererkennung über Basic (RFC 2617) zusätzlich erlauben (nicht empfohlen)", null);
 

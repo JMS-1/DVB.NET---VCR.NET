@@ -1,5 +1,7 @@
-﻿.jmslib-editmultibuttonlist {
-    button[data-jmslib-checked=yes] {
+﻿@import "../command/command.scss";
+
+.jmslib-editmultibuttonlist {
+    > div[data-jmslib-checked=yes] {
         background-color: white;
         font-weight: bold;
     }

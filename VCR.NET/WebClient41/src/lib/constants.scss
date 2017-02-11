@@ -1,6 +1,9 @@
-﻿$commandBackgroundColor: lightblue;
+﻿$commandFeedbackColor: lightblue;
 $commandActiveColor: darkgray;
-$commandErrorColor: red;
 
-$errorTextColor: red;
-$errorTextWeight: bold;
+$warningTextColor: red;
+$warningTextWeight: bold;
+
+$errorBorderColor: red;
+
+$inputErrorColor: red;

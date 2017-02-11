@@ -228,6 +228,9 @@ namespace VCRNETClient.App {
 
         // Nach der Auswahl des Gerätes alle Listen aktualisieren.
         private onDeviceChanged(deviceHasChanged: boolean) {
+            if (!this._filter.device)
+                return;
+
             VCRServer.GuideInfoCache.getPromise(this._filter.device).then(info => {
                 // Informationen zur Programmzeitschrift des Gerätes festhalten.
                 this._profileInfo = info;

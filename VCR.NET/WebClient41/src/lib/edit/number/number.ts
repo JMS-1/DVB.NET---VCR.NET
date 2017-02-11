@@ -11,7 +11,7 @@ namespace JMSLib.App {
     // Verwaltet eine Eigenschaft mit einer (ganzen) Zahl (mit maximal 6 Ziffern - ohne führende Nullen).
     export class EditNumber extends Property<number> implements IEditNumber {
         // Erlaubt sind beliebige Sequenzen von Nullen oder maximal 6 Ziffern - mit einer beliebigen Anzahl von führenden Nullen.
-        private static readonly _positiveNumber = /^(0+|((0*)[1-9][0-9]{0,5}))$/;
+        private static readonly _positiveNumber = /^(0+|(0*[1-9][0-9]{0,5}))$/;
 
         // Legt eine neue Verwaltung an.
         constructor(data?: any, prop?: string, name?: string, onChange?: () => void, isRequired?: boolean, private readonly _min?: number, private readonly _max?: number) {
@@ -31,41 +31,53 @@ namespace JMSLib.App {
 
         // Übermittelt eine neue Eingabe.
         set rawValue(newValue: string) {
+            // Leerzeichen ignorieren wir für die Prüfung.
             var test = (newValue || ``).trim();
 
+            // Keine Eingabe und ein Wert ist optional.
             if ((test.length < 1) && !this.isRequired) {
                 this._rawInput = undefined;
                 this.value = null;
             }
+
+            // Eine (nach unseren Regeln) gültige Zahl.
             else if (EditNumber._positiveNumber.test(test)) {
                 this._rawInput = undefined;
                 this.value = parseInt(test);
             }
+
+            // Die Eingabe ist grundsätzlich unzulässig.
             else {
                 this._rawInput = newValue;
             }
 
-            this.validate();
+            // Anzeige aktualisieren.
             this.refresh();
         }
 
+        // Prüft die aktuelle Eingabe.
         validate(): void {
+            // Immer erst die Basisklasse fragen - Meldung von dort werden bevorzugt angezeigt.
             super.validate();
 
             if (this.message.length > 0)
                 return;
 
+            // Ungültige Eingabe, die nicht in eine Zahl umgesetzt wurde.
             if (this._rawInput !== undefined)
                 this.message = `Ungültige Zahl`;
 
+            // Kein Wert vorhanden.
             else if (this.value === null) {
                 if (this.isRequired)
                     this.message = `Es muss eine Zahl eingegeben werden`;
             }
 
+            // Wert unterhalb der Untergrenze.
             else if ((this._min !== undefined) && (this.value < this._min))
                 this.message = `Die Zahl muss mindestens ${this._min} sein`;
 
+            // Wert oberhalb der Obergrenze.
             else if ((this._max !== undefined) && (this.value > this._max))
                 this.message = `Die Zahl darf höchstens ${this._max} sein`;
         }

@@ -8,14 +8,15 @@ namespace JMSLib.ReactUi {
             var value = this.props.noui.value;
 
             return <div className="jmslib-editbuttonlist">
-                {this.props.noui.allowedValues.map(av => <button key={av.display} data-jmslib-checked={(av.value === value) ? "yes" : null} onClick={ev => this.applyValue(ev, av.value)}>{av.display}</button>)}
+                {this.props.noui.allowedValues.map(av => <div
+                    key={av.display}
+                    className="jmslib-command"
+                    title=""
+                    data-jmslib-checked={(av.value === value) ? "yes" : null}
+                    onClick={ev => this.props.noui.value = av.value}>
+                    {av.display}
+                </div>)}
             </div>;
-        }
-
-        private applyValue(ev: React.FormEvent, value: any): void {
-            ev.preventDefault();
-
-            this.props.noui.value = value;
         }
     }
 }

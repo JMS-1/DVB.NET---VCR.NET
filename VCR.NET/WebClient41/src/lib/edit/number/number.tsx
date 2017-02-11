@@ -2,11 +2,16 @@
 
 namespace JMSLib.ReactUi {
 
+    // Konfiguration der Anzeige einer Zahl.
     interface IEditNumber extends IComponent<App.IEditNumber> {
+        // Die Anzahl der Zeichen im Texteingabefeld für die Zahl.
         chars: number;
     }
 
+    // React.Js Komponente zur Eingabe einer Zahl über ein Textfeld.
     export class EditNumber extends ComponentExWithSite<App.IEditNumber, IEditNumber>  {
+
+        // Oberflächenelemente erzeugen.
         render(): JSX.Element {
             return <input className="jmslib-editnumber"
                 type="TEXT"

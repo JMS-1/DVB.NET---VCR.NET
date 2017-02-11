@@ -2,12 +2,13 @@
 
 .jmslib-command {
     border: 1px solid black;
+    padding: 0.1rem 0.3rem;
     display: inline-block;
     border-radius: 4px;
-    padding: 4px 8px;
+    font-size: smaller;
 
     &:hover {
-        background: $commandBackgroundColor;
+        background: $commandFeedbackColor;
         cursor: pointer;
     }
 
@@ -16,11 +17,11 @@
     }
 
     &.jmslib-dangerous {
-        font-weight: $errorTextWeight;
-        color: $errorTextColor;
+        font-weight: $warningTextWeight;
+        color: $warningTextColor;
     }
 
     &:not([title=""]) {
-        border-color: $commandErrorColor;
+        border-color: $errorBorderColor;
     }
 }
