@@ -52,7 +52,7 @@ namespace VCRNETClient.App {
             JMSLib.App.uiValue(new SectionInfo("other", Admin.OtherSection, this), "Sonstiges")
         ];
 
-        readonly sections: JMSLib.App.EditFromList<SectionInfo> = new JMSLib.App.EditFromList<SectionInfo>({}, "value", null, null, false, this._sections);
+        readonly sections: JMSLib.App.SelectSingleFromList<SectionInfo> = new JMSLib.App.SelectSingleFromList<SectionInfo>({}, "value", null, null, false, this._sections);
 
         constructor(application: Application) {
             super("admin", application);

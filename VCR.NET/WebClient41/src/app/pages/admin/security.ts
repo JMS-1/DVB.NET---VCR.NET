@@ -18,10 +18,10 @@ namespace VCRNETClient.App.Admin {
         private static _windowsGroups: JMSLib.App.IHttpPromise<JMSLib.App.IUiValue<string>[]>;
 
         // Die Gruppe der normalen Benutzer mit Auswahl.
-        readonly userGroups = new JMSLib.App.EditFromList<string>({}, `users`, `Benutzer`);
+        readonly userGroups = new JMSLib.App.SelectSingleFromList<string>({}, `users`, `Benutzer`);
 
         // Die Gruppe der Administratoren mit Auswahl.
-        readonly adminGroups = new JMSLib.App.EditFromList<string>({}, `admins`, `Administratoren`);
+        readonly adminGroups = new JMSLib.App.SelectSingleFromList<string>({}, `admins`, `Administratoren`);
 
         // Beginnt mit der Abfrage der aktuellen Einstellungen.
         protected loadAsync(): void {

@@ -8,9 +8,9 @@ namespace JMSLib.ReactUi {
         render(): JSX.Element {
             return <select
                 className="jmslib-editlist"
-                value={`${this.props.noui.displayValueIndex}`}
+                value={`${this.props.noui.valueIndex}`}
                 title={this.props.noui.message}
-                onChange={ev => this.props.noui.displayValueIndex = parseInt((ev.target as HTMLSelectElement).value)}>
+                onChange={ev => this.props.noui.valueIndex = parseInt((ev.target as HTMLSelectElement).value)}>
                 {this.props.noui.allowedValues.map((av, index) => <option key={index} value={`${index}`}>{av.display}</option>)}
             </select>;
         }

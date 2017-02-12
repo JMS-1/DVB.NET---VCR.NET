@@ -76,9 +76,9 @@ namespace VCRNETClient.App.Admin {
 
         readonly noMPEG2PCR = new JMSLib.App.EditFlag({}, "noMPEG2PCR", "Systemzeit (PCR) in Aufzeichnungsdateien nicht aus einem MPEG2 Bildsignal ableiten", null);
 
-        readonly hibernation = new JMSLib.App.EditFromList<HibernationMode>({ value: null }, "value", "Art des von VCR.NET ausgelösten Schlafzustands", null, false, OtherSection._hibernation);
+        readonly hibernation = new JMSLib.App.SelectSingleFromList<HibernationMode>({ value: null }, "value", "Art des von VCR.NET ausgelösten Schlafzustands", null, false, OtherSection._hibernation);
 
-        readonly logging = new JMSLib.App.EditFromList<string>({}, "logging", "Umfang der Protokollierung in das Windows Ereignisprotokoll", null, false, OtherSection._logging);
+        readonly logging = new JMSLib.App.SelectSingleFromList<string>({}, "logging", "Umfang der Protokollierung in das Windows Ereignisprotokoll", null, false, OtherSection._logging);
 
         protected loadAsync(): void {
             VCRServer.getOtherSettings().then(settings => this.initialize(settings));

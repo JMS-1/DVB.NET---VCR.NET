@@ -11,7 +11,7 @@ namespace JMSLib.App {
         readonly display: string;
 
         // Meldet oder legt fest, ob der Wert ausgewählt wurde.
-        selected?: boolean;
+        isSelected?: boolean;
     }
 
     // Hilfsmethode zum Erstellen eines Auswahlwertes.
@@ -24,15 +24,12 @@ namespace JMSLib.App {
         // Die erlaubten Werte.
         readonly allowedValues: IUiValue<TValueType>[];
 
-        // Der aktuell ausgewählte Werte - in der dem Anwender zugänglichen Textdarstellung.
-        readonly displayValue: string;
-
         // Die laufende Nummer des aktuell ausgewählte Wertes - in der dem Anwender zugänglichen Textdarstellung.
-        displayValueIndex: number;
+        valueIndex: number;
     }
 
     // Erlaubt die Auswahl eines einzelnen Wertes aus einer Liste erlaubter Werte.
-    export class EditFromList<TValueType> extends Property<TValueType> implements IValueFromList<TValueType> {
+    export class SelectSingleFromList<TValueType> extends Property<TValueType> implements IValueFromList<TValueType> {
 
         // Legt ein neues Präsentationsmodell an.
         constructor(data?: any, prop?: string, name?: string, onChange?: () => void, isRequired?: boolean, private _allowedValues: IUiValue<TValueType>[] = []) {
@@ -71,12 +68,8 @@ namespace JMSLib.App {
                 this.message = "Der Wert ist nicht in der Liste der erlaubten Werte enthalten.";
         }
 
-        // Meldet den anzuzeigenden Wert.
-        get displayValue(): string {
-            return this.allowedValues[this.displayValueIndex].display;
-        }
-
-        get displayValueIndex(): number {
+        // Meldet die laufende Nummer des Wertes in der Liste der erlaubten Werte - existiert ein solcher nicht, wird 0 gemeldet.
+        get valueIndex(): number {
             for (var i = 0; i < this.allowedValues.length; i++)
                 if (this.allowedValues[i].value === this.value)
                     return i;
@@ -84,7 +77,8 @@ namespace JMSLib.App {
             return 0;
         }
 
-        set displayValueIndex(newIndex: number) {
+        // Ändert den Wert gemäß der laufenden Nummer in der Liste der erlaubten Werte.
+        set valueIndex(newIndex: number) {
             this.value = this.allowedValues[newIndex].value;
         }
     }

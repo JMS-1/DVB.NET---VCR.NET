@@ -8,7 +8,7 @@
     border-radius: 4px;
     font-size: smaller;
 
-    &:hover {
+    &:hover:not([data-jmslib-disabled="yes"]) {
         background: $commandFeedbackColor;
         cursor: pointer;
     }
@@ -24,5 +24,10 @@
 
     &:not([title=""]) {
         border-color: $errorBorderColor;
+    }
+
+    &[data-jmslib-disabled="yes"]{
+        opacity: 0.5;
+        cursor: default;
     }
 }

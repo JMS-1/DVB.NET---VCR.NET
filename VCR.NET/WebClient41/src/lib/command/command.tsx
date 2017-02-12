@@ -8,8 +8,8 @@ namespace JMSLib.ReactUi {
         render(): JSX.Element {
             return this.props.noui.isVisible ? <div
                 className={`jmslib-command${this.props.noui.isDangerous ? ` jmslib-dangerous` : ``}`}
+                data-jmslib-disabled={this.props.noui.isEnabled ? `no` : `yes`}
                 onClick={ev => this.props.noui.execute()}
-                disabled={!this.props.noui.isEnabled}
                 title={this.props.noui.message}>
                 {this.props.noui.text}
             </div> : null;

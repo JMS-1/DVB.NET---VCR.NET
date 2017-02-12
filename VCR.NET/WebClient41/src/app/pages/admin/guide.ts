@@ -30,19 +30,19 @@ namespace VCRNETClient.App.Admin {
 
         readonly isActive = new JMSLib.App.EditFlag({}, "value", "Aktualisierung aktivieren", () => this.refreshUi());
 
-        readonly hours = new JMSLib.App.SelectFromList<number>({}, "hours", "Uhrzeiten", null, AdminPage.hoursOfDay);
+        readonly hours = new JMSLib.App.SelectMultipleFromList<number>({}, "hours", "Uhrzeiten", null, AdminPage.hoursOfDay);
 
-        readonly sources = new JMSLib.App.SelectFromList<string>({ list: [] }, "list", null, () => this.refreshUi(), []);
+        readonly sources = new JMSLib.App.SelectMultipleFromList<string>({}, "value", null, () => this.refreshUi());
 
-        readonly ukTv = new JMSLib.App.EditFlag({}, "includeUK", "Sendungsvorschau englischer Sender (FreeSat UK) abrufen", null);
+        readonly ukTv = new JMSLib.App.EditFlag({}, "includeUK", "Sendungsvorschau englischer Sender (FreeSat UK) abrufen");
 
         readonly remove = new JMSLib.App.Command(() => this.removeSources(), "Entfernen", () => this.sources.value.length > 0);
 
-        readonly device = new JMSLib.App.EditFromList<string>({}, "value", "Quellen des Gerätes", () => this.onDeviceChanged(), true, []);
+        readonly device = new JMSLib.App.SelectSingleFromList<string>({}, "value", "Quellen des Gerätes", () => this.onDeviceChanged(), true);
 
         readonly source: ChannelEditor;
 
-        readonly add = new JMSLib.App.Command(() => this.addSource(), "Hinzufügen", () => this.source.value && (this.sources.allValues.indexOf(this.source.value) < 0));
+        readonly add = new JMSLib.App.Command(() => this.addSource(), "Hinzufügen", () => this.source.value && this.sources.allowedValues.every(v => v.value !== this.source.value));
 
         readonly duration = new JMSLib.App.EditNumber({}, "duration", "Maximale Laufzeit einer Aktualisierung in Minuten", () => this.refreshUi(), true, 5, 55);
 
@@ -72,8 +72,7 @@ namespace VCRNETClient.App.Admin {
             this.delay.data = settings;
             this.ukTv.data = settings;
 
-            this.sources.setValues(settings.sources.map(s => JMSLib.App.uiValue(s)));
-            this.sources.value = [];
+            this.sources.allowedValues = settings.sources.map(s => JMSLib.App.uiValue(s));
 
             this.duration.validate();
             this.latency.validate();
@@ -128,27 +127,19 @@ namespace VCRNETClient.App.Admin {
         }
 
         private removeSources(): void {
-            this.sources.removeSelected();
-
-            var settings = <VCRServer.GuideSettingsContract>this.hours.data;
-
-            settings.sources = this.sources.allValues;
+            this.sources.allowedValues = this.sources.allowedValues.filter(v => !v.isSelected);
         }
 
         private addSource(): void {
-            var source = this.source.value;
-
-            this.sources.addValue(JMSLib.App.uiValue(source));
+            this.sources.allowedValues = this.sources.allowedValues.concat([JMSLib.App.uiValue(this.source.value)]);
 
             this.source.value = ``;
-
-            var settings = <VCRServer.GuideSettingsContract>this.hours.data;
-
-            settings.sources = this.sources.allValues;
         }
 
         protected saveAsync(): JMSLib.App.IHttpPromise<boolean> {
             var settings = <VCRServer.GuideSettingsContract>this.hours.data;
+
+            settings.sources = this.sources.allowedValues.map(v => v.value);
 
             if (!this.isActive.value)
                 settings.duration = 0;

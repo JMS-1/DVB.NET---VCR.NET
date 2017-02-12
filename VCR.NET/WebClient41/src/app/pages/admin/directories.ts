@@ -2,7 +2,9 @@
 
 namespace VCRNETClient.App.Admin {
 
+    // Schnittstelle zur Pflege der erlaubten Aufzeichnungsverzeichnisse.
     export interface IAdminDirectoriesPage extends ISection {
+        // Die aktuelle Liste der Aufzeichnungsverzeichnisse.
         readonly directories: JMSLib.App.IMultiValueFromList<string>;
 
         readonly share: JMSLib.App.IEditString;
@@ -22,23 +24,23 @@ namespace VCRNETClient.App.Admin {
 
     export class DirectoriesSection extends Section<VCRServer.DirectorySettingsContract> implements IAdminDirectoriesPage {
 
-        readonly directories = new JMSLib.App.SelectFromList<string>({ value: [] }, "value", null, () => this.refreshUi(), []);
+        readonly directories = new JMSLib.App.SelectMultipleFromList<string>({}, "value", null, () => this.refreshUi());
 
         readonly pattern = new JMSLib.App.EditString({}, "pattern", "Muster für Dateinamen", () => this.refreshUi(), true);
 
         readonly remove = new JMSLib.App.Command(() => this.removeDirectories(), "Verzeichnisse entfernen", () => this.directories.value.length > 0);
 
-        readonly share = new JMSLib.App.EditString({}, "value", "Netzwerk-Share", () => this.onShareChanged(), false);
+        readonly share = new JMSLib.App.EditString({}, "value", "Netzwerk-Share", () => this.onShareChanged());
 
         get showBrowse(): boolean {
             return (this.share.value || "").trim().length < 1;
         }
 
-        readonly browse = new JMSLib.App.EditFromList<string>({}, "value", "Server-Verzeichnis", () => this.doBrowse(), false, []);
+        readonly browse = new JMSLib.App.SelectSingleFromList<string>({}, "value", "Server-Verzeichnis", () => this.doBrowse());
 
-        readonly parent = new JMSLib.App.Command(() => this.doBrowseUp(), "Übergeordnetes Verzeichnis", () => this.showBrowse && !!this.browse.value);
+        readonly parent = new JMSLib.App.Command(() => this.doBrowseUp(), "Übergeordnetes Verzeichnis", () => this.browse.value && this.showBrowse);
 
-        readonly add = new JMSLib.App.Command(() => this.addDirectory(), "Verzeichnis hinzufügen", () => !this.showBrowse || !!this.browse.value);
+        readonly add = new JMSLib.App.Command(() => this.addDirectory(), "Verzeichnis hinzufügen", () => !!this.browse.value || !this.showBrowse);
 
         private _disableBrowse = false;
 
@@ -51,8 +53,7 @@ namespace VCRNETClient.App.Admin {
         }
 
         private initialize(settings: VCRServer.DirectorySettingsContract): void {
-            this.directories.setValues(settings.directories.map(d => JMSLib.App.uiValue(d)));
-            this.directories.value = [];
+            this.directories.allowedValues = settings.directories.map(d => JMSLib.App.uiValue(d));
 
             this.pattern.data = settings;
 
@@ -88,7 +89,7 @@ namespace VCRNETClient.App.Admin {
         }
 
         private removeDirectories(): void {
-            this.directories.removeSelected();
+            this.directories.allowedValues = this.directories.allowedValues.filter(v => !v.isSelected);
         }
 
         private onShareChanged(): void {
@@ -97,20 +98,14 @@ namespace VCRNETClient.App.Admin {
             this.refreshUi();
         }
 
-        refreshUi(): void {
-            this.pattern.validate();
-
-            super.refreshUi();
-        }
-
         protected get isValid(): boolean {
-            return this.pattern.message === "";
+            return this.pattern.message === ``;
         }
 
         protected saveAsync(): JMSLib.App.IHttpPromise<boolean> {
             var settings: VCRServer.DirectorySettingsContract = this.pattern.data;
 
-            settings.directories = this.directories.allValues;
+            settings.directories = this.directories.allowedValues.map(v => v.value);
 
             return VCRServer.setDirectorySettings(settings);
         }
@@ -123,15 +118,8 @@ namespace VCRNETClient.App.Admin {
                     if (folder[folder.length - 1] != `\\`)
                         folder += `\\`;
 
-                if (!this.directories.values.some(v => v.value === folder)) {
-                    var values: JMSLib.App.IUiValue<string>[] = this.directories.values;
-
-                    values.push(JMSLib.App.uiValue(folder));
-
-                    this.directories.setValues(values);
-
-                    this.refreshUi();
-                }
+                if (!this.directories.allowedValues.some(v => v.value === folder))
+                    this.directories.allowedValues = this.directories.allowedValues.concat([JMSLib.App.uiValue(folder)]);
 
                 return null;
             }

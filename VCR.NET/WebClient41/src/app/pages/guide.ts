@@ -99,25 +99,25 @@ namespace VCRNETClient.App {
         };
 
         // Schnittstelle zur Auswahl des zu betrachtenden Gerätes.
-        readonly profiles = new JMSLib.App.EditFromList<string>(this._filter, `device`, `Gerät`, () => this.onDeviceChanged(true), false, []);
+        readonly profiles = new JMSLib.App.SelectSingleFromList<string>(this._filter, `device`, `Gerät`, () => this.onDeviceChanged(true), false, []);
 
         // Schnittstelle zur Auswahl der Quelle.
-        readonly sources = new JMSLib.App.EditFromList<string>(this._filter, `station`, `Quelle`, () => this.query(), false, []);
+        readonly sources = new JMSLib.App.SelectSingleFromList<string>(this._filter, `station`, `Quelle`, () => this.query(), false, []);
 
         // Schnittstelle zur Auswahl der Einschränkung auf die Verschlüsselung.
-        readonly encrpytion = new JMSLib.App.EditFromList<VCRServer.GuideEncryption>(this._filter, `cryptFilter`, null, () => this.query(), false, GuidePage._cryptOptions);
+        readonly encrpytion = new JMSLib.App.SelectSingleFromList<VCRServer.GuideEncryption>(this._filter, `cryptFilter`, null, () => this.query(), false, GuidePage._cryptOptions);
 
         // Schnittstelle zur Auswahl der Einschränkung auf die Art der Quelle.
-        readonly sourceType = new JMSLib.App.EditFromList<VCRServer.GuideSource>(this._filter, `typeFilter`, null, () => this.query(), false, GuidePage._typeOptions);
+        readonly sourceType = new JMSLib.App.SelectSingleFromList<VCRServer.GuideSource>(this._filter, `typeFilter`, null, () => this.query(), false, GuidePage._typeOptions);
 
         // Schnittstelle zum Setzen eines bestimmten Tags für den Anfang der Ergebnisliste.
-        readonly days = new JMSLib.App.EditFromList<string>(this._filter, `start`, `Datum`, () => this.resetIndexAndQuery(), false, []);
+        readonly days = new JMSLib.App.SelectSingleFromList<string>(this._filter, `start`, `Datum`, () => this.resetIndexAndQuery(), false, []);
 
         // Bei der nächsten Abfrage zu setzende Uhrzeit für den Anfang der Ergebnisliste.
         private _hour = -1;
 
         // Schnittstelle zum Setzen einer bestimmten Uhrzeit für den Anfange der Ergebnisliste.
-        readonly hours = new JMSLib.App.EditFromList<number>(this, `_hour`, `Start ab`, () => this.resetIndexAndQuery(), false, GuidePage._hours);
+        readonly hours = new JMSLib.App.SelectSingleFromList<number>(this, `_hour`, `Start ab`, () => this.resetIndexAndQuery(), false, GuidePage._hours);
 
         // Die aktuelle Freitextsucheingabe.
         private _query = ``;
@@ -160,7 +160,7 @@ namespace VCRNETClient.App {
         entries: Guide.GuideEntry[] = [];
 
         // Die aktuelle Liste der für das Gerät angelegten Aufträg.
-        private _jobSelector = new JMSLib.App.EditFromList<string>({}, `value`, `zum Auftrag`, null, true);
+        private _jobSelector = new JMSLib.App.SelectSingleFromList<string>({}, `value`, `zum Auftrag`, null, true);
 
         // Gesetzt, wenn eine nächste Seite der Ergebnisliste existiert.
         private _hasMore = false;

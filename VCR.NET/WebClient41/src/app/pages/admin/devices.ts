@@ -10,7 +10,7 @@ namespace VCRNETClient.App.Admin {
 
     export class DevicesSection extends Section<VCRServer.ProfileSettingsContract> implements IAdminDevicesPage {
 
-        readonly defaultDevice = new JMSLib.App.EditFromList<string>({}, "defaultProfile", "Bevorzugtes Gerät (zum Beispiel für neue Aufzeichnungen)", () => this.refreshUi(), true, []);
+        readonly defaultDevice = new JMSLib.App.SelectSingleFromList<string>({}, "defaultProfile", "Bevorzugtes Gerät (zum Beispiel für neue Aufzeichnungen)", () => this.refreshUi(), true, []);
 
         devices: Device[] = [];
 

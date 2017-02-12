@@ -3,27 +3,30 @@
 namespace JMSLib.App {
 
     export interface IMultiValueFromList<TValueType> extends IProperty<TValueType[]> {
-        readonly values: IUiValue<TValueType>[];
+        readonly allowedValues: IUiValue<TValueType>[];
     }
 
     class SelectableValue<TValueType> implements IUiValue<TValueType>{
 
-        constructor(value: IUiValue<TValueType>, private readonly _list: SelectFromList<TValueType>) {
+        constructor(value: IUiValue<TValueType>, private readonly _onChange: () => void) {
+            this.selected = value.isSelected || false;
             this.display = value.display;
             this.value = value.value;
         }
 
-        get selected(): boolean {
-            return this._list.value.indexOf(this.value) >= 0;
+        selected: boolean;
+
+        get isSelected(): boolean {
+            return this.selected;
         }
 
-        set selected(newValue: boolean) {
-            var values = this._list.value.filter(v => v !== this.value);
+        set isSelected(newValue: boolean) {
+            if (newValue === this.selected)
+                return;
 
-            if (newValue)
-                values.push(this.value);
+            this.selected = newValue;
 
-            this._list.value = values;
+            this._onChange();
         }
 
         readonly display: string;
@@ -31,38 +34,38 @@ namespace JMSLib.App {
         readonly value: TValueType;
     }
 
-    export class SelectFromList<TValueType> extends Property<TValueType[]> implements IMultiValueFromList<TValueType> {
+    export class SelectMultipleFromList<TValueType> extends Property<TValueType[]> implements IMultiValueFromList<TValueType> {
 
-        constructor(data: any, prop: string, name: string, onChange: () => void, values: IUiValue<TValueType>[]) {
+        constructor(data?: any, prop?: string, name?: string, onChange?: () => void, allowedValues: IUiValue<TValueType>[] = []) {
             super(data, prop, name, onChange);
 
-            this.setValues(values);
+            this.allowedValues = allowedValues;
         }
 
-        private _values: IUiValue<TValueType>[];
+        private _allowedValues: SelectableValue<TValueType>[];
 
-        get values(): IUiValue<TValueType>[] {
-            return this._values;
+        get allowedValues(): IUiValue<TValueType>[] {
+            return this._allowedValues;
         }
 
-        setValues(values: IUiValue<TValueType>[]): void {
-            this._values = values.map(v => new SelectableValue<TValueType>(v, this));
-        }
+        set allowedValues(newValues: IUiValue<TValueType>[]) {
+            this._allowedValues = newValues.map(v => new SelectableValue<TValueType>(v, () => this.setValueFromSelection()));
 
-        addValue(value: IUiValue<TValueType>): void {
-            this._values.push(new SelectableValue<TValueType>(value, this));
+            this.setValueFromSelection();
 
             this.refresh();
         }
 
-        get allValues(): TValueType[] {
-            return this.values.map(v => v.value);
+        private setValueFromSelection(): void {
+            this.value = this.allowedValues.filter(v => v.isSelected).map(v => v.value);
         }
 
-        removeSelected(): void {
-            this.setValues(this.values.filter(v => !v.selected));
+        refresh(): void {
+            var values = this.value || [];
 
-            this.value = [];
+            this._allowedValues.forEach(av => av.selected = values.some(v => v === av.value));
+
+            super.refresh();
         }
     }
 }
