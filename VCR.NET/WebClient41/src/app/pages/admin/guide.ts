@@ -56,7 +56,7 @@ namespace VCRNETClient.App.Admin {
             this.source = new ChannelEditor({}, "value", this.page.application.profile.recentSources || [], () => this.refreshUi());
         }
 
-        reset(): void {
+        protected loadAsync(): void {
             VCRServer.getGuideSettings().then(settings => this.initialize(settings));
         }
 

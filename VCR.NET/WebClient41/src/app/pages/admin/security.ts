@@ -24,7 +24,7 @@ namespace VCRNETClient.App.Admin {
         readonly adminGroups = new JMSLib.App.EditFromList<string>({}, `admins`, `Administratoren`, null, false, []);
 
         // Beginnt mit der Abfrage der aktuellen Einstellungen.
-        reset(): void {
+        protected loadAsync(): void {
             VCRServer.getSecuritySettings().then(settings => this.initialize(settings));
         }
 

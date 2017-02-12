@@ -80,7 +80,7 @@ namespace VCRNETClient.App.Admin {
 
         readonly logging = new JMSLib.App.EditFromList<string>({}, "logging", "Umfang der Protokollierung in das Windows Ereignisprotokoll", null, false, OtherSection._logging);
 
-        reset(): void {
+        protected loadAsync(): void {
             VCRServer.getOtherSettings().then(settings => this.initialize(settings));
         }
 

@@ -25,21 +25,15 @@
         private _busy = false;
 
         // Die zugehörige Anzeige.
-        private _site: ISite;
+        site: ISite;
 
-        // Meldet die aktuell zugeordnete Anzeige.
-        get site(): ISite {
-            return this._site;
-        }
-
-        // Verbindet die Aktion mit einer Anzeige.
-        set site(newSite: ISite) {
-            // Initialisieren.
+        // Setzt den Befehl auf den Initialzustand zurück.
+        reset(): void {
             this._message = ``;
             this._busy = false;
 
-            // Verbinden - oder abkoppeln.
-            this._site = newSite;
+            // Anzeige aktualisieren.
+            this.refreshUi();
         }
 
         // Fehlermeldung zur letzen Ausführung.

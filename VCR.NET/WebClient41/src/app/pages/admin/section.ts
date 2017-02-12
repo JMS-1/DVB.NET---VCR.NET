@@ -37,8 +37,18 @@
                 this.site.refreshUi();
         }
 
+        // Fordert die zugehörigen Konfigurationsdaten neu an.
+        protected abstract loadAsync(): void;
+
         // Beginnt mit der eventuell erneuten Darstellung des Konfigurationsbreichs in der Oberfläche.
-        abstract reset(): void;
+        reset(): void {
+            // Befehl zurücksetzen.
+            if (this._update)
+                this._update.reset();
+
+            // Konfigurationsdaten anfordern.
+            this.loadAsync();
+        }
 
         // Meldet die Beschriftung des Befehls zum Speichern der Daten des Konfigurationsbereichs.
         protected readonly saveCaption: string = "Ändern";

@@ -63,7 +63,7 @@ namespace VCRNETClient.App.Admin {
             return this.mode.value === ScanConfigMode.automatic;
         }
 
-        reset(): void {
+        protected loadAsync(): void {
             VCRServer.getSourceScanSettings().then(settings => this.initialize(settings));
         }
 

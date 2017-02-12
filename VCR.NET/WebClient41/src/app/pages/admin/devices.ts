@@ -14,7 +14,7 @@ namespace VCRNETClient.App.Admin {
 
         devices: Device[] = [];
 
-        reset(): void {
+        protected loadAsync(): void {
             VCRServer.getProfileSettings().then(settings => this.initialize(settings));
         }
 

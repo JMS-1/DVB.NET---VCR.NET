@@ -10,7 +10,7 @@ namespace VCRNETClient.App.Admin {
 
         readonly rules = new JMSLib.App.EditString({}, "rules", null, null, false);
 
-        reset(): void {
+        protected loadAsync(): void {
             VCRServer.getSchedulerRules().then(settings => this.initialize(settings));
         }
 
