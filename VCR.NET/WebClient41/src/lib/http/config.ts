@@ -11,4 +11,13 @@
 
     export var webCallRoot: string;
 
+    var webCallId = 0;
+
+    export function nextWebCallId(): number {
+        return ++webCallId;
+    }
+
+    export function switchView(): void {
+        nextWebCallId();
+    }
 }

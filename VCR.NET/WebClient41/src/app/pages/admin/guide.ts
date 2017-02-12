@@ -56,11 +56,11 @@ namespace VCRNETClient.App.Admin {
             this.source = new ChannelEditor({}, "value", this.page.application.profile.recentSources || [], () => this.refreshUi());
         }
 
-        protected loadAsync(): JMSLib.App.IHttpPromise<VCRServer.GuideSettingsContract> {
-            return VCRServer.getGuideSettings();
+        reset(): void {
+            VCRServer.getGuideSettings().then(settings => this.initialize(settings));
         }
 
-        protected initialize(settings: VCRServer.GuideSettingsContract): void {
+        private initialize(settings: VCRServer.GuideSettingsContract): void {
             this.source.setSources([], true);
 
             this.duration.data = settings;

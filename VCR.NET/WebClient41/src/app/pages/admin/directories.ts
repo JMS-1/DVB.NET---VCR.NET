@@ -42,11 +42,11 @@ namespace VCRNETClient.App.Admin {
 
         private _disableBrowse = false;
 
-        protected loadAsync(): JMSLib.App.IHttpPromise<VCRServer.DirectorySettingsContract> {
-            return VCRServer.getDirectorySettings();
+        reset(): void {
+            VCRServer.getDirectorySettings().then(settings => this.initialize(settings));
         }
 
-        protected initialize(settings: VCRServer.DirectorySettingsContract): void {
+        private initialize(settings: VCRServer.DirectorySettingsContract): void {
             this.directories.setValues(settings.directories.map(d => JMSLib.App.uiValue(d)));
             this.directories.value = [];
 

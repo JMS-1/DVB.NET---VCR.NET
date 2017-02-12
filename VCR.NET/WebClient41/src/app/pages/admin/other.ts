@@ -80,11 +80,11 @@ namespace VCRNETClient.App.Admin {
 
         readonly logging = new JMSLib.App.EditFromList<string>({}, "logging", "Umfang der Protokollierung in das Windows Ereignisprotokoll", null, false, OtherSection._logging);
 
-        protected loadAsync(): JMSLib.App.IHttpPromise<VCRServer.OtherSettingsContract> {
-            return VCRServer.getOtherSettings();
+        reset(): void {
+            VCRServer.getOtherSettings().then(settings => this.initialize(settings));
         }
 
-        protected initialize(settings: VCRServer.OtherSettingsContract): void {
+        private initialize(settings: VCRServer.OtherSettingsContract): void {
             this.ignoreMinSleep.data = settings;
             this.noMPEG2PCR.data = settings;
             this.securePort.data = settings;

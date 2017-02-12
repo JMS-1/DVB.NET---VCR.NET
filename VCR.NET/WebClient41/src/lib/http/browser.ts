@@ -3,10 +3,15 @@
 namespace JMSLib.App {
 
     export function browserWebCall<TResponseType, TRequestType>(url: string, method: string = 'GET', request?: TRequestType): IHttpPromise<TResponseType> {
+        var nextId = nextWebCallId() + 1;
+
         return new Promise<TResponseType, IHttpErrorInformation>((success, failure) => {
             var xhr = new XMLHttpRequest();
 
             xhr.addEventListener("load", () => {
+                if (nextWebCallId() != nextId)
+                    return;
+
                 if (xhr.status < 400)
                     if (xhr.status === 204)
                         success(undefined);

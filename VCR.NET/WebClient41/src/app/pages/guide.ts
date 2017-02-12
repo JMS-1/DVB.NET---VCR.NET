@@ -171,6 +171,9 @@ namespace VCRNETClient.App {
         // Beschreibt den Gesamtauszug der Programmzeitschrift zum aktuell ausgewählten Gerät.
         private _profileInfo: VCRServer.GuideInfoContract;
 
+        // Zeigt an, dass die Präsentation gearade die Daten für die initiale Ansicht sammelt.
+        private _startup: boolean;
+
         // Erstellt eine neue Instanz zur Anzeige der Programmzeitschrift.
         constructor(application: Application) {
             super("guide", application);
@@ -183,6 +186,7 @@ namespace VCRNETClient.App {
         // Wird aufgerufen wenn in der Oberfläche die Programmzeitschrift angezeigt werden soll.
         reset(sections: string[]): void {
             // Sicherstellen, dass alte Serveranfragen verworfen werden.
+            this._startup = true;
             this._queryId++;
 
             // Anzeige löschen.
@@ -201,6 +205,9 @@ namespace VCRNETClient.App {
                 // Erstes Gerät vorauswählen.
                 if (!this._filter.device || this.profiles.message)
                     this._filter.device = this.profiles.allowedValues[0].value;
+
+                // Die Startphase ist erst einmal abgeschlossen.
+                this._startup = false;
 
                 // Ergebnisliste aktualisieren.
                 this.onDeviceChanged(false);
@@ -228,8 +235,10 @@ namespace VCRNETClient.App {
 
         // Nach der Auswahl des Gerätes alle Listen aktualisieren.
         private onDeviceChanged(deviceHasChanged: boolean) {
-            if (!this._filter.device)
+            if (this._startup)
                 return;
+
+            this._startup = true;
 
             VCRServer.GuideInfoCache.getPromise(this._filter.device).then(info => {
                 // Informationen zur Programmzeitschrift des Gerätes festhalten.
@@ -248,6 +257,8 @@ namespace VCRNETClient.App {
                 selection.unshift(JMSLib.App.uiValue("", "(neuen Auftrag anlegen)"));
 
                 this._jobSelector.allowedValues = selection;
+
+                this._startup = false;
 
                 // Ergebnisliste neu laden - bei Wechsel des Gerätes werden alle Einschränkungen entfernt.
                 if (deviceHasChanged)
@@ -336,6 +347,9 @@ namespace VCRNETClient.App {
 
         // Führt eine Suche aus.
         private query(): void {
+            if (this._startup)
+                return;
+
             // Eine eventuell ausstehende verzögerte Suche deaktivieren.
             this.clearTimeout();
 

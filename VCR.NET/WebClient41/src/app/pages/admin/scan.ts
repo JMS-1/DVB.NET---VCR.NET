@@ -63,11 +63,11 @@ namespace VCRNETClient.App.Admin {
             return this.mode.value === ScanConfigMode.automatic;
         }
 
-        protected loadAsync(): JMSLib.App.IHttpPromise<VCRServer.SourceScanSettingsContract> {
-            return VCRServer.getSourceScanSettings();
+        reset(): void {
+            VCRServer.getSourceScanSettings().then(settings => this.initialize(settings));
         }
 
-        protected initialize(settings: VCRServer.SourceScanSettingsContract): void {
+        private initialize(settings: VCRServer.SourceScanSettingsContract): void {
             this.duration.data = settings;
             this.gapDays.data = settings;
             this.latency.data = settings;

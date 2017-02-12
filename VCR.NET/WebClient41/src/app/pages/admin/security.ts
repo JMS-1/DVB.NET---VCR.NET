@@ -24,8 +24,8 @@ namespace VCRNETClient.App.Admin {
         readonly adminGroups = new JMSLib.App.EditFromList<string>({}, `admins`, `Administratoren`, null, false, []);
 
         // Beginnt mit der Abfrage der aktuellen Einstellungen.
-        protected loadAsync(): JMSLib.App.IHttpPromise<VCRServer.SecuritySettingsContract> {
-            return VCRServer.getSecuritySettings();
+        reset(): void {
+            VCRServer.getSecuritySettings().then(settings => this.initialize(settings));
         }
 
         // Beginnt mit der Aktualisierung der aktuellen Einstellungen.
@@ -43,7 +43,7 @@ namespace VCRNETClient.App.Admin {
         }
 
         // Aktuelle Benutzergruppen in den Auswahhlisten vorwählen.
-        protected initialize(security: VCRServer.SecuritySettingsContract): void {
+        private initialize(security: VCRServer.SecuritySettingsContract): void {
             this.userGroups.data = this.adminGroups.data = security;
 
             // Windows Kontogruppen einmalig anfordern.

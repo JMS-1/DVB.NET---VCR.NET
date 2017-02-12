@@ -59,6 +59,9 @@ namespace VCRNETClient.App {
         }
 
         reset(sections: string[]): void {
+            // Melden, dass alle ausstehenden asynchronen Anfragen von nun an nicht mehr interessieren.
+            JMSLib.App.switchView();
+
             var allSections = this.sections.allowedValues;
             var curSection = allSections.filter(v => v.value.route === sections[0])[0] || allSections[0];
 

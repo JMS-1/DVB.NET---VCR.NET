@@ -14,11 +14,11 @@ namespace VCRNETClient.App.Admin {
 
         devices: Device[] = [];
 
-        protected loadAsync(): JMSLib.App.IHttpPromise<VCRServer.ProfileSettingsContract> {
-            return VCRServer.getProfileSettings();
+        reset(): void {
+            VCRServer.getProfileSettings().then(settings => this.initialize(settings));
         }
 
-        protected initialize(settings: VCRServer.ProfileSettingsContract): void {
+        private initialize(settings: VCRServer.ProfileSettingsContract): void {
             this.devices = settings.profiles.map(p => new Device(p, () => this.refreshUi()));
 
             this.defaultDevice.allowedValues = settings.profiles.map(p => JMSLib.App.uiValue(p.name));

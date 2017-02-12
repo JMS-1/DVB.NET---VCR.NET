@@ -61,9 +61,6 @@
             return this._busy;
         }
 
-        // Wieviele ausstehende Zugriffe bis zum Start gibt es noch.
-        private _startPending = 2;
-
         constructor(private _site: IApplicationSite) {
             // Alle bekannten Seiten.
             this.adminPage = this.addPage(AdminPage);
@@ -75,11 +72,7 @@
             this.jobPage = this.addPage(JobPage);
             this.logPage = this.addPage(LogPage);
 
-            // Alle Startvorgänge einleiten.
-            var testStart = this.testStart.bind(this);
-
-            VCRServer.getServerVersion().then(info => this.version = info).then(testStart);
-            VCRServer.getUserProfile().then(profile => this.profile = profile).then(testStart);
+            VCRServer.getServerVersion().then(info => this.setVersion(info));
         }
 
         private addPage<TPageType extends Page>(factory: { new (application: Application): TPageType }): TPageType {
@@ -90,9 +83,14 @@
             return page;
         }
 
-        private testStart(): void {
-            if (this._startPending-- > 1)
-                return;
+        private setVersion(info: VCRServer.InfoServiceContract): void {
+            this.version = info;
+
+            VCRServer.getUserProfile().then(profile => this.setUserProfile(profile));
+        }
+
+        private setUserProfile(profile: VCRServer.UserProfileContract): void {
+            this.profile = profile;
 
             // Alle Startvorgänge sind abgeschlossen
             this.isBusy = false;
@@ -106,6 +104,9 @@
         }
 
         switchPage(name: string, sections: string[]): boolean {
+            // Melden, dass alle ausstehenden asynchronen Anfragen von nun an nicht mehr interessieren.
+            JMSLib.App.switchView();
+
             this.isBusy = true;
 
             // Den Singleton der gewünschten Seite ermitteln.

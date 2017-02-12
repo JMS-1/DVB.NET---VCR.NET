@@ -38,19 +38,7 @@
         }
 
         // Beginnt mit der eventuell erneuten Darstellung des Konfigurationsbreichs in der Oberfläche.
-        reset(): void {
-            // Schaltfläche aktualisieren.
-            this.update.message = ``;
-
-            // Aktuelle Daten vom VCR.NET Recording Service anfordern und Konfigurationsbereich damit initialisieren.
-            this.loadAsync().then(settings => this.initialize(settings));
-        }
-
-        // Initialisiert den Bereich mit den aktuellen Konfigurationsdaten.
-        protected abstract initialize(settings: TSettingsType);
-
-        // Fordert die aktuelle Konfiguration an.
-        protected abstract loadAsync(): JMSLib.App.IHttpPromise<TSettingsType>;
+        abstract reset(): void;
 
         // Meldet die Beschriftung des Befehls zum Speichern der Daten des Konfigurationsbereichs.
         protected readonly saveCaption: string = "Ändern";
