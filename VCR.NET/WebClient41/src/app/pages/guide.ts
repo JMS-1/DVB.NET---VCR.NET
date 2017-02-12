@@ -59,26 +59,26 @@ namespace VCRNETClient.App {
 
         // Optionen zur Auswahl der Einschränkung auf die Verschlüsselung.
         private static _cryptOptions = [
-            JMSLib.App.uiValue(VCRServer.GuideEncryption.FREE, "Nur unverschlüsselt"),
-            JMSLib.App.uiValue(VCRServer.GuideEncryption.PAY, "Nur verschlüsselt"),
-            JMSLib.App.uiValue(VCRServer.GuideEncryption.ALL, "Alle Quellen")
+            JMSLib.App.uiValue(VCRServer.GuideEncryption.FREE, `Nur unverschlüsselt`),
+            JMSLib.App.uiValue(VCRServer.GuideEncryption.PAY, `Nur verschlüsselt`),
+            JMSLib.App.uiValue(VCRServer.GuideEncryption.ALL, `Alle Quellen`)
         ];
 
         // Optionen zur Auswahl der Einschränkuzng auf die Art der Quelle.
         private static _typeOptions = [
-            JMSLib.App.uiValue(VCRServer.GuideSource.TV, "Nur Fernsehen"),
-            JMSLib.App.uiValue(VCRServer.GuideSource.RADIO, "Nur Radio"),
-            JMSLib.App.uiValue(VCRServer.GuideSource.ALL, "Alle Quellen")
+            JMSLib.App.uiValue(VCRServer.GuideSource.TV, `Nur Fernsehen`),
+            JMSLib.App.uiValue(VCRServer.GuideSource.RADIO, `Nur Radio`),
+            JMSLib.App.uiValue(VCRServer.GuideSource.ALL, `Alle Quellen`)
         ];
 
         // Für den Start der aktuellen Ergebnisliste verfügbaren Auswahloptionen für die Uhrzeit.
         private static _hours = [
-            JMSLib.App.uiValue(0, "00:00"),
-            JMSLib.App.uiValue(6, "06:00"),
-            JMSLib.App.uiValue(12, "12:00"),
-            JMSLib.App.uiValue(18, "18:00"),
-            JMSLib.App.uiValue(20, "20:00"),
-            JMSLib.App.uiValue(22, "22:00")
+            JMSLib.App.uiValue(0, `00:00`),
+            JMSLib.App.uiValue(6, `06:00`),
+            JMSLib.App.uiValue(12, `12:00`),
+            JMSLib.App.uiValue(18, `18:00`),
+            JMSLib.App.uiValue(20, `20:00`),
+            JMSLib.App.uiValue(22, `22:00`)
         ];
 
         // Laufende Nummer der aktuellen Serveranfrage.
@@ -93,58 +93,58 @@ namespace VCRNETClient.App {
             device: null,
             start: null,
             title: null,
-            station: "",
+            station: ``,
             size: 20,
             index: 0
         };
 
         // Schnittstelle zur Auswahl des zu betrachtenden Gerätes.
-        readonly profiles = new JMSLib.App.EditFromList<string>(this._filter, "device", "Gerät", () => this.onDeviceChanged(true), false, []);
+        readonly profiles = new JMSLib.App.EditFromList<string>(this._filter, `device`, `Gerät`, () => this.onDeviceChanged(true), false, []);
 
         // Schnittstelle zur Auswahl der Quelle.
-        readonly sources = new JMSLib.App.EditFromList<string>(this._filter, "station", "Quelle", () => this.query(), false, []);
+        readonly sources = new JMSLib.App.EditFromList<string>(this._filter, `station`, `Quelle`, () => this.query(), false, []);
 
         // Schnittstelle zur Auswahl der Einschränkung auf die Verschlüsselung.
-        readonly encrpytion = new JMSLib.App.EditFromList<VCRServer.GuideEncryption>(this._filter, "cryptFilter", null, () => this.query(), false, GuidePage._cryptOptions);
+        readonly encrpytion = new JMSLib.App.EditFromList<VCRServer.GuideEncryption>(this._filter, `cryptFilter`, null, () => this.query(), false, GuidePage._cryptOptions);
 
         // Schnittstelle zur Auswahl der Einschränkung auf die Art der Quelle.
-        readonly sourceType = new JMSLib.App.EditFromList<VCRServer.GuideSource>(this._filter, "typeFilter", null, () => this.query(), false, GuidePage._typeOptions);
+        readonly sourceType = new JMSLib.App.EditFromList<VCRServer.GuideSource>(this._filter, `typeFilter`, null, () => this.query(), false, GuidePage._typeOptions);
 
         // Schnittstelle zum Setzen eines bestimmten Tags für den Anfang der Ergebnisliste.
-        readonly days = new JMSLib.App.EditFromList<string>(this._filter, "start", "Datum", () => this.resetIndexAndQuery(), false, []);
+        readonly days = new JMSLib.App.EditFromList<string>(this._filter, `start`, `Datum`, () => this.resetIndexAndQuery(), false, []);
 
         // Bei der nächsten Abfrage zu setzende Uhrzeit für den Anfang der Ergebnisliste.
         private _hour = -1;
 
         // Schnittstelle zum Setzen einer bestimmten Uhrzeit für den Anfange der Ergebnisliste.
-        readonly hours = new JMSLib.App.EditFromList<number>(this, "_hour", "Start ab", () => this.resetIndexAndQuery(), false, GuidePage._hours);
+        readonly hours = new JMSLib.App.EditFromList<number>(this, `_hour`, `Start ab`, () => this.resetIndexAndQuery(), false, GuidePage._hours);
 
         // Die aktuelle Freitextsucheingabe.
-        private _query = "";
+        private _query = ``;
 
         // Schnittstelle zur Pflege der Freitextsuchbedingung.
-        readonly queryString = new JMSLib.App.EditString(this, "_query", "Suche nach", () => this.delayedQuery(), false);
+        readonly queryString = new JMSLib.App.EditString(this, `_query`, `Suche nach`, () => this.delayedQuery(), false);
 
         // Gesetzt, wenn auch eine Suche auf die Beschreibung erfolgen soll.
         private _withContent = true;
 
         // Schnittstelle zur Pflege der Auswahl der Freitextsuche auf die Beschreibung.
-        readonly withContent = new JMSLib.App.EditFlag(this, "_withContent", "Auch in Beschreibung suchen", () => this.query());
+        readonly withContent = new JMSLib.App.EditFlag(this, `_withContent`, `Auch in Beschreibung suchen`, () => this.query());
 
         // Aktuelle Anmeldung für verzögerte Suchanfragen.
         private _timeout: number;
 
         // Befehl zur Anzeige des Anfangs der Ergebnisliste.
-        readonly firstPage = new JMSLib.App.Command(() => this.changePage(-this._filter.index), "Erste Seite", () => this._filter.index > 0);
+        readonly firstPage = new JMSLib.App.Command(() => this.changePage(-this._filter.index), `Erste Seite`, () => this._filter.index > 0);
 
         // Befehl zur Anzeige der vorherigen Seite der Ergebnisliste.
-        readonly prevPage = new JMSLib.App.Command(() => this.changePage(-1), "Vorherige Seite", () => this._filter.index > 0);
+        readonly prevPage = new JMSLib.App.Command(() => this.changePage(-1), `Vorherige Seite`, () => this._filter.index > 0);
 
         // Befehl zur Anzeige der nächsten Seite der Ergebnisliste.
-        readonly nextPage = new JMSLib.App.Command(() => this.changePage(+1), "Nächste Seite", () => this._hasMore);
+        readonly nextPage = new JMSLib.App.Command(() => this.changePage(+1), `Nächste Seite`, () => this._hasMore);
 
         // Befehl zum Zurücksetzen aller aktuellen Einschränkungen.
-        readonly resetFilter = new JMSLib.App.Command(() => this.resetAllAndQuery(), "Neue Suche");
+        readonly resetFilter = new JMSLib.App.Command(() => this.resetAllAndQuery(), `Neue Suche`);
 
         // Meldet, ob die Auswahl der Verschlüsselung angeboten werden soll.
         get showEncryption(): boolean {
@@ -159,11 +159,8 @@ namespace VCRNETClient.App {
         // Der aktuell anzuzeigende Ausschnitt aus der Ergebnisliste.
         entries: Guide.GuideEntry[] = [];
 
-        // Der aktuell ausgewählte Auftrag.
-        private _selectedJob = "*";
-
         // Die aktuelle Liste der für das Gerät angelegten Aufträg.
-        private _jobSelector = new JMSLib.App.EditFromList<string>(this, "_selectedJob", "zum Auftrag", null, true, []);
+        private _jobSelector = new JMSLib.App.EditFromList<string>({}, `value`, `zum Auftrag`, null, true);
 
         // Gesetzt, wenn eine nächste Seite der Ergebnisliste existiert.
         private _hasMore = false;
@@ -176,7 +173,7 @@ namespace VCRNETClient.App {
 
         // Erstellt eine neue Instanz zur Anzeige der Programmzeitschrift.
         constructor(application: Application) {
-            super("guide", application);
+            super(`guide`, application);
 
             // Navigation abweichend vom Standard konfigurieren.
             this.navigation.favorites = true;
@@ -192,6 +189,10 @@ namespace VCRNETClient.App {
             // Anzeige löschen.
             this.entries = [];
             this._hasMore = false;
+            this.nextPage.reset();
+            this.prevPage.reset();
+            this.firstPage.reset();
+            this.resetFilter.reset();
 
             // Größe der Anzeigeliste auf den neusten Stand bringen - alle anderen Einschränkungen bleiben erhalten!
             this._filter.size = this.application.profile.guideRows;
@@ -216,7 +217,7 @@ namespace VCRNETClient.App {
 
         // Meldet die Überschrift der Seite.
         get title(): string {
-            return "Programmzeitschrift";
+            return `Programmzeitschrift`;
         }
 
         // Alle Einschränkungen entfernen.
@@ -224,12 +225,12 @@ namespace VCRNETClient.App {
             this._filter.cryptFilter = VCRServer.GuideEncryption.ALL;
             this._filter.typeFilter = VCRServer.GuideSource.ALL;
             this._filter.content = null;
-            this._filter.station = "";
+            this._filter.station = ``;
             this._filter.start = null;
             this._filter.title = null;
             this._withContent = true;
             this._filter.index = 0;
-            this._query = "";
+            this._query = ``;
             this._hour = -1;
         }
 
@@ -254,10 +255,10 @@ namespace VCRNETClient.App {
                 // Liste der bekannten Aufträge aktualisieren.
                 var selection = jobs.map(job => JMSLib.App.uiValue(job.id, job.name));
 
-                selection.unshift(JMSLib.App.uiValue("", "(neuen Auftrag anlegen)"));
+                selection.unshift(JMSLib.App.uiValue(`*`, `(neuen Auftrag anlegen)`));
 
                 this._jobSelector.allowedValues = selection;
-
+                
                 this._startup = false;
 
                 // Ergebnisliste neu laden - bei Wechsel des Gerätes werden alle Einschränkungen entfernt.
@@ -273,7 +274,7 @@ namespace VCRNETClient.App {
             var sources = (this._profileInfo.stations || []).map(s => JMSLib.App.uiValue(s));
 
             // Der erste Eintrag erlaubt immer die Anzeige ohne vorausgewählter Quelle.
-            sources.unshift(JMSLib.App.uiValue("", "(Alle Sender)"));
+            sources.unshift(JMSLib.App.uiValue(``, `(Alle Sender)`));
 
             this.sources.allowedValues = sources;
         }
@@ -283,7 +284,7 @@ namespace VCRNETClient.App {
             var days: JMSLib.App.IUiValue<string>[] = [];
 
             // Als Basis kann immer die aktuelle Uhrzeit verwendet werden.
-            days.push(JMSLib.App.uiValue(<string>null, "Jetzt"));
+            days.push(JMSLib.App.uiValue(<string>null, `Jetzt`));
 
             // Das geht nur, wenn mindestens ein Eintrag in der Programmzeitschrift der aktuellen Quelle vorhanden ist.
             if (this._profileInfo.first && this._profileInfo.last) {
@@ -370,7 +371,7 @@ namespace VCRNETClient.App {
             // Suchbedingung vorbereiten und übernehmen.
             var query = this._query.trim();
 
-            this._filter.title = (query === "") ? null : `*${query}`;
+            this._filter.title = (query === ``) ? null : `*${query}`;
             this._filter.content = this._withContent ? this._filter.title : null;
 
             // Auszug aus der Programmzeitschrift abrufen.
@@ -409,7 +410,7 @@ namespace VCRNETClient.App {
             entry.showDetails = !show;
 
             // Oberfläche aktualisieren.
-            this._selectedJob = "";
+            this._jobSelector.value = `*`;
 
             this.refreshUi();
         }

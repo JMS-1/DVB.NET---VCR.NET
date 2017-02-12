@@ -57,6 +57,9 @@ namespace VCRNETClient.App.Admin {
         }
 
         protected loadAsync(): void {
+            this.add.reset();
+            this.remove.reset();
+
             VCRServer.getGuideSettings().then(settings => this.initialize(settings));
         }
 

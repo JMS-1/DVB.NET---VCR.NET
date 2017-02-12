@@ -37,6 +37,8 @@ namespace VCRNETClient.App {
 
         // Wird jedesmal beim Aufruf der Änderungsseite aufgerufen.
         reset(sections: string[]): void {
+            this.del.reset();
+            this.save.reset();
             this.job = undefined;
             this.schedule = undefined;
             this.del.isDangerous = false;

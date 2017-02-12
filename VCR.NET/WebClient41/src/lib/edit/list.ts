@@ -9,35 +9,46 @@ namespace JMSLib.App {
 
         // Der Wert zur Anzeige.
         readonly display: string;
+
+        // Meldet oder legt fest, ob der Wert ausgewählt wurde.
+        selected?: boolean;
     }
 
+    // Hilfsmethode zum Erstellen eines Auswahlwertes.
     export function uiValue<TValueType>(value: TValueType, display?: string): IUiValue<TValueType> {
         return { value: value, display: (display === undefined) ? ((value === null) ? `` : value.toString()) : display };
     }
 
-    export interface ISelectableUiValue<TValueType> extends IUiValue<TValueType> {
-        selected: boolean;
-    }
-
+    // Schnittstelle zur Auswahl eines einzelnen Wertes aus einer Liste erlaubter Werte.
     export interface IValueFromList<TValueType> extends IProperty<TValueType> {
+        // Die erlaubten Werte.
         readonly allowedValues: IUiValue<TValueType>[];
 
-        displayValue: string;
+        // Der aktuell ausgewählte Werte - in der dem Anwender zugänglichen Textdarstellung.
+        readonly displayValue: string;
+
+        // Die laufende Nummer des aktuell ausgewählte Wertes - in der dem Anwender zugänglichen Textdarstellung.
+        displayValueIndex: number;
     }
 
+    // Erlaubt die Auswahl eines einzelnen Wertes aus einer Liste erlaubter Werte.
     export class EditFromList<TValueType> extends Property<TValueType> implements IValueFromList<TValueType> {
 
-        // Legt eine neue Verwaltung an.
-        constructor(data: any, prop: string, name: string, onChange: () => void, isRequired?: boolean, private _allowedValues: IUiValue<TValueType>[] = []) {
+        // Legt ein neues Präsentationsmodell an.
+        constructor(data?: any, prop?: string, name?: string, onChange?: () => void, isRequired?: boolean, private _allowedValues: IUiValue<TValueType>[] = []) {
             super(data, prop, name, onChange, isRequired);
         }
 
+        // Meldet die Liste der aktuell erlaubten Werte.
         get allowedValues(): IUiValue<TValueType>[] {
             return this._allowedValues;
         }
 
+        // Legt die Liste der aktuell erlaubten Werte neu fest.
         set allowedValues(values: IUiValue<TValueType>[]) {
             this._allowedValues = values || [];
+
+            // Anzeige erneuern.
             this.refresh();
         }
 
@@ -49,34 +60,32 @@ namespace JMSLib.App {
             if (this.message.length > 0)
                 return;
 
-            // Der Wert muss in der Liste sein.
+            // Der Wert muss in der Liste sein - sofern er nicht leer und gleichzeitig optional ist.
             var value = this.value;
 
-            if (value === null)
+            if (!value)
                 if (!this.isRequired)
                     return;
 
             if (!this.allowedValues.some(av => av.value === value))
-                this.message = "Der Wert ist nicht in der Liste der möglichen Werte enthalten.";
+                this.message = "Der Wert ist nicht in der Liste der erlaubten Werte enthalten.";
         }
 
+        // Meldet den anzuzeigenden Wert.
         get displayValue(): string {
-            var value = this.value;
-            var display = this.allowedValues.filter(v => v.value === value);
-
-            if (display.length === 1)
-                return display[0].display;
-            else
-                return (value === null) ? null : value.toString();
+            return this.allowedValues[this.displayValueIndex].display;
         }
 
-        set displayValue(newDisplay: string) {
-            var value = this.allowedValues.filter(v => v.display === newDisplay);
+        get displayValueIndex(): number {
+            for (var i = 0; i < this.allowedValues.length; i++)
+                if (this.allowedValues[i].value === this.value)
+                    return i;
 
-            if (value.length === 1)
-                this.value = value[0].value;
-            else
-                this.value = null;
+            return 0;
+        }
+
+        set displayValueIndex(newIndex: number) {
+            this.value = this.allowedValues[newIndex].value;
         }
     }
 

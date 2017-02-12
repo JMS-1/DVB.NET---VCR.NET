@@ -3,10 +3,10 @@
 namespace JMSLib.App {
 
     export interface IMultiValueFromList<TValueType> extends IProperty<TValueType[]> {
-        readonly values: ISelectableUiValue<TValueType>[];
+        readonly values: IUiValue<TValueType>[];
     }
 
-    class SelectableValue<TValueType> implements ISelectableUiValue<TValueType>{
+    class SelectableValue<TValueType> implements IUiValue<TValueType>{
 
         constructor(value: IUiValue<TValueType>, private readonly _list: SelectFromList<TValueType>) {
             this.display = value.display;
@@ -39,9 +39,9 @@ namespace JMSLib.App {
             this.setValues(values);
         }
 
-        private _values: ISelectableUiValue<TValueType>[];
+        private _values: IUiValue<TValueType>[];
 
-        get values(): ISelectableUiValue<TValueType>[] {
+        get values(): IUiValue<TValueType>[] {
             return this._values;
         }
 

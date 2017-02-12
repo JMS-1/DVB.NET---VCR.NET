@@ -14,35 +14,21 @@ namespace VCRNETClient.App.Admin {
     // Instanz zur Pflege der Konfiguration der Benutzergruppen.
     export class SecuritySection extends Section<VCRServer.SecuritySettingsContract> implements IAdminSecurityPage {
 
-        // Alle bekannten Windows Kontogruppen.
+        // Alle bekannten Windows Kontogruppen - die werden nur ein einziges Mal angefordert.
         private static _windowsGroups: JMSLib.App.IHttpPromise<JMSLib.App.IUiValue<string>[]>;
 
         // Die Gruppe der normalen Benutzer mit Auswahl.
-        readonly userGroups = new JMSLib.App.EditFromList<string>({}, `users`, `Benutzer`, null, false, []);
+        readonly userGroups = new JMSLib.App.EditFromList<string>({}, `users`, `Benutzer`);
 
         // Die Gruppe der Administratoren mit Auswahl.
-        readonly adminGroups = new JMSLib.App.EditFromList<string>({}, `admins`, `Administratoren`, null, false, []);
+        readonly adminGroups = new JMSLib.App.EditFromList<string>({}, `admins`, `Administratoren`);
 
         // Beginnt mit der Abfrage der aktuellen Einstellungen.
         protected loadAsync(): void {
             VCRServer.getSecuritySettings().then(settings => this.initialize(settings));
         }
 
-        // Beginnt mit der Aktualisierung der aktuellen Einstellungen.
-        protected saveAsync(): JMSLib.App.IHttpPromise<boolean> {
-            return VCRServer.setSecuritySettings(this.userGroups.data);
-        }
-
-        // Windows Kontogruppen in die Auswahllisten übernehmen.
-        private setWindowsGroups(groups: JMSLib.App.IUiValue<string>[]): void {
-            this.userGroups.allowedValues = groups;
-            this.adminGroups.allowedValues = groups;
-
-            // Bedienung durch den Anwender freischalten.
-            this.page.application.isBusy = false;
-        }
-
-        // Aktuelle Benutzergruppen in den Auswahhlisten vorwählen.
+        // Übernimmt die aktuelle Konfiguration des VCR.NET Recording Service.
         private initialize(security: VCRServer.SecuritySettingsContract): void {
             this.userGroups.data = this.adminGroups.data = security;
 
@@ -60,6 +46,20 @@ namespace VCRNETClient.App.Admin {
 
             // Windows Kontogruppen direkt oder verzögert laden.
             SecuritySection._windowsGroups.then(groups => this.setWindowsGroups(groups));
+        }
+
+        // Windows Kontogruppen in die Auswahllisten übernehmen.
+        private setWindowsGroups(groups: JMSLib.App.IUiValue<string>[]): void {
+            this.userGroups.allowedValues = groups;
+            this.adminGroups.allowedValues = groups;
+
+            // Bedienung durch den Anwender freischalten.
+            this.page.application.isBusy = false;
+        }
+
+        // Beginnt mit der Aktualisierung der aktuellen Einstellungen.
+        protected saveAsync(): JMSLib.App.IHttpPromise<boolean> {
+            return VCRServer.setSecuritySettings(this.userGroups.data);
         }
     }
 }

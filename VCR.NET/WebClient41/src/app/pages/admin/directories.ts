@@ -43,6 +43,10 @@ namespace VCRNETClient.App.Admin {
         private _disableBrowse = false;
 
         protected loadAsync(): void {
+            this.add.reset();
+            this.remove.reset();
+            this.parent.reset();
+
             VCRServer.getDirectorySettings().then(settings => this.initialize(settings));
         }
 
