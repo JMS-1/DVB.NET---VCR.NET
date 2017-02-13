@@ -51,7 +51,7 @@
         readonly showException: boolean;
 
         // Die am besten passenden Informationen aus der Programmzeitschrift.
-        readonly guideItem: VCRServer.GuideItemContract;
+        readonly guideItem: Guide.IGuideInfo;
 
         // Schaltet die Detailanzeige um.
         toggleDetail(epg: boolean): void;
@@ -189,9 +189,9 @@
                 this.site.refreshUi();
         }
 
-        private _guideItem: VCRServer.GuideItemContract;
+        private _guideItem: Guide.IGuideInfo;
 
-        get guideItem(): VCRServer.GuideItemContract {
+        get guideItem(): Guide.IGuideInfo {
             if (!this.model.epg || !this.model.epgDevice || !this.model.source)
                 return null;
 
@@ -199,7 +199,7 @@
                 return this._guideItem;
 
             VCRServer.getGuideItem(this.model.epgDevice, this.model.source, this.start, this.end).then(item => {
-                this._guideItem = item;
+                this._guideItem = item ? new Guide.GuideInfo(item) : null;
 
                 this.refreshUi();
             });

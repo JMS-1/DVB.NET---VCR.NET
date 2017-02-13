@@ -1,10 +1,7 @@
 ﻿namespace VCRNETClient.App.Guide {
 
     // Schnittstelle zur Anzeige eines Eintrags in der Programmzeitschrift.
-    export interface IGuideEntry {
-        // Die Kennung des Eintrags.
-        readonly id: string;
-
+    export interface IGuideInfo {
         // Beginn der Sendung.
         readonly startDisplay: string;
 
@@ -34,6 +31,12 @@
 
         // Vollständige Beschreibung.
         readonly longDescription: string;
+    }
+
+    // Schnittstelle zur Anzeige eines Eintrags in der Programmzeitschrift.
+    export interface IGuideEntry extends IGuideInfo {
+        // Die Kennung des Eintrags.
+        readonly id: string;
 
         // Gesetzt, wenn die Detailansicht eingeblendet werden soll.
         readonly showDetails: boolean;
@@ -49,83 +52,95 @@
     }
 
     // Repräsentiert einen Eintrag in der Programmzeitschrift.
-    export class GuideEntry implements IGuideEntry {
+    export class GuideInfo implements IGuideInfo {
 
         // Erstellt eine neue Beschreibung.
-        constructor(private readonly _model: VCRServer.GuideItemContract, private _toggleDetails: (entry: GuideEntry) => void, createNew: (entry: GuideEntry) => void, public jobSelector: JMSLib.App.IValueFromList<string>) {
+        constructor(protected readonly model: VCRServer.GuideItemContract) {
             // Zeitraum der Sendung.
-            var start = new Date(_model.start);
-            var end = new Date(start.getTime() + 1000 * _model.duration);
+            this.start = new Date(model.start);
+            this.end = new Date(this.start.getTime() + 1000 * model.duration);
+        }
 
-            // Zeitraum zur direkten Anzeige aufbereiten.
-            this.startDisplay = JMSLib.DateFormatter.getStartTime(start);
-            this.endDisplay = JMSLib.DateFormatter.getEndTime(end);
+        protected readonly start: Date;
+
+        protected readonly end: Date;
+
+        // Startzeit der Sendung.
+        get startDisplay(): string {
+            return JMSLib.DateFormatter.getStartTime(this.start);
+        }
+
+        // Endzeit der Sendung.
+        get endDisplay(): string {
+            return JMSLib.DateFormatter.getEndTime(this.end);
+        }
+
+        // Meldet die Quelle.
+        get source(): string {
+            return this.model.station;
+        }
+
+        // Meldet den Namen der Sendung.
+        get name(): string {
+            return this.model.name;
+        }
+
+        // Meldet die Sprache der Sendung.
+        get language(): string {
+            return this.model.language;
+        }
+
+        // Meldet die Kurzbeschreibung der Sendung.
+        get shortDescription(): string {
+            return this.model.shortDescription;
+        }
+
+        // Meldet die ausführliche Beschreibung der Sendung.
+        get longDescription(): string {
+            return this.model.description;
+        }
+
+        // Meldet die Dauer der Sendung.
+        get duration(): string {
+            return JMSLib.DateFormatter.getDuration(new Date(1000 * this.model.duration));
+        }
+
+        // Meldet die Freigabe der Sendung.
+        get rating(): string {
+            return (this.model.ratings || []).join(" ");
+        }
+
+        // Meldet die Art der Sendung.
+        get content(): string {
+            return (this.model.categories || []).join(" ");
+        }
+    }
+
+    // Repräsentiert einen Eintrag in der Programmzeitschrift.
+    export class GuideEntry extends GuideInfo implements IGuideEntry {
+
+        // Erstellt eine neue Beschreibung.
+        constructor(model: VCRServer.GuideItemContract, private _toggleDetails: (entry: GuideEntry) => void, createNew: (entry: GuideEntry) => void, public jobSelector: JMSLib.App.IValueFromList<string>) {
+            super(model);
 
             // Befehl zum Neuanlegen einer Aufzeichnung einrichten.
-            this.createNew = new JMSLib.App.Command(() => createNew(this), "Aufzeichnung anlegen", () => end > new Date());
+            this.createNew = new JMSLib.App.Command(() => createNew(this), "Aufzeichnung anlegen", () => this.end > new Date());
         }
 
         // Befehl zum Anlegen einer neuen Aufzeichnung.
         readonly createNew: JMSLib.App.ICommand;
-
-        // Startzeit der Sendung.
-        readonly startDisplay: string;
-
-        // Endzeit der Sendung.
-        readonly endDisplay: string;
 
         // Gesetzt, wenn die Detailansicht eingeblendet werden soll.
         showDetails = false;
 
         // Die eindeutige Kennung des Eintrags.
         get id(): string {
-            return this._model.id;
-        }
-
-        // Meldet die Quelle.
-        get source(): string {
-            return this._model.station;
-        }
-
-        // Meldet den Namen der Sendung.
-        get name(): string {
-            return this._model.name;
+            return this.model.id;
         }
 
         // Schaltet die Anzeige der Detailansicht um.
         toggleDetail(): void {
             this._toggleDetails(this);
         }
-
-        // Meldet die Sprache der Sendung.
-        get language(): string {
-            return this._model.language;
-        }
-
-        // Meldet die Kurzbeschreibung der Sendung.
-        get shortDescription(): string {
-            return this._model.shortDescription;
-        }
-
-        // Meldet die ausführliche Beschreibung der Sendung.
-        get longDescription(): string {
-            return this._model.description;
-        }
-
-        // Meldet die Dauer der Sendung.
-        get duration(): string {
-            return JMSLib.DateFormatter.getDuration(new Date(1000 * this._model.duration));
-        }
-
-        // Meldet die Freigabe der Sendung.
-        get rating(): string {
-            return (this._model.ratings || []).join(" ");
-        }
-
-        // Meldet die Art der Sendung.
-        get content(): string {
-            return (this._model.categories || []).join(" ");
-        }
-
     }
 }

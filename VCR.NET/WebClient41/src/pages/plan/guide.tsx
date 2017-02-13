@@ -23,6 +23,7 @@ namespace VCRNETClient.Ui {
                 {guide ?
                     <fieldset>
                         <legend>Auszug aus der Programmzeitschrift</legend>
+                        <GuideEntryInfo noui={guide} />
                     </fieldset> :
                     <div>
                         <span>Programmzeitschrift:</span> <span className="vcrnet-optionoff">wird abgerufen</span>
