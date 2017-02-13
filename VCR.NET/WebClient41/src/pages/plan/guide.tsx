@@ -23,6 +23,7 @@ namespace VCRNETClient.Ui {
                 {guide ?
                     <fieldset>
                         <legend>Auszug aus der Programmzeitschrift</legend>
+                        <JMSLib.ReactUi.TimeBar noui={this.props.noui.guideTime} />
                         <GuideEntryInfo noui={guide} />
                     </fieldset> :
                     <div>

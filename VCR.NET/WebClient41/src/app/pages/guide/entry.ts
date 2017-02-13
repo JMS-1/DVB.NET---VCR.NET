@@ -61,9 +61,9 @@
             this.end = new Date(this.start.getTime() + 1000 * model.duration);
         }
 
-        protected readonly start: Date;
+        readonly start: Date;
 
-        protected readonly end: Date;
+        readonly end: Date;
 
         // Startzeit der Sendung.
         get startDisplay(): string {

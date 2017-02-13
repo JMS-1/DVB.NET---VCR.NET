@@ -53,6 +53,9 @@
         // Die am besten passenden Informationen aus der Programmzeitschrift.
         readonly guideItem: Guide.IGuideInfo;
 
+        // Beschreibt die Zeit von Aufzeichung und Eintrag der Programmzeitschrift.
+        readonly guideTime: JMSLib.App.ITimeBar;
+
         // Schaltet die Detailanzeige um.
         toggleDetail(epg: boolean): void;
     }
@@ -189,7 +192,13 @@
                 this.site.refreshUi();
         }
 
-        private _guideItem: Guide.IGuideInfo;
+        private _guideItem: Guide.GuideInfo;
+
+        private _guideTime: JMSLib.App.TimeBar;
+
+        get guideTime(): JMSLib.App.ITimeBar {
+            return this._guideTime;
+        }
 
         get guideItem(): Guide.IGuideInfo {
             if (!this.model.epg || !this.model.epgDevice || !this.model.source)
@@ -200,6 +209,9 @@
 
             VCRServer.getGuideItem(this.model.epgDevice, this.model.source, this.start, this.end).then(item => {
                 this._guideItem = item ? new Guide.GuideInfo(item) : null;
+
+                if (this._guideItem)
+                    this._guideTime = new JMSLib.App.TimeBar(this.start, this.end, this._guideItem.start, this._guideItem.end);
 
                 this.refreshUi();
             });

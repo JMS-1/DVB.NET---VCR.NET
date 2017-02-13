@@ -16,14 +16,12 @@ namespace VCRNETClient.App.Edit {
         constructor(data: any, propTime: string, propDuration: string, text: string, onChange: () => void) {
             super(data, propDuration, text, onChange);
 
-            this.startTime = new JMSLib.App.EditTime(data, propTime, this._onChanged);
+            this.startTime = new JMSLib.App.EditTime(data, propTime, null, () => this.onChanged());
 
             var end = new Date(new Date(this.startTime.value).getTime() + 60000 * this.value);
 
-            this.endTime = new JMSLib.App.EditTime({ time: end.toISOString() }, "time", this._onChanged, undefined, this.checkLimit.bind(this));
+            this.endTime = new JMSLib.App.EditTime({ time: end.toISOString() }, "time", null, () => this.onChanged(), this.checkLimit.bind(this));
         }
-
-        private readonly _onChanged = this.onChanged.bind(this);
 
         private onChanged(): void {
             var start = JMSLib.App.DateFormatter.parseTime(this.startTime.time);

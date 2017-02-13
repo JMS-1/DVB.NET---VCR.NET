@@ -120,6 +120,8 @@
     <TypeScriptCompile Include="src\lib\edit\text\textarea.tsx" />
     <TypeScriptCompile Include="src\lib\http\browser.ts" />
     <TypeScriptCompile Include="src\lib\http\config.ts" />
+    <TypeScriptCompile Include="src\lib\timebar.ts" />
+    <TypeScriptCompile Include="src\lib\timeBar.tsx" />
     <TypeScriptCompile Include="src\pages\admin.tsx" />
     <TypeScriptCompile Include="src\pages\admin\directories.tsx" />
     <TypeScriptCompile Include="src\pages\admin\devices.tsx" />
@@ -193,6 +195,7 @@
     <None Include="src\lib\edit\multiButtonList.scss" />
     <None Include="src\lib\edit\text\textarea.scss" />
     <None Include="src\lib\constants.scss" />
+    <None Include="src\lib\timebar.scss" />
     <Content Include="src\pages\admin\directories.scss" />
     <Content Include="src\pages\admin\guide.scss" />
     <Content Include="src\pages\admin\other.scss" />

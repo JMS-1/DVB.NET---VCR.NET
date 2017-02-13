@@ -1,0 +1,43 @@
+﻿.jmslib-timebar {
+    position: relative;
+    height: 26px;
+    width: 90%;
+
+    > div:first-child {
+        border: 1px solid black;
+        background: lightgray;
+        position: relative;
+        border-left: none;
+        height: 20px;
+        width: 100%;
+        top: 2px;
+        left: 0;
+
+        > div {
+            border-left: 1px solid black;
+            display: inline-block;
+            position: absolute;
+            height: 100%;
+            left: 0;
+            top: 0;
+
+            &.jmslib-timebar-good {
+                background: lime;
+            }
+
+            &.jmslib-timebar-bad {
+                background: yellow;
+            }
+        }
+    }
+
+    > div:last-child {
+        border: 2px solid #666;
+        border-radius: 2px;
+        position: absolute;
+        height: 22px;
+        width: 2px;
+        left: 0;
+        top: 0;
+    }
+}

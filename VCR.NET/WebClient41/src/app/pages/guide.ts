@@ -255,7 +255,7 @@ namespace VCRNETClient.App {
                 // Liste der bekannten Aufträge aktualisieren.
                 var selection = jobs.map(job => JMSLib.App.uiValue(job.id, job.name));
 
-                selection.unshift(JMSLib.App.uiValue(`*`, `(neuen Auftrag anlegen)`));
+                selection.unshift(JMSLib.App.uiValue(``, `(neuen Auftrag anlegen)`));
 
                 this._jobSelector.allowedValues = selection;
                 
@@ -410,7 +410,7 @@ namespace VCRNETClient.App {
             entry.showDetails = !show;
 
             // Oberfläche aktualisieren.
-            this._jobSelector.value = `*`;
+            this._jobSelector.value = ``;
 
             this.refreshUi();
         }
