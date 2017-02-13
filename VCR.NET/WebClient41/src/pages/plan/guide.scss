@@ -1,0 +1,15 @@
+﻿@import "../../../content/vars";
+
+.vcrnet-planguide {
+    > div {
+        font-size: small;
+
+        > span:first-child {
+            font-weight: bold;
+        }
+    }
+
+    .vcrnet-optionoff {
+        text-decoration: line-through;
+    }
+}

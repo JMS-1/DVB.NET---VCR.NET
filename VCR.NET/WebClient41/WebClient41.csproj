@@ -214,6 +214,7 @@
     <None Include="src\pages\jobs.scss" />
     <None Include="src\pages\log.scss" />
     <None Include="src\pages\log\details.scss" />
+    <None Include="src\pages\plan\guide.scss" />
     <Content Include="ui\images\faq\recover.png" />
     <Content Include="ui\images\faq\webserver.png" />
     <Content Include="FAQ\websettings.html" />
@@ -439,6 +440,7 @@
     <TypeScriptCompile Include="src\common\navigation.tsx" />
     <TypeScriptCompile Include="src\lib\command\pictogram.tsx" />
     <TypeScriptCompile Include="src\pages\plan.tsx" />
+    <TypeScriptCompile Include="src\pages\plan\guide.tsx" />
     <TypeScriptCompile Include="src\pages\plan\row.tsx" />
     <TypeScriptCompile Include="src\lib\command\radio.tsx" />
     <TypeScriptCompile Include="src\common\view.tsx" />

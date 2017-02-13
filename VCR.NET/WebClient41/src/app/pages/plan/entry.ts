@@ -1,7 +1,7 @@
 ﻿namespace VCRNETClient.App.Plan {
 
     // Erweiterte Schnittstelle (View Model) zur Anzeige eines Eintrags des Aufzeichnunsplans.
-    export interface IPlanEntry {
+    export interface IPlanEntry extends JMSLib.App.IConnectable {
         // Ein Kürzel für die Qualität der Aufzeichnung, etwa ob dieser verspätet beginnt.
         readonly mode: string;
 
@@ -28,6 +28,21 @@
 
         // Der Name der Aufzeichnung.
         readonly name: string;
+
+        // Gesetzt, wenn alle Tonspuren aufgezeichnet werden sollen.
+        readonly allAudio: boolean;
+
+        // Gesetzt, wenn Dolby Tonspuren aufgezeichnet werden sollen.
+        readonly dolby: boolean;
+
+        // Gesetzt, wenn der Videotext mit aufgezeichnet werden soll.
+        readonly ttx: boolean;
+
+        // Gesetzt, wenn DVB Untertitel mit aufgezeichnet werden sollen.
+        readonly subs: boolean;
+
+        // Gesetzt, wenn DVB Untertitel mit aufgezeichnet werden sollen.
+        readonly guide: boolean;
 
         // Zeigt die Programmzeitschrift an.
         readonly showEpg: boolean;
@@ -90,6 +105,31 @@
             return this.model.name;
         }
 
+        // Gesetzt, wenn alle Tonspuren aufgezeichnet werden sollen.
+        get allAudio(): boolean {
+            return this.model.allAudio;
+        }
+
+        // Gesetzt, wenn Dolby Tonspuren aufgezeichnet werden sollen.
+        get dolby(): boolean {
+            return this.model.ac3;
+        }
+
+        // Gesetzt, wenn der Videotext mit aufgezeichnet werden soll.
+        get ttx(): boolean {
+            return this.model.ttx;
+        }
+
+        // Gesetzt, wenn DVB Untertitel mit aufgezeichnet werden sollen.
+        get subs(): boolean {
+            return this.model.dvbsub;
+        }
+
+        // Gesetzt, wenn DVB Untertitel mit aufgezeichnet werden sollen.
+        get guide(): boolean {
+            return this.model.epg;
+        }
+
         // Der Startzeitpunkt formatiert für die Darstellung.
         get displayStart(): string {
             return JMSLib.App.DateFormatter.getStartTime(this.start);
@@ -137,5 +177,8 @@
         toggleDetail(epg: boolean): void {
             return this._toggleDetail(this, epg);
         }
+
+        // Das zugehörige Oberflächenelement.
+        site: JMSLib.App.ISite;
     }
 }

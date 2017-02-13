@@ -30,7 +30,7 @@ namespace VCRNETClient.Ui {
                                 <PlanRow noui={job} key={index} />,
                                 job.showEpg ?
                                     <JMSLib.ReactUi.DetailRow prefixColumns={1} dataColumns={5} key={`${index}Details`}>
-                                        [EPGINFO]
+                                        <PlanGuide noui={job} page={this.props.noui} />
                                     </JMSLib.ReactUi.DetailRow> : null,
                                 job.showException ?
                                     <JMSLib.ReactUi.DetailRow prefixColumns={1} dataColumns={5} key={`${index}Exceptions`}>
