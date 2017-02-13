@@ -44,29 +44,11 @@ namespace VCRNETClient.Ui {
                     </tbody>
                 </table>
                 <div>
-                    <button onClick={ev => this.onOriginal(ev)}>Ursprüngliche Planung</button>
-                    <button onClick={ev => this.onDisable(ev)}>Nicht aufzeichnen</button>
-                    <button onClick={ev => this.onSave(ev)}>Einstellungen übernehmen</button>
+                    <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.originalTime} />
+                    <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.skip} />
+                    <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.update} />
                 </div>
             </fieldset>;
-        }
-
-        private onOriginal(ev: React.FormEvent): void {
-            ev.preventDefault();
-
-            this.props.noui.setToOriginal();
-        }
-
-        private onDisable(ev: React.FormEvent): void {
-            ev.preventDefault();
-
-            this.props.noui.setToDisable();
-        }
-
-        private onSave(ev: React.FormEvent): void {
-            ev.preventDefault();
-
-            this.props.noui.update();
         }
     }
 }

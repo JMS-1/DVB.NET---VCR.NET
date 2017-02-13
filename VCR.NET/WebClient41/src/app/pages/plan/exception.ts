@@ -21,21 +21,21 @@
         readonly currentDuration: number;
 
         // Verwendet die ursprüngliche Aufzeichnungsdaten.
-        setToOriginal(): void;
+        readonly originalTime: JMSLib.App.ICommand;
 
         // Deaktiviert die Aufzeichnung vollständig.
-        setToDisable(): void;
+        readonly skip: JMSLib.App.ICommand;
 
         // Aktualisiert die Aufzeichnung.
-        update(): void;
+        readonly update: JMSLib.App.ICommand;
     }
 
     // Erweiterte Schnittstelle zur Pflege einer einzelnen Ausnahmeregel.
     export class PlanException implements IPlanException {
         constructor(private model: VCRServer.PlanExceptionContract, private _entryId: string, private _reload: () => void) {
             this._originalStart = new Date(model.originalStart as string);
-            this.startSlider = new JMSLib.App.EditNumberWithSlider(model, "startShift", () => this.refresh(), -480, +480);
-            this.durationSlider = new JMSLib.App.EditNumberWithSlider(model, "timeDelta", () => this.refresh(), -model.originalDuration, +480);
+            this.startSlider = new JMSLib.App.EditNumberWithSlider(model, "startShift", () => this.refreshUi(), -480, +480);
+            this.durationSlider = new JMSLib.App.EditNumberWithSlider(model, "timeDelta", () => this.refreshUi(), -model.originalDuration, +480);
         }
 
         // Der ursprüngliche Startzeitpunkt
@@ -46,6 +46,15 @@
 
         // Der Regler zur Einstellung der Laufzeitveränderung.
         readonly durationSlider: JMSLib.App.EditNumberWithSlider;
+
+        // Befehl zum Zurücksetzen des Aufzeichnungsbereichs of die originalen Werte.
+        readonly originalTime = new JMSLib.App.Command(() => this.setToOriginal(), "Ursprüngliche Planung");
+
+        // Befehl zum Deaktivieren der Aufzeichnung.
+        readonly skip = new JMSLib.App.Command(() => this.setToDisable(), "Nicht aufzeichnen");
+
+        // Befehl zum Abspeichern der Änderungen.
+        readonly update = new JMSLib.App.Command(() => this.save(), "Einstellungen übernehmen");
 
         // Die Darstellung für den Zustand der Ausnahme.
         get exceptionMode(): string {
@@ -77,31 +86,35 @@
 
         // Setzt alles auf den Eingangszustand zurück.
         reset(): void {
+            this.skip.reset();
+            this.update.reset();
+            this.originalTime.reset();
+
             this.startSlider.reset()
             this.durationSlider.reset();
         }
 
         // Verwendet die ursprüngliche Aufzeichnungsdaten.
-        setToOriginal(): void {
+        private setToOriginal(): void {
             this.startSlider.sync(0);
             this.durationSlider.sync(0);
         }
 
         // Deaktiviert die Aufzeichnung vollständig.
-        setToDisable(): void {
+        private setToDisable(): void {
             this.startSlider.sync(0);
             this.durationSlider.sync(-this.model.originalDuration);
         }
 
         // Aktualisiert die Aufzeichnung.
-        update(): void {
+        private save(): void {
             VCRServer.updateException(this._entryId, this.model.referenceDay, this.model.startShift, this.model.timeDelta).then(this._reload);
         }
 
         // Beachrichtigungen einrichten.
         site: JMSLib.App.ISite;
 
-        refresh(): void {
+        refreshUi(): void {
             if (this.site)
                 this.site.refreshUi();
         }
