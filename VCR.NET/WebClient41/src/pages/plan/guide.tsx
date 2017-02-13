@@ -8,6 +8,8 @@ namespace VCRNETClient.Ui {
 
     export class PlanGuide extends JMSLib.ReactUi.ComponentExWithSite<App.Plan.IPlanEntry, IPlanGuide> {
         render(): JSX.Element {
+            var guide = this.props.noui.guideItem;
+
             return <div className="vcrnet-planguide">
                 <div>
                     <span>Aufzeichnungsoptionen:</span>
@@ -18,12 +20,13 @@ namespace VCRNETClient.Ui {
                     , <span className={this.props.noui.subs ? undefined : `vcrnet-optionoff`}>DVB-Untertitel</span>
                     , <span className={this.props.noui.guide ? undefined : `vcrnet-optionoff`}>Programminformationen</span>
                 </div>
-                <div>
-                    <span>Programmzeitschrift:</span> <span className="vcrnet-optionoff">wird abgerufen</span>
-                </div>
-                <fieldset>
-                    <legend>Auszug aus der Programmzeitschrift</legend>
-                </fieldset>
+                {guide ?
+                    <fieldset>
+                        <legend>Auszug aus der Programmzeitschrift</legend>
+                    </fieldset> :
+                    <div>
+                        <span>Programmzeitschrift:</span> <span className="vcrnet-optionoff">wird abgerufen</span>
+                    </div>}
             </div>;
         }
     }

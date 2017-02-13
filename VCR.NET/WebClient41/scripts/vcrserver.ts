@@ -761,11 +761,8 @@ module VCRServer {
         return doUrlCall('info?directories');
     }
 
-    export function getGuideItem(device: string, source: string, start: Date, end: Date): JQueryPromise<GuideItemContract> {
-        return $.ajax({
-            url: restRoot + 'guide?profile=' + encodeURIComponent(device) + '&source=' + source + '&pattern=' + start.getTime() + '-' + end.getTime(),
-            dataType: 'json',
-        });
+    export function getGuideItem(device: string, source: string, start: Date, end: Date): JMSLib.App.IHttpPromise<GuideItemContract> {
+        return doUrlCall(`guide?profile=${encodeURIComponent(device)}&source=${source}&pattern=${start.getTime()}-${end.getTime()}`);
     }
 
     export function updateException(legacyId: string, referenceDay: string, startDelta: number, durationDelta: number): JMSLib.App.IHttpPromise<void> {

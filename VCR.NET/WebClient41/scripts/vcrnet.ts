@@ -1044,7 +1044,7 @@ class GuideItemCache {
     request(device: string, source: string, start: Date, end: Date, dataAvailable: (data: GuideItem) => void): void {
         // Haben wir schon
         if (this.guideItem == undefined)
-            VCRServer.getGuideItem(device, source, start, end).done((rawData: VCRServer.GuideItemContract) => {
+            VCRServer.getGuideItem(device, source, start, end).then(rawData => {
                 if (rawData == null)
                     this.guideItem = null;
                 else

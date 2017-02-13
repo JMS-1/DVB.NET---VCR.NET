@@ -50,6 +50,9 @@
         // Zeigt die Pflege der Ausnahmeregel an.
         readonly showException: boolean;
 
+        // Die am besten passenden Informationen aus der Programmzeitschrift.
+        readonly guideItem: VCRServer.GuideItemContract;
+
         // Schaltet die Detailanzeige um.
         toggleDetail(epg: boolean): void;
     }
@@ -180,5 +183,28 @@
 
         // Das zugehörige Oberflächenelement.
         site: JMSLib.App.ISite;
+
+        private refreshUi(): void {
+            if (this.site)
+                this.site.refreshUi();
+        }
+
+        private _guideItem: VCRServer.GuideItemContract;
+
+        get guideItem(): VCRServer.GuideItemContract {
+            if (!this.model.epg || !this.model.epgDevice || !this.model.source)
+                return null;
+
+            if (this._guideItem !== undefined)
+                return this._guideItem;
+
+            VCRServer.getGuideItem(this.model.epgDevice, this.model.source, this.start, this.end).then(item => {
+                this._guideItem = item;
+
+                this.refreshUi();
+            });
+
+            return null;
+        }
     }
 }
