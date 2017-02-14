@@ -13,6 +13,7 @@ namespace VCRNETClient.Ui {
                 [page.application.helpPage.route]: Help,
                 [page.application.guidePage.route]: Guide,
                 [page.application.adminPage.route]: Admin,
+                [page.application.settingsPage.route]: Settings,
             };
         }
     }

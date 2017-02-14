@@ -113,6 +113,7 @@
     <TypeScriptCompile Include="src\app\pages\jobs.ts" />
     <TypeScriptCompile Include="src\app\pages\log.ts" />
     <TypeScriptCompile Include="src\app\pages\log\entry.ts" />
+    <TypeScriptCompile Include="src\app\pages\settings.ts" />
     <TypeScriptCompile Include="src\lib\edit\multiButtonList.tsx" />
     <TypeScriptCompile Include="src\lib\edit\multiList.ts" />
     <TypeScriptCompile Include="src\lib\edit\multiList.tsx" />
@@ -220,6 +221,7 @@
     <None Include="src\pages\log\details.scss" />
     <None Include="src\pages\plan\guide.scss" />
     <None Include="src\pages\guide\info.scss" />
+    <None Include="src\pages\settings.scss" />
     <Content Include="ui\images\faq\recover.png" />
     <Content Include="ui\images\faq\webserver.png" />
     <Content Include="FAQ\websettings.html" />
@@ -449,6 +451,7 @@
     <TypeScriptCompile Include="src\pages\plan\row.tsx" />
     <TypeScriptCompile Include="src\lib\command\radio.tsx" />
     <TypeScriptCompile Include="src\common\view.tsx" />
+    <TypeScriptCompile Include="src\pages\settings.tsx" />
     <TypeScriptCompile Include="src\vcrnet.tsx" />
   </ItemGroup>
   <ItemGroup>
