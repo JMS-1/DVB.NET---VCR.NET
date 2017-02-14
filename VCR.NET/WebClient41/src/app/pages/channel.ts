@@ -227,7 +227,7 @@ namespace VCRNETClient.App {
 
         // Ermittelt die Liste der relevanten Quellen neu.
         private refreshFilter(): void {
-            // Alle Quellen bezürglich der aktiven Filter untersuchen.
+            // Alle Quellen bezüglich der aktiven Filter untersuchen.
             this.sourceNames = this._sources.filter(s => {
                 if (!this.applyEncryptionFilter(s))
                     return false;

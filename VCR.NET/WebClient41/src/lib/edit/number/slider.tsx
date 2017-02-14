@@ -3,7 +3,7 @@
 namespace JMSLib.ReactUi {
 
     // React.Js Komponente zur Auswahl einer Zahl über einen Schieberegler.
-    export class EditNumberWithSlider extends ComponentWithSite<App.IEditNumberWithSlider>  {
+    export class EditNumberWithSlider extends ComponentWithSite<App.INumberWithSlider>  {
         // Erstellt die Oberflächenelement - hier gibt es eine ganze Menge Kleinigkeiten im CSS zu beachten, esp. die Positionierung.
         render(): JSX.Element {
             return <div className="jmslib-slider">

@@ -45,10 +45,10 @@ namespace VCRNETClient.App {
         readonly hours: JMSLib.App.IValueFromList<number>;
 
         // Der aktuelle Text zur Suche in allen Einträgen der Programmzeitschrift.
-        readonly queryString: JMSLib.App.IEditString;
+        readonly queryString: JMSLib.App.IString;
 
         // Gesetzt, wenn auch in der Beschreibung gesucht werden soll.
-        readonly withContent: JMSLib.App.IEditFlag;
+        readonly withContent: JMSLib.App.IFlag;
 
         // Befhel zum Zurücksetzen aller Einschränkungen.
         readonly resetFilter: JMSLib.App.ICommand;
@@ -123,13 +123,13 @@ namespace VCRNETClient.App {
         private _query = ``;
 
         // Schnittstelle zur Pflege der Freitextsuchbedingung.
-        readonly queryString = new JMSLib.App.EditString(this, `_query`, `Suche nach`, () => this.delayedQuery(), false);
+        readonly queryString = new JMSLib.App.String(this, `_query`, `Suche nach`, () => this.delayedQuery(), false);
 
         // Gesetzt, wenn auch eine Suche auf die Beschreibung erfolgen soll.
         private _withContent = true;
 
         // Schnittstelle zur Pflege der Auswahl der Freitextsuche auf die Beschreibung.
-        readonly withContent = new JMSLib.App.EditFlag(this, `_withContent`, `Auch in Beschreibung suchen`, () => this.query());
+        readonly withContent = new JMSLib.App.Flag(this, `_withContent`, `Auch in Beschreibung suchen`, () => this.query());
 
         // Aktuelle Anmeldung für verzögerte Suchanfragen.
         private _timeout: number;

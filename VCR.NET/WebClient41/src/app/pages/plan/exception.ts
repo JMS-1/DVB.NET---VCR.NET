@@ -3,10 +3,10 @@
     // Erweiterte Schnittstelle zur Pflege einer einzelnen Ausnahmeregel.
     export interface IPlanException extends JMSLib.App.IConnectable {
         // Der Regler zur Einstellung der Startzeitverschiebung.
-        readonly startSlider: JMSLib.App.IEditNumberWithSlider;
+        readonly startSlider: JMSLib.App.INumberWithSlider;
 
         // Der Regler zur Einstellung der Laufzeitveränderung.
-        readonly durationSlider: JMSLib.App.IEditNumberWithSlider;
+        readonly durationSlider: JMSLib.App.INumberWithSlider;
 
         // Die Darstellung für den Zustand der Ausnahme.
         readonly exceptionMode: string;
@@ -34,18 +34,18 @@
     export class PlanException implements IPlanException {
         constructor(private model: VCRServer.PlanExceptionContract, private _entryId: string, private _reload: () => void) {
             this._originalStart = new Date(model.originalStart as string);
-            this.startSlider = new JMSLib.App.EditNumberWithSlider(model, "startShift", () => this.refreshUi(), -480, +480);
-            this.durationSlider = new JMSLib.App.EditNumberWithSlider(model, "timeDelta", () => this.refreshUi(), -model.originalDuration, +480);
+            this.startSlider = new JMSLib.App.NumberWithSlider(model, "startShift", () => this.refreshUi(), -480, +480);
+            this.durationSlider = new JMSLib.App.NumberWithSlider(model, "timeDelta", () => this.refreshUi(), -model.originalDuration, +480);
         }
 
         // Der ursprüngliche Startzeitpunkt
         private _originalStart: Date;
 
         // Der Regler zur Einstellung der Startzeitverschiebung.
-        readonly startSlider: JMSLib.App.EditNumberWithSlider;
+        readonly startSlider: JMSLib.App.NumberWithSlider;
 
         // Der Regler zur Einstellung der Laufzeitveränderung.
-        readonly durationSlider: JMSLib.App.EditNumberWithSlider;
+        readonly durationSlider: JMSLib.App.NumberWithSlider;
 
         // Befehl zum Zurücksetzen des Aufzeichnungsbereichs of die originalen Werte.
         readonly originalTime = new JMSLib.App.Command(() => this.setToOriginal(), "Ursprüngliche Planung");

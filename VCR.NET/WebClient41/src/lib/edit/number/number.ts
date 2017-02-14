@@ -3,13 +3,13 @@
 namespace JMSLib.App {
 
     // Beschreibt eine Eigenschaft mit einer Zahl.
-    export interface IEditNumber extends IProperty<number> {
+    export interface INumber extends IProperty<number> {
         // Falls die Eingabe über einen Text erfolgt wird diese Eigenschaft zur Pflege verwendet.
         rawValue: string;
     }
 
     // Verwaltet eine Eigenschaft mit einer (ganzen) Zahl (mit maximal 6 Ziffern - ohne führende Nullen).
-    export class EditNumber extends Property<number> implements IEditNumber {
+    export class Number extends Property<number> implements INumber {
         // Erlaubt sind beliebige Sequenzen von Nullen oder maximal 6 Ziffern - mit einer beliebigen Anzahl von führenden Nullen.
         private static readonly _positiveNumber = /^(0+|(0*[1-9][0-9]{0,5}))$/;
 
@@ -41,7 +41,7 @@ namespace JMSLib.App {
             }
 
             // Eine (nach unseren Regeln) gültige Zahl.
-            else if (EditNumber._positiveNumber.test(test)) {
+            else if (Number._positiveNumber.test(test)) {
                 this._rawInput = undefined;
                 this.value = parseInt(test);
             }

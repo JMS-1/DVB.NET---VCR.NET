@@ -5,33 +5,33 @@ namespace VCRNETClient.App.Admin {
     export interface IDevice {
         readonly name: string;
 
-        readonly active: JMSLib.App.IEditFlag;
+        readonly active: JMSLib.App.IFlag;
 
-        readonly priority: JMSLib.App.IEditNumber;
+        readonly priority: JMSLib.App.INumber;
 
-        readonly decryption: JMSLib.App.IEditNumber;
+        readonly decryption: JMSLib.App.INumber;
 
-        readonly sources: JMSLib.App.IEditNumber;
+        readonly sources: JMSLib.App.INumber;
     }
 
     export class Device implements IDevice {
 
         readonly name: string;
 
-        readonly active: JMSLib.App.EditFlag;
+        readonly active: JMSLib.App.Flag;
 
-        readonly priority: JMSLib.App.EditNumber;
+        readonly priority: JMSLib.App.Number;
 
-        readonly decryption: JMSLib.App.EditNumber;
+        readonly decryption: JMSLib.App.Number;
 
-        readonly sources: JMSLib.App.EditNumber;
+        readonly sources: JMSLib.App.Number;
 
         constructor(profile: VCRServer.ProfileContract, onChange: () => void) {
             this.name = profile.name;
-            this.active = new JMSLib.App.EditFlag(profile, "active", null, onChange);
-            this.priority = new JMSLib.App.EditNumber(profile, "priority", null, null, true, 0, 100);
-            this.decryption = new JMSLib.App.EditNumber(profile, "ciLimit", null, null, true, 0, 16);
-            this.sources = new JMSLib.App.EditNumber(profile, "sourceLimit", null, null, true, 1, 32);
+            this.active = new JMSLib.App.Flag(profile, "active", null, onChange);
+            this.priority = new JMSLib.App.Number(profile, "priority", null, null, true, 0, 100);
+            this.decryption = new JMSLib.App.Number(profile, "ciLimit", null, null, true, 0, 16);
+            this.sources = new JMSLib.App.Number(profile, "sourceLimit", null, null, true, 1, 32);
         }
 
         validate(defaultDevice: string): void {

@@ -3,12 +3,12 @@
 namespace VCRNETClient.App.Admin {
 
     export interface IAdminRulesPage extends ISection {
-        readonly rules: JMSLib.App.IEditString;
+        readonly rules: JMSLib.App.IString;
     }
 
     export class RulesSection extends Section<VCRServer.SchedulerRulesContract> implements IAdminRulesPage {
 
-        readonly rules = new JMSLib.App.EditString({}, "rules", null, null, false);
+        readonly rules = new JMSLib.App.String({}, "rules", null, null, false);
 
         protected loadAsync(): void {
             VCRServer.getSchedulerRules().then(settings => this.initialize(settings));

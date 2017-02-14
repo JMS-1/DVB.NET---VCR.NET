@@ -643,16 +643,11 @@ module VCRServer {
     }
 
     export function getUserProfile(): JMSLib.App.IHttpPromise<UserProfileContract> {
-        return doUrlCall('userprofile');
+        return doUrlCall(`userprofile`);
     }
 
-    export function setUserProfile(profile: UserProfileContract): JQueryPromise<any> {
-        return $.ajax({
-            contentType: 'application/json',
-            url: restRoot + 'userprofile',
-            data: JSON.stringify(profile),
-            type: 'PUT'
-        });
+    export function setUserProfile(profile: UserProfileContract): JMSLib.App.IHttpPromise<UserProfileContract> {
+        return doUrlCall(`userprofile`, `PUT`, profile);
     }
 
     export function updateSearchQueries(queries: string): JQueryPromise<any> {
@@ -1106,8 +1101,7 @@ module VCRServer {
         // Sendet die aktuelle Konfiguration an den Web Service.
         update(onError: (message: string) => void): void {
             setUserProfile(this.toContract())
-                .done((data: UserProfileContract) => { UserProfile.global.loadFrom(data); window.location.hash = 'home'; })
-                .fail(JMSLib.dispatchErrorMessage(onError));
+                .then(data => { UserProfile.global.loadFrom(data); window.location.hash = 'home'; }, JMSLib.dispatchErrorMessage(onError));
         }
 
         // Die einzige Instanz der Einstellungen.

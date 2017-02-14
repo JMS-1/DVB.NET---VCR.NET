@@ -7,7 +7,7 @@ namespace VCRNETClient.App.Admin {
         // Die aktuelle Liste der Aufzeichnungsverzeichnisse.
         readonly directories: JMSLib.App.IMultiValueFromList<string>;
 
-        readonly share: JMSLib.App.IEditString;
+        readonly share: JMSLib.App.IString;
 
         readonly showBrowse: boolean;
 
@@ -19,18 +19,18 @@ namespace VCRNETClient.App.Admin {
 
         readonly remove: JMSLib.App.ICommand;
 
-        readonly pattern: JMSLib.App.IEditString;
+        readonly pattern: JMSLib.App.IString;
     }
 
     export class DirectoriesSection extends Section<VCRServer.DirectorySettingsContract> implements IAdminDirectoriesPage {
 
         readonly directories = new JMSLib.App.SelectMultipleFromList<string>({}, "value", null, () => this.refreshUi());
 
-        readonly pattern = new JMSLib.App.EditString({}, "pattern", "Muster für Dateinamen", () => this.refreshUi(), true);
+        readonly pattern = new JMSLib.App.String({}, "pattern", "Muster für Dateinamen", () => this.refreshUi(), true);
 
         readonly remove = new JMSLib.App.Command(() => this.removeDirectories(), "Verzeichnisse entfernen", () => this.directories.value.length > 0);
 
-        readonly share = new JMSLib.App.EditString({}, "value", "Netzwerk-Share", () => this.onShareChanged());
+        readonly share = new JMSLib.App.String({}, "value", "Netzwerk-Share", () => this.onShareChanged());
 
         get showBrowse(): boolean {
             return (this.share.value || "").trim().length < 1;

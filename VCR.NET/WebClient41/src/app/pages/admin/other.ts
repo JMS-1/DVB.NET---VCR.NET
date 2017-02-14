@@ -12,27 +12,27 @@ namespace VCRNETClient.App.Admin {
     }
 
     export interface IAdminOtherPage extends ISection {
-        readonly port: JMSLib.App.IEditNumber;
+        readonly port: JMSLib.App.INumber;
 
-        readonly ssl: JMSLib.App.IEditFlag;
+        readonly ssl: JMSLib.App.IFlag;
 
-        readonly securePort: JMSLib.App.IEditNumber;
+        readonly securePort: JMSLib.App.INumber;
 
-        readonly basicAuth: JMSLib.App.IEditFlag;
+        readonly basicAuth: JMSLib.App.IFlag;
 
-        readonly preSleep: JMSLib.App.IEditNumber;
+        readonly preSleep: JMSLib.App.INumber;
 
-        readonly minSleep: JMSLib.App.IEditNumber;
+        readonly minSleep: JMSLib.App.INumber;
 
-        readonly ignoreMinSleep: JMSLib.App.IEditFlag;
+        readonly ignoreMinSleep: JMSLib.App.IFlag;
 
-        readonly logKeep: JMSLib.App.IEditNumber;
+        readonly logKeep: JMSLib.App.INumber;
 
-        readonly jobKeep: JMSLib.App.IEditNumber;
+        readonly jobKeep: JMSLib.App.INumber;
 
-        readonly noH264PCR: JMSLib.App.IEditFlag;
+        readonly noH264PCR: JMSLib.App.IFlag;
 
-        readonly noMPEG2PCR: JMSLib.App.IEditFlag;
+        readonly noMPEG2PCR: JMSLib.App.IFlag;
 
         readonly hibernation: JMSLib.App.IValueFromList<HibernationMode>;
 
@@ -54,27 +54,27 @@ namespace VCRNETClient.App.Admin {
             JMSLib.App.uiValue(HibernationMode.hibernate, "Hibernate (S4)"),
         ];
 
-        readonly port = new JMSLib.App.EditNumber({}, "webPort", "TCP/IP Port für den Web Server", () => this.refreshUi(), true, 1, 0xffff);
+        readonly port = new JMSLib.App.Number({}, "webPort", "TCP/IP Port für den Web Server", () => this.refreshUi(), true, 1, 0xffff);
 
-        readonly ssl = new JMSLib.App.EditFlag({}, "ssl", "Sichere Verbindung zusätzlich anbieten", null);
+        readonly ssl = new JMSLib.App.Flag({}, "ssl", "Sichere Verbindung zusätzlich anbieten", null);
 
-        readonly securePort = new JMSLib.App.EditNumber({}, "sslPort", "TCP/IP Port für den sicheren Zugang", () => this.refreshUi(), true, 1, 0xffff);
+        readonly securePort = new JMSLib.App.Number({}, "sslPort", "TCP/IP Port für den sicheren Zugang", () => this.refreshUi(), true, 1, 0xffff);
 
-        readonly basicAuth = new JMSLib.App.EditFlag({}, "basicAuth", "Benutzererkennung über Basic (RFC 2617) zusätzlich erlauben (nicht empfohlen)", null);
+        readonly basicAuth = new JMSLib.App.Flag({}, "basicAuth", "Benutzererkennung über Basic (RFC 2617) zusätzlich erlauben (nicht empfohlen)", null);
 
-        readonly preSleep = new JMSLib.App.EditNumber({}, "hibernationDelay", "Vorlaufzeit für das Aufwachen aus dem Schlafzustand in Sekunden", () => this.refreshUi(), true, 0, 600);
+        readonly preSleep = new JMSLib.App.Number({}, "hibernationDelay", "Vorlaufzeit für das Aufwachen aus dem Schlafzustand in Sekunden", () => this.refreshUi(), true, 0, 600);
 
-        readonly minSleep = new JMSLib.App.EditNumber({}, "forcedHibernationDelay", "Minimale Pause nach einem erzwungenen Schlafzustand in Minuten", () => this.refreshUi(), true, 5, 60);
+        readonly minSleep = new JMSLib.App.Number({}, "forcedHibernationDelay", "Minimale Pause nach einem erzwungenen Schlafzustand in Minuten", () => this.refreshUi(), true, 5, 60);
 
-        readonly ignoreMinSleep = new JMSLib.App.EditFlag({}, "suppressHibernationDelay", "Pause für erzwungenen Schlafzustand ignorieren", null);
+        readonly ignoreMinSleep = new JMSLib.App.Flag({}, "suppressHibernationDelay", "Pause für erzwungenen Schlafzustand ignorieren", null);
 
-        readonly logKeep = new JMSLib.App.EditNumber({}, "protocol", "Aufbewahrungsdauer für Protokolle in Wochen", () => this.refreshUi(), true, 1, 13);
+        readonly logKeep = new JMSLib.App.Number({}, "protocol", "Aufbewahrungsdauer für Protokolle in Wochen", () => this.refreshUi(), true, 1, 13);
 
-        readonly jobKeep = new JMSLib.App.EditNumber({}, "archive", "Aufbewahrungsdauer von archivierten Aufzeichnungen in Wochen", () => this.refreshUi(), true, 1, 13);
+        readonly jobKeep = new JMSLib.App.Number({}, "archive", "Aufbewahrungsdauer von archivierten Aufzeichnungen in Wochen", () => this.refreshUi(), true, 1, 13);
 
-        readonly noH264PCR = new JMSLib.App.EditFlag({}, "noH264PCR", "Systemzeit (PCR) in Aufzeichnungsdateien nicht aus einem H.264 Bildsignal ableiten", null);
+        readonly noH264PCR = new JMSLib.App.Flag({}, "noH264PCR", "Systemzeit (PCR) in Aufzeichnungsdateien nicht aus einem H.264 Bildsignal ableiten", null);
 
-        readonly noMPEG2PCR = new JMSLib.App.EditFlag({}, "noMPEG2PCR", "Systemzeit (PCR) in Aufzeichnungsdateien nicht aus einem MPEG2 Bildsignal ableiten", null);
+        readonly noMPEG2PCR = new JMSLib.App.Flag({}, "noMPEG2PCR", "Systemzeit (PCR) in Aufzeichnungsdateien nicht aus einem MPEG2 Bildsignal ableiten", null);
 
         readonly hibernation = new JMSLib.App.SelectSingleFromList<HibernationMode>({ value: null }, "value", "Art des von VCR.NET ausgelösten Schlafzustands", null, false, OtherSection._hibernation);
 

@@ -7,11 +7,11 @@ namespace VCRNETClient.App {
 
         readonly startDay: JMSLib.App.IValueFromList<string>;
 
-        readonly showGuide: JMSLib.App.IEditFlag;
+        readonly showGuide: JMSLib.App.IFlag;
 
-        readonly showScan: JMSLib.App.IEditFlag;
+        readonly showScan: JMSLib.App.IFlag;
 
-        readonly showLive: JMSLib.App.IEditFlag;
+        readonly showLive: JMSLib.App.IFlag;
 
         readonly entries: Log.ILogEntry[];
     }
@@ -20,11 +20,11 @@ namespace VCRNETClient.App {
 
         readonly profiles = new JMSLib.App.SelectSingleFromList<string>({}, "value", "Protokollbereich", () => this.load(), false, []);
 
-        readonly showGuide = new JMSLib.App.EditFlag({}, "value", "Programmzeitschrift", () => this.refreshUi());
+        readonly showGuide = new JMSLib.App.Flag({}, "value", "Programmzeitschrift", () => this.refreshUi());
 
-        readonly showScan = new JMSLib.App.EditFlag({}, "value", "Sendersuchlauf", () => this.refreshUi());
+        readonly showScan = new JMSLib.App.Flag({}, "value", "Sendersuchlauf", () => this.refreshUi());
 
-        readonly showLive = new JMSLib.App.EditFlag({}, "value", "Zapping", () => this.refreshUi());
+        readonly showLive = new JMSLib.App.Flag({}, "value", "Zapping", () => this.refreshUi());
 
         private _startDay: string;
 

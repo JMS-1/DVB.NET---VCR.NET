@@ -2,7 +2,7 @@
 
 namespace JMSLib.ReactUi {
     // React.Js Komponente zur Pflege eines Wahrheitswertes über eine CHECKBOX.
-    export class CheckBoxCommand extends Component<App.IEditFlag>{
+    export class CheckBoxCommand extends Component<App.IFlag>{
         // Erzeugt die Oberflächenelemente.
         render(): JSX.Element {
             return <label className="jmslib-checkbox jmslib-toggleButton" data-jmslib-checked={this.props.noui.value ? "yes" : null}>

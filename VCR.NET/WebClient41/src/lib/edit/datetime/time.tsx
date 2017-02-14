@@ -2,7 +2,7 @@
 
 namespace JMSLib.ReactUi {
 
-    export class EditTime extends ComponentWithSite<App.IEditTime> {
+    export class EditTime extends ComponentWithSite<App.ITime> {
         render(): JSX.Element {
             return <input className="jmslib-edittime"
                 type="TEXT"

@@ -3,11 +3,11 @@
 namespace JMSLib.App {
 
     // Schnittstelle zur Pflege einer Eigenschaft mit einem Wahrheitswert.
-    export interface IEditFlag extends IProperty<boolean> {
+    export interface IFlag extends IProperty<boolean> {
     }
 
     // Verwaltet den Wahrheitswert in einer Eigenschaft - hier können wir uns vollständig auf die Implementierung der Basisklasse verlassen.
-    export class EditFlag extends Property<boolean> implements IEditFlag {
+    export class Flag extends Property<boolean> implements IFlag {
         // Legt eine neue Verwaltung an.
         constructor(data?: any, prop?: string, name?: string, onChange?: () => void, testReadOnly?: () => boolean) {
             super(data, prop, name, onChange, false, testReadOnly);
@@ -15,12 +15,12 @@ namespace JMSLib.App {
     }
 
     // Verwaltet ein Bitfeld von Wahrheitswerten in einer Eigenschaft mit einer Zahl als Wert.
-    export class EditFlagSet implements IEditFlag {
+    export class FlagSet implements IFlag {
         // Prüfungen werden hierbei nicht individuell unterstützt.
         readonly message = "";
 
         // Erstelle eine Verwaltungsinstanz auf Basis der Verwaltung der elementaren Zahl.
-        constructor(private _mask: number, private readonly _flags: EditNumber, public text: string) {
+        constructor(private _mask: number, private readonly _flags: Number, public text: string) {
         }
 
         // Das zugehörige Oberflächenelement.

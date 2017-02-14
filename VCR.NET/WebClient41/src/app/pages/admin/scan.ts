@@ -18,15 +18,15 @@ namespace VCRNETClient.App.Admin {
 
         readonly configureAutomatic: boolean;
 
-        readonly duration: JMSLib.App.IEditNumber;
+        readonly duration: JMSLib.App.INumber;
 
         readonly hours: JMSLib.App.IMultiValueFromList<number>;
 
-        readonly merge: JMSLib.App.IEditFlag;
+        readonly merge: JMSLib.App.IFlag;
 
-        readonly gapDays: JMSLib.App.IEditNumber;
+        readonly gapDays: JMSLib.App.INumber;
 
-        readonly latency: JMSLib.App.IEditNumber;
+        readonly latency: JMSLib.App.INumber;
     }
 
     export class ScanSection extends Section<VCRServer.SourceScanSettingsContract> implements IAdminScanPage {
@@ -47,13 +47,13 @@ namespace VCRNETClient.App.Admin {
 
         readonly hours = new JMSLib.App.SelectMultipleFromList<number>({}, "hours", "Uhrzeiten", null, AdminPage.hoursOfDay);
 
-        readonly duration = new JMSLib.App.EditNumber({}, "duration", "Maximale Laufzeit für einen Sendersuchlauf in Minuten", () => this.refreshUi(), true, 5, 55);
+        readonly duration = new JMSLib.App.Number({}, "duration", "Maximale Laufzeit für einen Sendersuchlauf in Minuten", () => this.refreshUi(), true, 5, 55);
 
-        readonly merge = new JMSLib.App.EditFlag({}, "merge", "Senderliste nach dem Suchlauf mit der vorherigen zusammenführen (empfohlen)", null);
+        readonly merge = new JMSLib.App.Flag({}, "merge", "Senderliste nach dem Suchlauf mit der vorherigen zusammenführen (empfohlen)", null);
 
-        readonly gapDays = new JMSLib.App.EditNumber({}, "interval", "Minimale Anzahl von Tagen zwischen zwei Suchläufen", () => this.refreshUi(), true, 1, 28);
+        readonly gapDays = new JMSLib.App.Number({}, "interval", "Minimale Anzahl von Tagen zwischen zwei Suchläufen", () => this.refreshUi(), true, 1, 28);
 
-        readonly latency = new JMSLib.App.EditNumber({}, "joinDays", "Latenzzeit für vorgezogene Aktualisierungen in Tagen (optional)", () => this.refreshUi(), false, 1, 14);
+        readonly latency = new JMSLib.App.Number({}, "joinDays", "Latenzzeit für vorgezogene Aktualisierungen in Tagen (optional)", () => this.refreshUi(), false, 1, 14);
 
         get showConfiguration(): boolean {
             return this.mode.value !== ScanConfigMode.disabled;

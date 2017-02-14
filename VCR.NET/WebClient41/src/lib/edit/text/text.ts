@@ -3,11 +3,11 @@
 namespace JMSLib.App {
 
     // Beschreibt eine Eigenschaft der Art Zeichenkette mit Prüfergebnissen.
-    export interface IEditString extends IProperty<string> {
+    export interface IString extends IProperty<string> {
     }
 
     // Verwaltet eine Eigenschaft der Art Zeichenkette.
-    export class EditString extends Property<string> implements IEditString {
+    export class String extends Property<string> implements IString {
 
         // Legt eine neue Verwaltung an.
         constructor(data: any, prop: string, name: string, onChange: () => void, isRequired?: boolean, private _message?: string) {

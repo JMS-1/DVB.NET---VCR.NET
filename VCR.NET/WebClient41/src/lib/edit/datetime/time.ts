@@ -2,13 +2,13 @@
 
 namespace JMSLib.App {
 
-    export interface IEditTime extends IConnectable {
+    export interface ITime extends IConnectable {
         time: string;
 
         readonly error: string;
     }
 
-    export class EditTime extends Property<string> implements IEditTime {
+    export class Time extends Property<string> implements ITime {
         private _time: string;
 
         protected onSiteChanged(): void {

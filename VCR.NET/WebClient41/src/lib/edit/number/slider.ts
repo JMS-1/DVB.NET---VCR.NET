@@ -3,7 +3,7 @@
 namespace JMSLib.App {
 
     // Steuert die Pflege einer Zahl über einen Schieberegler.
-    export interface IEditNumberWithSlider extends IConnectable {
+    export interface INumberWithSlider extends IConnectable {
         // Meldet oder ändert die relative (0..1) Position des Reglers.
         position: number;
 
@@ -18,7 +18,7 @@ namespace JMSLib.App {
     }
 
     // Steuerung für einen Schieberegeler für die Auswahl eines Wertes.
-    export class EditNumberWithSlider extends Property<number> implements IEditNumberWithSlider {
+    export class NumberWithSlider extends Property<number> implements INumberWithSlider {
         // Die aktuelle relative (0..1) Position des Reglers.
         private _position = 0;
 
