@@ -618,6 +618,26 @@ module VCRServer {
         schedule: EditScheduleContract;
     }
 
+    export interface SavedGuideQueryContract {
+        // Das zu berücksichtigende Gerät
+        device: string;
+
+        // Optional die Quelle
+        source: string;
+
+        // Der Text zur Suche in der üblichen Notation mit der Suchart als erstem Zeichen
+        text: string;
+
+        // Gesetzt, wenn nur im Titel gesucht werden soll
+        titleOnly: boolean;
+
+        // Die Art der zu berücksichtigenden Quelle
+        sourceType: VCRServer.GuideSource;
+
+        // Die Art der Verschlüsselung
+        encryption: VCRServer.GuideEncryption;
+    }
+
     export function getRestRoot(): string {
         return restRoot;
     }
@@ -650,13 +670,8 @@ module VCRServer {
         return doUrlCall(`userprofile`, `PUT`, profile);
     }
 
-    export function updateSearchQueries(queries: string): JQueryPromise<any> {
-        return $.ajax({
-            url: restRoot + 'userprofile?favorites',
-            contentType: 'text/plain',
-            data: queries,
-            type: 'PUT'
-        });
+    export function updateSearchQueries(queries: SavedGuideQueryContract[]): JMSLib.App.IHttpPromise<void> {
+        return doUrlCall<void, SavedGuideQueryContract[]>(`userprofile?favorites`, `PUT`, queries);
     }
 
     export function getPlanCurrent(): JMSLib.App.IHttpPromise<PlanCurrentContract[]> {
@@ -740,16 +755,11 @@ module VCRServer {
     }
 
     export function queryProgramGuide(filter: GuideFilterContract): JMSLib.App.IHttpPromise<GuideItemContract[]> {
-        return doUrlCall("guide", "POST", filter);
+        return doUrlCall("guide", `POST`, filter);
     }
 
-    export function countProgramGuide(filter: GuideFilterContract, protocolFilter: (key: string, value: any) => any): JQueryPromise<any> {
-        return $.ajax({
-            data: JSON.stringify(filter, protocolFilter),
-            url: restRoot + 'guide?countOnly',
-            contentType: 'application/json',
-            type: 'POST',
-        });
+    export function countProgramGuide(filter: GuideFilterContract): JMSLib.App.IHttpPromise<number> {
+        return doUrlCall(`guide?countOnly`, `POST`, filter);
     }
 
     export function getRecordingDirectories(): JMSLib.App.IHttpPromise<string[]> {
@@ -776,12 +786,8 @@ module VCRServer {
         return doUrlCall(`configuration?browse&toParent=${!children}&root=${encodeURIComponent(root)}`);
     }
 
-    export function deleteSchedule(jobId: string, scheduleId: string): JQueryPromise<any> {
-        return $.ajax({
-            url: restRoot + 'edit/' + jobId + scheduleId,
-            contentType: 'application/json',
-            type: 'DELETE',
-        });
+    export function deleteSchedule(jobId: string, scheduleId: string): JMSLib.App.IHttpPromise<void> {
+        return doUrlCall<void, void>(`edit/${jobId}${scheduleId}`, `DELETE`);
     }
 
     export function updateEndTime(device: string, suppressHibernate: boolean, scheduleIdentifier: string, newEnd: Date): JQueryPromise<any> {

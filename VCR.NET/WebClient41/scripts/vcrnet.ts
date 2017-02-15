@@ -249,7 +249,7 @@ class SavedGuideQueries {
 
     // Aktualisiert die gespeicherten Suchen
     static save() {
-        VCRServer.updateSearchQueries(JSON.stringify(SavedGuideQueries.queries, SavedGuideQuery.filterProperties));
+        VCRServer.updateSearchQueries(SavedGuideQueries.queries);
     }
 }
 
@@ -435,7 +435,7 @@ class GuideFilter implements VCRServer.GuideFilterContract {
         this.cancelTimeout();
 
         VCRServer.queryProgramGuide(this).then(data => {
-            var items = $.map(data, (rawData: VCRServer.GuideItemContract) => new GuideItem(rawData));
+            var items = $.map(data, rawData => new GuideItem(rawData));
 
             // Wir erhalten immer einen Eintrag mehr als angefordert, falls noch mehr Einträge existieren
             this.moreAvailable = items.length > this.size;
@@ -446,7 +446,7 @@ class GuideFilter implements VCRServer.GuideFilterContract {
 
     // Fordert die Anzahl der Sendungen an
     count(whenLoaded: (count: number) => void): void {
-        VCRServer.countProgramGuide(this, GuideFilter.filterProperties).done(whenLoaded);
+        VCRServer.countProgramGuide(this).then(whenLoaded);
     }
 
     // Die einzige Instanz dieser Klasse
@@ -1884,9 +1884,8 @@ class JobDataValidator implements JMSLib.IValidator {
 
             VCRServer
                 .deleteSchedule(job.id, schedule.id)
-                .done(() => window.location.href = '#plan')
-                .fail((result: JQueryXHR) => {
-                    var info: any = $.parseJSON(result.responseText);
+                .then(() => window.location.href = '#plan', error => {
+                    var info: any = $.parseJSON(error.message);
 
                     deleteButton.addClass(JMSLib.CSSClass.invalid);
                     deleteButton.attr('title', info.ExceptionMessage);
