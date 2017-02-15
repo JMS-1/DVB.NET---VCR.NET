@@ -53,7 +53,7 @@ namespace VCRNETClient.Ui {
 
         private getPlanHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen">
-                Im Aufzeichnungsplan<JMSLib.ReactUi.InternalLink view="plan" pict="plan" /> werden die Daten aller
+                Im Aufzeichnungsplan<JMSLib.ReactUi.InternalLink view={this.props.noui.application.planPage.route} pict="plan" /> werden die Daten aller
                 geplanten Aufzeichnungen in einer Liste angezeigt. Um eine gewisse Übersichtlichkeit zu erhalten wird allerdings
                 nur eine begrenzte Anzahl von Aufzeichnungen auf einmal angezeigt. Die im Folgenden angezeigte Zahl legt fest,
                 wie viele Tage pro Seite im Aufzeichnungsplan berücksichtigt werden sollen.
@@ -90,13 +90,13 @@ namespace VCRNETClient.Ui {
                 synchronisiert ist.
                 <br />
                 <br />
-                Hier wird auch festgelegt, wie viele Einträge die Programmzeitschrift<JMSLib.ReactUi.InternalLink view="guide" pict="guide" />
+                Hier wird auch festgelegt, wie viele Einträge die Programmzeitschrift<JMSLib.ReactUi.InternalLink view={this.props.noui.application.guidePage.route} pict="guide" />
                 pro Seite anzeigen soll. Zu große Werte erhöhen nicht nur die Zeit zur Anzeige einer Seite sondern sorgen oft
                 auch dafür, dass nicht alle Sendungen einer Seite auf einen Blick erfasst werden können.
                 <br />
                 <br />
                 Wenn die Programmierung einer Aufzeichnung aus der Programmzeitschrift abgeschlossen ist wird normalerweise
-                zum Aufzeichnungsplan<JMSLib.ReactUi.InternalLink view="plan" pict="plan" />
+                zum Aufzeichnungsplan<JMSLib.ReactUi.InternalLink view={this.props.noui.application.planPage.route} pict="plan" />
                 gewechselt. Ist die unten als letztes angebotene Einstellung aktiviert wird in diesem Fall erneut die
                 Programmzeitschrift aufgerufen.
             </InlineHelp>;

@@ -22,7 +22,7 @@ namespace VCRNETClient.Ui {
                         <li><JMSLib.ReactUi.InternalLink view={application.logPage.route}>den Protokollen</JMSLib.ReactUi.InternalLink> von bereits durchgeführten Aufzeichnungen<HelpLink page={this.props.noui} topic="log" /></li>
                     </ul>
                     <ul>
-                        <li><JMSLib.ReactUi.InternalLink pict="settings" view="settings">den individuellen Anpassungen</JMSLib.ReactUi.InternalLink> der Web Oberfläche</li>
+                        <li><JMSLib.ReactUi.InternalLink pict="settings" view={application.settingsPage.route}>den individuellen Anpassungen</JMSLib.ReactUi.InternalLink> der Web Oberfläche</li>
                     </ul>
                 </div>
                 <div>

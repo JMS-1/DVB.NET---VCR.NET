@@ -108,6 +108,7 @@
     <TypeScriptCompile Include="src\app\pages\admin\scan.ts" />
     <TypeScriptCompile Include="src\app\pages\admin\section.ts" />
     <TypeScriptCompile Include="src\app\pages\admin\security.ts" />
+    <TypeScriptCompile Include="src\app\pages\favorites.ts" />
     <TypeScriptCompile Include="src\app\pages\guide.ts" />
     <TypeScriptCompile Include="src\app\pages\guide\entry.ts" />
     <TypeScriptCompile Include="src\app\pages\jobs.ts" />
@@ -131,6 +132,7 @@
     <TypeScriptCompile Include="src\pages\admin\other.tsx" />
     <TypeScriptCompile Include="src\pages\admin\sources.tsx" />
     <TypeScriptCompile Include="src\pages\admin\security.tsx" />
+    <TypeScriptCompile Include="src\pages\favorites.tsx" />
     <TypeScriptCompile Include="src\pages\guide.tsx" />
     <TypeScriptCompile Include="src\pages\guide\details.tsx" />
     <TypeScriptCompile Include="src\pages\guide\info.tsx" />
@@ -207,6 +209,7 @@
     <None Include="src\pages\edit\exception.scss" />
     <None Include="src\pages\admin.scss" />
     <None Include="src\pages\admin\devices.scss" />
+    <None Include="src\pages\favorites.scss" />
     <Content Include="src\pages\guide.scss" />
     <None Include="src\pages\guide\navigator.scss" />
     <None Include="src\lib\edit\boolean\flagButton.scss" />

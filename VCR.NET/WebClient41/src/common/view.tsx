@@ -14,6 +14,7 @@ namespace VCRNETClient.Ui {
                 [page.application.guidePage.route]: Guide,
                 [page.application.adminPage.route]: Admin,
                 [page.application.settingsPage.route]: Settings,
+                [page.application.favoritesPage.route]: Favorites,
             };
         }
     }

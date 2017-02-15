@@ -33,7 +33,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 Normalerweise wird nach der Auswahl eine neue Aufzeichnung angelegt - auf Wunsch
                 kann auch eine Aufzeichnung zu einem existierenden Auftrag ergänzt werden. Die Zeiten
                 aus der Programmzeitschrift werden um Vor- und Nachlaufzeiten gemäß den
-                Voreinstellungen<JMSLib.ReactUi.InternalLink view="settings" pict="settings" /> des
+                Voreinstellungen<JMSLib.ReactUi.InternalLink view={page.application.settingsPage.route} pict="settings" /> des
                 Anwenders erweitert. Die eigentliche Programmierung muss noch einmal bestätigt werden,
                 wobei dann auch noch Detailänderungen möglich sind - zum Beispiel um direkt
                 eine <JMSLib.ReactUi.InternalLink view={`${page.route};repeatingschedules`}>Serienaufzeichnung</JMSLib.ReactUi.InternalLink> anzulegen.

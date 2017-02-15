@@ -11,7 +11,7 @@ namespace VCRNETClient.Ui {
                     (EPG)<HelpLink topic="epg" page={this.props.noui.page} /> periodisch
                     aktualisieren<HelpLink topic="epgconfig" page={this.props.noui.page} /> und
                     dann zur Programmierung von neuen Aufzeichnungen
-                    anbieten.<JMSLib.ReactUi.InternalLink view="edit" pict="new" /> Hier
+                    anbieten.<JMSLib.ReactUi.InternalLink view={this.props.noui.page.application.editPage.route} pict="new" /> Hier
                     werden die Eckdaten für die Aktualisierung festgelegt.
                 </div>
                 <JMSLib.ReactUi.EditBoolean noui={this.props.noui.isActive} />
