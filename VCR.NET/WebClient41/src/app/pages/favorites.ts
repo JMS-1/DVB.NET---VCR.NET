@@ -8,6 +8,8 @@ namespace VCRNETClient.App {
         readonly count: number;
 
         readonly remove: JMSLib.App.ICommand;
+
+        readonly show: JMSLib.App.ICommand;
     }
 
     export interface IFavoritesPage extends IPage {
@@ -31,12 +33,18 @@ namespace VCRNETClient.App {
 
         readonly remove = new JMSLib.App.Command(() => this._remove(this), "Löschen");
 
+        readonly show = new JMSLib.App.Command(() => this._show(this), "Anzeigen");
+
         private _remove: (favorite: Favorite) => JMSLib.App.IHttpPromise<void>;
 
-        registerRemove(callback: (favorite: Favorite) => JMSLib.App.IHttpPromise<void>): void {
-            this._remove = callback;
+        private _show: (favorite: Favorite) => void;
+
+        registerRemove(show: (favorite: Favorite) => void, remove: (favorite: Favorite) => JMSLib.App.IHttpPromise<void>): void {
+            this._remove = remove;
+            this._show = show;
 
             this.remove.reset();
+            this.show.reset();
         }
 
         get title(): string {
@@ -138,14 +146,19 @@ namespace VCRNETClient.App {
                 FavoritesPage._Entries = JSON.parse(this.application.profile.guideSearches || "[]").map(e => new Favorite(e));
 
             var remove = this.remove.bind(this);
+            var show = this.show.bind(this);
 
-            FavoritesPage._Entries.forEach(f => f.registerRemove(remove));
+            FavoritesPage._Entries.forEach(f => f.registerRemove(show, remove));
 
             this.application.isBusy = false;
         }
 
         get title(): string {
             return `Gespeicherte Suchen`;
+        }
+
+        private show(favorite: Favorite): void {
+            this.application.guidePage.loadFilter(favorite.model);
         }
 
         private remove(favorite: Favorite): JMSLib.App.IHttpPromise<void> {

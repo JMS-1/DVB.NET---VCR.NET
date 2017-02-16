@@ -4,9 +4,13 @@ namespace JMSLib.ReactUi {
 
     export class EditBooleanWithButton extends ComponentWithSite<App.IFlag>  {
         render(): JSX.Element {
-            return <button className="jmslib-editflagbutton" data-jmslib-checked={this.props.noui.value ? "yes" : null} onClick={ev => this.onClick(ev)}>
+            return <div
+                className="jmslib-editflagbutton jmslib-command"
+                data-jmslib-checked={this.props.noui.value ? "yes" : null}
+                onClick={ev => this.onClick(ev)}
+                title="">
                 {this.props.noui.text}
-            </button>;
+            </div>;
         }
 
         private onClick(ev: React.FormEvent): void {

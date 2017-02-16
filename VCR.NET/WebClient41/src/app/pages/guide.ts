@@ -171,6 +171,9 @@ namespace VCRNETClient.App {
         // Zeigt an, dass die Präsentation gearade die Daten für die initiale Ansicht sammelt.
         private _startup: boolean;
 
+        // Die konkrete Art der Suche.
+        private _fulltextQuery = true;
+
         // Erstellt eine neue Instanz zur Anzeige der Programmzeitschrift.
         constructor(application: Application) {
             super(`guide`, application);
@@ -225,6 +228,7 @@ namespace VCRNETClient.App {
             this._filter.cryptFilter = VCRServer.GuideEncryption.ALL;
             this._filter.typeFilter = VCRServer.GuideSource.ALL;
             this._filter.content = null;
+            this._fulltextQuery = true;
             this._filter.station = ``;
             this._filter.start = null;
             this._filter.title = null;
@@ -232,6 +236,23 @@ namespace VCRNETClient.App {
             this._filter.index = 0;
             this._query = ``;
             this._hour = -1;
+        }
+
+        // Vordefinierte Suche als Suchbedingung laden.
+        loadFilter(filter: VCRServer.SavedGuideQueryContract): void {
+            this.clearFilter();
+
+            var query = filter.text || ``;
+
+            this._fulltextQuery = (query[0] === `*`);
+            this._withContent = !filter.titleOnly;
+            this._query = query.substr(1);
+
+            this._filter.cryptFilter = filter.encryption;
+            this._filter.typeFilter = filter.sourceType;
+            this._filter.station = filter.source;
+
+            this.application.gotoPage(this.route);
         }
 
         // Nach der Auswahl des Gerätes alle Listen aktualisieren.
@@ -258,7 +279,7 @@ namespace VCRNETClient.App {
                 selection.unshift(JMSLib.App.uiValue(``, `(neuen Auftrag anlegen)`));
 
                 this._jobSelector.allowedValues = selection;
-                
+
                 this._startup = false;
 
                 // Ergebnisliste neu laden - bei Wechsel des Gerätes werden alle Einschränkungen entfernt.
@@ -322,6 +343,9 @@ namespace VCRNETClient.App {
         private delayedQuery(): void {
             this.clearTimeout();
 
+            // Nach Eingabe gibt es immer die Volltextsuche.
+            this._fulltextQuery = true;
+
             // Mit den Suchanfragen synchronisieren.
             var queryId = ++this._queryId;
 
@@ -371,8 +395,8 @@ namespace VCRNETClient.App {
             // Suchbedingung vorbereiten und übernehmen.
             var query = this._query.trim();
 
-            this._filter.title = (query === ``) ? null : `*${query}`;
-            this._filter.content = this._withContent ? this._filter.title : null;
+            this._filter.title = (query === ``) ? null : `${this._fulltextQuery ? `*` : `=`}${query}`;
+            this._filter.content = (this._withContent && this._fulltextQuery) ? this._filter.title : null;
 
             // Auszug aus der Programmzeitschrift abrufen.
             VCRServer.queryProgramGuide(this._filter).then(items => {
