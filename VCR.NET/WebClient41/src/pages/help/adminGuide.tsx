@@ -52,7 +52,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 Der genaue Wert ist abhängig von den ausgewählten Quellen und kann nur individuell
                 selbst bestimmt werden. Ist die Aktualisierung doch vorzeitig abgeschlossen, so
                 wird auch die
-                Aktivität <JMSLib.ReactUi.InternalLink view="current" pict="devices" /> auf
+                Aktivität <JMSLib.ReactUi.InternalLink view={page.application.devicesPage.route} pict="devices" /> auf
                 dem DVB Gerät beendet.
                 Mit Hilfe der <JMSLib.ReactUi.InternalLink view={`${page.route};log`}>Protokollliste</JMSLib.ReactUi.InternalLink> lässt
                 sich dann leicht feststellen, was ein typischer Wert für die Laufzeit ist.

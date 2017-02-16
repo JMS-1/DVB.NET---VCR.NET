@@ -7,7 +7,7 @@ namespace VCRNETClient.Ui.HelpPages {
         render(page: App.IPage): JSX.Element {
             return <div>
                 Der VCR.NET Recording Service erstellt für jede ausgeführte
-                Aktivität<JMSLib.ReactUi.InternalLink view="current" pict="devices" /> einen
+                Aktivität<JMSLib.ReactUi.InternalLink view={page.application.devicesPage.route} pict="devices" /> einen
                 gesonderten Protokolleintrag. Eine Aktivität ist hierbei
                 immer ein geschlossener Nutzungszeitraum eines DVB Gerätes. In diesem Zeitraum kann
                 entweder eine einzelne Sonderaufgabe oder

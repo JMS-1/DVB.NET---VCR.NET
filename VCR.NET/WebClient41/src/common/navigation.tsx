@@ -21,7 +21,7 @@ namespace VCRNETClient.Ui {
                 {page.navigation.guide ? <JMSLib.ReactUi.InternalLink view={application.guidePage.route} pict="guide">Programmzeitschrift</JMSLib.ReactUi.InternalLink> : null}
                 {page.navigation.plan ? <JMSLib.ReactUi.InternalLink view={application.planPage.route} pict="plan">Aufzeichnungsplan</JMSLib.ReactUi.InternalLink> : null}
                 {page.navigation.new ? <JMSLib.ReactUi.InternalLink view={application.editPage.route} pict="new">Neue Aufzeichnung</JMSLib.ReactUi.InternalLink> : null}
-                {page.navigation.current ? <JMSLib.ReactUi.InternalLink view="current" pict="devices">Geräte</JMSLib.ReactUi.InternalLink> : null}
+                {page.navigation.current ? <JMSLib.ReactUi.InternalLink view={application.devicesPage.route} pict="devices">Geräte</JMSLib.ReactUi.InternalLink> : null}
             </div>;
         }
     }

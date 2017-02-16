@@ -21,6 +21,8 @@
 
         readonly favoritesPage: IFavoritesPage;
 
+        readonly devicesPage: IDevicesPage;
+
         getHelpComponentProvider<TComponentType extends IHelpComponent>(): IHelpComponentProvider<TComponentType>;
     }
 
@@ -53,6 +55,8 @@
 
         readonly favoritesPage: FavoritesPage;
 
+        readonly devicesPage: DevicesPage;
+
         private _pageMapper: { [name: string]: Page } = {};
 
         // Nach aussen hin sichtbarer globaler Zustand.
@@ -73,6 +77,7 @@
             // Alle bekannten Seiten.
             this.favoritesPage = this.addPage(FavoritesPage);
             this.settingsPage = this.addPage(SettingsPage);
+            this.devicesPage = this.addPage(DevicesPage);
             this.adminPage = this.addPage(AdminPage);
             this.guidePage = this.addPage(GuidePage);
             this.editPage = this.addPage(EditPage);

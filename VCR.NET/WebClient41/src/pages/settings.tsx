@@ -70,7 +70,7 @@ namespace VCRNETClient.Ui {
 
         private getSleepHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen">
-                Wird eine aktive Aufzeichnung<JMSLib.ReactUi.InternalLink view="current" pict="devices" />
+                Wird eine aktive Aufzeichnung<JMSLib.ReactUi.InternalLink view={this.props.noui.application.devicesPage.route} pict="devices" />
                 vorzeitig beendet, so wird der VCR.NET Recording Service prüfen, ob
                 der Rechner in den Schlafzustand versetzt werden soll.<HelpLink topic="hibernation" page={this.props.noui} />
                 Diese Verhalten kann pro Abbruch gesondert deaktiviert werden und die folgende Einstellung legt

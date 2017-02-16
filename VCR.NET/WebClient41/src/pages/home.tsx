@@ -12,7 +12,7 @@ namespace VCRNETClient.Ui {
                     Willkommen zur Benutzeroberfläche des VCR.NET Recording Service. Von hier aus geht es direkt zu:
                     <ul>
                         <li><JMSLib.ReactUi.InternalLink pict="plan" view={application.planPage.route}>dem Aufzeichnungsplan</JMSLib.ReactUi.InternalLink> mit den anstehenden Aufzeichnungen<HelpLink page={this.props.noui} topic="parallelrecording" /></li>
-                        <li><JMSLib.ReactUi.InternalLink pict="devices" view="current">den laufenden Aufzeichnungen</JMSLib.ReactUi.InternalLink> mit den Aktivitäten der einzelnen DVB Geräte</li>
+                        <li><JMSLib.ReactUi.InternalLink pict="devices" view={application.devicesPage.route}>den laufenden Aufzeichnungen</JMSLib.ReactUi.InternalLink> mit den Aktivitäten der einzelnen DVB Geräte</li>
                         <li><JMSLib.ReactUi.InternalLink pict="guide" view={application.guidePage.route}>der Programmzeitschrift</JMSLib.ReactUi.InternalLink> zum Anlegen neuer Aufzeichnungen<HelpLink page={this.props.noui} topic="epg" /></li>
                         <li><JMSLib.ReactUi.InternalLink pict="new" view={application.editPage.route}>einer neuen Aufzeichnung</JMSLib.ReactUi.InternalLink></li>
                     </ul>
