@@ -36,5 +36,9 @@
         id: string;
     }
 
+    export function getGuideItem(device: string, source: string, start: Date, end: Date): JMSLib.App.IHttpPromise<GuideItemContract> {
+        return doUrlCall(`guide?profile=${encodeURIComponent(device)}&source=${source}&pattern=${start.getTime()}-${end.getTime()}`);
+    }
+
 }
 

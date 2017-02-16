@@ -47,5 +47,9 @@
         remainingMinutes: number;
     }
 
+    export function getPlanCurrent(): JMSLib.App.IHttpPromise<PlanCurrentContract[]> {
+        return doUrlCall(`plan`);
+    }
+
 }
 

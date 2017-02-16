@@ -18,5 +18,13 @@
         merge: boolean;
     }
 
+    export function getSourceScanSettings(): JMSLib.App.IHttpPromise<SourceScanSettingsContract> {
+        return doUrlCall(`configuration?scan`);
+    }
+
+    export function setSourceScanSettings(data: SourceScanSettingsContract): JMSLib.App.IHttpPromise<boolean> {
+        return doUrlCall(`configuration?scan`, `PUT`, data);
+    }
+
 }
 

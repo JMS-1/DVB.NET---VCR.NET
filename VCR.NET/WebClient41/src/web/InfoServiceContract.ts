@@ -21,5 +21,9 @@
         hasGuides: boolean;
     }
 
+    export function getServerVersion(): JMSLib.App.IHttpPromise<InfoServiceContract> {
+        return doUrlCall(`info`);
+    }
+
 }
 

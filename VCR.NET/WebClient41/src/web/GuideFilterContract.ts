@@ -30,5 +30,13 @@
         cryptFilter: GuideEncryption;
     }
 
+    export function queryProgramGuide(filter: GuideFilterContract): JMSLib.App.IHttpPromise<GuideItemContract[]> {
+        return doUrlCall(`guide`, `POST`, filter);
+    }
+
+    export function countProgramGuide(filter: GuideFilterContract): JMSLib.App.IHttpPromise<number> {
+        return doUrlCall(`guide?countOnly`, `POST`, filter);
+    }
+
 }
 

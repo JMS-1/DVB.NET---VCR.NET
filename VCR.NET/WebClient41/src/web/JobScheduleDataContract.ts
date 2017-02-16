@@ -9,5 +9,27 @@
         schedule: EditScheduleContract;
     }
 
+    export function createScheduleFromGuide(legacyId: string, epgId: string): JMSLib.App.IHttpPromise<JobScheduleInfoContract> {
+        return doUrlCall(`edit/${legacyId}?epg=${epgId}`);
+    }
+
+    export function updateSchedule(jobId: string, scheduleId: string, data: JobScheduleDataContract): JMSLib.App.IHttpPromise<void> {
+        var method = `POST`;
+        var url = `edit`;
+
+        if (jobId != null) {
+            url += `/` + jobId;
+
+            if (scheduleId != null) {
+                url += scheduleId;
+
+                method = `PUT`;
+            }
+        }
+
+        // Befehl ausführen
+        return doUrlCall<void, JobScheduleDataContract>(url, method, data);
+    }
+
 }
 

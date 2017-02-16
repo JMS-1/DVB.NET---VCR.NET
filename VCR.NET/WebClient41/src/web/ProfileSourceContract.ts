@@ -6,5 +6,9 @@
         tvNotRadio: boolean;
     }
 
+    export function getProfileSources(device: string): JMSLib.App.IHttpPromise<ProfileSourceContract[]> {
+        return doUrlCall(`profile/${device}`);
+    }
+
 }
 

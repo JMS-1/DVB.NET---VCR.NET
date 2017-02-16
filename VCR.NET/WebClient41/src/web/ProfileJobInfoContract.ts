@@ -9,5 +9,9 @@
         id: string;
     }
 
+    export function getProfileJobInfos(device: string): JMSLib.App.IHttpPromise<ProfileJobInfoContract[]> {
+        return doUrlCall(`profile/${device}?activeJobs`);
+    }
+
 }
 

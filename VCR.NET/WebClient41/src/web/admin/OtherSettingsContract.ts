@@ -45,5 +45,13 @@
         logging: string;
     }
 
+    export function getOtherSettings(): JMSLib.App.IHttpPromise<OtherSettingsContract> {
+        return doUrlCall(`configuration?other`);
+    }
+
+    export function setOtherSettings(data: OtherSettingsContract): JMSLib.App.IHttpPromise<boolean> {
+        return doUrlCall(`configuration?other`, `PUT`, data);
+    }
+
 }
 

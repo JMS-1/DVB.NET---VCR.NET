@@ -57,5 +57,9 @@
         exception?: PlanExceptionContract;
     }
 
+    export function getPlan(limit: number, end: Date): JMSLib.App.IHttpPromise<PlanActivityContract[]> {
+        return doUrlCall(`plan?limit=${limit}&end=${end.toISOString()}`);
+    }
+
 }
 
