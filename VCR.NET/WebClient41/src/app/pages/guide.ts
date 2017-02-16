@@ -1,5 +1,6 @@
 ﻿/// <reference path="page.ts" />
-/// <reference path="../../../scripts/VCRServer.ts" />
+/// <reference path="../../web/GuideSource.ts" />
+/// <reference path="../../web/GuideEncryption.ts" />
 
 namespace VCRNETClient.App {
 
