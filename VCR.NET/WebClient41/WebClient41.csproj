@@ -250,7 +250,6 @@
     <Content Include="FAQ\nexus.html" />
     <Content Include="FAQ\jobsandschedules.html" />
     <Content Include="FAQ\hibernation.html" />
-    <Content Include="FAQ\filecontents.html" />
     <Content Include="FAQ\editcurrent.html" />
     <Content Include="FAQ\dvbnet.html" />
     <Content Include="FAQ\decryption.html" />
@@ -431,6 +430,7 @@
     <TypeScriptCompile Include="src\lib\edit\datetime\day.tsx" />
     <TypeScriptCompile Include="src\pages\edit\duration.tsx" />
     <TypeScriptCompile Include="src\pages\edit\exception.tsx" />
+    <TypeScriptCompile Include="src\pages\help\fileContents.tsx" />
     <TypeScriptCompile Include="src\pages\jobs.tsx" />
     <TypeScriptCompile Include="src\pages\log.tsx" />
     <TypeScriptCompile Include="src\pages\log\details.tsx" />

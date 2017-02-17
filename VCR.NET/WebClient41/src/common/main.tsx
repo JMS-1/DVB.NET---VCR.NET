@@ -10,10 +10,11 @@ namespace VCRNETClient.Ui {
                 ["parallelrecording"]: new HelpPages.ParallelRecording(),
                 ["epgconfig"]: new HelpPages.AdminProgramGuide(),
                 ["psiconfig"]: new HelpPages.AdminSourceScan(),
+                ["filecontents"]: new HelpPages.FileContents(),
                 ["overview"]: new HelpPages.Overview(),
                 ["epg"]: new HelpPages.ProgramGuide(),
                 ["archive"]: new HelpPages.Archive(),
-                ["log"]: new HelpPages.Log()
+                ["log"]: new HelpPages.Log(),
             };
         }
 
