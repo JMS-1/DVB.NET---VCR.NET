@@ -136,7 +136,9 @@
     <TypeScriptCompile Include="src\pages\admin\sources.tsx" />
     <TypeScriptCompile Include="src\pages\admin\security.tsx" />
     <TypeScriptCompile Include="src\pages\devices.tsx" />
+    <TypeScriptCompile Include="src\pages\devices\control.tsx" />
     <TypeScriptCompile Include="src\pages\devices\entry.tsx" />
+    <TypeScriptCompile Include="src\pages\devices\guide.tsx" />
     <TypeScriptCompile Include="src\pages\favorites.tsx" />
     <TypeScriptCompile Include="src\pages\favorites\entry.tsx" />
     <TypeScriptCompile Include="src\pages\guide.tsx" />
@@ -219,6 +221,8 @@
     <None Include="src\pages\favorites\entry.scss" />
     <None Include="src\pages\devices.scss" />
     <None Include="src\pages\devices\entry.scss" />
+    <None Include="src\pages\devices\guide.scss" />
+    <None Include="src\pages\devices\control.scss" />
     <Content Include="src\pages\guide.scss" />
     <None Include="src\pages\guide\navigator.scss" />
     <None Include="src\lib\edit\boolean\flagButton.scss" />

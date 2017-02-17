@@ -18,6 +18,10 @@ namespace VCRNETClient.App {
         readonly mode: string;
 
         readonly id: string;
+
+        readonly showGuide: JMSLib.App.IFlag;
+
+        readonly showControl: JMSLib.App.IFlag;
     }
 
     export interface IDevicesPage extends IPage {
@@ -37,9 +41,31 @@ namespace VCRNETClient.App {
         }
 
         private setPlan(plan: VCRServer.PlanCurrentContract[]): void {
-            this.infos = (plan || []).map(info => new Devices.Info(info));
+            var refresh = this.refresh.bind(this);
+
+            this.infos = (plan || []).map(info => new Devices.Info(info, refresh));
 
             this.application.isBusy = false;
+        }
+
+        private _refreshing = false;
+
+        private refresh(info: Devices.Info, guide: boolean): void {
+            if (this._refreshing)
+                return;
+
+            this._refreshing = true;
+
+            var flag = guide ? info.showGuide : info.showControl;
+            var state = flag.value;
+
+            this.infos.forEach(i => i.showControl.value = i.showGuide.value = false);
+
+            flag.value = state;
+
+            this._refreshing = false;
+
+            this.refreshUi();
         }
 
         get title(): string {

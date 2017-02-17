@@ -2,7 +2,7 @@
 
     export class Info implements IDeviceInfo {
 
-        constructor(private readonly _model: VCRServer.PlanCurrentContract) {
+        constructor(private readonly _model: VCRServer.PlanCurrentContract, refresh: (info: Info, guide: boolean) => void) {
             if (!_model.isIdle) {
                 var start = new Date(_model.start);
                 var end = new Date(start.getTime() + _model.duration * 1000);
@@ -10,7 +10,14 @@
                 this.start = JMSLib.DateFormatter.getStartTime(start);
                 this.end = JMSLib.DateFormatter.getEndTime(end);
             }
+
+            this.showGuide = new JMSLib.App.Flag({}, "value", null, () => refresh(this, true), () => !this._model.epg);
+            this.showControl = new JMSLib.App.Flag({}, "value", null, () => refresh(this, false), () => this.mode !== `running`);
         }
+
+        readonly showGuide: JMSLib.App.IFlag;
+
+        readonly showControl: JMSLib.App.IFlag;
 
         get mode(): string {
             if (this._model.isIdle)
