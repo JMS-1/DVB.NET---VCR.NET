@@ -18,15 +18,7 @@ namespace VCRNETClient.Ui {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.props.noui.infos.map((i, index) => <tr key={index}>
-                            <td>{i.mode ? <JMSLib.ReactUi.Pictogram name={i.mode} type="gif" /> : <span>&nbsp;</span>}</td>
-                            <td>{i.start}</td>
-                            <td>{i.end}</td>
-                            <td>{i.source}</td>
-                            <td>{i.id ? <JMSLib.ReactUi.InternalLink view={`${this.props.noui.application.editPage.route};id=${i.id}`}>{i.name}</JMSLib.ReactUi.InternalLink> : <span>{i.name}</span>}</td>
-                            <td>{i.device}</td>
-                            <td>{i.size}</td>
-                        </tr>)}
+                        {this.props.noui.infos.map((i, index) => <Device key={index} page={this.props.noui} noui={i} />)}
                     </tbody>
                 </table>
             </div>;

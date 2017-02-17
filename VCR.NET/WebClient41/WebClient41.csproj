@@ -109,7 +109,9 @@
     <TypeScriptCompile Include="src\app\pages\admin\section.ts" />
     <TypeScriptCompile Include="src\app\pages\admin\security.ts" />
     <TypeScriptCompile Include="src\app\pages\devices.ts" />
+    <TypeScriptCompile Include="src\app\pages\devices\entry.ts" />
     <TypeScriptCompile Include="src\app\pages\favorites.ts" />
+    <TypeScriptCompile Include="src\app\pages\favorites\entry.ts" />
     <TypeScriptCompile Include="src\app\pages\guide.ts" />
     <TypeScriptCompile Include="src\app\pages\guide\entry.ts" />
     <TypeScriptCompile Include="src\app\pages\jobs.ts" />
@@ -134,6 +136,7 @@
     <TypeScriptCompile Include="src\pages\admin\sources.tsx" />
     <TypeScriptCompile Include="src\pages\admin\security.tsx" />
     <TypeScriptCompile Include="src\pages\devices.tsx" />
+    <TypeScriptCompile Include="src\pages\devices\entry.tsx" />
     <TypeScriptCompile Include="src\pages\favorites.tsx" />
     <TypeScriptCompile Include="src\pages\favorites\entry.tsx" />
     <TypeScriptCompile Include="src\pages\guide.tsx" />
@@ -215,6 +218,7 @@
     <None Include="src\pages\favorites.scss" />
     <None Include="src\pages\favorites\entry.scss" />
     <None Include="src\pages\devices.scss" />
+    <None Include="src\pages\devices\entry.scss" />
     <Content Include="src\pages\guide.scss" />
     <None Include="src\pages\guide\navigator.scss" />
     <None Include="src\lib\edit\boolean\flagButton.scss" />
@@ -339,7 +343,10 @@
     <Content Include="ui\images\delete.png" />
     <Content Include="ui\images\fav.png" />
     <Content Include="ui\images\info.png" />
+    <Content Include="ui\images\next.gif" />
+    <Content Include="ui\images\prev.gif" />
     <Content Include="ui\images\recording.png" />
+    <Content Include="ui\images\running.png" />
     <Content Include="ui\log.html" />
     <Content Include="ui\home.html" />
     <Content Include="ui\guide.html" />
