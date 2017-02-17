@@ -247,7 +247,6 @@
     <Content Include="FAQ\sourcelimit.html" />
     <Content Include="FAQ\sourcechooser.html" />
     <Content Include="FAQ\nexus.html" />
-    <Content Include="FAQ\jobsandschedules.html" />
     <Content Include="FAQ\hibernation.html" />
     <Content Include="FAQ\editcurrent.html" />
     <Content Include="FAQ\dvbnet.html" />
@@ -430,6 +429,7 @@
     <TypeScriptCompile Include="src\pages\edit\duration.tsx" />
     <TypeScriptCompile Include="src\pages\edit\exception.tsx" />
     <TypeScriptCompile Include="src\pages\help\fileContents.tsx" />
+    <TypeScriptCompile Include="src\pages\help\jobsAndSchedules.tsx" />
     <TypeScriptCompile Include="src\pages\help\numberOfFiles.tsx" />
     <TypeScriptCompile Include="src\pages\jobs.tsx" />
     <TypeScriptCompile Include="src\pages\log.tsx" />

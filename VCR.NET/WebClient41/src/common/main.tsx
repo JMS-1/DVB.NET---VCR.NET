@@ -8,6 +8,7 @@ namespace VCRNETClient.Ui {
             Main._topics = {
                 ["repeatingschedules"]: new HelpPages.RepeatingSchedules(),
                 ["parallelrecording"]: new HelpPages.ParallelRecording(),
+                ["jobsandschedules"]: new HelpPages.JobsAndSchedules(),
                 ["numberoffiles"]: new HelpPages.NumberOfFiles(),
                 ["epgconfig"]: new HelpPages.AdminProgramGuide(),
                 ["psiconfig"]: new HelpPages.AdminSourceScan(),
