@@ -2,17 +2,19 @@
 
     export class Info implements IDeviceInfo {
 
-        constructor(private readonly _model: VCRServer.PlanCurrentContract, refresh: (info: Info, guide: boolean) => void) {
-            if (!_model.isIdle) {
-                var start = new Date(_model.start);
-                var end = new Date(start.getTime() + _model.duration * 1000);
+        site: JMSLib.App.ISite;
 
-                this.start = JMSLib.DateFormatter.getStartTime(start);
-                this.end = JMSLib.DateFormatter.getEndTime(end);
+        constructor(private readonly _model: VCRServer.PlanCurrentContract, _refresh: (info: Info, guide: boolean) => void) {
+            if (!_model.isIdle) {
+                this._start = new Date(_model.start);
+                this._end = new Date(this._start.getTime() + _model.duration * 1000);
+
+                this.displayStart = JMSLib.DateFormatter.getStartTime(this._start);
+                this.displayEnd = JMSLib.DateFormatter.getEndTime(this._end);
             }
 
-            this.showGuide = new JMSLib.App.Flag({}, "value", null, () => refresh(this, true), () => !this._model.epg);
-            this.showControl = new JMSLib.App.Flag({}, "value", null, () => refresh(this, false), () => this.mode !== `running`);
+            this.showGuide = new JMSLib.App.Flag({}, "value", null, () => _refresh(this, true), () => !this._model.epg || !this._model.device || !this._model.source);
+            this.showControl = new JMSLib.App.Flag({}, "value", null, () => _refresh(this, false), () => this.mode !== `running`);
         }
 
         readonly showGuide: JMSLib.App.IFlag;
@@ -41,9 +43,13 @@
             return this._model.name;
         }
 
-        readonly start: string;
+        private readonly _start: Date;
 
-        readonly end: string;
+        private readonly _end: Date;
+
+        readonly displayStart: string;
+
+        readonly displayEnd: string;
 
         get source(): string {
             return this._model.sourceName;
@@ -59,6 +65,34 @@
 
         get id(): string {
             return this._model.id;
+        }
+
+        private _guideItem: Guide.GuideInfo;
+
+        private _guideTime: JMSLib.App.TimeBar;
+
+        get guideTime(): JMSLib.App.ITimeBar {
+            return this._guideTime;
+        }
+
+        get guideItem(): Guide.IGuideInfo {
+            if (this.showGuide.isReadonly)
+                return null;
+
+            if (this._guideItem !== undefined)
+                return this._guideItem;
+
+            VCRServer.getGuideItem(this._model.device, this._model.source, this._start, this._end).then(item => {
+                this._guideItem = item ? new Guide.GuideInfo(item) : null;
+
+                if (this._guideItem)
+                    this._guideTime = new JMSLib.App.TimeBar(this._start, this._end, this._guideItem.start, this._guideItem.end);
+
+                if (this.site)
+                    this.site.refreshUi();
+            });
+
+            return null;
         }
     }
 

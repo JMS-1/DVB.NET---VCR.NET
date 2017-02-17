@@ -2,14 +2,11 @@
 
 namespace VCRNETClient.Ui {
 
-    interface IDeviceGuide extends JMSLib.ReactUi.IComponent<App.IDeviceInfo> {
-        page: App.IDevicesPage;
-    }
-
-    export class DeviceGuide extends JMSLib.ReactUi.ComponentEx<App.IDeviceInfo, IDeviceGuide> {
+    export class DeviceGuide extends JMSLib.ReactUi.ComponentWithSite<App.IDeviceInfo> {
         render(): JSX.Element {
             return <fieldset className="vcrnet-device-epg">
-                [EPG]
+                {this.props.noui.guideTime ? <JMSLib.ReactUi.TimeBar noui={this.props.noui.guideTime} /> : null}
+                {this.props.noui.guideItem ? <GuideEntryInfo noui={this.props.noui.guideItem} /> : null}
             </fieldset>;
         }
     }

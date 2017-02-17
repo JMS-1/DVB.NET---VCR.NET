@@ -19,10 +19,10 @@ namespace VCRNETClient.Ui {
                     <span>&nbsp;</span>}
                 </td>
                 <td>{showGuide.isReadonly ?
-                    <span>{this.props.noui.start}</span> :
-                    <JMSLib.ReactUi.InternalLink view={() => showGuide.value = !showGuide.value}>{this.props.noui.start}</JMSLib.ReactUi.InternalLink>}
+                    <span>{this.props.noui.displayStart}</span> :
+                    <JMSLib.ReactUi.InternalLink view={() => showGuide.value = !showGuide.value}>{this.props.noui.displayStart}</JMSLib.ReactUi.InternalLink>}
                 </td>
-                <td>{this.props.noui.end}</td>
+                <td>{this.props.noui.displayEnd}</td>
                 <td>{this.props.noui.source}</td>
                 <td>{this.props.noui.id ? <JMSLib.ReactUi.InternalLink view={`${this.props.page.application.editPage.route};id=${this.props.noui.id}`}>{this.props.noui.name}</JMSLib.ReactUi.InternalLink> : <span>{this.props.noui.name}</span>}</td>
                 <td>{this.props.noui.device}</td>

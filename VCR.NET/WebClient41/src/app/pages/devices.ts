@@ -2,12 +2,12 @@
 
 namespace VCRNETClient.App {
 
-    export interface IDeviceInfo {
+    export interface IDeviceInfo extends JMSLib.App.IConnectable {
         readonly name: string;
 
-        readonly start: string;
+        readonly displayStart: string;
 
-        readonly end: string;
+        readonly displayEnd: string;
 
         readonly source: string;
 
@@ -22,6 +22,10 @@ namespace VCRNETClient.App {
         readonly showGuide: JMSLib.App.IFlag;
 
         readonly showControl: JMSLib.App.IFlag;
+
+        readonly guideItem: Guide.IGuideInfo;
+
+        readonly guideTime: JMSLib.App.ITimeBar;
     }
 
     export interface IDevicesPage extends IPage {
