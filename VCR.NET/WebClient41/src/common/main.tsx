@@ -20,6 +20,7 @@ namespace VCRNETClient.Ui {
                 ["overview"]: new HelpPages.Overview(),
                 ["epg"]: new HelpPages.ProgramGuide(),
                 ["archive"]: new HelpPages.Archive(),
+                ["tasks"]: new HelpPages.Tasks(),
                 ["log"]: new HelpPages.Log(),
             };
         }
