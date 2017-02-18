@@ -26,6 +26,14 @@ namespace VCRNETClient.App {
         readonly guideItem: Guide.IGuideInfo;
 
         readonly guideTime: JMSLib.App.ITimeBar;
+
+        readonly controller: IDeviceController;
+    }
+
+    export interface IDeviceController extends JMSLib.App.IConnectable {
+        readonly end: string;
+
+        readonly remaining: JMSLib.App.INumberWithSlider;
     }
 
     export interface IDevicesPage extends IPage {
@@ -38,10 +46,12 @@ namespace VCRNETClient.App {
 
         constructor(application: Application) {
             super(`current`, application);
+
+            this.navigation.refresh = true;
         }
 
         reset(sections: string[]): void {
-            VCRServer.getPlanCurrent().then(plan => this.setPlan(plan));
+            this.reload();
         }
 
         private setPlan(plan: VCRServer.PlanCurrentContract[]): void {
@@ -50,9 +60,15 @@ namespace VCRNETClient.App {
             this.infos = (plan || []).map(info => new Devices.Info(info, refresh));
 
             this.application.isBusy = false;
+
+            this.refreshUi();
         }
 
         private _refreshing = false;
+
+        reload(): void {
+            VCRServer.getPlanCurrent().then(plan => this.setPlan(plan));
+        }
 
         private refresh(info: Devices.Info, guide: boolean): void {
             if (this._refreshing)

@@ -24,7 +24,7 @@ namespace VCRNETClient.Ui {
                                 <DeviceGuide key={`${index}Guide`} noui={i} />
                             </JMSLib.ReactUi.DetailRow> : null,
                             i.showControl.value ? <JMSLib.ReactUi.DetailRow prefixColumns={1} dataColumns={6}>
-                                <DeviceControl key={`${index}Control`} page={this.props.noui} noui={i} />
+                                <DeviceControl key={`${index}Control`} page={this.props.noui} noui={i.controller} />
                             </JMSLib.ReactUi.DetailRow> : null
                         ])}
                     </tbody>

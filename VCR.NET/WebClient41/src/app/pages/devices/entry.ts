@@ -11,6 +11,8 @@
 
                 this.displayStart = JMSLib.DateFormatter.getStartTime(this._start);
                 this.displayEnd = JMSLib.DateFormatter.getEndTime(this._end);
+
+                this.controller = new Controller(this._end, _model.remainingMinutes);
             }
 
             this.showGuide = new JMSLib.App.Flag({}, "value", null, () => _refresh(this, true), () => !this._model.epg || !this._model.device || !this._model.source);
@@ -38,6 +40,8 @@
             else
                 return 'intime';
         }
+
+        readonly controller: Controller;
 
         get name(): string {
             return this._model.name;
@@ -88,11 +92,15 @@
                 if (this._guideItem)
                     this._guideTime = new JMSLib.App.TimeBar(this._start, this._end, this._guideItem.start, this._guideItem.end);
 
-                if (this.site)
-                    this.site.refreshUi();
+                this.refreshUi();
             });
 
             return null;
+        }
+
+        private refreshUi(): void {
+            if (this.site)
+                this.site.refreshUi();
         }
     }
 

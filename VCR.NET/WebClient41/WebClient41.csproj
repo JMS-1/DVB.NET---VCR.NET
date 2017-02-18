@@ -109,6 +109,7 @@
     <TypeScriptCompile Include="src\app\pages\admin\section.ts" />
     <TypeScriptCompile Include="src\app\pages\admin\security.ts" />
     <TypeScriptCompile Include="src\app\pages\devices.ts" />
+    <TypeScriptCompile Include="src\app\pages\devices\controller.ts" />
     <TypeScriptCompile Include="src\app\pages\devices\entry.ts" />
     <TypeScriptCompile Include="src\app\pages\favorites.ts" />
     <TypeScriptCompile Include="src\app\pages\favorites\entry.ts" />
