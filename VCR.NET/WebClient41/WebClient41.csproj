@@ -200,7 +200,6 @@
     <Content Include="content\themes\base\tooltip.css" />
     <None Include="content\vars.scss" />
     <Content Include="default.html" />
-    <Content Include="FAQ\customschedule.html" />
     <Content Include="FAQ\configuration.html" />
     <Content Include="FAQ\controlcenter.html" />
     <None Include="src\lib\edit\multiList.scss" />
@@ -426,6 +425,7 @@
     <TypeScriptCompile Include="src\lib\edit\datetime\day.tsx" />
     <TypeScriptCompile Include="src\pages\edit\duration.tsx" />
     <TypeScriptCompile Include="src\pages\edit\exception.tsx" />
+    <TypeScriptCompile Include="src\pages\help\customSchedule.tsx" />
     <TypeScriptCompile Include="src\pages\help\decryption.tsx" />
     <TypeScriptCompile Include="src\pages\help\fileContents.tsx" />
     <TypeScriptCompile Include="src\pages\help\jobsAndSchedules.tsx" />

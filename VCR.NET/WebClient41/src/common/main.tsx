@@ -9,6 +9,7 @@ namespace VCRNETClient.Ui {
                 ["repeatingschedules"]: new HelpPages.RepeatingSchedules(),
                 ["parallelrecording"]: new HelpPages.ParallelRecording(),
                 ["jobsandschedules"]: new HelpPages.JobsAndSchedules(),
+                ["customschedule"]: new HelpPages.CustomSchedule(),
                 ["sourcechooser"]: new HelpPages.SourceChooser(),
                 ["numberoffiles"]: new HelpPages.NumberOfFiles(),
                 ["epgconfig"]: new HelpPages.AdminProgramGuide(),

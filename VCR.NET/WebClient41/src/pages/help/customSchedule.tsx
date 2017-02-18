@@ -1,17 +1,16 @@
-﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title>[Fragment]</title>
-</head>
-<body>
-    <div>
-        <div id="faqContents" data-title="Regeln für die Planung von Aufzeichnungen">
-            Der VCR.NET Recording Service verwendet nach der Installation ein festes Regelwerk zur Planung von
-            Aufzeichnungen für den Fall, dass mehrere DVB.NET Geräteprofile verwendet werden. Über die
-            Konfiguration<a href="#admin;rules"><img class="linkImage" src="ui/images/admin.png" /></a>
-            kann dieses speziellen Bedürfnissen angepasst werden.
-            <div>
-                <p>
+﻿/// <reference path="helpComponent.ts" />
+
+namespace VCRNETClient.Ui.HelpPages {
+    export class CustomSchedule extends HelpComponent {
+        readonly title = "Regeln für die Planung von Aufzeichnungen";
+
+        render(page: App.IPage): JSX.Element {
+            return <div>
+                Der VCR.NET Recording Service verwendet nach der Installation ein festes Regelwerk zur Planung von
+                Aufzeichnungen für den Fall, dass mehrere DVB.NET Geräteprofile verwendet werden. Über die
+                Konfiguration<JMSLib.ReactUi.InternalLink view={`${page.application.adminPage.route};rules`} pict="admin" /> kann
+                dieses speziellen Bedürfnissen angepasst werden.
+                <div>
                     Für die Aufzeichnungsplanung ermittelt der VCR.NET Recording Service in einer
                     ersten Phase Zeitbereiche mit sich überlappenden Aufzeichnungen. Der Zeitraum
                     eines solchen Bereiches definiert sich durch den Startzeitpunkt der als erstes
@@ -19,8 +18,8 @@
                     darin. Zu jedem Zeitpunkt in einem Bereich ist mindestens eine Aufzeichnung aktiv.
                     Alle anderen Aufzeichnungen, die nicht im Bereich erfasst werden, beginnen entweder
                     frühestens am Endzeitpunkt oder enden spätestens am Startzeitpunkt.
-                </p>
-                <p>
+                    <br />
+                    <br />
                     Für jeden Bereich berechnet VCR.NET in der aktuellen Implementierung alle möglichen
                     Zuordnungen von Aufzeichnungen zu Geräten - dieses Vorgehen ist bei sehr vielen
                     insbesondere gleichartigen Geräten nicht sonderlich clever und wird sich in zukünftigen
@@ -28,18 +27,18 @@
                     Regelwerk bewertet und die dadurch definierte beste Zuordnung zur Aufzeichnung verwendet.
                     Sind mehrere Zuordnungsvarianten gemäß den Regeln gleichwertig als beste Alternative
                     bewertet so wird eine Zuordnung zufällig ausgewählt.
-                </p>
-                <p>
+                    <br />
+                    <br />
                     Hier in der Konfiguration kann durch eine einfache Abfolge von Regeln die Bewertung
                     einer Zuordnung relativ zu einer anderen festgelegt werden. Eine Regel hat dabei immer
                     das Format <i>Eigenschaft:Ordnung</i> - Leerzeilen und Zeichen, die auf ein # folgen
                     werden gänzlich ignoriert.
-                </p>
-                <p>
+                    <br />
+                    <br />
                     Das bei der Installation mitgelieferte Regelwerk verwendet folgende Einzelregeln - in
                     der hier aufgeführten Reihenfolge:
-                </p>
-                <p>
+                    <br />
+                    <br />
                     <i><strong>TotalCut:Min</strong></i> Die Eigenschaft <i>TotalCut</i> einer Zuordnung beschreibt die
                     gesamte Verspätung von Aufzeichnungen. Wenn etwa zwei überlappende Aufzeichnungen
                     auf verschiedenen Quellgruppen (aka <i>Transponder</i>) auf einem Gerät ausgeführt werden,
@@ -49,15 +48,15 @@
                     Regel im Regelwerk von VCR.NET: soviel der gewünschten Aufzeichnungen ausführen, wie
                     nur irgendwie möglich. Diese Regel alleine reicht eigentlich für die meisten Anwendungen
                     aus.
-                </p>
-                <p>
+                    <br />
+                    <br />
                     <i><strong>ResourceCount:Min</strong></i> Mit der Eigenschaft <i>ResourceCount</i> meldet eine
                     Zuordnung wie viele Geräte im Zeitbereich eingesetzt werden. VCR.NET sieht eine
                     Zuordnung als umso besser an je weniger Geräte verwendet werden. Da es
                     sich hier um die zweite Regel im Regelwerk handelt ist sie nur für die Zuordnungen
                     relevant, die die geringsten Aufzeichnungsverluste aufweisen.
-                </p>
-                <p>
+                    <br />
+                    <br />
                     <i><strong>ByPriority:Descending</strong></i> Mit dieser Regel wird die
                     Bewertung der Zuordnungen verlassen und auf die Betrachtung einzelner Geräte
                     gewechselt. Die Ordnung <i>Descending</i> bedeutet dabei, dass zuerst das DVB.NET
@@ -66,8 +65,8 @@
                     <i>Ascending</i> verwendet werden. Bei mehreren Geräten gleicher Priorität ist
                     die Reihenfolge willkürlich und kann sich mit jedem Start des VCR.NET Dienstes
                     ändern.
-                </p>
-                <p>
+                    <br />
+                    <br />
                     <i><strong>RecordingCount:Max</strong></i> Für ein einzelnes Gerät meldet die Eigenschaft <i>RecordingCount</i>
                     die Anzahl der diesem Gerät im Zeitbereich zugeordneten Aufzeichnungen. Die Ordnung
                     <i>Max</i> bevorzugt hier Zuordnungen mit mehr Aufzeichnungen auf einem Gerät - eine
@@ -78,42 +77,40 @@
                     aber nur vorgenommen, wenn die beiden Zuordnungen bereits den minimalen Aufzeichnungsverlust
                     haben und zudem auch eine minimale Gerätenutzung garantieren. Ist die Anzahl der Aufzeichnung
                     auf dem höchstpriorisierten Gerät identisch, so wird das nächste untersucht und so weiter.
-                </p>
-                <p>
+                    <br />
+                    <br />
                     <i><strong>ByPriority:End</strong></i> Beendet die Betrachtung einzelner Geräte und wechselt
                     zurück in die Bewertung der Zuordnungen an sich. Das nach der Erstinstallation
                     verwendete Regelwerk endet an dieser Stelle. Gibt es mehrere gleichwertige Zuordnungen,
-                    wird nun eine zufällig ausgewählt.
-                </p>
-                <pre class="codeSample">
-# Der Verlust an Aufzeichnungszeit muss minimiert werden
-TotalCut:Min
-
-# Es sollen so wenige Geräte wie möglich verwendet werden
-ResourceCount:Min
-
-# Die einzelnen Geräte werden mit absteigender Aufzeichnungspriorität untersucht
-ByPriority:Descending
-
+                    wird nun eine zufällig ausgewählt.<pre>{`
+    # Der Verlust an Aufzeichnungszeit muss minimiert werden
+    TotalCut:Min
+                    
+    # Es sollen so wenige Geräte wie möglich verwendet werden
+    ResourceCount:Min
+                    
+    # Die einzelnen Geräte werden mit absteigender Aufzeichnungspriorität untersucht
+    ByPriority:Descending
+                    
     # Je mehr Aufzeichnungen auf einem Gerät, desto besser
     RecordingCount:Max
-
-ByPriority:End</pre>
-                <p>Die im Folgenden aufgeführten Eigenschaften werden im Standardregelwerk nicht verwendet:</p>
-                <p>
+                    
+    ByPriority:End`}</pre>Die im Folgenden aufgeführten Eigenschaften werden im Standardregelwerk nicht verwendet:
+                    <br />
+                    <br />
                     <i><strong>SourceCount</strong></i> Ermittelt für ein Gerät wie viele unterschiedliche Quellen
                     (aka Sender) im Zeitbereich angesteuert werden. Mit der Ordnung <i>Min</i> würde so eine
                     Planung bevorzugt bei der eine Quelle immer vom selben Gerät aufgezeichnet wird. Bei
                     vielen gleichzeitigen Aufzeichnungen mit und ohne Überlappung ist diese Bewertung
                     allerdings recht unzuverlässig, obwohl sie in Einzelfällen durchaus Sinn macht.
-                </p>
-                <p>
+                    <br />
+                    <br />
                     <i><strong>ParallelSource</strong></i> ermittelt über einen Planungszeitraum für jede Quelle
                     die Gesamtzeit, über die diese auf mehreren Geräten gleichzeitig aufgezeichnet wird. Mit der
                     Ordnung <i>Min</i> wird VCR.NET aufgefordert diese Zeit auf ein Minimum zu reduzieren,
                     selbst wenn dadurch die Planungspriorität der Geräte überschrieben wird.
-                </p>
-                <p>
+                    <br />
+                    <br />
                     <i><strong>StartTime:</strong>regelwerk</i> untersucht die relativen Startzeitpunkte von Geräten und
                     versucht zu verhindern, dass ein Geräte nach einem anderen aktiviert wird - etwa
                     weil bekannt ist, dass bei dem Start der zugehörigen Gerätetreiber auf anderen Geräten
@@ -121,17 +118,16 @@ ByPriority:End</pre>
                     angegeben, die durch einen senkrechten Strich (|) getrennt sind. Jede Regel beginnt mit dem
                     Namen eines Gerätes, darauf folgt das Symbol für <i>kleiner als</i> (&lt;) und dann eine
                     ebenfalls durch <i>kleiner als</i> getrennte Liste von Gerätenamen.
-                </p>
-                <p class="helpIndent">
+                    <br />
+                    <br />
                     Ein kleines Beispiel dazu: <i>dev1&lt;dev2&lt;dev3|dev4&lt;dev2</i> bevorzugt Planungen, bei denen das Gerät
                     <i>dev1</i> <strong>nicht</strong> nach <i>dev2</i> und <i>dev3</i> gestartet wird und
                     <i>dev4</i> <strong>nicht nach</strong> <i>dev2</i>. Der einfachste Fall ist mein privates
                     Beispiel mit der <i>Hauppauge Nexus-S</i> unter Windows 7 (32-Bit natürlich) die beim Starten
                     Aufzeichnungen anderer Geräte stört: <i>Nexus&lt;*</i> mit der Sonderregel, dass der Stern (*)
                     alle (anderen) für VCR.NET freigeschalteten DVB Geräte bezeichnet.
-                </p>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+                </div>
+            </div>;
+        }
+    }
+}
