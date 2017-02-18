@@ -154,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="content\styles.scss" />
+    <Content Include="content\images\null.png" />
     <Content Include="content\styles.css">
       <DependentUpon>styles.scss</DependentUpon>
     </Content>

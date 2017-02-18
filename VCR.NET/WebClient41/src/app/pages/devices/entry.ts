@@ -4,7 +4,7 @@
 
         site: JMSLib.App.ISite;
 
-        constructor(private readonly _model: VCRServer.PlanCurrentContract, _refresh: (info: Info, guide: boolean) => void) {
+        constructor(private readonly _model: VCRServer.PlanCurrentContract, suppressHibernate: boolean, _refresh: (info: Info, guide: boolean) => void, reload: () => void) {
             if (!_model.isIdle) {
                 this._start = new Date(_model.start);
                 this._end = new Date(this._start.getTime() + _model.duration * 1000);
@@ -12,7 +12,7 @@
                 this.displayStart = JMSLib.DateFormatter.getStartTime(this._start);
                 this.displayEnd = JMSLib.DateFormatter.getEndTime(this._end);
 
-                this.controller = new Controller(this._end, _model.remainingMinutes);
+                this.controller = new Controller(_model, suppressHibernate, reload);
             }
 
             this.showGuide = new JMSLib.App.Flag({}, "value", null, () => _refresh(this, true), () => !this._model.epg || !this._model.device || !this._model.source);
@@ -27,7 +27,9 @@
             if (this._model.isIdle)
                 return undefined;
 
-            if (this._model.remainingMinutes > 0)
+            if (this._model.duration <= 0)
+                return 'null';
+            if (this._model.referenceId)
                 return 'running';
 
             if (this._model.sourceName === 'PSI')

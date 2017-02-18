@@ -22,7 +22,7 @@ module VCRServer {
 
     export function doUrlCall<TResponseType, TRequestType>(url: string, method: string = `GET`, request?: TRequestType): JMSLib.App.IHttpPromise<TResponseType> {
         return JMSLib.App.browserWebCall(url, method, request);
-    }    
+    }
 
     export function getRestRoot(): string {
         return restRoot;
@@ -60,12 +60,8 @@ module VCRServer {
         return doUrlCall<void, void>(`edit/${jobId}${scheduleId}`, `DELETE`);
     }
 
-    export function updateEndTime(device: string, suppressHibernate: boolean, scheduleIdentifier: string, newEnd: Date): JQueryPromise<any> {
-        return $.ajax({
-            url: restRoot + `profile/` + device + `?disableHibernate=` + suppressHibernate + `&schedule=` + scheduleIdentifier + `&endTime=` + newEnd.toISOString(),
-            dataType: `json`,
-            type: `PUT`,
-        });
+    export function updateEndTime(device: string, suppressHibernate: boolean, scheduleIdentifier: string, newEnd: Date): JMSLib.App.IHttpPromise<void> {
+        return doUrlCall<void, void>(`profile/${device}?disableHibernate=${suppressHibernate}&schedule=${scheduleIdentifier}&endTime=${newEnd.toISOString()}`, `PUT`);
     }
 
     export function updateConfiguration(type: string, contract: SettingsContract, protocolFilter: (key: string, value: any) => any = null): JQueryPromise<any> {

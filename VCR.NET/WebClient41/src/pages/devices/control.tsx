@@ -9,6 +9,8 @@ namespace VCRNETClient.Ui {
     export class DeviceControl extends JMSLib.ReactUi.ComponentExWithSite<App.IDeviceController, IDeviceControl> {
         render(): JSX.Element {
             return <fieldset className="vcrnet-device-control">
+                {this.props.noui.live ? <div><a href={this.props.noui.live}>Aktuelle Aufzeichnung anschauen</a></div> : null}
+                {this.props.noui.timeshift ? <div><a href={this.props.noui.timeshift}>Aufzeichnung zeitversetzt anschauen</a></div> : null}
                 <table>
                     <tbody>
                         <tr>
@@ -22,6 +24,11 @@ namespace VCRNETClient.Ui {
                     </tbody>
                 </table>
                 <JMSLib.ReactUi.EditNumberWithSlider noui={this.props.noui.remaining} />
+                <div>
+                    <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.stopNow} />
+                    <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.update} />
+                    <JMSLib.ReactUi.EditBoolean noui={this.props.noui.noHibernate} />
+                </div>
             </fieldset>;
         }
     }

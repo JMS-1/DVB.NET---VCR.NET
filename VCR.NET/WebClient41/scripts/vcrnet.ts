@@ -2504,7 +2504,7 @@ class CurrentInfo {
     updateEndTime(whenDone: () => void): void {
         var end = (this.remainingMinutes > 0) ? this.currentEnd() : this.start;
 
-        VCRServer.updateEndTime(this.device, this.suppressHibernate, this.scheduleIdentifier, end).done(whenDone);
+        VCRServer.updateEndTime(this.device, this.suppressHibernate, this.scheduleIdentifier, end).then(whenDone);
     }
 }
 

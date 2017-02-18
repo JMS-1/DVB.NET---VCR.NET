@@ -34,6 +34,16 @@ namespace VCRNETClient.App {
         readonly end: string;
 
         readonly remaining: JMSLib.App.INumberWithSlider;
+
+        readonly live: string;
+
+        readonly timeshift: string;
+
+        readonly stopNow: JMSLib.App.ICommand;
+
+        readonly noHibernate: JMSLib.App.IFlag;
+
+        readonly update: JMSLib.App.ICommand;
     }
 
     export interface IDevicesPage extends IPage {
@@ -56,8 +66,9 @@ namespace VCRNETClient.App {
 
         private setPlan(plan: VCRServer.PlanCurrentContract[]): void {
             var refresh = this.refresh.bind(this);
+            var reload = this.reload.bind(this);
 
-            this.infos = (plan || []).map(info => new Devices.Info(info, refresh));
+            this.infos = (plan || []).map(info => new Devices.Info(info, this.application.profile.suppressHibernate, refresh, reload));
 
             this.application.isBusy = false;
 
