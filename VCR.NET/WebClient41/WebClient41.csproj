@@ -242,7 +242,6 @@
     <Content Include="content\images\faq\recover.png" />
     <Content Include="content\images\faq\webserver.png" />
     <Content Include="FAQ\websettings.html" />
-    <Content Include="FAQ\tsplayer.html" />
     <Content Include="FAQ\tasks.html" />
     <Content Include="FAQ\streaming.html" />
     <Content Include="FAQ\sourcelimit.html" />
@@ -432,6 +431,7 @@
     <TypeScriptCompile Include="src\pages\help\jobsAndSchedules.tsx" />
     <TypeScriptCompile Include="src\pages\help\numberOfFiles.tsx" />
     <TypeScriptCompile Include="src\pages\help\sourceChooser.tsx" />
+    <TypeScriptCompile Include="src\pages\help\tsPlayer.tsx" />
     <TypeScriptCompile Include="src\pages\jobs.tsx" />
     <TypeScriptCompile Include="src\pages\log.tsx" />
     <TypeScriptCompile Include="src\pages\log\details.tsx" />

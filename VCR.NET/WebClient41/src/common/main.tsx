@@ -15,6 +15,7 @@ namespace VCRNETClient.Ui {
                 ["psiconfig"]: new HelpPages.AdminSourceScan(),
                 ["filecontents"]: new HelpPages.FileContents(),
                 ["decryption"]: new HelpPages.Decryption(),
+                ["tsplayer"]: new HelpPages.TsPlayer(),
                 ["overview"]: new HelpPages.Overview(),
                 ["epg"]: new HelpPages.ProgramGuide(),
                 ["archive"]: new HelpPages.Archive(),
