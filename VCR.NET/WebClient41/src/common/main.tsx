@@ -14,6 +14,7 @@ namespace VCRNETClient.Ui {
                 ["epgconfig"]: new HelpPages.AdminProgramGuide(),
                 ["psiconfig"]: new HelpPages.AdminSourceScan(),
                 ["filecontents"]: new HelpPages.FileContents(),
+                ["decryption"]: new HelpPages.Decryption(),
                 ["overview"]: new HelpPages.Overview(),
                 ["epg"]: new HelpPages.ProgramGuide(),
                 ["archive"]: new HelpPages.Archive(),

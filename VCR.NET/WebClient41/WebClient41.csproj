@@ -250,7 +250,6 @@
     <Content Include="FAQ\hibernation.html" />
     <Content Include="FAQ\editcurrent.html" />
     <Content Include="FAQ\dvbnet.html" />
-    <Content Include="FAQ\decryption.html" />
     <Content Include="FAQ\currentstream.html" />
     <Content Include="content\images\faq\decryptlimit.png" />
     <Content Include="content\images\faq\endchange.png" />
@@ -428,6 +427,7 @@
     <TypeScriptCompile Include="src\lib\edit\datetime\day.tsx" />
     <TypeScriptCompile Include="src\pages\edit\duration.tsx" />
     <TypeScriptCompile Include="src\pages\edit\exception.tsx" />
+    <TypeScriptCompile Include="src\pages\help\decryption.tsx" />
     <TypeScriptCompile Include="src\pages\help\fileContents.tsx" />
     <TypeScriptCompile Include="src\pages\help\jobsAndSchedules.tsx" />
     <TypeScriptCompile Include="src\pages\help\numberOfFiles.tsx" />
