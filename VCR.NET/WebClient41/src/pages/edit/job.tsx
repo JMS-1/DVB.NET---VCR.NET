@@ -1,4 +1,4 @@
-﻿/// <reference path="../../lib/reactUi.tsx" />
+﻿/// <reference path="../../lib.react/reactUi.tsx" />
 
 namespace VCRNETClient.Ui {
     export class JobData extends JMSLib.ReactUi.Component<App.Edit.IJobEditor>{

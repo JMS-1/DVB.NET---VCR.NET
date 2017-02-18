@@ -1,4 +1,4 @@
-﻿/// <reference path="../../lib/reactUi.tsx" />
+﻿/// <reference path="../../lib.react/reactUi.tsx" />
 
 namespace VCRNETClient.Ui {
     export class GuideNavigation extends JMSLib.ReactUi.Component<App.IGuidePageNavigation>  {

@@ -1,4 +1,4 @@
-﻿/// <reference path="../lib/router.tsx" />
+﻿/// <reference path="../lib.react/router.tsx" />
 
 namespace VCRNETClient.Ui {
 

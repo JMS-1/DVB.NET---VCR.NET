@@ -119,15 +119,32 @@
     <TypeScriptCompile Include="src\app\pages\log.ts" />
     <TypeScriptCompile Include="src\app\pages\log\entry.ts" />
     <TypeScriptCompile Include="src\app\pages\settings.ts" />
-    <TypeScriptCompile Include="src\lib\edit\multiButtonList.tsx" />
+    <TypeScriptCompile Include="src\lib.react\command\checkbox.tsx" />
+    <TypeScriptCompile Include="src\lib.react\command\command.tsx" />
+    <TypeScriptCompile Include="src\lib.react\command\externalLink.tsx" />
+    <TypeScriptCompile Include="src\lib.react\command\internalLink.tsx" />
+    <TypeScriptCompile Include="src\lib.react\command\pictogram.tsx" />
+    <TypeScriptCompile Include="src\lib.react\command\radio.tsx" />
+    <TypeScriptCompile Include="src\lib.react\detailRow.tsx" />
+    <TypeScriptCompile Include="src\lib.react\edit\boolean\flag.tsx" />
+    <TypeScriptCompile Include="src\lib.react\edit\boolean\flagButton.tsx" />
+    <TypeScriptCompile Include="src\lib.react\edit\buttonList.tsx" />
+    <TypeScriptCompile Include="src\lib.react\edit\datetime\day.tsx" />
+    <TypeScriptCompile Include="src\lib.react\edit\datetime\time.tsx" />
+    <TypeScriptCompile Include="src\lib.react\edit\list.tsx" />
+    <TypeScriptCompile Include="src\lib.react\edit\multiButtonList.tsx" />
+    <TypeScriptCompile Include="src\lib.react\edit\multiList.tsx" />
+    <TypeScriptCompile Include="src\lib.react\edit\number\number.tsx" />
+    <TypeScriptCompile Include="src\lib.react\edit\number\slider.tsx" />
+    <TypeScriptCompile Include="src\lib.react\edit\text\text.tsx" />
+    <TypeScriptCompile Include="src\lib.react\edit\text\textarea.tsx" />
+    <TypeScriptCompile Include="src\lib.react\reactUi.tsx" />
+    <TypeScriptCompile Include="src\lib.react\router.tsx" />
+    <TypeScriptCompile Include="src\lib.react\timeBar.tsx" />
     <TypeScriptCompile Include="src\lib\edit\multiList.ts" />
-    <TypeScriptCompile Include="src\lib\edit\multiList.tsx" />
-    <TypeScriptCompile Include="src\lib\edit\text\text.tsx" />
-    <TypeScriptCompile Include="src\lib\edit\text\textarea.tsx" />
     <TypeScriptCompile Include="src\lib\http\browser.ts" />
     <TypeScriptCompile Include="src\lib\http\config.ts" />
     <TypeScriptCompile Include="src\lib\timebar.ts" />
-    <TypeScriptCompile Include="src\lib\timeBar.tsx" />
     <TypeScriptCompile Include="src\pages\admin.tsx" />
     <TypeScriptCompile Include="src\pages\admin\directories.tsx" />
     <TypeScriptCompile Include="src\pages\admin\devices.tsx" />
@@ -147,9 +164,7 @@
     <TypeScriptCompile Include="src\pages\guide\info.tsx" />
     <TypeScriptCompile Include="src\pages\guide\navigator.tsx" />
     <TypeScriptCompile Include="src\lib\command\command.ts" />
-    <TypeScriptCompile Include="src\lib\edit\boolean\flagButton.tsx" />
     <TypeScriptCompile Include="src\lib\edit\list.ts" />
-    <TypeScriptCompile Include="src\lib\edit\buttonList.tsx" />
     <TypeScriptCompile Include="src\lib\localizable.ts" />
   </ItemGroup>
   <ItemGroup>
@@ -203,18 +218,38 @@
     <Content Include="default.html" />
     <Content Include="FAQ\configuration.html" />
     <Content Include="FAQ\controlcenter.html" />
-    <None Include="src\lib\edit\multiList.scss" />
-    <None Include="src\lib\edit\multiButtonList.scss" />
-    <None Include="src\lib\edit\text\textarea.scss" />
-    <None Include="src\lib\constants.scss" />
-    <None Include="src\lib\timebar.scss" />
+    <Content Include="src\lib.react\command\checkbox.scss" />
+    <Content Include="src\lib.react\command\command.scss" />
+    <Content Include="src\lib.react\command\externalLink.scss" />
+    <Content Include="src\lib.react\command\internalLink.scss" />
+    <Content Include="src\lib.react\command\pictogram.scss" />
+    <Content Include="src\lib.react\command\radio.scss" />
+    <Content Include="src\lib.react\constants.scss" />
+    <Content Include="src\lib.react\detailRow.scss" />
+    <Content Include="src\lib.react\edit\boolean\flag.scss" />
+    <Content Include="src\lib.react\edit\boolean\flagButton.scss" />
+    <Content Include="src\lib.react\edit\buttonList.scss" />
+    <Content Include="src\lib.react\edit\datetime\day.scss" />
+    <Content Include="src\lib.react\edit\datetime\time.scss" />
+    <Content Include="src\lib.react\edit\list.scss" />
+    <Content Include="src\lib.react\edit\multiButtonList.scss" />
+    <Content Include="src\lib.react\edit\multiList.scss" />
+    <Content Include="src\lib.react\edit\number\number.scss" />
+    <Content Include="src\lib.react\edit\number\slider.scss" />
+    <Content Include="src\lib.react\edit\text\text.scss" />
+    <Content Include="src\lib.react\edit\text\textarea.scss" />
+    <Content Include="src\lib.react\router.scss" />
+    <Content Include="src\lib.react\styles.css">
+      <DependentUpon>styles.scss</DependentUpon>
+    </Content>
+    <Content Include="src\lib.react\styles.scss" />
+    <Content Include="src\lib.react\timebar.scss" />
     <Content Include="src\pages\admin\directories.scss" />
     <Content Include="src\pages\admin\guide.scss" />
     <Content Include="src\pages\admin\other.scss" />
     <Content Include="src\pages\admin\rules.scss" />
     <Content Include="src\pages\admin\security.scss" />
     <Content Include="src\pages\admin\sources.scss" />
-    <Content Include="src\lib\edit\text\text.scss" />
     <None Include="src\pages\edit\exception.scss" />
     <None Include="src\pages\admin.scss" />
     <None Include="src\pages\admin\devices.scss" />
@@ -226,11 +261,6 @@
     <None Include="src\pages\devices\control.scss" />
     <Content Include="src\pages\guide.scss" />
     <None Include="src\pages\guide\navigator.scss" />
-    <None Include="src\lib\edit\boolean\flagButton.scss" />
-    <Content Include="src\lib\styles.css">
-      <DependentUpon>styles.scss</DependentUpon>
-    </Content>
-    <Content Include="src\lib\edit\buttonList.scss" />
     <None Include="src\pages\guide\entry.scss" />
     <None Include="src\pages\guide\details.scss" />
     <None Include="src\pages\jobs.scss" />
@@ -253,18 +283,11 @@
     <Content Include="content\images\faq\endchange.png" />
     <None Include="src\pages\edit\job.scss" />
     <None Include="src\common\field.scss" />
-    <None Include="src\lib\edit\number\number.scss" />
-    <None Include="src\lib\edit\list.scss" />
-    <None Include="src\lib\edit\boolean\flag.scss" />
     <None Include="src\pages\edit\channel.scss" />
     <None Include="src\pages\edit\channelFlags.scss" />
     <None Include="src\pages\edit\schedule.scss" />
-    <None Include="src\lib\edit\datetime\day.scss" />
-    <None Include="src\lib\edit\datetime\time.scss" />
     <None Include="src\pages\edit\duration.scss" />
-    <None Include="src\lib\command\command.scss" />
     <None Include="src\pages\plan\exception.scss" />
-    <None Include="src\lib\edit\number\slider.scss" />
     <Content Include="src\common\styles.css">
       <DependentUpon>styles.scss</DependentUpon>
     </Content>
@@ -317,24 +340,16 @@
     <Content Include="scripts\vcrnet.js.map">
       <DependentUpon>vcrnet.js</DependentUpon>
     </Content>
-    <None Include="src\lib\command\internalLink.scss" />
     <None Include="src\common\helpLink.scss" />
-    <None Include="src\lib\command\externalLink.scss" />
     <None Include="src\common\navigation.scss" />
-    <None Include="src\lib\command\pictogram.scss" />
-    <None Include="src\lib\detailRow.scss" />
     <None Include="src\common\inlineHelp.scss" />
-    <None Include="src\lib\command\checkbox.scss" />
     <Content Include="src\common\styles.scss" />
-    <Content Include="src\lib\styles.scss" />
-    <Content Include="src\lib\router.scss" />
     <None Include="src\pages\edit.scss" />
     <None Include="src\pages\help.scss" />
     <Content Include="src\pages\plan.scss" />
     <Content Include="src\pages\home.scss" />
     <Content Include="src\common\main.scss" />
     <None Include="src\pages\plan\row.scss" />
-    <None Include="src\lib\command\radio.scss" />
     <Content Include="ui\admin.html" />
     <Content Include="ui\faq.html" />
     <Content Include="ui\favorites.html" />
@@ -417,12 +432,8 @@
     <TypeScriptCompile Include="src\app\pages\plan.ts" />
     <TypeScriptCompile Include="src\lib\promise.ts" />
     <TypeScriptCompile Include="src\app\pages\edit\schedule.ts" />
-    <TypeScriptCompile Include="src\lib\command\checkbox.tsx" />
-    <TypeScriptCompile Include="src\lib\detailRow.tsx" />
-    <TypeScriptCompile Include="src\lib\command\command.tsx" />
     <TypeScriptCompile Include="src\pages\edit\channel.tsx" />
     <TypeScriptCompile Include="src\pages\edit\channelFlags.tsx" />
-    <TypeScriptCompile Include="src\lib\edit\datetime\day.tsx" />
     <TypeScriptCompile Include="src\pages\edit\duration.tsx" />
     <TypeScriptCompile Include="src\pages\edit\exception.tsx" />
     <TypeScriptCompile Include="src\pages\help\customSchedule.tsx" />
@@ -439,16 +450,8 @@
     <TypeScriptCompile Include="src\pages\plan\exception.tsx" />
     <TypeScriptCompile Include="src\common\field.tsx" />
     <TypeScriptCompile Include="src\pages\edit\job.tsx" />
-    <TypeScriptCompile Include="src\lib\command\externalLink.tsx" />
     <TypeScriptCompile Include="src\common\helpLink.tsx" />
-    <TypeScriptCompile Include="src\lib\edit\boolean\flag.tsx" />
-    <TypeScriptCompile Include="src\lib\edit\number\slider.tsx" />
     <TypeScriptCompile Include="src\pages\edit\schedule.tsx" />
-    <TypeScriptCompile Include="src\lib\edit\list.tsx" />
-    <TypeScriptCompile Include="src\lib\edit\number\number.tsx" />
-    <TypeScriptCompile Include="src\lib\edit\datetime\time.tsx" />
-    <TypeScriptCompile Include="src\lib\reactUi.tsx" />
-    <TypeScriptCompile Include="src\lib\router.tsx" />
     <TypeScriptCompile Include="src\pages\edit.tsx" />
     <TypeScriptCompile Include="src\pages\help\adminGuide.tsx" />
     <TypeScriptCompile Include="src\pages\help\adminScan.tsx" />
@@ -463,14 +466,11 @@
     <TypeScriptCompile Include="src\pages\help.tsx" />
     <TypeScriptCompile Include="src\pages\home.tsx" />
     <TypeScriptCompile Include="src\common\inlineHelp.tsx" />
-    <TypeScriptCompile Include="src\lib\command\internalLink.tsx" />
     <TypeScriptCompile Include="src\common\main.tsx" />
     <TypeScriptCompile Include="src\common\navigation.tsx" />
-    <TypeScriptCompile Include="src\lib\command\pictogram.tsx" />
     <TypeScriptCompile Include="src\pages\plan.tsx" />
     <TypeScriptCompile Include="src\pages\plan\guide.tsx" />
     <TypeScriptCompile Include="src\pages\plan\row.tsx" />
-    <TypeScriptCompile Include="src\lib\command\radio.tsx" />
     <TypeScriptCompile Include="src\common\view.tsx" />
     <TypeScriptCompile Include="src\pages\settings.tsx" />
     <TypeScriptCompile Include="src\vcrnet.tsx" />
