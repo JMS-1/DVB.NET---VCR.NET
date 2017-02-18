@@ -576,7 +576,7 @@ class Page {
 }
 
 // Globale Initialisierungen
-if (document.location.pathname !== "/default.html")
+if (document.location.pathname.indexOf("/default.html") < 0)
     $(() => {
         // Benutzereinstellungen einmalig anfordern
         VCRServer.UserProfile.global.refresh();
