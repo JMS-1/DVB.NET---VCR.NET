@@ -6,7 +6,7 @@ namespace VCRNETClient.Ui {
         page: App.IDevicesPage;
     }
 
-    export class DeviceControl extends JMSLib.ReactUi.ComponentEx<App.IDeviceController, IDeviceControl> {
+    export class DeviceControl extends JMSLib.ReactUi.ComponentExWithSite<App.IDeviceController, IDeviceControl> {
         render(): JSX.Element {
             return <fieldset className="vcrnet-device-control">
                 <table>
