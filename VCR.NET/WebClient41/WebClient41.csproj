@@ -305,7 +305,7 @@
     <TypeScriptCompile Include="..\typings\index.d.ts">
       <Link>src\index.d.ts</Link>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="scripts\jmslib.ts" />
+    <None Include="scripts\jmslib.ts" />
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
@@ -397,7 +397,7 @@
     <Content Include="ui\templates\sourceSelection.html" />
     <Content Include="ui\templates\planRow.html" />
     <Content Include="ui\templates\planRowException.html" />
-    <TypeScriptCompile Include="scripts\vcrnet.ts" />
+    <None Include="scripts\vcrnet.ts" />
     <None Include="content\jmslib.scss" />
     <TypeScriptCompile Include="src\app\app.ts" />
     <TypeScriptCompile Include="src\lib\dateTimeFormatter.ts" />

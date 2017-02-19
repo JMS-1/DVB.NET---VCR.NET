@@ -73,12 +73,12 @@
 
         // Startzeit der Sendung.
         get startDisplay(): string {
-            return JMSLib.DateFormatter.getStartTime(this.start);
+            return JMSLib.App.DateFormatter.getStartTime(this.start);
         }
 
         // Endzeit der Sendung.
         get endDisplay(): string {
-            return JMSLib.DateFormatter.getEndTime(this.end);
+            return JMSLib.App.DateFormatter.getEndTime(this.end);
         }
 
         // Meldet die Quelle.
@@ -108,7 +108,7 @@
 
         // Meldet die Dauer der Sendung.
         get duration(): string {
-            return JMSLib.DateFormatter.getDuration(new Date(1000 * this.model.duration));
+            return JMSLib.App.DateFormatter.getDuration(new Date(1000 * this.model.duration));
         }
 
         // Meldet die Freigabe der Sendung.
