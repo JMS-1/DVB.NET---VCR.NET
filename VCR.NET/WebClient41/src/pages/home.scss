@@ -1,6 +1,4 @@
 ﻿.vcrnet-home {
-    li.vcrnet-home-task {
-        list-style-type: none;
-        width: 70%;
-    }
 }
+
+@import "home/task.scss";

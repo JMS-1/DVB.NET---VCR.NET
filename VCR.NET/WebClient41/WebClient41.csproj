@@ -281,6 +281,7 @@
     <Content Include="src\common\styles.css">
       <DependentUpon>styles.scss</DependentUpon>
     </Content>
+    <None Include="src\pages\home\task.scss" />
     <Content Include="src\pages\styles.css">
       <DependentUpon>styles.scss</DependentUpon>
     </Content>
@@ -444,6 +445,7 @@
     <TypeScriptCompile Include="src\pages\help\tasks.tsx" />
     <TypeScriptCompile Include="src\pages\help\tsPlayer.tsx" />
     <TypeScriptCompile Include="src\pages\help\webSettings.tsx" />
+    <TypeScriptCompile Include="src\pages\home\task.tsx" />
     <TypeScriptCompile Include="src\pages\jobs.tsx" />
     <TypeScriptCompile Include="src\pages\log.tsx" />
     <TypeScriptCompile Include="src\pages\log\details.tsx" />
