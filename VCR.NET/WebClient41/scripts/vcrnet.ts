@@ -2778,7 +2778,7 @@ class homePage extends Page implements IPage {
 
     // Aktiviert eine Anzeige zur Aktualisierung
     private showUpdate(button: JQuery, index: number, method: string): void {
-        this.startUpdate = () => VCRServer.triggerTask(method).done(() => window.location.hash = '#current');
+        this.startUpdate = () => VCRServer.triggerTask(method).then(() => window.location.hash = '#current');
 
         // Anzeigen oder ausblenden
         var view = this.detailsManager.toggle(this, button[0], index);

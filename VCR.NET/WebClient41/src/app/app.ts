@@ -87,7 +87,7 @@
             this.jobPage = this.addPage(JobPage);
             this.logPage = this.addPage(LogPage);
 
-            VCRServer.getServerVersion().then(info => this.setVersion(info));
+            VCRServer.getUserProfile().then(profile => this.setUserProfile(profile));
         }
 
         private addPage<TPageType extends Page>(factory: { new (application: Application): TPageType }): TPageType {
@@ -96,12 +96,6 @@
             this._pageMapper[page.route] = page;
 
             return page;
-        }
-
-        private setVersion(info: VCRServer.InfoServiceContract): void {
-            this.version = info;
-
-            VCRServer.getUserProfile().then(profile => this.setUserProfile(profile));
         }
 
         private setUserProfile(profile: VCRServer.UserProfileContract): void {
@@ -131,7 +125,11 @@
             this.page = page;
 
             // Zustand wie beim Erstaufruf vorbereiten.
-            page.reset(sections || []);
+            VCRServer.getServerVersion().then(info => {
+                this.version = info;
+
+                page.reset(sections || []);
+            });
 
             return true;
         }

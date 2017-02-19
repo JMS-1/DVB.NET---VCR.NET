@@ -3,9 +3,11 @@
 namespace VCRNETClient.Ui {
 
     // Die React.Js Komponente zur Anzeige der Startseite.
-    export class Home extends JMSLib.ReactUi.Component<App.IHomePage>{
+    export class Home extends JMSLib.ReactUi.ComponentWithSite<App.IHomePage>{
         render(): JSX.Element {
             var application = this.props.noui.application;
+            var showGuide = this.props.noui.showStartGuide;
+            var showScan = this.props.noui.showStartScan;
 
             return <div className="vcrnet-home">
                 <div>
@@ -28,12 +30,41 @@ namespace VCRNETClient.Ui {
                 <div>
                     Je nach den zugeteilten Benutzerrechten können Sie darüber hinaus folgende administrative Tätigkeiten wahrnehmen:
                     <ul>
-                        <li><JMSLib.ReactUi.InternalLink view="">die Programmzeitschrift sobald wie möglich aktualisieren</JMSLib.ReactUi.InternalLink><HelpLink page={this.props.noui} topic="epgconfig" /></li>
-                        <li><JMSLib.ReactUi.InternalLink view="">einen Sendersuchlauf sobald wie möglich durchführen</JMSLib.ReactUi.InternalLink><HelpLink page={this.props.noui} topic="psiconfig" /></li>
+                        <li>{showGuide.isReadonly ? showGuide.text : <JMSLib.ReactUi.InternalLink view={() => showGuide.value = !showGuide.value}>{showGuide.text}</JMSLib.ReactUi.InternalLink>}<HelpLink page={this.props.noui} topic="epgconfig" /></li>
+                        {showGuide.value ? <li className="vcrnet-home-task">
+                            <fieldset>
+                                Mit der Schaltfläche unter diesem Text kann eine baldmögliche Aktualisierung der
+                                Programmzeitschrift<HelpLink topic="epg" page={this.props.noui} /> angefordert
+                                werden. Sind gerade Aufzeichnungen aktiv oder in nächster Zeit geplant, so wird der VCR.NET
+                                Recording Service die Aktualisierung auf den nächstmöglichen Zeitpunkt verschieben, da die Ausführung
+                                regulärer Aufzeichnungen immer Priorität vor allen Aktualisierungen
+                                hat.<HelpLink topic="tasks" page={this.props.noui} />
+                                <div>
+                                    <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.startGuide} />
+                                </div>
+                            </fieldset>
+                        </li> : null}
+                        <li>{showScan.isReadonly ? showScan.text : <JMSLib.ReactUi.InternalLink view={() => showScan.value = !showScan.value}>{showScan.text}</JMSLib.ReactUi.InternalLink>}<HelpLink page={this.props.noui} topic="psiconfig" /></li>
+                        {showScan.value ? <li className="vcrnet-home-task">
+                            <fieldset>
+                                Hier ist es nun möglich, die Aktualisierung der Quellen der vom VCR.NET Recording Service verwalteten
+                                DVB.NET Geräte anzufordern. Da die Aktualisierung der Quellen eine niedrigere Priorität besitzt als
+                                die Ausführung regulärer Aufzeichnungen kann es sein, dass sie nicht unmittelbar gestartet wird.
+                                Der VCR.NET Recording Service wird dies aber bei nächster Gelegenheit
+                                nachholen.<HelpLink topic="tasks" page={this.props.noui} />
+                                <div>
+                                    <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.startScan} />
+                                </div>
+                            </fieldset>
+                        </li> : null}
                         <li>prüfen, ob inzwischen eine <JMSLib.ReactUi.InternalLink view="">neuere Version</JMSLib.ReactUi.InternalLink> des VCR.NET Recording Service angeboten wird</li>
-                        <li><JMSLib.ReactUi.InternalLink pict="admin" view={application.adminPage.route}>die Konfiguration des VCR.NET Recording Service verändern</JMSLib.ReactUi.InternalLink></li>
+                        <li>{this.props.noui.isRecording ? "die Konfiguration des VCR.NET Recording Service verändern" : <JMSLib.ReactUi.InternalLink pict="admin" view={application.adminPage.route}>die Konfiguration des VCR.NET Recording Service verändern</JMSLib.ReactUi.InternalLink>}</li>
                     </ul>
                 </div>
+                {this.props.noui.isRecording ? <div>
+                    Hinweis: Der VCR.NET Recording Service führt gerade eine oder mehrere Aufzeichnungen
+                    oder Aktualisierungen von Programmzeitschrift respektive Senderliste aus.<JMSLib.ReactUi.InternalLink view={this.props.noui.application.devicesPage.route} pict="info" />
+                </div> : null}
                 <div>
                     Weitere Informationen zum VCR.NET Recording Service findet man hier im Bereich der <JMSLib.ReactUi.InternalLink view={`${application.helpPage.route};overview`}>Fragen &amp; Antworten</JMSLib.ReactUi.InternalLink>, auf
                     der <JMSLib.ReactUi.ExternalLink url="http://www.psimarron.net/vcrnet">Homepage im Internet</JMSLib.ReactUi.ExternalLink> oder

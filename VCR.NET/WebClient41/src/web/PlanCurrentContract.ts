@@ -51,5 +51,9 @@
         return doUrlCall(`plan`);
     }
 
+    export function updateEndTime(device: string, suppressHibernate: boolean, scheduleIdentifier: string, newEnd: Date): JMSLib.App.IHttpPromise<void> {
+        return doUrlCall<void, void>(`profile/${device}?disableHibernate=${suppressHibernate}&schedule=${scheduleIdentifier}&endTime=${newEnd.toISOString()}`, `PUT`);
+    }
+
 }
 

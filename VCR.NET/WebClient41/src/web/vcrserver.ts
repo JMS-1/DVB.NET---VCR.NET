@@ -40,28 +40,8 @@ module VCRServer {
         return deviceUrl;
     }
 
-    export function getRecordingDirectories(): JMSLib.App.IHttpPromise<string[]> {
-        return doUrlCall(`info?directories`);
-    }
-
-    export function updateException(legacyId: string, referenceDay: string, startDelta: number, durationDelta: number): JMSLib.App.IHttpPromise<void> {
-        return doUrlCall<void, void>(`exception/${legacyId}?when=${referenceDay}&startDelta=${startDelta}&durationDelta=${durationDelta}`, `PUT`);
-    }
-
-    export function triggerTask(taskName: string): JQueryPromise<any> {
-        return $.ajax({
-            url: restRoot + `plan?` + taskName,
-            dataType: `json`,
-            type: `POST`,
-        });
-    }
-
-    export function deleteSchedule(jobId: string, scheduleId: string): JMSLib.App.IHttpPromise<void> {
-        return doUrlCall<void, void>(`edit/${jobId}${scheduleId}`, `DELETE`);
-    }
-
-    export function updateEndTime(device: string, suppressHibernate: boolean, scheduleIdentifier: string, newEnd: Date): JMSLib.App.IHttpPromise<void> {
-        return doUrlCall<void, void>(`profile/${device}?disableHibernate=${suppressHibernate}&schedule=${scheduleIdentifier}&endTime=${newEnd.toISOString()}`, `PUT`);
+    export function triggerTask(taskName: string): JMSLib.App.IHttpPromise<void> {
+        return doUrlCall<void, void>(`plan?${taskName}`, `POST`);
     }
 
     export function updateConfiguration(type: string, contract: SettingsContract, protocolFilter: (key: string, value: any) => any = null): JQueryPromise<any> {
