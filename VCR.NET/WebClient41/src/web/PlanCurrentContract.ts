@@ -55,5 +55,9 @@
         return doUrlCall<void, void>(`profile/${device}?disableHibernate=${suppressHibernate}&schedule=${scheduleIdentifier}&endTime=${newEnd.toISOString()}`, `PUT`);
     }
 
+    export function triggerTask(taskName: string): JMSLib.App.IHttpPromise<void> {
+        return doUrlCall<void, void>(`plan?${taskName}`, `POST`);
+    }
+
 }
 

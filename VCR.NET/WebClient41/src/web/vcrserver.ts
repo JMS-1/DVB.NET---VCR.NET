@@ -40,10 +40,6 @@ module VCRServer {
         return deviceUrl;
     }
 
-    export function triggerTask(taskName: string): JMSLib.App.IHttpPromise<void> {
-        return doUrlCall<void, void>(`plan?${taskName}`, `POST`);
-    }
-
     export function updateConfiguration(type: string, contract: SettingsContract, protocolFilter: (key: string, value: any) => any = null): JQueryPromise<any> {
         if (protocolFilter == null)
             protocolFilter = (key: string, value: any) => value;
