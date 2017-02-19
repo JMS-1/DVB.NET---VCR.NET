@@ -37,7 +37,7 @@
                 // Verwaltung erzeugen.
                 ProfileSourcesCache.promises[profileName] = promise = new JMSLib.App.Promise<SourceEntry[], JMSLib.App.IHttpErrorInformation>((success, failure) => {
                     // Ladevorgang anstossen.
-                    getProfileSources(profileName).then(data => success($.map(data, rawData => new SourceEntry(rawData))));
+                    getProfileSources(profileName).then(data => success(data.map(rawData => new SourceEntry(rawData))));
                 });
             }
 
