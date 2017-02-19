@@ -1,13 +1,8 @@
 ﻿@import "jmslib";
 @import "vcrnet_old";
 
-@import "../src/lib.react/styles.scss";
+@import "../src/lib.react/styles";
 
-@import "../src/common/styles.scss";
-@import "../src/vcrnet.scss";
-@import "../src/pages/styles.scss";
-
-vcrnet-spa {
-    display: block;
-}
-
+@import "../src/common/styles";
+@import "../src/vcrnet";
+@import "../src/pages/styles";

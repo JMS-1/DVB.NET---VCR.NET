@@ -398,7 +398,6 @@
     <Content Include="ui\templates\planRow.html" />
     <Content Include="ui\templates\planRowException.html" />
     <TypeScriptCompile Include="scripts\vcrnet.ts" />
-    <Content Include="default_old.html" />
     <None Include="content\jmslib.scss" />
     <TypeScriptCompile Include="src\app\app.ts" />
     <TypeScriptCompile Include="src\lib\dateTimeFormatter.ts" />

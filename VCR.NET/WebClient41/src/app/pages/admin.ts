@@ -77,7 +77,11 @@ namespace VCRNETClient.App {
                 if (restartRequired === true)
                     alert(`RESTART`);
                 else if (restartRequired !== false)
+                {
                     command.message = `Ausführung zurzeit nicht möglich`;
+
+                    this.application.restart();
+                }
                 else
                     this.application.gotoPage(null);
             }, error => {

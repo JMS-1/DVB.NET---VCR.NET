@@ -71,16 +71,13 @@ namespace VCRNETClient.Ui {
             if (document.title !== title)
                 document.title = title;
 
-            if (this._application.isBusy)
-                return <div className="vcrnet-main">
-                    <h1>(Bitte etwas Geduld)</h1>
-                </div>;
-            else
-                return <div className="vcrnet-main">
-                    <h1>{page ? page.title : title}</h1>
-                    <Navigation noui={page} />
-                    <View noui={page} />
-                </div>;
+            return <div className="vcrnet-main">
+                {this._application.isRestarting ?
+                    <div>Der VCR.NET Recording Service startet nun neu und steht in Kürze wieder zur Verfügung.</div> :
+                    (this._application.isBusy ?
+                        <div><h1>(Bitte etwas Geduld)</h1></div> :
+                        <div><h1>{page ? page.title : title}</h1><Navigation noui={page} /><View noui={page} /></div>)}
+            </div>;
         }
 
         private onhashchange(): void {
@@ -102,7 +99,7 @@ namespace VCRNETClient.Ui {
         }
 
         goto(name: string): void {
-            window.location.href = `#${name}`;
+            window.location.href = name ? `#${name}` : `#`;
         }
 
         getHelpComponentProvider<TComponentType extends App.IHelpComponent>(): App.IHelpComponentProvider<TComponentType> {

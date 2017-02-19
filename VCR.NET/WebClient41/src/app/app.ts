@@ -1,6 +1,8 @@
 ﻿namespace VCRNETClient.App {
 
     export interface IApplication {
+        readonly isRestarting;
+
         readonly homePage: IHomePage;
 
         readonly helpPage: IHelpPage;
@@ -60,6 +62,8 @@
         private _pageMapper: { [name: string]: Page } = {};
 
         // Nach aussen hin sichtbarer globaler Zustand.
+        isRestarting = false
+
         version: VCRServer.InfoServiceContract;
 
         profile: VCRServer.UserProfileContract;
@@ -140,6 +144,10 @@
 
             this._busy = isBusy
 
+            this.refreshUi();
+        }
+
+        private refreshUi(): void {
             if (this._site)
                 this._site.refreshUi();
         }
@@ -156,6 +164,20 @@
 
         getHelpComponentProvider<TComponentType extends IHelpComponent>(): IHelpComponentProvider<TComponentType> {
             return this._site && this._site.getHelpComponentProvider<TComponentType>();
+        }
+
+        restart(): void {
+            this.isRestarting = true;
+
+            setTimeout(() => {
+                this.isRestarting = false;
+
+                this.gotoPage(null);
+
+                this.refreshUi();
+            }, 10000);
+
+            this.refreshUi();
         }
     }
 }
