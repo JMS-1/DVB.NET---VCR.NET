@@ -61,7 +61,7 @@
     }
 
     export class PlanEntry implements IPlanEntry {
-        constructor(private model: VCRServer.PlanActivityContract, private _toggleDetail: (entry: PlanEntry, epg: boolean) => void, application: App.Application, reload: () => void) {
+        constructor(private model: VCRServer.PlanActivityContract, private _toggleDetail: (entry: PlanEntry, epg: boolean) => void, application: App.Application, reload: () => void, private readonly _findInGuide: (model: VCRServer.GuideItemContract) => void) {
             // Zeiten umrechnen
             this.duration = parseInt(model.duration);
             this.start = new Date(model.start);
@@ -208,7 +208,7 @@
                 return this._guideItem;
 
             VCRServer.getGuideItem(this.model.epgDevice, this.model.source, this.start, this.end).then(item => {
-                this._guideItem = item ? new Guide.GuideInfo(item) : null;
+                this._guideItem = item ? new Guide.GuideInfo(item, this._findInGuide) : null;
 
                 if (this._guideItem)
                     this._guideTime = new JMSLib.App.TimeBar(this.start, this.end, this._guideItem.start, this._guideItem.end);

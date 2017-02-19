@@ -31,6 +31,9 @@
 
         // Vollständige Beschreibung.
         readonly longDescription: string;
+
+        // Suche nach ähnlichen Einträgen in der Programmzeitschrift.
+        readonly findSimiliar: JMSLib.App.ICommand;
     }
 
     // Schnittstelle zur Anzeige eines Eintrags in der Programmzeitschrift.
@@ -55,11 +58,14 @@
     export class GuideInfo implements IGuideInfo {
 
         // Erstellt eine neue Beschreibung.
-        constructor(protected readonly model: VCRServer.GuideItemContract) {
+        constructor(protected readonly model: VCRServer.GuideItemContract, private readonly _findInGuide: (model: VCRServer.GuideItemContract) => void) {
             // Zeitraum der Sendung.
             this.start = new Date(model.start);
             this.end = new Date(this.start.getTime() + 1000 * model.duration);
         }
+
+        // Suche nach ähnlichen Einträgen in der Programmzeitschrift.
+        readonly findSimiliar = new JMSLib.App.Command(() => this._findInGuide(this.model), "Mögliche Wiederholungen");
 
         readonly start: Date;
 
@@ -120,8 +126,8 @@
     export class GuideEntry extends GuideInfo implements IGuideEntry {
 
         // Erstellt eine neue Beschreibung.
-        constructor(model: VCRServer.GuideItemContract, private _toggleDetails: (entry: GuideEntry) => void, createNew: (entry: GuideEntry) => void, public jobSelector: JMSLib.App.IValueFromList<string>) {
-            super(model);
+        constructor(model: VCRServer.GuideItemContract, findInGuide: (model: VCRServer.GuideItemContract) => void, private _toggleDetails: (entry: GuideEntry) => void, createNew: (entry: GuideEntry) => void, public jobSelector: JMSLib.App.IValueFromList<string>) {
+            super(model, findInGuide);
 
             // Befehl zum Neuanlegen einer Aufzeichnung einrichten.
             this.createNew = new JMSLib.App.Command(() => createNew(this), "Aufzeichnung anlegen", () => this.end > new Date());

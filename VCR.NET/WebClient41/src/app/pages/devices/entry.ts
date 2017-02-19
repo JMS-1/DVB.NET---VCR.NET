@@ -4,7 +4,7 @@
 
         site: JMSLib.App.ISite;
 
-        constructor(private readonly _model: VCRServer.PlanCurrentContract, suppressHibernate: boolean, _refresh: (info: Info, guide: boolean) => void, reload: () => void) {
+        constructor(private readonly _model: VCRServer.PlanCurrentContract, suppressHibernate: boolean, _refresh: (info: Info, guide: boolean) => void, reload: () => void, private readonly _findInGuide: (model: VCRServer.GuideItemContract) => void) {
             if (!_model.isIdle) {
                 this._start = new Date(_model.start);
                 this._end = new Date(this._start.getTime() + _model.duration * 1000);
@@ -89,7 +89,7 @@
                 return this._guideItem;
 
             VCRServer.getGuideItem(this._model.device, this._model.source, this._start, this._end).then(item => {
-                this._guideItem = item ? new Guide.GuideInfo(item) : null;
+                this._guideItem = item ? new Guide.GuideInfo(item, this._findInGuide) : null;
 
                 if (this._guideItem)
                     this._guideTime = new JMSLib.App.TimeBar(this._start, this._end, this._guideItem.start, this._guideItem.end);

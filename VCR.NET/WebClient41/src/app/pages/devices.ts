@@ -65,10 +65,11 @@ namespace VCRNETClient.App {
         }
 
         private setPlan(plan: VCRServer.PlanCurrentContract[]): void {
+            var similiar = this.application.guidePage.findInGuide.bind(this.application.guidePage);
             var refresh = this.refresh.bind(this);
             var reload = this.reload.bind(this);
 
-            this.infos = (plan || []).map(info => new Devices.Info(info, this.application.profile.suppressHibernate, refresh, reload));
+            this.infos = (plan || []).map(info => new Devices.Info(info, this.application.profile.suppressHibernate, refresh, reload, similiar));
 
             this.application.isBusy = false;
 

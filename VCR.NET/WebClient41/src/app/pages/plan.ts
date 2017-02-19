@@ -111,10 +111,11 @@ namespace VCRNETClient.App {
                     return;
 
                 // Anzeigedarstellung für alle Aufträge erstellen.
+                var similiar = this.application.guidePage.findInGuide.bind(this.application.guidePage);
                 var toggleDetail = this.toggleDetail.bind(this);
                 var reload = this.reload.bind(this);
 
-                this._jobs = plan.map(job => new Plan.PlanEntry(job, toggleDetail, this.application, reload));
+                this._jobs = plan.map(job => new Plan.PlanEntry(job, toggleDetail, this.application, reload, similiar));
 
                 // Anzeige aktualisieren.
                 this.fireRefresh();

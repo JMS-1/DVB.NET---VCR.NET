@@ -239,6 +239,22 @@ namespace VCRNETClient.App {
             this._hour = -1;
         }
 
+        findInGuide(model: VCRServer.GuideItemContract): void {
+            this.clearFilter();
+
+            // Textsuche auf den Namen auf der selben Karte
+            this._filter.device = model.id.split(':')[1];
+            this._filter.station = model.station;
+            this._fulltextQuery = false;
+            this._withContent = false;
+            this._query = model.name;
+
+            if (this.application.page === this)
+                this.query();
+            else
+                this.application.gotoPage(this.route);
+        }
+
         // Vordefinierte Suche als Suchbedingung laden.
         loadFilter(filter: VCRServer.SavedGuideQueryContract): void {
             this.clearFilter();
@@ -408,8 +424,9 @@ namespace VCRNETClient.App {
                 // Einträge im Auszug auswerten.
                 var toggleDetails = this.toggleDetails.bind(this);
                 var createNew = this.createNewSchedule.bind(this);
+                var similiar = this.findInGuide.bind(this);
 
-                this.entries = (items || []).slice(0, this._filter.size).map(i => new Guide.GuideEntry(i, toggleDetails, createNew, this._jobSelector));
+                this.entries = (items || []).slice(0, this._filter.size).map(i => new Guide.GuideEntry(i, similiar, toggleDetails, createNew, this._jobSelector));
                 this._hasMore = items && (items.length > this._filter.size);
 
                 // Anwendung zur Bedienung freischalten.
