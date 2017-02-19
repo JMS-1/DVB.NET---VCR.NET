@@ -12,10 +12,20 @@ namespace VCRNETClient.App {
         readonly showStartScan: JMSLib.App.IFlag;
 
         readonly isRecording: boolean;
+
+        readonly checkVersion: JMSLib.App.IFlag;
+
+        readonly currentVersion: string;
+
+        readonly onlineVersion: string;
+
+        readonly versionMismatch: boolean;
     }
 
     // Die Anwendungslogik für die Startseite.
     export class HomePage extends Page implements IHomePage {
+
+        private static _versionExtract = />VCRNET\.MSI<\/a>[^<]*\s([^\s]+)\s*</i;
 
         readonly startGuide = new JMSLib.App.Command(() => this.startTask(`guideUpdate`), "Aktualisierung anfordern", () => this.application.version.hasGuides);
 
@@ -25,6 +35,8 @@ namespace VCRNETClient.App {
 
         readonly showStartScan = new JMSLib.App.Flag({}, "value", "einen Sendersuchlauf sobald wie möglich durchführen", () => this.refreshUi(), () => !this.application.version.canScan);
 
+        readonly checkVersion = new JMSLib.App.Flag({}, "value", "neue Version", () => this.toggleVersionCheck());
+
         // Erstellt die Anwendungslogik.
         constructor(application: Application) {
             super("home", application);
@@ -33,10 +45,47 @@ namespace VCRNETClient.App {
             this.navigation = null;
         }
 
+        get currentVersion(): string {
+            return this.application.version.msiVersion;
+        }
+
+        private _onlineVersion: string;
+
+        get onlineVersion(): string {
+            return this._onlineVersion || `(wird ermittelt)`;
+        }
+
+        get versionMismatch(): boolean {
+            return this._onlineVersion && (this._onlineVersion !== this.currentVersion);
+        }
+
+        private toggleVersionCheck(): void {
+            if (this.checkVersion.value) {
+                this._onlineVersion = undefined;
+
+                VCRServer.doUrlCall(`http://downloads.psimarron.net`).then((html: string) => {
+                    var match = HomePage._versionExtract.exec(html);
+                    if (match == null)
+                        return;
+                    if (match.length < 2)
+                        return;
+
+                    this._onlineVersion = match[1];
+
+                    this.refreshUi();
+                });
+            }
+
+            this.refreshUi();
+        }
+
         // Zeigt die Startseite (erneut) an.
         reset(sections: string[]): void {
+            this._onlineVersion = undefined;
+
             this.startScan.reset();
             this.startGuide.reset();
+            this.checkVersion.value = false;
             this.showStartScan.value = false;
             this.showStartGuide.value = false;
 

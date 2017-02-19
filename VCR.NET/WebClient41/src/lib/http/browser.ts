@@ -6,6 +6,7 @@ namespace JMSLib.App {
         var nextId = nextWebCallId() + 1;
 
         return new Promise<TResponseType, IHttpErrorInformation>((success, failure) => {
+            var raw = (url.substr(0, 7) === "http://");
             var xhr = new XMLHttpRequest();
 
             xhr.addEventListener("load", () => {
@@ -15,6 +16,8 @@ namespace JMSLib.App {
                 if (xhr.status < 400)
                     if (xhr.status === 204)
                         success(undefined);
+                    else if (raw)
+                        success(<any>xhr.responseText);
                     else
                         success(JSON.parse(xhr.responseText));
                 else {
@@ -24,7 +27,10 @@ namespace JMSLib.App {
                 }
             });
 
-            xhr.open(method, webCallRoot + url);
+            if (!raw)
+                url = webCallRoot + url;
+
+            xhr.open(method, url);
             xhr.setRequestHeader("accept", "application/json");
 
             if (request === undefined) {

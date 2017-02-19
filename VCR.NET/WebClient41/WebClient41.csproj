@@ -261,6 +261,7 @@
     <None Include="src\pages\guide\navigator.scss" />
     <None Include="src\pages\guide\entry.scss" />
     <None Include="src\pages\guide\details.scss" />
+    <Content Include="src\pages\home\versionCheck.scss" />
     <None Include="src\pages\jobs.scss" />
     <None Include="src\pages\log.scss" />
     <None Include="src\pages\log\details.scss" />
@@ -446,6 +447,7 @@
     <TypeScriptCompile Include="src\pages\help\tsPlayer.tsx" />
     <TypeScriptCompile Include="src\pages\help\webSettings.tsx" />
     <TypeScriptCompile Include="src\pages\home\task.tsx" />
+    <TypeScriptCompile Include="src\pages\home\versionCheck.tsx" />
     <TypeScriptCompile Include="src\pages\jobs.tsx" />
     <TypeScriptCompile Include="src\pages\log.tsx" />
     <TypeScriptCompile Include="src\pages\log\details.tsx" />

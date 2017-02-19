@@ -5,9 +5,10 @@ namespace VCRNETClient.Ui {
     // Die React.Js Komponente zur Anzeige der Startseite.
     export class Home extends JMSLib.ReactUi.ComponentWithSite<App.IHomePage>{
         render(): JSX.Element {
-            var application = this.props.noui.application;
+            var versionCheck = this.props.noui.checkVersion;
             var showGuide = this.props.noui.showStartGuide;
             var showScan = this.props.noui.showStartScan;
+            var application = this.props.noui.application;
 
             return <div className="vcrnet-home">
                 <div>
@@ -47,7 +48,8 @@ namespace VCRNETClient.Ui {
                             Der VCR.NET Recording Service wird dies aber bei nächster Gelegenheit
                             nachholen.<HelpLink topic="tasks" page={this.props.noui} />
                         </Task> : null}
-                        <li>prüfen, ob inzwischen eine <JMSLib.ReactUi.InternalLink view="">neuere Version</JMSLib.ReactUi.InternalLink> des VCR.NET Recording Service angeboten wird</li>
+                        <li>prüfen, ob inzwischen eine <JMSLib.ReactUi.InternalLink view={() => versionCheck.value = !versionCheck.value}>neuere Version</JMSLib.ReactUi.InternalLink> des VCR.NET Recording Service angeboten wird</li>
+                        {versionCheck.value ? <VersionCheck noui={this.props.noui} /> : null}
                         <li>{this.props.noui.isRecording ? "die Konfiguration des VCR.NET Recording Service verändern" : <JMSLib.ReactUi.InternalLink pict="admin" view={application.adminPage.route}>die Konfiguration des VCR.NET Recording Service verändern</JMSLib.ReactUi.InternalLink>}</li>
                     </ul>
                 </div>
