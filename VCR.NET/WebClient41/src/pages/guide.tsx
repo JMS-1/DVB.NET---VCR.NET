@@ -30,6 +30,7 @@ namespace VCRNETClient.Ui {
                             </Field>
                             <JMSLib.ReactUi.EditBooleanWithButton noui={this.props.noui.withContent} />
                             <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.resetFilter} />
+                            <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.addFavorite} />
                         </div>
                         <div>
                             <Field page={this.props.noui} label={`${this.props.noui.days.text}:`}>

@@ -53,6 +53,8 @@ namespace VCRNETClient.App {
 
         // Befhel zum Zurücksetzen aller Einschränkungen.
         readonly resetFilter: JMSLib.App.ICommand;
+
+        readonly addFavorite: JMSLib.App.ICommand;
     }
 
     // Ui View Model zur Anzeige der Programmzeitschrift.
@@ -146,6 +148,8 @@ namespace VCRNETClient.App {
 
         // Befehl zum Zurücksetzen aller aktuellen Einschränkungen.
         readonly resetFilter = new JMSLib.App.Command(() => this.resetAllAndQuery(), `Neue Suche`);
+
+        readonly addFavorite = new JMSLib.App.Command(() => this.createFavorite(), `Aktuelle Suche als Favorit hinzufügen`, () => (this._query || ``).trim() !== ``);
 
         // Meldet, ob die Auswahl der Verschlüsselung angeboten werden soll.
         get showEncryption(): boolean {
@@ -462,6 +466,19 @@ namespace VCRNETClient.App {
             // Startseite ändern und neue Suche ausführen.
             this._filter.index += delta;
             this.query();
+        }
+
+        private createFavorite(): JMSLib.App.IHttpPromise<void> {
+            var query: VCRServer.SavedGuideQueryContract = {
+                encryption: this._filter.station ? VCRServer.GuideEncryption.ALL : this._filter.cryptFilter,
+                sourceType: this._filter.station ? VCRServer.GuideSource.ALL : this._filter.typeFilter,
+                text: `${this._fulltextQuery ? `*` : `=`}${this._query}`,
+                titleOnly: !this._withContent,
+                source: this._filter.station,
+                device: this._filter.device
+            };
+
+            return this.application.favoritesPage.add(query);
         }
     }
 }

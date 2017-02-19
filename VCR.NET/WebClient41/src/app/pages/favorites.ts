@@ -40,16 +40,20 @@ namespace VCRNETClient.App {
             super(`favorites`, application);
         }
 
-        reset(sections: string[]): void {
-            Favorites.Favorite.resetLoader();
-
+        private ensureFavorites(): Favorites.Favorite[] {
             if (!FavoritesPage._Entries)
                 FavoritesPage._Entries = JSON.parse(this.application.profile.guideSearches || "[]").map(e => new Favorites.Favorite(e));
+
+            return FavoritesPage._Entries;
+        }
+
+        reset(sections: string[]): void {
+            Favorites.Favorite.resetLoader();
 
             var remove = this.remove.bind(this);
             var show = this.show.bind(this);
 
-            FavoritesPage._Entries.forEach(f => f.registerRemove(show, remove));
+            this.ensureFavorites().forEach(f => f.registerRemove(show, remove));
 
             this.application.isBusy = false;
         }
@@ -63,13 +67,23 @@ namespace VCRNETClient.App {
         }
 
         private remove(favorite: Favorites.Favorite): JMSLib.App.IHttpPromise<void> {
-            var favorites = FavoritesPage._Entries;
+            var favorites = FavoritesPage._Entries.filter(f => f !== favorite);
 
             return VCRServer.updateSearchQueries(favorites.map(f => f.model)).then(() => {
                 FavoritesPage._Entries = favorites;
 
                 this.refreshUi();
             })
+        }
+
+        add(favorite: VCRServer.SavedGuideQueryContract): JMSLib.App.IHttpPromise<void> {
+            var favorites = [new Favorites.Favorite(favorite)].concat(this.ensureFavorites());
+
+            return VCRServer.updateSearchQueries(favorites.map(f => f.model)).then(() => {
+                FavoritesPage._Entries = favorites;
+
+                this.application.gotoPage(this.route);
+            });
         }
     }
 }
