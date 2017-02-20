@@ -321,7 +321,6 @@
     <Content Include="content\images\running.gif" />
     <Content Include="content\images\settings.png" />
     <Content Include="ui\templates\favoriteRow.html" />
-    <Content Include="ui\templates\editCurrent.html" />
     <Content Include="ui\templates\jobRow.html" />
     <None Include="scripts\vcrnet.ts" />
     <None Include="content\jmslib.scss" />

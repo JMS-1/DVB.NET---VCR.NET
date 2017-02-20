@@ -39,6 +39,8 @@ namespace VCRNETClient.App {
 
         readonly timeshift: string;
 
+        readonly target: string;
+
         readonly stopNow: JMSLib.App.ICommand;
 
         readonly noHibernate: JMSLib.App.IFlag;

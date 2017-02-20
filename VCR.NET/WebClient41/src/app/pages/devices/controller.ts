@@ -41,6 +41,11 @@
             return JMSLib.App.DateFormatter.getEndTime(this.currentEnd);
         }
 
+        get target(): string {
+            return this._model.streamTarget;
+        }
+
+
         private refreshUi(): void {
             if (this.site)
                 this.site.refreshUi();

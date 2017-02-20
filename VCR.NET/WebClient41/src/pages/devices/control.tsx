@@ -11,6 +11,7 @@ namespace VCRNETClient.Ui {
             return <fieldset className="vcrnet-device-control">
                 {this.props.noui.live ? <div><a href={this.props.noui.live}>Aktuelle Aufzeichnung anschauen</a></div> : null}
                 {this.props.noui.timeshift ? <div><a href={this.props.noui.timeshift}>Aufzeichnung zeitversetzt anschauen</a></div> : null}
+                {this.props.noui.target ? <div>Aufzeichnung wird aktuell versendet, Empfänger ist {this.props.noui.target}<HelpLink topic="streaming" page={this.props.page} /></div> : null}
                 <table>
                     <tbody>
                         <tr>
