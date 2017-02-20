@@ -29,6 +29,8 @@ namespace VCRNETClient.App {
 
         private _isValid = false;
 
+        private _fromGuide: boolean;
+
         constructor(application: Application) {
             super("edit", application);
 
@@ -40,6 +42,7 @@ namespace VCRNETClient.App {
             this.del.reset();
             this.save.reset();
             this.job = undefined;
+            this._fromGuide = false;
             this.schedule = undefined;
             this.del.isDangerous = false;
             this._jobScheduleInfo = undefined;
@@ -70,7 +73,6 @@ namespace VCRNETClient.App {
                 this.del.isVisible = false;
 
                 // Leere Aufzeichnung angelegen.
-
                 var newJob = <VCRServer.EditJobContract>{
                     withSubtitles: this.application.profile.subtitles,
                     withVideotext: this.application.profile.videotext,
@@ -98,6 +100,9 @@ namespace VCRNETClient.App {
 
                 // Bei neuen Aufzeichnungen brauchen wir auch kein Löschen.
                 this.del.isVisible = (id !== "*");
+
+                // Einsprung aus der Programmzeitschrift.
+                this._fromGuide = ((sections[1] || ``).substr(0, 6) === `epgid=`);
 
                 // Existierende Aufzeichnung abrufen.
                 VCRServer.createScheduleFromGuide(id, (sections[1] || "epgid=").substr(6)).then(info => this.setJobSchedule(info, profileSelection, folders));
@@ -170,7 +175,12 @@ namespace VCRNETClient.App {
         private onSave(): JMSLib.App.IHttpPromise<void> {
             return VCRServer
                 .updateSchedule(this._jobScheduleInfo.jobId, this._jobScheduleInfo.scheduleId, { job: this._jobScheduleInfo.job, schedule: this._jobScheduleInfo.schedule })
-                .then(() => this.application.gotoPage(this.application.planPage.route));
+                .then(() => {
+                    if (this._fromGuide && this.application.profile.backToGuide)
+                        this.application.gotoPage(this.application.guidePage.route);
+                    else
+                        this.application.gotoPage(this.application.planPage.route);
+                });
         }
 
         private onDelete(): (JMSLib.App.IHttpPromise<void> | void) {
