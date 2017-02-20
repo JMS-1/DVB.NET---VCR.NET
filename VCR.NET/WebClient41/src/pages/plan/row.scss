@@ -14,9 +14,13 @@
 
                 &:last-child {
                     position: absolute;
-                    right:0;
+                    right: 0;
                 }
             }
+        }
+
+        &.vcrnet-planrow-suspect {
+            background: yellow;
         }
     }
 }

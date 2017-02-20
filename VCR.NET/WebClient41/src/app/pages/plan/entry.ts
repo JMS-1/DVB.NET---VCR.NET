@@ -44,6 +44,9 @@
         // Gesetzt, wenn DVB Untertitel mit aufgezeichnet werden sollen.
         readonly guide: boolean;
 
+        // Gesetzt, wenn die Endzeit evtl. wegen der Zeitumstellung nicht wie erwartet ist.
+        readonly suspectTime: boolean;
+
         // Zeigt die Programmzeitschrift an.
         readonly showEpg: boolean;
 
@@ -105,6 +108,10 @@
 
         // Der Zeitpunkt, an dem die Aufzeichnung enden wird.
         readonly end: Date;
+
+        get suspectTime(): boolean {
+            return this.model.suspectEndTime;
+        }
 
         // Der Name der Aufzeichnung.
         get name(): string {

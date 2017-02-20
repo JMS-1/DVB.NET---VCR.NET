@@ -318,7 +318,6 @@
     <Content Include="content\images\running.gif" />
     <Content Include="content\images\settings.png" />
     <None Include="scripts\vcrnet.ts" />
-    <None Include="content\jmslib.scss" />
     <TypeScriptCompile Include="src\app\app.ts" />
     <TypeScriptCompile Include="src\lib\dateTimeFormatter.ts" />
     <TypeScriptCompile Include="src\app\pages\edit.ts" />
