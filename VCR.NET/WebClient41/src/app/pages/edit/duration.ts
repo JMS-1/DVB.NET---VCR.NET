@@ -20,7 +20,7 @@ namespace VCRNETClient.App.Edit {
 
             var end = new Date(new Date(this.startTime.value).getTime() + 60000 * this.value);
 
-            this.endTime = new JMSLib.App.Time({ time: end.toISOString() }, "time", null, () => this.onChanged(), this.checkLimit.bind(this));
+            this.endTime = new JMSLib.App.Time({ time: end.toISOString() }, "time", null, () => this.onChanged(), () => this.checkLimit());
         }
 
         private onChanged(): void {

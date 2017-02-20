@@ -173,8 +173,15 @@ namespace VCRNETClient.App {
         }
 
         private onSave(): JMSLib.App.IHttpPromise<void> {
+            var schedule = { ...this._jobScheduleInfo.schedule };
+
+            var start = new Date(schedule.firstStart);
+            var end = new Date(start.getFullYear(), start.getMonth(), start.getDate(), start.getHours(), start.getMinutes() + schedule.duration);
+
+            schedule.duration = Math.floor((end.getTime() - start.getTime()) / 60000);
+
             return VCRServer
-                .updateSchedule(this._jobScheduleInfo.jobId, this._jobScheduleInfo.scheduleId, { job: this._jobScheduleInfo.job, schedule: this._jobScheduleInfo.schedule })
+                .updateSchedule(this._jobScheduleInfo.jobId, this._jobScheduleInfo.scheduleId, { job: this._jobScheduleInfo.job, schedule: schedule })
                 .then(() => {
                     if (this._fromGuide && this.application.profile.backToGuide)
                         this.application.gotoPage(this.application.guidePage.route);
