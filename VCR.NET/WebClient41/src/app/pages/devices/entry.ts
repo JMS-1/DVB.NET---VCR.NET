@@ -15,7 +15,7 @@
                 this.controller = new Controller(_model, suppressHibernate, reload);
             }
 
-            this.showGuide = new JMSLib.App.Flag({}, "value", null, () => _refresh(this, true), () => !this._model.epg || !this._model.device || !this._model.source);
+            this.showGuide = new JMSLib.App.Flag({}, "value", null, () => _refresh(this, true), () => !this._model.epg || !this._model.device || !this._model.source || (this.mode === `null`));
             this.showControl = new JMSLib.App.Flag({}, "value", null, () => _refresh(this, false), () => this.mode !== `running`);
         }
 
@@ -27,7 +27,7 @@
             if (this._model.isIdle)
                 return undefined;
 
-            if (this._model.duration <= 0)
+            if (this._end <= new Date())
                 return 'null';
             if (this._model.referenceId)
                 return 'running';
