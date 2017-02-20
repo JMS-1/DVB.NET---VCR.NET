@@ -27,7 +27,7 @@ namespace VCRNETClient.Ui {
                             <td>&nbsp;</td>
                         </tr>
                         <tr>
-                            <td>Dauer</td>
+                            <td className={(this.props.noui.currentDuration <= 0) ? `vcrnet-planexception-discard` : undefined}>Dauer</td>
                             <td>{`${this.props.noui.currentDuration} Minute${(this.props.noui.currentDuration === 1) ? '' : 'n'}`}</td>
                             <td>&nbsp;</td>
                         </tr>

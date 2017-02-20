@@ -14,6 +14,10 @@
             > td:nth-child(2) {
                 width: 12rem;
             }
+
+            > td.vcrnet-planexception-discard {
+                color: red;
+            }
         }
     }
 }
