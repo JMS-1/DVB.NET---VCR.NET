@@ -29,8 +29,6 @@
     }
 
     export interface IApplicationSite extends JMSLib.App.ISite {
-        onFirstStart(): void;
-
         goto(page: string);
 
         getHelpComponentProvider<TComponentType extends IHelpComponent>(): IHelpComponentProvider<TComponentType>;
@@ -90,8 +88,6 @@
             this.planPage = this.addPage(PlanPage);
             this.jobPage = this.addPage(JobPage);
             this.logPage = this.addPage(LogPage);
-
-            VCRServer.getUserProfile().then(profile => this.setUserProfile(profile));
         }
 
         private addPage<TPageType extends Page>(factory: { new (application: Application): TPageType }): TPageType {
@@ -100,16 +96,6 @@
             this._pageMapper[page.route] = page;
 
             return page;
-        }
-
-        private setUserProfile(profile: VCRServer.UserProfileContract): void {
-            this.profile = profile;
-
-            // Alle Startvorgänge sind abgeschlossen
-            this.isBusy = false;
-
-            // Wir können nun die Standardseite aktivieren
-            this._site.onFirstStart();
         }
 
         gotoPage(name: string): void {
@@ -129,7 +115,11 @@
             this.page = page;
 
             // Zustand wie beim Erstaufruf vorbereiten.
-            VCRServer.getServerVersion().then(info => {
+            VCRServer.getUserProfile().then(profile => {
+                this.profile = profile;
+
+                return VCRServer.getServerVersion();
+            }).then(info => {
                 this.version = info;
 
                 page.reset(sections || []);

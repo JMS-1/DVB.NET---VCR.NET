@@ -25,35 +25,37 @@ namespace VCRNETClient.App {
             JMSLib.App.uiValue(false, "Nur Favoriten mit Sendungen"),
         ];
 
-        private static _Entries: Favorites.Favorite[];
+        private _entries: Favorites.Favorite[];
 
         readonly filter = new JMSLib.App.SelectSingleFromList<boolean>({ value: true }, "value", null, () => this.refreshUi(), true, FavoritesPage._filter);
 
         get favorites(): IFavorite[] {
             if (this.filter.value)
-                return FavoritesPage._Entries;
+                return this.allFavorites;
             else
-                return FavoritesPage._Entries.filter(e => e.count !== 0);
+                return this.allFavorites.filter(e => e.count !== 0);
         }
 
         constructor(application: Application) {
             super(`favorites`, application);
         }
 
-        private ensureFavorites(): Favorites.Favorite[] {
-            if (!FavoritesPage._Entries)
-                FavoritesPage._Entries = JSON.parse(this.application.profile.guideSearches || "[]").map(e => new Favorites.Favorite(e));
+        private get allFavorites(): Favorites.Favorite[] {
+            if (!this._entries)
+                this._entries = JSON.parse(this.application.profile.guideSearches || "[]").map(e => new Favorites.Favorite(e));
 
-            return FavoritesPage._Entries;
+            return this._entries;
         }
 
         reset(sections: string[]): void {
+            this._entries = undefined;
+
             Favorites.Favorite.resetLoader();
 
             var remove = this.remove.bind(this);
             var show = this.show.bind(this);
 
-            this.ensureFavorites().forEach(f => f.registerRemove(show, remove));
+            this.allFavorites.forEach(f => f.registerRemove(show, remove));
 
             this.application.isBusy = false;
         }
@@ -67,23 +69,21 @@ namespace VCRNETClient.App {
         }
 
         private remove(favorite: Favorites.Favorite): JMSLib.App.IHttpPromise<void> {
-            var favorites = FavoritesPage._Entries.filter(f => f !== favorite);
+            var favorites = this.allFavorites.filter(f => f !== favorite);
 
             return VCRServer.updateSearchQueries(favorites.map(f => f.model)).then(() => {
-                FavoritesPage._Entries = favorites;
+                this._entries = favorites;
 
                 this.refreshUi();
             })
         }
 
         add(favorite: VCRServer.SavedGuideQueryContract): JMSLib.App.IHttpPromise<void> {
-            var favorites = [new Favorites.Favorite(favorite)].concat(this.ensureFavorites());
+            this._entries = undefined;
 
-            return VCRServer.updateSearchQueries(favorites.map(f => f.model)).then(() => {
-                FavoritesPage._Entries = favorites;
-
-                this.application.gotoPage(this.route);
-            });
+            return VCRServer
+                .updateSearchQueries([favorite].concat(this.allFavorites.map(f => f.model)))
+                .then(() => this.application.gotoPage(this.route));
         }
     }
 }

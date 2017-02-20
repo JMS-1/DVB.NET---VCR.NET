@@ -46,6 +46,8 @@ namespace VCRNETClient.Ui {
                 Main.initStatic();
 
             this._onhashchange = this.onhashchange.bind(this);
+
+            this.onhashchange();
         }
 
         componentDidMount(): void {
@@ -58,10 +60,6 @@ namespace VCRNETClient.Ui {
 
         refreshUi(): void {
             this.forceUpdate();
-        }
-
-        onFirstStart(): void {
-            this.onhashchange();
         }
 
         render(): JSX.Element {
