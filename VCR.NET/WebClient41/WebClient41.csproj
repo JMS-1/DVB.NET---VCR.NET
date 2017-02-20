@@ -293,7 +293,6 @@
     <Content Include="src\pages\home.scss" />
     <Content Include="src\common\main.scss" />
     <None Include="src\pages\plan\row.scss" />
-    <Content Include="ui\favorites.html" />
     <Content Include="content\images\delete.png" />
     <Content Include="content\images\fav.png" />
     <Content Include="content\images\info.png" />
@@ -301,8 +300,6 @@
     <Content Include="content\images\prev.gif" />
     <Content Include="content\images\recording.png" />
     <Content Include="content\images\running.png" />
-    <Content Include="ui\log.html" />
-    <Content Include="ui\home.html" />
     <Content Include="content\images\admin.png" />
     <Content Include="content\images\devices.png" />
     <Content Include="content\images\jobs.png" />
@@ -320,8 +317,6 @@
     <Content Include="content\images\refresh.png" />
     <Content Include="content\images\running.gif" />
     <Content Include="content\images\settings.png" />
-    <Content Include="ui\templates\favoriteRow.html" />
-    <Content Include="ui\templates\jobRow.html" />
     <None Include="scripts\vcrnet.ts" />
     <None Include="content\jmslib.scss" />
     <TypeScriptCompile Include="src\app\app.ts" />

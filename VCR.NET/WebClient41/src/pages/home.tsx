@@ -63,7 +63,7 @@ namespace VCRNETClient.Ui {
                     im <JMSLib.ReactUi.ExternalLink url="http://www.watchersnet.de/Default.aspx?tabid=52&g=topics&f=17">offiziellen Forum</JMSLib.ReactUi.ExternalLink>.
                 </div>
                 <div>
-                    Dr. Jochen Manns, 2003-17
+                    <JMSLib.ReactUi.ExternalLink url="http://www.psimarron.net"><JMSLib.ReactUi.Pictogram name="psimarron" type="gif" /></JMSLib.ReactUi.ExternalLink>Dr. Jochen Manns, 2003-17
                 </div>
             </div>;
         }
