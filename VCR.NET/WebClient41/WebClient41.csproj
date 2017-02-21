@@ -175,6 +175,10 @@
     </Content>
     <None Include="content\vars.scss" />
     <Content Include="default.html" />
+    <Content Include="scripts\vcrnet.js" />
+    <Content Include="scripts\vcrnet.js.map">
+      <DependentUpon>vcrnet.js</DependentUpon>
+    </Content>
     <Content Include="src\lib.react\command\checkbox.scss" />
     <Content Include="src\lib.react\command\command.scss" />
     <Content Include="src\lib.react\command\externalLink.scss" />
@@ -277,12 +281,6 @@
     <Content Include="scripts\react\react.js" />
     <Content Include="scripts\react\react.min.js" />
     <Content Include="favicon.ico" />
-    <Content Include="scripts\vcrnet.js">
-      <DependentUpon>vcrnet.ts</DependentUpon>
-    </Content>
-    <Content Include="scripts\vcrnet.js.map">
-      <DependentUpon>vcrnet.js</DependentUpon>
-    </Content>
     <None Include="src\common\helpLink.scss" />
     <None Include="src\common\navigation.scss" />
     <None Include="src\common\inlineHelp.scss" />
@@ -317,7 +315,6 @@
     <Content Include="content\images\refresh.png" />
     <Content Include="content\images\running.gif" />
     <Content Include="content\images\settings.png" />
-    <None Include="scripts\vcrnet.ts" />
     <TypeScriptCompile Include="src\app\app.ts" />
     <TypeScriptCompile Include="src\lib\dateTimeFormatter.ts" />
     <TypeScriptCompile Include="src\app\pages\edit.ts" />

@@ -37,7 +37,7 @@ namespace VCRNETClient.App.Edit {
 
             // Anpassungen.
             if (!model.lastDay)
-                model.lastDay = ScheduleEditor.makePureDate(ScheduleEditor.maximumDate).toISOString();
+                model.lastDay = ScheduleEditor.maximumDate.toISOString();
 
             // Pflegbare Eigenschaften anlegen.
             this.firstStart = new JMSLib.App.DayEditor(model, "firstStart", "Datum", onChange, false);
@@ -81,10 +81,10 @@ namespace VCRNETClient.App.Edit {
         }
 
         // Der kleinste erlaubte Datumswert.
-        static readonly minimumDate: Date = new Date(1963, 8, 29);
+        static readonly minimumDate = ScheduleEditor.makePureDate(new Date(1963, 8, 29));
 
         // Der höchste erlaubte Datumswert.
-        static readonly maximumDate: Date = new Date(2099, 11, 31);
+        static readonly maximumDate = ScheduleEditor.makePureDate(new Date(2099, 11, 31));
 
         // Das Bit für Montag.
         static readonly flagMonday: number = 0x01;
@@ -139,9 +139,16 @@ namespace VCRNETClient.App.Edit {
             this.lastDay.validate();
             this.repeat.validate();
 
+            // Der letzte Tage einer Wiederholung.
+            var lastDay = new Date(this.lastDay.value)
+
+            if (this.lastDay.message.length < 1)
+                if (lastDay < ScheduleEditor.minimumDate)
+                    this.lastDay.message = `Datum liegt zu weit in der Vergangenheit.`;
+                else if (lastDay > ScheduleEditor.maximumDate)
+                    this.lastDay.message = `Datum liegt zu weit in der Zukunft.`;
+
             if (this.firstStart.message.length > 0)
-                return;
-            if (this.duration.message.length > 0)
                 return;
 
             // Geplanter erster (evt. einziger Start).
@@ -168,7 +175,7 @@ namespace VCRNETClient.App.Edit {
                 start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, start.getHours(), start.getMinutes());
 
                 // Von dort aus schauen wir in die Zukunft.
-                for (var lastDay = new Date(this.lastDay.value); ;) {
+                for (; ;) {
                     // Den nächsten Wochentag suchen, an dem eine Wiederholung erlaubt ist.
                     do {
                         // Dabei den Startzeitpunkt immer um einen Tag vorrücken, bis es passt.
@@ -177,7 +184,7 @@ namespace VCRNETClient.App.Edit {
                     while ((ScheduleEditor._flags[start.getDay()] & repeat) === 0)
 
                     // Dazu das eine Datum ermitteln - UTC, da auch unser Enddatum UTC ist.
-                    var startDay = new Date(Date.UTC(start.getFullYear(), start.getMonth(), start.getDate()));
+                    var startDay = ScheduleEditor.makePureDate(start);
 
                     // Der Startzeitpunkt ist leider verboten.
                     if (startDay > lastDay)
