@@ -25,15 +25,15 @@
     export class LogEntry implements ILogEntry {
 
         get start(): string {
-            return JMSLib.App.DateFormatter.getStartTime(new Date(this._model.start));
+            return JMSLib.App.DateTimeUtils.formatStartTime(new Date(this._model.start));
         }
 
         get end(): string {
-            return JMSLib.App.DateFormatter.getStartTime(new Date(this._model.end));
+            return JMSLib.App.DateTimeUtils.formatStartTime(new Date(this._model.end));
         }
 
         get endTime(): string {
-            return JMSLib.App.DateFormatter.getEndTime(new Date(this._model.end));
+            return JMSLib.App.DateTimeUtils.formatEndTime(new Date(this._model.end));
         }
 
         get size(): string {

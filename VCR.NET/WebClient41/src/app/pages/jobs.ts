@@ -68,24 +68,24 @@ namespace VCRNETClient.App {
             var start: string = ``;
 
             if (repeat === 0)
-                start = JMSLib.App.DateFormatter.getStartTime(new Date(schedule.start));
+                start = JMSLib.App.DateTimeUtils.formatStartTime(new Date(schedule.start));
             else {
                 if (repeat & Edit.ScheduleEditor.flagMonday)
-                    start += JMSLib.App.DateFormatter.germanDays[1];
+                    start += JMSLib.App.DateTimeUtils.germanDays[1];
                 if (repeat & Edit.ScheduleEditor.flagTuesday)
-                    start += JMSLib.App.DateFormatter.germanDays[2]
+                    start += JMSLib.App.DateTimeUtils.germanDays[2]
                 if (repeat & Edit.ScheduleEditor.flagWednesday)
-                    start += JMSLib.App.DateFormatter.germanDays[3];
+                    start += JMSLib.App.DateTimeUtils.germanDays[3];
                 if (repeat & Edit.ScheduleEditor.flagThursday)
-                    start += JMSLib.App.DateFormatter.germanDays[4];
+                    start += JMSLib.App.DateTimeUtils.germanDays[4];
                 if (repeat & Edit.ScheduleEditor.flagFriday)
-                    start += JMSLib.App.DateFormatter.germanDays[5];
+                    start += JMSLib.App.DateTimeUtils.germanDays[5];
                 if (repeat & Edit.ScheduleEditor.flagSaturday)
-                    start += JMSLib.App.DateFormatter.germanDays[6];
+                    start += JMSLib.App.DateTimeUtils.germanDays[6];
                 if (repeat & Edit.ScheduleEditor.flagSunday)
-                    start += JMSLib.App.DateFormatter.germanDays[0];
+                    start += JMSLib.App.DateTimeUtils.germanDays[0];
 
-                start += ` ${JMSLib.App.DateFormatter.getEndTime(new Date(schedule.start))}`;
+                start += ` ${JMSLib.App.DateTimeUtils.formatEndTime(new Date(schedule.start))}`;
             }
 
             return { name: `${name}: ${start} auf ${schedule.sourceName}`, url: `${this.application.editPage.route};id=${schedule.id}` };

@@ -10,7 +10,7 @@ namespace JMSLib.App {
         // Der Wert zur Anzeige.
         readonly display: string;
 
-        // Meldet oder legt fest, ob der Wert ausgewählt wurde.
+        // Meldet ob der Wert ausgewählt wurde.
         isSelected?: boolean;
     }
 
@@ -24,7 +24,7 @@ namespace JMSLib.App {
         // Die erlaubten Werte.
         readonly allowedValues: IUiValue<TValueType>[];
 
-        // Die laufende Nummer des aktuell ausgewählte Wertes - in der dem Anwender zugänglichen Textdarstellung.
+        // Die laufende Nummer des aktuell ausgewählte Wertes.
         valueIndex: number;
     }
 

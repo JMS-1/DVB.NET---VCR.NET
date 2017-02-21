@@ -58,7 +58,7 @@
         }
 
         // Erstellt eine neue Repräsentation.
-        constructor(private _begin: () => (IHttpPromise<TResponseType> | void), public text: string, private _test?: () => boolean) {
+        constructor(private readonly _begin: () => (IHttpPromise<TResponseType> | void), public readonly text: string, private readonly _test?: () => boolean) {
         }
 
         // Gesetzt, wenn es sich um eine kritische Änderung handelt.
@@ -151,12 +151,10 @@
             var begin = this._begin();
 
             // Auf das Ende der Aktion warten und Aktion wieder freigeben.
-            var reenable: () => void = this.setBusy.bind(this, false);
-
             if (begin)
-                begin.then(reenable, reenable);
+                begin.then(() => this.setBusy(false), e => { this.message = e.message; this.setBusy(false); });
             else
-                reenable();
+                this.setBusy(false);
         }
     }
 }

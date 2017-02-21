@@ -177,7 +177,7 @@ namespace VCRNETClient.App {
             var schedule = { ...this._jobScheduleInfo.schedule };
 
             // Dauer unter Berücksichtigung der Zeitumstellung anpassen.
-            schedule.duration = JMSLib.App.DateFormatter.getRealDurationInMinutes(schedule.firstStart, schedule.duration);
+            schedule.duration = JMSLib.App.DateTimeUtils.getRealDurationInMinutes(schedule.firstStart, schedule.duration);
 
             return VCRServer
                 .updateSchedule(this._jobScheduleInfo.jobId, this._jobScheduleInfo.scheduleId, { job: this._jobScheduleInfo.job, schedule: schedule })

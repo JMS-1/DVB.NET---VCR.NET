@@ -67,7 +67,7 @@
         }
 
         get currentStart(): string {
-            return JMSLib.App.DateFormatter.getStartTime(this.start());
+            return JMSLib.App.DateTimeUtils.formatStartTime(this.start());
         }
 
         // Meldet den Endzeitpunkt als Text.
@@ -76,7 +76,7 @@
         }
 
         get currentEnd(): string {
-            return JMSLib.App.DateFormatter.getEndTime(this.end());
+            return JMSLib.App.DateTimeUtils.formatEndTime(this.end());
         }
 
         // Meldet die aktuelle Dauer.

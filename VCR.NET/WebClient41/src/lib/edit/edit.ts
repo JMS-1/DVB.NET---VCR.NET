@@ -16,7 +16,7 @@
     export abstract class Property<TValueType> implements IProperty<TValueType> {
 
         // Initialisiert die Verwaltung des Wertes einer einzelnen Eigenschaft (_prop) im Modell (_data).
-        protected constructor(private _data: any = {}, private readonly _prop: string = `value`, public readonly text: string = null, private readonly _onChange?: () => void, protected readonly isRequired?: boolean, private _testReadOnly?: () => boolean) {
+        protected constructor(private _data: any = {}, private readonly _prop: string = `value`, public readonly text: string = null, private readonly _onChange?: () => void, protected readonly isRequired?: boolean, private readonly _testReadOnly?: () => boolean) {
         }
 
         // Das zugehörige Oberflächenelement.
@@ -95,13 +95,8 @@
         }
 
         // Ändert das aktuell zugeordnete Modell.
-        protected setData(newValue: any): void {
-            this._data = newValue;
-        }
-
-        // Ändert das aktuell zugeordnete Modell.
         set data(newValue: any) {
-            this.setData(newValue);
+            this._data = newValue;
 
             // Dadurch kann sich natürlich der aktuelle Wert verändert haben.
             this.refresh();

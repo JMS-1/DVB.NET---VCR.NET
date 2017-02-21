@@ -143,6 +143,7 @@
     <TypeScriptCompile Include="src\lib.react\timeBar.tsx" />
     <TypeScriptCompile Include="src\lib\edit\multiList.ts" />
     <TypeScriptCompile Include="src\lib\http\browser.ts" />
+    <TypeScriptCompile Include="src\lib\http\common.ts" />
     <TypeScriptCompile Include="src\lib\http\config.ts" />
     <TypeScriptCompile Include="src\lib\timebar.ts" />
     <TypeScriptCompile Include="src\pages\admin.tsx" />
@@ -316,7 +317,7 @@
     <Content Include="content\images\running.gif" />
     <Content Include="content\images\settings.png" />
     <TypeScriptCompile Include="src\app\app.ts" />
-    <TypeScriptCompile Include="src\lib\dateTimeFormatter.ts" />
+    <TypeScriptCompile Include="src\lib\dateTimeUtils.ts" />
     <TypeScriptCompile Include="src\app\pages\edit.ts" />
     <TypeScriptCompile Include="src\app\pages\help.ts" />
     <TypeScriptCompile Include="src\app\pages\home.ts" />

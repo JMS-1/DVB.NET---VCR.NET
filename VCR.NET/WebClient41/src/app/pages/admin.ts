@@ -1,6 +1,6 @@
 ﻿/// <reference path="page.ts" />
 /// <reference path="../../lib/edit/list.ts" />
-/// <reference path="../../lib/dateTimeFormatter.ts" />
+/// <reference path="../../lib/dateTimeUtils.ts" />
 
 namespace VCRNETClient.App {
 
@@ -35,7 +35,7 @@ namespace VCRNETClient.App {
             var hours: JMSLib.App.IUiValue<number>[] = [];
 
             for (var i = 0; i < 24; i++)
-                hours.push(JMSLib.App.uiValue(i, JMSLib.App.DateFormatter.formatNumber(i)));
+                hours.push(JMSLib.App.uiValue(i, JMSLib.App.DateTimeUtils.formatNumber(i)));
 
             return hours;
         })();

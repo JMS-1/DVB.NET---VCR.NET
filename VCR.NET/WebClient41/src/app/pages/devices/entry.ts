@@ -9,8 +9,8 @@
                 this._start = new Date(_model.start);
                 this._end = new Date(this._start.getTime() + _model.duration * 1000);
 
-                this.displayStart = JMSLib.App.DateFormatter.getStartTime(this._start);
-                this.displayEnd = JMSLib.App.DateFormatter.getEndTime(this._end);
+                this.displayStart = JMSLib.App.DateTimeUtils.formatStartTime(this._start);
+                this.displayEnd = JMSLib.App.DateTimeUtils.formatEndTime(this._end);
 
                 this.controller = new Controller(_model, suppressHibernate, reload);
             }

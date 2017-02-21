@@ -24,12 +24,12 @@ namespace VCRNETClient.App.Edit {
         }
 
         private onChanged(): void {
-            var start = JMSLib.App.DateFormatter.parseTime(this.startTime.time);
+            var start = JMSLib.App.DateTimeUtils.parseTime(this.startTime.time);
 
             if (start === null)
                 return;
 
-            var end = JMSLib.App.DateFormatter.parseTime(this.endTime.time);
+            var end = JMSLib.App.DateTimeUtils.parseTime(this.endTime.time);
 
             if (end === null)
                 return;

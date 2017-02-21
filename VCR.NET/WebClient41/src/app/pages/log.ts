@@ -57,7 +57,7 @@ namespace VCRNETClient.App {
             var days: JMSLib.App.IUiValue<string>[] = [];
 
             for (var i = 0; i < 10; i++) {
-                days.push(JMSLib.App.uiValue(start.toISOString(), JMSLib.App.DateFormatter.formatNumber(start.getUTCDate()) + '.' + JMSLib.App.DateFormatter.formatNumber(1 + start.getUTCMonth())));
+                days.push(JMSLib.App.uiValue(start.toISOString(), JMSLib.App.DateTimeUtils.formatNumber(start.getUTCDate()) + '.' + JMSLib.App.DateTimeUtils.formatNumber(1 + start.getUTCMonth())));
 
                 start = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate() - 7));
             }

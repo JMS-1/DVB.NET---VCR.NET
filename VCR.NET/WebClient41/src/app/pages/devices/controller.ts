@@ -38,7 +38,7 @@
         }
 
         get end(): string {
-            return JMSLib.App.DateFormatter.getEndTime(this.currentEnd);
+            return JMSLib.App.DateTimeUtils.formatEndTime(this.currentEnd);
         }
 
         get target(): string {

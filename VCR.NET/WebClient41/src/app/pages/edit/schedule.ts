@@ -45,13 +45,13 @@ namespace VCRNETClient.App.Edit {
             this.lastDay = new JMSLib.App.DayEditor(model, "lastDay", "wiederholen bis zum", onChange, true);
             this.duration = new DurationEditor(model, "firstStart", "duration", "Zeitraum", onChange);
 
-            this.onMonday = new JMSLib.App.FlagSet(ScheduleEditor.flagMonday, this.repeat, JMSLib.App.DateFormatter.germanDays[1]);
-            this.onTuesday = new JMSLib.App.FlagSet(ScheduleEditor.flagTuesday, this.repeat, JMSLib.App.DateFormatter.germanDays[2]);
-            this.onWednesday = new JMSLib.App.FlagSet(ScheduleEditor.flagWednesday, this.repeat, JMSLib.App.DateFormatter.germanDays[3]);
-            this.onThursday = new JMSLib.App.FlagSet(ScheduleEditor.flagThursday, this.repeat, JMSLib.App.DateFormatter.germanDays[4]);
-            this.onFriday = new JMSLib.App.FlagSet(ScheduleEditor.flagFriday, this.repeat, JMSLib.App.DateFormatter.germanDays[5]);
-            this.onSaturday = new JMSLib.App.FlagSet(ScheduleEditor.flagSaturday, this.repeat, JMSLib.App.DateFormatter.germanDays[6]);
-            this.onSunday = new JMSLib.App.FlagSet(ScheduleEditor.flagSunday, this.repeat, JMSLib.App.DateFormatter.germanDays[0]);
+            this.onMonday = new JMSLib.App.FlagSet(ScheduleEditor.flagMonday, this.repeat, JMSLib.App.DateTimeUtils.germanDays[1]);
+            this.onTuesday = new JMSLib.App.FlagSet(ScheduleEditor.flagTuesday, this.repeat, JMSLib.App.DateTimeUtils.germanDays[2]);
+            this.onWednesday = new JMSLib.App.FlagSet(ScheduleEditor.flagWednesday, this.repeat, JMSLib.App.DateTimeUtils.germanDays[3]);
+            this.onThursday = new JMSLib.App.FlagSet(ScheduleEditor.flagThursday, this.repeat, JMSLib.App.DateTimeUtils.germanDays[4]);
+            this.onFriday = new JMSLib.App.FlagSet(ScheduleEditor.flagFriday, this.repeat, JMSLib.App.DateTimeUtils.germanDays[5]);
+            this.onSaturday = new JMSLib.App.FlagSet(ScheduleEditor.flagSaturday, this.repeat, JMSLib.App.DateTimeUtils.germanDays[6]);
+            this.onSunday = new JMSLib.App.FlagSet(ScheduleEditor.flagSunday, this.repeat, JMSLib.App.DateTimeUtils.germanDays[0]);
 
             // Ausnahmeregeln.
             this.exceptions = (model.exceptions || []).map(e => new ScheduleException(e, () => this.onExceptionsChanged()));
@@ -155,7 +155,7 @@ namespace VCRNETClient.App.Edit {
             var start = new Date(this.firstStart.value);
 
             // Die echte Dauer unter Berücksichtigung der Zeitumstellung ermitteln.
-            var duration = JMSLib.App.DateFormatter.getRealDurationInMinutes(this.firstStart.value, this.duration.value);
+            var duration = JMSLib.App.DateTimeUtils.getRealDurationInMinutes(this.firstStart.value, this.duration.value);
 
             // Ende der ersten Aufzeichnung ermitteln - das sollte in den meisten Fällen schon passen.
             var end = new Date(start.getFullYear(), start.getMonth(), start.getDate(), start.getHours(), start.getMinutes() + duration);

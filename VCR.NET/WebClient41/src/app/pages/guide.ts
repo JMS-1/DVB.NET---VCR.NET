@@ -340,7 +340,7 @@ namespace VCRNETClient.App {
                     var start = new Date(first.getFullYear(), first.getMonth(), first.getDate());
 
                     // Auswahlelement anlegen.
-                    days.push(JMSLib.App.uiValue(start.toISOString(), JMSLib.App.DateFormatter.getShortDate(start)));
+                    days.push(JMSLib.App.uiValue(start.toISOString(), JMSLib.App.DateTimeUtils.formatShortDate(start)));
 
                     // Nächsten Tag auswählen.
                     first = new Date(start.getFullYear(), start.getMonth(), start.getDate() + 1);

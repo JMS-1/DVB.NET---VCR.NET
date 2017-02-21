@@ -1,58 +1,79 @@
 ﻿namespace JMSLib.App {
+
+    // Schnittstelle zur Anzeige einer Zeitschiene.
     export interface ITimeBar {
-        readonly prePercent: number;
+        // Vorlaufzeit in Prozent.
+        readonly prefixTime: number;
 
-        readonly recPercent: number;
+        // Dauer in Prozent.
+        readonly time: number;
 
-        readonly recClass: string;
+        // Nachlaufzeit in Prozent.
+        readonly suffixTime: number;
 
-        readonly postPercent: number;
+        // Aktuelle Uhrzeit in prozent.
+        readonly currentTime?: number;
 
-        readonly nowPercent: number;
+        // Gesetzt, wenn die Dauer vollständig sichtbar ist.
+        readonly timeIsComplete: boolean;
+
     }
 
+    // Präsentationsmodell zur Darstellung einer Zeitschiene.
     export class TimeBar implements ITimeBar {
+
+        // CSS Klasse für den Fall, dass die Dauer vollständig sichtbar ist.
         private static readonly  _goodClass = `jmslib-timebar-good`;
 
+        // CSS Klasse für den Fall, dass die Dauer
         private static readonly  _badClass = `jmslib-timebar-bad`;
 
         constructor(startRecording: Date, endRecording: Date, startProgram: Date, endProgram: Date) {
-            if (startRecording > startProgram)
-                this.recClass = TimeBar._badClass;
-            else if (endRecording < endProgram)
-                this.recClass = TimeBar._badClass;
-            else
-                this.recClass = TimeBar._goodClass;
+            // Prüfen, ob die gesamte Dauer angezeigt werden kann.
+            this.timeIsComplete = ((startRecording <= startProgram) && (endRecording >= endProgram))
 
+            // Die tatsächliche Dauer.
             var total = endRecording.getTime() - startRecording.getTime();
 
-            if (startRecording >= startProgram)
-                this.prePercent = 0;
+            // Prozentuale Vorlaufzeit berechnen.
+            var prefixTime = startProgram.getTime() - startRecording.getTime();
+
+            if (prefixTime <= 0)
+                this.prefixTime = 0;
             else
-                this.prePercent = Math.floor((startProgram.getTime() - startRecording.getTime()) * 100 / total);
+                this.prefixTime = Math.floor(prefixTime * 100 / total);
 
-            if (endRecording <= endProgram)
-                this.postPercent = 0;
+            // Prozentuale Nachlaufzeit berechnen.
+            var suffixTime = endRecording.getTime() - endProgram.getTime();
+
+            if (suffixTime <= 0)
+                this.suffixTime = 0;
             else
-                this.postPercent = Math.floor((endRecording.getTime() - endProgram.getTime()) * 100 / total);
+                this.suffixTime = Math.floor(suffixTime * 100 / total);
 
-            this.recPercent = 100 - (this.prePercent + this.postPercent);
+            // Prozentuale Dauer berechnen.
+            this.time = Math.max(0, Math.min(100, 100 - (this.prefixTime + this.suffixTime)));
 
-            var now = new Date();
+            // Aktuelle Uhrzeit einblenden, wenn möglich.
+            var currentTime = Date.now() - startRecording.getTime();
 
-            if (now >= startRecording)
-                if (now <= endRecording)
-                    this.nowPercent = Math.floor((now.getTime() - startRecording.getTime()) * 100 / total);
+            if ((currentTime >= 0) && (currentTime <= total))
+                this.currentTime = Math.floor(currentTime * 100 / total);
         }
 
-        readonly prePercent: number;
+        // Vorlauf in Prozent.
+        readonly prefixTime: number;
 
-        readonly recPercent: number;
+        // Dauer in Prozent.
+        readonly time: number;
 
-        readonly recClass: string;
+        // Gesetzt, wenn die Dauer vollständig angezeigt wird.
+        readonly timeIsComplete: boolean;
 
-        readonly postPercent: number;
+        // Nachlauf in Prozent.
+        readonly suffixTime: number;
 
-        readonly nowPercent: number;
+        // Optional die aktuelle Zeit.
+        readonly currentTime?: number;
     }
 }

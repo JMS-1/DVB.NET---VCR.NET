@@ -12,7 +12,7 @@ namespace JMSLib.App {
         private _time: string;
 
         protected onSiteChanged(): void {
-            this._time = DateFormatter.getEndTime(new Date(this.value));
+            this._time = DateTimeUtils.formatEndTime(new Date(this.value));
         }
 
         constructor(data: any, prop: string, name?: string, onChange?: () => void, private _externalValidator?: () => string) {
@@ -27,7 +27,7 @@ namespace JMSLib.App {
             if (newTime !== this._time) {
                 this._time = newTime;
 
-                var parsed = DateFormatter.parseTime(newTime);
+                var parsed = DateTimeUtils.parseTime(newTime);
 
                 if (parsed !== null) {
                     parsed /= 60000;
@@ -53,7 +53,7 @@ namespace JMSLib.App {
 
             if (external.length > 0)
                 this.message = external;
-            else if ((this._time === undefined) || (DateFormatter.parseTime(this._time) !== null))
+            else if ((this._time === undefined) || (DateTimeUtils.parseTime(this._time) !== null))
                 super.validate();
             else
                 this.message = "Ungültige Uhrzeit."

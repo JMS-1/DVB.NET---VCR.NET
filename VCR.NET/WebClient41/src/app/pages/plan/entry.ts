@@ -145,12 +145,12 @@
 
         // Der Startzeitpunkt formatiert für die Darstellung.
         get displayStart(): string {
-            return JMSLib.App.DateFormatter.getStartTime(this.start);
+            return JMSLib.App.DateTimeUtils.formatStartTime(this.start);
         }
 
         // Der Endzeitpunkt, formatiert für die Darstellung - es werden nur Stunden und Minuten angezeigt.
         get displayEnd(): string {
-            return JMSLib.App.DateFormatter.getEndTime(this.end);
+            return JMSLib.App.DateTimeUtils.formatEndTime(this.end);
         }
 
         // Die zugehörige Ausnahmeregel.

@@ -27,10 +27,8 @@
             // Nachfolger erstellen.
             var next = new Promise<TProjectedType, TErrorType>((success, failure) => {
                 // Nachfolger einbinden.
-                if (onFulfilled)
-                    this._success.push(v => success(onFulfilled(v)));
-                if (onRejected)
-                    this._failure.push(e => failure(onRejected(e)));
+                this._success.push(v => success(onFulfilled ? onFulfilled(v) : <TProjectedType><any>v));
+                this._failure.push(e => failure(onRejected ? onRejected(e) : e));
             });
 
             // Eventuell vorhandenes Ergebnis direkt verteilen.
