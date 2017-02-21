@@ -5,7 +5,7 @@ namespace JMSLib.ReactUi {
     export class EditDay extends ComponentWithSite<App.IDaySelector> {
         // Anzeige erstellen.
         render(): JSX.Element {
-            return <div className="jmslib-editday">
+            return <div className="jmslib-editday" title={this.props.noui.message}>
                 <div>
                     <Pictogram name="prev" type="gif" onClick={ev => this.props.noui.monthBackward()} />
                     <div>

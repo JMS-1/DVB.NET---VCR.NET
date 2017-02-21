@@ -82,4 +82,8 @@
             }
         }
     }
+    // Der Titel (Tooltip) der Datumsauswahl wird für die Anzeige von Fehlersituationen verwendet, das verstärken wird noch durch einen roten Rahmen.
+    &:not([title=""]) {
+        border: 1px solid red;
+    }
 }

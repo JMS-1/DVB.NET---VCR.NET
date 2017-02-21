@@ -36,6 +36,8 @@ namespace JMSLib.App {
         readonly dayNames: string[];
 
         readonly days: ISelectableDay[];
+
+        readonly message: string;
     }
 
     export class DayEditor extends Property<string> implements IDaySelector {

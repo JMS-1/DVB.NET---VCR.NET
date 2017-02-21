@@ -121,6 +121,16 @@ namespace VCRNETClient.App.Edit {
 
         readonly onSunday: JMSLib.App.FlagSet;
 
+        private static readonly _flags = [
+            ScheduleEditor.flagSunday,
+            ScheduleEditor.flagMonday,
+            ScheduleEditor.flagTuesday,
+            ScheduleEditor.flagWednesday,
+            ScheduleEditor.flagThursday,
+            ScheduleEditor.flagFriday,
+            ScheduleEditor.flagSaturday
+        ];
+
         validate(sources: VCRServer.SourceEntry[], sourceIsRequired: boolean): void {
             super.validate(sources, sourceIsRequired);
 
@@ -128,6 +138,61 @@ namespace VCRNETClient.App.Edit {
             this.duration.validate();
             this.lastDay.validate();
             this.repeat.validate();
+
+            if (this.firstStart.message.length > 0)
+                return;
+            if (this.duration.message.length > 0)
+                return;
+
+            // Geplanter erster (evt. einziger Start).
+            var start = new Date(this.firstStart.value);
+
+            // Die echte Dauer unter Berücksichtigung der Zeitumstellung ermitteln.
+            var duration = JMSLib.App.DateFormatter.getRealDurationInMinutes(this.firstStart.value, this.duration.value);
+
+            // Ende der ersten Aufzeichnung ermitteln - das sollte in den meisten Fällen schon passen.
+            var end = new Date(start.getFullYear(), start.getMonth(), start.getDate(), start.getHours(), start.getMinutes() + duration);
+
+            // Aktuelle Uhrzeit ermitteln.
+            var now = new Date();
+
+            // Wenn die Aufzeichnung in der Zukunft endet ist alles gut.
+            if (end > now)
+                return;
+
+            // Ansonsten kann uns nur noch das Wiederholen retten.
+            var repeat = this.repeat.value;
+
+            if (repeat !== 0) {
+                // Zur Vereinfachung der Vergleiche beginnen wir etwas vor dem aktuellen Tag.
+                start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, start.getHours(), start.getMinutes());
+
+                // Von dort aus schauen wir in die Zukunft.
+                for (var lastDay = new Date(this.lastDay.value); ;) {
+                    // Den nächsten Wochentag suchen, an dem eine Wiederholung erlaubt ist.
+                    do {
+                        // Dabei den Startzeitpunkt immer um einen Tag vorrücken, bis es passt.
+                        start = new Date(start.getFullYear(), start.getMonth(), start.getDate() + 1, start.getHours(), start.getMinutes());
+                    }
+                    while ((ScheduleEditor._flags[start.getDay()] & repeat) === 0)
+
+                    // Dazu das eine Datum ermitteln - UTC, da auch unser Enddatum UTC ist.
+                    var startDay = new Date(Date.UTC(start.getFullYear(), start.getMonth(), start.getDate()));
+
+                    // Der Startzeitpunkt ist leider verboten.
+                    if (startDay > lastDay)
+                        break;
+
+                    // Nun müssen wir uns das zugehörige Ende der Aufzeichnung anschauen.
+                    var end = new Date(start.getFullYear(), start.getMonth(), start.getDate(), start.getHours(), start.getMinutes() + duration);
+
+                    // Liegt dieses echt in der Zukunft ist alles gut.
+                    if (end > now)
+                        return;
+                }
+            }
+
+            this.firstStart.message = `Die Aufzeichnung liegt in der Vergangenheit.`;
         }
 
         isValid(): boolean {

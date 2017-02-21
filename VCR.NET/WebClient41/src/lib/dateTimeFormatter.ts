@@ -91,5 +91,17 @@
 
             return digit - 0x30;
         }
+
+        // Ermittelt aus einem Startzeitpunkt und einer Dauer die tatsächlich Dauer unter Berücksichtigung der Zeitumstellung.
+        static getRealDurationInMinutes(isoStart: string, durationInMinutes: number): number {
+            // Startzeitpunkt aus der ISO Notation in die lokale Zeit umrechnen.
+            var start = new Date(isoStart);
+
+            // Die ursprüngliche Dauer in der lokalen Zeit hinzufügen.
+            var end = new Date(start.getFullYear(), start.getMonth(), start.getDate(), start.getHours(), start.getMinutes() + durationInMinutes);
+
+            // Daraus kann nun die echte Zeitdifferenz ermittelt werden.
+            return Math.floor((end.getTime() - start.getTime()) / 60000);
+        }
     }
 }

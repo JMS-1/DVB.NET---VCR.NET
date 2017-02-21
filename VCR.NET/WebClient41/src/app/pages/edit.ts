@@ -173,12 +173,11 @@ namespace VCRNETClient.App {
         }
 
         private onSave(): JMSLib.App.IHttpPromise<void> {
+            // Kopie der Aufzeichnungsdaten anlegen.
             var schedule = { ...this._jobScheduleInfo.schedule };
 
-            var start = new Date(schedule.firstStart);
-            var end = new Date(start.getFullYear(), start.getMonth(), start.getDate(), start.getHours(), start.getMinutes() + schedule.duration);
-
-            schedule.duration = Math.floor((end.getTime() - start.getTime()) / 60000);
+            // Dauer unter Berücksichtigung der Zeitumstellung anpassen.
+            schedule.duration = JMSLib.App.DateFormatter.getRealDurationInMinutes(schedule.firstStart, schedule.duration);
 
             return VCRServer
                 .updateSchedule(this._jobScheduleInfo.jobId, this._jobScheduleInfo.scheduleId, { job: this._jobScheduleInfo.job, schedule: schedule })
