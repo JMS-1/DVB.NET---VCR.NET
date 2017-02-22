@@ -32,8 +32,8 @@ namespace JMSLib.App {
     export class SelectSingleFromList<TValueType> extends Property<TValueType> implements IValueFromList<TValueType> {
 
         // Legt ein neues Präsentationsmodell an.
-        constructor(data?: any, prop?: string, name?: string, onChange?: () => void, isRequired?: boolean, private _allowedValues: IUiValue<TValueType>[] = []) {
-            super(data, prop, name, onChange, isRequired);
+        constructor(data?: any, prop?: string, name?: string, onChange?: () => void, isRequired?: boolean, private _allowedValues: IUiValue<TValueType>[] = [], validator?: (property: SelectSingleFromList<TValueType>) => string) {
+            super(data, prop, name, onChange, isRequired, null, validator);
         }
 
         // Meldet die Liste der aktuell erlaubten Werte.
@@ -50,22 +50,25 @@ namespace JMSLib.App {
         }
 
         // Prüft den aktuellen Wert.
-        validate(): void {
+        protected onValidate(): string {
             // Sollte die Basisklasse bereits einen Fehler melden so ist dieser so elementar, dass er unbedingt verwendet werden soll.
-            super.validate();
+            var message = super.onValidate();
 
-            if (this.message.length > 0)
-                return;
+            if (message !== ``)
+                return message;
 
             // Der Wert muss in der Liste sein - sofern er nicht leer und gleichzeitig optional ist.
             var value = this.value;
 
             if (!value)
                 if (!this.isRequired)
-                    return;
+                    return message;
 
             if (!this.allowedValues.some(av => av.value === value))
-                this.message = "Der Wert ist nicht in der Liste der erlaubten Werte enthalten.";
+                return "Der Wert ist nicht in der Liste der erlaubten Werte enthalten.";
+
+            // Ursprünglichen Wert melden.
+            return message;
         }
 
         // Meldet die laufende Nummer des Wertes in der Liste der erlaubten Werte - existiert ein solcher nicht, wird 0 gemeldet.

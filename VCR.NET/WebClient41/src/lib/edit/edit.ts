@@ -16,7 +16,7 @@
     export abstract class Property<TValueType> implements IProperty<TValueType> {
 
         // Initialisiert die Verwaltung des Wertes einer einzelnen Eigenschaft (_prop) im Modell (_data).
-        protected constructor(private _data: any = {}, private readonly _prop: string = `value`, public readonly text: string = null, private readonly _onChange?: () => void, protected readonly isRequired?: boolean, private readonly _testReadOnly?: () => boolean) {
+        protected constructor(private _data: any = {}, private readonly _prop: string = `value`, public readonly text: string = null, private readonly _onChange?: () => void, protected readonly isRequired?: boolean, private readonly _testReadOnly?: () => boolean, private readonly _validator?: (property: Property<TValueType>) => string) {
         }
 
         // Das zugehörige Oberflächenelement.
@@ -83,10 +83,21 @@
         }
 
         // Verwaltung des Prüfergebnisses - die Basisimplementierung meldet die Eigenschaft immer als gültig (leere Zeichenkette).
-        message = ``;
+        private _message = ``;
+
+        get message(): string {
+            return this._message;
+        }
 
         validate(): void {
-            this.message = ``;
+            this._message = this.onValidate();
+        }
+
+        protected onValidate(): string {
+            if (this._validator)
+                return this._validator(this);
+            else
+                return ``;
         }
 
         // Meldet das aktuell zugeordnete Modell.

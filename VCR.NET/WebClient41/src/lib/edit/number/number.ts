@@ -56,30 +56,33 @@ namespace JMSLib.App {
         }
 
         // Prüft die aktuelle Eingabe.
-        validate(): void {
+        protected onValidate(): string {
             // Immer erst die Basisklasse fragen - Meldung von dort werden bevorzugt angezeigt.
-            super.validate();
+            var message = super.onValidate();
 
-            if (this.message.length > 0)
-                return;
+            if (message !== ``)
+                return message;
 
             // Ungültige Eingabe, die nicht in eine Zahl umgesetzt wurde.
             if (this._rawInput !== undefined)
-                this.message = `Ungültige Zahl`;
+                return `Ungültige Zahl`;
 
             // Kein Wert vorhanden.
             else if (this.value === null) {
                 if (this.isRequired)
-                    this.message = `Es muss eine Zahl eingegeben werden`;
+                    return `Es muss eine Zahl eingegeben werden`;
             }
 
             // Wert unterhalb der Untergrenze.
             else if ((this._min !== undefined) && (this.value < this._min))
-                this.message = `Die Zahl muss mindestens ${this._min} sein`;
+                return `Die Zahl muss mindestens ${this._min} sein`;
 
             // Wert oberhalb der Obergrenze.
             else if ((this._max !== undefined) && (this.value > this._max))
-                this.message = `Die Zahl darf höchstens ${this._max} sein`;
+                return `Die Zahl darf höchstens ${this._max} sein`;
+
+            // Ursprünglichen Wert melden.
+            return message;
         }
     }
 }

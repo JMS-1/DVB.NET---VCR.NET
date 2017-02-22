@@ -286,29 +286,29 @@ namespace VCRNETClient.App {
         }
 
         // Prüft den aktuellen Wert.
-        validate(): void {
+        protected onValidate(): string {
             // Sollte die Basisklasse bereits einen Fehler melden so ist dieser so elementar, dass er unbedingt verwendet werden soll.
-            super.validate();
+            var message = super.onValidate();
 
-            if (this.message.length > 0)
-                return;
+            if (message !== ``)
+                return message;
 
             // Unbekannter Sender.
-            if (!this._hasChannel) {
-                this.message = "Die Quelle wird von dem ausgewählten Gerät nicht empfangen.";
-
-                return;
-            }
+            if (!this._hasChannel)
+                return "Die Quelle wird von dem ausgewählten Gerät nicht empfangen.";
 
             // Die Quelle darf eventuell auch leer sein.
             if (!this._isRequired)
-                return;
+                return message;
 
             // Quelle prüfen.
             var value = (this.value || "").trim();
 
             if (value.length < 1)
-                this.message = "Entweder für die Aufzeichnung oder für den Auftrag muss eine Quelle angegeben werden.";
+                return "Entweder für die Aufzeichnung oder für den Auftrag muss eine Quelle angegeben werden.";
+
+            // Ursprünglichen Wert melden.
+            return message;
         }
     }
 }

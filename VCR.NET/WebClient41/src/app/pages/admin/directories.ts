@@ -30,7 +30,9 @@ namespace VCRNETClient.App.Admin {
 
         readonly remove = new JMSLib.App.Command(() => this.removeDirectories(), "Verzeichnisse entfernen", () => this.directories.value.length > 0);
 
-        readonly share = new JMSLib.App.String({}, "value", "Netzwerk-Share", () => this.onShareChanged());
+        private _shareValidation: string;
+
+        readonly share = new JMSLib.App.String({}, "value", "Netzwerk-Share", () => this.onShareChanged(), null, null, str => this._shareValidation || ``);
 
         get showBrowse(): boolean {
             return (this.share.value || "").trim().length < 1;
@@ -134,11 +136,15 @@ namespace VCRNETClient.App.Admin {
 
             var share = this.share.value.trim();
 
+            this._shareValidation = undefined;
+            this.share.validate();
+
             return VCRServer.validateDirectory(share).then(ok => {
                 if (ok)
                     this.addDirectory(share);
                 else {
-                    this.share.message = "Ungültiges Verzeichnis";
+                    this._shareValidation = "Ungültiges Verzeichnis";
+                    this.share.validate();
 
                     this.refreshUi();
                 }

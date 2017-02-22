@@ -40,10 +40,10 @@ namespace VCRNETClient.App.Edit {
                 model.lastDay = ScheduleEditor.maximumDate.toISOString();
 
             // Pflegbare Eigenschaften anlegen.
-            this.firstStart = new JMSLib.App.DayEditor(model, "firstStart", "Datum", onChange, false);
             this.repeat = new JMSLib.App.Number(model, "repeatPattern", "Wiederholung", onChange);
-            this.lastDay = new JMSLib.App.DayEditor(model, "lastDay", "wiederholen bis zum", onChange, true);
             this.duration = new DurationEditor(model, "firstStart", "duration", "Zeitraum", onChange);
+            this.firstStart = new JMSLib.App.DayEditor(model, "firstStart", "Datum", onChange, false, day => this.validateFirstRecording());
+            this.lastDay = new JMSLib.App.DayEditor(model, "lastDay", "wiederholen bis zum", onChange, true, day => ScheduleEditor.validateDateRange(day));
 
             this.onMonday = new JMSLib.App.FlagSet(ScheduleEditor.flagMonday, this.repeat, JMSLib.App.DateTimeUtils.germanDays[1]);
             this.onTuesday = new JMSLib.App.FlagSet(ScheduleEditor.flagTuesday, this.repeat, JMSLib.App.DateTimeUtils.germanDays[2]);
@@ -131,25 +131,20 @@ namespace VCRNETClient.App.Edit {
             ScheduleEditor.flagSaturday
         ];
 
-        validate(sources: VCRServer.SourceEntry[], sourceIsRequired: boolean): void {
-            super.validate(sources, sourceIsRequired);
+        private static validateDateRange(day: JMSLib.App.DayEditor): string {
+            var lastDay = new Date(day.value)
 
-            this.firstStart.validate();
-            this.duration.validate();
-            this.lastDay.validate();
-            this.repeat.validate();
+            if (lastDay < ScheduleEditor.minimumDate)
+                return `Datum liegt zu weit in der Vergangenheit.`;
+            else if (lastDay > ScheduleEditor.maximumDate)
+                return `Datum liegt zu weit in der Zukunft.`;
 
+            return ``;
+        }
+
+        private validateFirstRecording(): string {
             // Der letzte Tage einer Wiederholung.
             var lastDay = new Date(this.lastDay.value)
-
-            if (this.lastDay.message.length < 1)
-                if (lastDay < ScheduleEditor.minimumDate)
-                    this.lastDay.message = `Datum liegt zu weit in der Vergangenheit.`;
-                else if (lastDay > ScheduleEditor.maximumDate)
-                    this.lastDay.message = `Datum liegt zu weit in der Zukunft.`;
-
-            if (this.firstStart.message.length > 0)
-                return;
 
             // Geplanter erster (evt. einziger Start).
             var start = new Date(this.firstStart.value);
@@ -165,7 +160,7 @@ namespace VCRNETClient.App.Edit {
 
             // Wenn die Aufzeichnung in der Zukunft endet ist alles gut.
             if (end > now)
-                return;
+                return ``;
 
             // Ansonsten kann uns nur noch das Wiederholen retten.
             var repeat = this.repeat.value;
@@ -195,11 +190,20 @@ namespace VCRNETClient.App.Edit {
 
                     // Liegt dieses echt in der Zukunft ist alles gut.
                     if (end > now)
-                        return;
+                        return ``;
                 }
             }
 
-            this.firstStart.message = `Die Aufzeichnung liegt in der Vergangenheit.`;
+            return `Die Aufzeichnung liegt in der Vergangenheit.`;
+        }
+
+        validate(sources: VCRServer.SourceEntry[], sourceIsRequired: boolean): void {
+            super.validate(sources, sourceIsRequired);
+
+            this.firstStart.validate();
+            this.duration.validate();
+            this.lastDay.validate();
+            this.repeat.validate();
         }
 
         isValid(): boolean {

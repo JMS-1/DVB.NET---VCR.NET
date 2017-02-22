@@ -10,7 +10,7 @@ namespace VCRNETClient.App.Admin {
 
     export class DevicesSection extends Section<VCRServer.ProfileSettingsContract> implements IAdminDevicesPage {
 
-        readonly defaultDevice = new JMSLib.App.SelectSingleFromList<string>({}, "defaultProfile", "Bevorzugtes Gerät (zum Beispiel für neue Aufzeichnungen)", () => this.refreshUi(), true, []);
+        readonly defaultDevice = new JMSLib.App.SelectSingleFromList<string>({}, "defaultProfile", "Bevorzugtes Gerät (zum Beispiel für neue Aufzeichnungen)", () => this.refreshUi(), true, [], list => this.validateDefaultDevice());
 
         devices: Device[] = [];
 
@@ -29,10 +29,13 @@ namespace VCRNETClient.App.Admin {
             this.page.application.isBusy = false;
         }
 
+        private validateDefaultDevice(): string {
+            return this.devices.some(d => d.active.message !== ``) ? `Dieses Gerät ist nicht für Aufzeichnungen vorgesehen` : ``;
+        }
+
         refreshUi(): void {
             this.devices.forEach(d => d.validate(this.defaultDevice.value));
-
-            this.defaultDevice.message = this.devices.some(d => d.active.message !== ``) ? `Dieses Gerät ist nicht für Aufzeichnungen vorgesehen` : ``;
+            this.defaultDevice.validate();
 
             super.refreshUi();
         }

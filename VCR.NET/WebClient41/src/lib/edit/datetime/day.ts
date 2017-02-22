@@ -212,8 +212,8 @@ namespace JMSLib.App {
             while (current.getMonth() === month);
         }
 
-        constructor(data: any, prop: string, text: string, onChange: () => void, private _utc: boolean) {
-            super(data, prop, text, onChange);
+        constructor(data: any, prop: string, text: string, onChange: () => void, private _utc: boolean, validator?: (day: DayEditor) => string) {
+            super(data, prop, text, onChange, null, null, validator);
         }
 
         private selectDay(day: ISelectableDay): void {

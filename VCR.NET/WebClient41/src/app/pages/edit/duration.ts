@@ -46,17 +46,19 @@ namespace VCRNETClient.App.Edit {
             return (this.value >= 24 * 60) ? "Die Aufzeichnungsdauer muss kleiner als ein Tag sein." : undefined;
         }
 
-        validate(): void {
-            super.validate();
+        protected onValidate(): string {
+            var message = super.onValidate();
 
             this.startTime.validate();
             this.endTime.validate();
 
-            if (this.message.length < 1)
-                if (this.startTime.message.length > 0)
-                    this.message = this.startTime.message;
+            if (message === ``)
+                if (this.startTime.message !== ``)
+                    return this.startTime.message;
                 else
-                    this.message = this.endTime.message;
+                    return this.endTime.message;
+
+            return message;
         }
     }
 }

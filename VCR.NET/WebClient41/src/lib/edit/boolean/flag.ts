@@ -9,8 +9,8 @@ namespace JMSLib.App {
     // Verwaltet den Wahrheitswert in einer Eigenschaft - hier können wir uns vollständig auf die Implementierung der Basisklasse verlassen.
     export class Flag extends Property<boolean> implements IFlag {
         // Legt eine neue Verwaltung an.
-        constructor(data?: any, prop?: string, name?: string, onChange?: () => void, testReadOnly?: () => boolean) {
-            super(data, prop, name, onChange, false, testReadOnly);
+        constructor(data?: any, prop?: string, name?: string, onChange?: () => void, testReadOnly?: () => boolean, validator?: (property: Flag) => string) {
+            super(data, prop, name, onChange, false, testReadOnly, validator);
         }
     }
 

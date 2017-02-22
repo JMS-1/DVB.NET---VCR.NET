@@ -10,17 +10,17 @@ namespace JMSLib.App {
     export class String extends Property<string> implements IString {
 
         // Legt eine neue Verwaltung an.
-        constructor(data: any, prop: string, name: string, onChange: () => void, isRequired?: boolean, private readonly _message?: string, private readonly _validator?: () => string) {
-            super(data, prop, name, onChange, isRequired);
+        constructor(data: any, prop: string, name: string, onChange: () => void, isRequired?: boolean, private readonly _defaultMessage?: string, validator?: (str: String) => string) {
+            super(data, prop, name, onChange, isRequired, null, validator);
         }
 
         // Prüft den aktuellen Wert auf Gültigkeit.
-        validate(): void {
+        protected onValidate(): string {
             // Sollte die Basisklasse bereits einen Fehler melden so ist dieser so elementar, dass er unbedingt verwendet werden soll.
-            super.validate();
+            var message = super.onValidate();
 
-            if (this.message.length > 0)
-                return;
+            if (message !== ``)
+                return message;
 
             // Es gibt eine Einschränkung auf die Werte der Eigenschaft.
             if (this.isRequired) {
@@ -28,13 +28,11 @@ namespace JMSLib.App {
                 var value = (this.value || "").trim();
 
                 if (value.length < 1)
-                    this.message = this._message || "Es muss ein Wert angegeben werden.";
+                    return this._defaultMessage || "Es muss ein Wert angegeben werden.";
             }
 
-            // Sonderprüfung.
-            if (this.message.length < 1)
-                if (this._validator)
-                    this.message = this._validator();
+            // Ergebnis der Basisklasse nutzen.
+            return message;
         }
     }
 }

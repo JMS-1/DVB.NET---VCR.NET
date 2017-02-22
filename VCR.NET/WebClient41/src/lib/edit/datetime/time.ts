@@ -48,15 +48,15 @@ namespace JMSLib.App {
             return this.message;
         }
 
-        validate(): void {
+        protected onValidate(): string {
             var external = (this._externalValidator && this._externalValidator()) || "";
 
             if (external.length > 0)
-                this.message = external;
+                return external;
             else if ((this._time === undefined) || (DateTimeUtils.parseTime(this._time) !== null))
-                super.validate();
+                return super.onValidate();
             else
-                this.message = "Ungültige Uhrzeit."
+                return "Ungültige Uhrzeit."
         }
     }
 }
