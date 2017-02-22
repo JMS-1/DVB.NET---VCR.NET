@@ -17,7 +17,7 @@ namespace JMSLib.App {
     // Verwaltet ein Bitfeld von Wahrheitswerten in einer Eigenschaft mit einer Zahl als Wert.
     export class FlagSet implements IFlag {
         // Prüfungen werden hierbei nicht individuell unterstützt.
-        readonly message = "";
+        readonly message = ``;
 
         // Erstelle eine Verwaltungsinstanz auf Basis der Verwaltung der elementaren Zahl.
         constructor(private _mask: number, private readonly _flags: Number, public text: string) {
