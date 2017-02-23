@@ -11,11 +11,11 @@ namespace VCRNETClient.Ui {
                 {this.getHelp()}
                 <form>
                     <Field page={this.props.uvm} label={`${this.props.uvm.profiles.text}:`}>
-                        <JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.profiles} />
-                        <JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.startDay} />
-                        <JMSLib.ReactUi.EditBooleanWithButton uvm={this.props.uvm.showGuide} />
-                        <JMSLib.ReactUi.EditBooleanWithButton uvm={this.props.uvm.showScan} />
-                        <JMSLib.ReactUi.EditBooleanWithButton uvm={this.props.uvm.showLive} />
+                        <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.profiles} />
+                        <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.startDay} />
+                        <JMSLib.ReactUi.ToggleCommand uvm={this.props.uvm.showGuide} />
+                        <JMSLib.ReactUi.ToggleCommand uvm={this.props.uvm.showScan} />
+                        <JMSLib.ReactUi.ToggleCommand uvm={this.props.uvm.showLive} />
                     </Field>
                 </form>
                 <table>

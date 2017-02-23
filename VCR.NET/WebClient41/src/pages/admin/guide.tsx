@@ -18,13 +18,13 @@ namespace VCRNETClient.Ui {
                 {this.props.uvm.isActive.value ? <form>
                     {this.getSourceHelp()}
                     <div>
-                        <JMSLib.ReactUi.SelectMultipleFromList uvm={this.props.uvm.sources} items={10} />
+                        <JMSLib.ReactUi.MultiSelect uvm={this.props.uvm.sources} items={10} />
                         <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.remove} />
                     </div>
                     {this.getUkHelp()}
                     <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.ukTv} />
                     <Field page={this.props.uvm.page} label={`${this.props.uvm.device.text}:`}>
-                        <JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.device} />
+                        <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.device} />
                         <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.add} />
                     </Field>
                     <EditChannel uvm={this.props.uvm.source} />
@@ -33,7 +33,7 @@ namespace VCRNETClient.Ui {
                         <JMSLib.ReactUi.EditNumber uvm={this.props.uvm.duration} chars={5} />
                     </Field>
                     <Field page={this.props.uvm.page} label={`${this.props.uvm.hours.text}:`} >
-                        <JMSLib.ReactUi.MultiButtonsFromList uvm={this.props.uvm.hours} />
+                        <JMSLib.ReactUi.MultiSelectButton uvm={this.props.uvm.hours} />
                     </Field>
                     <Field page={this.props.uvm.page} label={`${this.props.uvm.delay.text}:`} >
                         <JMSLib.ReactUi.EditNumber uvm={this.props.uvm.delay} chars={5} />

@@ -24,7 +24,7 @@ namespace VCRNETClient.Ui {
                         </tr>
                     </tbody>
                 </table>
-                <JMSLib.ReactUi.EditNumberWithSlider uvm={this.props.uvm.remaining} />
+                <JMSLib.ReactUi.EditNumberSlider uvm={this.props.uvm.remaining} />
                 <div>
                     <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.stopNow} />
                     <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} />

@@ -16,9 +16,10 @@ namespace JMSLib.ReactUi {
             return <input className="jmslib-editnumber"
                 type="TEXT"
                 size={this.props.chars}
-                value={this.props.uvm.rawValue}
                 title={this.props.uvm.message}
+                value={this.props.uvm.rawValue}
                 onChange={ev => this.props.uvm.rawValue = (ev.target as HTMLInputElement).value} />;
         }
+
     }
 }

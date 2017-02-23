@@ -25,7 +25,7 @@ namespace VCRNETClient.Ui {
                     </div>
                     {this.getSleepHelp()}
                     <Field label={`${this.props.uvm.hibernation.text}:`} page={this.props.uvm.page} >
-                        <JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.hibernation} />
+                        <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.hibernation} />
                     </Field>
                     <Field label={`${this.props.uvm.preSleep.text}:`} page={this.props.uvm.page} >
                         <JMSLib.ReactUi.EditNumber uvm={this.props.uvm.preSleep} chars={8} />
@@ -48,7 +48,7 @@ namespace VCRNETClient.Ui {
                         <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.noMPEG2PCR} />
                     </div>
                     <Field label={`${this.props.uvm.logging.text}:`} page={this.props.uvm.page} >
-                        <JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.logging} />
+                        <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.logging} />
                     </Field>
                 </form>
                 {this.getSaveHelp()}

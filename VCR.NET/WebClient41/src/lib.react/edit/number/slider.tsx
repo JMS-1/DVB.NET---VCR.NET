@@ -3,7 +3,8 @@
 namespace JMSLib.ReactUi {
 
     // React.Js Komponente zur Auswahl einer Zahl über einen Schieberegler.
-    export class EditNumberWithSlider extends ComponentWithSite<App.INumberWithSlider>  {
+    export class EditNumberSlider extends ComponentWithSite<App.INumberWithSlider>  {
+
         // Erstellt die Oberflächenelement - hier gibt es eine ganze Menge Kleinigkeiten im CSS zu beachten, esp. die Positionierung.
         render(): JSX.Element {
             return <div className="jmslib-slider">
@@ -13,12 +14,14 @@ namespace JMSLib.ReactUi {
                         style={{ left: `${100 * this.props.uvm.position}%` }}>
                     </div>
                 </div>
-                <div 
-                    onMouseDown={ev => this.props.uvm.isDragging = (ev.buttons === 1)}
+                <div
+                    draggable={false}
+                    onDragStart={() => false}
                     onMouseMove={ev => this.doMove(ev)}
-                    onMouseUp={ev => this.props.uvm.isDragging = false} onMouseLeave={ev => this.props.uvm.isDragging = false}
                     onKeyUp={ev => this.doKey(ev)} tabIndex={0}
-                    draggable={false} onDragStart={() => false}>
+                    onMouseUp={ev => this.props.uvm.isDragging = false}
+                    onMouseLeave={ev => this.props.uvm.isDragging = false}
+                    onMouseDown={ev => this.props.uvm.isDragging = (ev.buttons === 1)}>
                 </div>
             </div>;
         }
@@ -35,7 +38,7 @@ namespace JMSLib.ReactUi {
             // Die relative horizontale Mausposition.
             var absX = ev.clientX;
             var relX = absX - bounds.left;
-            
+
             // Als relativen Wert zwischen 0 und 1 an die Anwendungslogik melden.
             this.props.uvm.position = relX / bounds.width;
         }
@@ -47,5 +50,6 @@ namespace JMSLib.ReactUi {
             else if (ev.keyCode === 39)
                 this.props.uvm.delta(+1);
         }
+
     }
 }

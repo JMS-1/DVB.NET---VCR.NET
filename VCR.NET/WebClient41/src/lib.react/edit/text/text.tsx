@@ -13,6 +13,7 @@ namespace JMSLib.ReactUi {
 
     // Texteingabe für React.Js - die NoUi Schicht stellt den Wert und das Prüfergebnis zur Verfügung.
     export class EditText extends ComponentExWithSite<App.IString, IEditText>  {
+
         // Erstellt die Anzeige der Komponente.
         render(): JSX.Element {
             return <input className="jmslib-edittext"
@@ -23,5 +24,6 @@ namespace JMSLib.ReactUi {
                 title={this.props.uvm.message}
                 onChange={ev => this.props.uvm.value = (ev.target as HTMLInputElement).value} />;
         }
+
     }
 }

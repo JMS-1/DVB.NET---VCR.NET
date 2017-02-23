@@ -7,7 +7,7 @@ namespace VCRNETClient.Ui {
                 <legend>Daten zum Auftrag</legend>
 
                 <Field page={this.props.uvm.page} label={`${this.props.uvm.device.text}:`}>
-                    <JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.device} />
+                    <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.device} />
                     <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.deviceLock} />
                 </Field>
 
@@ -16,7 +16,7 @@ namespace VCRNETClient.Ui {
                 </Field>
 
                 <Field page={this.props.uvm.page} label={`${this.props.uvm.folder.text}:`}>
-                    <JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.folder} />
+                    <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.folder} />
                 </Field>
 
                 <Field page={this.props.uvm.page} label={`${this.props.uvm.source.text}:`} help="sourcechooser">

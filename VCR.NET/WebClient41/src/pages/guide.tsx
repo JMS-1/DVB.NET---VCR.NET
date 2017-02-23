@@ -16,30 +16,30 @@ namespace VCRNETClient.Ui {
                         <legend>Einschränkungen festlegen</legend>
                         <div>
                             <Field page={this.props.uvm} label={`${this.props.uvm.profiles.text}:`}>
-                                <JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.profiles} />
+                                <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.profiles} />
                             </Field>
                             <Field page={this.props.uvm} label={`${this.props.uvm.sources.text}:`}>
-                                <JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.sources} />
+                                <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.sources} />
                             </Field>
-                            {this.props.uvm.showSourceType ? <JMSLib.ReactUi.ButtonFromList uvm={this.props.uvm.sourceType} /> : null}
-                            {this.props.uvm.showEncryption ? <JMSLib.ReactUi.ButtonFromList uvm={this.props.uvm.encrpytion} /> : null}
+                            {this.props.uvm.showSourceType ? <JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.sourceType} /> : null}
+                            {this.props.uvm.showEncryption ? <JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.encrpytion} /> : null}
                         </div>
                         <div>
                             <Field page={this.props.uvm} label={`${this.props.uvm.queryString.text}:`}>
                                 <JMSLib.ReactUi.EditText uvm={this.props.uvm.queryString} chars={30} />
                             </Field>
-                            <JMSLib.ReactUi.EditBooleanWithButton uvm={this.props.uvm.withContent} />
+                            <JMSLib.ReactUi.ToggleCommand uvm={this.props.uvm.withContent} />
                             <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.resetFilter} />
                             <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.addFavorite} />
                         </div>
                         <div>
                             <Field page={this.props.uvm} label={`${this.props.uvm.days.text}:`}>
-                                <JMSLib.ReactUi.ButtonFromList uvm={this.props.uvm.days} />
+                                <JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.days} />
                             </Field>
                         </div>
                         <div>
                             <Field page={this.props.uvm} label={`${this.props.uvm.hours.text}:`}>
-                                <JMSLib.ReactUi.ButtonFromList uvm={this.props.uvm.hours} />
+                                <JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.hours} />
                             </Field>
                         </div>
                     </fieldset>

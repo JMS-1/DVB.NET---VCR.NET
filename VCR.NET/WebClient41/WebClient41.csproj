@@ -126,7 +126,6 @@
     <TypeScriptCompile Include="src\lib.react\command\pictogram.tsx" />
     <TypeScriptCompile Include="src\lib.react\detailRow.tsx" />
     <TypeScriptCompile Include="src\lib.react\edit\boolean\flag.tsx" />
-    <TypeScriptCompile Include="src\lib.react\edit\boolean\flagButton.tsx" />
     <TypeScriptCompile Include="src\lib.react\edit\buttonList.tsx" />
     <TypeScriptCompile Include="src\lib.react\edit\datetime\day.tsx" />
     <TypeScriptCompile Include="src\lib.react\edit\datetime\time.tsx" />
@@ -187,7 +186,6 @@
     <Content Include="src\lib.react\constants.scss" />
     <Content Include="src\lib.react\detailRow.scss" />
     <Content Include="src\lib.react\edit\boolean\flag.scss" />
-    <Content Include="src\lib.react\edit\boolean\flagButton.scss" />
     <Content Include="src\lib.react\edit\buttonList.scss" />
     <Content Include="src\lib.react\edit\datetime\day.scss" />
     <Content Include="src\lib.react\edit\datetime\time.scss" />

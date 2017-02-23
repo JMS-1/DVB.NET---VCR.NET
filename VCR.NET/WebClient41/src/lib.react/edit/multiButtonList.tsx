@@ -2,18 +2,22 @@
 
 namespace JMSLib.ReactUi {
 
-    export class MultiButtonsFromList extends ComponentWithSite<App.IMultiValueFromList<any>>  {
+    // React.Js Komponente für eine Mehrfachauswahl über einzelne Schaltflächen.
+    export class MultiSelectButton extends ComponentWithSite<App.IMultiValueFromList<any>>  {
+
+        // Oberflächenelemente erstellen.
         render(): JSX.Element {
             return <div className="jmslib-editmultibuttonlist">
                 {this.props.uvm.allowedValues.map(v => <div
+                    title=""
                     key={v.display}
                     className="jmslib-command"
-                    title=""
-                    data-jmslib-checked={v.isSelected ? "yes" : null}
-                    onClick={ev => v.isSelected = !v.isSelected}>
+                    onClick={ev => v.isSelected = !v.isSelected}
+                    data-jmslib-checked={v.isSelected ? "yes" : "no"}>
                     {v.display}
                 </div>)}
             </div>;
         }
+
     }
 }

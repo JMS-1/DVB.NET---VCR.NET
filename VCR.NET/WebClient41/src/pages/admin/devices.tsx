@@ -13,7 +13,7 @@ namespace VCRNETClient.Ui {
                 {this.getHelp()}
                 <form>
                     <Field page={this.props.uvm.page} label={`${this.props.uvm.defaultDevice.text}:`}>
-                        <JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.defaultDevice} />
+                        <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.defaultDevice} />
                     </Field>
                     <table>
                         <thead>

@@ -14,7 +14,7 @@ namespace VCRNETClient.Ui {
                 </fieldset>
                 <div>
                     <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.createNew} />
-                    <Field page={this.props.page} label={`(${this.props.uvm.jobSelector.text}:`}><JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.jobSelector} />)</Field>
+                    <Field page={this.props.page} label={`(${this.props.uvm.jobSelector.text}:`}><JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.jobSelector} />)</Field>
                 </div>
             </form>;
         }

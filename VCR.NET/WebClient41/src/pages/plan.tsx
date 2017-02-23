@@ -10,7 +10,7 @@ namespace VCRNETClient.Ui {
                 Hier sieht man einen Ausschnitt der geplanten Aufzeichnungen für die nächsten Wochen.<HelpLink page={this.props.uvm} topic="parallelrecording" />
                 {this.getHelp()}
                 <div className="vcrnet-plan-filter">
-                    <JMSLib.ReactUi.ButtonFromList uvm={this.props.uvm.startFilter} />
+                    <JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.startFilter} />
                     <JMSLib.ReactUi.ToggleCommand uvm={this.props.uvm.showTasks} />
                 </div>
                 {

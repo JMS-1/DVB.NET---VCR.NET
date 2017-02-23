@@ -14,8 +14,8 @@ namespace VCRNETClient.Ui {
                     {this.getSourceHelp()}
                     <div>
                         Inhalte der Senderlisten bei Aufzeichnungen:
-                        <JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.type} />
-                        <JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.encryption} />
+                        <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.type} />
+                        <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.encryption} />
                     </div>
                     <Field page={this.props.uvm} label={`${this.props.uvm.maxFavorites.text}:`} >
                         <JMSLib.ReactUi.EditNumber uvm={this.props.uvm.maxFavorites} chars={5} />

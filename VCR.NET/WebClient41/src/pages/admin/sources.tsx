@@ -10,7 +10,7 @@ namespace VCRNETClient.Ui {
                 Geräte zu aktualisieren.<HelpLink topic="psiconfig" page={this.props.uvm.page} />
                 Dies kann automatisch oder gemäß eines Zeitplans erfolgen.
                 <div>
-                    <JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.mode} />
+                    <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.mode} />
                 </div>
                 {this.props.uvm.showConfiguration ? <form>
                     {this.getDurationHelp()}
@@ -21,7 +21,7 @@ namespace VCRNETClient.Ui {
                     {this.props.uvm.configureAutomatic ? <div>
                         {this.getHourHelp()}
                         <Field page={this.props.uvm.page} label={`${this.props.uvm.hours.text}:`} >
-                            <JMSLib.ReactUi.MultiButtonsFromList uvm={this.props.uvm.hours} />
+                            <JMSLib.ReactUi.MultiSelectButton uvm={this.props.uvm.hours} />
                         </Field>
                         <Field page={this.props.uvm.page} label={`${this.props.uvm.gapDays.text}:`} >
                             <JMSLib.ReactUi.EditNumber uvm={this.props.uvm.gapDays} chars={5} />
