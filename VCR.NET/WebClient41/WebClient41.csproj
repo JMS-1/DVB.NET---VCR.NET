@@ -197,9 +197,6 @@
     <Content Include="src\lib.react\edit\text\text.scss" />
     <Content Include="src\lib.react\edit\text\textarea.scss" />
     <Content Include="src\lib.react\router.scss" />
-    <Content Include="src\lib.react\styles.css">
-      <DependentUpon>styles.scss</DependentUpon>
-    </Content>
     <Content Include="src\lib.react\styles.scss" />
     <Content Include="src\lib.react\timebar.scss" />
     <Content Include="src\pages\admin\directories.scss" />
