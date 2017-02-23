@@ -5,13 +5,13 @@
         // Rückgriff auf die Anwendung als Ganzes.
         readonly application: IApplication;
 
-        // Dereindeutige Name (die Route) zur Seite.
+        // Der eindeutige Name (der Navigationsbereich) zur Seite.
         readonly route: string;
 
         // Die Überschrift der Seite.
         readonly title: string;
 
-        // Der Navigationsbereich.
+        // Konfiguration der Navigationsleiste.
         readonly navigation: {
             // Aktualisierung.
             readonly refresh: boolean;
@@ -38,30 +38,14 @@
 
     // Basisklasse zur Implementierung von Seiten.
     export abstract class Page implements IPage {
+
         // Das zugehörige Oberflächenelement.
-        private _site: JMSLib.App.ISite;
-
-        // Legt das zugehörige Oberflächenelement fest.
-        set site(newSite: JMSLib.App.ISite) {
-            this._site = newSite;
-
-            if (this._site)
-                this.onSiteChanged();
-        }
-
-        // Meldet das zugehörige Oberflächenelement.
-        get site(): JMSLib.App.ISite {
-            return this._site;
-        }
-
-        // Wird ausgelöst, wenn das zugehörige Oberflächenelement gesetzt wurde.
-        protected onSiteChanged(): void {
-        }
+        site: JMSLib.App.ISite;
 
         // Meldet Änderungen an das zugehörige Oberflächenelement.
         protected refreshUi(): void {
-            if (this._site)
-                this._site.refreshUi();
+            if (this.site)
+                this.site.refreshUi();
         }
 
         // Initialisiert die Seite zur erneuten Anzeige.
@@ -70,7 +54,7 @@
         // Meldet die Überschrift der Seite.
         abstract get title(): string;
 
-        // Initialisiert den Navigationsbereich.
+        // Initialisiert die Navigationsleiste.
         navigation = {
             favorites: false,
             refresh: false,

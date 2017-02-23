@@ -6,7 +6,7 @@ namespace VCRNETClient.App.Admin {
         readonly rules: JMSLib.App.IString;
     }
 
-    export class RulesSection extends Section<VCRServer.SchedulerRulesContract> implements IAdminRulesPage {
+    export class RulesSection extends Section implements IAdminRulesPage {
 
         readonly rules = new JMSLib.App.String({}, "rules", null, null, false);
 

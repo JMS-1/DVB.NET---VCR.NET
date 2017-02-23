@@ -10,7 +10,7 @@
     }
 
     // Basisklasse für einen Konfigurationsbereich.
-    export abstract class Section<TSettingsType> implements ISection {
+    export abstract class Section implements ISection {
 
         // Der Befehl zum Speichern der Daten des Konfigurationsbereichs.
         private _update: JMSLib.App.Command<void>;
@@ -19,7 +19,7 @@
         get update(): JMSLib.App.Command<void> {
             // Beim ersten Aufruf muss der Befehl erzeugt werden.
             if (!this._update)
-                this._update = new JMSLib.App.Command(() => this.save(), this.saveCaption, () => this.isValid)
+                this._update = new JMSLib.App.Command(() => this.save(), this.saveCaption, () => this.isValid);
 
             return this._update;
         }
@@ -66,12 +66,12 @@
     }
 
     // Beschreibt einen Konfigurationsbereich.
-    export interface ISectionInfo<TPageType extends ISection> {
+    export interface ISectionInfo {
         // Der eindeutige Name des Konfigurationsbereichs.
         readonly route: string;
 
         // Das Präsentationsmodell des Konfigurationsbereichs.
-        readonly page: TPageType;
+        readonly section: ISection;
     }
 
 }

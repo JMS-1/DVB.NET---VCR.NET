@@ -39,7 +39,7 @@ namespace VCRNETClient.App.Admin {
         readonly logging: JMSLib.App.IValueFromList<string>;
     }
 
-    export class OtherSection extends Section<VCRServer.OtherSettingsContract> implements IAdminOtherPage {
+    export class OtherSection extends Section implements IAdminOtherPage {
 
         private static readonly _logging = [
             JMSLib.App.uiValue("Errors", "Nur Fehler"),

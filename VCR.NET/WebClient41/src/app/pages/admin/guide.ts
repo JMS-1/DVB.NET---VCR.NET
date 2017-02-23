@@ -26,7 +26,7 @@ namespace VCRNETClient.App.Admin {
         readonly latency: JMSLib.App.INumber;
     }
 
-    export class GuideSection extends Section<VCRServer.GuideSettingsContract> implements IAdminGuidePage {
+    export class GuideSection extends Section implements IAdminGuidePage {
 
         readonly isActive = new JMSLib.App.Flag({}, "value", "Aktualisierung aktivieren", () => this.refreshUi());
 

@@ -12,7 +12,7 @@ namespace VCRNETClient.App.Admin {
     }
 
     // Instanz zur Pflege der Konfiguration der Benutzergruppen.
-    export class SecuritySection extends Section<VCRServer.SecuritySettingsContract> implements IAdminSecurityPage {
+    export class SecuritySection extends Section implements IAdminSecurityPage {
 
         // Alle bekannten Windows Kontogruppen - die werden nur ein einziges Mal angefordert.
         private static _windowsGroups: JMSLib.App.IHttpPromise<JMSLib.App.IUiValue<string>[]>;

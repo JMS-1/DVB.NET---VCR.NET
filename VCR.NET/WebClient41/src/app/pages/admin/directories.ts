@@ -22,7 +22,7 @@ namespace VCRNETClient.App.Admin {
         readonly pattern: JMSLib.App.IString;
     }
 
-    export class DirectoriesSection extends Section<VCRServer.DirectorySettingsContract> implements IAdminDirectoriesPage {
+    export class DirectoriesSection extends Section implements IAdminDirectoriesPage {
 
         readonly directories = new JMSLib.App.SelectMultipleFromList<string>({}, "value", null, () => this.refreshUi());
 

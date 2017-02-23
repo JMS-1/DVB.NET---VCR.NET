@@ -5,43 +5,38 @@
 namespace VCRNETClient.App {
 
     // Interne Verwaltungseinheit für Konfigurationsbereiche.
-    class SectionInfo implements Admin.ISectionInfo<Admin.ISection> {
+    class SectionInfo implements Admin.ISectionInfo {
 
         // Erstellt eine neue Verwaltung.
-        constructor(public readonly route: string, private readonly _factory: { new (page: AdminPage): Admin.Section<any> }, private readonly _adminPage: AdminPage) {
+        constructor(public readonly route: string, private readonly _factory: { new (section: AdminPage): Admin.Section }, private readonly _adminPage: AdminPage) {
         }
 
         // Die Präsentationsinstanz des zugehörigen Konfigurationsbereichs.
-        private _page: Admin.Section<any>;
+        private _section: Admin.Section;
 
         // Meldet die Präsentation des zugehörigen Konfigurationsbereichs - bei Bedarf wird eine neue erstellt.
-        get page(): Admin.Section<any> {
+        get section(): Admin.Section {
             // Beim ersten Aufruf eine neue Präsentationsinstanz anlegen.
-            if (!this._page)
-                this._page = new (this._factory)(this._adminPage);
+            if (!this._section)
+                this._section = new (this._factory)(this._adminPage);
 
-            return this._page;
+            return this._section;
         }
     }
 
     // Schnittstelle zur Anzeige der Administration.
     export interface IAdminPage extends IPage {
-        readonly sections: JMSLib.App.IValueFromList<Admin.ISectionInfo<any>>;
+        // Eine Auswahl für den aktuell anzuzeigenden Konfigurationsbereich.
+        readonly sections: JMSLib.App.IValueFromList<Admin.ISectionInfo>;
     }
 
+    // Das Präsentationsmodell für die Konfiguration des VCR.NET Recording Service.
     export class AdminPage extends Page implements IAdminPage {
 
-        static readonly hoursOfDay = (() => {
-            var hours: JMSLib.App.IUiValue<number>[] = [];
+        // Einmalig berechnet die Liste aller Stunden des Tages.
+        static readonly hoursOfDay = Array.apply(null, Array(24)).map((d, i) => JMSLib.App.uiValue(i, JMSLib.App.DateTimeUtils.formatNumber(i)));
 
-            for (var i = 0; i < 24; i++)
-                hours.push(JMSLib.App.uiValue(i, JMSLib.App.DateTimeUtils.formatNumber(i)));
-
-            return hours;
-        })();
-
-        private static _windowsGroups: JMSLib.App.IHttpPromise<JMSLib.App.IUiValue<string>[]>;
-
+        // Die Liste aller Konfigurationsbereiche in der Reihenfolge, in der sie dem Anwender präsentiert werden sollen.
         private readonly _sections: JMSLib.App.IUiValue<SectionInfo>[] = [
             JMSLib.App.uiValue(new SectionInfo("security", Admin.SecuritySection, this), "Sicherheit"),
             JMSLib.App.uiValue(new SectionInfo("directories", Admin.DirectoriesSection, this), "Verzeichnisse"),
@@ -52,45 +47,47 @@ namespace VCRNETClient.App {
             JMSLib.App.uiValue(new SectionInfo("other", Admin.OtherSection, this), "Sonstiges")
         ];
 
+        // Präsentationsmodell zur Auswahl des aktuellen Konfigurationsbereichs.
         readonly sections: JMSLib.App.SelectSingleFromList<SectionInfo> = new JMSLib.App.SelectSingleFromList<SectionInfo>({}, "value", null, null, false, this._sections);
 
+        // Erstellt ein neues Präsentationsmodell für die Seite.
         constructor(application: Application) {
             super("admin", application);
         }
 
+        // Bereitet die Seite für die Anzeige vor.
         reset(sections: string[]): void {
-            // Melden, dass alle ausstehenden asynchronen Anfragen von nun an nicht mehr interessieren.
-            JMSLib.App.switchView();
-
+            // Den aktuellen Konfigurationsbereich ermittelt - im Zweifel verwenden wir den ersten der Liste.
             var allSections = this.sections.allowedValues;
             var curSection = allSections.filter(v => v.value.route === sections[0])[0] || allSections[0];
 
+            // Auswahl übernehmen.
             this.sections.value = curSection.value;
 
-            curSection.value.page.reset();
+            // Den aktiven Konfigurationsbereich laden.
+            curSection.value.section.reset();
         }
 
-        update<TResponseType>(promise: JMSLib.App.IHttpPromise<boolean>, command: JMSLib.App.Command<TResponseType>): JMSLib.App.IHttpPromise<void> {
-            command.message = ``;
-
-            return promise.then(restartRequired => {
+        // Aktualisiert eine Teilkonfiguration.
+        update(request: JMSLib.App.IHttpPromise<boolean>, command: JMSLib.App.Command<void>): JMSLib.App.IHttpPromise<void> {
+            // Auf das Ende der asynchronen Ausführung warten.
+            return request.then(restartRequired => {
                 if (restartRequired === true)
-                    alert(`RESTART`);
-                else if (restartRequired !== false)
-                {
-                    command.message = `Ausführung zurzeit nicht möglich`;
-
                     this.application.restart();
-                }
-                else
+                else if (restartRequired === false)
                     this.application.gotoPage(null);
+                else
+                    command.message = `Ausführung zurzeit nicht möglich`;
             }, error => {
+                // Fehlermeldung eintragen.
                 command.message = error.message;
 
+                // Weitere Fehlerbehandlung ermöglichen.
                 return error;
             });
         }
 
+        // Überschrift melden.
         get title(): string {
             return `Administration und Konfiguration`;
         }

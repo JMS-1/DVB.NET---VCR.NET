@@ -29,7 +29,7 @@ namespace VCRNETClient.App.Admin {
         readonly latency: JMSLib.App.INumber;
     }
 
-    export class ScanSection extends Section<VCRServer.SourceScanSettingsContract> implements IAdminScanPage {
+    export class ScanSection extends Section implements IAdminScanPage {
 
         private static readonly  _scanDisabled = "Aktualisierung deaktivieren";
 

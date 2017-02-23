@@ -21,7 +21,7 @@ namespace VCRNETClient.Ui {
         }
 
         private renderSection(): JSX.Element {
-            const page = this.props.uvm.sections.value.page;
+            const page = this.props.uvm.sections.value.section;
 
             if (page instanceof App.Admin.DevicesSection)
                 return <AdminDevices uvm={page} />;
