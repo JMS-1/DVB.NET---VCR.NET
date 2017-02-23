@@ -4,7 +4,7 @@ import ReactDOM = __React.__DOM;
 
 namespace JMSLib.ReactUi {
 
-    // Beschreibt eine React.Js Komponente für ein NoUi Präsentationsmodell.
+    // Beschreibt eine React.Js Komponente für ein Präsentationsmodell.
     export interface IComponent<TViewModelType> {
         // Das Präsentationsmodell.
         noui: TViewModelType;
@@ -14,7 +14,7 @@ namespace JMSLib.ReactUi {
     export interface IEmpty {
     }
 
-    // Implementierung einer React.Js Komponente für ein NoUi Präsentationsmodell.
+    // Implementierung einer React.Js Komponente für ein Präsentationsmodell.
     export abstract class ComponentEx<TViewModelType, TConfigType extends IComponent<TViewModelType>> extends React.Component<TConfigType, IEmpty>
     {
     }
@@ -23,7 +23,7 @@ namespace JMSLib.ReactUi {
     {
     }
 
-    // Implementierung einer React.Js Komponente für ein NoUi Präsentationsmodell.
+    // Implementierung einer React.Js Komponente für ein Präsentationsmodell mit Benachrichtigungen.
     export abstract class ComponentExWithSite<TViewModelType extends App.IConnectable, TConfigType extends IComponent<TViewModelType>> extends ComponentEx<TViewModelType, TConfigType> implements App.ISite {
         // Führt die Anmeldung auf Benachrichtigungen aus.
         componentWillMount(): void {
