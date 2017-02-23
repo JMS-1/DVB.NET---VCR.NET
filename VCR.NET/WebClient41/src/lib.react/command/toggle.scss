@@ -1,6 +1,8 @@
-﻿@import "command.scss";
+﻿@import "button";
 
 .jmslib-checkbox {
+    @extend .jmslib-command;
+
     &[data-jmslib-checked=yes] {
         font-weight: bold;
     }

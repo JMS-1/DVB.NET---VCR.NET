@@ -14,11 +14,12 @@ namespace JMSLib.ReactUi {
         description?: string;
 
         // Aktion bei Auswahl des Symbols.
-        onClick?: (ev: React.FormEvent) => void;
+        onClick?(ev: React.FormEvent): void;
     }
 
     // React.Js Komponente zur Anzeige eines Symbols.
     export class Pictogram extends React.Component<IPictogram, IEmpty>{
+
         // Globale Festlegung für das Verzeichnis aller Symboldateien.
         static imageRoot: string;
 
@@ -27,8 +28,9 @@ namespace JMSLib.ReactUi {
             return <img
                 className="jmslib-pict"
                 alt={this.props.description}
-                src={`${Pictogram.imageRoot}${this.props.name}.${this.props.type || "png"}`}
-                onClick={this.props.onClick} />;
+                onClick={this.props.onClick}
+                src={`${Pictogram.imageRoot}${this.props.name}.${this.props.type || "png"}`} />;
         }
+
     }
 }

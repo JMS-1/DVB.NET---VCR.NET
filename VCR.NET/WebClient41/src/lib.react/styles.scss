@@ -2,38 +2,25 @@
 @import "timebar";
 @import "detailRow";
 
-@import "command/command";
-@import "command/checkbox";
-@import "command/radio";
+@import "command/button";
+@import "command/toggle";
 @import "command/pictogram";
-@import "command/internalLink";
 @import "command/externalLink";
+@import "command/internalLink";
 
 @import "edit/list";
 @import "edit/multiList";
 @import "edit/buttonList";
 @import "edit/multiButtonList";
+
 @import "edit/text/text";
 @import "edit/text/textarea";
+
 @import "edit/boolean/flag";
 @import "edit/boolean/flagButton";
+
 @import "edit/number/slider";
 @import "edit/number/number";
-@import "edit/datetime/time";
+
 @import "edit/datetime/day";
-
-.jmslib-toggleButton {
-    margin: 0px 4px;
-    padding: 1px 2px;
-    font-size: small;
-    border: 1px solid black;
-
-    input {
-        display: none;
-    }
-
-    &[data-jmslib-checked] {
-        font-weight: bold;
-        background: white;
-    }
-}
+@import "edit/datetime/time";

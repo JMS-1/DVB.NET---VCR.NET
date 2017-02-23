@@ -4,6 +4,7 @@ namespace JMSLib.ReactUi {
 
     // React.Js Komponente zur Anzeige einer Aktion über eine Schaltfläche.
     export class ButtonCommand extends ComponentWithSite<App.ICommand>  {
+
         // Oberflächenelemente erzeugen.
         render(): JSX.Element {
             return this.props.uvm.isVisible ? <div
@@ -14,6 +15,7 @@ namespace JMSLib.ReactUi {
                 {this.props.uvm.text}
             </div> : null;
         }
+
     }
 
 }

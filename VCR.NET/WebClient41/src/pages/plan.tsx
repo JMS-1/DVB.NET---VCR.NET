@@ -11,7 +11,7 @@ namespace VCRNETClient.Ui {
                 {this.getHelp()}
                 <div className="vcrnet-plan-filter">
                     <JMSLib.ReactUi.ButtonFromList uvm={this.props.uvm.startFilter} />
-                    <JMSLib.ReactUi.CheckBoxCommand uvm={this.props.uvm.showTasks} />
+                    <JMSLib.ReactUi.ToggleCommand uvm={this.props.uvm.showTasks} />
                 </div>
                 {
                     jobs ? <table>

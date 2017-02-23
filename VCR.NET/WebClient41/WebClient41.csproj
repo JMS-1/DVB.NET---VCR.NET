@@ -119,12 +119,11 @@
     <TypeScriptCompile Include="src\app\pages\log.ts" />
     <TypeScriptCompile Include="src\app\pages\log\entry.ts" />
     <TypeScriptCompile Include="src\app\pages\settings.ts" />
-    <TypeScriptCompile Include="src\lib.react\command\checkbox.tsx" />
-    <TypeScriptCompile Include="src\lib.react\command\command.tsx" />
+    <TypeScriptCompile Include="src\lib.react\command\toggle.tsx" />
+    <TypeScriptCompile Include="src\lib.react\command\button.tsx" />
     <TypeScriptCompile Include="src\lib.react\command\externalLink.tsx" />
     <TypeScriptCompile Include="src\lib.react\command\internalLink.tsx" />
     <TypeScriptCompile Include="src\lib.react\command\pictogram.tsx" />
-    <TypeScriptCompile Include="src\lib.react\command\radio.tsx" />
     <TypeScriptCompile Include="src\lib.react\detailRow.tsx" />
     <TypeScriptCompile Include="src\lib.react\edit\boolean\flag.tsx" />
     <TypeScriptCompile Include="src\lib.react\edit\boolean\flagButton.tsx" />
@@ -180,12 +179,11 @@
     <Content Include="scripts\vcrnet.js.map">
       <DependentUpon>vcrnet.js</DependentUpon>
     </Content>
-    <Content Include="src\lib.react\command\checkbox.scss" />
-    <Content Include="src\lib.react\command\command.scss" />
+    <Content Include="src\lib.react\command\toggle.scss" />
+    <Content Include="src\lib.react\command\button.scss" />
     <Content Include="src\lib.react\command\externalLink.scss" />
     <Content Include="src\lib.react\command\internalLink.scss" />
     <Content Include="src\lib.react\command\pictogram.scss" />
-    <Content Include="src\lib.react\command\radio.scss" />
     <Content Include="src\lib.react\constants.scss" />
     <Content Include="src\lib.react\detailRow.scss" />
     <Content Include="src\lib.react\edit\boolean\flag.scss" />

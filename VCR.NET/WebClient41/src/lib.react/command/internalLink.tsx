@@ -4,7 +4,7 @@ namespace JMSLib.ReactUi {
 
     // Konfigurationzur Anzeige eines internen Verweises.
     interface IInternalLink {
-        // Der Name einer Seite oder eine Funktion zur Durchführung eines Übergangs.
+        // Ein Navigationsziel oder eine Funktion zur Durchführung eines Übergangs.
         view: string | (() => void);
 
         // Optional ein Symbol für den Verweis.
@@ -13,6 +13,7 @@ namespace JMSLib.ReactUi {
 
     // React.Js Komponente zur Anzeige eines internen Verweises.
     export class InternalLink extends React.Component<IInternalLink, IEmpty>{
+
         // Erstellt die Oberflächenelemente.
         render(): JSX.Element {
             // Konfiguration des HTML A Verweises je nach Parameter der Komponente.
@@ -30,5 +31,6 @@ namespace JMSLib.ReactUi {
                 {this.props.children ? <a href={target} onClick={click}>{this.props.children}</a> : null}
             </div>;
         }
+
     }
 }
