@@ -8,44 +8,44 @@ namespace VCRNETClient.Ui {
                 Hier werden im Wesentlichen Voreinstellungen für einzelne Teil der Web Anwendung des VCR.NET Recording Service festgelegt.
                 <form>
                     {this.getPlanHelp()}
-                    <Field page={this.props.noui} label={`${this.props.noui.planDays.text}:`} >
-                        <JMSLib.ReactUi.EditNumber noui={this.props.noui.planDays} chars={5} />
+                    <Field page={this.props.uvm} label={`${this.props.uvm.planDays.text}:`} >
+                        <JMSLib.ReactUi.EditNumber uvm={this.props.uvm.planDays} chars={5} />
                     </Field>
                     {this.getSourceHelp()}
                     <div>
                         Inhalte der Senderlisten bei Aufzeichnungen:
-                        <JMSLib.ReactUi.SelectSingleFromList noui={this.props.noui.type} />
-                        <JMSLib.ReactUi.SelectSingleFromList noui={this.props.noui.encryption} />
+                        <JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.type} />
+                        <JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.encryption} />
                     </div>
-                    <Field page={this.props.noui} label={`${this.props.noui.maxFavorites.text}:`} >
-                        <JMSLib.ReactUi.EditNumber noui={this.props.noui.maxFavorites} chars={5} />
+                    <Field page={this.props.uvm} label={`${this.props.uvm.maxFavorites.text}:`} >
+                        <JMSLib.ReactUi.EditNumber uvm={this.props.uvm.maxFavorites} chars={5} />
                     </Field>
                     <div>
                         Bevorzugte Zusatzoptionen für Aufzeichnungen:
-                        <JMSLib.ReactUi.EditBoolean noui={this.props.noui.dolby} />
-                        <JMSLib.ReactUi.EditBoolean noui={this.props.noui.allAudio} />
-                        <JMSLib.ReactUi.EditBoolean noui={this.props.noui.ttx} />
-                        <JMSLib.ReactUi.EditBoolean noui={this.props.noui.subs} />
+                        <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.dolby} />
+                        <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.allAudio} />
+                        <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.ttx} />
+                        <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.subs} />
                     </div>
                     {this.getSleepHelp()}
                     <div>
-                        <JMSLib.ReactUi.EditBoolean noui={this.props.noui.noSleep} />
+                        <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.noSleep} />
                     </div>
                     {this.getGuideHelp()}
-                    <Field page={this.props.noui} label={`${this.props.noui.guideRows.text}:`} >
-                        <JMSLib.ReactUi.EditNumber noui={this.props.noui.guideRows} chars={5} />
+                    <Field page={this.props.uvm} label={`${this.props.uvm.guideRows.text}:`} >
+                        <JMSLib.ReactUi.EditNumber uvm={this.props.uvm.guideRows} chars={5} />
                     </Field>
-                    <Field page={this.props.noui} label={`${this.props.noui.preGuide.text}:`} >
-                        <JMSLib.ReactUi.EditNumber noui={this.props.noui.preGuide} chars={5} />
+                    <Field page={this.props.uvm} label={`${this.props.uvm.preGuide.text}:`} >
+                        <JMSLib.ReactUi.EditNumber uvm={this.props.uvm.preGuide} chars={5} />
                     </Field>
-                    <Field page={this.props.noui} label={`${this.props.noui.postGuide.text}:`} >
-                        <JMSLib.ReactUi.EditNumber noui={this.props.noui.postGuide} chars={5} />
+                    <Field page={this.props.uvm} label={`${this.props.uvm.postGuide.text}:`} >
+                        <JMSLib.ReactUi.EditNumber uvm={this.props.uvm.postGuide} chars={5} />
                     </Field>
                     <div>
-                        <JMSLib.ReactUi.EditBoolean noui={this.props.noui.backToGuide} />
+                        <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.backToGuide} />
                     </div>
                     <div>
-                        <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.update} />
+                        <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} />
                     </div>
                 </form>
             </div >;
@@ -53,7 +53,7 @@ namespace VCRNETClient.Ui {
 
         private getPlanHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen">
-                Im Aufzeichnungsplan<JMSLib.ReactUi.InternalLink view={this.props.noui.application.planPage.route} pict="plan" /> werden die Daten aller
+                Im Aufzeichnungsplan<JMSLib.ReactUi.InternalLink view={this.props.uvm.application.planPage.route} pict="plan" /> werden die Daten aller
                 geplanten Aufzeichnungen in einer Liste angezeigt. Um eine gewisse Übersichtlichkeit zu erhalten wird allerdings
                 nur eine begrenzte Anzahl von Aufzeichnungen auf einmal angezeigt. Die im Folgenden angezeigte Zahl legt fest,
                 wie viele Tage pro Seite im Aufzeichnungsplan berücksichtigt werden sollen.
@@ -63,16 +63,16 @@ namespace VCRNETClient.Ui {
         private getSourceHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen">
                 Bei der Programmierung neuer Aufzeichnungen können eine ganze Reihe von Einstellungen verwendet werden,
-                die bei der Auswahl der zu verwendenden Quelle helfen.<HelpLink topic="sourcechooser" page={this.props.noui} />
+                die bei der Auswahl der zu verwendenden Quelle helfen.<HelpLink topic="sourcechooser" page={this.props.uvm} />
                 Hier wird die gewünschte Vorbelegung dieser Einstellungen festgelegt.
             </InlineHelp>;
         }
 
         private getSleepHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen">
-                Wird eine aktive Aufzeichnung<JMSLib.ReactUi.InternalLink view={this.props.noui.application.devicesPage.route} pict="devices" />
+                Wird eine aktive Aufzeichnung<JMSLib.ReactUi.InternalLink view={this.props.uvm.application.devicesPage.route} pict="devices" />
                 vorzeitig beendet, so wird der VCR.NET Recording Service prüfen, ob
-                der Rechner in den Schlafzustand versetzt werden soll.<HelpLink topic="hibernation" page={this.props.noui} />
+                der Rechner in den Schlafzustand versetzt werden soll.<HelpLink topic="hibernation" page={this.props.uvm} />
                 Diese Verhalten kann pro Abbruch gesondert deaktiviert werden und die folgende Einstellung legt
                 das bevorzugte Verhalten fest.
             </InlineHelp>;
@@ -80,7 +80,7 @@ namespace VCRNETClient.Ui {
 
         private getGuideHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen">
-                Wird eine neue Aufzeichnung aus der Programmzeitschrift<HelpLink topic="epg" page={this.props.noui} />
+                Wird eine neue Aufzeichnung aus der Programmzeitschrift<HelpLink topic="epg" page={this.props.uvm} />
                 heraus angelegt, so können hier vor allem die Vor- und Nachlaufzeiten der Aufzeichnung relativ zu den exakten
                 Daten aus der Programmzeitschrift festgelegt werden. Es handelt sich allerdings nur um Vorschlagswerte, die
                 in den Daten der neuen Aufzeichnung jederzeit korrigiert werden können. Da Sendungen in den seltensten Fällen
@@ -90,13 +90,13 @@ namespace VCRNETClient.Ui {
                 synchronisiert ist.
                 <br />
                 <br />
-                Hier wird auch festgelegt, wie viele Einträge die Programmzeitschrift<JMSLib.ReactUi.InternalLink view={this.props.noui.application.guidePage.route} pict="guide" />
+                Hier wird auch festgelegt, wie viele Einträge die Programmzeitschrift<JMSLib.ReactUi.InternalLink view={this.props.uvm.application.guidePage.route} pict="guide" />
                 pro Seite anzeigen soll. Zu große Werte erhöhen nicht nur die Zeit zur Anzeige einer Seite sondern sorgen oft
                 auch dafür, dass nicht alle Sendungen einer Seite auf einen Blick erfasst werden können.
                 <br />
                 <br />
                 Wenn die Programmierung einer Aufzeichnung aus der Programmzeitschrift abgeschlossen ist wird normalerweise
-                zum Aufzeichnungsplan<JMSLib.ReactUi.InternalLink view={this.props.noui.application.planPage.route} pict="plan" />
+                zum Aufzeichnungsplan<JMSLib.ReactUi.InternalLink view={this.props.uvm.application.planPage.route} pict="plan" />
                 gewechselt. Ist die unten als letztes angebotene Einstellung aktiviert wird in diesem Fall erneut die
                 Programmzeitschrift aufgerufen.
             </InlineHelp>;

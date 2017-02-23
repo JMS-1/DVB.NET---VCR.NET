@@ -12,38 +12,38 @@ namespace VCRNETClient.Ui {
                 Namen von Aufzeichnungsdateien aus den Daten einer Aufzeichnung zusammensetzen sollen.
                 {this.getFolderHelp()}
                 <div>
-                    <JMSLib.ReactUi.SelectMultipleFromList noui={this.props.noui.directories} items={10} />
+                    <JMSLib.ReactUi.SelectMultipleFromList uvm={this.props.uvm.directories} items={10} />
                     <div>
-                        <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.remove} />
+                        <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.remove} />
                     </div>
                 </div>
                 {this.getAddHelp()}
                 <form>
                     <fieldset>
                         <legend>Neues Verzeichnis</legend>
-                        <Field page={this.props.noui.page} label={`${this.props.noui.share.text}:`}>
-                            <JMSLib.ReactUi.EditText noui={this.props.noui.share} chars={80} />
+                        <Field page={this.props.uvm.page} label={`${this.props.uvm.share.text}:`}>
+                            <JMSLib.ReactUi.EditText uvm={this.props.uvm.share} chars={80} />
                         </Field>
-                        {this.props.noui.showBrowse ? <div>
+                        {this.props.uvm.showBrowse ? <div>
                             <i>oder</i>
-                            <Field page={this.props.noui.page} label={`${this.props.noui.browse.text}:`}>
-                                <JMSLib.ReactUi.SelectSingleFromList noui={this.props.noui.browse} />
+                            <Field page={this.props.uvm.page} label={`${this.props.uvm.browse.text}:`}>
+                                <JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.browse} />
                             </Field>
                         </div> : null}
                         <div>
-                            {this.props.noui.showBrowse ? <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.parent} /> : null}
-                            <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.add} />
+                            {this.props.uvm.showBrowse ? <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.parent} /> : null}
+                            <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.add} />
                         </div>
                     </fieldset>
                 </form>
                 <form>
-                    <Field page={this.props.noui.page} label={`${this.props.noui.pattern.text}:`}>
-                        <JMSLib.ReactUi.EditText noui={this.props.noui.pattern} chars={60} />
+                    <Field page={this.props.uvm.page} label={`${this.props.uvm.pattern.text}:`}>
+                        <JMSLib.ReactUi.EditText uvm={this.props.uvm.pattern} chars={60} />
                     </Field>
                 </form>
                 {this.getPatternHelp()}
                 <div>
-                    <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.update} />
+                    <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} />
                 </div>
             </div>;
         }
@@ -87,7 +87,7 @@ namespace VCRNETClient.Ui {
         private getPatternHelp(): JSX.Element {
             return <InlineHelp title="Mögliche Platzhalter in den Dateinamen">
                 Für jede Aufzeichnung wird im Allgemeinen genau eine Aufzeichnungsdatei
-                erstellt.<HelpLink topic="numberoffiles" page={this.props.noui.page} /> Der VCR.NET Recording Service
+                erstellt.<HelpLink topic="numberoffiles" page={this.props.uvm.page} /> Der VCR.NET Recording Service
                 nutzt die Daten der Programmierung sowie weitere Umgebungsparameter wie die aktuelle Uhrzeit zur Erzeugung eines
                 Dateinamens. Die Regeln zur Komposition dieses Namens können frei konfiguriert werden, es wird allerdings dringend
                 empfohlen ein Schema zu wählen, das eine Eindeutigkeit der Dateinamen garantiert - ohne Einbeziehung des Zeitpunktes

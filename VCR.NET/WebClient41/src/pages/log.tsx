@@ -6,16 +6,16 @@ namespace VCRNETClient.Ui {
         render(): JSX.Element {
             return <div className="vcrnet-log">
                 Für jede Nutzung eines Gerätes erstellt der VCR.NET Recording Service einen
-                Protokolleintrag<HelpLink topic="log" page={this.props.noui} />, der hier eingesehen werden kann.
+                Protokolleintrag<HelpLink topic="log" page={this.props.uvm} />, der hier eingesehen werden kann.
                 Bei überlappenden Aufzeichnung wird ein einziger Eintrag erstellt, der den gesamten Nutzungszeitraum beschreibt.
                 {this.getHelp()}
                 <form>
-                    <Field page={this.props.noui} label={`${this.props.noui.profiles.text}:`}>
-                        <JMSLib.ReactUi.SelectSingleFromList noui={this.props.noui.profiles} />
-                        <JMSLib.ReactUi.SelectSingleFromList noui={this.props.noui.startDay} />
-                        <JMSLib.ReactUi.EditBooleanWithButton noui={this.props.noui.showGuide} />
-                        <JMSLib.ReactUi.EditBooleanWithButton noui={this.props.noui.showScan} />
-                        <JMSLib.ReactUi.EditBooleanWithButton noui={this.props.noui.showLive} />
+                    <Field page={this.props.uvm} label={`${this.props.uvm.profiles.text}:`}>
+                        <JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.profiles} />
+                        <JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.startDay} />
+                        <JMSLib.ReactUi.EditBooleanWithButton uvm={this.props.uvm.showGuide} />
+                        <JMSLib.ReactUi.EditBooleanWithButton uvm={this.props.uvm.showScan} />
+                        <JMSLib.ReactUi.EditBooleanWithButton uvm={this.props.uvm.showLive} />
                     </Field>
                 </form>
                 <table>
@@ -27,14 +27,14 @@ namespace VCRNETClient.Ui {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.props.noui.entries.map((e, index) => [
+                        {this.props.uvm.entries.map((e, index) => [
                             <tr key={index}>
                                 <td><a href="javascript:void(0)" onClick={() => e.toggleDetail()}>{e.start}</a></td>
                                 <td>{e.endTime}</td>
                                 <td>{e.source}</td>
                             </tr>,
                             e.showDetail ? <JMSLib.ReactUi.DetailRow key={`${index}Detail`} dataColumns={3}>
-                                <LogDetails noui={e} />
+                                <LogDetails uvm={e} />
                             </JMSLib.ReactUi.DetailRow> : null
                         ])}
                     </tbody>
@@ -51,14 +51,14 @@ namespace VCRNETClient.Ui {
                 <br />
                 <br />
                 Nach dem Aufruf der Seite werden erst einmal nur die regulären Aufzeichnungen angezeigt. Die Nutzung des
-                jeweiligen Gerätes durch Aktualisierungen<HelpLink topic="tasks" page={this.props.noui} /> und
+                jeweiligen Gerätes durch Aktualisierungen<HelpLink topic="tasks" page={this.props.uvm} /> und
                 den LIVE Zugriff kann durch die entsprechenden Schaltflächen
                 neben der Auswahl der Woche eingeblendet werden.
                 <br />
                 <br />
                 Durch Anwahl des jeweiligen Startzeitpunkts eines Protokolleintrags wird die Detailanzeige geöffnet. Handelt
                 es sich bei der Nutzung des Geräte um eine oder mehrere reguläre Aufzeichnungen, so sind mit dieser eventuell
-                noch nicht gelöschte Aufzeichnungsdateien verbunden.<HelpLink topic="filecontents" page={this.props.noui} />
+                noch nicht gelöschte Aufzeichnungsdateien verbunden.<HelpLink topic="filecontents" page={this.props.uvm} />
                 Durch Anwahl des jeweiligen Symbols können diese
                 zur Anzeige durch
                 den <JMSLib.ReactUi.ExternalLink url="http://www.psimarron.net/DVBNETViewer/html/vcrfile.html">DVB.NET / VCR.NET Viewer</JMSLib.ReactUi.ExternalLink> abgerufen

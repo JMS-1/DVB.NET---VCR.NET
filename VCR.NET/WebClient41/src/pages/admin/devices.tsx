@@ -7,13 +7,13 @@ namespace VCRNETClient.Ui {
             return <div className="vcrnet-admin-devices">
                 <h2>Aktivierung von DVB.NET Geräteprofilen</h2>
                 Für den VCR.NET Recording Service kann festgelegt werden, welche der auf dem zugehörigen Rechner
-                installierten DVB.NET<HelpLink topic="dvbnet" page={this.props.noui.page} />
+                installierten DVB.NET<HelpLink topic="dvbnet" page={this.props.uvm.page} />
                 Geräteprofile für Aufzeichnungen verwendet werden dürfen. Eines dieser Geräte
                 muss dann als bevorzugtes Gerät festgelegt werden.
                 {this.getHelp()}
                 <form>
-                    <Field page={this.props.noui.page} label={`${this.props.noui.defaultDevice.text}:`}>
-                        <JMSLib.ReactUi.SelectSingleFromList noui={this.props.noui.defaultDevice} />
+                    <Field page={this.props.uvm.page} label={`${this.props.uvm.defaultDevice.text}:`}>
+                        <JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.defaultDevice} />
                     </Field>
                     <table>
                         <thead>
@@ -26,18 +26,18 @@ namespace VCRNETClient.Ui {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.props.noui.devices.map(d => <tr key={d.name}>
-                                <td><JMSLib.ReactUi.EditBoolean noui={d.active} /></td>
+                            {this.props.uvm.devices.map(d => <tr key={d.name}>
+                                <td><JMSLib.ReactUi.EditBoolean uvm={d.active} /></td>
                                 <td>{d.name}</td>
-                                <td><JMSLib.ReactUi.EditNumber noui={d.priority} chars={5} /></td>
-                                <td><JMSLib.ReactUi.EditNumber noui={d.decryption} chars={5} /></td>
-                                <td><JMSLib.ReactUi.EditNumber noui={d.sources} chars={5} /></td>
+                                <td><JMSLib.ReactUi.EditNumber uvm={d.priority} chars={5} /></td>
+                                <td><JMSLib.ReactUi.EditNumber uvm={d.decryption} chars={5} /></td>
+                                <td><JMSLib.ReactUi.EditNumber uvm={d.sources} chars={5} /></td>
                             </tr>)}
                         </tbody>
                     </table>
                 </form>
                 <div>
-                    <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.update} />
+                    <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} />
                 </div>
             </div>;
         }

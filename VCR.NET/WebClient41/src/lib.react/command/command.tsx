@@ -6,12 +6,12 @@ namespace JMSLib.ReactUi {
     export class ButtonCommand extends ComponentWithSite<App.ICommand>  {
         // Oberflächenelemente erzeugen.
         render(): JSX.Element {
-            return this.props.noui.isVisible ? <div
-                className={`jmslib-command${this.props.noui.isDangerous ? ` jmslib-dangerous` : ``}`}
-                data-jmslib-disabled={this.props.noui.isEnabled ? `no` : `yes`}
-                onClick={ev => this.props.noui.execute()}
-                title={this.props.noui.message}>
-                {this.props.noui.text}
+            return this.props.uvm.isVisible ? <div
+                className={`jmslib-command${this.props.uvm.isDangerous ? ` jmslib-dangerous` : ``}`}
+                data-jmslib-disabled={this.props.uvm.isEnabled ? `no` : `yes`}
+                onClick={ev => this.props.uvm.execute()}
+                title={this.props.uvm.message}>
+                {this.props.uvm.text}
             </div> : null;
         }
     }

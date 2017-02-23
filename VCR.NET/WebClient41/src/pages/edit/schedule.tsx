@@ -6,37 +6,37 @@ namespace VCRNETClient.Ui {
             return <fieldset className="vcrnet-scheduledata">
                 <legend>Daten zur Aufzeichnung</legend>
 
-                <Field page={this.props.noui.page} label={`${this.props.noui.name.text}:`} help="jobsandschedules">
-                    <JMSLib.ReactUi.EditText noui={this.props.noui.name} chars={100} hint="(Optionaler Name der Aufzeichnung)" />
+                <Field page={this.props.uvm.page} label={`${this.props.uvm.name.text}:`} help="jobsandschedules">
+                    <JMSLib.ReactUi.EditText uvm={this.props.uvm.name} chars={100} hint="(Optionaler Name der Aufzeichnung)" />
                 </Field>
 
-                <Field page={this.props.noui.page} label={`${this.props.noui.source.text}:`} help="sourcechooser">
-                    <EditChannel noui={this.props.noui.source} />
+                <Field page={this.props.uvm.page} label={`${this.props.uvm.source.text}:`} help="sourcechooser">
+                    <EditChannel uvm={this.props.uvm.source} />
                 </Field>
 
-                <Field page={this.props.noui.page} label={`${this.props.noui.sourceFlags.text}:`} help="filecontents">
-                    <EditChannelFlags noui={this.props.noui.sourceFlags} />
+                <Field page={this.props.uvm.page} label={`${this.props.uvm.sourceFlags.text}:`} help="filecontents">
+                    <EditChannelFlags uvm={this.props.uvm.sourceFlags} />
                 </Field>
 
-                <Field page={this.props.noui.page} label={`${this.props.noui.firstStart.text}:`}>
-                    <JMSLib.ReactUi.EditDay noui={this.props.noui.firstStart} />
+                <Field page={this.props.uvm.page} label={`${this.props.uvm.firstStart.text}:`}>
+                    <JMSLib.ReactUi.EditDay uvm={this.props.uvm.firstStart} />
                 </Field>
 
-                <Field page={this.props.noui.page} label={`${this.props.noui.duration.text}:`}>
-                    <EditDuration noui={this.props.noui.duration} />
+                <Field page={this.props.uvm.page} label={`${this.props.uvm.duration.text}:`}>
+                    <EditDuration uvm={this.props.uvm.duration} />
                 </Field>
 
-                <Field page={this.props.noui.page} label={`${this.props.noui.repeat.text}:`} help="repeatingschedules">
-                    <JMSLib.ReactUi.EditBoolean noui={this.props.noui.onMonday} />
-                    <JMSLib.ReactUi.EditBoolean noui={this.props.noui.onTuesday} />
-                    <JMSLib.ReactUi.EditBoolean noui={this.props.noui.onWednesday} />
-                    <JMSLib.ReactUi.EditBoolean noui={this.props.noui.onThursday} />
-                    <JMSLib.ReactUi.EditBoolean noui={this.props.noui.onFriday} />
-                    <JMSLib.ReactUi.EditBoolean noui={this.props.noui.onSaturday} />
-                    <JMSLib.ReactUi.EditBoolean noui={this.props.noui.onSunday} />
-                    {(this.props.noui.repeat.value !== 0) ? <div>
-                        {this.props.noui.lastDay.text}
-                        <JMSLib.ReactUi.EditDay noui={this.props.noui.lastDay} />
+                <Field page={this.props.uvm.page} label={`${this.props.uvm.repeat.text}:`} help="repeatingschedules">
+                    <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.onMonday} />
+                    <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.onTuesday} />
+                    <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.onWednesday} />
+                    <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.onThursday} />
+                    <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.onFriday} />
+                    <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.onSaturday} />
+                    <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.onSunday} />
+                    {(this.props.uvm.repeat.value !== 0) ? <div>
+                        {this.props.uvm.lastDay.text}
+                        <JMSLib.ReactUi.EditDay uvm={this.props.uvm.lastDay} />
                     </div> : null}
                 </Field>
             </fieldset>;

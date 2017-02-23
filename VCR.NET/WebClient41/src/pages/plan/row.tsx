@@ -4,15 +4,15 @@ namespace VCRNETClient.Ui {
     export class PlanRow extends JMSLib.ReactUi.Component<App.Plan.IPlanEntry>  {
         render(): JSX.Element {
             return <tr className="vcrnet-planrow">
-                <td>{this.props.noui.mode ? <JMSLib.ReactUi.Pictogram name={this.props.noui.mode} type="gif" /> : <span>&nbsp;</span>}</td>
-                <td>{this.props.noui.mode ? <a href="javascript:void(0)" onClick={() => this.props.noui.toggleDetail(true)}>{this.props.noui.displayStart}</a> : <span>{this.props.noui.displayStart}</span>}</td>
-                <td className={this.props.noui.suspectTime ? `vcrnet-planrow-suspect` : undefined}>{this.props.noui.displayEnd}</td>
-                <td>{this.props.noui.station}</td>
+                <td>{this.props.uvm.mode ? <JMSLib.ReactUi.Pictogram name={this.props.uvm.mode} type="gif" /> : <span>&nbsp;</span>}</td>
+                <td>{this.props.uvm.mode ? <a href="javascript:void(0)" onClick={() => this.props.uvm.toggleDetail(true)}>{this.props.uvm.displayStart}</a> : <span>{this.props.uvm.displayStart}</span>}</td>
+                <td className={this.props.uvm.suspectTime ? `vcrnet-planrow-suspect` : undefined}>{this.props.uvm.displayEnd}</td>
+                <td>{this.props.uvm.station}</td>
                 <td className="vcrnet-planrow-name">
-                    <div>{this.props.noui.editLink ? <JMSLib.ReactUi.InternalLink view={this.props.noui.editLink}>{this.props.noui.name}</JMSLib.ReactUi.InternalLink> : <span>{this.props.noui.name}</span>}</div>
-                    <div>{this.props.noui.exception ? <a href="javascript:void(0)" onClick={() => this.props.noui.toggleDetail(false)}><JMSLib.ReactUi.Pictogram name={this.props.noui.exception.exceptionMode} /></a> : null}</div>
+                    <div>{this.props.uvm.editLink ? <JMSLib.ReactUi.InternalLink view={this.props.uvm.editLink}>{this.props.uvm.name}</JMSLib.ReactUi.InternalLink> : <span>{this.props.uvm.name}</span>}</div>
+                    <div>{this.props.uvm.exception ? <a href="javascript:void(0)" onClick={() => this.props.uvm.toggleDetail(false)}><JMSLib.ReactUi.Pictogram name={this.props.uvm.exception.exceptionMode} /></a> : null}</div>
                 </td>
-                <td>{this.props.noui.device}</td>
+                <td>{this.props.uvm.device}</td>
             </tr>;
         }
     }

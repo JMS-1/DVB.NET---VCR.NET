@@ -7,7 +7,7 @@ namespace VCRNETClient.Ui {
     {
         // Erstellt die Anzeige.
         render(): JSX.Element {
-            var page = this.props.noui;
+            var page = this.props.uvm;
 
             if (!page || !page.navigation)
                 return null;

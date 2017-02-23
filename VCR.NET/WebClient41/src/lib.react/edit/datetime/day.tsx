@@ -5,30 +5,30 @@ namespace JMSLib.ReactUi {
     export class EditDay extends ComponentWithSite<App.IDaySelector> {
         // Anzeige erstellen.
         render(): JSX.Element {
-            return <div className="jmslib-editday" title={this.props.noui.message}>
+            return <div className="jmslib-editday" title={this.props.uvm.message}>
                 <div>
-                    <Pictogram name="prev" type="gif" onClick={ev => this.props.noui.monthBackward()} />
+                    <Pictogram name="prev" type="gif" onClick={ev => this.props.uvm.monthBackward()} />
                     <div>
-                        <select value={this.props.noui.month} onChange={ev => this.props.noui.month = (ev.target as HTMLSelectElement).value} >
-                            {this.props.noui.months.map(m => <option key={m} value={m}>{m}</option>)}
+                        <select value={this.props.uvm.month} onChange={ev => this.props.uvm.month = (ev.target as HTMLSelectElement).value} >
+                            {this.props.uvm.months.map(m => <option key={m} value={m}>{m}</option>)}
                         </select>
-                        <select value={this.props.noui.year} onChange={ev => this.props.noui.year = (ev.target as HTMLSelectElement).value} >
-                            {this.props.noui.years.map(m => <option key={m} value={m}>{m}</option>)}
+                        <select value={this.props.uvm.year} onChange={ev => this.props.uvm.year = (ev.target as HTMLSelectElement).value} >
+                            {this.props.uvm.years.map(m => <option key={m} value={m}>{m}</option>)}
                         </select>
                     </div>
-                    <Pictogram name="next" type="gif" onClick={ev => this.props.noui.monthForward()} />
+                    <Pictogram name="next" type="gif" onClick={ev => this.props.uvm.monthForward()} />
                 </div>
                 <table>
                     <thead>
-                        <tr>{this.props.noui.dayNames.map(n => <td key={n}>{n}</td>)}</tr>
+                        <tr>{this.props.uvm.dayNames.map(n => <td key={n}>{n}</td>)}</tr>
                     </thead>
                     <tbody>
-                        {this.getRows(this.props.noui.days)}
+                        {this.getRows(this.props.uvm.days)}
                     </tbody>
                 </table>
                 <div>
-                    <button onClick={ev => this.today(ev)} disabled={this.props.noui.days.some(d => d.isToday)}>Heute</button>
-                    <button onClick={ev => this.reset(ev)} disabled={this.props.noui.days.some(d => d.isCurrentDay)}>Zurück</button>
+                    <button onClick={ev => this.today(ev)} disabled={this.props.uvm.days.some(d => d.isToday)}>Heute</button>
+                    <button onClick={ev => this.reset(ev)} disabled={this.props.uvm.days.some(d => d.isCurrentDay)}>Zurück</button>
                 </div>
             </div>;
         }
@@ -36,13 +36,13 @@ namespace JMSLib.ReactUi {
         private reset(ev: React.FormEvent): void {
             ev.preventDefault();
 
-            this.props.noui.reset();
+            this.props.uvm.reset();
         }
 
         private today(ev: React.FormEvent): void {
             ev.preventDefault();
 
-            this.props.noui.today();
+            this.props.uvm.today();
         }
 
         private getRow(days: App.ISelectableDay[], rowKey: number): JSX.Element {

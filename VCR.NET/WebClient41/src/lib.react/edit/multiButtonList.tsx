@@ -5,7 +5,7 @@ namespace JMSLib.ReactUi {
     export class MultiButtonsFromList extends ComponentWithSite<App.IMultiValueFromList<any>>  {
         render(): JSX.Element {
             return <div className="jmslib-editmultibuttonlist">
-                {this.props.noui.allowedValues.map(v => <div
+                {this.props.uvm.allowedValues.map(v => <div
                     key={v.display}
                     className="jmslib-command"
                     title=""

@@ -6,8 +6,8 @@ namespace JMSLib.ReactUi {
 
     // Beschreibt eine React.Js Komponente für ein Präsentationsmodell.
     export interface IComponent<TViewModelType> {
-        // Das Präsentationsmodell.
-        noui: TViewModelType;
+        // Das Präsentationsmodell (Ui View Model).
+        uvm: TViewModelType;
     }
 
     // Beschreibt einen nicht vorhandenen Zustand einer React.Js Komponente.
@@ -27,12 +27,12 @@ namespace JMSLib.ReactUi {
     export abstract class ComponentExWithSite<TViewModelType extends App.IConnectable, TConfigType extends IComponent<TViewModelType>> extends ComponentEx<TViewModelType, TConfigType> implements App.ISite {
         // Führt die Anmeldung auf Benachrichtigungen aus.
         componentWillMount(): void {
-            this.props.noui.site = this;
+            this.props.uvm.site = this;
         }
 
         // Meldet sich von Benachrichtigungen ab.
         componentWillUnmount(): void {
-            this.props.noui.site = undefined;
+            this.props.uvm.site = undefined;
         }
 
         // Fordert eine Aktualisierung der Anzeige an.

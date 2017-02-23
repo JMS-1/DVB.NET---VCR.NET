@@ -11,56 +11,56 @@ namespace VCRNETClient.Ui {
                 durchaus dazu führen können, dass der Dienst nicht mehr funktionsfähig ist.
                 <form>
                     {this.getWebHelp()}
-                    <Field label={`${this.props.noui.port.text}:`} page={this.props.noui.page} >
-                        <JMSLib.ReactUi.EditNumber noui={this.props.noui.port} chars={8} />
+                    <Field label={`${this.props.uvm.port.text}:`} page={this.props.uvm.page} >
+                        <JMSLib.ReactUi.EditNumber uvm={this.props.uvm.port} chars={8} />
                     </Field>
                     <div>
-                        <JMSLib.ReactUi.EditBoolean noui={this.props.noui.ssl} />
+                        <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.ssl} />
                     </div>
-                    <Field label={`${this.props.noui.securePort.text}:`} page={this.props.noui.page} >
-                        <JMSLib.ReactUi.EditNumber noui={this.props.noui.securePort} chars={8} />
+                    <Field label={`${this.props.uvm.securePort.text}:`} page={this.props.uvm.page} >
+                        <JMSLib.ReactUi.EditNumber uvm={this.props.uvm.securePort} chars={8} />
                     </Field>
                     <div>
-                        <JMSLib.ReactUi.EditBoolean noui={this.props.noui.basicAuth} />
+                        <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.basicAuth} />
                     </div>
                     {this.getSleepHelp()}
-                    <Field label={`${this.props.noui.hibernation.text}:`} page={this.props.noui.page} >
-                        <JMSLib.ReactUi.SelectSingleFromList noui={this.props.noui.hibernation} />
+                    <Field label={`${this.props.uvm.hibernation.text}:`} page={this.props.uvm.page} >
+                        <JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.hibernation} />
                     </Field>
-                    <Field label={`${this.props.noui.preSleep.text}:`} page={this.props.noui.page} >
-                        <JMSLib.ReactUi.EditNumber noui={this.props.noui.preSleep} chars={8} />
+                    <Field label={`${this.props.uvm.preSleep.text}:`} page={this.props.uvm.page} >
+                        <JMSLib.ReactUi.EditNumber uvm={this.props.uvm.preSleep} chars={8} />
                     </Field>
-                    <Field label={`${this.props.noui.minSleep.text}:`} page={this.props.noui.page} >
-                        <JMSLib.ReactUi.EditNumber noui={this.props.noui.minSleep} chars={8} />
+                    <Field label={`${this.props.uvm.minSleep.text}:`} page={this.props.uvm.page} >
+                        <JMSLib.ReactUi.EditNumber uvm={this.props.uvm.minSleep} chars={8} />
                     </Field>
-                    <JMSLib.ReactUi.EditBoolean noui={this.props.noui.ignoreMinSleep} />
+                    <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.ignoreMinSleep} />
                     {this.getLogHelp()}
-                    <Field label={`${this.props.noui.logKeep.text}:`} page={this.props.noui.page} >
-                        <JMSLib.ReactUi.EditNumber noui={this.props.noui.logKeep} chars={8} />
+                    <Field label={`${this.props.uvm.logKeep.text}:`} page={this.props.uvm.page} >
+                        <JMSLib.ReactUi.EditNumber uvm={this.props.uvm.logKeep} chars={8} />
                     </Field>
-                    <Field label={`${this.props.noui.jobKeep.text}:`} page={this.props.noui.page} >
-                        <JMSLib.ReactUi.EditNumber noui={this.props.noui.jobKeep} chars={8} />
+                    <Field label={`${this.props.uvm.jobKeep.text}:`} page={this.props.uvm.page} >
+                        <JMSLib.ReactUi.EditNumber uvm={this.props.uvm.jobKeep} chars={8} />
                     </Field>
                     <div>
-                        <JMSLib.ReactUi.EditBoolean noui={this.props.noui.noH264PCR} />
+                        <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.noH264PCR} />
                     </div>
                     <div>
-                        <JMSLib.ReactUi.EditBoolean noui={this.props.noui.noMPEG2PCR} />
+                        <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.noMPEG2PCR} />
                     </div>
-                    <Field label={`${this.props.noui.logging.text}:`} page={this.props.noui.page} >
-                        <JMSLib.ReactUi.SelectSingleFromList noui={this.props.noui.logging} />
+                    <Field label={`${this.props.uvm.logging.text}:`} page={this.props.uvm.page} >
+                        <JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.logging} />
                     </Field>
                 </form>
                 {this.getSaveHelp()}
                 <div>
-                    <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.update} />
+                    <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} />
                 </div>
             </div>;
         }
 
         private getWebHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zur Bedienung">
-                Der VCR.NET Recording Service ist ein Web Server<HelpLink topic="websettings" page={this.props.noui.page} />
+                Der VCR.NET Recording Service ist ein Web Server<HelpLink topic="websettings" page={this.props.uvm.page} />
                 auf Basis der Microsoft ASP.NET / .NET
                 Technologie. Als solcher ist es mindestens notwendig, einen TCP/IP Port für die Kommunikation
                 mit den Clients und auch dieser Web Anwendung festzulegen. Weitere Einstellungen erlauben
@@ -71,7 +71,7 @@ namespace VCRNETClient.Ui {
         private getSleepHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zur Bedienung">
                 Es kann dem VCR.NET Recording Service gestattet werden, den Rechner nach erfolgten Aufzeichnungen
-                in den Schlafzustand zu versetzen.<HelpLink topic="hibernation" page={this.props.noui.page} />
+                in den Schlafzustand zu versetzen.<HelpLink topic="hibernation" page={this.props.uvm.page} />
                 Unabhängig davon wird der VCR.NET Dienst versuchen, den
                 Rechner für Aufzeichnungen aus dem Schlafzustand zu wecken, falls dieser nicht erst kurz
                 vorher ausgelöst wurde - dieser Grenzwert kann hier eingestellt werden. Da nicht jedes System
@@ -83,12 +83,12 @@ namespace VCRNETClient.Ui {
         private getLogHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zur Bedienung">
                 Nach erfolgter Aufzeichnung erstellt der VCR.NET Recording Service automatisch einen Protokolleintrag
-                mit den Eckdaten der Gerätenutzung.<HelpLink topic="log" page={this.props.noui.page} />
+                mit den Eckdaten der Gerätenutzung.<HelpLink topic="log" page={this.props.uvm.page} />
                 Diese werden allerdings nur eine begrenzte Zeit vorgehalten und dann
                 automatisch endgültig gelöscht. Ähnlich verhält es sich mit vollständig abgeschlossenen
-                Aufträgen:<HelpLink topic="archive" page={this.props.noui.page} />
+                Aufträgen:<HelpLink topic="archive" page={this.props.uvm.page} />
                 diese werden für einen gewissen Zeitraum archiviert, bevor sie endgültig entfernt werden. Während des Verbleibs
-                im Archive können sie jederzeit abgefrufen<HelpLink topic="archive" page={this.props.noui.page} /> und erneut verwendet werden.
+                im Archive können sie jederzeit abgefrufen<HelpLink topic="archive" page={this.props.uvm.page} /> und erneut verwendet werden.
             </InlineHelp>;
         }
 

@@ -6,7 +6,7 @@ namespace VCRNETClient.Ui {
         render(): JSX.Element {
             return <div className="vcrnet-favorites">
                 {this.getHelp()}
-                <JMSLib.ReactUi.ButtonFromList noui={this.props.noui.filter} />
+                <JMSLib.ReactUi.ButtonFromList uvm={this.props.uvm.filter} />
                 <table>
                     <thead>
                         <tr>
@@ -15,7 +15,7 @@ namespace VCRNETClient.Ui {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.props.noui.favorites.map((f, index) => <Favorite key={index} noui={f} />)}
+                        {this.props.uvm.favorites.map((f, index) => <Favorite key={index} uvm={f} />)}
                     </tbody>
                 </table>
             </div >;

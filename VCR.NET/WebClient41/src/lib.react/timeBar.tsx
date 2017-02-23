@@ -1,15 +1,19 @@
 ﻿namespace JMSLib.ReactUi {
 
+    // Eine React.Js Komponente zur Anzeige einer Zeitschiene.
     export class TimeBar extends Component<App.ITimeBar>  {
+
+        // Erstellt die Oberflächenelemente zur Anzeige der Zeitschiene.
         render(): JSX.Element {
             return <div className="jmslib-timebar">
                 <div>
-                    <div style={{ width: `${this.props.noui.prefixTime}%` }}></div>
-                    <div className={this.props.noui.timeIsComplete ? `jmslib-timebar-good` : `jmslib-timebar-bad`} style={{ width: `${this.props.noui.time}%`, left: `${this.props.noui.prefixTime}%` }}></div>
-                    <div style={{ width: `${this.props.noui.suffixTime}%`, left: `${this.props.noui.prefixTime + this.props.noui.time}%` }}></div>
+                    <div style={{ width: `${this.props.uvm.prefixTime}%` }}></div>
+                    <div style={{ width: `${this.props.uvm.time}%`, left: `${this.props.uvm.prefixTime}%` }} className={this.props.uvm.timeIsComplete ? `jmslib-timebar-good` : `jmslib-timebar-bad`}></div>
+                    <div style={{ width: `${this.props.uvm.suffixTime}%`, left: `${this.props.uvm.prefixTime + this.props.uvm.time}%` }}></div>
                 </div>
-                <div style={(this.props.noui.currentTime === undefined) ? { display: `none` } : { left: `${this.props.noui.currentTime}%` }}></div>
+                <div style={(this.props.uvm.currentTime === undefined) ? { display: `none` } : { left: `${this.props.uvm.currentTime}%` }}></div>
             </div>;
         }
+
     }
 }

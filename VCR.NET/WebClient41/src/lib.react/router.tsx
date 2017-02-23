@@ -2,27 +2,38 @@
 
 namespace JMSLib.ReactUi {
 
+    // Schnittstelle eines Präsentationsmodell, das als Ziel einer Navigation dienen kann.
     export interface IRoutablePage {
+        // Der eindeutige Name des Navigationsziels.
         route: string;
     }
 
+    // Schnittstelle zum Erzeugen einer React.Js Komponente für ein Navigationsziel.
     export interface IPageFactory<TPageType extends IRoutablePage> {
-        [route: string]: { new (props?: JMSLib.ReactUi.IComponent<any>, context?: any): JMSLib.ReactUi.Component<TPageType> };
+        // Ermittelt zu dem Präsentationsmodell Navigationsziel eine geeignet React.Js Komponente.
+        [route: string]: { new (props?: JMSLib.ReactUi.IComponent<any>, context?: IEmpty): JMSLib.ReactUi.Component<TPageType> };
     }
 
+    // Basisklasse zur Implementierung eines Navigationsverteilers.
     export abstract class Router<TPageType extends IRoutablePage> extends JMSLib.ReactUi.Component<TPageType>{
+
+        // Alle bekannten Navigationsziele und deren React.Js Komponentenerzeuger.
         private static _pages: IPageFactory<any>;
 
         protected abstract getPages(page: TPageType): IPageFactory<TPageType>;
 
+        // Erstellt die Oberflächenelemente.
         render(): JSX.Element {
+            // Die Navigationszeiele werden einmalig und vor allem nicht statisch zur Laufzeit geladen - das vermeidet unnötige Abhängigkeiten.
             if (!Router._pages)
-                if (this.props.noui)
-                    Router._pages = this.getPages(this.props.noui);
+                if (this.props.uvm)
+                    Router._pages = this.getPages(this.props.uvm);
 
-            var factory = Router._pages && Router._pages[this.props.noui.route];
+            // Erzeuger für das aktuelle Navigationsziel ermitteln.
+            var factory = Router._pages && Router._pages[this.props.uvm.route];
 
-            return <div className="jmslib-router">{factory ? React.createElement(factory, { noui: this.props.noui }) : null}</div>;
+            // React.Js Komponente für das Navigationsziel anlegen.
+            return <div className="jmslib-router">{factory ? React.createElement(factory, { uvm: this.props.uvm }) : null}</div>;
         }
     }
 }

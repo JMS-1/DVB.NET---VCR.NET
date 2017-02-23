@@ -14,28 +14,28 @@ namespace VCRNETClient.Ui {
                         <tbody>
                             <tr>
                                 <td>Beginn:</td>
-                                <td>{this.props.noui.start}</td>
+                                <td>{this.props.uvm.start}</td>
                             </tr>
                             <tr>
                                 <td>Ende:</td>
-                                <td>{this.props.noui.end}</td>
+                                <td>{this.props.uvm.end}</td>
                             </tr>
                             <tr>
                                 <td>Quelle:</td>
-                                <td>{this.props.noui.source}</td>
+                                <td>{this.props.uvm.source}</td>
                             </tr>
                             <tr>
                                 <td>Größe:</td>
-                                <td>{this.props.noui.size}</td>
+                                <td>{this.props.uvm.size}</td>
                             </tr>
                             <tr>
                                 <td>Primäre Datei:</td>
-                                <td>{this.props.noui.primary}</td>
+                                <td>{this.props.uvm.primary}</td>
                             </tr>
-                            {this.props.noui.hasFiles ?
+                            {this.props.uvm.hasFiles ?
                                 <tr>
                                     <td>Datei ansehen:</td>
-                                    <td>{this.props.noui.files.map((f, index) => <JMSLib.ReactUi.ExternalLink key={index} url={f} sameWindow={true}><JMSLib.ReactUi.Pictogram name="recording" /></JMSLib.ReactUi.ExternalLink>)}</td>
+                                    <td>{this.props.uvm.files.map((f, index) => <JMSLib.ReactUi.ExternalLink key={index} url={f} sameWindow={true}><JMSLib.ReactUi.Pictogram name="recording" /></JMSLib.ReactUi.ExternalLink>)}</td>
                                 </tr> : null}
                         </tbody>
                     </table>

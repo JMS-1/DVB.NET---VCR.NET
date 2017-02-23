@@ -4,23 +4,23 @@ namespace VCRNETClient.Ui {
     export class Edit extends JMSLib.ReactUi.ComponentWithSite<App.IEditPage>
     {
         render(): JSX.Element {
-            const schedule = this.props.noui.schedule;
+            const schedule = this.props.uvm.schedule;
 
             return <div className="vcrnet-edit">
                 <div>
                     Mit diesem Formular werden alle Daten erfasst, die für die Ausführung einer Aufzeichnung benötigt werden. Im
-                    oberen Bereich finden sich die Einstellungen des Auftrags<HelpLink page={this.props.noui} topic="jobsandschedules" />,
+                    oberen Bereich finden sich die Einstellungen des Auftrags<HelpLink page={this.props.uvm} topic="jobsandschedules" />,
                     die allen Aufzeichnungen des Auftrags gemeinsam sind.
                     In der Mitte werden die eigentlichen Aufzeichnungsdaten festgelegt. Der untere Bereich ist für sich
                     wiederholende Aufzeichnungen aktiv, wenn für einzelne Tage Ausnahmeregeln definiert wurden.
                 </div>
                 {this.renderJobHelp()}
                 <form>
-                    <JobData noui={this.props.noui.job} />
+                    <JobData uvm={this.props.uvm.job} />
                 </form>
                 {this.renderScheduleHelp()}
                 <form>
-                    <ScheduleData noui={schedule} />
+                    <ScheduleData uvm={schedule} />
                 </form>
                 {schedule.hasExceptions ? this.renderExceptionHelp() : null}
                 {schedule.hasExceptions ? <form>
@@ -34,14 +34,14 @@ namespace VCRNETClient.Ui {
                                     <td>Laufzeitanpassung</td>
                                 </tr>
                             </thead>
-                            <tbody>{schedule.exceptions.map((e, index) => <EditException key={index} noui={e} />)}</tbody>
+                            <tbody>{schedule.exceptions.map((e, index) => <EditException key={index} uvm={e} />)}</tbody>
                         </table>
                     </fieldset>
                 </form> : null}
                 {this.renderButtonHelp()}
                 <div>
-                    <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.save} />
-                    <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.del} />
+                    <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.save} />
+                    <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.del} />
                 </div>
             </div>;
         }

@@ -18,35 +18,35 @@ namespace VCRNETClient.Ui {
                     <tbody>
                         <tr>
                             <td>Start</td>
-                            <td>{this.props.noui.currentStart}</td>
+                            <td>{this.props.uvm.currentStart}</td>
                             <td>&nbsp;</td>
                         </tr>
                         <tr>
                             <td>Ende</td>
-                            <td>{this.props.noui.currentEnd}</td>
+                            <td>{this.props.uvm.currentEnd}</td>
                             <td>&nbsp;</td>
                         </tr>
                         <tr>
-                            <td className={(this.props.noui.currentDuration <= 0) ? `vcrnet-planexception-discard` : undefined}>Dauer</td>
-                            <td>{`${this.props.noui.currentDuration} Minute${(this.props.noui.currentDuration === 1) ? '' : 'n'}`}</td>
+                            <td className={(this.props.uvm.currentDuration <= 0) ? `vcrnet-planexception-discard` : undefined}>Dauer</td>
+                            <td>{`${this.props.uvm.currentDuration} Minute${(this.props.uvm.currentDuration === 1) ? '' : 'n'}`}</td>
                             <td>&nbsp;</td>
                         </tr>
                         <tr>
                             <td>Startverschiebung</td>
-                            <td>{`${this.props.noui.startSlider.value} Minute${(Math.abs(this.props.noui.startSlider.value) === 1) ? '' : 'n'}`}</td>
-                            <td><JMSLib.ReactUi.EditNumberWithSlider noui={this.props.noui.startSlider} /></td>
+                            <td>{`${this.props.uvm.startSlider.value} Minute${(Math.abs(this.props.uvm.startSlider.value) === 1) ? '' : 'n'}`}</td>
+                            <td><JMSLib.ReactUi.EditNumberWithSlider uvm={this.props.uvm.startSlider} /></td>
                         </tr>
                         <tr>
                             <td>Laufzeitanpassung</td>
-                            <td>{`${this.props.noui.durationSlider.value} Minute${(Math.abs(this.props.noui.durationSlider.value) === 1) ? '' : 'n'}`}</td>
-                            <td><JMSLib.ReactUi.EditNumberWithSlider noui={this.props.noui.durationSlider} /></td>
+                            <td>{`${this.props.uvm.durationSlider.value} Minute${(Math.abs(this.props.uvm.durationSlider.value) === 1) ? '' : 'n'}`}</td>
+                            <td><JMSLib.ReactUi.EditNumberWithSlider uvm={this.props.uvm.durationSlider} /></td>
                         </tr>
                     </tbody>
                 </table>
                 <div>
-                    <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.originalTime} />
-                    <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.skip} />
-                    <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.update} />
+                    <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.originalTime} />
+                    <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.skip} />
+                    <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} />
                 </div>
             </fieldset>;
         }

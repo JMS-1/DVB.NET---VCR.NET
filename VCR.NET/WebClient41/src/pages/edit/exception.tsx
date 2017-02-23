@@ -7,10 +7,10 @@ namespace VCRNETClient.Ui {
         // Erstellt die Oberflächenelemente zur Pflege.
         render(): JSX.Element {
             return <tr className="vcrnet-editexception">
-                <td><JMSLib.ReactUi.EditBoolean noui={this.props.noui.isActive} /></td>
-                <td>{this.props.noui.dayDisplay}</td>
-                <td>{this.props.noui.startShift} Minute<span>{(this.props.noui.startShift === 1) ? '' : 'n'}</span></td>
-                <td>{this.props.noui.timeDelta} Minute<span>{(this.props.noui.timeDelta === 1) ? '' : 'n'}</span></td>
+                <td><JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.isActive} /></td>
+                <td>{this.props.uvm.dayDisplay}</td>
+                <td>{this.props.uvm.startShift} Minute<span>{(this.props.uvm.startShift === 1) ? '' : 'n'}</span></td>
+                <td>{this.props.uvm.timeDelta} Minute<span>{(this.props.uvm.timeDelta === 1) ? '' : 'n'}</span></td>
             </tr>;
         }
     }

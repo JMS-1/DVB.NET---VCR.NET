@@ -4,14 +4,14 @@ namespace VCRNETClient.Ui {
 
     export class Plan extends JMSLib.ReactUi.ComponentWithSite<App.IPlanPage> {
         render(): JSX.Element {
-            var jobs = this.props.noui.jobs;
+            var jobs = this.props.uvm.jobs;
 
             return <div className="vcrnet-plan">
-                Hier sieht man einen Ausschnitt der geplanten Aufzeichnungen für die nächsten Wochen.<HelpLink page={this.props.noui} topic="parallelrecording" />
+                Hier sieht man einen Ausschnitt der geplanten Aufzeichnungen für die nächsten Wochen.<HelpLink page={this.props.uvm} topic="parallelrecording" />
                 {this.getHelp()}
                 <div className="vcrnet-plan-filter">
-                    <JMSLib.ReactUi.ButtonFromList noui={this.props.noui.startFilter} />
-                    <JMSLib.ReactUi.CheckBoxCommand noui={this.props.noui.showTasks} />
+                    <JMSLib.ReactUi.ButtonFromList uvm={this.props.uvm.startFilter} />
+                    <JMSLib.ReactUi.CheckBoxCommand uvm={this.props.uvm.showTasks} />
                 </div>
                 {
                     jobs ? <table>
@@ -27,14 +27,14 @@ namespace VCRNETClient.Ui {
                         </thead>
                         <tbody>
                             {jobs.map((job, index) => [
-                                <PlanRow noui={job} key={index} />,
+                                <PlanRow uvm={job} key={index} />,
                                 job.showEpg ?
                                     <JMSLib.ReactUi.DetailRow prefixColumns={1} dataColumns={5} key={`${index}Details`}>
-                                        <PlanGuide noui={job} page={this.props.noui} />
+                                        <PlanGuide uvm={job} page={this.props.uvm} />
                                     </JMSLib.ReactUi.DetailRow> : null,
                                 job.showException ?
                                     <JMSLib.ReactUi.DetailRow prefixColumns={1} dataColumns={5} key={`${index}Exceptions`}>
-                                        <PlanException noui={job.exception} page={this.props.noui} />
+                                        <PlanException uvm={job.exception} page={this.props.uvm} />
                                     </JMSLib.ReactUi.DetailRow> : null
                             ])}
                         </tbody>
@@ -47,11 +47,11 @@ namespace VCRNETClient.Ui {
             return <InlineHelp title="Erläuterungen zur Bedienung">
                 Über die Datumsauswahl im linken Bereich kann
                 der zeitliche Anfang des angezeigten Ausschnitts festgelegt werden. Das Ende des Ausschnitts ergibt sich daraus
-                und aus der gewünschten Anzahl von zu berücksichtigenden Tagen.<JMSLib.ReactUi.InternalLink view={this.props.noui.application.settingsPage.route} pict="settings" />
+                und aus der gewünschten Anzahl von zu berücksichtigenden Tagen.<JMSLib.ReactUi.InternalLink view={this.props.uvm.application.settingsPage.route} pict="settings" />
                 <br />
                 <br />
                 Die beiden Schaltflächen direkt rechts neben der Datumsauswahl erlauben es zusätzlich zu
-                den regulären Aufzeichnungen auch die vorgesehenen Zeiten für die Aktualisierung<HelpLink page={this.props.noui} topic="tasks" />
+                den regulären Aufzeichnungen auch die vorgesehenen Zeiten für die Aktualisierung<HelpLink page={this.props.uvm} topic="tasks" />
                 der Programmzeitschrift oder der
                 Senderliste in der Liste darzustellen.
                 <br />
@@ -85,7 +85,7 @@ namespace VCRNETClient.Ui {
                 <br />
                 Direkt rechts neben dem Symbol wird der Beginn der
                 Aufzeichnung als Verweis angezeigt. Wird dieser Verweis angeklickt, so werden weitere Details zur Aufzeichnung
-                sichtbar. Je nach vorhandenen Daten wird auch der zugehörige Eintrag der Programmzeitschrift<HelpLink page={this.props.noui} topic="epg" />
+                sichtbar. Je nach vorhandenen Daten wird auch der zugehörige Eintrag der Programmzeitschrift<HelpLink page={this.props.uvm} topic="epg" />
                 abgerufen und angezeigt.
                 <br />
                 <br />
@@ -99,7 +99,7 @@ namespace VCRNETClient.Ui {
                                 <JMSLib.ReactUi.Pictogram name="exceptOff" />
                             </td>
                             <td>
-                                Handelt es sich um eine sich wiederholende Aufzeichnung<HelpLink page={this.props.noui} topic="repeatingschedules" />,
+                                Handelt es sich um eine sich wiederholende Aufzeichnung<HelpLink page={this.props.uvm} topic="repeatingschedules" />,
                                 so kann auch das Symbol direkt rechts neben dem Namen angeklickt werden,
                                 um die Ausnahmeregelung für die jeweilige Aufzeichnung anzuzeigen und zu ändern.
                             </td>

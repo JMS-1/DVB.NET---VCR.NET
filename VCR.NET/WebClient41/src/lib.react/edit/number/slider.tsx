@@ -9,14 +9,14 @@ namespace JMSLib.ReactUi {
             return <div className="jmslib-slider">
                 <div></div>
                 <div>
-                    <div className={this.props.noui.isDragging ? "jmslib-slider-selected" : undefined}
-                        style={{ left: `${100 * this.props.noui.position}%` }}>
+                    <div className={this.props.uvm.isDragging ? "jmslib-slider-selected" : undefined}
+                        style={{ left: `${100 * this.props.uvm.position}%` }}>
                     </div>
                 </div>
                 <div 
-                    onMouseDown={ev => this.props.noui.isDragging = (ev.buttons === 1)}
+                    onMouseDown={ev => this.props.uvm.isDragging = (ev.buttons === 1)}
                     onMouseMove={ev => this.doMove(ev)}
-                    onMouseUp={ev => this.props.noui.isDragging = false} onMouseLeave={ev => this.props.noui.isDragging = false}
+                    onMouseUp={ev => this.props.uvm.isDragging = false} onMouseLeave={ev => this.props.uvm.isDragging = false}
                     onKeyUp={ev => this.doKey(ev)} tabIndex={0}
                     draggable={false} onDragStart={() => false}>
                 </div>
@@ -26,7 +26,7 @@ namespace JMSLib.ReactUi {
         // Überwacht Bewegungen mit der Maus und gibe diese an die Anwendungslogik weiter.
         private doMove(ev: React.MouseEvent): void {
             // Zurzeit sind Änderungen nicht gestattet.
-            if (!this.props.noui.isDragging)
+            if (!this.props.uvm.isDragging)
                 return;
 
             // Der äußere Bereich des Reglers.
@@ -37,15 +37,15 @@ namespace JMSLib.ReactUi {
             var relX = absX - bounds.left;
             
             // Als relativen Wert zwischen 0 und 1 an die Anwendungslogik melden.
-            this.props.noui.position = relX / bounds.width;
+            this.props.uvm.position = relX / bounds.width;
         }
 
         // Zur Feinsteuerung setzen wir auch die Pfeiltasten nach links und rechts um.
         private doKey(ev: React.KeyboardEvent): void {
             if (ev.keyCode === 37)
-                this.props.noui.delta(-1);
+                this.props.uvm.delta(-1);
             else if (ev.keyCode === 39)
-                this.props.noui.delta(+1);
+                this.props.uvm.delta(+1);
         }
     }
 }

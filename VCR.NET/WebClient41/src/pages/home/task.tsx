@@ -8,7 +8,7 @@ namespace VCRNETClient.Ui {
                 <fieldset>
                     {this.props.children}
                     <div>
-                        <JMSLib.ReactUi.ButtonCommand noui={this.props.noui} />
+                        <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm} />
                     </div>
                 </fieldset>
             </li>;

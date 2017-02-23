@@ -74,7 +74,7 @@ namespace VCRNETClient.Ui {
                     <div>Der VCR.NET Recording Service startet nun neu und steht in Kürze wieder zur Verfügung.</div> :
                     (this._application.isBusy ?
                         <div><h1>(Bitte etwas Geduld)</h1></div> :
-                        <div><h1>{page ? page.title : title}</h1><Navigation noui={page} /><View noui={page} /></div>)}
+                        <div><h1>{page ? page.title : title}</h1><Navigation uvm={page} /><View uvm={page} /></div>)}
             </div>;
         }
 

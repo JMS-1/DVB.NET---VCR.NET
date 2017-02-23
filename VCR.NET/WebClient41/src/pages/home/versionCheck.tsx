@@ -11,11 +11,11 @@ namespace VCRNETClient.Ui {
                         <tbody>
                             <tr>
                                 <td>Aktuell installierte Version:</td>
-                                <td>{this.props.noui.currentVersion}</td>
+                                <td>{this.props.uvm.currentVersion}</td>
                             </tr>
                             <tr>
                                 <td>Aktuell verfügbare Version:</td>
-                                <td>{this.props.noui.onlineVersion}</td>
+                                <td>{this.props.uvm.onlineVersion}</td>
                             </tr>
                         </tbody>
                     </table>

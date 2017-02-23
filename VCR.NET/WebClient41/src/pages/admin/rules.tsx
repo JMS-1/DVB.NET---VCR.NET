@@ -8,11 +8,11 @@ namespace VCRNETClient.Ui {
                 <h2>Regeln für die Planung von Aufzeichnungen</h2>
                 Der VCR.NET Recording Service verwendet nach der Installation ein festes Regelwerk zur Planung von
                 Aufzeichnungen für den Fall, dass mehrere DVB.NET Geräteprofile verwendet werden. Hier ist es
-                möglich, dieses Regelwerk<HelpLink topic="customschedule" page={this.props.noui.page} />
+                möglich, dieses Regelwerk<HelpLink topic="customschedule" page={this.props.uvm.page} />
                 anzupassen - auf eigene Gefahr, versteht sich.
-                <JMSLib.ReactUi.EditTextArea noui={this.props.noui.rules} columns={100} rows={25} />
+                <JMSLib.ReactUi.EditTextArea uvm={this.props.uvm.rules} columns={100} rows={25} />
                 {this.getHelp()}
-                <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.update} />
+                <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} />
             </div>;
         }
 

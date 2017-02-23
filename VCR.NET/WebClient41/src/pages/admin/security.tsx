@@ -12,14 +12,14 @@ namespace VCRNETClient.Ui {
                 Der VCR.NET Recording Service unterscheidet zwischen regulären Anwendern, die Aufzeichnungen anlegen, ändern und entfernen dürfen
                 und Administratoren, die zusätzlich sämtliche Betriebsparameter verändern dürfen.
                 {this.getHelp()}
-                <Field label={`${this.props.noui.userGroups.text}:`} page={this.props.noui.page} >
-                    <JMSLib.ReactUi.SelectSingleFromList noui={this.props.noui.userGroups} />
+                <Field label={`${this.props.uvm.userGroups.text}:`} page={this.props.uvm.page} >
+                    <JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.userGroups} />
                 </Field>
-                <Field label={`${this.props.noui.adminGroups.text}:`} page={this.props.noui.page} >
-                    <JMSLib.ReactUi.SelectSingleFromList noui={this.props.noui.adminGroups} />
+                <Field label={`${this.props.uvm.adminGroups.text}:`} page={this.props.uvm.page} >
+                    <JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.adminGroups} />
                 </Field>
                 <div>
-                    <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.update} />
+                    <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} />
                 </div>
             </div>;
         }

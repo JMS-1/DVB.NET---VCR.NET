@@ -5,9 +5,9 @@ namespace VCRNETClient.Ui {
     export class Guide extends JMSLib.ReactUi.ComponentWithSite<App.IGuidePage> {
         render(): JSX.Element {
             return <div className="vcrnet-guide">
-                Die Programmzeitschrift<HelpLink page={this.props.noui} topic="epg" /> zeigt pro Gerät alle
+                Die Programmzeitschrift<HelpLink page={this.props.uvm} topic="epg" /> zeigt pro Gerät alle
                 Sendungen der Quellen, für die eine Sammlung der Daten konfiguriert
-                wurde.<HelpLink page={this.props.noui} topic="epgconfig" />
+                wurde.<HelpLink page={this.props.uvm} topic="epgconfig" />
                 Über diese Ansicht ist es nicht nur möglich, sich die Details einzelner Sendungen anzeigen
                 zu lassen. Vielmehr ist es dabei auch sofort möglich, eine neue Aufzeichnung anzulegen.
                 {this.getHelp()}
@@ -15,36 +15,36 @@ namespace VCRNETClient.Ui {
                     <fieldset>
                         <legend>Einschränkungen festlegen</legend>
                         <div>
-                            <Field page={this.props.noui} label={`${this.props.noui.profiles.text}:`}>
-                                <JMSLib.ReactUi.SelectSingleFromList noui={this.props.noui.profiles} />
+                            <Field page={this.props.uvm} label={`${this.props.uvm.profiles.text}:`}>
+                                <JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.profiles} />
                             </Field>
-                            <Field page={this.props.noui} label={`${this.props.noui.sources.text}:`}>
-                                <JMSLib.ReactUi.SelectSingleFromList noui={this.props.noui.sources} />
+                            <Field page={this.props.uvm} label={`${this.props.uvm.sources.text}:`}>
+                                <JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.sources} />
                             </Field>
-                            {this.props.noui.showSourceType ? <JMSLib.ReactUi.ButtonFromList noui={this.props.noui.sourceType} /> : null}
-                            {this.props.noui.showEncryption ? <JMSLib.ReactUi.ButtonFromList noui={this.props.noui.encrpytion} /> : null}
+                            {this.props.uvm.showSourceType ? <JMSLib.ReactUi.ButtonFromList uvm={this.props.uvm.sourceType} /> : null}
+                            {this.props.uvm.showEncryption ? <JMSLib.ReactUi.ButtonFromList uvm={this.props.uvm.encrpytion} /> : null}
                         </div>
                         <div>
-                            <Field page={this.props.noui} label={`${this.props.noui.queryString.text}:`}>
-                                <JMSLib.ReactUi.EditText noui={this.props.noui.queryString} chars={30} />
+                            <Field page={this.props.uvm} label={`${this.props.uvm.queryString.text}:`}>
+                                <JMSLib.ReactUi.EditText uvm={this.props.uvm.queryString} chars={30} />
                             </Field>
-                            <JMSLib.ReactUi.EditBooleanWithButton noui={this.props.noui.withContent} />
-                            <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.resetFilter} />
-                            <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.addFavorite} />
+                            <JMSLib.ReactUi.EditBooleanWithButton uvm={this.props.uvm.withContent} />
+                            <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.resetFilter} />
+                            <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.addFavorite} />
                         </div>
                         <div>
-                            <Field page={this.props.noui} label={`${this.props.noui.days.text}:`}>
-                                <JMSLib.ReactUi.ButtonFromList noui={this.props.noui.days} />
+                            <Field page={this.props.uvm} label={`${this.props.uvm.days.text}:`}>
+                                <JMSLib.ReactUi.ButtonFromList uvm={this.props.uvm.days} />
                             </Field>
                         </div>
                         <div>
-                            <Field page={this.props.noui} label={`${this.props.noui.hours.text}:`}>
-                                <JMSLib.ReactUi.ButtonFromList noui={this.props.noui.hours} />
+                            <Field page={this.props.uvm} label={`${this.props.uvm.hours.text}:`}>
+                                <JMSLib.ReactUi.ButtonFromList uvm={this.props.uvm.hours} />
                             </Field>
                         </div>
                     </fieldset>
                 </form>
-                <GuideNavigation noui={this.props.noui} />
+                <GuideNavigation uvm={this.props.uvm} />
                 <table>
                     <thead>
                         <tr>
@@ -54,15 +54,15 @@ namespace VCRNETClient.Ui {
                             <td>Name</td>
                         </tr>
                     </thead>
-                    <tbody>{this.props.noui.entries.map((e, index) => [
-                        <GuideEntry key={index} noui={e} />,
+                    <tbody>{this.props.uvm.entries.map((e, index) => [
+                        <GuideEntry key={index} uvm={e} />,
                         e.showDetails ?
                             <JMSLib.ReactUi.DetailRow dataColumns={4} key={`${index}Details`}>
-                                <GuideDetails noui={e} page={this.props.noui} />
+                                <GuideDetails uvm={e} page={this.props.uvm} />
                             </JMSLib.ReactUi.DetailRow> : null
                     ])}</tbody>
                 </table>
-                <GuideNavigation noui={this.props.noui} />
+                <GuideNavigation uvm={this.props.uvm} />
             </div>;
         }
 

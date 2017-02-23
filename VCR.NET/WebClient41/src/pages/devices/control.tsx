@@ -9,26 +9,26 @@ namespace VCRNETClient.Ui {
     export class DeviceControl extends JMSLib.ReactUi.ComponentExWithSite<App.IDeviceController, IDeviceControl> {
         render(): JSX.Element {
             return <fieldset className="vcrnet-device-control">
-                {this.props.noui.live ? <div><a href={this.props.noui.live}>Aktuelle Aufzeichnung anschauen</a></div> : null}
-                {this.props.noui.timeshift ? <div><a href={this.props.noui.timeshift}>Aufzeichnung zeitversetzt anschauen</a></div> : null}
-                {this.props.noui.target ? <div>Aufzeichnung wird aktuell versendet, Empfänger ist {this.props.noui.target}<HelpLink topic="streaming" page={this.props.page} /></div> : null}
+                {this.props.uvm.live ? <div><a href={this.props.uvm.live}>Aktuelle Aufzeichnung anschauen</a></div> : null}
+                {this.props.uvm.timeshift ? <div><a href={this.props.uvm.timeshift}>Aufzeichnung zeitversetzt anschauen</a></div> : null}
+                {this.props.uvm.target ? <div>Aufzeichnung wird aktuell versendet, Empfänger ist {this.props.uvm.target}<HelpLink topic="streaming" page={this.props.page} /></div> : null}
                 <table>
                     <tbody>
                         <tr>
                             <td>Endzeitpunkt:</td>
-                            <td>{this.props.noui.end}</td>
+                            <td>{this.props.uvm.end}</td>
                         </tr>
                         <tr>
                             <td>Verbleibende Dauer:</td>
-                            <td>{`${this.props.noui.remaining.value} Minute${(this.props.noui.remaining.value === 1) ? `` : `n`}`}</td>
+                            <td>{`${this.props.uvm.remaining.value} Minute${(this.props.uvm.remaining.value === 1) ? `` : `n`}`}</td>
                         </tr>
                     </tbody>
                 </table>
-                <JMSLib.ReactUi.EditNumberWithSlider noui={this.props.noui.remaining} />
+                <JMSLib.ReactUi.EditNumberWithSlider uvm={this.props.uvm.remaining} />
                 <div>
-                    <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.stopNow} />
-                    <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.update} />
-                    <JMSLib.ReactUi.EditBoolean noui={this.props.noui.noHibernate} />
+                    <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.stopNow} />
+                    <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} />
+                    <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.noHibernate} />
                 </div>
             </fieldset>;
         }

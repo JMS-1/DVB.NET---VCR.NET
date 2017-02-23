@@ -8,9 +8,9 @@ namespace JMSLib.ReactUi {
             return <div
                 title=""
                 className="jmslib-checkbox jmslib-command"
-                data-jmslib-checked={this.props.noui.value ? "yes" : null}
-                onClick={() => this.props.noui.value = !this.props.noui.value}>
-                {this.props.noui.text}
+                data-jmslib-checked={this.props.uvm.value ? "yes" : null}
+                onClick={() => this.props.uvm.value = !this.props.uvm.value}>
+                {this.props.uvm.text}
             </div>;
         }
     }

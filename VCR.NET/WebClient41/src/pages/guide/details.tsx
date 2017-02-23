@@ -10,11 +10,11 @@ namespace VCRNETClient.Ui {
         render(): JSX.Element {
             return <form className="vcrnet-guideentrydetails">
                 <fieldset>
-                    <GuideEntryInfo noui={this.props.noui} />
+                    <GuideEntryInfo uvm={this.props.uvm} />
                 </fieldset>
                 <div>
-                    <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.createNew} />
-                    <Field page={this.props.page} label={`(${this.props.noui.jobSelector.text}:`}><JMSLib.ReactUi.SelectSingleFromList noui={this.props.noui.jobSelector} />)</Field>
+                    <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.createNew} />
+                    <Field page={this.props.page} label={`(${this.props.uvm.jobSelector.text}:`}><JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.jobSelector} />)</Field>
                 </div>
             </form>;
         }

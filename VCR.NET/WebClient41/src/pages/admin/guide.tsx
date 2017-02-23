@@ -8,42 +8,42 @@ namespace VCRNETClient.Ui {
                 <h2>Einstellungen zum Aufbau der Programmzeitschrift</h2>
                 <div>
                     Auf Wunsch kann der VCR.NET Recording Service die Elektronische Programmzeitschrift
-                    (EPG)<HelpLink topic="epg" page={this.props.noui.page} /> periodisch
-                    aktualisieren<HelpLink topic="epgconfig" page={this.props.noui.page} /> und
+                    (EPG)<HelpLink topic="epg" page={this.props.uvm.page} /> periodisch
+                    aktualisieren<HelpLink topic="epgconfig" page={this.props.uvm.page} /> und
                     dann zur Programmierung von neuen Aufzeichnungen
-                    anbieten.<JMSLib.ReactUi.InternalLink view={this.props.noui.page.application.editPage.route} pict="new" /> Hier
+                    anbieten.<JMSLib.ReactUi.InternalLink view={this.props.uvm.page.application.editPage.route} pict="new" /> Hier
                     werden die Eckdaten für die Aktualisierung festgelegt.
                 </div>
-                <JMSLib.ReactUi.EditBoolean noui={this.props.noui.isActive} />
-                {this.props.noui.isActive.value ? <form>
+                <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.isActive} />
+                {this.props.uvm.isActive.value ? <form>
                     {this.getSourceHelp()}
                     <div>
-                        <JMSLib.ReactUi.SelectMultipleFromList noui={this.props.noui.sources} items={10} />
-                        <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.remove} />
+                        <JMSLib.ReactUi.SelectMultipleFromList uvm={this.props.uvm.sources} items={10} />
+                        <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.remove} />
                     </div>
                     {this.getUkHelp()}
-                    <JMSLib.ReactUi.EditBoolean noui={this.props.noui.ukTv} />
-                    <Field page={this.props.noui.page} label={`${this.props.noui.device.text}:`}>
-                        <JMSLib.ReactUi.SelectSingleFromList noui={this.props.noui.device} />
-                        <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.add} />
+                    <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.ukTv} />
+                    <Field page={this.props.uvm.page} label={`${this.props.uvm.device.text}:`}>
+                        <JMSLib.ReactUi.SelectSingleFromList uvm={this.props.uvm.device} />
+                        <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.add} />
                     </Field>
-                    <EditChannel noui={this.props.noui.source} />
+                    <EditChannel uvm={this.props.uvm.source} />
                     {this.getDurationHelp()}
-                    <Field page={this.props.noui.page} label={`${this.props.noui.duration.text}:`} >
-                        <JMSLib.ReactUi.EditNumber noui={this.props.noui.duration} chars={5} />
+                    <Field page={this.props.uvm.page} label={`${this.props.uvm.duration.text}:`} >
+                        <JMSLib.ReactUi.EditNumber uvm={this.props.uvm.duration} chars={5} />
                     </Field>
-                    <Field page={this.props.noui.page} label={`${this.props.noui.hours.text}:`} >
-                        <JMSLib.ReactUi.MultiButtonsFromList noui={this.props.noui.hours} />
+                    <Field page={this.props.uvm.page} label={`${this.props.uvm.hours.text}:`} >
+                        <JMSLib.ReactUi.MultiButtonsFromList uvm={this.props.uvm.hours} />
                     </Field>
-                    <Field page={this.props.noui.page} label={`${this.props.noui.delay.text}:`} >
-                        <JMSLib.ReactUi.EditNumber noui={this.props.noui.delay} chars={5} />
+                    <Field page={this.props.uvm.page} label={`${this.props.uvm.delay.text}:`} >
+                        <JMSLib.ReactUi.EditNumber uvm={this.props.uvm.delay} chars={5} />
                     </Field>
-                    <Field page={this.props.noui.page} label={`${this.props.noui.latency.text}:`} >
-                        <JMSLib.ReactUi.EditNumber noui={this.props.noui.latency} chars={5} />
+                    <Field page={this.props.uvm.page} label={`${this.props.uvm.latency.text}:`} >
+                        <JMSLib.ReactUi.EditNumber uvm={this.props.uvm.latency} chars={5} />
                     </Field>
                 </form> : null}
                 {this.getUpdateHelp()}
-                <JMSLib.ReactUi.ButtonCommand noui={this.props.noui.update} />
+                <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} />
             </div>;
         }
 
@@ -74,7 +74,7 @@ namespace VCRNETClient.Ui {
                 Sollen Quellen zur Liste hinzugeführt werden, so ist zuerst einmal das Gerät auszuwählen,
                 über das die gewünschten Quellen empfangen werden können. Danach können die von der Programmierung
                 neuer Aufzeichnungen her bekannten Mechanismen zur schnellen Auswahl der Quelle verwendet
-                werden.<HelpLink topic="sourcechooser" page={this.props.noui.page} />
+                werden.<HelpLink topic="sourcechooser" page={this.props.uvm.page} />
             </InlineHelp>;
         }
 
