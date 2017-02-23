@@ -9,10 +9,10 @@ namespace JMSLib.ReactUi {
                 <div>
                     <Pictogram name="prev" type="gif" onClick={ev => this.props.noui.monthBackward()} />
                     <div>
-                        <select value={this.props.noui.month()} onChange={ev => this.props.noui.month((ev.target as HTMLSelectElement).value)} >
+                        <select value={this.props.noui.month} onChange={ev => this.props.noui.month = (ev.target as HTMLSelectElement).value} >
                             {this.props.noui.months.map(m => <option key={m} value={m}>{m}</option>)}
                         </select>
-                        <select value={this.props.noui.year()} onChange={ev => this.props.noui.year((ev.target as HTMLSelectElement).value)} >
+                        <select value={this.props.noui.year} onChange={ev => this.props.noui.year = (ev.target as HTMLSelectElement).value} >
                             {this.props.noui.years.map(m => <option key={m} value={m}>{m}</option>)}
                         </select>
                     </div>

@@ -37,17 +37,12 @@
         }
 
         // Meldet die Oberfläche an.
-        protected setSite(site: ISite): void {
+        set site(site: ISite) {
             this._site = site;
 
             // Interne Benachrichtigung auslösen.
             if (this._site)
                 this.onSiteChanged();
-        }
-
-        // Meldet die Oberfläche an.
-        set site(site: ISite) {
-            this.setSite(site);
         }
 
         // Ermittelt das aktuell zugeordnete Oberflächenelement.
@@ -94,10 +89,7 @@
         }
 
         protected onValidate(): string {
-            if (this._validator)
-                return this._validator(this);
-            else
-                return ``;
+            return (this._validator && this._validator(this)) || ``;
         }
 
         // Meldet das aktuell zugeordnete Modell.

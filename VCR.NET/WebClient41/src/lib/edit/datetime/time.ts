@@ -2,61 +2,80 @@
 
 namespace JMSLib.App {
 
+    // Schnittstelle zur Eingabe einer Uhrzeit.
     export interface ITime extends IConnectable {
-        time: string;
+        // Die aktuelle Zeit als Zeichenkette.
+        rawValue: string;
 
-        readonly error: string;
+        // Optional eine zugehörige Fehlermeldung.
+        readonly message: string;
     }
 
+    // Erlaubt die Eingabe einer Uhrzeit - tatsächlich gespeichert wird ein volles Datum mit Uhrezit.
     export class Time extends Property<string> implements ITime {
-        private _time: string;
 
+        // Die aktuelle Uhrzeit.
+        private _rawValue: string;
+
+        // Wird ausgelöst, wenn sich ein neues Oberflächenelement zur Pflege der Uhrzeit verbindet.
         protected onSiteChanged(): void {
-            this._time = DateTimeUtils.formatEndTime(new Date(this.value));
+            this._rawValue = DateTimeUtils.formatEndTime(new Date(this.value));
         }
 
-        constructor(data: any, prop: string, name?: string, onChange?: () => void, private _externalValidator?: () => string) {
+        // Erstellt ein neues Präsentationsmodell.
+        constructor(data?: any, prop?: string, name?: string, onChange?: () => void, private _externalValidator?: () => string) {
             super(data, prop, name, onChange);
         }
 
-        get time(): string {
-            return this._time;
+        // Meldet die aktuelle Uhrzeit.
+        get rawValue(): string {
+            return this._rawValue;
         }
 
-        set time(newTime: string) {
-            if (newTime !== this._time) {
-                this._time = newTime;
+        // Ändert die aktuelle Uhrzeit.
+        set rawValue(newTime: string) {
+            // Es hat sich gar keine Änderung ergeben.
+            if (newTime === this._rawValue)
+                return;
 
-                var parsed = DateTimeUtils.parseTime(newTime);
+            // Die tatsächliche Eingabe des Anwenders.
+            this._rawValue = newTime;
 
-                if (parsed !== null) {
-                    parsed /= 60000;
+            // Schauen wir mal, ob das dem Format (H:M) entspricht.
+            var parsed = DateTimeUtils.parseTime(newTime);
 
-                    var oldDay = new Date(this.value);
-                    var newDate = new Date(oldDay.getFullYear(), oldDay.getMonth(), oldDay.getDate(), Math.floor(parsed / 60), parsed % 60);
+            // Wenn ja, erhalten wir das Ergebnis in Millisekunden - so wie man das zum Rechnen mit Zeitebn eigentlich braucht.
+            if (parsed !== null) {
+                // Umrechnen in Minuten.
+                parsed /= 60000;
 
-                    this.value = newDate.toISOString();
-                }
+                // Uhrzeit einmischen.
+                var oldDay = new Date(this.value);
+                var newDate = new Date(oldDay.getFullYear(), oldDay.getMonth(), oldDay.getDate(), Math.floor(parsed / 60), parsed % 60);
 
-                this.refresh();
+                // Vollständiges Datum mit Uhrzeit aktualisieren.
+                this.value = newDate.toISOString();
             }
+
+            // Anzeige aktualisieren.
+            this.refresh();
         }
 
-        get error(): string {
-            this.validate();
-
-            return this.message;
-        }
-
+        // Prüft die aktuelle Eingabe.
         protected onValidate(): string {
-            var external = (this._externalValidator && this._externalValidator()) || "";
+            // Grundprüfung durchführen.
+            var message = super.onValidate();
 
-            if (external.length > 0)
-                return external;
-            else if ((this._time === undefined) || (DateTimeUtils.parseTime(this._time) !== null))
-                return super.onValidate();
-            else
-                return "Ungültige Uhrzeit."
+            if (message !== ``)
+                return message;
+
+            // Syntaxprüfung durchführen.
+            if (this._rawValue !== undefined)
+                if (DateTimeUtils.parseTime(this._rawValue) === null)
+                    return `Ungültige Uhrzeit.`;
+
+            // Externe Prüfung durchführen.
+            return (this._externalValidator && this._externalValidator()) || ``;
         }
     }
 }

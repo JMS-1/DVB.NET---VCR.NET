@@ -40,8 +40,8 @@ namespace JMSLib.App {
         }
 
         // Bei der Anzeige werden immer alle Einstellungen auf den Grundwert zurückgesetzt.
-        set site(newSite: ISite) {
-            super.setSite(newSite);
+        protected onSiteChanged(): void {
+            super.onSiteChanged();
 
             // Zurück auf den Anfang.
             this.reset();
@@ -86,11 +86,11 @@ namespace JMSLib.App {
                 // Schiebregler anpassen.
                 this._position = newPosition;
 
-                // Anzeige des Schiebereglers verändern.
-                this.refresh();
-
                 // Tatsächlichen Wert direkt mit ändern.
                 this.value = Math.round(this._min + newPosition * (this._max - this._min));
+
+                // Anzeige des Schiebereglers verändern.
+                this.refresh();
             }
         }
 
@@ -99,13 +99,16 @@ namespace JMSLib.App {
             return this._moving;
         }
 
-        set isDragging(newSelected: boolean) {
-            if (newSelected !== this._moving) {
-                this._moving = newSelected;
+        set isDragging(nowDragging: boolean) {
+            // Das machen wir bereits schon so.
+            if (nowDragging === this._moving)
+                return;
 
-                // Eventuell die Oberfläche anpassen (Feedback).
-                this.refresh();
-            }
+            // Änderung vermerken.
+            this._moving = nowDragging;
+
+            // Eventuell die Oberfläche anpassen (Feedback).
+            this.refresh();
         }
     }
 }
