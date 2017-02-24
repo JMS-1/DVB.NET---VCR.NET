@@ -32,13 +32,13 @@
 
     // Bietet die gemeinsamen Daten eines Auftrags oder einer Aufzeichnung zur Pflege an.
     export abstract class JobScheduleEditor<TModelType extends VCRServer.EditJobScheduleCommonContract> implements IJobScheduleEditor {
-        private static readonly _forbidenCharacters = /[\\\/\:\*\?\"\<\>\|]/;
+        private static readonly _allowedCharacters = /^[^\\\/\:\*\?\"\<\>\|]*$/;
 
         constructor(public readonly page: IPage, protected model: TModelType, mustHaveName: boolean, favoriteSources: string[], onChange: () => void) {
             var noSource = () => (this.source.value || "").trim().length < 1;
 
             // Pflegekomponenten erstellen
-            this.name = new JMSLib.App.String(this.model, "name", "Name", onChange, mustHaveName, "Ein Auftrag muss einen Namen haben.", () => this.validateName());
+            this.name = new JMSLib.App.String(this.model, "name", "Name", onChange);
             this.source = new ChannelEditor(this.model, "sourceName", favoriteSources, onChange);
             this.sourceFlags = {
                 includeDolby: new JMSLib.App.Flag(this.model, "includeDolby", "Dolby Digital (AC3)", onChange, noSource),
@@ -47,10 +47,12 @@
                 withVideotext: new JMSLib.App.Flag(this.model, "withVideotext", "Videotext", onChange, noSource),
                 text: "Besonderheiten"
             };
-        }
 
-        private validateName(): string {
-            return JobScheduleEditor._forbidenCharacters.test(this.name.value) ? `Der Name enthält ungültige Zeichen` : ``;
+            // Zusätzliche Prüfungen einrichten.
+            if (mustHaveName)
+                this.name.addRequiredValidator(`Ein Auftrag muss einen Namen haben.`);
+
+            this.name.addPatternValidator(JobScheduleEditor._allowedCharacters, `Der Name enthält ungültige Zeichen`);
         }
 
         // Der Name des Auftrags.

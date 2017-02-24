@@ -47,13 +47,21 @@ namespace VCRNETClient.App.Admin {
 
         readonly hours = new JMSLib.App.SelectMultipleFromList<number>({}, "hours", "Uhrzeiten", null, AdminPage.hoursOfDay);
 
-        readonly duration = new JMSLib.App.Number({}, "duration", "Maximale Laufzeit für einen Sendersuchlauf in Minuten", () => this.refreshUi(), true, 5, 55);
+        readonly duration = new JMSLib.App.Number({}, "duration", "Maximale Laufzeit für einen Sendersuchlauf in Minuten", () => this.refreshUi())
+            .addRequiredValidator()
+            .addMinValidator(5)
+            .addMaxValidator(55);
 
         readonly merge = new JMSLib.App.Flag({}, "merge", "Senderliste nach dem Suchlauf mit der vorherigen zusammenführen (empfohlen)", null);
 
-        readonly gapDays = new JMSLib.App.Number({}, "interval", "Minimale Anzahl von Tagen zwischen zwei Suchläufen", () => this.refreshUi(), true, 1, 28);
+        readonly gapDays = new JMSLib.App.Number({}, "interval", "Minimale Anzahl von Tagen zwischen zwei Suchläufen", () => this.refreshUi())
+            .addRequiredValidator()
+            .addMinValidator(1)
+            .addMaxValidator(28);
 
-        readonly latency = new JMSLib.App.Number({}, "joinDays", "Latenzzeit für vorgezogene Aktualisierungen in Tagen (optional)", () => this.refreshUi(), false, 1, 14);
+        readonly latency = new JMSLib.App.Number({}, "joinDays", "Latenzzeit für vorgezogene Aktualisierungen in Tagen (optional)", () => this.refreshUi())
+            .addMinValidator(1)
+            .addMaxValidator(14);
 
         get showConfiguration(): boolean {
             return this.mode.value !== ScanConfigMode.disabled;

@@ -14,8 +14,8 @@ namespace JMSLib.App {
         private static readonly _positiveNumber = /^(0+|(0*[1-9][0-9]{0,5}))$/;
 
         // Legt eine neue Verwaltung an.
-        constructor(data?: any, prop?: string, name?: string, onChange?: () => void, isRequired?: boolean, private readonly _min?: number, private readonly _max?: number) {
-            super(data, prop, name, onChange, isRequired);
+        constructor(data?: any, prop?: string, name?: string, onChange?: () => void) {
+            super(data, prop, name, onChange);
         }
 
         // Entählt die aktuelle Fehleingabe.
@@ -67,22 +67,34 @@ namespace JMSLib.App {
             if (this._rawInput !== undefined)
                 return `Ungültige Zahl`;
 
-            // Kein Wert vorhanden.
-            else if (this.value === null) {
-                if (this.isRequired)
-                    return `Es muss eine Zahl eingegeben werden`;
-            }
-
-            // Wert unterhalb der Untergrenze.
-            else if ((this._min !== undefined) && (this.value < this._min))
-                return `Die Zahl muss mindestens ${this._min} sein`;
-
-            // Wert oberhalb der Obergrenze.
-            else if ((this._max !== undefined) && (this.value > this._max))
-                return `Die Zahl darf höchstens ${this._max} sein`;
-
             // Ursprünglichen Wert melden.
             return message;
+        }
+
+        // Ergänzt eine Prüfung auf einen vorhandenen Wert.
+        addRequiredValidator(message: string = `Es muss eine Zahl eingegeben werden.`): this {
+            return this.addValidator(p => {
+                if (this.value === null)
+                    return message;
+            });
+        }
+
+        // Eine Prüfung auf eine Untergrenze.
+        addMinValidator(min: number, message?: string): this {
+            return this.addValidator(p => {
+                if (this._rawInput === undefined)
+                    if (this.value < min)
+                        return message || `Die Zahl muss mindestens ${min} sein`;
+            })
+        }
+
+        // Eine Prüfung auf eine Obergrenze.
+        addMaxValidator(max: number, message?: string): this {
+            return this.addValidator(p => {
+                if (this._rawInput === undefined)
+                    if (this.value > max)
+                        return message || `Die Zahl darf höchstens ${max} sein`;
+            })
         }
     }
 }

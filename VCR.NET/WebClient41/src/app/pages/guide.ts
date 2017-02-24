@@ -126,7 +126,7 @@ namespace VCRNETClient.App {
         private _query = ``;
 
         // Schnittstelle zur Pflege der Freitextsuchbedingung.
-        readonly queryString = new JMSLib.App.String(this, `_query`, `Suche nach`, () => this.delayedQuery(), false);
+        readonly queryString = new JMSLib.App.String(this, `_query`, `Suche nach`, () => this.delayedQuery());
 
         // Gesetzt, wenn auch eine Suche auf die Beschreibung erfolgen soll.
         private _withContent = true;

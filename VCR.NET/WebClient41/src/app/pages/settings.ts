@@ -46,15 +46,30 @@ namespace VCRNETClient.App {
             JMSLib.App.uiValue("F", "Nur unverschlüsselte Quellen")
         ];
 
-        readonly planDays = new JMSLib.App.Number({}, "planDays", "Anzahl der Vorschautage im Aufzeichnungsplan", () => this.refreshUi(), true, 1, 50);
+        readonly planDays = new JMSLib.App.Number({}, "planDays", "Anzahl der Vorschautage im Aufzeichnungsplan", () => this.refreshUi())
+            .addRequiredValidator()
+            .addMinValidator(1)
+            .addMaxValidator(50);
 
-        readonly maxFavorites = new JMSLib.App.Number({}, "recentSourceLimit", "Maximale Größe der Liste zuletzt verwendeter Sendern", () => this.refreshUi(), true, 1, 50);
+        readonly maxFavorites = new JMSLib.App.Number({}, "recentSourceLimit", "Maximale Größe der Liste zuletzt verwendeter Sendern", () => this.refreshUi())
+            .addRequiredValidator()
+            .addMinValidator(1)
+            .addMaxValidator(50);
 
-        readonly guideRows = new JMSLib.App.Number({}, "guideRows", "Anzahl der Einträge pro Seite in der Programmzeitschrift", () => this.refreshUi(), true, 10, 100);
+        readonly guideRows = new JMSLib.App.Number({}, "guideRows", "Anzahl der Einträge pro Seite in der Programmzeitschrift", () => this.refreshUi())
+            .addRequiredValidator()
+            .addMinValidator(10)
+            .addMaxValidator(100);
 
-        readonly preGuide = new JMSLib.App.Number({}, "guideAheadStart", "Vorlaufzeit bei Programmierung über die Programmzeitschrift (in Minuten)", () => this.refreshUi(), true, 0, 240);
+        readonly preGuide = new JMSLib.App.Number({}, "guideAheadStart", "Vorlaufzeit bei Programmierung über die Programmzeitschrift (in Minuten)", () => this.refreshUi())
+            .addRequiredValidator()
+            .addMinValidator(0)
+            .addMaxValidator(240);
 
-        readonly postGuide = new JMSLib.App.Number({}, "guideBeyondEnd", "Nachlaufzeit bei Programmierung über die Programmzeitschrift (in Minuten)", () => this.refreshUi(), true, 0, 240);
+        readonly postGuide = new JMSLib.App.Number({}, "guideBeyondEnd", "Nachlaufzeit bei Programmierung über die Programmzeitschrift (in Minuten)", () => this.refreshUi())
+            .addRequiredValidator()
+            .addMinValidator(0)
+            .addMaxValidator(240);
 
         readonly dolby = new JMSLib.App.Flag({}, "dolby", "Dolby Digital (AC3)");
 

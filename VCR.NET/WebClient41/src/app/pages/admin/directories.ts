@@ -36,7 +36,7 @@ namespace VCRNETClient.App.Admin {
         readonly directories = new JMSLib.App.SelectMultipleFromList<string>({}, "value", null, () => this.refreshUi());
 
         // Das aktuelle Muster für die Namen von Aufzeichnungsdateien.
-        readonly pattern = new JMSLib.App.String({}, "pattern", "Muster für Dateinamen", () => this.refreshUi(), true);
+        readonly pattern = new JMSLib.App.String({}, "pattern", "Muster für Dateinamen", () => this.refreshUi()).addRequiredValidator();
 
         // Befehl zum Entfernen der ausgewählten Verzeichnisse aus der Verzeichnisliste.
         readonly remove = new JMSLib.App.Command(() => this.removeDirectories(), "Verzeichnisse entfernen", () => this.directories.value.length > 0);
@@ -45,7 +45,7 @@ namespace VCRNETClient.App.Admin {
         private _shareValidation: string;
 
         // Eingabe eines Netzwerklaufwerks.
-        readonly share = new JMSLib.App.String({}, "value", "Netzwerk-Share", () => this.refreshUi(), null, null, str => this._shareValidation || ``);
+        readonly share = new JMSLib.App.String({}, "value", "Netzwerk-Share", () => this.refreshUi()).addValidator(v => this._shareValidation || ``);
 
         // Gesetzt wenn die Verzeichnisauswahl angezeigt werden soll.
         get showBrowse(): boolean {

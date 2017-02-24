@@ -12,11 +12,30 @@
         readonly message: string;
     }
 
+    // Schnittstelle für Prüfalgorithmen.
+    export interface IPropertyValidator<TValueType> {
+        // Führt die Prüfung aus.
+        (property: Property<TValueType>): string;
+    }
+
     // Basisklasse zur Pflege des Wertes einer einzelnen Eigenschaft.
     export abstract class Property<TValueType> implements IProperty<TValueType> {
 
         // Initialisiert die Verwaltung des Wertes einer einzelnen Eigenschaft (_prop) im Modell (_data).
-        protected constructor(private _data: any = {}, private readonly _prop: string = `value`, public readonly text: string = null, private readonly _onChange?: () => void, protected readonly isRequired?: boolean, private readonly _testReadOnly?: () => boolean, private readonly _validator?: (property: Property<TValueType>) => string) {
+        protected constructor(private _data: any = {}, private readonly _prop: string = `value`, public readonly text: string = null, private readonly _onChange?: () => void, protected readonly isRequired?: boolean, private readonly _testReadOnly?: () => boolean, validator?: (property: Property<TValueType>) => string) {
+            // Prüfalgorithmus merken.
+            if (validator)
+                this.addValidator(validator);
+        }
+
+        // Alle Prüfalgorithmen.
+        private _validators: IPropertyValidator<TValueType>[] = [];
+
+        // Vermerkt einen Prüfalgorithmus.
+        addValidator(validator: IPropertyValidator<TValueType>): this {
+            this._validators.push(validator);
+
+            return this;
         }
 
         // Das zugehörige Oberflächenelement.
@@ -89,7 +108,16 @@
         }
 
         protected onValidate(): string {
-            return (this._validator && this._validator(this)) || ``;
+            // Alle Prüfalgorithmen durchgehen.
+            for (var i = 0; i < this._validators.length; i++) {
+                // Prüfung ausführen.
+                var message = this._validators[i](this);
+                if (message)
+                    return message;
+            }
+
+            // Kein Fehler.
+            return ``;
         }
 
         // Meldet das aktuell zugeordnete Modell.
@@ -105,5 +133,4 @@
             this.refresh();
         }
     }
-
 }

@@ -41,9 +41,18 @@ namespace VCRNETClient.App.Admin {
         // Erstellt ein neues Präsentationsmodell.
         constructor(profile: VCRServer.ProfileContract, onChange: () => void, private readonly _defaultDevice: () => string) {
             this.name = profile.name;
-            this.priority = new JMSLib.App.Number(profile, "priority", null, null, true, 0, 100);
-            this.decryption = new JMSLib.App.Number(profile, "ciLimit", null, null, true, 0, 16);
-            this.sources = new JMSLib.App.Number(profile, "sourceLimit", null, null, true, 1, 32);
+            this.priority = new JMSLib.App.Number(profile, "priority")
+                .addRequiredValidator()
+                .addMinValidator(0)
+                .addMaxValidator(100);
+            this.decryption = new JMSLib.App.Number(profile, "ciLimit")
+                .addRequiredValidator()
+                .addMinValidator(0)
+                .addMaxValidator(16);
+            this.sources = new JMSLib.App.Number(profile, "sourceLimit")
+                .addRequiredValidator()
+                .addMinValidator(1)
+                .addMaxValidator(32);
             this.active = new JMSLib.App.Flag(profile, "active", null, onChange, null, flag => this.validateDefaultDevice(flag));
         }
 

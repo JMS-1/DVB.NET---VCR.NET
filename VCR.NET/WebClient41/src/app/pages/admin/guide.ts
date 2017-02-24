@@ -66,13 +66,20 @@ namespace VCRNETClient.App.Admin {
         readonly add = new JMSLib.App.Command(() => this.addSource(), "Hinzufügen", () => this.source.value && this.sources.allowedValues.every(v => v.value !== this.source.value));
 
         // Maximale Dauer für die Sammlung der Programmzeitschrift (in Minuten).
-        readonly duration = new JMSLib.App.Number({}, "duration", "Maximale Laufzeit einer Aktualisierung in Minuten", () => this.refreshUi(), true, 5, 55);
+        readonly duration = new JMSLib.App.Number({}, "duration", "Maximale Laufzeit einer Aktualisierung in Minuten", () => this.refreshUi())
+            .addRequiredValidator()
+            .addMinValidator(5)
+            .addMaxValidator(55);
 
         // Minimale Dauer zwischen zwei Sammlungen (in Minuten).
-        readonly delay = new JMSLib.App.Number({}, "minDelay", "Wartezeit zwischen zwei Aktualisierungen in Stunden (optional)", () => this.refreshUi(), false, 1, 23);
+        readonly delay = new JMSLib.App.Number({}, "minDelay", "Wartezeit zwischen zwei Aktualisierungen in Stunden (optional)", () => this.refreshUi())
+            .addMinValidator(1)
+            .addMaxValidator(23);
 
         // Interval für die vorgezogene Sammlung (in Minuten).
-        readonly latency = new JMSLib.App.Number({}, "joinHours", "Latenzzeit für vorgezogene Aktualisierungen in Stunden (optional)", () => this.refreshUi(), false, 1, 23);
+        readonly latency = new JMSLib.App.Number({}, "joinHours", "Latenzzeit für vorgezogene Aktualisierungen in Stunden (optional)", () => this.refreshUi())
+            .addMinValidator(1)
+            .addMaxValidator(23);
 
         // Erstellt ein neues Präsentationsmodell.
         constructor(page: AdminPage) {

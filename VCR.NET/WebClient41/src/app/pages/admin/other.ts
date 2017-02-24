@@ -76,31 +76,49 @@ namespace VCRNETClient.App.Admin {
         ];
 
         // Der TCP/IP Port des Web Clients.
-        readonly port = new JMSLib.App.Number({}, "webPort", "TCP/IP Port für den Web Server", () => this.refreshUi(), true, 1, 0xffff);
+        readonly port = new JMSLib.App.Number({}, "webPort", "TCP/IP Port für den Web Server", () => this.refreshUi())
+            .addRequiredValidator()
+            .addMinValidator(1)
+            .addMaxValidator(0xffff);
 
         // Gesetzt, wenn auch eine sichere Verbindung (SSL / HTTPS) unterstützt werden soll.
         readonly ssl = new JMSLib.App.Flag({}, "ssl", "Sichere Verbindung zusätzlich anbieten");
 
         // Der sichere (SSL) TCP/IP Port des Web Clients.
-        readonly securePort = new JMSLib.App.Number({}, "sslPort", "TCP/IP Port für den sicheren Zugang", () => this.refreshUi(), true, 1, 0xffff);
+        readonly securePort = new JMSLib.App.Number({}, "sslPort", "TCP/IP Port für den sicheren Zugang", () => this.refreshUi())
+            .addRequiredValidator()
+            .addMinValidator(1)
+            .addMaxValidator(0xffff);
 
         // Gesetzt, wenn neben der integrierten Windows Sicherheit (NTLM Challenge/Response) auch die Standard Autorisierung (Basic) verwendet werden kann.
         readonly basicAuth = new JMSLib.App.Flag({}, "basicAuth", "Benutzererkennung über Basic (RFC 2617) zusätzlich erlauben (nicht empfohlen)");
 
         // Die Zeit zum vorzeitigen Aufwachen für eine Aufzeichnung oder Sonderaufgabe (in Sekunden).
-        readonly preSleep = new JMSLib.App.Number({}, "hibernationDelay", "Vorlaufzeit für das Aufwachen aus dem Schlafzustand in Sekunden", () => this.refreshUi(), true, 0, 600);
+        readonly preSleep = new JMSLib.App.Number({}, "hibernationDelay", "Vorlaufzeit für das Aufwachen aus dem Schlafzustand in Sekunden", () => this.refreshUi())
+            .addRequiredValidator()
+            .addMinValidator(0)
+            .addMaxValidator(600);
 
         // Die minimale Verweildauer im Schalfzustand (in Minuten).
-        readonly minSleep = new JMSLib.App.Number({}, "forcedHibernationDelay", "Minimale Pause nach einem erzwungenen Schlafzustand in Minuten", () => this.refreshUi(), true, 5, 60);
+        readonly minSleep = new JMSLib.App.Number({}, "forcedHibernationDelay", "Minimale Pause nach einem erzwungenen Schlafzustand in Minuten", () => this.refreshUi())
+            .addRequiredValidator()
+            .addMinValidator(5)
+            .addMaxValidator(60);
 
         // Gesetzt um die minimale Verweildauer im Schlafzustand zu unterdrücken.
         readonly ignoreMinSleep = new JMSLib.App.Flag({}, "suppressHibernationDelay", "Pause für erzwungenen Schlafzustand ignorieren");
 
         // Die Verweildauer eines Protokolleintrags vor der automatischen Löscung (in Wochen).
-        readonly logKeep = new JMSLib.App.Number({}, "protocol", "Aufbewahrungsdauer für Protokolle in Wochen", () => this.refreshUi(), true, 1, 13);
+        readonly logKeep = new JMSLib.App.Number({}, "protocol", "Aufbewahrungsdauer für Protokolle in Wochen", () => this.refreshUi())
+            .addRequiredValidator()
+            .addMinValidator(1)
+            .addMaxValidator(13);
 
         // Die Verweildauer eines Auftrags im Archiv vor der automatischen Löschung (in Wochen).
-        readonly jobKeep = new JMSLib.App.Number({}, "archive", "Aufbewahrungsdauer von archivierten Aufzeichnungen in Wochen", () => this.refreshUi(), true, 1, 13);
+        readonly jobKeep = new JMSLib.App.Number({}, "archive", "Aufbewahrungsdauer von archivierten Aufzeichnungen in Wochen", () => this.refreshUi())
+            .addRequiredValidator()
+            .addMinValidator(1)
+            .addMaxValidator(13);
 
         // Gesetzt, wenn die Systemzeit einer HDTV Aufzeichnung nicht automatisch ermittelt werden soll.
         readonly noH264PCR = new JMSLib.App.Flag({}, "noH264PCR", "Systemzeit (PCR) in Aufzeichnungsdateien nicht aus einem H.264 Bildsignal ableiten");
