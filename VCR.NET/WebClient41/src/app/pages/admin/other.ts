@@ -3,44 +3,64 @@
 
 namespace VCRNETClient.App.Admin {
 
+    // Die Art des zu verwendenden Schlafzustands.
     export enum HibernationMode {
+        // Kein automatischer Übergang in den Schlafzustand.
         disabled,
 
+        // Für den Schlafzustand Stand-By verwenden.
         standBy,
 
+        // Für den Schlafzustand Hibernate verwenden.
         hibernate
     }
 
+    // Schnittstelle zur Pflege sonstiger Konfigurationswerte.
     export interface IAdminOtherPage extends ISection {
+        // Der TCP/IP Port des Web Clients.
         readonly port: JMSLib.App.INumber;
 
+        // Gesetzt, wenn auch eine sichere Verbindung (SSL / HTTPS) unterstützt werden soll.
         readonly ssl: JMSLib.App.IFlag;
 
+        // Der sichere (SSL) TCP/IP Port des Web Clients.
         readonly securePort: JMSLib.App.INumber;
 
+        // Gesetzt, wenn neben der integrierten Windows Sicherheit (NTLM Challenge/Response) auch die Standard Autorisierung (Basic) verwendet werden kann.
         readonly basicAuth: JMSLib.App.IFlag;
 
+        // Die Zeit zum vorzeitigen Aufwachen für eine Aufzeichnung oder Sonderaufgabe (in Sekunden).
         readonly preSleep: JMSLib.App.INumber;
 
+        // Die minimale Verweildauer im Schalfzustand (in Minuten).
         readonly minSleep: JMSLib.App.INumber;
 
+        // Gesetzt um die minimale Verweildauer im Schlafzustand zu unterdrücken.
         readonly ignoreMinSleep: JMSLib.App.IFlag;
 
+        // Die Verweildauer eines Protokolleintrags vor der automatischen Löscung (in Wochen).
         readonly logKeep: JMSLib.App.INumber;
 
+        // Die Verweildauer eines Auftrags im Archiv vor der automatischen Löschung (in Wochen).
         readonly jobKeep: JMSLib.App.INumber;
 
+        // Gesetzt, wenn die Systemzeit einer HDTV Aufzeichnung nicht automatisch ermittelt werden soll.
         readonly noH264PCR: JMSLib.App.IFlag;
 
+        // Gesetzt, wenn die Systemzeit einer SDTV Aufzeichnung nicht automatisch ermittelt werden soll.
         readonly noMPEG2PCR: JMSLib.App.IFlag;
 
+        // Die Art des automatischen Schlafzustands.
         readonly hibernation: JMSLib.App.IValueFromList<HibernationMode>;
 
+        // Die Art der Protokollierung.
         readonly logging: JMSLib.App.IValueFromList<string>;
     }
 
+    // Präsentationsmodell zur Pflege sonstiger Konfigurationswerte.
     export class OtherSection extends Section implements IAdminOtherPage {
 
+        // Die einzelnen Arten der Protokollierung als Auswahlliste für den Anwender.
         private static readonly _logging = [
             JMSLib.App.uiValue("Errors", "Nur Fehler"),
             JMSLib.App.uiValue("Security", "Nur Sicherheitsprobleme"),
@@ -48,70 +68,89 @@ namespace VCRNETClient.App.Admin {
             JMSLib.App.uiValue("Full", "Vollständig"),
         ];
 
+        // Die einzelnen Arten des Schlafzustands als Auswahlliste für den Anwender.
         private static readonly _hibernation = [
             JMSLib.App.uiValue(HibernationMode.disabled, "Nicht verwenden"),
             JMSLib.App.uiValue(HibernationMode.standBy, "StandBy / Suspend (S3)"),
             JMSLib.App.uiValue(HibernationMode.hibernate, "Hibernate (S4)"),
         ];
 
+        // Der TCP/IP Port des Web Clients.
         readonly port = new JMSLib.App.Number({}, "webPort", "TCP/IP Port für den Web Server", () => this.refreshUi(), true, 1, 0xffff);
 
-        readonly ssl = new JMSLib.App.Flag({}, "ssl", "Sichere Verbindung zusätzlich anbieten", null);
+        // Gesetzt, wenn auch eine sichere Verbindung (SSL / HTTPS) unterstützt werden soll.
+        readonly ssl = new JMSLib.App.Flag({}, "ssl", "Sichere Verbindung zusätzlich anbieten");
 
+        // Der sichere (SSL) TCP/IP Port des Web Clients.
         readonly securePort = new JMSLib.App.Number({}, "sslPort", "TCP/IP Port für den sicheren Zugang", () => this.refreshUi(), true, 1, 0xffff);
 
-        readonly basicAuth = new JMSLib.App.Flag({}, "basicAuth", "Benutzererkennung über Basic (RFC 2617) zusätzlich erlauben (nicht empfohlen)", null);
+        // Gesetzt, wenn neben der integrierten Windows Sicherheit (NTLM Challenge/Response) auch die Standard Autorisierung (Basic) verwendet werden kann.
+        readonly basicAuth = new JMSLib.App.Flag({}, "basicAuth", "Benutzererkennung über Basic (RFC 2617) zusätzlich erlauben (nicht empfohlen)");
 
+        // Die Zeit zum vorzeitigen Aufwachen für eine Aufzeichnung oder Sonderaufgabe (in Sekunden).
         readonly preSleep = new JMSLib.App.Number({}, "hibernationDelay", "Vorlaufzeit für das Aufwachen aus dem Schlafzustand in Sekunden", () => this.refreshUi(), true, 0, 600);
 
+        // Die minimale Verweildauer im Schalfzustand (in Minuten).
         readonly minSleep = new JMSLib.App.Number({}, "forcedHibernationDelay", "Minimale Pause nach einem erzwungenen Schlafzustand in Minuten", () => this.refreshUi(), true, 5, 60);
 
-        readonly ignoreMinSleep = new JMSLib.App.Flag({}, "suppressHibernationDelay", "Pause für erzwungenen Schlafzustand ignorieren", null);
+        // Gesetzt um die minimale Verweildauer im Schlafzustand zu unterdrücken.
+        readonly ignoreMinSleep = new JMSLib.App.Flag({}, "suppressHibernationDelay", "Pause für erzwungenen Schlafzustand ignorieren");
 
+        // Die Verweildauer eines Protokolleintrags vor der automatischen Löscung (in Wochen).
         readonly logKeep = new JMSLib.App.Number({}, "protocol", "Aufbewahrungsdauer für Protokolle in Wochen", () => this.refreshUi(), true, 1, 13);
 
+        // Die Verweildauer eines Auftrags im Archiv vor der automatischen Löschung (in Wochen).
         readonly jobKeep = new JMSLib.App.Number({}, "archive", "Aufbewahrungsdauer von archivierten Aufzeichnungen in Wochen", () => this.refreshUi(), true, 1, 13);
 
-        readonly noH264PCR = new JMSLib.App.Flag({}, "noH264PCR", "Systemzeit (PCR) in Aufzeichnungsdateien nicht aus einem H.264 Bildsignal ableiten", null);
+        // Gesetzt, wenn die Systemzeit einer HDTV Aufzeichnung nicht automatisch ermittelt werden soll.
+        readonly noH264PCR = new JMSLib.App.Flag({}, "noH264PCR", "Systemzeit (PCR) in Aufzeichnungsdateien nicht aus einem H.264 Bildsignal ableiten");
 
-        readonly noMPEG2PCR = new JMSLib.App.Flag({}, "noMPEG2PCR", "Systemzeit (PCR) in Aufzeichnungsdateien nicht aus einem MPEG2 Bildsignal ableiten", null);
+        // Gesetzt, wenn die Systemzeit einer SDTV Aufzeichnung nicht automatisch ermittelt werden soll.
+        readonly noMPEG2PCR = new JMSLib.App.Flag({}, "noMPEG2PCR", "Systemzeit (PCR) in Aufzeichnungsdateien nicht aus einem MPEG2 Bildsignal ableiten");
 
+        // Die Art des automatischen Schlafzustands.
         readonly hibernation = new JMSLib.App.SelectSingleFromList<HibernationMode>({ value: null }, "value", "Art des von VCR.NET ausgelösten Schlafzustands", null, false, OtherSection._hibernation);
 
+        // Die Art der Protokollierung.
         readonly logging = new JMSLib.App.SelectSingleFromList<string>({}, "logging", "Umfang der Protokollierung in das Windows Ereignisprotokoll", null, false, OtherSection._logging);
 
+        // Fordert die Konfigurationswerte vom VCR.NET Recording Service an.
         protected loadAsync(): void {
-            VCRServer.getOtherSettings().then(settings => this.initialize(settings));
-        }
+            VCRServer.getOtherSettings().then(settings => {
+                // Alle Präsentationsmodelle verbinden.
+                this.ignoreMinSleep.data = settings;
+                this.noMPEG2PCR.data = settings;
+                this.securePort.data = settings;
+                this.basicAuth.data = settings;
+                this.noH264PCR.data = settings;
+                this.minSleep.data = settings;
+                this.preSleep.data = settings;
+                this.jobKeep.data = settings;
+                this.logKeep.data = settings;
+                this.logging.data = settings;
+                this.port.data = settings;
+                this.ssl.data = settings;
 
-        private initialize(settings: VCRServer.OtherSettingsContract): void {
-            this.ignoreMinSleep.data = settings;
-            this.noMPEG2PCR.data = settings;
-            this.securePort.data = settings;
-            this.basicAuth.data = settings;
-            this.noH264PCR.data = settings;
-            this.minSleep.data = settings;
-            this.preSleep.data = settings;
-            this.jobKeep.data = settings;
-            this.logKeep.data = settings;
-            this.logging.data = settings;
-            this.port.data = settings;
-            this.ssl.data = settings;
-
-            if (settings.mayHibernate)
-                if (settings.useStandBy)
-                    this.hibernation.value = HibernationMode.standBy;
+                // Die Art des Schlafzustands wird in den Daten über zwei Wahrheitswerte repräsentiert, wir machen es dem Anwender etwas einfacher.
+                if (settings.mayHibernate)
+                    if (settings.useStandBy)
+                        this.hibernation.value = HibernationMode.standBy;
+                    else
+                        this.hibernation.value = HibernationMode.hibernate;
                 else
-                    this.hibernation.value = HibernationMode.hibernate;
-            else
-                this.hibernation.value = HibernationMode.disabled;
+                    this.hibernation.value = HibernationMode.disabled;
 
-            this.page.application.isBusy = false;
+                // Die Anwendung kann nun verwendet werden.
+                this.page.application.isBusy = false;
+            });
         }
 
+        // Die Beschriftung der Schaltfläche zum Speichern.
         protected readonly saveCaption = "Ändern und eventuell neu Starten";
 
+        // Gesetzt, wenn ein Speichern möglich ist.
         protected get isValid(): boolean {
+            // Alle Zahlen müssen fehlerfrei eingegeben worden sein - dazu gehört immer auch ein Wertebereich.
             if (this.port.message !== ``)
                 return false;
             if (this.securePort.message !== ``)
@@ -129,16 +168,21 @@ namespace VCRNETClient.App.Admin {
             if (this.logging.message !== ``)
                 return false;
 
+            // Ja, das geht.
             return true;
         }
 
+        // Beginnt die asynchrone Speicherung der Konfiguration.
         protected saveAsync(): JMSLib.App.IHttpPromise<boolean> {
+            // Die Art des Schlafzustands in die beiden Wahrheitswerte umsetzen.
             var settings: VCRServer.OtherSettingsContract = this.port.data;
 
             settings.mayHibernate = (this.hibernation.value !== HibernationMode.disabled);
             settings.useStandBy = (this.hibernation.value === HibernationMode.standBy);
 
+            // Speichervorgang anstossen.
             return VCRServer.setOtherSettings(settings);
         }
+
     }
 }
