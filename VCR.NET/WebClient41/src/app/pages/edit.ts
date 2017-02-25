@@ -176,6 +176,9 @@ namespace VCRNETClient.App {
         }
 
         private onChanged(): void {
+            if (!this.job)
+                return;
+
             this.loadSources().then(() => this.refreshUi());
 
             this.refreshUi();

@@ -3,7 +3,7 @@
 namespace VCRNETClient.App {
 
     // Die Einschränkung auf die Verschlüsselung.
-    export enum EncryptionFilterType {
+    export enum EncryptionFilter {
         // Keine Einschränkung.
         all,
 
@@ -14,20 +14,28 @@ namespace VCRNETClient.App {
         freeTv,
     }
 
+    // Die Arten von zu berücksichtigenden Quellen.
+    export enum TypeFilter {
+        // Alle Quellen.
+        all,
+
+        // Nur Radiosender.
+        radio,
+
+        // Nur Fernsehsender.
+        tv
+    }
+
     // Schnitstelle zur Pflege der Senderauswahl.
     export interface IChannelSelector extends JMSLib.App.IProperty<string>, JMSLib.App.IConnectable {
         // Die Vorauswahl der Quellen vor allem nach dem ersten Zeichen des Namens.
-        section: string;
-
-        readonly sections: string[];
+        readonly section: JMSLib.App.IValueFromList<number>;
 
         // Die Vorauswahl der Quellen über die Art (Fernsehen oder Radio).
-        type: string;
-
-        readonly types: string[];
+        readonly type: JMSLib.App.IValueFromList<TypeFilter>;
 
         // Die Vorauswahl der Quellen über die Verschlüsselung.
-        readonly encryption: JMSLib.App.IValueFromList<EncryptionFilterType>;
+        readonly encryption: JMSLib.App.IValueFromList<EncryptionFilter>;
 
         // Die komplette Liste aller verfügbaren Quellen.
         sourceNames: JMSLib.App.IUiValue<string>[];
@@ -41,9 +49,9 @@ namespace VCRNETClient.App {
 
         // Die Auswahl der Verschlüsselung.
         private static readonly _encryptions = [
-            JMSLib.App.uiValue(EncryptionFilterType.all, "Alle Quellen"),
-            JMSLib.App.uiValue(EncryptionFilterType.payTv, "Nur verschlüsselte Quellen"),
-            JMSLib.App.uiValue(EncryptionFilterType.freeTv, "Nur unverschlüsselte Quellen"),
+            JMSLib.App.uiValue(EncryptionFilter.all, "Alle Quellen"),
+            JMSLib.App.uiValue(EncryptionFilter.payTv, "Nur verschlüsselte Quellen"),
+            JMSLib.App.uiValue(EncryptionFilter.freeTv, "Nur unverschlüsselte Quellen"),
         ];
 
         // Prüft ob eine Quelle der aktuellen Einschränkung der Verschlüsselung entspricht.
@@ -53,11 +61,11 @@ namespace VCRNETClient.App {
                 return true;
 
             switch (this.encryption.value) {
-                case EncryptionFilterType.all:
+                case EncryptionFilter.all:
                     return true;
-                case EncryptionFilterType.payTv:
+                case EncryptionFilter.payTv:
                     return source.isEncrypted;
-                case EncryptionFilterType.freeTv:
+                case EncryptionFilter.freeTv:
                     return !source.isEncrypted;
                 default:
                     return false;
@@ -65,17 +73,14 @@ namespace VCRNETClient.App {
         }
 
         // Alle Auswahlmöglichkeiten der Verschlüsselung.
-        readonly encryption = new JMSLib.App.SelectSingleFromList({ value: EncryptionFilterType.all }, `value`, null, () => this.refreshFilter(), ChannelEditor._encryptions);
+        readonly encryption = new JMSLib.App.SelectSingleFromList({ value: EncryptionFilter.all }, `value`, null, () => this.refreshFilter(), ChannelEditor._encryptions);
 
         // Die Auswahlmöglichkeiten zur Art der Quelle.
         private static readonly _types = [
-            "Alle Quellen",
-            "Nur Radio",
-            "Nur Fernsehen"
+            JMSLib.App.uiValue(TypeFilter.all, "Alle Quellen"),
+            JMSLib.App.uiValue(TypeFilter.radio, "Nur Radio"),
+            JMSLib.App.uiValue(TypeFilter.tv, "Nur Fernsehen")
         ];
-
-        // Die aktuelle Einschränung auf die Art der Quelle.
-        private _type = ChannelEditor._types[0];
 
         // Prüft, ob eine Quelle der aktuell ausgewählten Art entspricht.
         private applyTypeFilter(source: VCRServer.SourceEntry): boolean {
@@ -83,12 +88,12 @@ namespace VCRNETClient.App {
             if (!this.showFilter)
                 return true;
 
-            switch (this.types.indexOf(this._type)) {
-                case 0:
+            switch (this.type.value) {
+                case TypeFilter.all:
                     return true;
-                case 1:
+                case TypeFilter.radio:
                     return !source.isTelevision;
-                case 2:
+                case TypeFilter.tv:
                     return source.isTelevision;
                 default:
                     return false;
@@ -96,47 +101,30 @@ namespace VCRNETClient.App {
         }
 
         // Alle Auswahlmöglichkeiten für die Art der Quelle.
-        types = ChannelEditor._types;
-
-        // Meldet oder ändert die Auswahl der Art der Quellen.
-        get type(): string {
-            return this._type;
-        }
-
-        set type(newType: string) {
-            if (newType !== this._type)
-                if (this.types.indexOf(newType) >= 0) {
-                    this._type = newType;
-
-                    this.refreshFilter();
-                }
-        }
+        readonly type = new JMSLib.App.SelectSingleFromList({ value: TypeFilter.all }, `value`, null, () => this.refreshFilter(), ChannelEditor._types);
 
         // Alle möglichen Einschränkungen auf die Namen der Quellen.
         private static readonly _sections = [
-            "(Zuletzt verwendet)",
-            "A B C",
-            "D E F",
-            "G H I",
-            "J K L",
-            "M N O",
-            "P Q R",
-            "S T U",
-            "V W X",
-            "Y Z",
-            "0 1 2 3 4 5 6 7 8 9",
-            "(Andere)",
-            "(Alle Quellen)"
+            JMSLib.App.uiValue(0, "(Zuletzt verwendet)"),
+            JMSLib.App.uiValue(1, "A B C"),
+            JMSLib.App.uiValue(2, "D E F"),
+            JMSLib.App.uiValue(3, "G H I"),
+            JMSLib.App.uiValue(4, "J K L"),
+            JMSLib.App.uiValue(5, "M N O"),
+            JMSLib.App.uiValue(6, "P Q R"),
+            JMSLib.App.uiValue(7, "S T U"),
+            JMSLib.App.uiValue(8, "V W X"),
+            JMSLib.App.uiValue(9, "Y Z"),
+            JMSLib.App.uiValue(10, "0 1 2 3 4 5 6 7 8 9"),
+            JMSLib.App.uiValue(11, "(Andere)"),
+            JMSLib.App.uiValue(12, "(Alle Quellen)")
         ];
-
-        // Die aktuelle Auswahl auf die Namen der Quellen.
-        private _section = ChannelEditor._sections[0];
 
         // Prüft, ob der Name einer Quelle der aktuellen Auswahl entspricht.
         private applySectionFilter(source: VCRServer.SourceEntry): boolean {
             var first = source.firstNameCharacter;
 
-            switch (this.sections.indexOf(this._section)) {
+            switch (this.section.value) {
                 case 0:
                     return this._favorites[source.name];
                 case 1:
@@ -169,25 +157,7 @@ namespace VCRNETClient.App {
         }
 
         // Alle Auswahlmöglichkeiten zum Namen der Quellen.
-        sections = ChannelEditor._sections;
-
-        // Meldet oder ändert die Auswahl für die Einschränkung auf den Namen der Quellen.
-        get section(): string {
-            return this._section;
-        }
-
-        set section(newSection: string) {
-            if (newSection !== this._section) {
-                var sectionIndex = this.sections.indexOf(newSection);
-
-                if (sectionIndex >= 0) {
-                    this.showFilter = (sectionIndex > 0);
-                    this._section = newSection;
-
-                    this.refreshFilter();
-                }
-            }
-        }
+        readonly section = new JMSLib.App.SelectSingleFromList({ value: 0 }, `value`, null, () => this.refreshFilter(), ChannelEditor._sections);
 
         // Alle aktuell bezüglich aller Einschränkungen relevanten Quellen.
         sourceNames: JMSLib.App.IUiValue<string>[];
@@ -209,8 +179,8 @@ namespace VCRNETClient.App {
             this.addValidator(c => !this._hasChannel && `Die Quelle wird von dem ausgewählten Gerät nicht empfangen.`);
 
             // Übernimmt die lineare Liste aller bevorzugten Sender zur schnelleren Auswahl in ein Dictionary.
-            if (this.showFilter = (favoriteSources.length < 1))
-                this._section = this.sections[this.sections.length - 1];
+            if (this.showFilter = (favoriteSources.length < 11111111))
+                this.section.value = this.section.allowedValues.length - 1;
             else
                 favoriteSources.forEach(s => this._favorites[s] = true);
         }
