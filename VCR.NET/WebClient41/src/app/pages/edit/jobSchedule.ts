@@ -32,9 +32,13 @@
 
     // Bietet die gemeinsamen Daten eines Auftrags oder einer Aufzeichnung zur Pflege an.
     export abstract class JobScheduleEditor<TModelType extends VCRServer.EditJobScheduleCommonContract> implements IJobScheduleEditor {
+
+        // Ein Muster zum Erkennen gültiger Namen von Aufzeichnungen.
         private static readonly _allowedCharacters = /^[^\\\/\:\*\?\"\<\>\|]*$/;
 
+        // Erstelltein neues Präsentationsmodell an.
         constructor(public readonly page: IPage, protected model: TModelType, favoriteSources: string[], onChange: () => void) {
+            // Prüfung auf die Auswahl einer Quelle - ohne eine solche machen die Optionen zur Aufzeichnung auch keinen Sinn.
             var noSource = () => (this.source.value || "").trim().length < 1;
 
             // Pflegekomponenten erstellen
@@ -51,9 +55,12 @@
             // Zusätzliche Prüfungen einrichten.
             this.name.addPatternValidator(JobScheduleEditor._allowedCharacters, `Der Name enthält ungültige Zeichen`);
 
-             // Initiale Prüfung.
+            // Initiale Prüfung.
             this.name.validate();
-            this.source.validate();
+            this.sourceFlags.includeDolby.validate();
+            this.sourceFlags.allLanguages.validate();
+            this.sourceFlags.withSubtitles.validate();
+            this.sourceFlags.withVideotext.validate();
         }
 
         // Der Name des Auftrags.
@@ -73,17 +80,18 @@
 
         // Gesetzt, wenn die Einstellungen der Quelle gültig sind.
         isValid(): boolean {
-            if (this.name.message.length > 0)
+            // Wir fragen einfach alle unsere Präsentationsmodelle.
+            if (this.name.message !== ``)
                 return false;
-            if (this.source.message.length > 0)
+            if (this.source.sourceName.message !== ``)
                 return false;
-            if (this.sourceFlags.allLanguages.message.length > 0)
+            if (this.sourceFlags.allLanguages.message !== ``)
                 return false;
-            if (this.sourceFlags.includeDolby.message.length > 0)
+            if (this.sourceFlags.includeDolby.message !== ``)
                 return false;
-            if (this.sourceFlags.withVideotext.message.length > 0)
+            if (this.sourceFlags.withVideotext.message !== ``)
                 return false;
-            if (this.sourceFlags.withSubtitles.message.length > 0)
+            if (this.sourceFlags.withSubtitles.message !== ``)
                 return false;
 
             return true;

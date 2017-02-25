@@ -32,6 +32,8 @@ namespace VCRNETClient.App.Edit {
 
     // Beschreibt die Daten einer Aufzeichnung.
     export class ScheduleEditor extends JobScheduleEditor<VCRServer.EditScheduleContract> implements IScheduleEditor {
+
+        // Erstellt ein neues Präsentationsmodell.
         constructor(page: IPage, model: VCRServer.EditScheduleContract, favoriteSources: string[], onChange: () => void, hasJobSource: () => boolean) {
             super(page, model, favoriteSources, onChange);
 
@@ -40,11 +42,11 @@ namespace VCRNETClient.App.Edit {
                 model.lastDay = ScheduleEditor.maximumDate.toISOString();
 
             // Pflegbare Eigenschaften anlegen.
-            this.repeat = new JMSLib.App.Number(model, "repeatPattern", "Wiederholung", onChange);
-            this.duration = new DurationEditor(model, "firstStart", "duration", "Zeitraum", onChange);
+            this.repeat = new JMSLib.App.Number(model, "repeatPattern", "Wiederholung", () => this.onChange(onChange));
+            this.duration = new DurationEditor(model, "firstStart", "duration", "Zeitraum", () => this.onChange(onChange));
             this.firstStart = new JMSLib.App.DayEditor(model, "firstStart", "Datum", onChange)
-                .addValidator(day => this.validateFirstRecording());
-            this.lastDay = new JMSLib.App.DayEditor(model, "lastDay", "wiederholen bis zum", onChange)
+                .addValidator(() => this.validateFirstRecording());
+            this.lastDay = new JMSLib.App.DayEditor(model, "lastDay", "wiederholen bis zum", () => this.onChange(onChange))
                 .addRequiredValidator()
                 .addValidator(day => ScheduleEditor.validateDateRange(day));
 
@@ -58,7 +60,6 @@ namespace VCRNETClient.App.Edit {
 
             // Ausnahmeregeln.
             this.exceptions = (model.exceptions || []).map(e => new ScheduleException(e, () => this.onExceptionsChanged()));
-            this.hasExceptions = (this.exceptions.length > 0);
 
             // Zusätzliche Prüfung einrichten.
             this.source.sourceName.addValidator(c => {
@@ -68,11 +69,19 @@ namespace VCRNETClient.App.Edit {
             });
 
             // Initiale Prüfung.
-            this.source.validate();
             this.repeat.validate();
             this.lastDay.validate();
-            this.duration.validate();
             this.firstStart.validate();
+            this.source.sourceName.validate();
+        }
+
+        // Bei Änderungen an den Aufzeichnungsdaten muss eine übergreifende Gesamtprüfungen stattfinden, die wir an das Startdatum gebunden haben.
+        private onChange(onOuterChange: () => void): void {
+            // Gesamtprüfung anstossen.
+            this.firstStart.validate();
+
+            // Durchreichen.
+            onOuterChange();
         }
 
         // Datum der ersten Aufzeichnung.
@@ -88,12 +97,14 @@ namespace VCRNETClient.App.Edit {
         readonly lastDay: JMSLib.App.DayEditor;
 
         // Bekannte Ausnahmen der Wiederholungsregel.
-        readonly hasExceptions: boolean;
+        get hasExceptions(): boolean {
+            return (this.exceptions.length > 0);
+        }
 
         readonly exceptions: ScheduleException[];
 
         // Hilfsmethode zum Arbeiten mit Datumswerten.
-        public static makePureDate(date: Date): Date {
+        private static makePureDate(date: Date): Date {
             return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
         }
 
@@ -138,6 +149,7 @@ namespace VCRNETClient.App.Edit {
 
         readonly onSunday: JMSLib.App.FlagSet;
 
+        // Die Bitmasken aller Wochentage in der Ordnung von JavaScript (Date.getDay()).
         private static readonly _flags = [
             ScheduleEditor.flagSunday,
             ScheduleEditor.flagMonday,
@@ -148,6 +160,7 @@ namespace VCRNETClient.App.Edit {
             ScheduleEditor.flagSaturday
         ];
 
+        // Prüft ob eon ausgewähltes Datum im unterstützten Bereich liegt.
         private static validateDateRange(day: JMSLib.App.DayEditor): string {
             var lastDay = new Date(day.value)
 
@@ -155,10 +168,9 @@ namespace VCRNETClient.App.Edit {
                 return `Datum liegt zu weit in der Vergangenheit.`;
             else if (lastDay > ScheduleEditor.maximumDate)
                 return `Datum liegt zu weit in der Zukunft.`;
-
-            return ``;
         }
 
+        // Prüft ob die Aufzeichnung überhaupt einmal stattfinden wird.
         private validateFirstRecording(): string {
             // Der letzte Tage einer Wiederholung.
             var lastDay = new Date(this.lastDay.value)
@@ -203,34 +215,42 @@ namespace VCRNETClient.App.Edit {
 
                     // Liegt dieses echt in der Zukunft ist alles gut.
                     if (end > now)
-                        return ``;
+                        return;
                 }
             }
             // Wenn die Aufzeichnung in der Zukunft endet ist alles gut.
             else if (end > now)
-                return ``;
+                return;
 
+            // Die Aufzeichnung findet sicher niemals statt.
             return `Die Aufzeichnung liegt in der Vergangenheit.`;
         }
 
+        // Gesetzt, wie die Daten der Aufzeichnung konsistent sind.
         isValid(): boolean {
+            // Erst einmal die Basisklasse fragen.
             if (!super.isValid())
                 return false;
-            if (this.firstStart.message.length > 0)
+
+            // Dann alle unseren eigenen Präsentationsmodelle.
+            if (this.repeat.message !== ``)
                 return false;
-            if (this.duration.message.length > 0)
+            if (this.firstStart.message !== ``)
                 return false;
-            if (this.repeat.message.length > 0)
+            if (this.lastDay.message !== ``)
                 return false;
-            if (this.lastDay.message.length > 0)
+            if (!this.duration.isValid())
                 return false;
 
             return true;
         }
 
+        // Die Liste der Ausnahmen wird immer mit aktualisiert.
         private onExceptionsChanged(): void {
+            // Alle übernehmen, die nicht explizit zum Löschen deaktiviert wurden.
             this.model.exceptions = this.exceptions.filter(e => e.isActive.value).map(e => e.model);
         }
+
     }
 
 }

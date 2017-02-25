@@ -16,6 +16,8 @@ namespace VCRNETClient.App.Edit {
 
     // Bietet die Daten eines Auftrags zur Pflege an.
     export class JobEditor extends JobScheduleEditor<VCRServer.EditJobContract> implements IJobEditor {
+
+        // Erstellt ein neues Präsentationsmodell.
         constructor(page: IPage, model: VCRServer.EditJobContract, devices: JMSLib.App.IUiValue<string>[], favoriteSources: string[], folders: JMSLib.App.IUiValue<string>[], onChange: () => void) {
             super(page, model, favoriteSources, onChange);
 
@@ -29,6 +31,7 @@ namespace VCRNETClient.App.Edit {
             this.name.addRequiredValidator(`Ein Auftrag muss einen Namen haben.`);
 
             // Initiale Prüfung.
+            this.name.validate();
             this.device.validate();
             this.folder.validate();
             this.deviceLock.validate();
@@ -45,13 +48,16 @@ namespace VCRNETClient.App.Edit {
 
         // Gesetzt, wenn die Einstellungen des Auftrags gültig sind.
         isValid(): boolean {
+            // Erst einmal die Basisklasse fragen.
             if (!super.isValid())
                 return false;
-            if (this.device.message.length > 0)
+
+            // Dann alle unsere eigenen Präsentationsmodelle.
+            if (this.device.message !== ``)
                 return false;
-            if (this.folder.message.length > 0)
+            if (this.folder.message !== ``)
                 return false;
-            if (this.deviceLock.message.length > 0)
+            if (this.deviceLock.message !== ``)
                 return false;
 
             return true;

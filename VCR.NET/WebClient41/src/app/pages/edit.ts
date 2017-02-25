@@ -149,41 +149,54 @@ namespace VCRNETClient.App {
             // Liste der zuletzt verwendeten Quellen abrufen.
             var favorites = this.application.profile.recentSources || [];
 
-            // Pflegemodelle anlegen.
+            // Präsentationsmodelle anlegen.
             this._jobScheduleInfo = info;
-            this.job = new Edit.JobEditor(this, info.job, profiles, favorites, folders, () => { this.schedule.source.sourceName.validate(); this.onChanged(); });
+            this.job = new Edit.JobEditor(this, info.job, profiles, favorites, folders, () => { this.schedule && this.schedule.source.sourceName.validate(); this.onChanged(); });
             this.schedule = new Edit.ScheduleEditor(this, info.schedule, favorites, () => this.onChanged(), () => (this.job.source.value || "").trim().length > 0);
 
             // Quellen für das aktuelle Geräteprofil laden und die Seite für den Anwender freigeben.
             this.loadSources().then(() => this.application.isBusy = false);
         }
 
-        private loadSources(): JMSLib.App.IHttpPromise<VCRServer.SourceEntry[]> {
+        // Die aktuelle Liste der Quellen zum ausgewählten Gerät anfordern.
+        private loadSources(): JMSLib.App.IHttpPromise<void> {
             var profile = this.job.device.value;
 
+            // Das kann man ruhig öfter mal machen, da das Ergebnis nach dem ersten asynchronen Abruf gespeichert wird.
             return VCRServer.ProfileSourcesCache.getSources(profile).then(sources => {
+                // Nur übernehmen, wenn das Gerät noch passt.
                 if (this.job.device.value === profile) {
-                    this.job.source.allSources = sources;
-                    this.schedule.source.allSources = sources;
+                    // Diese Zuweisung ist optimiert und macht einfach nichts, wenn exakt die selbe Liste eingetragen werden soll.
+                    if (this.job)
+                        this.job.source.allSources = sources;
+                    if (this.schedule)
+                        this.schedule.source.allSources = sources;
                 }
-
-                return sources;
             });
         }
 
+        // Meldet die Überschrift zur Anzeige des Präsentationsmodells.
         get title(): string {
             return this.del.isVisible ? `Aufzeichnung bearbeiten` : `Neue Aufzeichnung anlegen`;
         }
 
+        // Wird bei Änderungen ausgelöst.
         private onChanged(): void {
+            // Eventuell sind wir noch in einer Startphase.
             if (!this.job)
                 return;
 
-            this.loadSources().then(() => this.refreshUi());
+            // Quellen neu anfordern - da passiert im Allgemeinen nicht wirklich viel, trotzdem optimieren wir das ein bißchen.
+            var requireRefresh: any = true;
 
-            this.refreshUi();
+            this.loadSources().then(() => requireRefresh = this.refreshUi());
+
+            // Im asynchronen Fall jetzt schon einmal aktualisieren - irgendwann später gibt es dann noch eine zweite Aktualisierung.
+            if (requireRefresh)
+                this.refreshUi();
         }
 
+        // Beginnt mit der asynchronen Aktualisierung der Daten der Aufzeichnung.
         private onSave(): JMSLib.App.IHttpPromise<void> {
             // Kopie der Aufzeichnungsdaten anlegen.
             var schedule = { ...this._jobScheduleInfo.schedule };
@@ -191,9 +204,11 @@ namespace VCRNETClient.App {
             // Dauer unter Berücksichtigung der Zeitumstellung anpassen.
             schedule.duration = JMSLib.App.DateTimeUtils.getRealDurationInMinutes(schedule.firstStart, schedule.duration);
 
+            // Asynchrone Operation anfordern.
             return VCRServer
                 .updateSchedule(this._jobScheduleInfo.jobId, this._jobScheduleInfo.scheduleId, { job: this._jobScheduleInfo.job, schedule: schedule })
                 .then(() => {
+                    // Je nach Wunsch des Anwenders entweder zruück zur Programmzeitschrift oder dem Aufzeichnungsplan aufrufen.
                     if (this._fromGuide && this.application.profile.backToGuide)
                         this.application.gotoPage(this.application.guidePage.route);
                     else
@@ -201,13 +216,17 @@ namespace VCRNETClient.App {
                 });
         }
 
+        // Startet einen asynchronen Löschvorgang für die Aufzeichnung.
         private onDelete(): (JMSLib.App.IHttpPromise<void> | void) {
+            // Beim zweiten Aufruf wird der asynchrone Befehl an den VCR.NET Recording Service geschickt.
             if (this.del.isDangerous)
                 return VCRServer
                     .deleteSchedule(this._jobScheduleInfo.jobId, this._jobScheduleInfo.scheduleId)
                     .then(() => this.application.gotoPage(this.application.planPage.route));
 
+            // Beim ersten Versuch wird einfach nur ein Feedback angezeigt.
             this.del.isDangerous = true;
         }
+
     }
 }

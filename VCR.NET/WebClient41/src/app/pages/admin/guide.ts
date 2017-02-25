@@ -150,7 +150,6 @@ namespace VCRNETClient.App.Admin {
             VCRServer.ProfileSourcesCache.getSources(this.device.value).then(sources => {
                 // Auswahlliste setzen.
                 this.source.allSources = sources;
-                this.source.value = ``;
 
                 // Anwendung zur Benutzung freischalten.
                 this.page.application.isBusy = false;

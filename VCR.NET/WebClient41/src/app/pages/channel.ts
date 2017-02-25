@@ -29,7 +29,7 @@ namespace VCRNETClient.App {
     // Schnitstelle zur Pflege der Senderauswahl.
     export interface IChannelSelector extends JMSLib.App.IProperty<string>, JMSLib.App.IConnectable {
         // Die Vorauswahl der Quellen vor allem nach dem ersten Zeichen des Namens.
-        readonly section: JMSLib.App.IValueFromList<number>;
+        readonly section: JMSLib.App.IValueFromList<string>;
 
         // Die Vorauswahl der Quellen über die Art (Fernsehen oder Radio).
         readonly type: JMSLib.App.IValueFromList<TypeFilter>;
@@ -105,26 +105,26 @@ namespace VCRNETClient.App {
 
         // Alle möglichen Einschränkungen auf die Namen der Quellen.
         private static readonly _sections = [
-            JMSLib.App.uiValue(0, "(Zuletzt verwendet)"),
-            JMSLib.App.uiValue(1, "A B C"),
-            JMSLib.App.uiValue(2, "D E F"),
-            JMSLib.App.uiValue(3, "G H I"),
-            JMSLib.App.uiValue(4, "J K L"),
-            JMSLib.App.uiValue(5, "M N O"),
-            JMSLib.App.uiValue(6, "P Q R"),
-            JMSLib.App.uiValue(7, "S T U"),
-            JMSLib.App.uiValue(8, "V W X"),
-            JMSLib.App.uiValue(9, "Y Z"),
-            JMSLib.App.uiValue(10, "0 1 2 3 4 5 6 7 8 9"),
-            JMSLib.App.uiValue(11, "(Andere)"),
-            JMSLib.App.uiValue(12, "(Alle Quellen)")
+            JMSLib.App.uiValue("(Zuletzt verwendet)"),
+            JMSLib.App.uiValue("A B C"),
+            JMSLib.App.uiValue("D E F"),
+            JMSLib.App.uiValue("G H I"),
+            JMSLib.App.uiValue("J K L"),
+            JMSLib.App.uiValue("M N O"),
+            JMSLib.App.uiValue("P Q R"),
+            JMSLib.App.uiValue("S T U"),
+            JMSLib.App.uiValue("V W X"),
+            JMSLib.App.uiValue("Y Z"),
+            JMSLib.App.uiValue("0 1 2 3 4 5 6 7 8 9"),
+            JMSLib.App.uiValue("(Andere)"),
+            JMSLib.App.uiValue("(Alle Quellen)")
         ];
 
         // Prüft, ob der Name einer Quelle der aktuellen Auswahl entspricht.
         private applySectionFilter(source: VCRServer.SourceEntry): boolean {
             var first = source.firstNameCharacter;
 
-            switch (this.section.value) {
+            switch (this.section.valueIndex) {
                 case 0:
                     return this._favorites[source.name];
                 case 1:
@@ -160,31 +160,37 @@ namespace VCRNETClient.App {
         readonly section = new JMSLib.App.SelectSingleFromList({ value: 0 }, `value`, null, () => this.refreshFilter(), ChannelEditor._sections);
 
         // Alle aktuell bezüglich aller Einschränkungen relevanten Quellen.
-        readonly sourceName = new JMSLib.App.SelectSingleFromList<string>(this, `value`);
+        readonly sourceName = new JMSLib.App.SelectSingleFromList<string>(this, `value`)
+            .addValidator(n => {
+                var source = n.value;
+
+                // Wenn eine Quelle ausgewählt wurde, dann muss sie auch von dem aktuellen Gerät empfangen werden können.
+                if ((source || "").trim().length > 0)
+                    if (!this.allSources.some(s => s.name === source))
+                        return `Die Quelle wird von dem ausgewählten Gerät nicht empfangen.`;
+            });
 
         // Die bevorzugten Quellen des Anwenders - hier in einem Dictionary zur Prüfung optimiert.
         private _favorites: { [source: string]: boolean } = {};
 
         // Gesetzt, wenn die zusätzlichen Filter angezeigt werden sollen.
         get showFilter(): boolean {
-            return this.section.value !== 0;
+            return this.section.valueIndex !== 0;
         }
-
-        // Gesetzt, wenn der Sender bekannt ist.
-        private _hasChannel = false;
 
         // Erstellt eine neue Logik zur Senderauswahl.
         constructor(data: any, prop: string, favoriteSources: string[], onChange: () => void) {
             super(data, prop, "Quelle", onChange);
 
-            // Prüfungen einrichten
-            this.addValidator(c => !this._hasChannel && `Die Quelle wird von dem ausgewählten Gerät nicht empfangen.`);
-
-            // Übernimmt die lineare Liste aller bevorzugten Sender zur schnelleren Auswahl in ein Dictionary.
+            // Initialen Filter vorbereiten.
             if (favoriteSources.length < 1)
-                this.section.value = this.section.allowedValues.length - 1;
-            else
+                this.section.valueIndex = this.section.allowedValues.length - 1;
+            else {
+                this.section.valueIndex = 0;
+
+                // Übernimmt die lineare Liste aller bevorzugten Sender zur schnelleren Auswahl in ein Dictionary.
                 favoriteSources.forEach(s => this._favorites[s] = true);
+            }
         }
 
         // Ermittelt die Liste der relevanten Quellen neu.
@@ -203,31 +209,28 @@ namespace VCRNETClient.App {
 
             // Aktuelle Quelle zusätzliche in die Liste einmischen, so dass immer eine korrekte Auswahl existiert.
             var source = this.value;
-            var hasSource = ((source || "").trim().length > 0);
 
-            if (hasSource && (sourceNames.indexOf(source) < 0)) {
-                var cmp = source.toLocaleUpperCase();
-                var insertAt = -1;
+            if ((source || "").trim().length > 0)
+                if (sourceNames.indexOf(source) < 0) {
+                    var cmp = source.toLocaleUpperCase();
+                    var insertAt = -1;
 
-                for (var i = 0; i < sourceNames.length; i++)
-                    if (cmp.localeCompare(sourceNames[i].toLocaleUpperCase()) < 0) {
-                        insertAt = i;
+                    for (var i = 0; i < sourceNames.length; i++)
+                        if (cmp.localeCompare(sourceNames[i].toLocaleUpperCase()) < 0) {
+                            insertAt = i;
 
-                        break;
-                    }
+                            break;
+                        }
 
-                // Bereits gewählte Quelle an der korrekten Position in der Liste eintragen.
-                if (insertAt < 0)
-                    sourceNames.push(source);
-                else
-                    sourceNames.splice(insertAt, 0, source);
-            }
+                    // Bereits gewählte Quelle an der korrekten Position in der Liste eintragen.
+                    if (insertAt < 0)
+                        sourceNames.push(source);
+                    else
+                        sourceNames.splice(insertAt, 0, source);
+                }
 
             // Der erste Eintrag erlaubt es immer auch einfach mal keinen Sender auszuwählen.
             this.sourceName.allowedValues = [JMSLib.App.uiValue(``, "(Keine Quelle)")].concat(sourceNames.map(s => JMSLib.App.uiValue(s)));
-
-            // Schauen wir mal, ob wir die Quelle überhaupt kennen.
-            this._hasChannel = (!hasSource || this.allSources.some(s => s.name === source));
 
             // Anzeige aktualisieren.
             this.refresh();
