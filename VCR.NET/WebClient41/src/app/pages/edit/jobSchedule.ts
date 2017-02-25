@@ -34,7 +34,7 @@
     export abstract class JobScheduleEditor<TModelType extends VCRServer.EditJobScheduleCommonContract> implements IJobScheduleEditor {
         private static readonly _allowedCharacters = /^[^\\\/\:\*\?\"\<\>\|]*$/;
 
-        constructor(public readonly page: IPage, protected model: TModelType, isJob: boolean, favoriteSources: string[], onChange: () => void) {
+        constructor(public readonly page: IPage, protected model: TModelType, favoriteSources: string[], onChange: () => void) {
             var noSource = () => (this.source.value || "").trim().length < 1;
 
             // Pflegekomponenten erstellen
@@ -49,9 +49,6 @@
             };
 
             // Zusätzliche Prüfungen einrichten.
-            if (isJob)
-                this.name.addRequiredValidator(`Ein Auftrag muss einen Namen haben.`);
-
             this.name.addPatternValidator(JobScheduleEditor._allowedCharacters, `Der Name enthält ungültige Zeichen`);
 
              // Initiale Prüfung.

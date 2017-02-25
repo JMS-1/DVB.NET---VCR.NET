@@ -38,7 +38,7 @@ namespace VCRNETClient.App {
         readonly encryption: JMSLib.App.IValueFromList<EncryptionFilter>;
 
         // Die komplette Liste aller verfügbaren Quellen.
-        sourceNames: JMSLib.App.IUiValue<string>[];
+        readonly sourceName: JMSLib.App.IValueFromList<string>;
 
         // Gesetzt, wenn die zusätzlichen Filter angezeigt werden sollen.
         readonly showFilter: boolean;
@@ -160,13 +160,15 @@ namespace VCRNETClient.App {
         readonly section = new JMSLib.App.SelectSingleFromList({ value: 0 }, `value`, null, () => this.refreshFilter(), ChannelEditor._sections);
 
         // Alle aktuell bezüglich aller Einschränkungen relevanten Quellen.
-        sourceNames: JMSLib.App.IUiValue<string>[];
+        readonly sourceName = new JMSLib.App.SelectSingleFromList<string>(this, `value`);
 
         // Die bevorzugten Quellen des Anwenders - hier in einem Dictionary zur Prüfung optimiert.
         private _favorites: { [source: string]: boolean } = {};
 
         // Gesetzt, wenn die zusätzlichen Filter angezeigt werden sollen.
-        showFilter = false;
+        get showFilter(): boolean {
+            return this.section.value !== 0;
+        }
 
         // Gesetzt, wenn der Sender bekannt ist.
         private _hasChannel = false;
@@ -179,7 +181,7 @@ namespace VCRNETClient.App {
             this.addValidator(c => !this._hasChannel && `Die Quelle wird von dem ausgewählten Gerät nicht empfangen.`);
 
             // Übernimmt die lineare Liste aller bevorzugten Sender zur schnelleren Auswahl in ein Dictionary.
-            if (this.showFilter = (favoriteSources.length < 11111111))
+            if (favoriteSources.length < 1)
                 this.section.value = this.section.allowedValues.length - 1;
             else
                 favoriteSources.forEach(s => this._favorites[s] = true);
@@ -188,7 +190,7 @@ namespace VCRNETClient.App {
         // Ermittelt die Liste der relevanten Quellen neu.
         private refreshFilter(): void {
             // Alle Quellen bezüglich der aktiven Filter untersuchen.
-            this.sourceNames = this.allSources.filter(s => {
+            var sourceNames = this.allSources.filter(s => {
                 if (!this.applyEncryptionFilter(s))
                     return false;
                 if (!this.applyTypeFilter(s))
@@ -197,18 +199,18 @@ namespace VCRNETClient.App {
                     return false;
 
                 return true;
-            }).map(s => JMSLib.App.uiValue(s.name));
+            }).map(s => s.name);
 
             // Aktuelle Quelle zusätzliche in die Liste einmischen, so dass immer eine korrekte Auswahl existiert.
             var source = this.value;
             var hasSource = ((source || "").trim().length > 0);
 
-            if (hasSource && !this.sourceNames.some(s => s.value === source)) {
+            if (hasSource && (sourceNames.indexOf(source) < 0)) {
                 var cmp = source.toLocaleUpperCase();
                 var insertAt = -1;
 
-                for (var i = 0; i < this.sourceNames.length; i++)
-                    if (cmp.localeCompare(this.sourceNames[i].value.toLocaleUpperCase()) < 0) {
+                for (var i = 0; i < sourceNames.length; i++)
+                    if (cmp.localeCompare(sourceNames[i].toLocaleUpperCase()) < 0) {
                         insertAt = i;
 
                         break;
@@ -216,13 +218,13 @@ namespace VCRNETClient.App {
 
                 // Bereits gewählte Quelle an der korrekten Position in der Liste eintragen.
                 if (insertAt < 0)
-                    this.sourceNames.push(JMSLib.App.uiValue(source));
+                    sourceNames.push(source);
                 else
-                    this.sourceNames.splice(insertAt, 0, JMSLib.App.uiValue(source));
+                    sourceNames.splice(insertAt, 0, source);
             }
 
             // Der erste Eintrag erlaubt es immer auch einfach mal keinen Sender auszuwählen.
-            this.sourceNames.unshift(JMSLib.App.uiValue("", "(Keine Quelle)"));
+            this.sourceName.allowedValues = [JMSLib.App.uiValue(``, "(Keine Quelle)")].concat(sourceNames.map(s => JMSLib.App.uiValue(s)));
 
             // Schauen wir mal, ob wir die Quelle überhaupt kennen.
             this._hasChannel = (!hasSource || this.allSources.some(s => s.name === source));

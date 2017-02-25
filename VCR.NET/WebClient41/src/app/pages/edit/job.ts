@@ -17,13 +17,16 @@ namespace VCRNETClient.App.Edit {
     // Bietet die Daten eines Auftrags zur Pflege an.
     export class JobEditor extends JobScheduleEditor<VCRServer.EditJobContract> implements IJobEditor {
         constructor(page: IPage, model: VCRServer.EditJobContract, devices: JMSLib.App.IUiValue<string>[], favoriteSources: string[], folders: JMSLib.App.IUiValue<string>[], onChange: () => void) {
-            super(page, model, true, favoriteSources, onChange);
+            super(page, model, favoriteSources, onChange);
 
             // Pflegekomponenten erstellen
             this.deviceLock = new JMSLib.App.Flag(this.model, "lockedToDevice", "(auf diesem Gerät aufzeichnen)", onChange);
             this.folder = new JMSLib.App.SelectSingleFromList(this.model, "directory", "Verzeichnis", onChange, folders);
             this.device = new JMSLib.App.SelectSingleFromList(this.model, "device", "DVB.NET Geräteprofil", onChange, devices)
                 .addRequiredValidator();
+
+            // Zusätzliche Prüfungen einrichten.
+            this.name.addRequiredValidator(`Ein Auftrag muss einen Namen haben.`);
 
             // Initiale Prüfung.
             this.device.validate();

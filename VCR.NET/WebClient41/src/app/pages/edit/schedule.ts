@@ -33,7 +33,7 @@ namespace VCRNETClient.App.Edit {
     // Beschreibt die Daten einer Aufzeichnung.
     export class ScheduleEditor extends JobScheduleEditor<VCRServer.EditScheduleContract> implements IScheduleEditor {
         constructor(page: IPage, model: VCRServer.EditScheduleContract, favoriteSources: string[], onChange: () => void, hasJobSource: () => boolean) {
-            super(page, model, false, favoriteSources, onChange);
+            super(page, model, favoriteSources, onChange);
 
             // Anpassungen.
             if (!model.lastDay)
@@ -61,7 +61,7 @@ namespace VCRNETClient.App.Edit {
             this.hasExceptions = (this.exceptions.length > 0);
 
             // Zusätzliche Prüfung einrichten.
-            this.source.addValidator(c => {
+            this.source.sourceName.addValidator(c => {
                 if (!hasJobSource())
                     if ((c.value || ``).trim().length < 1)
                         return `Entweder für die Aufzeichnung oder für den Auftrag muss eine Quelle angegeben werden.`;
