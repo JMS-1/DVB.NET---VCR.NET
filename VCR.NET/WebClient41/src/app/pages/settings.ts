@@ -83,9 +83,11 @@ namespace VCRNETClient.App {
 
         readonly backToGuide = new JMSLib.App.Flag({}, "backToGuide", "Nach Anlegen einer neuen Aufzeichnung zurück zur Programmzeitschrift");
 
-        readonly type = new JMSLib.App.SelectSingleFromList<string>({}, "typeFilter", null, null, true, SettingsPage._types);
+        readonly type = new JMSLib.App.SelectSingleFromList<string>({}, "typeFilter", null, null, SettingsPage._types)
+            .addRequiredValidator();
 
-        readonly encryption = new JMSLib.App.SelectSingleFromList<string>({}, "encryptionFilter", null, null, true, SettingsPage._encryptions);
+        readonly encryption = new JMSLib.App.SelectSingleFromList<string>({}, "encryptionFilter", null, null, SettingsPage._encryptions)
+            .addRequiredValidator();
 
         readonly update = new JMSLib.App.Command(() => this.save(), "Aktualisieren", () => this.isValid);
 

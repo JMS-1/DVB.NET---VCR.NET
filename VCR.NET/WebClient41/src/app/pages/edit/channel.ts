@@ -208,15 +208,15 @@ namespace VCRNETClient.App {
         // Gesetzt, wenn die zusätzlichen Filter angezeigt werden sollen.
         showFilter = false;
 
-        // Gesetzt, wenn eine Quelle angegeben werden muss.
-        private _isRequired = false;
-
         // Gesetzt, wenn der Sender bekannt ist.
         private _hasChannel = false;
 
         // Erstellt eine neue Logik zur Senderauswahl.
         constructor(data: any, prop: string, favoriteSources: string[], onChange: () => void) {
             super(data, prop, "Quelle", onChange);
+
+            // Prüfungen einrichten
+            this.addValidator(c => !this._hasChannel && `Die Quelle wird von dem ausgewählten Gerät nicht empfangen.`);
 
             // Übernimmt die lineare Liste aller bevorzugten Sender zur schnelleren Auswahl in ein Dictionary.
             if (this.showFilter = (favoriteSources.length < 1))
@@ -272,9 +272,7 @@ namespace VCRNETClient.App {
         }
 
         // Aktuelle Liste der Quellen festlegen, etwa nach der Änderung des zu verwendenden Geräteprofils.
-        setSources(sources: VCRServer.SourceEntry[], sourceIsRequired: boolean): void {
-            this._isRequired = sourceIsRequired;
-
+        setSources(sources: VCRServer.SourceEntry[]): void {
             // Falls wir auf der gleichen Liste arbeiten müssen wir gar nichts machen.
             if (this._sources === sources)
                 return;
@@ -283,32 +281,6 @@ namespace VCRNETClient.App {
             this._sources = sources;
 
             this.refreshFilter();
-        }
-
-        // Prüft den aktuellen Wert.
-        protected onValidate(): string {
-            // Sollte die Basisklasse bereits einen Fehler melden so ist dieser so elementar, dass er unbedingt verwendet werden soll.
-            var message = super.onValidate();
-
-            if (message !== ``)
-                return message;
-
-            // Unbekannter Sender.
-            if (!this._hasChannel)
-                return "Die Quelle wird von dem ausgewählten Gerät nicht empfangen.";
-
-            // Die Quelle darf eventuell auch leer sein.
-            if (!this._isRequired)
-                return message;
-
-            // Quelle prüfen.
-            var value = (this.value || "").trim();
-
-            if (value.length < 1)
-                return "Entweder für die Aufzeichnung oder für den Auftrag muss eine Quelle angegeben werden.";
-
-            // Ursprünglichen Wert melden.
-            return message;
         }
     }
 }

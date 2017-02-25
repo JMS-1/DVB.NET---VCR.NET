@@ -48,7 +48,7 @@ namespace VCRNETClient.App {
         ];
 
         // Präsentationsmodell zur Auswahl des aktuellen Konfigurationsbereichs.
-        readonly sections: JMSLib.App.SelectSingleFromList<SectionInfo> = new JMSLib.App.SelectSingleFromList<SectionInfo>({}, "value", null, null, false, this._sections);
+        readonly sections: JMSLib.App.SelectSingleFromList<SectionInfo> = new JMSLib.App.SelectSingleFromList<SectionInfo>({}, "value", null, null, this._sections);
 
         // Erstellt ein neues Präsentationsmodell für die Seite.
         constructor(application: Application) {

@@ -23,8 +23,18 @@ namespace JMSLib.App {
         }
 
         // Erstellt ein neues Präsentationsmodell.
-        constructor(data?: any, prop?: string, name?: string, onChange?: () => void, private _externalValidator?: () => string) {
+        constructor(data?: any, prop?: string, name?: string, onChange?: () => void) {
             super(data, prop, name, onChange);
+
+            // Syntaxprüfung durchführen.
+            this.addValidator(Time.isValidTime);
+        }
+
+        // Prüft, ob eine gültige Uhrzeit eingegeben wurde.
+        private static isValidTime(time: Time): string {
+            if (time._rawValue !== undefined)
+                if (DateTimeUtils.parseTime(time._rawValue) === null)
+                    return `Ungültige Uhrzeit.`;
         }
 
         // Meldet die aktuelle Uhrzeit.
@@ -59,23 +69,6 @@ namespace JMSLib.App {
 
             // Anzeige aktualisieren.
             this.refresh();
-        }
-
-        // Prüft die aktuelle Eingabe.
-        protected onValidate(): string {
-            // Grundprüfung durchführen.
-            var message = super.onValidate();
-
-            if (message !== ``)
-                return message;
-
-            // Syntaxprüfung durchführen.
-            if (this._rawValue !== undefined)
-                if (DateTimeUtils.parseTime(this._rawValue) === null)
-                    return `Ungültige Uhrzeit.`;
-
-            // Externe Prüfung durchführen.
-            return (this._externalValidator && this._externalValidator()) || ``;
         }
     }
 }

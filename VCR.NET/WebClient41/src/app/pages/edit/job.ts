@@ -21,8 +21,9 @@ namespace VCRNETClient.App.Edit {
 
             // Pflegekomponenten erstellen
             this.deviceLock = new JMSLib.App.Flag(this.model, "lockedToDevice", "(auf diesem Gerät aufzeichnen)", onChange);
-            this.device = new JMSLib.App.SelectSingleFromList<string>(this.model, "device", "DVB.NET Geräteprofil", onChange, true, devices);
-            this.folder = new JMSLib.App.SelectSingleFromList<string>(this.model, "directory", "Verzeichnis", onChange, false, folders);
+            this.folder = new JMSLib.App.SelectSingleFromList<string>(this.model, "directory", "Verzeichnis", onChange, folders);
+            this.device = new JMSLib.App.SelectSingleFromList<string>(this.model, "device", "DVB.NET Geräteprofil", onChange, devices)
+                .addRequiredValidator();
         }
 
         // Das Aufzeichnungsverzeichnis.
@@ -36,7 +37,7 @@ namespace VCRNETClient.App.Edit {
 
         // Prüft alle Daten.
         validate(sources: VCRServer.SourceEntry[]): void {
-            super.validate(sources, false);
+            super.validate(sources);
 
             // Lokalisierte Prüfungen.
             this.device.validate();

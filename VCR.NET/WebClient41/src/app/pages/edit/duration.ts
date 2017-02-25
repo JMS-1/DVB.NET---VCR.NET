@@ -20,7 +20,18 @@ namespace VCRNETClient.App.Edit {
 
             var end = new Date(new Date(this.startTime.value).getTime() + 60000 * this.value);
 
-            this.endTime = new JMSLib.App.Time({ time: end.toISOString() }, "time", null, () => this.onChanged(), () => this.checkLimit());
+            this.endTime = new JMSLib.App.Time({ time: end.toISOString() }, "time", null, () => this.onChanged())
+                .addValidator(t => this.checkLimit());
+
+            this.addValidator(d => {
+                this.startTime.validate();
+                this.endTime.validate();
+
+                if (this.startTime.message !== ``)
+                    return this.startTime.message;
+                else
+                    return this.endTime.message;
+            });
         }
 
         private onChanged(): void {
@@ -44,21 +55,6 @@ namespace VCRNETClient.App.Edit {
 
         private checkLimit(): string {
             return (this.value >= 24 * 60) ? "Die Aufzeichnungsdauer muss kleiner als ein Tag sein." : undefined;
-        }
-
-        protected onValidate(): string {
-            var message = super.onValidate();
-
-            this.startTime.validate();
-            this.endTime.validate();
-
-            if (message === ``)
-                if (this.startTime.message !== ``)
-                    return this.startTime.message;
-                else
-                    return this.endTime.message;
-
-            return message;
         }
     }
 }

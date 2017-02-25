@@ -15,7 +15,9 @@ namespace VCRNETClient.App.Admin {
     export class DevicesSection extends Section implements IAdminDevicesPage {
 
         // Präsentationsmodell zur Pflege des bevorzugten Gerätes.
-        readonly defaultDevice = new JMSLib.App.SelectSingleFromList<string>({}, "defaultProfile", "Bevorzugtes Gerät (zum Beispiel für neue Aufzeichnungen)", () => this.refresh(), true, [], list => this.validateDefaultDevice(list.value));
+        readonly defaultDevice = new JMSLib.App.SelectSingleFromList<string>({}, "defaultProfile", "Bevorzugtes Gerät (zum Beispiel für neue Aufzeichnungen)", () => this.refresh(), [])
+            .addRequiredValidator()
+            .addValidator(list => this.validateDefaultDevice(list.value));
 
         // Alle bekannten Gerät.
         devices: Device[] = [];

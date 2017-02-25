@@ -32,7 +32,7 @@ namespace VCRNETClient.App.Edit {
 
     // Beschreibt die Daten einer Aufzeichnung.
     export class ScheduleEditor extends JobScheduleEditor<VCRServer.EditScheduleContract> implements IScheduleEditor {
-        constructor(page: IPage, model: VCRServer.EditScheduleContract, favoriteSources: string[], onChange: () => void) {
+        constructor(page: IPage, model: VCRServer.EditScheduleContract, favoriteSources: string[], onChange: () => void, hasJobSource: () => boolean) {
             super(page, model, false, favoriteSources, onChange);
 
             // Anpassungen.
@@ -42,8 +42,11 @@ namespace VCRNETClient.App.Edit {
             // Pflegbare Eigenschaften anlegen.
             this.repeat = new JMSLib.App.Number(model, "repeatPattern", "Wiederholung", onChange);
             this.duration = new DurationEditor(model, "firstStart", "duration", "Zeitraum", onChange);
-            this.firstStart = new JMSLib.App.DayEditor(model, "firstStart", "Datum", onChange, false, day => this.validateFirstRecording());
-            this.lastDay = new JMSLib.App.DayEditor(model, "lastDay", "wiederholen bis zum", onChange, true, day => ScheduleEditor.validateDateRange(day));
+            this.firstStart = new JMSLib.App.DayEditor(model, "firstStart", "Datum", onChange)
+                .addValidator(day => this.validateFirstRecording());
+            this.lastDay = new JMSLib.App.DayEditor(model, "lastDay", "wiederholen bis zum", onChange)
+                .addRequiredValidator()
+                .addValidator(day => ScheduleEditor.validateDateRange(day));
 
             this.onMonday = new JMSLib.App.FlagSet(ScheduleEditor.flagMonday, this.repeat, JMSLib.App.DateTimeUtils.germanDays[1]);
             this.onTuesday = new JMSLib.App.FlagSet(ScheduleEditor.flagTuesday, this.repeat, JMSLib.App.DateTimeUtils.germanDays[2]);
@@ -56,6 +59,13 @@ namespace VCRNETClient.App.Edit {
             // Ausnahmeregeln.
             this.exceptions = (model.exceptions || []).map(e => new ScheduleException(e, () => this.onExceptionsChanged()));
             this.hasExceptions = (this.exceptions.length > 0);
+
+            // Zusätzliche Prüfung einrichten.
+            this.source.addValidator(c => {
+                if (!hasJobSource())
+                    if ((c.value || ``).trim().length < 1)
+                        return `Entweder für die Aufzeichnung oder für den Auftrag muss eine Quelle angegeben werden.`;
+            });
         }
 
         // Datum der ersten Aufzeichnung.
@@ -158,10 +168,6 @@ namespace VCRNETClient.App.Edit {
             // Aktuelle Uhrzeit ermitteln.
             var now = new Date();
 
-            // Wenn die Aufzeichnung in der Zukunft endet ist alles gut.
-            if (end > now)
-                return ``;
-
             // Ansonsten kann uns nur noch das Wiederholen retten.
             var repeat = this.repeat.value;
 
@@ -193,12 +199,15 @@ namespace VCRNETClient.App.Edit {
                         return ``;
                 }
             }
+            // Wenn die Aufzeichnung in der Zukunft endet ist alles gut.
+            else if (end > now)
+                return ``;
 
             return `Die Aufzeichnung liegt in der Vergangenheit.`;
         }
 
-        validate(sources: VCRServer.SourceEntry[], sourceIsRequired: boolean): void {
-            super.validate(sources, sourceIsRequired);
+        validate(sources: VCRServer.SourceEntry[]): void {
+            super.validate(sources);
 
             this.firstStart.validate();
             this.duration.validate();

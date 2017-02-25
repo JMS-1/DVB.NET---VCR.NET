@@ -53,7 +53,8 @@ namespace VCRNETClient.App.Admin {
                 .addRequiredValidator()
                 .addMinValidator(1)
                 .addMaxValidator(32);
-            this.active = new JMSLib.App.Flag(profile, "active", null, onChange, null, flag => this.validateDefaultDevice(flag));
+            this.active = new JMSLib.App.Flag(profile, "active", null, onChange)
+                .addValidator(flag => this.validateDefaultDevice(flag));
         }
 
         // Wird ein Gerät nicht verwendet, so darf es auch nicht als Vorgabegerät eingetragen sein.

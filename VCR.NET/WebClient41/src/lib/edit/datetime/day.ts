@@ -276,8 +276,8 @@ namespace JMSLib.App {
         }
 
         // Erstelle ein präsentationsmodell zur Auswahl eines Datums.
-        constructor(data?: any, prop?: string, text?: string, onChange?: () => void, private _pureDate: boolean = false, validator?: (day: DayEditor) => string) {
-            super(data, prop, text, onChange, null, null, validator);
+        constructor(data?: any, prop?: string, text?: string, onChange?: () => void, private _pureDate: boolean = false) {
+            super(data, prop, text, onChange);
         }
 
         // Wählt ein neues Datum aus.
@@ -302,6 +302,14 @@ namespace JMSLib.App {
 
             // Anzeige aktualisieren.
             this.refresh();
+        }
+
+        // Ergänzt eine Prüfung auf einen vorhandenen Wert.
+        addRequiredValidator(message: string = `Es muss ein Datum ausgewählt werden.`): this {
+            return this.addValidator(p => {
+                if (this.value === null)
+                    return message;
+            });
         }
     }
 }

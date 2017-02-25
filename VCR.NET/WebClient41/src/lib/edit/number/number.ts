@@ -16,6 +16,15 @@ namespace JMSLib.App {
         // Legt eine neue Verwaltung an.
         constructor(data?: any, prop?: string, name?: string, onChange?: () => void) {
             super(data, prop, name, onChange);
+
+            // Spezielle Prüfung auf Fehleingaben.
+            this.addValidator(Number.isValidNumber);
+        }
+
+        // Prüft, ob eine gültige Zahl vorliegt.
+        private static isValidNumber(num: Number): string {
+            if (num._rawInput !== undefined)
+                return `Ungültige Zahl`;
         }
 
         // Entählt die aktuelle Fehleingabe.
@@ -35,7 +44,7 @@ namespace JMSLib.App {
             var test = (newValue || ``).trim();
 
             // Keine Eingabe und ein Wert ist optional.
-            if ((test.length < 1) && !this.isRequired) {
+            if (test.length < 1) {
                 this._rawInput = undefined;
                 this.value = null;
             }
@@ -53,22 +62,6 @@ namespace JMSLib.App {
 
             // Anzeige aktualisieren.
             this.refresh();
-        }
-
-        // Prüft die aktuelle Eingabe.
-        protected onValidate(): string {
-            // Immer erst die Basisklasse fragen - Meldung von dort werden bevorzugt angezeigt.
-            var message = super.onValidate();
-
-            if (message !== ``)
-                return message;
-
-            // Ungültige Eingabe, die nicht in eine Zahl umgesetzt wurde.
-            if (this._rawInput !== undefined)
-                return `Ungültige Zahl`;
-
-            // Ursprünglichen Wert melden.
-            return message;
         }
 
         // Ergänzt eine Prüfung auf einen vorhandenen Wert.

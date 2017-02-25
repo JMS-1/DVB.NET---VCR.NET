@@ -139,7 +139,7 @@ namespace VCRNETClient.App {
             // Pflegemodelle anlegen.
             this._jobScheduleInfo = info;
             this.job = new Edit.JobEditor(this, info.job, profiles, favorites, folders, this._onChanged);
-            this.schedule = new Edit.ScheduleEditor(this, info.schedule, favorites, this._onChanged);
+            this.schedule = new Edit.ScheduleEditor(this, info.schedule, favorites, this._onChanged, () => (this.job.source.value || "").trim().length > 0);
 
             // Quellen für das aktuelle Geräteprofil laden und die Seite für den Anwender freigeben.
             this.loadSources().then(() => this.application.isBusy = false);
@@ -153,7 +153,7 @@ namespace VCRNETClient.App {
                     this._sources = sources;
 
                     this.job.validate(sources);
-                    this.schedule.validate(sources, (this.job.source.value || "").trim().length < 1);
+                    this.schedule.validate(sources, );
 
                     this._isValid = this.job.isValid() && this.schedule.isValid();
                 }

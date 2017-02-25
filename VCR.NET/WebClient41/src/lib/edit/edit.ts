@@ -12,27 +12,18 @@
         readonly message: string;
     }
 
-    // Schnittstelle für Prüfalgorithmen.
-    export interface IPropertyValidator<TValueType> {
-        // Führt die Prüfung aus.
-        (property: Property<TValueType>): string;
-    }
-
     // Basisklasse zur Pflege des Wertes einer einzelnen Eigenschaft.
     export abstract class Property<TValueType> implements IProperty<TValueType> {
 
         // Initialisiert die Verwaltung des Wertes einer einzelnen Eigenschaft (_prop) im Modell (_data).
-        protected constructor(private _data: any = {}, private readonly _prop: string = `value`, public readonly text: string = null, private readonly _onChange?: () => void, protected readonly isRequired?: boolean, private readonly _testReadOnly?: () => boolean, validator?: (property: Property<TValueType>) => string) {
-            // Prüfalgorithmus merken.
-            if (validator)
-                this.addValidator(validator);
+        protected constructor(private _data: any = {}, private readonly _prop: string = `value`, public readonly text: string = null, private readonly _onChange?: () => void, private readonly _testReadOnly?: () => boolean) {
         }
 
         // Alle Prüfalgorithmen.
-        private _validators: IPropertyValidator<TValueType>[] = [];
+        private _validators: ((property: this) => string)[] = [];
 
         // Vermerkt einen Prüfalgorithmus.
-        addValidator(validator: IPropertyValidator<TValueType>): this {
+        addValidator(validator: (property: this) => string): this {
             this._validators.push(validator);
 
             return this;
@@ -104,20 +95,13 @@
         }
 
         validate(): void {
-            this._message = this.onValidate();
-        }
-
-        protected onValidate(): string {
             // Alle Prüfalgorithmen durchgehen.
-            for (var i = 0; i < this._validators.length; i++) {
-                // Prüfung ausführen.
-                var message = this._validators[i](this);
-                if (message)
-                    return message;
-            }
+            for (var i = 0; i < this._validators.length; i++)
+                if (this._message = this._validators[i](this))
+                    return;
 
             // Kein Fehler.
-            return ``;
+            this._message = ``;
         }
 
         // Meldet das aktuell zugeordnete Modell.
