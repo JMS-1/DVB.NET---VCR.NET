@@ -2,11 +2,11 @@
 
 namespace VCRNETClient.Ui {
 
-    interface IDeviceControl extends JMSLib.ReactUi.IComponent<App.IDeviceController> {
+    interface IDeviceControl extends JMSLib.ReactUi.IComponent<App.Devices.IDeviceController> {
         page: App.IDevicesPage;
     }
 
-    export class DeviceControl extends JMSLib.ReactUi.ComponentExWithSite<App.IDeviceController, IDeviceControl> {
+    export class DeviceControl extends JMSLib.ReactUi.ComponentExWithSite<App.Devices.IDeviceController, IDeviceControl> {
         render(): JSX.Element {
             return <fieldset className="vcrnet-device-control">
                 {this.props.uvm.live ? <div><a href={this.props.uvm.live}>Aktuelle Aufzeichnung anschauen</a></div> : null}

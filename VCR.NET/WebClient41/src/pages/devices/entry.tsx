@@ -2,11 +2,11 @@
 
 namespace VCRNETClient.Ui {
 
-    interface IDevice extends JMSLib.ReactUi.IComponent<App.IDeviceInfo> {
+    interface IDevice extends JMSLib.ReactUi.IComponent<App.Devices.IDeviceInfo> {
         page: App.IDevicesPage;
     }
 
-    export class Device extends JMSLib.ReactUi.ComponentEx<App.IDeviceInfo, IDevice> {
+    export class Device extends JMSLib.ReactUi.ComponentEx<App.Devices.IDeviceInfo, IDevice> {
         render(): JSX.Element {
             var showGuide = this.props.uvm.showGuide;
             var showControl = this.props.uvm.showControl;

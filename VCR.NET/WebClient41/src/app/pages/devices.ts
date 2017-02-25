@@ -2,108 +2,87 @@
 
 namespace VCRNETClient.App {
 
-    export interface IDeviceInfo extends JMSLib.App.IConnectable {
-        readonly name: string;
-
-        readonly displayStart: string;
-
-        readonly displayEnd: string;
-
-        readonly source: string;
-
-        readonly device: string;
-
-        readonly size: string;
-
-        readonly mode: string;
-
-        readonly id: string;
-
-        readonly showGuide: JMSLib.App.IFlag;
-
-        readonly showControl: JMSLib.App.IFlag;
-
-        readonly guideItem: Guide.IGuideInfo;
-
-        readonly guideTime: JMSLib.App.ITimeBar;
-
-        readonly controller: IDeviceController;
-    }
-
-    export interface IDeviceController extends JMSLib.App.IConnectable {
-        readonly end: string;
-
-        readonly remaining: JMSLib.App.INumberWithSlider;
-
-        readonly live: string;
-
-        readonly timeshift: string;
-
-        readonly target: string;
-
-        readonly stopNow: JMSLib.App.ICommand;
-
-        readonly noHibernate: JMSLib.App.IFlag;
-
-        readonly update: JMSLib.App.ICommand;
-    }
-
+    // Schnittstelle zur Anzeige der aktuellen Aktivitäten.
     export interface IDevicesPage extends IPage {
-        readonly infos: IDeviceInfo[];
+        // Alle aktuellen Aktivitäten.
+        readonly infos: Devices.IDeviceInfo[];
     }
 
+    // Präsentationsmodell zur Anzeige und Manipulation der aktuellen Aktivitäten.
     export class DevicesPage extends Page implements IDevicesPage {
 
+        // Alle Aktivitäten.
         infos: Devices.Info[] = [];
 
+        // Erstellt ein neues Präsentationsmodell.
         constructor(application: Application) {
             super(`current`, application);
 
+            // Der Anwender kann die Ansicht aktualisieren.
             this.navigation.refresh = true;
         }
 
+        // Beginnt mit der Anzeige der Ansicht.
         reset(sections: string[]): void {
+            // Zurücksetzen
+            this._refreshing = false;
+            
+            // Liste anfordern.
             this.reload();
         }
 
-        private setPlan(plan: VCRServer.PlanCurrentContract[]): void {
-            var similiar = this.application.guidePage.findInGuide.bind(this.application.guidePage);
-            var refresh = this.refresh.bind(this);
-            var reload = this.reload.bind(this);
-
-            this.infos = (plan || []).map(info => new Devices.Info(info, this.application.profile.suppressHibernate, refresh, reload, similiar));
-
-            this.application.isBusy = false;
-
-            this.refreshUi();
-        }
-
+        // Gesetzt während sich das Präsentationsmodell aktualisiert.
         private _refreshing = false;
 
+        // Fordert die Aktivitäten vom VCR.NET Recording Service neu an.
         reload(): void {
-            VCRServer.getPlanCurrent().then(plan => this.setPlan(plan));
+            VCRServer.getPlanCurrent().then(plan => {
+                // Aktionen des Anwenders einmal binden.
+                var similiar = this.application.guidePage.findInGuide.bind(this.application.guidePage);
+                var refresh = this.toggleDetails.bind(this);
+                var reload = this.reload.bind(this);
+
+                // Die aktuellen Aktivitäten umwandeln.
+                this.infos = (plan || []).map(info => new Devices.Info(info, this.application.profile.suppressHibernate, refresh, reload, similiar));
+
+                // Anwendung kann nun bedient werden.
+                this.application.isBusy = false;
+
+                // Anzeige zur Aktualisierung auffordern.
+                this.refreshUi();
+            });
         }
 
-        private refresh(info: Devices.Info, guide: boolean): void {
+        // Schaltet die Detailanzeige einer Aktivität um.
+        private toggleDetails(info: Devices.Info, guide: boolean): void {
+            // Das machen wir gerade schon.
             if (this._refreshing)
                 return;
 
+            // Wir müssen hier Rekursionen vermeiden.
             this._refreshing = true;
 
+            // Aktuellen Stand auslesen.
             var flag = guide ? info.showGuide : info.showControl;
             var state = flag.value;
 
+            // Alle anderen Detailansichten schliessen.
             this.infos.forEach(i => i.showControl.value = i.showGuide.value = false);
 
+            // Neuen Stand übernehmen.
             flag.value = state;
 
+            // Wir können nun wieder normal arbeiten.
             this._refreshing = false;
 
+            // Oberfläche zur Aktualisierung auffordern.
             this.refreshUi();
         }
 
+        // Die Überschreibt für die Ansicht des Präsentationsmodells.
         get title(): string {
             return `Geräteübersicht`;
         }
+
     }
 }
