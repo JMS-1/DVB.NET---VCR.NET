@@ -2,73 +2,101 @@
 
 namespace VCRNETClient.App {
 
+    // Schnittstelle zur Pflege einer einzelnen Aufzeichnung.
     export interface IEditPage extends IPage {
+        // Die Daten des zugehörigen Auftrags.
         readonly job: Edit.IJobEditor;
 
+        // Die Daten der Aufzeichnung.
         readonly schedule: Edit.IScheduleEditor;
 
+        // Befehl zum Speichern der Aufzeichnung.
         readonly save: JMSLib.App.ICommand;
 
+        // Befehl zum Löschen der Aufzeichnung.
         readonly del: JMSLib.App.ICommand;
     }
 
+    // Das Präsentationsmodell zur Pflege einer Aufzeichnung.
     export class EditPage extends Page implements IEditPage {
+
+        // Die Originaldaten der Aufzeichnung.
         private _jobScheduleInfo: VCRServer.JobScheduleInfoContract;
 
+        // Die Daten des zugehörigen Auftrags.
         job: Edit.JobEditor;
 
+        // Die Daten der Aufzeichnung.
         schedule: Edit.ScheduleEditor;
 
-        private _onChanged = this.onChanged.bind(this);
+        // Befehl zum Speichern der Aufzeichnung.
+        readonly save = new JMSLib.App.Command(() => this.onSave(), "Übernehmen", () => this.isValid);
 
-        save = new JMSLib.App.Command(() => this.onSave(), "Übernehmen", () => this._isValid);
+        // Befehl zum Löschen der Aufzeichnung.
+        readonly del = new JMSLib.App.Command(() => this.onDelete(), "Löschen");
 
-        del = new JMSLib.App.Command(() => this.onDelete(), "Löschen", null);
+        // Meldet, ob alle Eingaben konsistent sind.
+        private get isValid(): boolean {
+            return this.job.isValid() && this.schedule.isValid();
+        }
 
-        private _sources: VCRServer.SourceEntry[];
-
-        private _isValid = false;
-
+        // Gesetzt, wenn die Pflegeseite aus der Programmzeitschrift aufgerufen wurde.
         private _fromGuide: boolean;
 
+        // Erstellt ein neues Präsentationsmodell.
         constructor(application: Application) {
             super("edit", application);
 
+            // Eine neue Aufzeichnung kann von hier aus nicht mehr direkt angelegt werden.
             this.navigation.new = false;
         }
 
-        // Wird jedesmal beim Aufruf der Änderungsseite aufgerufen.
+        // Initialisiert das Präsentationsmodell.
         reset(sections: string[]): void {
+            // Zustand zurücksetzen.
             this.del.reset();
             this.save.reset();
-            this.job = undefined;
-            this._fromGuide = false;
-            this.schedule = undefined;
             this.del.isDangerous = false;
+
+            this.job = undefined;
+            this.schedule = undefined;
             this._jobScheduleInfo = undefined;
 
+            this._fromGuide = false;
+
+            // Die Auswahlliste der Aufzeichnungsverzeichnisse.
+            var folderSelection = [JMSLib.App.uiValue("", "(Voreinstellung verwenden)")];
+
+            // Die Auswahlliste der Geräte.
+            var profileSelection: JMSLib.App.IUiValue<string>[];
+
             // Zuerst die Liste der Aufzeichnungsverzeichnisse abfragen.
-            VCRServer.RecordingDirectoryCache.getPromise().then(dirs => this.setDirectories(dirs, sections));
-        }
+            VCRServer.RecordingDirectoryCache.getPromise().then(folders => {
+                // Die möglichen Verzeichnisse anhängen.
+                folderSelection.push(...folders.map(f => JMSLib.App.uiValue(f)));
 
-        // Die Liste der Aufzeichnungsverzeichnisse steht bereit.
-        private setDirectories(folders: string[], sections: string[]): void {
-            // Auswahlliste für den Anwender aufbauen.
-            var folderSelection = folders.map(f => JMSLib.App.uiValue(f));
+                // Geräteprofile anfordern.
+                return VCRServer.ProfileCache.getAllProfiles();
+            }).then(profiles => {
+                // Auswahl für den Anwender vorbereiten.
+                profileSelection = profiles.map(p => JMSLib.App.uiValue(p.name));
 
-            folderSelection.unshift(JMSLib.App.uiValue("", "(Voreinstellung verwenden)"));
+                // Auf das Neuanlegen prüfen.
+                if (sections.length > 0) {
+                    // Auf existierende Aufzeichnung prüfen - wir gehen hier einfach mal von der Notation id= in der URL aus.
+                    var id = sections[0].substr(3);
+                    var epgId = (sections[1] || "epgid=").substr(6);
 
-            // Geräteprofile anfordern.
-            VCRServer.ProfileCache.getAllProfiles().then(profiles => this.setProfiles(profiles, sections, folderSelection));
-        }
+                    // Bei neuen Aufzeichnungen brauchen wir auch kein Löschen.
+                    this.del.isVisible = (id !== "*");
 
-        // Die Liste der Geräteprofile steht bereit.
-        private setProfiles(profiles: VCRServer.ProfileInfoContract[], sections: string[], folders: JMSLib.App.IUiValue<string>[]): void {
-            // Auswahl für den Anwender vorbereiten.
-            var profileSelection = profiles.map(p => JMSLib.App.uiValue(p.name));
+                    // Einsprung aus der Programmzeitschrift.
+                    this._fromGuide = !!epgId;
 
-            // Auf das Neuanlegen prüfen.
-            if (sections.length < 1) {
+                    // Aufzeichnung asynchron abrufen - entweder existiert eine solche oder sie wird aus der Programmzeitschrift neu angelegt.
+                    return VCRServer.createScheduleFromGuide(id, epgId);
+                }
+
                 // Löschen geht sicher nicht.
                 this.del.isVisible = false;
 
@@ -85,31 +113,20 @@ namespace VCRNETClient.App {
                     name: ''
                 };
 
+                // Beschreibung der Aufzeichnung vorbereiten.
                 var info = <VCRServer.JobScheduleInfoContract>{
                     job: newJob,
                     jobId: null,
                     scheduleId: null,
                     schedule: this.createEmptySchedule()
-                }
+                };
 
-                this.setJobSchedule(info, profileSelection, folders);
-            }
-            else {
-                // Auf existierende Aufzeichnung prüfen.
-                var id = sections[0].substr(3);
-
-                // Bei neuen Aufzeichnungen brauchen wir auch kein Löschen.
-                this.del.isVisible = (id !== "*");
-
-                // Einsprung aus der Programmzeitschrift.
-                this._fromGuide = ((sections[1] || ``).substr(0, 6) === `epgid=`);
-
-                // Existierende Aufzeichnung abrufen.
-                VCRServer.createScheduleFromGuide(id, (sections[1] || "epgid=").substr(6)).then(info => this.setJobSchedule(info, profileSelection, folders));
-            }
+                // Die neue Aufzeichnung können wir auch direkt synchron bearbeiten.
+                return info;
+            }).then(info => this.setJobSchedule(info, profileSelection, folderSelection));
         }
 
-        // Erstellt eine neue Aufzeichnung.
+        // Erstellt eine neue leere Aufzeichnung.
         private createEmptySchedule(): VCRServer.EditScheduleContract {
             var now = new Date(Date.now());
 
@@ -129,17 +146,13 @@ namespace VCRNETClient.App {
 
         // Die Daten einer existierenden Aufzeichnung stehen bereit.
         private setJobSchedule(info: VCRServer.JobScheduleInfoContract, profiles: JMSLib.App.IUiValue<string>[], folders: JMSLib.App.IUiValue<string>[]): void {
-            // Leere Aufzeichnung eintragen.
-            if (!info.schedule)
-                info.schedule = this.createEmptySchedule();
-
             // Liste der zuletzt verwendeten Quellen abrufen.
             var favorites = this.application.profile.recentSources || [];
 
             // Pflegemodelle anlegen.
             this._jobScheduleInfo = info;
-            this.job = new Edit.JobEditor(this, info.job, profiles, favorites, folders, this._onChanged);
-            this.schedule = new Edit.ScheduleEditor(this, info.schedule, favorites, this._onChanged, () => (this.job.source.value || "").trim().length > 0);
+            this.job = new Edit.JobEditor(this, info.job, profiles, favorites, folders, () => this.onChanged());
+            this.schedule = new Edit.ScheduleEditor(this, info.schedule, favorites, () => this.onChanged(), () => (this.job.source.value || "").trim().length > 0);
 
             // Quellen für das aktuelle Geräteprofil laden und die Seite für den Anwender freigeben.
             this.loadSources().then(() => this.application.isBusy = false);
@@ -150,12 +163,8 @@ namespace VCRNETClient.App {
 
             return VCRServer.ProfileSourcesCache.getSources(profile).then(sources => {
                 if (this.job.device.value === profile) {
-                    this._sources = sources;
-
-                    this.job.validate(sources);
-                    this.schedule.validate(sources, );
-
-                    this._isValid = this.job.isValid() && this.schedule.isValid();
+                    this.job.source.sources = sources;
+                    this.schedule.source.sources = sources;
                 }
 
                 return sources;

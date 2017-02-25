@@ -199,9 +199,6 @@ namespace VCRNETClient.App {
         // Alle aktuell bezüglich aller Einschränkungen relevanten Quellen.
         sourceNames: JMSLib.App.IUiValue<string>[];
 
-        // Sämtliche bekannten Quellen.
-        private _sources: VCRServer.SourceEntry[] = [];
-
         // Die bevorzugten Quellen des Anwenders - hier in einem Dictionary zur Prüfung optimiert.
         private _favorites: { [source: string]: boolean } = {};
 
@@ -228,7 +225,7 @@ namespace VCRNETClient.App {
         // Ermittelt die Liste der relevanten Quellen neu.
         private refreshFilter(): void {
             // Alle Quellen bezüglich der aktiven Filter untersuchen.
-            this.sourceNames = this._sources.filter(s => {
+            this.sourceNames = this.sources.filter(s => {
                 if (!this.applyEncryptionFilter(s))
                     return false;
                 if (!this.applyTypeFilter(s))
@@ -265,14 +262,20 @@ namespace VCRNETClient.App {
             this.sourceNames.unshift(JMSLib.App.uiValue("", "(Keine Quelle)"));
 
             // Schauen wir mal, ob wir die Quelle überhaupt kennen.
-            this._hasChannel = (!hasSource || this._sources.some(s => s.name === source));
+            this._hasChannel = (!hasSource || this.sources.some(s => s.name === source));
 
             // Anzeige aktualisieren.
             this.refresh();
         }
 
-        // Aktuelle Liste der Quellen festlegen, etwa nach der Änderung des zu verwendenden Geräteprofils.
-        setSources(sources: VCRServer.SourceEntry[]): void {
+        // Sämtliche bekannten Quellen.
+        private _sources: VCRServer.SourceEntry[] = [];
+
+        get sources(): VCRServer.SourceEntry[] {
+            return this._sources;
+        }
+
+        set sources(sources: VCRServer.SourceEntry[]) {
             // Falls wir auf der gleichen Liste arbeiten müssen wir gar nichts machen.
             if (this._sources === sources)
                 return;

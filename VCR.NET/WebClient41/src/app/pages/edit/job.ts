@@ -35,16 +35,6 @@ namespace VCRNETClient.App.Edit {
         // Gesetzt, wenn die Aufzeichnung immer auf dem Gerät stattfinden soll.
         readonly deviceLock: JMSLib.App.Flag;
 
-        // Prüft alle Daten.
-        validate(sources: VCRServer.SourceEntry[]): void {
-            super.validate(sources);
-
-            // Lokalisierte Prüfungen.
-            this.device.validate();
-            this.folder.validate();
-            this.deviceLock.validate();
-        }
-
         // Gesetzt, wenn die Einstellungen des Auftrags gültig sind.
         isValid(): boolean {
             if (!super.isValid())

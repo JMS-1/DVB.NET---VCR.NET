@@ -206,15 +206,6 @@ namespace VCRNETClient.App.Edit {
             return `Die Aufzeichnung liegt in der Vergangenheit.`;
         }
 
-        validate(sources: VCRServer.SourceEntry[]): void {
-            super.validate(sources);
-
-            this.firstStart.validate();
-            this.duration.validate();
-            this.lastDay.validate();
-            this.repeat.validate();
-        }
-
         isValid(): boolean {
             if (!super.isValid())
                 return false;

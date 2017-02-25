@@ -70,20 +70,6 @@
             readonly withSubtitles: JMSLib.App.Flag;
         };
 
-        // Prüft alle Daten.
-        validate(sources: VCRServer.SourceEntry[]): void {
-            // Aktualisieren.
-            this.source.setSources(sources);
-
-            // Lokalisierte Prüfungen.
-            this.name.validate();
-            this.source.validate();
-            this.sourceFlags.allLanguages.validate();
-            this.sourceFlags.includeDolby.validate();
-            this.sourceFlags.withVideotext.validate();
-            this.sourceFlags.withSubtitles.validate();
-        }
-
         // Gesetzt, wenn die Einstellungen der Quelle gültig sind.
         isValid(): boolean {
             if (this.name.message.length > 0)
