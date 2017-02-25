@@ -12,32 +12,23 @@ module VCRServer {
     // Der Präfix für den Zugriff auf Geräte und Dateien
     var protocolEnd = serverRoot.indexOf(`://`);
     var deviceUrl = `dvbnet` + serverRoot.substr(protocolEnd) + `/`;
-    var playUrl = deviceUrl + `play=`;
 
     // Der Präfix für alle REST Zugiffe
-    var restRoot = serverRoot + `/vcr.net/`;
+    JMSLib.App.webCallRoot = serverRoot + `/vcr.net/`;
 
-    // Bibliothek konfigurieren.
-    JMSLib.App.webCallRoot = restRoot;
-
+    // Führt eine Web Anfrage aus.
     export function doUrlCall<TResponseType, TRequestType>(url: string, method: string = `GET`, request?: TRequestType): JMSLib.App.IHttpPromise<TResponseType> {
         return JMSLib.App.browserWebCall(url, method, request);
     }
 
-    export function getRestRoot(): string {
-        return restRoot;
-    }
-
-    export function getServerRoot(): string {
-        return serverRoot;
-    }
-
-    export function getFilePlayUrl(path: string): string {
-        return `${playUrl}${encodeURIComponent(path)}`;
-    }
-
+    // Meldet den Verweis zum Aufruf des DVB.NET / VCR.NET Viewers.
     export function getDeviceRoot(): string {
         return deviceUrl;
+    }
+
+    // Meldet den Pfad zum Abspielen einer abgeschlossenen Aufzeichnung (DVB.NET / VCR.NET Viewer muss installiert sein).
+    export function getFilePlayUrl(path: string): string {
+        return `${getDeviceRoot()}play=${encodeURIComponent(path)}`;
     }
 
 }
