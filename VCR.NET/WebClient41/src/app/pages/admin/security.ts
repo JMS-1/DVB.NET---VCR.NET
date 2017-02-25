@@ -25,36 +25,36 @@ namespace VCRNETClient.App.Admin {
 
         // Beginnt mit der Abfrage der aktuellen Einstellungen.
         protected loadAsync(): void {
-            VCRServer.getSecuritySettings().then(settings => this.initialize(settings));
-        }
+            VCRServer.getSecuritySettings().then(settings => {
+                // Daten an die Präsentationsmodelle binden.
+                this.userGroups.data = settings;
+                this.adminGroups.data = settings;
 
-        // Übernimmt die aktuelle Konfiguration des VCR.NET Recording Service.
-        private initialize(security: VCRServer.SecuritySettingsContract): void {
-            this.userGroups.data = this.adminGroups.data = security;
+                // Windows Kontogruppen einmalig anfordern.
+                if (!SecuritySection._windowsGroups)
+                    SecuritySection._windowsGroups = VCRServer.getWindowsGroups().then(names => {
+                        // Immer die Leerauswahl ergänzen - damit werden automatisch alle Benutzer erfasst.
+                        var groups = [JMSLib.App.uiValue(``, `(Alle Benutzer)`)];
 
-            // Windows Kontogruppen einmalig anfordern.
-            if (!SecuritySection._windowsGroups)
-                SecuritySection._windowsGroups = VCRServer.getWindowsGroups().then(names => {
-                    // Immer die Leerauswahl ergänzen - damit werden automatisch alle Benutzer erfasst.
-                    var groups = [JMSLib.App.uiValue(``, `(Alle Benutzer)`)];
+                        // Auswahlliste aufsetzen und melden.
+                        groups.push(...names.map(name => JMSLib.App.uiValue(name)));
 
-                    // Auswahlliste aufsetzen und melden.
-                    groups.push(...names.map(name => JMSLib.App.uiValue(name)));
+                        return groups;
+                    });
 
-                    return groups;
-                });
+                // Windows Kontogruppen direkt oder verzögert laden.
+                return SecuritySection._windowsGroups;
+            }).then(groups => {
+                // Daten in den Präsentationsmodellen berücksichtigen.
+                this.userGroups.allowedValues = groups;
+                this.adminGroups.allowedValues = groups;
 
-            // Windows Kontogruppen direkt oder verzögert laden.
-            SecuritySection._windowsGroups.then(groups => this.setWindowsGroups(groups));
-        }
+                // Bedienung durch den Anwender freischalten.
+                this.page.application.isBusy = false;
 
-        // Windows Kontogruppen in die Auswahllisten übernehmen.
-        private setWindowsGroups(groups: JMSLib.App.IUiValue<string>[]): void {
-            this.userGroups.allowedValues = groups;
-            this.adminGroups.allowedValues = groups;
-
-            // Bedienung durch den Anwender freischalten.
-            this.page.application.isBusy = false;
+                // Aktualisierung der Oberfläche anfordern.
+                this.refreshUi();
+            });
         }
 
         // Beginnt mit der Aktualisierung der aktuellen Einstellungen.

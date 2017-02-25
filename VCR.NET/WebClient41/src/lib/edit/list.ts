@@ -44,7 +44,7 @@ namespace JMSLib.App {
             // Der Wert muss in der Liste sein.
             var value = list.value;
 
-            if (value && !list.allowedValues.some(av => av.value === value))
+            if ((value !== null) && !list.allowedValues.some(av => av.value === value))
                 return "Der Wert ist nicht in der Liste der erlaubten Werte enthalten.";
         }
 
@@ -64,7 +64,7 @@ namespace JMSLib.App {
         // Ergänzt eine Prüfung auf eine fehlende Auswahl.
         addRequiredValidator(message: string = `Es muss ein Wert angegeben werden.`): this {
             return this.addValidator(p => {
-                if (!this.value)
+                if (this.value === null)
                     return message;
             });
         }
