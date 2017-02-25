@@ -127,7 +127,7 @@ namespace VCRNETClient.App.Admin {
         readonly noMPEG2PCR = new JMSLib.App.Flag({}, "noMPEG2PCR", "Systemzeit (PCR) in Aufzeichnungsdateien nicht aus einem MPEG2 Bildsignal ableiten");
 
         // Die Art des automatischen Schlafzustands.
-        readonly hibernation = new JMSLib.App.SelectSingleFromList<HibernationMode>({ value: null }, "value", "Art des von VCR.NET ausgelösten Schlafzustands", null, OtherSection._hibernation);
+        readonly hibernation = new JMSLib.App.SelectSingleFromList<HibernationMode>(this, "hibernationMode", "Art des von VCR.NET ausgelösten Schlafzustands", null, OtherSection._hibernation);
 
         // Die Art der Protokollierung.
         readonly logging = new JMSLib.App.SelectSingleFromList<string>({}, "logging", "Umfang der Protokollierung in das Windows Ereignisprotokoll", null, OtherSection._logging);
@@ -149,17 +149,11 @@ namespace VCRNETClient.App.Admin {
                 this.port.data = settings;
                 this.ssl.data = settings;
 
-                // Die Art des Schlafzustands wird in den Daten über zwei Wahrheitswerte repräsentiert, wir machen es dem Anwender etwas einfacher.
-                if (settings.mayHibernate)
-                    if (settings.useStandBy)
-                        this.hibernation.value = HibernationMode.standBy;
-                    else
-                        this.hibernation.value = HibernationMode.hibernate;
-                else
-                    this.hibernation.value = HibernationMode.disabled;
-
                 // Die Anwendung kann nun verwendet werden.
                 this.page.application.isBusy = false;
+
+                // Anzeige aktualisieren lassen.
+                this.refreshUi();
             });
         }
 
@@ -190,16 +184,35 @@ namespace VCRNETClient.App.Admin {
             return true;
         }
 
-        // Beginnt die asynchrone Speicherung der Konfiguration.
-        protected saveAsync(): JMSLib.App.IHttpPromise<boolean> {
-            // Die Art des Schlafzustands in die beiden Wahrheitswerte umsetzen.
+        // Meldet oder ändert die Art des Schlafzustands.
+        private get hibernationMode(): HibernationMode {
             var settings: VCRServer.OtherSettingsContract = this.port.data;
 
-            settings.mayHibernate = (this.hibernation.value !== HibernationMode.disabled);
-            settings.useStandBy = (this.hibernation.value === HibernationMode.standBy);
+            // Die Art des Schlafzustands wird in den Daten über zwei Wahrheitswerte repräsentiert, wir machen es dem Anwender etwas einfacher.
+            if (!settings)
+                return null;
+            else if (settings.mayHibernate)
+                if (settings.useStandBy)
+                    return HibernationMode.standBy;
+                else
+                    return HibernationMode.hibernate;
+            else
+                return HibernationMode.disabled;
+        }
 
-            // Speichervorgang anstossen.
-            return VCRServer.setOtherSettings(settings);
+        private set hibernationMode(newMode: HibernationMode) {
+            var settings: VCRServer.OtherSettingsContract = this.port.data;
+
+            // Die Art des Schlafzustands in die beiden Wahrheitswerte umsetzen.
+            if (settings) {
+                settings.mayHibernate = (newMode !== HibernationMode.disabled);
+                settings.useStandBy = (newMode === HibernationMode.standBy);
+            }
+        }
+
+        // Beginnt die asynchrone Speicherung der Konfiguration.
+        protected saveAsync(): JMSLib.App.IHttpPromise<boolean> {
+            return VCRServer.setOtherSettings(this.port.data);
         }
 
     }
