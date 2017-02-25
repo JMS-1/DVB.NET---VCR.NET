@@ -46,27 +46,27 @@ namespace VCRNETClient.App {
             JMSLib.App.uiValue("F", "Nur unverschlüsselte Quellen")
         ];
 
-        readonly planDays = new JMSLib.App.Number({}, "planDays", "Anzahl der Vorschautage im Aufzeichnungsplan", () => this.refreshUi())
+        readonly planDays = new JMSLib.App.Number({}, "planDays", "Anzahl der Vorschautage im Aufzeichnungsplan", () => this.update.refreshUi())
             .addRequiredValidator()
             .addMinValidator(1)
             .addMaxValidator(50);
 
-        readonly maxFavorites = new JMSLib.App.Number({}, "recentSourceLimit", "Maximale Größe der Liste zuletzt verwendeter Sendern", () => this.refreshUi())
+        readonly maxFavorites = new JMSLib.App.Number({}, "recentSourceLimit", "Maximale Größe der Liste zuletzt verwendeter Sendern", () => this.update.refreshUi())
             .addRequiredValidator()
             .addMinValidator(1)
             .addMaxValidator(50);
 
-        readonly guideRows = new JMSLib.App.Number({}, "guideRows", "Anzahl der Einträge pro Seite in der Programmzeitschrift", () => this.refreshUi())
+        readonly guideRows = new JMSLib.App.Number({}, "guideRows", "Anzahl der Einträge pro Seite in der Programmzeitschrift", () => this.update.refreshUi())
             .addRequiredValidator()
             .addMinValidator(10)
             .addMaxValidator(100);
 
-        readonly preGuide = new JMSLib.App.Number({}, "guideAheadStart", "Vorlaufzeit bei Programmierung über die Programmzeitschrift (in Minuten)", () => this.refreshUi())
+        readonly preGuide = new JMSLib.App.Number({}, "guideAheadStart", "Vorlaufzeit bei Programmierung über die Programmzeitschrift (in Minuten)", () => this.update.refreshUi())
             .addRequiredValidator()
             .addMinValidator(0)
             .addMaxValidator(240);
 
-        readonly postGuide = new JMSLib.App.Number({}, "guideBeyondEnd", "Nachlaufzeit bei Programmierung über die Programmzeitschrift (in Minuten)", () => this.refreshUi())
+        readonly postGuide = new JMSLib.App.Number({}, "guideBeyondEnd", "Nachlaufzeit bei Programmierung über die Programmzeitschrift (in Minuten)", () => this.update.refreshUi())
             .addRequiredValidator()
             .addMinValidator(0)
             .addMaxValidator(240);

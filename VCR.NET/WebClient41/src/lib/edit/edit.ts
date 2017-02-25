@@ -42,6 +42,11 @@
                 this._onChange();
 
             // Unmittelbar verbundenes Oberflächenelement aktualisieren.
+            this.refreshUi();
+        }
+
+        // Fordert die Anzeige zur Aktualisierung auf.
+        refreshUi(): void {
             if (this._site)
                 this._site.refreshUi();
         }

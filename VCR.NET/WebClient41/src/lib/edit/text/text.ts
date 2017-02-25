@@ -10,7 +10,7 @@ namespace JMSLib.App {
     export class String extends Property<string> implements IString {
 
         // Legt eine neue Verwaltung an.
-        constructor(data: any, prop: string, name: string, onChange: () => void) {
+        constructor(data?: any, prop?: string, name?: string, onChange?: () => void) {
             super(data, prop, name, onChange);
         }
 

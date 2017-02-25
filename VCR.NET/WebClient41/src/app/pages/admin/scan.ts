@@ -48,19 +48,19 @@ namespace VCRNETClient.App.Admin {
 
         readonly hours = new JMSLib.App.SelectMultipleFromList<number>({}, "hours", "Uhrzeiten", null, AdminPage.hoursOfDay);
 
-        readonly duration = new JMSLib.App.Number({}, "duration", "Maximale Laufzeit für einen Sendersuchlauf in Minuten", () => this.refreshUi())
+        readonly duration = new JMSLib.App.Number({}, "duration", "Maximale Laufzeit für einen Sendersuchlauf in Minuten", () => this.update.refreshUi())
             .addRequiredValidator()
             .addMinValidator(5)
             .addMaxValidator(55);
 
         readonly merge = new JMSLib.App.Flag({}, "merge", "Senderliste nach dem Suchlauf mit der vorherigen zusammenführen (empfohlen)", null);
 
-        readonly gapDays = new JMSLib.App.Number({}, "interval", "Minimale Anzahl von Tagen zwischen zwei Suchläufen", () => this.refreshUi())
+        readonly gapDays = new JMSLib.App.Number({}, "interval", "Minimale Anzahl von Tagen zwischen zwei Suchläufen", () => this.update.refreshUi())
             .addRequiredValidator()
             .addMinValidator(1)
             .addMaxValidator(28);
 
-        readonly latency = new JMSLib.App.Number({}, "joinDays", "Latenzzeit für vorgezogene Aktualisierungen in Tagen (optional)", () => this.refreshUi())
+        readonly latency = new JMSLib.App.Number({}, "joinDays", "Latenzzeit für vorgezogene Aktualisierungen in Tagen (optional)", () => this.update.refreshUi())
             .addMinValidator(1)
             .addMaxValidator(14);
 

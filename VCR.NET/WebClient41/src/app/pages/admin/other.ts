@@ -76,7 +76,7 @@ namespace VCRNETClient.App.Admin {
         ];
 
         // Der TCP/IP Port des Web Clients.
-        readonly port = new JMSLib.App.Number({}, "webPort", "TCP/IP Port für den Web Server", () => this.refreshUi())
+        readonly port = new JMSLib.App.Number({}, "webPort", "TCP/IP Port für den Web Server", () => this.update.refreshUi())
             .addRequiredValidator()
             .addMinValidator(1)
             .addMaxValidator(0xffff);
@@ -85,7 +85,7 @@ namespace VCRNETClient.App.Admin {
         readonly ssl = new JMSLib.App.Flag({}, "ssl", "Sichere Verbindung zusätzlich anbieten");
 
         // Der sichere (SSL) TCP/IP Port des Web Clients.
-        readonly securePort = new JMSLib.App.Number({}, "sslPort", "TCP/IP Port für den sicheren Zugang", () => this.refreshUi())
+        readonly securePort = new JMSLib.App.Number({}, "sslPort", "TCP/IP Port für den sicheren Zugang", () => this.update.refreshUi())
             .addRequiredValidator()
             .addMinValidator(1)
             .addMaxValidator(0xffff);
@@ -94,13 +94,13 @@ namespace VCRNETClient.App.Admin {
         readonly basicAuth = new JMSLib.App.Flag({}, "basicAuth", "Benutzererkennung über Basic (RFC 2617) zusätzlich erlauben (nicht empfohlen)");
 
         // Die Zeit zum vorzeitigen Aufwachen für eine Aufzeichnung oder Sonderaufgabe (in Sekunden).
-        readonly preSleep = new JMSLib.App.Number({}, "hibernationDelay", "Vorlaufzeit für das Aufwachen aus dem Schlafzustand in Sekunden", () => this.refreshUi())
+        readonly preSleep = new JMSLib.App.Number({}, "hibernationDelay", "Vorlaufzeit für das Aufwachen aus dem Schlafzustand in Sekunden", () => this.update.refreshUi())
             .addRequiredValidator()
             .addMinValidator(0)
             .addMaxValidator(600);
 
         // Die minimale Verweildauer im Schalfzustand (in Minuten).
-        readonly minSleep = new JMSLib.App.Number({}, "forcedHibernationDelay", "Minimale Pause nach einem erzwungenen Schlafzustand in Minuten", () => this.refreshUi())
+        readonly minSleep = new JMSLib.App.Number({}, "forcedHibernationDelay", "Minimale Pause nach einem erzwungenen Schlafzustand in Minuten", () => this.update.refreshUi())
             .addRequiredValidator()
             .addMinValidator(5)
             .addMaxValidator(60);
@@ -109,13 +109,13 @@ namespace VCRNETClient.App.Admin {
         readonly ignoreMinSleep = new JMSLib.App.Flag({}, "suppressHibernationDelay", "Pause für erzwungenen Schlafzustand ignorieren");
 
         // Die Verweildauer eines Protokolleintrags vor der automatischen Löscung (in Wochen).
-        readonly logKeep = new JMSLib.App.Number({}, "protocol", "Aufbewahrungsdauer für Protokolle in Wochen", () => this.refreshUi())
+        readonly logKeep = new JMSLib.App.Number({}, "protocol", "Aufbewahrungsdauer für Protokolle in Wochen", () => this.update.refreshUi())
             .addRequiredValidator()
             .addMinValidator(1)
             .addMaxValidator(13);
 
         // Die Verweildauer eines Auftrags im Archiv vor der automatischen Löschung (in Wochen).
-        readonly jobKeep = new JMSLib.App.Number({}, "archive", "Aufbewahrungsdauer von archivierten Aufzeichnungen in Wochen", () => this.refreshUi())
+        readonly jobKeep = new JMSLib.App.Number({}, "archive", "Aufbewahrungsdauer von archivierten Aufzeichnungen in Wochen", () => this.update.refreshUi())
             .addRequiredValidator()
             .addMinValidator(1)
             .addMaxValidator(13);

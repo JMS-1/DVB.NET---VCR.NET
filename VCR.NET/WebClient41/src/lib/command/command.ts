@@ -129,8 +129,8 @@
             this.refreshUi();
         }
 
-        // Oberfläche aktualiseren.
-        private refreshUi(): void {
+        // Oberfläche zur Aktualisierung auffordern.
+        refreshUi(): void {
             if (this.site)
                 this.site.refreshUi();
         }

@@ -33,10 +33,10 @@ namespace VCRNETClient.App.Admin {
     export class DirectoriesSection extends Section implements IAdminDirectoriesPage {
 
         // Die aktuelle Liste der Aufzeichnungsverzeichnisse.
-        readonly directories = new JMSLib.App.SelectMultipleFromList<string>({}, "value", null, () => this.refreshUi());
+        readonly directories = new JMSLib.App.SelectMultipleFromList<string>({}, "value", null, () => this.remove && this.remove.refreshUi());
 
         // Das aktuelle Muster für die Namen von Aufzeichnungsdateien.
-        readonly pattern = new JMSLib.App.String({}, "pattern", "Muster für Dateinamen", () => this.refreshUi()).addRequiredValidator();
+        readonly pattern = new JMSLib.App.String({}, "pattern", "Muster für Dateinamen", () => this.update.refreshUi()).addRequiredValidator();
 
         // Befehl zum Entfernen der ausgewählten Verzeichnisse aus der Verzeichnisliste.
         readonly remove = new JMSLib.App.Command(() => this.removeDirectories(), "Verzeichnisse entfernen", () => this.directories.value.length > 0);
@@ -167,8 +167,7 @@ namespace VCRNETClient.App.Admin {
             this.share.validate();
 
             // Oberfläche zur eingeschränkten Aktualisierung der Anzeige auffordern.
-            if (this.share.site)
-                this.share.site.refreshUi();
+            this.share.refreshUi();
 
             // Verzeichnis durch den VCR.NET Recording Service prüfen lassen.
             return VCRServer.validateDirectory(share).then(ok => {
@@ -186,8 +185,7 @@ namespace VCRNETClient.App.Admin {
                     this.share.validate();
 
                     // Oberfläche zur eingeschränkten Aktualisierung der Anzeige auffordern.
-                    if (this.share.site)
-                        this.share.site.refreshUi();
+                    this.share.refreshUi();
                 }
             });
         }
