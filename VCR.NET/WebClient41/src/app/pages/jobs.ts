@@ -31,7 +31,7 @@ namespace VCRNETClient.App {
             JMSLib.App.uiValue(true, "Archiviert"),
         ];
 
-        readonly showArchived = new JMSLib.App.SelectSingleFromList<boolean>({}, "value", null, () => this.refreshUi(), JobPage._types);
+        readonly showArchived = new JMSLib.App.SelectSingleFromList({}, "value", null, () => this.refreshUi(), JobPage._types);
 
         private _jobs: IJobPageJobInternal[] = [];
 

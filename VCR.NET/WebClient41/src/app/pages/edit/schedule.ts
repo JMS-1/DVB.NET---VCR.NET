@@ -66,6 +66,13 @@ namespace VCRNETClient.App.Edit {
                     if ((c.value || ``).trim().length < 1)
                         return `Entweder für die Aufzeichnung oder für den Auftrag muss eine Quelle angegeben werden.`;
             });
+
+            // Initiale Prüfung.
+            this.source.validate();
+            this.repeat.validate();
+            this.lastDay.validate();
+            this.duration.validate();
+            this.firstStart.validate();
         }
 
         // Datum der ersten Aufzeichnung.

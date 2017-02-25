@@ -34,7 +34,7 @@ namespace VCRNETClient.App {
     export class AdminPage extends Page implements IAdminPage {
 
         // Einmalig berechnet die Liste aller Stunden des Tages.
-        static readonly hoursOfDay = Array.apply(null, Array(24)).map((d, i) => JMSLib.App.uiValue(i, JMSLib.App.DateTimeUtils.formatNumber(i)));
+        static readonly hoursOfDay: JMSLib.App.IUiValue<number>[] = Array.apply(null, Array(24)).map((d, i) => JMSLib.App.uiValue(i, JMSLib.App.DateTimeUtils.formatNumber(i)));
 
         // Die Liste aller Konfigurationsbereiche in der Reihenfolge, in der sie dem Anwender präsentiert werden sollen.
         private readonly _sections: JMSLib.App.IUiValue<SectionInfo>[] = [
@@ -48,7 +48,7 @@ namespace VCRNETClient.App {
         ];
 
         // Präsentationsmodell zur Auswahl des aktuellen Konfigurationsbereichs.
-        readonly sections: JMSLib.App.SelectSingleFromList<SectionInfo> = new JMSLib.App.SelectSingleFromList<SectionInfo>({}, "value", null, null, this._sections);
+        readonly sections = new JMSLib.App.SelectSingleFromList({}, "value", null, null, this._sections);
 
         // Erstellt ein neues Präsentationsmodell für die Seite.
         constructor(application: Application) {

@@ -27,7 +27,7 @@ namespace VCRNETClient.App {
 
         private _entries: Favorites.Favorite[];
 
-        readonly filter = new JMSLib.App.SelectSingleFromList<boolean>({ value: true }, "value", null, () => this.refreshUi(), FavoritesPage._filter)
+        readonly filter = new JMSLib.App.SelectSingleFromList({ value: true }, "value", null, () => this.refreshUi(), FavoritesPage._filter)
             .addRequiredValidator();
 
         get favorites(): IFavorite[] {

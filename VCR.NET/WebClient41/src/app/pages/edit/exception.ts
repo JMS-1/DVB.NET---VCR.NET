@@ -15,6 +15,8 @@
             this.dayDisplay = JMSLib.App.DateTimeUtils.formatStartDate(new Date(parseInt(model.referenceDayDisplay, 10)));
 
             this.isActive = new JMSLib.App.Flag(this, "_active", null, () => this.onChange(onChange));
+
+            this.isActive.validate();
         }
 
         private _active = true;

@@ -1,6 +1,18 @@
-﻿/// <reference path="../../../lib/edit/edit.ts" />
+﻿/// <reference path="../../lib/edit/edit.ts" />
 
 namespace VCRNETClient.App {
+
+    // Die Einschränkung auf die Verschlüsselung.
+    export enum EncryptionFilterType {
+        // Keine Einschränkung.
+        all,
+
+        // Nur verschlüsselte Sender.
+        payTv,
+
+        // Nur unverschlüsselte Sender.
+        freeTv,
+    }
 
     // Schnitstelle zur Pflege der Senderauswahl.
     export interface IChannelSelector extends JMSLib.App.IProperty<string>, JMSLib.App.IConnectable {
@@ -15,9 +27,7 @@ namespace VCRNETClient.App {
         readonly types: string[];
 
         // Die Vorauswahl der Quellen über die Verschlüsselung.
-        encryption: string;
-
-        readonly encryptions: string[];
+        readonly encryption: JMSLib.App.IValueFromList<EncryptionFilterType>;
 
         // Die komplette Liste aller verfügbaren Quellen.
         sourceNames: JMSLib.App.IUiValue<string>[];
@@ -31,13 +41,10 @@ namespace VCRNETClient.App {
 
         // Die Auswahl der Verschlüsselung.
         private static readonly _encryptions = [
-            "Alle Quellen",
-            "Nur verschlüsselte Quellen",
-            "Nur unverschlüsselte Quellen"
+            JMSLib.App.uiValue(EncryptionFilterType.all, "Alle Quellen"),
+            JMSLib.App.uiValue(EncryptionFilterType.payTv, "Nur verschlüsselte Quellen"),
+            JMSLib.App.uiValue(EncryptionFilterType.freeTv, "Nur unverschlüsselte Quellen"),
         ];
-
-        // Die aktuelle Einschränkung bezüglich der Verschlüsselung.
-        private _encryption = ChannelEditor._encryptions[0];
 
         // Prüft ob eine Quelle der aktuellen Einschränkung der Verschlüsselung entspricht.
         private applyEncryptionFilter(source: VCRServer.SourceEntry): boolean {
@@ -45,12 +52,12 @@ namespace VCRNETClient.App {
             if (!this.showFilter)
                 return true;
 
-            switch (this.encryptions.indexOf(this._encryption)) {
-                case 0:
+            switch (this.encryption.value) {
+                case EncryptionFilterType.all:
                     return true;
-                case 1:
+                case EncryptionFilterType.payTv:
                     return source.isEncrypted;
-                case 2:
+                case EncryptionFilterType.freeTv:
                     return !source.isEncrypted;
                 default:
                     return false;
@@ -58,21 +65,7 @@ namespace VCRNETClient.App {
         }
 
         // Alle Auswahlmöglichkeiten der Verschlüsselung.
-        encryptions = ChannelEditor._encryptions;
-
-        // Meldet oder ändert die aktuelle Auswahl der Verschlüsselung.
-        get encryption(): string {
-            return this._encryption;
-        }
-
-        set encryption(newEncryption: string) {
-            if (newEncryption !== this._encryption)
-                if (this.encryptions.indexOf(newEncryption) >= 0) {
-                    this._encryption = newEncryption;
-
-                    this.refreshFilter();
-                }
-        }
+        readonly encryption = new JMSLib.App.SelectSingleFromList({ value: EncryptionFilterType.all }, `value`, null, () => this.refreshFilter(), ChannelEditor._encryptions);
 
         // Die Auswahlmöglichkeiten zur Art der Quelle.
         private static readonly _types = [
@@ -225,7 +218,7 @@ namespace VCRNETClient.App {
         // Ermittelt die Liste der relevanten Quellen neu.
         private refreshFilter(): void {
             // Alle Quellen bezüglich der aktiven Filter untersuchen.
-            this.sourceNames = this.sources.filter(s => {
+            this.sourceNames = this.allSources.filter(s => {
                 if (!this.applyEncryptionFilter(s))
                     return false;
                 if (!this.applyTypeFilter(s))
@@ -262,26 +255,26 @@ namespace VCRNETClient.App {
             this.sourceNames.unshift(JMSLib.App.uiValue("", "(Keine Quelle)"));
 
             // Schauen wir mal, ob wir die Quelle überhaupt kennen.
-            this._hasChannel = (!hasSource || this.sources.some(s => s.name === source));
+            this._hasChannel = (!hasSource || this.allSources.some(s => s.name === source));
 
             // Anzeige aktualisieren.
             this.refresh();
         }
 
         // Sämtliche bekannten Quellen.
-        private _sources: VCRServer.SourceEntry[] = [];
+        private _allSources: VCRServer.SourceEntry[] = [];
 
-        get sources(): VCRServer.SourceEntry[] {
-            return this._sources;
+        get allSources(): VCRServer.SourceEntry[] {
+            return this._allSources;
         }
 
-        set sources(sources: VCRServer.SourceEntry[]) {
+        set allSources(sources: VCRServer.SourceEntry[]) {
             // Falls wir auf der gleichen Liste arbeiten müssen wir gar nichts machen.
-            if (this._sources === sources)
+            if (this._allSources === sources)
                 return;
 
             // Die Liste der Quellen wurde verändert.
-            this._sources = sources;
+            this._allSources = sources;
 
             this.refreshFilter();
         }

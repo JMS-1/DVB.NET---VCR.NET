@@ -163,8 +163,8 @@ namespace VCRNETClient.App {
 
             return VCRServer.ProfileSourcesCache.getSources(profile).then(sources => {
                 if (this.job.device.value === profile) {
-                    this.job.source.sources = sources;
-                    this.schedule.source.sources = sources;
+                    this.job.source.allSources = sources;
+                    this.schedule.source.allSources = sources;
                 }
 
                 return sources;

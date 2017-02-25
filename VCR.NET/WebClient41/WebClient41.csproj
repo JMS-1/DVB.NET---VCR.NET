@@ -317,7 +317,7 @@
     <TypeScriptCompile Include="src\lib\edit\datetime\day.ts" />
     <TypeScriptCompile Include="src\app\pages\edit\duration.ts" />
     <TypeScriptCompile Include="src\app\pages\edit\job.ts" />
-    <TypeScriptCompile Include="src\app\pages\edit\channel.ts" />
+    <TypeScriptCompile Include="src\app\pages\channel.ts" />
     <TypeScriptCompile Include="src\lib\edit\edit.ts" />
     <TypeScriptCompile Include="src\app\pages\edit\jobSchedule.ts" />
     <TypeScriptCompile Include="src\lib\edit\number\slider.ts" />

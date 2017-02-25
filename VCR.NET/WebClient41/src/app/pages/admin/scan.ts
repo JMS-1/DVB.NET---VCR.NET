@@ -52,10 +52,10 @@ namespace VCRNETClient.App.Admin {
         ];
 
         // Die Art der Aktualisierung.
-        readonly mode = new JMSLib.App.SelectSingleFromList<ScanConfigMode>({}, "value", null, () => this.refreshUi(), ScanSection._scanModes);
+        readonly mode = new JMSLib.App.SelectSingleFromList({}, "value", null, () => this.refreshUi(), ScanSection._scanModes);
 
         // Die Stunden, an denen eine Aktualisierung ausgeführt werden soll.
-        readonly hours = new JMSLib.App.SelectMultipleFromList<number>({}, "hours", "Uhrzeiten", null, AdminPage.hoursOfDay);
+        readonly hours = new JMSLib.App.SelectMultipleFromList({}, "hours", "Uhrzeiten", null, AdminPage.hoursOfDay);
 
         // Die maximale Dauer eines Suchlaufs (in Minuten).
         readonly duration = new JMSLib.App.Number({}, "duration", "Maximale Laufzeit für einen Sendersuchlauf in Minuten", () => this.update.refreshUi())

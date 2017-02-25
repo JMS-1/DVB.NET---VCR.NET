@@ -96,7 +96,7 @@ namespace VCRNETClient.App.Admin {
             this.remove.reset();
 
             this.device.value = null;
-            this.source.sources = [];
+            this.source.allSources = [];
             this.source.value = ``;
 
             // Daten vom VCR.NET Recording Service abrufen.
@@ -149,7 +149,7 @@ namespace VCRNETClient.App.Admin {
         private loadSources(): void {
             VCRServer.ProfileSourcesCache.getSources(this.device.value).then(sources => {
                 // Auswahlliste setzen.
-                this.source.sources = sources;
+                this.source.allSources = sources;
                 this.source.value = ``;
 
                 // Anwendung zur Benutzung freischalten.

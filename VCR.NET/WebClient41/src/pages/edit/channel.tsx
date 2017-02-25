@@ -16,17 +16,8 @@ namespace VCRNETClient.Ui {
                 <select value={this.props.uvm.type} onChange={this._type} hidden={!this.props.uvm.showFilter}>
                     {this.props.uvm.types.map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
-                <select value={this.props.uvm.encryption} onChange={this._encryption} hidden={!this.props.uvm.showFilter}>
-                    {this.props.uvm.encryptions.map(e => <option key={e} value={e}>{e}</option>)}
-                </select>
+                {this.props.uvm.showFilter ? <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.encryption} /> : null}
             </div>;
-        }
-
-        // Einschränkung auf die Verschlüsselung ändern.
-        private _encryption = this.updateEncryption.bind(this);
-
-        private updateEncryption(ev: React.FormEvent): void {
-            this.props.uvm.encryption = (ev.target as HTMLSelectElement).value;
         }
 
         // Einschränkung auf die Art der Quelle ändern.

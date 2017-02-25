@@ -53,6 +53,10 @@
                 this.name.addRequiredValidator(`Ein Auftrag muss einen Namen haben.`);
 
             this.name.addPatternValidator(JobScheduleEditor._allowedCharacters, `Der Name enthält ungültige Zeichen`);
+
+             // Initiale Prüfung.
+            this.name.validate();
+            this.source.validate();
         }
 
         // Der Name des Auftrags.

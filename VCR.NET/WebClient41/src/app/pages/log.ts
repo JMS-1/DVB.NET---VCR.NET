@@ -62,7 +62,7 @@ namespace VCRNETClient.App {
                 start = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate() - 7));
             }
 
-            this.startDay = new JMSLib.App.SelectSingleFromList<string>(this, "_startDay", null, () => this.load(), days);
+            this.startDay = new JMSLib.App.SelectSingleFromList(this, "_startDay", null, () => this.load(), days);
         }
 
         reset(sections: string[]): void {
