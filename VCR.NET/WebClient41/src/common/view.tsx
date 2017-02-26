@@ -2,7 +2,10 @@
 
 namespace VCRNETClient.Ui {
 
+    // Konkretisierte React.Js Komponente zur Anzeige unterschiedlicher Navigationsbereiche.
     export class View extends JMSLib.ReactUi.Router<App.IPage> {
+
+        // Anmeldung der Navigationsbereiche für die Basisklasse.
         protected getPages(page: App.IPage): JMSLib.ReactUi.IPageFactory<App.IPage> {
             return {
                 [page.application.logPage.route]: Log,
