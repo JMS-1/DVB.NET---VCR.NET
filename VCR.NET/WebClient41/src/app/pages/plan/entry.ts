@@ -63,7 +63,10 @@
         toggleDetail(epg: boolean): void;
     }
 
+    // Präsentationsmodell zur Anzeige eines Eintrags im Aufzeichnungsplan.
     export class PlanEntry implements IPlanEntry {
+
+        // Erstellt ein neues Präsentationsmodell.
         constructor(private model: VCRServer.PlanActivityContract, private _toggleDetail: (entry: PlanEntry, epg: boolean) => void, application: App.Application, reload: () => void, private readonly _findInGuide: (model: VCRServer.GuideItemContract) => void) {
             // Zeiten umrechnen
             this.duration = parseInt(model.duration);
@@ -194,35 +197,45 @@
         // Das zugehörige Oberflächenelement.
         view: JMSLib.App.IView;
 
+        // Fordert die Oberfläche zur Aktualisierung auf.
         private refreshUi(): void {
             if (this.view)
                 this.view.refreshUi();
         }
 
-        private _guideItem: Guide.GuideInfo;
-
+        // Beschreibt die Zeit von Aufzeichung und Eintrag der Programmzeitschrift.
         private _guideTime: JMSLib.App.TimeBar;
 
         get guideTime(): JMSLib.App.ITimeBar {
             return this._guideTime;
         }
 
+        // Beschreibt die Zeit von Aufzeichung und Eintrag der Programmzeitschrift.
+        private _guideItem: Guide.GuideInfo;
+
         get guideItem(): Guide.IGuideInfo {
+            // Das ist grundsätzlich nicht möglich.
             if (!this.model.epg || !this.model.epgDevice || !this.model.source)
                 return null;
 
+            // Das haben wir schon einmal probiert.
             if (this._guideItem !== undefined)
                 return this._guideItem;
 
+            // In der Programmzeitschrift suchen und den am besten passenden Eintrag ermitteln.
             VCRServer.getGuideItem(this.model.epgDevice, this.model.source, this.start, this.end).then(item => {
+                // Eventuell Präsentationsmodell für den Eintrag erstellen.
                 this._guideItem = item ? new Guide.GuideInfo(item, this._findInGuide) : null;
 
+                // Zusätzlich ein Präsentationsmodell für die Zeitschiene erstellen.
                 if (this._guideItem)
                     this._guideTime = new JMSLib.App.TimeBar(this.start, this.end, this._guideItem.start, this._guideItem.end);
 
+                // Overfläche zur Aktualisierung auffordern.
                 this.refreshUi();
             });
 
+            // Erst einmal keine Informationen - wir warten auf die Antwort des VCR.NET Recording Service.
             return null;
         }
     }

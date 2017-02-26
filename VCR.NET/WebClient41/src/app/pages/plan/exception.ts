@@ -32,6 +32,8 @@
 
     // Erweiterte Schnittstelle zur Pflege einer einzelnen Ausnahmeregel.
     export class PlanException implements IPlanException {
+
+        // Erstellt ein neies Präsentationsmodell.
         constructor(private model: VCRServer.PlanExceptionContract, private _entryId: string, private _reload: () => void) {
             this._originalStart = new Date(model.originalStart as string);
             this.startSlider = new JMSLib.App.NumberWithSlider(model, "startShift", () => this.refreshUi(), -480, +480);
@@ -106,14 +108,16 @@
             this.durationSlider.sync(-this.model.originalDuration);
         }
 
-        // Aktualisiert die Aufzeichnung.
+        // Aktualisiert die Ausnahmeregel.
         private save(): void {
+            // Änderung anfordern und Ergebnis asynchron bearbeiten.
             VCRServer.updateException(this._entryId, this.model.referenceDay, this.model.startShift, this.model.timeDelta).then(this._reload);
         }
 
         // Beachrichtigungen einrichten.
         view: JMSLib.App.IView;
 
+        // Fordert die Oberfläche zur Aktualisierung auf.
         refreshUi(): void {
             if (this.view)
                 this.view.refreshUi();

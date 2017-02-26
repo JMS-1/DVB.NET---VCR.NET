@@ -30,6 +30,9 @@ namespace VCRNETClient.App {
         // Alle bekannten Datumsfilter.
         readonly startFilter = new JMSLib.App.SelectSingleFromList<Date>({}, "value", null, () => this.fireRefresh(true), []);
 
+        // Gesetzt, wenn keine Abfragen abgesendet werden sollen.
+        private _disableQuery: boolean;
+
         // Erzeugt eine neue Steuerung.
         constructor(application: Application) {
             super("plan", application);
@@ -46,9 +49,6 @@ namespace VCRNETClient.App {
 
         // Wird beim Aufruf der Seite aktiviert.
         reset(sections: string[]): void {
-            // Sicherstellen, dass veraltete Informationen nicht mehr berücksichtigt werden.
-            this._requestId++;
-
             // Aktuelles Dateum ermitteln - ohne Berücksichtigung der Uhrzeit.
             var now = new Date();
 
@@ -58,8 +58,10 @@ namespace VCRNETClient.App {
             var start: JMSLib.App.IUiValue<Date>[] = [];
 
             for (var i = 0; i < 7; i++) {
+                // Eintrag erstellen.
                 start.push(JMSLib.App.uiValue(now, (i === 0) ? "Jetzt" : JMSLib.App.DateTimeUtils.formatShortDate(now)));
 
+                // Um die gewünschte Anzahl von Tagen weiter setzen.
                 now = new Date(now.getFullYear(), now.getMonth(), now.getDate() + this.application.profile.planDays);
             }
 
@@ -93,23 +95,13 @@ namespace VCRNETClient.App {
             return true;
         }
 
-        // Ein Aufrufzähler.
-        private _requestId = 0;
-
         // Ermittelt die aktuell gültigen Aufträge.
         private query(): void {
-            // Sicherstellen, dass alte Anfragen ignoriert werden.
-            const requestId = ++this._requestId;
-
             // Wir schauen maximal 13 Wochen in die Zukunft
             var endOfTime = new Date(Date.now() + 13 * 7 * 86400000);
 
             // Zusätzlich beschränken wir uns auf maximal 500 Einträge
             VCRServer.getPlan(500, endOfTime).then(plan => {
-                // Veraltete Antwort.
-                if (this._requestId !== requestId)
-                    return;
-
                 // Anzeigedarstellung für alle Aufträge erstellen.
                 var similiar = this.application.guidePage.findInGuide.bind(this.application.guidePage);
                 var toggleDetail = this.toggleDetail.bind(this);
@@ -117,11 +109,11 @@ namespace VCRNETClient.App {
 
                 this._jobs = plan.map(job => new Plan.PlanEntry(job, toggleDetail, this.application, reload, similiar));
 
-                // Anzeige aktualisieren.
-                this.fireRefresh();
-
                 // Die Seite kann nun normal verwendet werden.
                 this.application.isBusy = false;
+
+                // Anzeige aktualisieren lassen.
+                this.fireRefresh();
             });
         }
 
