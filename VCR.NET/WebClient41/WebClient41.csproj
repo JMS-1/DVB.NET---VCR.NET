@@ -172,7 +172,6 @@
     <Content Include="content\styles.css">
       <DependentUpon>styles.scss</DependentUpon>
     </Content>
-    <None Include="content\vars.scss" />
     <Content Include="default.html" />
     <Content Include="scripts\vcrnet.js" />
     <Content Include="scripts\vcrnet.js.map">
@@ -265,7 +264,6 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="content\vcrnet_old.scss" />
     <Content Include="scripts\react\react-dom-server.js" />
     <Content Include="scripts\react\react-dom-server.min.js" />
     <Content Include="scripts\react\react-dom.js" />
