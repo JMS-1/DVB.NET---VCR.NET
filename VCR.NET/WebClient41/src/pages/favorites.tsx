@@ -6,7 +6,7 @@ namespace VCRNETClient.Ui {
         render(): JSX.Element {
             return <div className="vcrnet-favorites">
                 {this.getHelp()}
-                <JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.filter} />
+                <JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.onlyWithCount} />
                 <table>
                     <thead>
                         <tr>

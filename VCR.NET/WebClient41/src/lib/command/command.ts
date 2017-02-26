@@ -25,7 +25,7 @@
         private _busy = false;
 
         // Die zugehörige Anzeige.
-        site: ISite;
+        view: IView;
 
         // Setzt den Befehl auf den Initialzustand zurück.
         reset(): void {
@@ -131,8 +131,8 @@
 
         // Oberfläche zur Aktualisierung auffordern.
         refreshUi(): void {
-            if (this.site)
-                this.site.refreshUi();
+            if (this.view)
+                this.view.refreshUi();
         }
 
         // Befehl ausführen.

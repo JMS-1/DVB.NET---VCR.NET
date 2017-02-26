@@ -24,15 +24,15 @@ namespace JMSLib.ReactUi {
     }
 
     // Implementierung einer React.Js Komponente für ein Präsentationsmodell mit Benachrichtigungen.
-    export abstract class ComponentExWithSite<TViewModelType extends App.IConnectable, TConfigType extends IComponent<TViewModelType>> extends ComponentEx<TViewModelType, TConfigType> implements App.ISite {
+    export abstract class ComponentExWithSite<TViewModelType extends App.IConnectable, TConfigType extends IComponent<TViewModelType>> extends ComponentEx<TViewModelType, TConfigType> implements App.IView {
         // Führt die Anmeldung auf Benachrichtigungen aus.
         componentWillMount(): void {
-            this.props.uvm.site = this;
+            this.props.uvm.view = this;
         }
 
         // Meldet sich von Benachrichtigungen ab.
         componentWillUnmount(): void {
-            this.props.uvm.site = undefined;
+            this.props.uvm.view = undefined;
         }
 
         // Fordert eine Aktualisierung der Anzeige an.

@@ -24,7 +24,7 @@ namespace JMSLib.App {
         }
 
         // Das zugehörige Oberflächenelement.
-        site: ISite;
+        view: IView;
 
         // Meldet den aktuellen Wert oder verändert diesen.
         get value(): boolean {
@@ -43,8 +43,8 @@ namespace JMSLib.App {
             this._flags.value = flags;
 
             // Oberfläche aktualisieren.
-            if (this.site)
-                this.site.refreshUi();
+            if (this.view)
+                this.view.refreshUi();
         }
 
         // Gesetzt, wenn der Wert der Eigenschaft nicht verändert werden darf.

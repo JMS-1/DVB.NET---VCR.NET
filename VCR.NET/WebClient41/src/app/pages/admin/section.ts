@@ -29,12 +29,12 @@
         }
 
         // Das aktuell zur Anzeige veränderte Oberflächenelement.
-        site: JMSLib.App.ISite;
+        view: JMSLib.App.IView;
 
         // Benachrichtigt das aktuelle Oberflächenelement über Veränderungen in der Anzeige.
         protected refreshUi(): void {
-            if (this.site)
-                this.site.refreshUi();
+            if (this.view)
+                this.view.refreshUi();
         }
 
         // Fordert die zugehörigen Konfigurationsdaten neu an.

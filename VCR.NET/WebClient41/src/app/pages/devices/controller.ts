@@ -31,7 +31,7 @@
     export class Controller implements IDeviceController {
 
         // Aktuell verbundenes Oberflächenelement.
-        site: JMSLib.App.ISite;
+        view: JMSLib.App.IView;
 
         // Einstellung für die verbleibende Restzeit.
         readonly remaining = new JMSLib.App.NumberWithSlider({}, "value", () => this.refreshUi(), 0, 480);
@@ -89,8 +89,8 @@
 
         // Fordert die Oberfläche zur Aktualisierung auf.
         private refreshUi(): void {
-            if (this.site)
-                this.site.refreshUi();
+            if (this.view)
+                this.view.refreshUi();
         }
 
         // Aktualisiert den Endzeitpunkt.

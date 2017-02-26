@@ -192,11 +192,11 @@
         }
 
         // Das zugehörige Oberflächenelement.
-        site: JMSLib.App.ISite;
+        view: JMSLib.App.IView;
 
         private refreshUi(): void {
-            if (this.site)
-                this.site.refreshUi();
+            if (this.view)
+                this.view.refreshUi();
         }
 
         private _guideItem: Guide.GuideInfo;

@@ -2,7 +2,7 @@
 
 namespace VCRNETClient.Ui {
 
-    export class Favorite extends JMSLib.ReactUi.ComponentWithSite<App.IFavorite> {
+    export class Favorite extends JMSLib.ReactUi.ComponentWithSite<App.Favorites.IFavorite> {
         render(): JSX.Element {
             return <tr className="vcrnet-favorite">
                 <td><a href="javascript:void(0)" title="In der Programmzeitschrift anzeigen" onClick={() => this.props.uvm.show.execute()}>{(this.props.uvm.count === null) ? `-` : `${this.props.uvm.count}`}</a></td>

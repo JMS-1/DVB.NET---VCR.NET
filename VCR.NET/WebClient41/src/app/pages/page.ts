@@ -40,12 +40,12 @@
     export abstract class Page implements IPage {
 
         // Das zugehörige Oberflächenelement.
-        site: JMSLib.App.ISite;
+        view: JMSLib.App.IView;
 
         // Meldet Änderungen an das zugehörige Oberflächenelement.
         protected refreshUi(): void {
-            if (this.site)
-                this.site.refreshUi();
+            if (this.view)
+                this.view.refreshUi();
         }
 
         // Initialisiert die Seite zur erneuten Anzeige.

@@ -46,7 +46,7 @@
     export class Info implements IDeviceInfo {
 
         // Das aktuell angebundene Oberflächenelement.
-        site: JMSLib.App.ISite;
+        view: JMSLib.App.IView;
 
         // Erstellt ein neues Präsentationsmodell.
         constructor(private readonly _model: VCRServer.PlanCurrentContract, suppressHibernate: boolean, toggleDetails: (info: Info, guide: boolean) => void, reload: () => void, private readonly _findInGuide: (model: VCRServer.GuideItemContract) => void) {
@@ -178,8 +178,8 @@
 
         // Die Anzeige zur Aktualisierung auffordern.
         private refreshUi(): void {
-            if (this.site)
-                this.site.refreshUi();
+            if (this.view)
+                this.view.refreshUi();
         }
 
     }

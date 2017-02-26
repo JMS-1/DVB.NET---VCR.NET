@@ -30,7 +30,7 @@
         }
 
         // Das zugehörige Oberflächenelement.
-        private _site: ISite;
+        private _site: IView;
 
         // Benachrichtigt die Oberfläche zur Aktualisierung der Anzeige.
         protected refresh(): void {
@@ -52,7 +52,7 @@
         }
 
         // Meldet die Oberfläche an.
-        set site(site: ISite) {
+        set view(site: IView) {
             this._site = site;
 
             // Interne Benachrichtigung auslösen.
@@ -61,7 +61,7 @@
         }
 
         // Ermittelt das aktuell zugeordnete Oberflächenelement.
-        get site(): ISite {
+        get view(): IView {
             return this._site;
         }
 

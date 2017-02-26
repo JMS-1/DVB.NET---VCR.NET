@@ -43,7 +43,7 @@
     }
 
     // Die von der Oberfläche bereitzustellende Arbeitsumgebung für die Anwendung.
-    export interface IApplicationSite extends JMSLib.App.ISite {
+    export interface IApplicationSite extends JMSLib.App.IView {
         // Wechselt zu einem anderen Navigationsbereich.
         goto(page: string);
 
