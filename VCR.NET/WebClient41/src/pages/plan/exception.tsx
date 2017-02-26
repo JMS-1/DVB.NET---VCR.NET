@@ -5,11 +5,12 @@ namespace VCRNETClient.Ui {
     // Schnittstelle zur Pflege einer Ausnahmeregel.
     interface IPlanExceptionStatic extends JMSLib.ReactUi.IComponent<App.Plan.IPlanException> {
         // Die aktuell angezeigte Seite.
-        page: App.IPage;
+        page: App.IPlanPage;
     }
 
     // React.Js Komponente zur Pflege einer einzelnen Ausnahmeregel.
     export class PlanException extends JMSLib.ReactUi.ComponentExWithSite<App.Plan.IPlanException, IPlanExceptionStatic> {
+
         // Erstellt die Oberflächenelemente zur Pflege.
         render(): JSX.Element {
             return <fieldset className="vcrnet-planexception">

@@ -9,6 +9,9 @@ namespace JMSLib.ReactUi {
 
         // Optional ein Symbol für den Verweis.
         pict?: string
+
+        // Optional ein Tooltip.
+        description?: string;
     }
 
     // React.Js Komponente zur Anzeige eines internen Verweises.
@@ -27,8 +30,8 @@ namespace JMSLib.ReactUi {
 
             // Verweis mit optionalem Symbol erstellen.
             return <div className="jmslib-internalLink">
-                {this.props.pict ? <a href={target} onClick={click}><Pictogram name={this.props.pict} /></a> : null}
-                {this.props.children ? <a href={target} onClick={click}>{this.props.children}</a> : null}
+                {this.props.pict ? <a href={target} title={this.props.description} onClick={click}><Pictogram name={this.props.pict} /></a> : null}
+                {this.props.children ? <a href={target} title={this.props.description} onClick={click}>{this.props.children}</a> : null}
             </div>;
         }
 

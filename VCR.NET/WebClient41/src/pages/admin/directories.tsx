@@ -2,7 +2,10 @@
 
 namespace VCRNETClient.Ui {
 
+    // React.js Komponente zur Konfiguration der Aufzeichnungsverzeichnisse.
     export class AdminDirectories extends JMSLib.ReactUi.ComponentWithSite<App.Admin.IAdminDirectoriesPage>{
+
+        // Oberflächenelemente erzeugen.
         render(): JSX.Element {
             return <div className="vcrnet-admin-directories">
                 <h2>Aufzeichnungsverzeichnisse und Dateinamen</h2>
@@ -48,6 +51,7 @@ namespace VCRNETClient.Ui {
             </div>;
         }
 
+        // Hilfe für die Auswahl der Verzeichnisse.
         private getFolderHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zur Bedienung">
                 Im oberen Teil wird die Liste der Verzeichnisse angezeigt, die zurzeit als Aufzeichnunsverzeichnisse
@@ -59,6 +63,7 @@ namespace VCRNETClient.Ui {
             </InlineHelp>;
         }
 
+        // Hilfe zum Hinzufügen neuer Verzeichnisse.
         private getAddHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zur Bedienung">
                 Die Liste der Aufzeichnungsverzeichnisse kann durch Auswahl eines Verzeichnisses oder durch
@@ -84,15 +89,16 @@ namespace VCRNETClient.Ui {
             </InlineHelp>;
         }
 
+        // Hilfe zum Dateinamenmuster,
         private getPatternHelp(): JSX.Element {
             return <InlineHelp title="Mögliche Platzhalter in den Dateinamen">
                 Für jede Aufzeichnung wird im Allgemeinen genau eine Aufzeichnungsdatei
                 erstellt.<HelpLink topic="numberoffiles" page={this.props.uvm.page} /> Der VCR.NET Recording Service
-                nutzt die Daten der Programmierung sowie weitere Umgebungsparameter wie die aktuelle Uhrzeit zur Erzeugung eines
-                Dateinamens. Die Regeln zur Komposition dieses Namens können frei konfiguriert werden, es wird allerdings dringend
-                empfohlen ein Schema zu wählen, das eine Eindeutigkeit der Dateinamen garantiert - ohne Einbeziehung des Zeitpunktes
-                der Aufzeichnung kann es etwa leicht dazu kommen, dass eine Aufzeichnung die Aufzeichnungsdatei eine frühere Ausführung
-                überschreibt.
+                nutzt die Daten der Programmierung sowie weitere Umgebungsparameter wie die aktuelle Uhrzeit zur
+                Erzeugung eines Dateinamens. Die Regeln zur Komposition dieses Namens können frei konfiguriert werden,
+                es wird allerdings dringend empfohlen ein Schema zu wählen, das eine Eindeutigkeit der Dateinamen
+                garantiert - ohne Einbeziehung des Zeitpunktes der Aufzeichnung kann es etwa leicht dazu kommen,
+                dass eine Aufzeichnung die Aufzeichnungsdatei eine frühere Ausführung überschreibt.
                 <br />
                 <br />
                 <table>

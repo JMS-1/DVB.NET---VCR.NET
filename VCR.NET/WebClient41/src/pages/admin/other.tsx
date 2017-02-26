@@ -2,7 +2,10 @@
 
 namespace VCRNETClient.Ui {
 
+    // React.Js Komponente zur Konfiguration sonstiger Einstellungen.
     export class AdminOther extends JMSLib.ReactUi.ComponentWithSite<App.Admin.IAdminOtherPage>{
+
+        // Erstellt die Oberflächenelemente.
         render(): JSX.Element {
             return <div className="vcrnet-admin-other">
                 <h2>Sonstige Betriebsparameter</h2>
@@ -58,40 +61,45 @@ namespace VCRNETClient.Ui {
             </div>;
         }
 
+        // Hilfe zur Konfiguration des Web Servers.
         private getWebHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zur Bedienung">
-                Der VCR.NET Recording Service ist ein Web Server<HelpLink topic="websettings" page={this.props.uvm.page} />
-                auf Basis der Microsoft ASP.NET / .NET
-                Technologie. Als solcher ist es mindestens notwendig, einen TCP/IP Port für die Kommunikation
-                mit den Clients und auch dieser Web Anwendung festzulegen. Weitere Einstellungen erlauben
-                das Verschlüsseln der Kommunikation mit dem Web Server oder alternative Autorisierungsprotokolle.
+                Der VCR.NET Recording Service ist ein Web Server<HelpLink topic="websettings" page={this.props.uvm.page} /> auf
+                Basis der Microsoft ASP.NET / .NET Technologie. Als solcher ist es mindestens notwendig,
+                einen TCP/IP Port für die Kommunikation mit den Clients und auch dieser Web Anwendung
+                festzulegen. Weitere Einstellungen erlauben das Verschlüsseln der Kommunikation mit dem
+                Web Server oder alternative Autorisierungsprotokolle.
             </InlineHelp>;
         }
 
+        // Hilfe zum Schlafzustand.
         private getSleepHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zur Bedienung">
                 Es kann dem VCR.NET Recording Service gestattet werden, den Rechner nach erfolgten Aufzeichnungen
-                in den Schlafzustand zu versetzen.<HelpLink topic="hibernation" page={this.props.uvm.page} />
-                Unabhängig davon wird der VCR.NET Dienst versuchen, den
-                Rechner für Aufzeichnungen aus dem Schlafzustand zu wecken, falls dieser nicht erst kurz
-                vorher ausgelöst wurde - dieser Grenzwert kann hier eingestellt werden. Da nicht jedes System
-                gleich schnell aus dem Schlafzustand in den Betriebszsutand wecheln kann, ist es fernen
-                möglich, eine Vorlaufzeit für das Aufwecken festzulegen.
+                in den Schlafzustand zu versetzen.<HelpLink topic="hibernation" page={this.props.uvm.page} /> Unabhängig
+                davon wird der VCR.NET Dienst versuchen, den Rechner für Aufzeichnungen aus dem Schlafzustand zu
+                wecken, falls dieser nicht erst kurz vorher ausgelöst wurde - dieser Grenzwert kann hier eingestellt
+                werden. Da nicht jedes System gleich schnell aus dem Schlafzustand in den Betriebszsutand wecheln
+                kann, ist es ferner möglich, eine Vorlaufzeit für das Aufwecken festzulegen.
             </InlineHelp>;
         }
 
+        // Hilfe zur Protokollierung.
         private getLogHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zur Bedienung">
-                Nach erfolgter Aufzeichnung erstellt der VCR.NET Recording Service automatisch einen Protokolleintrag
-                mit den Eckdaten der Gerätenutzung.<HelpLink topic="log" page={this.props.uvm.page} />
-                Diese werden allerdings nur eine begrenzte Zeit vorgehalten und dann
-                automatisch endgültig gelöscht. Ähnlich verhält es sich mit vollständig abgeschlossenen
-                Aufträgen:<HelpLink topic="archive" page={this.props.uvm.page} />
-                diese werden für einen gewissen Zeitraum archiviert, bevor sie endgültig entfernt werden. Während des Verbleibs
-                im Archive können sie jederzeit abgefrufen<HelpLink topic="archive" page={this.props.uvm.page} /> und erneut verwendet werden.
+                Nach erfolgter Aufzeichnung erstellt der VCR.NET Recording Service automatisch einen
+                Protokolleintrag mit den Eckdaten der Gerätenutzung.<HelpLink topic="log" page={this.props.uvm.page} /> Diese
+                werden allerdings nur eine begrenzte Zeit vorgehalten und dann automatisch endgültig
+                gelöscht. Ähnlich verhält es sich mit vollständig abgeschlossenen
+                Aufträgen:<HelpLink topic="archive" page={this.props.uvm.page} /> diese werden für
+                einen gewissen Zeitraum archiviert, bevor sie endgültig entfernt werden. Während des
+                Verbleibs im Archive können sie jederzeit
+                abgefrufen<HelpLink topic="archive" page={this.props.uvm.page} /> und erneut verwendet
+                werden.
             </InlineHelp>;
         }
 
+        // Hilfe zum Speichern der Konfiguration.
         private getSaveHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zur Bedienung">
                 Alle Änderungen werden erst durch explizites Betätigen der Schaltfläche übernommen. Einige

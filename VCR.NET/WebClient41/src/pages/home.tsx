@@ -4,6 +4,8 @@ namespace VCRNETClient.Ui {
 
     // Die React.Js Komponente zur Anzeige der Startseite.
     export class Home extends JMSLib.ReactUi.ComponentWithSite<App.IHomePage>{
+
+        // Oberflächenelemente anlegen.
         render(): JSX.Element {
             var versionCheck = this.props.uvm.checkVersion;
             var showGuide = this.props.uvm.showStartGuide;

@@ -2,11 +2,16 @@
 
 namespace VCRNETClient.Ui {
 
+    // Konfiguration der Steuerung einer laufenden Aufzeichnung.
     interface IDeviceControl extends JMSLib.ReactUi.IComponent<App.Devices.IDeviceController> {
+        // Der zugehörige Navigationsbereich.
         page: App.IDevicesPage;
     }
 
+    // React.Js Komponente zur Steuerung einer laufenden Aufzeichnung.
     export class DeviceControl extends JMSLib.ReactUi.ComponentExWithSite<App.Devices.IDeviceController, IDeviceControl> {
+
+        // Oberflächenelemente anlegen.
         render(): JSX.Element {
             return <fieldset className="vcrnet-device-control">
                 {this.props.uvm.live ? <div><a href={this.props.uvm.live}>Aktuelle Aufzeichnung anschauen</a></div> : null}

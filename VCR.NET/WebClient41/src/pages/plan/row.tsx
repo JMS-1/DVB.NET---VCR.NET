@@ -1,7 +1,11 @@
 ﻿/// <reference path="../../lib.react/reactUi.tsx" />
 
 namespace VCRNETClient.Ui {
+
+    // React.Js Komponente zur Anzeige einer Aufzeichnung im Aufzeichnungsplan.
     export class PlanRow extends JMSLib.ReactUi.Component<App.Plan.IPlanEntry>  {
+
+        // Oberflächenelemente erstellen.
         render(): JSX.Element {
             return <tr className="vcrnet-planrow">
                 <td>{this.props.uvm.mode ? <JMSLib.ReactUi.Pictogram name={this.props.uvm.mode} type="gif" /> : <span>&nbsp;</span>}</td>

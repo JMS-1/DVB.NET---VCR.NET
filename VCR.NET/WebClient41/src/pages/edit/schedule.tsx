@@ -1,7 +1,11 @@
 ﻿/// <reference path="../../lib.react/reactUi.tsx" />
 
 namespace VCRNETClient.Ui {
+
+    // React.Js Komponente zur Pflege der Daten einer Aufzeichnung.
     export class ScheduleData extends JMSLib.ReactUi.Component<App.Edit.IScheduleEditor>{
+
+        // Oberflächenelement anlegen.
         render(): JSX.Element {
             return <fieldset className="vcrnet-scheduledata">
                 <legend>Daten zur Aufzeichnung</legend>

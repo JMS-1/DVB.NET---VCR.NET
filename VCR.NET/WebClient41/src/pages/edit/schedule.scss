@@ -1,6 +1,4 @@
-﻿@import "../../../content/vars";
-
-.vcrnet-scheduledata {
+﻿.vcrnet-scheduledata {
     // Wir wollen die erste Auswahl mit den anderen Eingabefeldern synchronisieren.
     > div:last-child > div:last-child > label:first-child input {
         margin-left: 0;

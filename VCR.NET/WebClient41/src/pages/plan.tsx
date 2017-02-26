@@ -2,12 +2,16 @@
 
 namespace VCRNETClient.Ui {
 
+    // React.Js Komponente zur Anzeige des Aufzeichnungsplans.
     export class Plan extends JMSLib.ReactUi.ComponentWithSite<App.IPlanPage> {
+
+        // Oberflächenelemente anlegen.
         render(): JSX.Element {
             var jobs = this.props.uvm.jobs;
 
             return <div className="vcrnet-plan">
-                Hier sieht man einen Ausschnitt der geplanten Aufzeichnungen für die nächsten Wochen.<HelpLink page={this.props.uvm} topic="parallelrecording" />
+                Hier sieht man einen Ausschnitt der geplanten Aufzeichnungen für die nächsten
+                Wochen.<HelpLink page={this.props.uvm} topic="parallelrecording" />
                 {this.getHelp()}
                 <div className="vcrnet-plan-filter">
                     <JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.startFilter} />
@@ -43,21 +47,23 @@ namespace VCRNETClient.Ui {
             </div >;
         }
 
+        // Hilfe erstellen.
         private getHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zur Bedienung">
-                Über die Datumsauswahl im linken Bereich kann
-                der zeitliche Anfang des angezeigten Ausschnitts festgelegt werden. Das Ende des Ausschnitts ergibt sich daraus
-                und aus der gewünschten Anzahl von zu berücksichtigenden Tagen.<JMSLib.ReactUi.InternalLink view={this.props.uvm.application.settingsPage.route} pict="settings" />
+                Über die Datumsauswahl im linken Bereich kann der zeitliche Anfang des angezeigten
+                Ausschnitts festgelegt werden. Das Ende des Ausschnitts ergibt sich daraus und aus
+                der gewünschten Anzahl von zu berücksichtigenden
+                Tagen.<JMSLib.ReactUi.InternalLink view={this.props.uvm.application.settingsPage.route} pict="settings" />
                 <br />
                 <br />
-                Die beiden Schaltflächen direkt rechts neben der Datumsauswahl erlauben es zusätzlich zu
-                den regulären Aufzeichnungen auch die vorgesehenen Zeiten für die Aktualisierung<HelpLink page={this.props.uvm} topic="tasks" />
-                der Programmzeitschrift oder der
-                Senderliste in der Liste darzustellen.
+                Die beiden Schaltflächen direkt rechts neben der Datumsauswahl erlauben es zusätzlich 
+                zu den regulären Aufzeichnungen auch die vorgesehenen Zeiten für die
+                Aktualisierung<HelpLink page={this.props.uvm} topic="tasks" /> der Programmzeitschrift 
+                oder der Senderliste in der Liste darzustellen.
                 <br />
                 <br />
-                Links vor jeder Aufzeichnung in der Liste befindet sich ein kleines Symbol, dass darüber informiert, ob die
-                Aufzeichnung wie gewünscht ausgeführt werden kann oder nicht.
+                Links vor jeder Aufzeichnung in der Liste befindet sich ein kleines Symbol, das darüber 
+                informiert, ob die Aufzeichnung wie gewünscht ausgeführt werden kann oder nicht.
                 <br />
                 <br />
                 <table>
@@ -83,10 +89,10 @@ namespace VCRNETClient.Ui {
                     </tbody>
                 </table>
                 <br />
-                Direkt rechts neben dem Symbol wird der Beginn der
-                Aufzeichnung als Verweis angezeigt. Wird dieser Verweis angeklickt, so werden weitere Details zur Aufzeichnung
-                sichtbar. Je nach vorhandenen Daten wird auch der zugehörige Eintrag der Programmzeitschrift<HelpLink page={this.props.uvm} topic="epg" />
-                abgerufen und angezeigt.
+                Direkt rechts neben dem Symbol wird der Beginn der Aufzeichnung als Verweis angezeigt.
+                Wird dieser Verweis angeklickt, so werden weitere Details zur Aufzeichnung sichtbar.
+                Je nach vorhandenen Daten wird auch der zugehörige Eintrag der
+                Programmzeitschrift<HelpLink page={this.props.uvm} topic="epg" /> abgerufen und angezeigt.
                 <br />
                 <br />
                 Durch Anwählen des Verweises auf den Namen der Aufzeichnung kann diese bearbeitet werden.

@@ -2,7 +2,10 @@
 
 namespace VCRNETClient.Ui {
 
+    // React.Js Komponente zur Anzeige des Protokolls.
     export class Log extends JMSLib.ReactUi.ComponentWithSite<App.ILogPage>{
+
+        // Oberflächenelemente anlegen.
         render(): JSX.Element {
             return <div className="vcrnet-log">
                 Für jede Nutzung eines Gerätes erstellt der VCR.NET Recording Service einen
@@ -42,6 +45,7 @@ namespace VCRNETClient.Ui {
             </div>;
         }
 
+        // Hilfe erstellen.
         private getHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zur Bedienung">
                 Die Anzeige auf dieser Seite erfolgt immer pro Gerät und Woche, wobei sowohl das Gerät als auch die gewünschte
@@ -58,11 +62,11 @@ namespace VCRNETClient.Ui {
                 <br />
                 Durch Anwahl des jeweiligen Startzeitpunkts eines Protokolleintrags wird die Detailanzeige geöffnet. Handelt
                 es sich bei der Nutzung des Geräte um eine oder mehrere reguläre Aufzeichnungen, so sind mit dieser eventuell
-                noch nicht gelöschte Aufzeichnungsdateien verbunden.<HelpLink topic="filecontents" page={this.props.uvm} />
-                Durch Anwahl des jeweiligen Symbols können diese
-                zur Anzeige durch
-                den <JMSLib.ReactUi.ExternalLink url="http://www.psimarron.net/DVBNETViewer/html/vcrfile.html">DVB.NET / VCR.NET Viewer</JMSLib.ReactUi.ExternalLink> abgerufen
-                werden.
+                noch nicht gelöschte Aufzeichnungsdateien
+                verbunden.<HelpLink topic="filecontents" page={this.props.uvm} /> Durch Anwahl des jeweiligen Symbols können 
+                diese zur Anzeige durch
+                den <JMSLib.ReactUi.ExternalLink url="http://www.psimarron.net/DVBNETViewer/html/vcrfile.html">DVB.NET
+                / VCR.NET Viewer</JMSLib.ReactUi.ExternalLink> abgerufen werden.
             </InlineHelp>;
         }
     }

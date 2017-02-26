@@ -2,11 +2,16 @@
 
 namespace VCRNETClient.Ui {
 
+    // Konfiguration zur Anzeige der Details zu einer Sendung der Programmzeitschrift.
     interface IGuideDetails extends JMSLib.ReactUi.IComponent<App.Guide.IGuideEntry> {
-        page: App.IPage;
+        // Der zugehörige Navigationsbereich.
+        page: App.IGuidePage;
     }
 
+    // React.Js Komponente zur Anzeige der Details einer Sendung der Programmzeitschrift.
     export class GuideDetails extends JMSLib.ReactUi.ComponentEx<App.Guide.IGuideEntry, IGuideDetails> {
+
+        // Oberflächenelemente anlegen.
         render(): JSX.Element {
             return <form className="vcrnet-guideentrydetails">
                 <fieldset>

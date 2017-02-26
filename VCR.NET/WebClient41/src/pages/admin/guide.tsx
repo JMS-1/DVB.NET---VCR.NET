@@ -2,7 +2,10 @@
 
 namespace VCRNETClient.Ui {
 
+    // React.Js Komponentezur Pflege der Konfiguration der Aktualisierung der Programmzeitschrift.
     export class AdminGuide extends JMSLib.ReactUi.ComponentWithSite<App.Admin.IAdminGuidePage>{
+
+        // Oberflächenelemente erzeugen
         render(): JSX.Element {
             return <div className="vcrnet-admin-guide">
                 <h2>Einstellungen zum Aufbau der Programmzeitschrift</h2>
@@ -47,6 +50,7 @@ namespace VCRNETClient.Ui {
             </div>;
         }
 
+        // Hilfe zum Speichern der Konfiguration.
         private getUpdateHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zur Bedienung">
                 Alle Änderungen müssen durch das explizite Betätigen der entsprechenden Schaltfläche
@@ -55,6 +59,7 @@ namespace VCRNETClient.Ui {
             </InlineHelp>;
         }
 
+        // Hilfe zur Auswahl der Quellen.
         private getSourceHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zur Bedienung">
                 Der VCR.NET Recording Service verwaltet eine geräteübergreifende Liste von Quellen, die in der
@@ -63,6 +68,7 @@ namespace VCRNETClient.Ui {
             </InlineHelp>;
         }
 
+        // Informationen zur englischen Programmzeitschrift.
         private getUkHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zur Bedienung">
                 Wenn auch Quellen zu britischen Sendern in der Liste enthalten sind, so muss auch die Option
@@ -78,6 +84,7 @@ namespace VCRNETClient.Ui {
             </InlineHelp>;
         }
 
+        // Hilfe zur Konfiguration der automatischen Aktualisierung.
         private getDurationHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zur Bedienung">
                 Zur Planung der Aktualisierungen zwischen regulären Aufzeichnungen benötigt der VCR.NET

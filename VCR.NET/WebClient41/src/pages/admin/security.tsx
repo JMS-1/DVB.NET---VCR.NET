@@ -9,8 +9,9 @@ namespace VCRNETClient.Ui {
         render(): JSX.Element {
             return <div className="vcrnet-admin-security">
                 <h2>Auswahl der Benutzergruppen</h2>
-                Der VCR.NET Recording Service unterscheidet zwischen regulären Anwendern, die Aufzeichnungen anlegen, ändern und entfernen dürfen
-                und Administratoren, die zusätzlich sämtliche Betriebsparameter verändern dürfen.
+                Der VCR.NET Recording Service unterscheidet zwischen regulären Anwendern, die 
+                Aufzeichnungen anlegen, ändern und entfernen dürfen und Administratoren, die 
+                zusätzlich sämtliche Betriebsparameter verändern dürfen.
                 {this.getHelp()}
                 <Field label={`${this.props.uvm.userGroups.text}:`} page={this.props.uvm.page} >
                     <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.userGroups} />
@@ -24,7 +25,7 @@ namespace VCRNETClient.Ui {
             </div>;
         }
 
-        // Eingebettete Erläuterungen erstellen.
+        // Hilfe zur Bedeutung der Kontogruppen.
         private getHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zur Bedienung">
                 In der Voreinstellung sind alle Windows Benutzer sowohl reguläre Anwender als auch Administratoren.

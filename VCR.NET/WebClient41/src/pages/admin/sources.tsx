@@ -2,13 +2,16 @@
 
 namespace VCRNETClient.Ui {
 
+    // React.Js Komponente zur Konfiguration des Sendersuchlaufs.
     export class AdminSources extends JMSLib.ReactUi.ComponentWithSite<App.Admin.IAdminScanPage>{
+
+        // Oberflächenelemente erstellen.
         render(): JSX.Element {
             return <div className="vcrnet-admin-sources">
                 <h2>Aktualisierung der Quellen konfigurieren</h2>
                 Der VCR.NET Recording Service ist in der Lage, die Liste der Quellen der verwendeten DVB.NET
-                Geräte zu aktualisieren.<HelpLink topic="psiconfig" page={this.props.uvm.page} />
-                Dies kann automatisch oder gemäß eines Zeitplans erfolgen.
+                Geräte zu aktualisieren.<HelpLink topic="psiconfig" page={this.props.uvm.page} /> Dies kann 
+                automatisch oder gemäß eines Zeitplans erfolgen.
                 <div>
                     <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.mode} />
                 </div>
@@ -38,6 +41,7 @@ namespace VCRNETClient.Ui {
             </div>;
         }
 
+        // Erläuterungen zu den Zeitparametern.
         private getDurationHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zur Bedienung">
                 Wenn die Aktualisierung der Quellen (auch als Sendersuchlauf bekannt) nicht gänzlich deaktiviert ist,
@@ -53,6 +57,7 @@ namespace VCRNETClient.Ui {
             </InlineHelp>;
         }
 
+        // Erläuterung zur Stundenauswahl.
         private getHourHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zur Bedienung">
                 Für eine automatische Aktualisierung muss immer angegeben werden, wieviel Zeit zwischen zwei
@@ -64,6 +69,7 @@ namespace VCRNETClient.Ui {
             </InlineHelp>;
         }
 
+        // Erläuterungen zum Speichern der Konfiguration.
         private getSaveHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zur Bedienung">
                 Für eine Übernahme der hier vorgenommenen Änderungen muss die entsprechende Schaltfläche

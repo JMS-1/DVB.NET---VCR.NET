@@ -2,7 +2,10 @@
 
 namespace VCRNETClient.Ui {
 
+    // React.Js Komponente zur Anzeige der Konfiguration.
     export class Admin extends JMSLib.ReactUi.ComponentWithSite<App.IAdminPage>{
+
+        // Oberflächenelemente erstellen.
         render(): JSX.Element {
             const section = this.props.uvm.sections.value;
 
@@ -20,6 +23,7 @@ namespace VCRNETClient.Ui {
             </div>;
         }
 
+        // React.Js Komponente zum aktuellen Konfigurationsbereich ermitteln.
         private renderSection(): JSX.Element {
             const page = this.props.uvm.sections.value.section;
 

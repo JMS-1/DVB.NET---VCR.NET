@@ -1,6 +1,4 @@
-﻿@import "../../content/vars";
-
-.vcrnet-admin {
+﻿.vcrnet-admin {
     padding: 4px;
     width: 90%;
 
@@ -52,10 +50,10 @@
     }
 }
 
-@import "admin/devices";
-@import "admin/directories";
 @import "admin/guide";
 @import "admin/other";
 @import "admin/rules";
-@import "admin/security";
+@import "admin/devices";
 @import "admin/sources";
+@import "admin/security";
+@import "admin/directories";

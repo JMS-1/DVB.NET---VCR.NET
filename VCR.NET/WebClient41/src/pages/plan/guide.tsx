@@ -2,11 +2,16 @@
 
 namespace VCRNETClient.Ui {
 
+    // Konfiguration zur Anzeige der Details einer Aufzeichnung.
     interface IPlanGuide extends JMSLib.ReactUi.IComponent<App.Plan.IPlanEntry> {
-        page: App.IPage;
+        // Der zugehörige Navigationsbereich.
+        page: App.IPlanPage;
     }
 
+    // React.Js Komponente zur Anzeige der Details einer Aufzeichnung.
     export class PlanGuide extends JMSLib.ReactUi.ComponentExWithSite<App.Plan.IPlanEntry, IPlanGuide> {
+
+        // Oberflächenelemente erstellen.
         render(): JSX.Element {
             var guide = this.props.uvm.guideItem;
 

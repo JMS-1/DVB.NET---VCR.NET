@@ -2,14 +2,17 @@
 
 namespace VCRNETClient.Ui {
 
+    // React.Js Komponente zur Anzeige der Programmzeitschrift.
     export class Guide extends JMSLib.ReactUi.ComponentWithSite<App.IGuidePage> {
+
+        // Oberflächenelemente anlegen.
         render(): JSX.Element {
             return <div className="vcrnet-guide">
                 Die Programmzeitschrift<HelpLink page={this.props.uvm} topic="epg" /> zeigt pro Gerät alle
                 Sendungen der Quellen, für die eine Sammlung der Daten konfiguriert
-                wurde.<HelpLink page={this.props.uvm} topic="epgconfig" />
-                Über diese Ansicht ist es nicht nur möglich, sich die Details einzelner Sendungen anzeigen
-                zu lassen. Vielmehr ist es dabei auch sofort möglich, eine neue Aufzeichnung anzulegen.
+                wurde.<HelpLink page={this.props.uvm} topic="epgconfig" /> Über diese Ansicht ist es nicht 
+                nur möglich, sich die Details einzelner Sendungen anzeigen zu lassen. Vielmehr ist es dabei 
+                auch sofort möglich, eine neue Aufzeichnung anzulegen.
                 {this.getHelp()}
                 <form>
                     <fieldset>
@@ -66,6 +69,7 @@ namespace VCRNETClient.Ui {
             </div>;
         }
 
+        // Hilfe zur Bedienung erstellen.
         private getHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zur Bedienung">
                 Sollten mehrere Geräte eingesetzt werden, so kann für jedes Gerät die Programmzeitschrift separat abgefragt werden.

@@ -2,7 +2,10 @@
 
 namespace VCRNETClient.Ui {
 
+    // React.Js Komponente zur Anzeige aller Aufträge.
     export class Jobs extends JMSLib.ReactUi.ComponentWithSite<App.IJobPage>{
+
+        // Oberflächenelemente anlegen.
         render(): JSX.Element {
             return <div className="vcrnet-jobs">
                 Diese Ansicht zeigt alle im VCR.NET Recording Service gespeicherten
@@ -22,13 +25,16 @@ namespace VCRNETClient.Ui {
             </div>;
         }
 
+        // Hilfe erstellen.
         private getHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zur Bedienung">
                 <div>
                     Zu jedem Auftrag wir die Liste der zugeordneten Aufzeichnungen
-                    angezeigt.<HelpLink page={this.props.uvm} topic="jobsandschedules" /> Durch Auswahl einer solchen Aufzeichnung
-                    kann unmittelbar zur Pflege der Daten dieser Aufzeichnung gewechselt werden. Der jeweils erste Eintrag unterhalb
-                    des Auftrags selbst wird dabei verwendet, um einem bereits existierenden Auftrag eine ganz neue Aufzeichnung
+                    angezeigt.<HelpLink page={this.props.uvm} topic="jobsandschedules" /> Durch 
+                    Auswahl einer solchen Aufzeichnung kann unmittelbar zur Pflege 
+                    der Daten dieser Aufzeichnung gewechselt werden. Der jeweils 
+                    erste Eintrag unterhalb des Auftrags selbst wird dabei verwendet, 
+                    um einem bereits existierenden Auftrag eine ganz neue Aufzeichnung
                     hinzu zu fügen.
                 </div>
             </InlineHelp>;

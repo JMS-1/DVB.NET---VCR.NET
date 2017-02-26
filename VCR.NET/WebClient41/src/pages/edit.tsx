@@ -1,18 +1,24 @@
 ﻿/// <reference path="../lib.react/reactUi.tsx" />
 
 namespace VCRNETClient.Ui {
-    export class Edit extends JMSLib.ReactUi.ComponentWithSite<App.IEditPage>
-    {
+
+    // React.Js Komponente zur Pflege einer Aufzeichnung.
+    export class Edit extends JMSLib.ReactUi.ComponentWithSite<App.IEditPage> {
+
+        // Oberflächenelemente erstellen.
         render(): JSX.Element {
             const schedule = this.props.uvm.schedule;
 
             return <div className="vcrnet-edit">
                 <div>
-                    Mit diesem Formular werden alle Daten erfasst, die für die Ausführung einer Aufzeichnung benötigt werden. Im
-                    oberen Bereich finden sich die Einstellungen des Auftrags<HelpLink page={this.props.uvm} topic="jobsandschedules" />,
-                    die allen Aufzeichnungen des Auftrags gemeinsam sind.
-                    In der Mitte werden die eigentlichen Aufzeichnungsdaten festgelegt. Der untere Bereich ist für sich
-                    wiederholende Aufzeichnungen aktiv, wenn für einzelne Tage Ausnahmeregeln definiert wurden.
+                    Mit diesem Formular werden alle Daten erfasst, die für die 
+                    Ausführung einer Aufzeichnung benötigt werden. Im oberen
+                    Bereich finden sich die Einstellungen des
+                    Auftrags<HelpLink page={this.props.uvm} topic="jobsandschedules" />,
+                    die allen Aufzeichnungen des Auftrags gemeinsam sind. In der 
+                    Mitte werden die eigentlichen Aufzeichnungsdaten festgelegt. 
+                    Der untere Bereich ist für sich wiederholende Aufzeichnungen 
+                    aktiv, wenn für einzelne Tage Ausnahmeregeln definiert wurden.
                 </div>
                 {this.renderJobHelp()}
                 <form>
@@ -46,6 +52,7 @@ namespace VCRNETClient.Ui {
             </div>;
         }
 
+        // Hilfe zu Aufzeichnungsdaten.
         private renderScheduleHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zu den Daten einer Aufzeichnung">
                 <div>
@@ -99,6 +106,7 @@ namespace VCRNETClient.Ui {
             </InlineHelp>;
         }
 
+        // Hilfe zu den Auftragsdaten.
         private renderJobHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zu den Daten eines Auftrags">
                 <div>
@@ -174,6 +182,7 @@ namespace VCRNETClient.Ui {
             </InlineHelp>;
         }
 
+        // Hilfe zu Ausnahmeregeln.
         private renderExceptionHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zu den Ausnahmeregelungen">
                 <div>
@@ -185,6 +194,7 @@ namespace VCRNETClient.Ui {
             </InlineHelp>;
         }
 
+        // Hilfe zur Übernahme von Änderungen.
         private renderButtonHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zur Bedienung">
                 <div>

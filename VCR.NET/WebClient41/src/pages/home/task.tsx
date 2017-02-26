@@ -2,7 +2,10 @@
 
 namespace VCRNETClient.Ui {
 
+    // React.Js Komponente zum manuellen Starten einer Sonderaufgabe.
     export class Task extends JMSLib.ReactUi.ComponentWithSite<JMSLib.App.ICommand> {
+
+        // Oberflächenelemente anlegen.
         render(): JSX.Element {
             return <li className="vcrnet-home-task">
                 <fieldset>

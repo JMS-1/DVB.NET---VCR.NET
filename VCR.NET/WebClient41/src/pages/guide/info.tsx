@@ -2,7 +2,10 @@
 
 namespace VCRNETClient.Ui {
 
+    // React.Js Komponente zur Anzeige der Details einer Sendung aus der Programmzeitschrift.
     export class GuideEntryInfo extends JMSLib.ReactUi.Component<App.Guide.IGuideInfo> {
+
+        // Oberflächenelemente anlegen.
         render(): JSX.Element {
             return <div className="vcrnet-guideentryinfo">
                 <table>

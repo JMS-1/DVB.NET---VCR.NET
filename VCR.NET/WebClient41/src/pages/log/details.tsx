@@ -2,10 +2,10 @@
 
 namespace VCRNETClient.Ui {
 
-    interface ILogDetails extends JMSLib.ReactUi.IComponent<App.Log.ILogEntry> {
-    }
+    // React.Js Komponente zur Anzeige der Details eines Protokolleintrags.
+    export class LogDetails extends JMSLib.ReactUi.Component<App.Log.ILogEntry> {
 
-    export class LogDetails extends JMSLib.ReactUi.ComponentEx<App.Log.ILogEntry, ILogDetails> {
+        // Oberflächenelemente erstellen.
         render(): JSX.Element {
             return <form className="vcrnet-logentrydetails">
                 <fieldset>

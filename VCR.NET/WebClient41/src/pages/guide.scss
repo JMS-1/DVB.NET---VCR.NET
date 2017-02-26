@@ -1,6 +1,4 @@
-﻿@import "../../content/vars";
-
-.vcrnet-guide {
+﻿.vcrnet-guide {
     > form {
         > fieldset, select, button {
             font-size: small;
@@ -41,7 +39,7 @@
     }
 }
 
-@import "guide/navigator";
-@import "guide/details";
-@import "guide/entry";
 @import "guide/info";
+@import "guide/entry";
+@import "guide/details";
+@import "guide/navigator";

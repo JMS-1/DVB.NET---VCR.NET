@@ -2,11 +2,16 @@
 
 namespace VCRNETClient.Ui {
 
+    // Konfiguration zur Anzeige einer einzelnen Aktivität.
     interface IDevice extends JMSLib.ReactUi.IComponent<App.Devices.IDeviceInfo> {
+        // Der zugehörige Navigationsbereich.
         page: App.IDevicesPage;
     }
 
+    // React.Js Komponente zur Anzeige einer Aktivität.
     export class Device extends JMSLib.ReactUi.ComponentEx<App.Devices.IDeviceInfo, IDevice> {
+
+        // Erstellt die Oberflächenelemente.
         render(): JSX.Element {
             var showGuide = this.props.uvm.showGuide;
             var showControl = this.props.uvm.showControl;
