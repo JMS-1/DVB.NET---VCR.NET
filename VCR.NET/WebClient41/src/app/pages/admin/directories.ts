@@ -132,7 +132,7 @@ namespace VCRNETClient.App.Admin {
 
         // Wenn das Dateimuster gültig ist, kann die Konfiguration abgespeichert werden - selbst eine leere Verzeichnisliste ist in Ordnung.
         protected get isValid(): boolean {
-            return this.pattern.message === ``;
+            return !this.pattern.message;
         }
 
         // Sendet die veränderte Konfiguration an den VCR.NET Recording Service.

@@ -163,21 +163,21 @@ namespace VCRNETClient.App.Admin {
         // Gesetzt, wenn ein Speichern möglich ist.
         protected get isValid(): boolean {
             // Alle Zahlen müssen fehlerfrei eingegeben worden sein - dazu gehört immer auch ein Wertebereich.
-            if (this.port.message !== ``)
+            if (this.port.message)
                 return false;
-            if (this.securePort.message !== ``)
+            if (this.securePort.message)
                 return false;
-            if (this.hibernation.message !== ``)
+            if (this.hibernation.message)
                 return false;
-            if (this.preSleep.message !== ``)
+            if (this.preSleep.message)
                 return false;
-            if (this.minSleep.message !== ``)
+            if (this.minSleep.message)
                 return false;
-            if (this.logKeep.message !== ``)
+            if (this.logKeep.message)
                 return false;
-            if (this.jobKeep.message !== ``)
+            if (this.jobKeep.message)
                 return false;
-            if (this.logging.message !== ``)
+            if (this.logging.message)
                 return false;
 
             // Ja, das geht.

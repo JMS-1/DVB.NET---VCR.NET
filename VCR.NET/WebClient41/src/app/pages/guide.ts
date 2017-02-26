@@ -51,9 +51,10 @@ namespace VCRNETClient.App {
         // Gesetzt, wenn auch in der Beschreibung gesucht werden soll.
         readonly withContent: JMSLib.App.IFlag;
 
-        // Befhel zum Zurücksetzen aller Einschränkungen.
+        // Befehl zum Zurücksetzen aller Einschränkungen.
         readonly resetFilter: JMSLib.App.ICommand;
 
+        // Befehl zum Anlegen einer neuen gespeicherten Suche.
         readonly addFavorite: JMSLib.App.ICommand;
     }
 
@@ -61,21 +62,21 @@ namespace VCRNETClient.App {
     export class GuidePage extends Page implements IGuidePage {
 
         // Optionen zur Auswahl der Einschränkung auf die Verschlüsselung.
-        private static _cryptOptions = [
+        private static readonly _cryptOptions = [
             JMSLib.App.uiValue(VCRServer.GuideEncryption.FREE, `Nur unverschlüsselt`),
             JMSLib.App.uiValue(VCRServer.GuideEncryption.PAY, `Nur verschlüsselt`),
             JMSLib.App.uiValue(VCRServer.GuideEncryption.ALL, `Alle Quellen`)
         ];
 
         // Optionen zur Auswahl der Einschränkuzng auf die Art der Quelle.
-        private static _typeOptions = [
+        private static readonly _typeOptions = [
             JMSLib.App.uiValue(VCRServer.GuideSource.TV, `Nur Fernsehen`),
             JMSLib.App.uiValue(VCRServer.GuideSource.RADIO, `Nur Radio`),
             JMSLib.App.uiValue(VCRServer.GuideSource.ALL, `Alle Quellen`)
         ];
 
         // Für den Start der aktuellen Ergebnisliste verfügbaren Auswahloptionen für die Uhrzeit.
-        private static _hours = [
+        private static readonly _hours = [
             JMSLib.App.uiValue(0, `00:00`),
             JMSLib.App.uiValue(6, `06:00`),
             JMSLib.App.uiValue(12, `12:00`),
@@ -83,9 +84,6 @@ namespace VCRNETClient.App {
             JMSLib.App.uiValue(20, `20:00`),
             JMSLib.App.uiValue(22, `22:00`)
         ];
-
-        // Laufende Nummer der aktuellen Serveranfrage.
-        private _queryId = 0;
 
         // Die aktuellen Einschränkungen.
         private _filter: VCRServer.GuideFilterContract =
@@ -116,23 +114,14 @@ namespace VCRNETClient.App {
         // Schnittstelle zum Setzen eines bestimmten Tags für den Anfang der Ergebnisliste.
         readonly days = new JMSLib.App.SelectSingleFromList<string>(this._filter, `start`, `Datum`, () => this.resetIndexAndQuery(), []);
 
-        // Bei der nächsten Abfrage zu setzende Uhrzeit für den Anfang der Ergebnisliste.
-        private _hour = -1;
-
         // Schnittstelle zum Setzen einer bestimmten Uhrzeit für den Anfange der Ergebnisliste.
-        readonly hours = new JMSLib.App.SelectSingleFromList(this, `_hour`, `Start ab`, () => this.resetIndexAndQuery(), GuidePage._hours);
-
-        // Die aktuelle Freitextsucheingabe.
-        private _query = ``;
+        readonly hours = new JMSLib.App.SelectSingleFromList({ value: -1 }, `value`, `Start ab`, () => this.resetIndexAndQuery(), GuidePage._hours);
 
         // Schnittstelle zur Pflege der Freitextsuchbedingung.
-        readonly queryString = new JMSLib.App.String(this, `_query`, `Suche nach`, () => this.delayedQuery());
-
-        // Gesetzt, wenn auch eine Suche auf die Beschreibung erfolgen soll.
-        private _withContent = true;
+        readonly queryString = new JMSLib.App.String({ value: `` }, `value`, `Suche nach`, () => this.delayedQuery());
 
         // Schnittstelle zur Pflege der Auswahl der Freitextsuche auf die Beschreibung.
-        readonly withContent = new JMSLib.App.Flag(this, `_withContent`, `Auch in Beschreibung suchen`, () => this.query());
+        readonly withContent = new JMSLib.App.Flag({ value: true }, `value`, `Auch in Beschreibung suchen`, () => this.query());
 
         // Aktuelle Anmeldung für verzögerte Suchanfragen.
         private _timeout: number;
@@ -149,7 +138,8 @@ namespace VCRNETClient.App {
         // Befehl zum Zurücksetzen aller aktuellen Einschränkungen.
         readonly resetFilter = new JMSLib.App.Command(() => this.resetAllAndQuery(), `Neue Suche`);
 
-        readonly addFavorite = new JMSLib.App.Command(() => this.createFavorite(), `Aktuelle Suche als Favorit hinzufügen`, () => (this._query || ``).trim() !== ``);
+        // Befehl zum Anlegen einer neuen gespeicherten Suche.
+        readonly addFavorite = new JMSLib.App.Command(() => this.createFavorite(), `Aktuelle Suche als Favorit hinzufügen`, () => !!((this.queryString.value || ``).trim()));
 
         // Meldet, ob die Auswahl der Verschlüsselung angeboten werden soll.
         get showEncryption(): boolean {
@@ -174,11 +164,11 @@ namespace VCRNETClient.App {
         // Beschreibt den Gesamtauszug der Programmzeitschrift zum aktuell ausgewählten Gerät.
         private _profileInfo: VCRServer.GuideInfoContract;
 
-        // Zeigt an, dass die Präsentation gearade die Daten für die initiale Ansicht sammelt.
-        private _startup: boolean;
-
         // Die konkrete Art der Suche.
         private _fulltextQuery = true;
+
+        // Zeigt an, dass die Präsentation gearade die Daten für die initiale Ansicht sammelt.
+        private _disableQuery: boolean;
 
         // Erstellt eine neue Instanz zur Anzeige der Programmzeitschrift.
         constructor(application: Application) {
@@ -191,9 +181,8 @@ namespace VCRNETClient.App {
 
         // Wird aufgerufen wenn in der Oberfläche die Programmzeitschrift angezeigt werden soll.
         reset(sections: string[]): void {
-            // Sicherstellen, dass alte Serveranfragen verworfen werden.
-            this._startup = true;
-            this._queryId++;
+            // In der Initialisierungsphase ist es wichtig, dass einige Dinge nicht getan werden.
+            this._disableQuery = true;
 
             // Anzeige löschen.
             this.entries = [];
@@ -202,6 +191,7 @@ namespace VCRNETClient.App {
             this.prevPage.reset();
             this.firstPage.reset();
             this.resetFilter.reset();
+            this.addFavorite.reset();
 
             // Größe der Anzeigeliste auf den neusten Stand bringen - alle anderen Einschränkungen bleiben erhalten!
             this._filter.size = this.application.profile.guideRows;
@@ -217,11 +207,26 @@ namespace VCRNETClient.App {
                     this._filter.device = this.profiles.allowedValues[0].value;
 
                 // Die Startphase ist erst einmal abgeschlossen.
-                this._startup = false;
+                this._disableQuery = false;
 
                 // Ergebnisliste aktualisieren.
                 this.onDeviceChanged(false);
             });
+        }
+
+        // Ruft eine Methode mit deaktivierter Reaktion auf Suchen auf.
+        private disableQuery(callback: () => void): void {
+            // Ursprüngliche Einstellung.
+            var wasDisabled = this._disableQuery;
+
+            // Deaktivieren.
+            this._disableQuery = true;
+
+            // Methode aufrufen.
+            callback();
+
+            // Ursprünglichen Zustand wieder herstellen.
+            this._disableQuery = wasDisabled;
         }
 
         // Meldet die Überschrift der Seite.
@@ -231,29 +236,40 @@ namespace VCRNETClient.App {
 
         // Alle Einschränkungen entfernen.
         private clearFilter(): void {
-            this._filter.cryptFilter = VCRServer.GuideEncryption.ALL;
-            this._filter.typeFilter = VCRServer.GuideSource.ALL;
-            this._filter.content = null;
-            this._fulltextQuery = true;
-            this._filter.station = ``;
-            this._filter.start = null;
-            this._filter.title = null;
-            this._withContent = true;
-            this._filter.index = 0;
-            this._query = ``;
-            this._hour = -1;
+            this.disableQuery(() => {
+                this._filter.cryptFilter = VCRServer.GuideEncryption.ALL;
+                this._filter.typeFilter = VCRServer.GuideSource.ALL;
+                this._filter.content = null;
+                this._fulltextQuery = true;
+                this._filter.station = ``;
+                this._filter.start = null;
+                this._filter.title = null;
+                this._filter.index = 0;
+
+                this.queryString.value = ``;
+                this.withContent.value = true;
+
+                this.hours.value = -1;
+            });
         }
 
+        // Ähnliche Aufzeichnungen suchen.
         findInGuide(model: VCRServer.GuideItemContract): void {
             this.clearFilter();
 
-            // Textsuche auf den Namen auf der selben Karte
-            this._filter.device = model.id.split(':')[1];
-            this._filter.station = model.station;
-            this._fulltextQuery = false;
-            this._withContent = false;
-            this._query = model.name;
+            this.disableQuery(() => {
+                // Textsuche auf den Namen auf dem selben Gerät.
+                this._filter.device = model.id.split(':')[1];
+                this._filter.station = model.station;
 
+                this.queryString.value = model.name;
+                this.withContent.value = false;
+
+                // Die exakte Suche kann über die Oberfläche nicht direkt aktiviert werden.
+                this._fulltextQuery = false;
+            });
+
+            // Eventuell kommen wir dabei aus einem anderen Teilt der Anwendung.
             if (this.application.page === this)
                 this.query();
             else
@@ -264,25 +280,32 @@ namespace VCRNETClient.App {
         loadFilter(filter: VCRServer.SavedGuideQueryContract): void {
             this.clearFilter();
 
-            var query = filter.text || ``;
+            this.disableQuery(() => {
+                // Der Suchtext beginnt immer mit der Art des Vergleichs.
+                var query = filter.text || ``;
 
-            this._fulltextQuery = (query[0] === `*`);
-            this._withContent = !filter.titleOnly;
-            this._query = query.substr(1);
+                this._filter.cryptFilter = filter.encryption;
+                this._filter.typeFilter = filter.sourceType;
+                this._filter.station = filter.source;
 
-            this._filter.cryptFilter = filter.encryption;
-            this._filter.typeFilter = filter.sourceType;
-            this._filter.station = filter.source;
+                this.queryString.value = query.substr(1);
+                this._fulltextQuery = (query[0] === `*`);
 
+                this.withContent.value = !filter.titleOnly;
+            });
+
+            // Zur Programmzeitschrift wechseln.
             this.application.gotoPage(this.route);
         }
 
         // Nach der Auswahl des Gerätes alle Listen aktualisieren.
         private onDeviceChanged(deviceHasChanged: boolean) {
-            if (this._startup)
+            // Nicht während der Initialisierung des Präsentationsmodells.
+            if (this._disableQuery)
                 return;
 
-            this._startup = true;
+            // Und auch kontrolliert immer nur einmal.
+            this._disableQuery = true;
 
             VCRServer.GuideInfoCache.getPromise(this._filter.device).then(info => {
                 // Informationen zur Programmzeitschrift des Gerätes festhalten.
@@ -302,7 +325,8 @@ namespace VCRNETClient.App {
 
                 this._jobSelector.allowedValues = selection;
 
-                this._startup = false;
+                // Von jetzt arbeiten wir wieder normal.
+                this._disableQuery = false;
 
                 // Ergebnisliste neu laden - bei Wechsel des Gerätes werden alle Einschränkungen entfernt.
                 if (deviceHasChanged)
@@ -314,20 +338,14 @@ namespace VCRNETClient.App {
 
         // Die Liste der Quellen des aktuell ausgewählten Gerätes neu ermitteln.
         private refreshSources(): void {
-            var sources = (this._profileInfo.stations || []).map(s => JMSLib.App.uiValue(s));
-
             // Der erste Eintrag erlaubt immer die Anzeige ohne vorausgewählter Quelle.
-            sources.unshift(JMSLib.App.uiValue(``, `(Alle Sender)`));
-
-            this.sources.allowedValues = sources;
+            this.sources.allowedValues = [JMSLib.App.uiValue(``, `(Alle Sender)`)].concat((this._profileInfo.stations || []).map(s => JMSLib.App.uiValue(s)));
         }
 
         // Die Liste der möglichen Starttage ermitteln.
         private refreshDays(): void {
-            var days: JMSLib.App.IUiValue<string>[] = [];
-
             // Als Basis kann immer die aktuelle Uhrzeit verwendet werden.
-            days.push(JMSLib.App.uiValue(<string>null, `Jetzt`));
+            var days = [JMSLib.App.uiValue<string>(null, `Jetzt`)];
 
             // Das geht nur, wenn mindestens ein Eintrag in der Programmzeitschrift der aktuellen Quelle vorhanden ist.
             if (this._profileInfo.first && this._profileInfo.last) {
@@ -353,9 +371,11 @@ namespace VCRNETClient.App {
 
         // Deaktiviert die verzögerte Ausführung einer Suchanfrage.
         private clearTimeout(): void {
+            // Ist schon passiert.
             if (this._timeout === undefined)
                 return;
 
+            // Sicherstellen, dass hier nichts mehr nachkommt.
             clearTimeout(this._timeout);
 
             this._timeout = undefined;
@@ -365,18 +385,22 @@ namespace VCRNETClient.App {
         private delayedQuery(): void {
             this.clearTimeout();
 
+            // Das dürfen wir gerade nicht.
+            if (this._disableQuery)
+                return;
+
             // Nach Eingabe gibt es immer die Volltextsuche.
             this._fulltextQuery = true;
 
-            // Mit den Suchanfragen synchronisieren.
-            var queryId = ++this._queryId;
-
             // Nach einer viertel Sekunde Suche starten.
             this._timeout = setTimeout(() => {
-                // Suchanfrage starten, falls die Programmzeitschrift noch aktiv ist und inzwischen keine anderen Anfragen gestartet wurden.
-                if (this._queryId === queryId)
-                    if (this.view)
-                        this.query();
+                // Wir werden gar nicht mehr angezeigt.
+                if (!this.view)
+                    return;
+
+                // Suche starten.
+                this._filter.index = 0;
+                this.query();
             }, 250);
         }
 
@@ -394,38 +418,32 @@ namespace VCRNETClient.App {
 
         // Führt eine Suche aus.
         private query(): void {
-            if (this._startup)
+            // Das dürfen wir leider gerade nicht.
+            if (this._disableQuery)
                 return;
 
             // Eine eventuell ausstehende verzögerte Suche deaktivieren.
             this.clearTimeout();
 
-            // Eindeutige Nummer für die Anfrage erstellen.
-            var queryId = ++this._queryId;
-
             // Ausstehende Änderung der Startzeit einmischen.
-            if (this._hour >= 0) {
+            if (this.hours.value >= 0) {
                 // Vollen Startzeitpunkt bestimmen.
                 var start = this._filter.start ? new Date(this._filter.start) : new Date();
 
-                this._filter.start = new Date(start.getFullYear(), start.getMonth(), start.getDate(), this._hour).toISOString();
+                this._filter.start = new Date(start.getFullYear(), start.getMonth(), start.getDate(), this.hours.value).toISOString();
 
                 // Das machen wir immer nur einmal - die Auswahl wirkt dadurch wie eine Schaltfläche.
-                this._hour = -1;
+                this.disableQuery(() => this.hours.value = -1);
             }
 
             // Suchbedingung vorbereiten und übernehmen.
-            var query = this._query.trim();
+            var query = this.queryString.value.trim();
 
-            this._filter.title = (query === ``) ? null : `${this._fulltextQuery ? `*` : `=`}${query}`;
-            this._filter.content = (this._withContent && this._fulltextQuery) ? this._filter.title : null;
+            this._filter.title = !query ? null : `${this._fulltextQuery ? `*` : `=`}${query}`;
+            this._filter.content = (this.withContent.value && this._fulltextQuery) ? this._filter.title : null;
 
             // Auszug aus der Programmzeitschrift abrufen.
             VCRServer.queryProgramGuide(this._filter).then(items => {
-                // Es handelt sich eventuell nicht mehr um die aktuelle Anfrage.
-                if (this._queryId !== queryId)
-                    return;
-
                 // Einträge im Auszug auswerten.
                 var toggleDetails = this.toggleDetails.bind(this);
                 var createNew = this.createNewSchedule.bind(this);
@@ -449,16 +467,17 @@ namespace VCRNETClient.App {
 
         // Aktualisiert die Detailanzeige für einen Eintrag.
         private toggleDetails(entry: Guide.GuideEntry): void {
-            // Anzeige umschalten.
+            // Anzeige auf die eine Sendung umschalten.
             var show = entry.showDetails;
 
             this.entries.forEach(e => e.showDetails = false);
 
             entry.showDetails = !show;
 
-            // Oberfläche aktualisieren.
+            // Auswahl zurücksetzen.
             this._jobSelector.value = ``;
 
+            // Oberfläche zur Aktualisierung auffordern.
             this.refreshUi();
         }
 
@@ -469,16 +488,19 @@ namespace VCRNETClient.App {
             this.query();
         }
 
+        // Legt eine neue gespeicherte Suche an.
         private createFavorite(): JMSLib.App.IHttpPromise<void> {
+            // Protokollstruktur anlegen.
             var query: VCRServer.SavedGuideQueryContract = {
                 encryption: this._filter.station ? VCRServer.GuideEncryption.ALL : this._filter.cryptFilter,
                 sourceType: this._filter.station ? VCRServer.GuideSource.ALL : this._filter.typeFilter,
-                text: `${this._fulltextQuery ? `*` : `=`}${this._query}`,
-                titleOnly: !this._withContent,
+                text: `${this._fulltextQuery ? `*` : `=`}${this.queryString.value}`,
+                titleOnly: !this.withContent.value,
                 source: this._filter.station,
                 device: this._filter.device
             };
 
+            // Zur Ausführung verwenden wir das Präsentationsmodell der gespeicherten Suchen.
             return this.application.favoritesPage.add(query);
         }
     }

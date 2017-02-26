@@ -1,6 +1,7 @@
 ﻿@import "../constants.scss";
 
 .jmslib-command {
+    @include no-select();
     border: 1px solid black;
     padding: 0.1rem 0.3rem;
     display: inline-block;
@@ -13,13 +14,15 @@
         cursor: default;
     }
 
-    &:not([data-jmslib-disabled="yes"]):hover {
-        background: $commandFeedbackColor;
-        cursor: pointer;
-    }
+    &:not([data-jmslib-disabled="yes"]) {
+        &:hover {
+            background: $commandFeedbackColor;
+            cursor: pointer;
+        }
 
-    &:active {
-        background: $commandActiveColor;
+        &:active {
+            background: $commandActiveColor;
+        }
     }
 
     &.jmslib-dangerous {

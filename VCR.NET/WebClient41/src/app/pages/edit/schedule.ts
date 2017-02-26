@@ -233,11 +233,11 @@ namespace VCRNETClient.App.Edit {
                 return false;
 
             // Dann alle unseren eigenen Präsentationsmodelle.
-            if (this.repeat.message !== ``)
+            if (this.repeat.message)
                 return false;
-            if (this.firstStart.message !== ``)
+            if (this.firstStart.message)
                 return false;
-            if (this.lastDay.message !== ``)
+            if (this.lastDay.message)
                 return false;
             if (!this.duration.isValid())
                 return false;

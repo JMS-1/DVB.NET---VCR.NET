@@ -123,15 +123,15 @@ namespace VCRNETClient.App.Admin {
                 return true;
 
             // Zumindest die Grundeinstellungen für die manuelle Aktualisierung prüfen.
-            if (this.duration.message !== ``)
+            if (this.duration.message)
                 return false;
 
             // Zusätzlich eventuell auch noch die Einstellungen der automatischen Aktualisierung.
             if (!this.configureAutomatic)
                 return true;
-            if (this.gapDays.message !== ``)
+            if (this.gapDays.message)
                 return false;
-            if (this.latency.message !== ``)
+            if (this.latency.message)
                 return false;
 
             // Speicherung ist möglich.

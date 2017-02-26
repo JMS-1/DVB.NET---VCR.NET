@@ -74,7 +74,7 @@ namespace VCRNETClient.App.Admin {
 
         // Prüft, ob die Konfiguration des Gerätes gültig ist.
         get isValid(): boolean {
-            return (this.active.message === ``) && (this.priority.message === ``) && (this.decryption.message === ``) && (this.sources.message === ``);
+            return !this.active.message && !this.priority.message && !this.decryption.message && !this.sources.message;
         }
     }
 }

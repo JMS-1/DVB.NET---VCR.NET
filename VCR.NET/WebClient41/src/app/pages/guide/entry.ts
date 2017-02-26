@@ -67,16 +67,16 @@
         // Suche nach ähnlichen Einträgen in der Programmzeitschrift.
         readonly findSimiliar = new JMSLib.App.Command(() => this._findInGuide(this.model), "Mögliche Wiederholungen");
 
+        // Startzeit der Sendung.
         readonly start: Date;
 
-        readonly end: Date;
-
-        // Startzeit der Sendung.
         get startDisplay(): string {
             return JMSLib.App.DateTimeUtils.formatStartTime(this.start);
         }
 
         // Endzeit der Sendung.
+        readonly end: Date;
+
         get endDisplay(): string {
             return JMSLib.App.DateTimeUtils.formatEndTime(this.end);
         }

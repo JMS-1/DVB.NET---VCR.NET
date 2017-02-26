@@ -127,15 +127,15 @@ namespace VCRNETClient.App {
         }
 
         private get isValid(): boolean {
-            if (this.planDays.message !== ``)
+            if (this.planDays.message)
                 return false;
-            if (this.guideRows.message !== ``)
+            if (this.guideRows.message)
                 return false;
-            if (this.preGuide.message !== ``)
+            if (this.preGuide.message)
                 return false;
-            if (this.postGuide.message !== ``)
+            if (this.postGuide.message)
                 return false;
-            if (this.maxFavorites.message !== ``)
+            if (this.maxFavorites.message)
                 return false;
 
             return true;

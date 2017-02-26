@@ -134,11 +134,11 @@ namespace VCRNETClient.App.Admin {
                 return true;
 
             // Alle Zahlen müssen fehlerfrei sein.
-            if (this.duration.message !== ``)
+            if (this.duration.message)
                 return false;
-            if (this.latency.message !== ``)
+            if (this.latency.message)
                 return false;
-            if (this.delay.message !== ``)
+            if (this.delay.message)
                 return false;
 
             // Dann können wir auch speichern.

@@ -53,11 +53,11 @@ namespace VCRNETClient.App.Edit {
                 return false;
 
             // Dann alle unsere eigenen Präsentationsmodelle.
-            if (this.device.message !== ``)
+            if (this.device.message)
                 return false;
-            if (this.folder.message !== ``)
+            if (this.folder.message)
                 return false;
-            if (this.deviceLock.message !== ``)
+            if (this.deviceLock.message)
                 return false;
 
             return true;

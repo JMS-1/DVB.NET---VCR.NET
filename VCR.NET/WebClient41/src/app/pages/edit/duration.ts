@@ -69,9 +69,9 @@ namespace VCRNETClient.App.Edit {
         // Prüft, ob die Eingabe der Dauer gültig ist.
         isValid(): boolean {
             // Wir haben keine eigene Fehlermeldung und mißbrauchen die Endzeit dafür.
-            if (this.startTime.message !== ``)
+            if (this.startTime.message)
                 return false;
-            if (this.endTime.message !== ``)
+            if (this.endTime.message)
                 return false;
 
             return true;

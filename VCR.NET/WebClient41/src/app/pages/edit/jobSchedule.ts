@@ -81,17 +81,17 @@
         // Gesetzt, wenn die Einstellungen der Quelle gültig sind.
         isValid(): boolean {
             // Wir fragen einfach alle unsere Präsentationsmodelle.
-            if (this.name.message !== ``)
+            if (this.name.message)
                 return false;
-            if (this.source.sourceName.message !== ``)
+            if (this.source.sourceName.message)
                 return false;
-            if (this.sourceFlags.allLanguages.message !== ``)
+            if (this.sourceFlags.allLanguages.message)
                 return false;
-            if (this.sourceFlags.includeDolby.message !== ``)
+            if (this.sourceFlags.includeDolby.message)
                 return false;
-            if (this.sourceFlags.withVideotext.message !== ``)
+            if (this.sourceFlags.withVideotext.message)
                 return false;
-            if (this.sourceFlags.withSubtitles.message !== ``)
+            if (this.sourceFlags.withSubtitles.message)
                 return false;
 
             return true;
