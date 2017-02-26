@@ -149,6 +149,10 @@ namespace VCRNETClient.App {
             // Liste der zuletzt verwendeten Quellen abrufen.
             var favorites = this.application.profile.recentSources || [];
 
+            // Leere Aufzeichnung anlegen.
+            if (!info.schedule)
+                info.schedule = this.createEmptySchedule();
+
             // Präsentationsmodelle anlegen.
             this._jobScheduleInfo = info;
             this.job = new Edit.JobEditor(this, info.job, profiles, favorites, folders, () => { this.schedule && this.schedule.source.sourceName.validate(); this.onChanged(); });

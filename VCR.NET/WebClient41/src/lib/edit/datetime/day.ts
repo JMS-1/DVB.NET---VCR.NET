@@ -150,6 +150,9 @@ namespace JMSLib.App {
             this._month = newMonth;
 
             // Anzeige aktualisieren.
+            this.fillSelectors();
+
+            // Anzeige aktualisieren.
             this.refresh();
         }
 
@@ -167,6 +170,9 @@ namespace JMSLib.App {
 
             // Änderung übernehmen.
             this._year = newYear;
+
+            // Anzeige aktualisieren.
+            this.fillSelectors();
 
             // Anzeige aktualisieren.
             this.refresh();

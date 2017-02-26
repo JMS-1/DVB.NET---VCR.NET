@@ -186,10 +186,10 @@ namespace VCRNETClient.App {
             if (favoriteSources.length < 1)
                 this.section.valueIndex = this.section.allowedValues.length - 1;
             else {
-                this.section.valueIndex = 0;
-
                 // Übernimmt die lineare Liste aller bevorzugten Sender zur schnelleren Auswahl in ein Dictionary.
                 favoriteSources.forEach(s => this._favorites[s] = true);
+
+                this.section.valueIndex = 0;
             }
         }
 

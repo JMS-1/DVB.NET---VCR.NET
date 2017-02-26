@@ -41,7 +41,7 @@ namespace VCRNETClient.Ui {
         }
 
         // Das Präsentationsmodell der Anwendung.
-        private readonly _application = new App.Application(this);
+        private readonly _application: App.IApplication = new App.Application(this);
 
         // Wird ausgelöst, wenn sich der Navigationsberich ändert.
         private readonly _onhashchange: () => void = this.onhashchange.bind(this);

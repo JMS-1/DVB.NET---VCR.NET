@@ -2,8 +2,17 @@
 
     // Schnittstelle der Anwendung.
     export interface IApplication {
+        // Die Überschrift der Anwendung als Ganzes.
+        readonly title: string;
+
+        // Der aktuell verwendete Navigationsbereich.
+        readonly page: IPage;
+
+        // Getzt solange einer neuer Navigationsbereich initialisiert wird.
+        readonly isBusy: boolean;
+
         // Gesetzt während der VCR.NET Recording Service neu startet.
-        readonly isRestarting;
+        readonly isRestarting: boolean;
 
         // Das Präsentationsmodell der Einstiegsseite.
         readonly homePage: IHomePage;
@@ -40,6 +49,9 @@
 
         // Meldet die Verwaltung der Hilfeseiten - dies erfolgt primär im Kontext der Oberfläche.
         getHelpComponentProvider<TComponentType extends IHelpComponent>(): IHelpComponentProvider<TComponentType>;
+
+        // Wechselt den Navigationsbereich.
+        switchPage(name: string, sections: string[]): void;
     }
 
     // Die von der Oberfläche bereitzustellende Arbeitsumgebung für die Anwendung.
