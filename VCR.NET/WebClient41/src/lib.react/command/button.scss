@@ -2,11 +2,11 @@
 
 .jmslib-command {
     @include no-select();
-    border: 1px solid black;
-    padding: 0.1rem 0.3rem;
+    border: 1px solid #c5c5c5;
+    padding: 0.3rem 0.8rem;
     display: inline-block;
-    background: #e8e8e8;
-    border-radius: 4px;
+    background: #f6f6f6;
+    border-radius: 3px;
     font-size: smaller;
 
     &[data-jmslib-disabled="yes"] {
@@ -16,12 +16,13 @@
 
     &:not([data-jmslib-disabled="yes"]) {
         &:hover {
-            background: $commandFeedbackColor;
+            border-color: #c0c0c0;
+            background: #ededed;
             cursor: pointer;
         }
 
         &:active {
-            background: $commandActiveColor;
+            background: #c0c0c0;
         }
     }
 

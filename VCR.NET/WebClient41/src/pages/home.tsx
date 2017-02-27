@@ -55,7 +55,7 @@ namespace VCRNETClient.Ui {
                         <li>{this.props.uvm.isRecording ? "die Konfiguration des VCR.NET Recording Service verändern" : <JMSLib.ReactUi.InternalLink pict="admin" view={application.adminPage.route}>die Konfiguration des VCR.NET Recording Service verändern</JMSLib.ReactUi.InternalLink>}</li>
                     </ul>
                 </div>
-                {this.props.uvm.isRecording ? <div>
+                {this.props.uvm.isRecording ? <div className="vcrnet-warningtext">
                     Hinweis: Der VCR.NET Recording Service führt gerade eine oder mehrere Aufzeichnungen
                     oder Aktualisierungen von Programmzeitschrift respektive Senderliste aus.<JMSLib.ReactUi.InternalLink view={this.props.uvm.application.devicesPage.route} pict="info" />
                 </div> : null}
@@ -64,8 +64,9 @@ namespace VCRNETClient.Ui {
                     der <JMSLib.ReactUi.ExternalLink url="http://www.psimarron.net/vcrnet">Homepage im Internet</JMSLib.ReactUi.ExternalLink> oder
                     im <JMSLib.ReactUi.ExternalLink url="http://www.watchersnet.de/Default.aspx?tabid=52&g=topics&f=17">offiziellen Forum</JMSLib.ReactUi.ExternalLink>.
                 </div>
-                <div>
-                    <JMSLib.ReactUi.ExternalLink url="http://www.psimarron.net"><JMSLib.ReactUi.Pictogram name="psimarron" type="gif" /></JMSLib.ReactUi.ExternalLink>Dr. Jochen Manns, 2003-17
+                <div className="vcrnet-home-copyright">
+                    <JMSLib.ReactUi.ExternalLink url="http://www.psimarron.net"><JMSLib.ReactUi.Pictogram name="psimarron" type="gif" /></JMSLib.ReactUi.ExternalLink>
+                    <span>Dr. Jochen Manns, 2003-17</span>
                 </div>
             </div>;
         }

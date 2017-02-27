@@ -76,8 +76,9 @@ namespace JMSLib.App {
         addMinValidator(min: number, message?: string): this {
             return this.addValidator(p => {
                 if (this._rawInput === undefined)
-                    if (this.value < min)
-                        return message || `Die Zahl muss mindestens ${min} sein`;
+                    if (this.value !== null)
+                        if (this.value < min)
+                            return message || `Die Zahl muss mindestens ${min} sein`;
             })
         }
 
@@ -85,8 +86,9 @@ namespace JMSLib.App {
         addMaxValidator(max: number, message?: string): this {
             return this.addValidator(p => {
                 if (this._rawInput === undefined)
-                    if (this.value > max)
-                        return message || `Die Zahl darf höchstens ${max} sein`;
+                    if (this.value !== null)
+                        if (this.value > max)
+                            return message || `Die Zahl darf höchstens ${max} sein`;
             })
         }
     }

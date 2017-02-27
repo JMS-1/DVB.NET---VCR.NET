@@ -18,7 +18,7 @@ namespace VCRNETClient.Ui {
                             </tr>
                             <tr>
                                 <td>Aktuell verfügbare Version:</td>
-                                <td>{this.props.uvm.onlineVersion}</td>
+                                <td className={this.props.uvm.versionMismatch ? `vcrnet-warningtext` : undefined}>{this.props.uvm.onlineVersion}</td>
                             </tr>
                         </tbody>
                     </table>
