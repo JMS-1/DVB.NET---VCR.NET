@@ -7,11 +7,10 @@ namespace VCRNETClient.Ui.HelpPages {
         render(page: App.IPage): JSX.Element {
             return <div>
                 Selbstverständlich ist es keine Problem unabhängig Aufzeichnungen auf mehreren DVB
-                Karten zu programmieren, wenn diese dem VCR.NET Recording Service zur Nutzung
-                zur Verfügung<JMSLib.ReactUi.InternalLink view={`${page.application.adminPage.route};devices`} pict="admin" />gestellt
-                wurden. Hier soll allerdings
-                beschrieben werden, unter welchen Bedingungen es möglich ist, mit einer DVB Hardware
-                zum gleichen Zeitpunkt mehrere Quellen aufzuzeichnen.
+                Karten zu programmieren, wenn diese dem VCR.NET Recording Service zur Nutzung zur
+                Verfügung<JMSLib.ReactUi.InternalLink view={`${page.application.adminPage.route};devices`} pict="admin" /> gestellt
+                wurden. Hier soll allerdings beschrieben werden, unter welchen Bedingungen es möglich
+                ist, mit einer DVB Hardware zum gleichen Zeitpunkt mehrere Quellen aufzuzeichnen.
                 <br />
                 <br />
                 Zuerst einmal ist festzustellen, dass bei dem digitalen Radio- und Fernsehempfang
@@ -24,9 +23,9 @@ namespace VCRNETClient.Ui.HelpPages {
                 aus und verwirft alle anderen empfangenen Daten. Hier setzt der VCR.NET Recording
                 Service bei gleichzeitigen Aufzeichnung an: alle Aufzeichnungen, die Quellen aus
                 ein und derselben Quellgruppe verwenden, können parallel aufgezeichnet werden. Hier
-                einmal ein Beispiel aus dem täglichen Leben. Auf einer der Quellgruppen <em>RTL World</em> werden
-                die Sender RTL, RTL2, VOX, SuperRTL und andere empfangen, analog auf einer
-                der <em>ProSiebenSat.1</em> Gruppen ProSieben, Kabel1, SAT.1 und andere.
+                einmal ein Beispiel aus dem täglichen Leben. Auf einer der Quellgruppen <em>RTL
+                World</em> werden die Sender RTL, RTL2, VOX, SuperRTL und andere empfangen, analog
+                auf einer der <em>ProSiebenSat.1</em> Gruppen ProSieben, Kabel1, SAT.1 und andere.
                 <br />
                 <br />
                 Es sollen nun auf einem DVB Gerät folgende Aufzeichnungen programmiert werden:
@@ -40,10 +39,11 @@ namespace VCRNETClient.Ui.HelpPages {
                 und in voller Länge aufgezeichnet werden. Sollte nun eine weitere Aufzeichnung einer
                 anderen Quellgruppe hinzugefügt werden, so hat der VCR.NET Recording Service verschiedene
                 Strategien, die programmierten Wünsche so gut wie möglich zu
-                erfüllen. <JMSLib.ReactUi.InternalLink view={`${page.route};customschedule`}>Die genauen Regeln</JMSLib.ReactUi.InternalLink> sind
-                etwas komplexer und berücksichtigen neben der programmierten Anfangszeit
-                der Aufzeichnungen unter anderem auch die mögliche Anzahl vollständig durchgeführter
-                Aufzeichnungen und den Gesamtverlust verspätet beginnender Aufzeichnungen.
+                erfüllen. <JMSLib.ReactUi.InternalLink view={`${page.route};customschedule`}>Die
+                genauen Regeln</JMSLib.ReactUi.InternalLink> sind etwas komplexer und berücksichtigen
+                neben der programmierten Anfangszeit der Aufzeichnungen unter anderem auch die mögliche
+                Anzahl vollständig durchgeführter Aufzeichnungen und den Gesamtverlust verspätet
+                beginnender Aufzeichnungen.
                 <br />
                 <br />
                 Zusätzlich zu den drei Aufzeichnungen oben wird nun eine Aufzeichnung auf SAT.1
@@ -64,7 +64,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 <br />
                 <br />
                 Das Ergebnis einer Planung wird im
-                Aufzeichnungsplan<JMSLib.ReactUi.InternalLink view={page.application.planPage.route} pict="plan" />durch
+                Aufzeichnungsplan<JMSLib.ReactUi.InternalLink view={page.application.planPage.route} pict="plan" /> durch
                 entsprechende farbige Symbole dargestellt.
             </div>;
         }

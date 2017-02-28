@@ -2,7 +2,7 @@
 
 .jmslib-command {
     @include no-select();
-    border: 1px solid #c5c5c5;
+    border: 1px solid $buttonBorderColor;
     padding: 0.3rem 0.8rem;
     display: inline-block;
     background: #f6f6f6;
@@ -16,13 +16,13 @@
 
     &:not([data-jmslib-disabled="yes"]) {
         &:hover {
-            border-color: #c0c0c0;
-            background: #ededed;
+            border-color: $buttonHoverBorderColor;
+            background: $buttonHoverBackgroundColor;
             cursor: pointer;
         }
 
         &:active {
-            background: #c0c0c0;
+            background: $buttonHoverBorderColor;
         }
     }
 

@@ -1,10 +1,18 @@
 ﻿.vcrnet-navigation {
-    .jmslib-pict {
-        margin-right: 2px;
-    }
+    background: #dddddd;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    font-size: smaller;
+    padding: 6px 10px;
 
-    .vcrnet-internalLink:last-child {
-        margin-right: 6px;
-        font-size: smaller;
+    .jmslib-internalLink {
+        .jmslib-pict {
+            margin-right: 2px;
+            vertical-align: bottom;
+        }
+
+        &:not(:last-child) {
+            margin-right: 0.5rem;
+        }
     }
 }

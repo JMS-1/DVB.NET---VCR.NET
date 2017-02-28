@@ -69,21 +69,15 @@ namespace VCRNETClient.Ui {
                 <table>
                     <tbody>
                         <tr>
-                            <td>
-                                <JMSLib.ReactUi.Pictogram name="intime" type="gif" />
-                            </td>
+                            <td><JMSLib.ReactUi.Pictogram name="intime" type="gif" /></td>
                             <td>Die Aufzeichnung wird wie programmiert ausgeführt.</td>
                         </tr>
                         <tr>
-                            <td>
-                                <JMSLib.ReactUi.Pictogram name="late" type="gif" />
-                            </td>
+                            <td><JMSLib.ReactUi.Pictogram name="late" type="gif" /></td>
                             <td>Die Aufzeichnung beginnt verspätet, eventuell fehlt der Anfang.</td>
                         </tr>
                         <tr>
-                            <td>
-                                <JMSLib.ReactUi.Pictogram name="lost" type="gif" />
-                            </td>
+                            <td><JMSLib.ReactUi.Pictogram name="lost" type="gif" /></td>
                             <td>Die Aufzeichnung kann nicht ausgeführt werden.</td>
                         </tr>
                     </tbody>
@@ -101,9 +95,7 @@ namespace VCRNETClient.Ui {
                 <table>
                     <tbody>
                         <tr>
-                            <td>
-                                <JMSLib.ReactUi.Pictogram name="exceptOff" />
-                            </td>
+                            <td><JMSLib.ReactUi.Pictogram name="exceptOff" /></td>
                             <td>
                                 Handelt es sich um eine sich wiederholende Aufzeichnung<HelpLink page={this.props.uvm} topic="repeatingschedules" />,
                                 so kann auch das Symbol direkt rechts neben dem Namen angeklickt werden,

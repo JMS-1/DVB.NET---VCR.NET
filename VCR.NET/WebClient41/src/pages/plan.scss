@@ -24,6 +24,11 @@
             }
         }
     }
+
+    .vcrnet-inline-help > div > table:last-child td:first-child {
+        vertical-align: top;
+        padding-top: 0.2rem;
+    }
 }
 
 @import "plan/row";
