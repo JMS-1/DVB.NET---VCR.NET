@@ -1,26 +1,23 @@
 ﻿.vcrnet-plan {
-    > table {
-        width: 80%;
+    .vcrnet-table {
+        margin-top: 10px;
+        min-width: 1050px;
 
-        > tbody > tr {
-            > td:nth-child(1) {
-                width: 20px;
-            }
+        > thead, > tbody {
+            > tr {
+                > td:nth-child(4) {
+                    white-space: normal;
+                }
 
-            > td:nth-child(2) {
-                width: 11rem;
-            }
+                > td:nth-child(5) {
+                    border-right-width: 0;
+                    white-space: normal;
+                }
 
-            > td:nth-child(3) {
-                width: 4rem;
-            }
-
-            > td:nth-child(4) {
-                width: 15rem;
-            }
-
-            > td:nth-child(6) {
-                width: 10rem;
+                > td:nth-child(6) {
+                    border-left-width: 0;
+                    width: 12px;
+                }
             }
         }
     }
@@ -29,9 +26,27 @@
         vertical-align: top;
         padding-top: 0.2rem;
     }
+
+    .vcrnet-plan-filter > .jmslib-editbuttonlist > .jmslib-command {
+        width: 3.5rem;
+
+        &:not(:last-child) {
+            border-right-width: 0;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        &:not(:first-child) {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        &:first-child {
+            width: 2rem;
+        }
+    }
 }
 
 @import "plan/row";
 @import "plan/guide";
 @import "plan/exception";
-

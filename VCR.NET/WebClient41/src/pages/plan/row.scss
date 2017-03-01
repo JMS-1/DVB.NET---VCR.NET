@@ -1,24 +1,5 @@
 ﻿.vcrnet-planrow {
-    > td {
-        &.vcrnet-planrow-name {
-            position: relative;
-
-            > div {
-                display: inline-block;
-
-                &:first-child {
-                    margin-right: 40px;
-                }
-
-                &:last-child {
-                    position: absolute;
-                    right: 0;
-                }
-            }
-        }
-
-        &.vcrnet-planrow-suspect {
-            background: yellow;
-        }
+    > td.vcrnet-planrow-suspect {
+        background: yellow;
     }
 }

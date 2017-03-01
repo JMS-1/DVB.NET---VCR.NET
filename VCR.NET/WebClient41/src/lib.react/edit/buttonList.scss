@@ -1,12 +1,4 @@
-﻿@import "../command/button";
-
-.jmslib-editbuttonlist {
+﻿.jmslib-editbuttonlist {
     display: inline-block;
     margin: 0 4px;
-
-    > div {
-        &[data-jmslib-checked=yes] {
-            font-weight: bold;
-        }
-    }
 }

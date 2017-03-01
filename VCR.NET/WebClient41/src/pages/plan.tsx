@@ -13,19 +13,20 @@ namespace VCRNETClient.Ui {
                 Hier sieht man einen Ausschnitt der geplanten Aufzeichnungen für die nächsten
                 Wochen.<HelpLink page={this.props.uvm} topic="parallelrecording" />
                 {this.getHelp()}
-                <div className="vcrnet-plan-filter">
+                <div className="vcrnet-plan-filter vcrnet-bar">
                     <JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.startFilter} />
                     <JMSLib.ReactUi.ToggleCommand uvm={this.props.uvm.showTasks} />
                 </div>
                 {
-                    jobs ? <table>
+                    jobs ? <table className="vcrnet-table">
                         <thead>
                             <tr>
-                                <td>&nbsp;</td>
-                                <td>Beginn</td>
-                                <td>Ende</td>
+                                <td className="vcrnet-column-mode">&nbsp;</td>
+                                <td className="vcrnet-column-start">Beginn</td>
+                                <td className="vcrnet-column-end">Ende</td>
                                 <td>Quelle</td>
                                 <td>Name</td>
+                                <td>&nbsp;</td>
                                 <td>Gerät</td>
                             </tr>
                         </thead>
@@ -33,11 +34,11 @@ namespace VCRNETClient.Ui {
                             {jobs.map((job, index) => [
                                 <PlanRow uvm={job} key={index} />,
                                 job.showEpg ?
-                                    <JMSLib.ReactUi.DetailRow prefixColumns={1} dataColumns={5} key={`${index}Details`}>
+                                    <JMSLib.ReactUi.DetailRow prefixColumns={1} dataColumns={6} key={`${index}Details`}>
                                         <PlanGuide uvm={job} page={this.props.uvm} />
                                     </JMSLib.ReactUi.DetailRow> : null,
                                 job.showException ?
-                                    <JMSLib.ReactUi.DetailRow prefixColumns={1} dataColumns={5} key={`${index}Exceptions`}>
+                                    <JMSLib.ReactUi.DetailRow prefixColumns={1} dataColumns={6} key={`${index}Exceptions`}>
                                         <PlanException uvm={job.exception} page={this.props.uvm} />
                                     </JMSLib.ReactUi.DetailRow> : null
                             ])}
@@ -56,13 +57,13 @@ namespace VCRNETClient.Ui {
                 Tagen.<JMSLib.ReactUi.InternalLink view={this.props.uvm.application.settingsPage.route} pict="settings" />
                 <br />
                 <br />
-                Die beiden Schaltflächen direkt rechts neben der Datumsauswahl erlauben es zusätzlich 
+                Die beiden Schaltflächen direkt rechts neben der Datumsauswahl erlauben es zusätzlich
                 zu den regulären Aufzeichnungen auch die vorgesehenen Zeiten für die
-                Aktualisierung<HelpLink page={this.props.uvm} topic="tasks" /> der Programmzeitschrift 
+                Aktualisierung<HelpLink page={this.props.uvm} topic="tasks" /> der Programmzeitschrift
                 oder der Senderliste in der Liste darzustellen.
                 <br />
                 <br />
-                Links vor jeder Aufzeichnung in der Liste befindet sich ein kleines Symbol, das darüber 
+                Links vor jeder Aufzeichnung in der Liste befindet sich ein kleines Symbol, das darüber
                 informiert, ob die Aufzeichnung wie gewünscht ausgeführt werden kann oder nicht.
                 <br />
                 <br />

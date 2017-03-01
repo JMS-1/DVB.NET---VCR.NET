@@ -14,7 +14,7 @@ namespace VCRNETClient.Ui {
 
             var application = page.application;
 
-            return <div className="vcrnet-navigation">
+            return <div className="vcrnet-navigation vcrnet-bar">
                 {page.navigation.refresh ? <JMSLib.ReactUi.InternalLink view={() => page.reload()} pict="refresh">Aktualisieren</JMSLib.ReactUi.InternalLink> : null}
                 <JMSLib.ReactUi.InternalLink view={application.homePage.route} pict="home">Startseite</JMSLib.ReactUi.InternalLink>
                 {page.navigation.favorites ? <JMSLib.ReactUi.InternalLink view={application.favoritesPage.route} pict="fav">Favoriten</JMSLib.ReactUi.InternalLink> : null}

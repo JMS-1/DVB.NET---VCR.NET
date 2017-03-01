@@ -3,9 +3,9 @@
 .jmslib-command {
     @include no-select();
     border: 1px solid $buttonBorderColor;
+    background: $buttonBackgroundColor;
     padding: 0.3rem 0.8rem;
     display: inline-block;
-    background: #f6f6f6;
     border-radius: 3px;
     font-size: smaller;
 
@@ -14,11 +14,19 @@
         cursor: default;
     }
 
+    &[data-jmslib-checked=yes] {
+        background: $buttonBorderColor;
+    }
+
     &:not([data-jmslib-disabled="yes"]) {
         &:hover {
-            border-color: $buttonHoverBorderColor;
-            background: $buttonHoverBackgroundColor;
-            cursor: pointer;
+            cursor: default;
+
+            &:not([data-jmslib-checked=yes]) {
+                border-color: $buttonHoverBorderColor;
+                background: $buttonHoverBackgroundColor;
+                cursor: pointer;
+            }
         }
 
         &:active {

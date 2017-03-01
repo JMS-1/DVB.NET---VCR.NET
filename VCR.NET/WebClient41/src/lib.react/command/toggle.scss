@@ -1,9 +1,2 @@
-﻿@import "button";
-
-.jmslib-toggle {
-    @extend .jmslib-command;
-
-    &[data-jmslib-checked=yes] {
-        font-weight: bold;
-    }
+﻿.jmslib-toggle {
 }

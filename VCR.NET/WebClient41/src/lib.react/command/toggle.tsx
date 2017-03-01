@@ -8,7 +8,7 @@ namespace JMSLib.ReactUi {
         // Erzeugt die Oberflächenelemente.
         render(): JSX.Element {
             return <div
-                className="jmslib-toggle"
+                className="jmslib-toggle jmslib-command"
                 title={this.props.uvm.message}
                 data-jmslib-checked={this.props.uvm.value ? "yes" : "no"}
                 onClick={() => this.props.uvm.value = !this.props.uvm.value}>
