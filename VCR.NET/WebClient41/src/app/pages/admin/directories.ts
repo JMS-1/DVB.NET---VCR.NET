@@ -201,7 +201,7 @@ namespace VCRNETClient.App.Admin {
 
             // Nur bisher unbekannte Verzeichnisse eintragen.
             if (!this.directories.allowedValues.some(v => v.value === folder))
-                this.directories.allowedValues = this.directories.allowedValues.concat([JMSLib.App.uiValue(folder)]);
+                this.directories.allowedValues = [...this.directories.allowedValues].concat([JMSLib.App.uiValue(folder)]);
         }
     }
 }
