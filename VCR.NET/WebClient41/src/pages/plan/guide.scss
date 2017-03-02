@@ -5,6 +5,24 @@
         > span:first-child {
             font-weight: bold;
         }
+
+        > .vcrnet-helpLink {
+            margin-right: 10px;
+        }
+    }
+
+    > fieldset {
+        margin-top: 10px;
+        padding: 10px;
+
+        > legend {
+            font-size: small;
+            font-weight: bold;
+        }
+    }
+
+    .vcrnet-guideentryinfo {
+        margin-top: 10px;
     }
 
     .vcrnet-optionoff {

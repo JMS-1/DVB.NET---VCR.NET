@@ -2,22 +2,42 @@
 
 .vcrnet-planexception {
     @include no-select();
+    padding: 10px;
+
+    > legend {
+        font-size: small;
+        font-weight: bold;
+    }
 
     > table {
         width: 100%;
 
         > tbody > tr {
+            > td {
+                padding-bottom: 0.25rem;
+            }
+
             > td:nth-child(1) {
                 width: 10rem;
             }
 
             > td:nth-child(2) {
+                padding-left: 10px;
                 width: 12rem;
             }
 
             > td.vcrnet-planexception-discard {
                 color: red;
             }
+        }
+    }
+
+    > div:last-child {
+        font-size: small;
+        margin-top: 6px;
+
+        > .jmslib-command:not(:first-child) {
+            margin-left: 5px;
         }
     }
 }

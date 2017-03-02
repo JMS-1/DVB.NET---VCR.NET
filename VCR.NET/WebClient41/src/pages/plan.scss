@@ -18,6 +18,16 @@
                     border-left-width: 0;
                     width: 12px;
                 }
+
+                &.jmslib-details {
+                    > td:nth-child(1) {
+                        border-right-width: 0;
+                    }
+
+                    > td:nth-child(2) {
+                        border-left-width: 0;
+                    }
+                }
             }
         }
     }

@@ -10,6 +10,7 @@
         top: 0.2rem;
         bottom: 0.2rem;
         background: lightgray;
+        border-radius: 2px 2px;
     }
 
     > div:nth-child(2) {
@@ -26,11 +27,12 @@
             width: 1rem;
             height: 1rem;
             background: darkgray;
-            border: 1px solid gray;
+            border: 1px solid #808080;
+            border-radius: 50% 50%;
+            box-shadow: #707070 1px 1px;
 
             &.jmslib-slider-selected {
                 background-color: gray;
-                border-color: black;
             }
         }
     }
