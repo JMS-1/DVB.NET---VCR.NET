@@ -23,7 +23,7 @@ namespace VCRNETClient.Ui {
 
             return <div className="vcrnet-inline-help">
                 <h1 onClick={() => this.setState({ open: !isOpen })}>{this.props.title}</h1>
-                {isOpen ? <div>{this.props.children}</div> : null}
+                {isOpen && <div>{this.props.children}</div>}
             </div>;
         }
     }

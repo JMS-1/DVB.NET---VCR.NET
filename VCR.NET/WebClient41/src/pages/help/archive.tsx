@@ -20,9 +20,9 @@ namespace VCRNETClient.Ui.HelpPages {
                 ein <JMSLib.ReactUi.InternalLink view={`${page.route};jobsandschedules`}>Auftrag</JMSLib.ReactUi.InternalLink> nur
                 abgeschlossene Aufzeichnungen, so wird auch dieser als abgeschlossen betrachtet. 
                 Der Auftrag wird dann aus der Liste der
-                vorhandenen <JMSLib.ReactUi.InternalLink view={page.application.jobPage.route} pict="jobs" /> Aufträge
+                vorhandenen<JMSLib.ReactUi.InternalLink view={page.application.jobPage.route} pict="jobs" /> Aufträge
                 entfernt und in das so genannte
-                Archiv <JMSLib.ReactUi.InternalLink view={`${page.application.jobPage.route};archive`} pict="jobs" /> übernommen.
+                Archiv<JMSLib.ReactUi.InternalLink view={`${page.application.jobPage.route};archive`} pict="jobs" /> übernommen.
                 Die Übertragung ins Archiv kann auch manuell über das Löschen eines Auftrags oder 
                 der letzten Aufzeichnung eines Auftrags erfolgen. Die Aufzeichnungen des Auftrags 
                 werden dann nicht weiter bei der Planung berücksichtigt.
@@ -36,12 +36,12 @@ namespace VCRNETClient.Ui.HelpPages {
                 <br />
                 <br />
                 Abhängig von der
-                Konfiguration <JMSLib.ReactUi.InternalLink view={`${page.application.adminPage.route};other`} pict="admin" /> werden
+                Konfiguration<JMSLib.ReactUi.InternalLink view={`${page.application.adminPage.route};other`} pict="admin" /> werden
                 die Aufträge im Archiv nach einer gewissen Zeit endgültig gelöscht - dies ist durch 
                 manuelles Löschen auch jederzeit vorab möglich. Der VCR.NET Recording Service führt 
                 diese Bereinigung allerdings nur durch, wenn der Anwender aktiv die Liste der Aufträge 
                 im Archiv
-                aufruft <JMSLib.ReactUi.InternalLink view={`${page.application.jobPage.route};archive`} pict="jobs" />.
+                aufruft<JMSLib.ReactUi.InternalLink view={`${page.application.jobPage.route};archive`} pict="jobs" />.
                 Als Kriterium wird der Zeitpunkt verwendet, an dem ein Auftrag in das Archiv übernommen 
                 wurde.
                 <br />

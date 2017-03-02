@@ -18,7 +18,7 @@ namespace VCRNETClient.Ui {
                     <JMSLib.ReactUi.ToggleCommand uvm={this.props.uvm.showTasks} />
                 </div>
                 {
-                    jobs ? <table className="vcrnet-table">
+                    jobs && <table className="vcrnet-table">
                         <thead>
                             <tr>
                                 <td className="vcrnet-column-mode">&nbsp;</td>
@@ -33,17 +33,17 @@ namespace VCRNETClient.Ui {
                         <tbody>
                             {jobs.map((job, index) => [
                                 <PlanRow uvm={job} key={index} />,
-                                job.showEpg ?
+                                job.showEpg &&
                                     <JMSLib.ReactUi.DetailRow prefixColumns={1} dataColumns={6} key={`${index}Details`}>
                                         <PlanGuide uvm={job} page={this.props.uvm} />
-                                    </JMSLib.ReactUi.DetailRow> : null,
-                                job.showException ?
+                                    </JMSLib.ReactUi.DetailRow>,
+                                job.showException &&
                                     <JMSLib.ReactUi.DetailRow prefixColumns={1} dataColumns={6} key={`${index}Exceptions`}>
                                         <PlanException uvm={job.exception} page={this.props.uvm} />
-                                    </JMSLib.ReactUi.DetailRow> : null
+                                    </JMSLib.ReactUi.DetailRow>
                             ])}
                         </tbody>
-                    </table> : null
+                    </table>
                 }
             </div >;
         }

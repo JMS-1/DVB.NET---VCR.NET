@@ -48,21 +48,21 @@ namespace VCRNETClient.Ui {
                     </fieldset>
                 </form>
                 <GuideNavigation uvm={this.props.uvm} />
-                <table>
+                <table className="vcrnet-table">
                     <thead>
                         <tr>
-                            <td>Beginn</td>
-                            <td>Ende</td>
+                            <td className="vcrnet-column-start">Beginn</td>
+                            <td className="vcrnet-column-end">Ende</td>
                             <td>Quelle</td>
                             <td>Name</td>
                         </tr>
                     </thead>
                     <tbody>{this.props.uvm.entries.map((e, index) => [
                         <GuideEntry key={index} uvm={e} />,
-                        e.showDetails ?
+                        e.showDetails &&
                             <JMSLib.ReactUi.DetailRow dataColumns={4} key={`${index}Details`}>
                                 <GuideDetails uvm={e} page={this.props.uvm} />
-                            </JMSLib.ReactUi.DetailRow> : null
+                            </JMSLib.ReactUi.DetailRow>
                     ])}</tbody>
                 </table>
                 <GuideNavigation uvm={this.props.uvm} />

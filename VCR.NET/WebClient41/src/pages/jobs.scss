@@ -1,5 +1,24 @@
 ﻿.vcrnet-jobs {
-    fieldset {
+    .jmslib-editbuttonlist{
+        font-size: small;
+        margin: 0 0 2px 2px;
+
+        > .jmslib-command{
+            &:first-child{
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+
+            &:last-child{
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+        }
+    }
+
+    > fieldset {
+        width: 90%;
+
         > div {
             margin-top: 10px;
 

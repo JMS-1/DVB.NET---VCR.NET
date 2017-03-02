@@ -6,23 +6,21 @@ namespace VCRNETClient.Ui.HelpPages {
 
         render(page: App.IPage): JSX.Element {
             return <div>
-                <div>
-                    Wie jede andere Anwendung auch arbeitet der VCR.NET Recording Service nach gewissen
-                    Prinzipien, die man für einen erfolgreichen Einsatz verstanden haben sollte. Letztlich
-                    soll VCR.NET ja genau das tun, was man eigentlich will. Auch wenn die Web Oberfläche
-                    ein intuitives Bedienungskonzept verwendet, so erschließen sich die Funktionalitäten
-                    sicher nicht immer von selbst. Hier im Hilfebereich, der mit dem VCR.NET Recording
-                    Service installiert wird und auch ohne Online Verbindung jederzeit zur Verfügung
-                    steht, sind einige der wesentlichen Aspekte der Bedienung unter Oberbegriffen zusammengefasst.
-                    Zusätzlich findet man in den einzelnen Bereichen der Anwendung oft das kleine
-                    Symbol <JMSLib.ReactUi.Pictogram name="info" />, über das direkt zu einer passenden
-                    Erklärung gesprungen werden kann.
-                </div>
-                <div>
-                    In einigen Fällen führen die im Folgenden aufgeführten Verweise unmittelbar
-                    zu entsprechenden Seiten der Web Anwendung. Diese bieten dann die Option an, die gewünschten Erläuterungen direkt
-                    in die Seite einzublenden.
-                </div>
+                Wie jede andere Anwendung auch arbeitet der VCR.NET Recording Service nach gewissen
+                Prinzipien, die man für einen erfolgreichen Einsatz verstanden haben sollte. Letztlich
+                soll VCR.NET ja genau das tun, was man eigentlich will. Auch wenn die Web Oberfläche
+                ein intuitives Bedienungskonzept verwendet, so erschließen sich die Funktionalitäten
+                sicher nicht immer von selbst. Hier im Hilfebereich, der mit dem VCR.NET Recording
+                Service installiert wird und auch ohne Online Verbindung jederzeit zur Verfügung
+                steht, sind einige der wesentlichen Aspekte der Bedienung unter Oberbegriffen zusammengefasst.
+                Zusätzlich findet man in den einzelnen Bereichen der Anwendung oft das kleine
+                Symbol<JMSLib.ReactUi.Pictogram name="info" />, über das direkt zu einer passenden
+                Erklärung gesprungen werden kann.
+                <br />
+                <br />
+                In einigen Fällen führen die im Folgenden aufgeführten Verweise unmittelbar
+                zu entsprechenden Seiten der Web Anwendung. Diese bieten dann die Option an, die gewünschten Erläuterungen direkt
+                in die Seite einzublenden.
                 <h3>Aufzeichnungen</h3>
                 <ul>
                     <li><JMSLib.ReactUi.InternalLink view={`${page.route};filecontents`}>Was</JMSLib.ReactUi.InternalLink> wird aufgezeichnet?</li>

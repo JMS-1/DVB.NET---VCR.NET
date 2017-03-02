@@ -15,7 +15,7 @@
         // Oberflächenelemente anlegen.
         render(): JSX.Element {
             return <tr className="jmslib-details">
-                {this.props.prefixColumns ? <td colSpan={this.props.prefixColumns}>&nbsp;</td> : null}
+                {this.props.prefixColumns && <td colSpan={this.props.prefixColumns}>&nbsp;</td>}
                 <td colSpan={this.props.dataColumns}>{this.props.children}</td>
             </tr>;
         }

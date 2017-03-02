@@ -1,5 +1,7 @@
 ﻿.vcrnet-guide {
     > form {
+        margin-bottom: 10px;
+
         > fieldset, select, button {
             font-size: small;
         }
@@ -20,22 +22,7 @@
     }
 
     > table {
-        width: 80%;
-        white-space: nowrap;
-
-        > thead > tr {
-            > td:nth-child(1) {
-                width: 11rem;
-            }
-
-            > td:nth-child(2) {
-                width: 4rem;
-            }
-
-            > td:nth-child(3) {
-                width: 20rem;
-            }
-        }
+        min-width: 1050px;
     }
 }
 
