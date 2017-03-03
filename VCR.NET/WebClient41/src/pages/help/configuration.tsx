@@ -37,7 +37,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 <br />
                 Die Web Oberfläche des VCR.NET Recording Service ist üblicherweise über den Standard Web Server
                 Port 80 zu erreichen. Dieser kann an die eigenen Bedürfnissen angepasst
-                werden<JMSLib.ReactUi.InternalLink view={`${page.application.adminPage.route};other`} pict="admin" />-
+                werden<JMSLib.ReactUi.InternalLink view={`${page.application.adminPage.route};other`} pict="admin" /> -
                 man beachte allerdings, dass eine Umschaltung einen erneuten Aufruf des Browsers mit dem veränderten Port erforderlich macht.<br />
                 <br />
                 Zusätzlich ist es möglich, den Umfang der Protokollierung

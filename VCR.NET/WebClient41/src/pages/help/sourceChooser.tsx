@@ -16,6 +16,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 <br />
                 <JMSLib.ReactUi.Pictogram description="Quelle auswählen" name="FAQ/sources" />
                 <br />
+                <br />
                 Abhängig von der zweiten Auswahlliste wird die Liste der Quellen links daneben wie
                 folgt beschränkt - in der Reihenfolge der Einträge der im Bild geöffnet gezeigten
                 Liste:

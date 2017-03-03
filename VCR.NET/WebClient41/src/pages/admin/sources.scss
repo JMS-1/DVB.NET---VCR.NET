@@ -1,5 +1,25 @@
-﻿.vcrnet-admin-sources {
+﻿$spacing: 10px;
+
+.vcrnet-admin-sources {
+    > form {
+        .jmslib-command {
+            font-size: x-small;
+        }
+
+        .vcrnet-editfield {
+            margin-bottom: $spacing;
+
+            > div:first-child {
+                margin-right: 4px;
+            }
+        }
+    }
+
+    > div:first-of-type {
+        margin-bottom: $spacing;
+    }
+
     > div:last-child {
-        margin-top: 10px;
+        margin-top: $spacing;
     }
 }

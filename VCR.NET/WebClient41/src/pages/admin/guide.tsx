@@ -18,25 +18,24 @@ namespace VCRNETClient.Ui {
                     werden die Eckdaten für die Aktualisierung festgelegt.
                 </div>
                 <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.isActive} />
-                {this.props.uvm.isActive.value ? <form>
+                {this.props.uvm.isActive.value && <form>
                     {this.getSourceHelp()}
                     <div>
                         <JMSLib.ReactUi.MultiSelect uvm={this.props.uvm.sources} items={10} />
                         <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.remove} />
                     </div>
-                    {this.getUkHelp()}
-                    <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.ukTv} />
                     <Field page={this.props.uvm.page} label={`${this.props.uvm.device.text}:`}>
                         <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.device} />
+                        <EditChannel uvm={this.props.uvm.source} />
                         <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.add} />
                     </Field>
-                    <EditChannel uvm={this.props.uvm.source} />
+                    <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.ukTv} />
                     {this.getDurationHelp()}
                     <Field page={this.props.uvm.page} label={`${this.props.uvm.duration.text}:`} >
                         <JMSLib.ReactUi.EditNumber uvm={this.props.uvm.duration} chars={5} />
                     </Field>
                     <Field page={this.props.uvm.page} label={`${this.props.uvm.hours.text}:`} >
-                        <JMSLib.ReactUi.MultiSelectButton uvm={this.props.uvm.hours} />
+                        <JMSLib.ReactUi.MultiSelectButton uvm={this.props.uvm.hours} merge={true} />
                     </Field>
                     <Field page={this.props.uvm.page} label={`${this.props.uvm.delay.text}:`} >
                         <JMSLib.ReactUi.EditNumber uvm={this.props.uvm.delay} chars={5} />
@@ -44,11 +43,9 @@ namespace VCRNETClient.Ui {
                     <Field page={this.props.uvm.page} label={`${this.props.uvm.latency.text}:`} >
                         <JMSLib.ReactUi.EditNumber uvm={this.props.uvm.latency} chars={5} />
                     </Field>
-                </form> : null}
+                </form>}
                 {this.getUpdateHelp()}
-                <div>
-                    <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} />
-                </div>
+                <div><JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} /></div>
             </div>;
         }
 
@@ -67,22 +64,18 @@ namespace VCRNETClient.Ui {
                 Der VCR.NET Recording Service verwaltet eine geräteübergreifende Liste von Quellen, die in der
                 Programmzeitschrift zu berücksichtigen sind. Nach Auswahl von Quellen aus der Liste können diese
                 einfach daraus entfernt werden.
-            </InlineHelp>;
-        }
-
-        // Informationen zur englischen Programmzeitschrift.
-        private getUkHelp(): JSX.Element {
-            return <InlineHelp title="Erläuterungen zur Bedienung">
-                Wenn auch Quellen zu britischen Sendern in der Liste enthalten sind, so muss auch die Option
-                aktiviert werden um die zugehörigen Vorschaudaten mit einzusammeln. Dies ist notwendig, da
-                hierfür andere technische Voraussetzungen beim Emfpang der Elektronischen Programmzeitschrift
-                gelten.
                 <br />
                 <br />
                 Sollen Quellen zur Liste hinzugeführt werden, so ist zuerst einmal das Gerät auszuwählen,
                 über das die gewünschten Quellen empfangen werden können. Danach können die von der Programmierung
                 neuer Aufzeichnungen her bekannten Mechanismen zur schnellen Auswahl der Quelle verwendet
                 werden.<HelpLink topic="sourcechooser" page={this.props.uvm.page} />
+                <br />
+                <br />
+                Wenn auch Quellen zu britischen Sendern in der Liste enthalten sind, so muss auch die Option
+                aktiviert werden um die zugehörigen Vorschaudaten mit einzusammeln. Dies ist notwendig, da
+                hierfür andere technische Voraussetzungen beim Emfpang der Elektronischen Programmzeitschrift
+                gelten.
             </InlineHelp>;
         }
 

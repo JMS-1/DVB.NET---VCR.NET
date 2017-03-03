@@ -10,7 +10,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 Programmierung neuer Aufzeichnungen zur Verfügung stellen kann muss erst einmal
                 festgelegt werden, mit welchem Inhalt diese zu füllen ist. Im Administrationsbereich
                 der Web Oberfläche gibt es dazu eine gesonderten
-                Seite <JMSLib.ReactUi.InternalLink view={`${page.application.adminPage.route};guide`} pict="admin" />.
+                Seite<JMSLib.ReactUi.InternalLink view={`${page.application.adminPage.route};guide`} pict="admin" />.
                 Damit die Programmzeitschrift überhaupt erstellt wird, muss erst einmal die Sammlung 
                 der Informationen an sich aktiviert werden.
                 <br />

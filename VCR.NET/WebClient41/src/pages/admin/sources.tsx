@@ -9,22 +9,22 @@ namespace VCRNETClient.Ui {
         render(): JSX.Element {
             return <div className="vcrnet-admin-sources">
                 <h2>Aktualisierung der Quellen konfigurieren</h2>
-                Der VCR.NET Recording Service ist in der Lage, die Liste der Quellen der verwendeten DVB.NET
-                Geräte zu aktualisieren.<HelpLink topic="psiconfig" page={this.props.uvm.page} /> Dies kann
-                automatisch oder gemäß eines Zeitplans erfolgen.
                 <div>
-                    <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.mode} />
-                </div>
-                {this.props.uvm.showConfiguration ? <form>
+                    Der VCR.NET Recording Service ist in der Lage, die Liste der Quellen der verwendeten DVB.NET
+                    Geräte zu aktualisieren.<HelpLink topic="psiconfig" page={this.props.uvm.page} /> Dies kann
+                    automatisch oder gemäß eines Zeitplans erfolgen.
+                    </div>
+                <div><JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.mode} /></div>
+                {this.props.uvm.showConfiguration && <form>
                     {this.getDurationHelp()}
                     <Field page={this.props.uvm.page} label={`${this.props.uvm.duration.text}:`} >
                         <JMSLib.ReactUi.EditNumber uvm={this.props.uvm.duration} chars={5} />
                     </Field>
                     <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.merge} />
-                    {this.props.uvm.configureAutomatic ? <div>
+                    {this.props.uvm.configureAutomatic && <div>
                         {this.getHourHelp()}
                         <Field page={this.props.uvm.page} label={`${this.props.uvm.hours.text}:`} >
-                            <JMSLib.ReactUi.MultiSelectButton uvm={this.props.uvm.hours} />
+                            <JMSLib.ReactUi.MultiSelectButton uvm={this.props.uvm.hours} merge={true} />
                         </Field>
                         <Field page={this.props.uvm.page} label={`${this.props.uvm.gapDays.text}:`} >
                             <JMSLib.ReactUi.EditNumber uvm={this.props.uvm.gapDays} chars={5} />
@@ -32,8 +32,8 @@ namespace VCRNETClient.Ui {
                         <Field page={this.props.uvm.page} label={`${this.props.uvm.latency.text}:`} >
                             <JMSLib.ReactUi.EditNumber uvm={this.props.uvm.latency} chars={5} />
                         </Field>
-                    </div> : null}
-                </form> : null}
+                    </div>}
+                </form>}
                 {this.getSaveHelp()}
                 <div>
                     <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} />

@@ -57,13 +57,13 @@ namespace VCRNETClient.App.Admin {
         readonly remove = new JMSLib.App.Command(() => this.removeSources(), "Entfernen", () => this.sources.value.length > 0);
 
         // Die Auswahl eines Geräte für die folgende Auswahl einer Quelle.
-        readonly device = new JMSLib.App.SelectSingleFromList<string>({}, "value", "Quellen des Gerätes", () => !this.page.application.isBusy && this.loadSources());
+        readonly device = new JMSLib.App.SelectSingleFromList<string>({}, "value", "Gerät", () => !this.page.application.isBusy && this.loadSources());
 
         // Die Auswahl einer Quelle des aktuell ausgewählten Gerätes.
         readonly source: ChannelEditor;
 
         // Fügt eine Quelle zur Liste der zu untersuchenden Quellen hinzu.
-        readonly add = new JMSLib.App.Command(() => this.addSource(), "Hinzufügen", () => this.source.value && this.sources.allowedValues.every(v => v.value !== this.source.value));
+        readonly add = new JMSLib.App.Command(() => this.addSource(), "Quelle hinzufügen", () => this.source.value && this.sources.allowedValues.every(v => v.value !== this.source.value));
 
         // Maximale Dauer für die Sammlung der Programmzeitschrift (in Minuten).
         readonly duration = new JMSLib.App.Number({}, "duration", "Maximale Laufzeit einer Aktualisierung in Minuten", () => this.update.refreshUi())

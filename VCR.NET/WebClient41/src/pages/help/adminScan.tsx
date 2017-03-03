@@ -18,7 +18,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 <br />
                 Alternativ ist es aber auch möglich, dem VCR.NET Recording Service dafür einzurichten,
                 für alle DVB Geräte eine entsprechende
-                Aktualisierung <JMSLib.ReactUi.InternalLink view={`${page.application.adminPage.route};sources`} pict="admin" /> periodisch
+                Aktualisierung<JMSLib.ReactUi.InternalLink view={`${page.application.adminPage.route};sources`} pict="admin" /> periodisch
                 auszuführen.
                 <br />
                 <br />

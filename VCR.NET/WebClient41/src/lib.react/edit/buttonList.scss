@@ -5,18 +5,4 @@
     > .jmslib-command:not(:first-child) {
         margin-left: 6px;
     }
-
-    &.jmslib-mergedbuttons > .jmslib-command {
-        &:not(:last-child) {
-            border-right-width: 0;
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-
-        &:not(:first-child) {
-            margin-left: 0;
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-        }
-    }
 }

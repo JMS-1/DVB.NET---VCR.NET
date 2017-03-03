@@ -25,6 +25,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 <br />
                 <JMSLib.ReactUi.Pictogram description="Gleichzeitige Entschlüsselung" name="FAQ/decryptlimit" />
                 <br />
+                <br />
                 Die Aufzeichnungsplanung berücksichtigt diesen Wert und garantiert bei der Voreinstellung, dass auch
                 in <JMSLib.ReactUi.InternalLink view={`${page.route};parallelrecording`}>parallelen Aufzeichnungen</JMSLib.ReactUi.InternalLink> zu
                 jedem Zeitpunkt pro DVB Gerät maximal die festgelegte Anzahl von Quellen entschlüsselt wird. Wird dieser Wert
