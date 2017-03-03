@@ -40,17 +40,6 @@
     .vcrnet-plan-filter > .jmslib-editbuttonlist > .jmslib-command {
         width: 3.5rem;
 
-        &:not(:last-child) {
-            border-right-width: 0;
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-
-        &:not(:first-child) {
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-        }
-
         &:first-child {
             width: 2rem;
         }

@@ -14,7 +14,7 @@ namespace VCRNETClient.Ui {
                 Wochen.<HelpLink page={this.props.uvm} topic="parallelrecording" />
                 {this.getHelp()}
                 <div className="vcrnet-plan-filter vcrnet-bar">
-                    <JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.startFilter} />
+                    <JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.startFilter} merge={true} />
                     <JMSLib.ReactUi.ToggleCommand uvm={this.props.uvm.showTasks} />
                 </div>
                 {

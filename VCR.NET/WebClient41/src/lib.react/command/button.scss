@@ -8,6 +8,7 @@
     display: inline-block;
     border-radius: 3px;
     font-size: smaller;
+    text-align: center;
 
     &[data-jmslib-disabled="yes"] {
         opacity: 0.5;

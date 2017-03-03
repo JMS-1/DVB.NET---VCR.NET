@@ -24,8 +24,8 @@ namespace VCRNETClient.Ui {
                             <Field page={this.props.uvm} label={`${this.props.uvm.sources.text}:`}>
                                 <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.sources} />
                             </Field>
-                            {this.props.uvm.showSourceType ? <JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.sourceType} /> : null}
-                            {this.props.uvm.showEncryption ? <JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.encrpytion} /> : null}
+                            {this.props.uvm.showSourceType ? <JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.sourceType} merge={true} /> : null}
+                            {this.props.uvm.showEncryption ? <JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.encrpytion} merge={true} /> : null}
                         </div>
                         <div>
                             <Field page={this.props.uvm} label={`${this.props.uvm.queryString.text}:`}>

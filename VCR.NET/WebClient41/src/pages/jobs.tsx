@@ -14,7 +14,7 @@ namespace VCRNETClient.Ui {
                 oder bereits ausgeführte Aufträge, die bereits in das Archiv übertragen wurden.
                 {this.getHelp()}
                 <div>
-                    <JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.showArchived} />
+                    <JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.showArchived} merge={true} />
                 </div>
                 <fieldset>
                     {this.props.uvm.jobs.map((job, index) => <div key={index}>
