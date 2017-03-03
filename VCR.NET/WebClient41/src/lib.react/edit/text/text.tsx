@@ -16,12 +16,13 @@ namespace JMSLib.ReactUi {
 
         // Erstellt die Anzeige der Komponente.
         render(): JSX.Element {
-            return <input className="jmslib-edittext"
+            return <input
                 type="TEXT"
                 size={this.props.chars}
                 value={this.props.uvm.value}
                 placeholder={this.props.hint}
                 title={this.props.uvm.message}
+                className="jmslib-edittext jmslib-validatable"
                 onChange={ev => this.props.uvm.value = (ev.target as HTMLInputElement).value} />;
         }
 

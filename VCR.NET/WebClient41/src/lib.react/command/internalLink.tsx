@@ -30,8 +30,8 @@ namespace JMSLib.ReactUi {
 
             // Verweis mit optionalem Symbol erstellen.
             return <span className="jmslib-internalLink">
-                {this.props.pict ? <a href={target} title={this.props.description} onClick={click}><Pictogram name={this.props.pict} /></a> : null}
-                {this.props.children ? <a href={target} title={this.props.description} onClick={click}>{this.props.children}</a> : null}
+                {this.props.pict && <a href={target} title={this.props.description} onClick={click}><Pictogram name={this.props.pict} /></a>}
+                {this.props.children && <a href={target} title={this.props.description} onClick={click}>{this.props.children}</a>}
             </span>;
         }
 

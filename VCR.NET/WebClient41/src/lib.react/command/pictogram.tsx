@@ -29,7 +29,7 @@ namespace JMSLib.ReactUi {
                 className="jmslib-pict"
                 alt={this.props.description}
                 onClick={this.props.onClick}
-                src={`${Pictogram.imageRoot}${this.props.name}.${this.props.type || "png"}`} />;
+                src={`${Pictogram.imageRoot}${this.props.name}.${this.props.type || `png`}`} />;
         }
 
     }

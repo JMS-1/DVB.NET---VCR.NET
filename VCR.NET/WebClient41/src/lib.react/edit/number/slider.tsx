@@ -10,7 +10,8 @@ namespace JMSLib.ReactUi {
             return <div className="jmslib-slider">
                 <div></div>
                 <div>
-                    <div className={this.props.uvm.isDragging ? "jmslib-slider-selected" : undefined}
+                    <div
+                        className={this.props.uvm.isDragging ? "jmslib-slider-selected" : undefined}
                         style={{ left: `${100 * this.props.uvm.position}%` }}>
                     </div>
                 </div>

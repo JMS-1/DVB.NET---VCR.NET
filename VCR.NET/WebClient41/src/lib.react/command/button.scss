@@ -1,4 +1,5 @@
-﻿@import "../constants";
+﻿@import "../mixins";
+@import "../constants";
 
 .jmslib-command {
     @include no-select();
@@ -24,9 +25,12 @@
             cursor: default;
 
             &:not(.jmslib-command-checked) {
-                border-color: $commandHoverBorderColor;
                 background: $commandHoverBackgroundColor;
                 cursor: pointer;
+
+                &[title=""] {
+                    border-color: $commandHoverBorderColor;
+                }
             }
         }
 
@@ -36,11 +40,10 @@
     }
 
     &.jmslib-command-dangerous {
-        font-weight: $warningTextWeight;
-        color: $warningTextColor;
+        color: $textErrorColor;
     }
 
     &:not([title=""]) {
-        border-color: $errorBorderColor;
+        border-color: $textErrorColor;
     }
 }

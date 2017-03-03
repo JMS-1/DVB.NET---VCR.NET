@@ -33,7 +33,7 @@ namespace JMSLib.ReactUi {
             var factory = Router._pages && Router._pages[this.props.uvm.route];
 
             // React.Js Komponente für das Navigationsziel anlegen.
-            return <div className="jmslib-router">{factory ? React.createElement(factory, { uvm: this.props.uvm }) : null}</div>;
+            return <div className="jmslib-router">{factory && React.createElement(factory, { uvm: this.props.uvm })}</div>;
         }
     }
 }

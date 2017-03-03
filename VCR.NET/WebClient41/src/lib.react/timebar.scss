@@ -1,5 +1,7 @@
-﻿$innerHeigth: 14px;
-$radius: 2px;
+﻿@import "constants.scss";
+
+$innerHeigth: 16px;
+$radius: 4px;
 
 .jmslib-timebar {
     height: $innerHeigth + 6px;
@@ -14,7 +16,7 @@ $radius: 2px;
         left: 0;
 
         > div {
-            border: 1px solid black;
+            border: 1px solid $commandHoverBorderColor;
             display: inline-block;
             position: absolute;
             height: 100%;
@@ -22,15 +24,15 @@ $radius: 2px;
             top: 0;
 
             &.jmslib-timebar-good {
-                background: lime;
+                background: lightgreen;
             }
 
             &.jmslib-timebar-bad {
-                background: yellow;
+                background-color: #ffff70;
             }
 
             &:not(.jmslib-timebar-good):not(.jmslib-timebar-bad) {
-                background: lightgray;
+                background: $commandActiveBackgrundColor;
             }
 
             &:first-child {

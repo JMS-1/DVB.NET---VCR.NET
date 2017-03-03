@@ -9,8 +9,8 @@ namespace JMSLib.ReactUi {
         render(): JSX.Element {
             return <div
                 className={`jmslib-toggle jmslib-command${this.props.uvm.value ? ` jmslib-command-checked` : ``}`}
-                title={this.props.uvm.message}
-                onClick={() => this.props.uvm.value = !this.props.uvm.value}>
+                onClick={() => this.props.uvm.value = !this.props.uvm.value}
+                title={this.props.uvm.message}>
                 {this.props.uvm.text}
             </div>;
         }

@@ -7,9 +7,9 @@ namespace JMSLib.ReactUi {
 
         // Anzeige erstellen.
         render(): JSX.Element {
-            return <div className="jmslib-editday" title={this.props.uvm.message}>
+            return <div className="jmslib-editday jmslib-validatable" title={this.props.uvm.message}>
                 <div>
-                    <Pictogram name="prev" type="gif" onClick={ev => this.props.uvm.monthBackward()} />
+                    <Pictogram name="prev" type="gif" onClick={ev => this.props.uvm.monthBackward.execute()} />
                     <div>
                         <select value={this.props.uvm.month} onChange={ev => this.props.uvm.month = (ev.target as HTMLSelectElement).value} >
                             {this.props.uvm.months.map(m => <option key={m} value={m}>{m}</option>)}
@@ -18,35 +18,17 @@ namespace JMSLib.ReactUi {
                             {this.props.uvm.years.map(m => <option key={m} value={m}>{m}</option>)}
                         </select>
                     </div>
-                    <Pictogram name="next" type="gif" onClick={ev => this.props.uvm.monthForward()} />
+                    <Pictogram name="next" type="gif" onClick={ev => this.props.uvm.monthForward.execute()} />
                 </div>
                 <table>
-                    <thead>
-                        <tr>{this.props.uvm.dayNames.map(n => <td key={n}>{n}</td>)}</tr>
-                    </thead>
-                    <tbody>
-                        {this.getRows(this.props.uvm.days)}
-                    </tbody>
+                    <thead><tr>{this.props.uvm.dayNames.map(n => <td key={n}>{n}</td>)}</tr></thead>
+                    <tbody>{this.getRows(this.props.uvm.days)}</tbody>
                 </table>
                 <div>
-                    <button onClick={ev => this.today(ev)} disabled={this.props.uvm.days.some(d => d.isToday)}>Heute</button>
-                    <button onClick={ev => this.reset(ev)} disabled={this.props.uvm.days.some(d => d.isCurrentDay)}>Zurück</button>
+                    <ButtonCommand uvm={this.props.uvm.today} />
+                    <ButtonCommand uvm={this.props.uvm.reset} />
                 </div>
             </div>;
-        }
-
-        // Positioniert auf den Monat mit der aktuellen Auswahl.
-        private reset(ev: React.FormEvent): void {
-            ev.preventDefault();
-
-            this.props.uvm.reset();
-        }
-
-        // Positioniert mit dem aktuellen Monat.
-        private today(ev: React.FormEvent): void {
-            ev.preventDefault();
-
-            this.props.uvm.today();
         }
 
         // Ermittelt eine Woche mit auswählbaren Tagen.

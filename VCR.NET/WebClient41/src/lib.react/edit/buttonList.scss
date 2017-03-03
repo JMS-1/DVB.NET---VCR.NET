@@ -1,8 +1,10 @@
-﻿.jmslib-editbuttonlist {
+﻿@import "../constants";
+
+.jmslib-editbuttonlist {
     display: inline-block;
     margin: 0 4px;
 
     > .jmslib-command:not(:first-child) {
-        margin-left: 6px;
+        margin-left: $buttonSpacing;
     }
 }

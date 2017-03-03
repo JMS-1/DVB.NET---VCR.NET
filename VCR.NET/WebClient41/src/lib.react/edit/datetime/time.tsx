@@ -7,11 +7,12 @@ namespace JMSLib.ReactUi {
 
         // Erstellt die Oberflächenelemente.
         render(): JSX.Element {
-            return <input className="jmslib-edittime"
+            return <input
                 size={5}
                 type="TEXT"
                 title={this.props.uvm.message}
                 value={this.props.uvm.rawValue}
+                className="jmslib-edittime jmslib-validatable"
                 onChange={ev => this.props.uvm.rawValue = (ev.target as HTMLInputElement).value} />;
         }
 

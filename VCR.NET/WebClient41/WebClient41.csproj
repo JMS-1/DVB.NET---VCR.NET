@@ -182,6 +182,7 @@
     <None Include="src\lib.react\command\externalLink.scss" />
     <None Include="src\lib.react\command\internalLink.scss" />
     <None Include="src\lib.react\command\pictogram.scss" />
+    <Content Include="src\lib.react\mixins.scss" />
     <None Include="src\lib.react\constants.scss" />
     <None Include="src\lib.react\detailRow.scss" />
     <None Include="src\lib.react\edit\boolean\flag.scss" />

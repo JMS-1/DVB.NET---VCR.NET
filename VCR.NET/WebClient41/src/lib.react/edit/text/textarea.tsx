@@ -16,11 +16,12 @@ namespace JMSLib.ReactUi {
 
         // Oberflächenelemente erstellen.
         render(): JSX.Element {
-            return <textarea className="jmslib-edittextarea"
+            return <textarea
                 rows={this.props.rows}
                 cols={this.props.columns}
                 value={this.props.uvm.value}
                 title={this.props.uvm.message}
+                className="jmslib-edittextarea"
                 onChange={ev => this.props.uvm.value = (ev.target as HTMLTextAreaElement).value} />;
         }
 

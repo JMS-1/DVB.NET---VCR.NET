@@ -1,18 +1,18 @@
 ﻿.jmslib-editday {
+    padding: 4px;
+    font-size: smaller;
+    border-radius: 2px;
     vertical-align: top;
     display: inline-block;
     border: 1px solid black;
-    border-radius: 2px;
-    font-size: smaller;
-    padding: 4px;
 
     > div:first-child {
-        position: relative;
         z-index: 0;
+        position: relative;
 
         > img {
-            cursor: pointer;
             z-index: 1;
+            cursor: pointer;
 
             &:first-child {
                 float: left;
@@ -24,12 +24,12 @@
         }
 
         > div {
-            position: absolute;
-            display: inline-block;
-            text-align: center;
-            z-index: -1;
-            right: 0;
             left: 0;
+            right: 0;
+            z-index: -1;
+            position: absolute;
+            text-align: center;
+            display: inline-block;
 
             > select {
                 margin-left: 5px;
@@ -39,18 +39,18 @@
     }
 
     > div:last-child {
-        > button:first-child {
+        > .jmslib-command:first-child {
             float: left;
         }
 
-        > button:last-child {
+        > .jmslib-command:last-child {
             float: right;
         }
     }
 
     > table {
-        display: block;
         clear: both;
+        display: block;
 
         td {
             width: 2rem;
@@ -63,17 +63,17 @@
 
         > tbody {
             td {
+                cursor: pointer;
                 background: lightgray;
                 border: 1px solid darkgray;
-                cursor: pointer;
 
                 &:not(.jmslib-editday-month) {
                     color: darkgray;
                 }
 
                 &.jmslib-editday-selected {
-                    font-weight: bold;
                     cursor: default;
+                    font-weight: bold;
                 }
 
                 &.jmslib-editday-today {
@@ -81,9 +81,5 @@
                 }
             }
         }
-    }
-    // Der Titel (Tooltip) der Datumsauswahl wird für die Anzeige von Fehlersituationen verwendet, das verstärken wird noch durch einen roten Rahmen.
-    &:not([title=""]) {
-        border: 1px solid red;
     }
 }

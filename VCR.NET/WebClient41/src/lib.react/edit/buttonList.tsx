@@ -19,8 +19,8 @@ namespace JMSLib.ReactUi {
                 {this.props.uvm.allowedValues.map(av => <div
                     title=""
                     key={av.display}
-                    className={`jmslib-command${(av.value === value) ? ` jmslib-command-checked` : ``}`}
-                    onClick={ev => this.props.uvm.value = av.value}>
+                    onClick={ev => this.props.uvm.value = av.value}
+                    className={`jmslib-command${(av.value === value) ? ` jmslib-command-checked` : ``}`}>
                     {av.display}
                 </div>)}
             </div>;

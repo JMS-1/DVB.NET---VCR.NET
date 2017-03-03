@@ -13,11 +13,12 @@ namespace JMSLib.ReactUi {
 
         // Oberflächenelemente erzeugen.
         render(): JSX.Element {
-            return <input className="jmslib-editnumber"
+            return <input
                 type="TEXT"
                 size={this.props.chars}
                 title={this.props.uvm.message}
                 value={this.props.uvm.rawValue}
+                className="jmslib-editnumber jmslib-validatable"
                 onChange={ev => this.props.uvm.rawValue = (ev.target as HTMLInputElement).value} />;
         }
 

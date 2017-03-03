@@ -7,7 +7,7 @@ namespace JMSLib.ReactUi {
 
         // Erstellt die Anzeige der Komponente.
         render(): JSX.Element {
-            return <label className="jmslib-editflag" title={this.props.uvm.message}>
+            return <label className="jmslib-editflag jmslib-validatable" title={this.props.uvm.message}>
                 <input
                     type="CHECKBOX"
                     checked={this.props.uvm.value}

@@ -26,16 +26,16 @@ namespace JMSLib.App {
     // Schnittstelle zur Auswahl eines Tags.
     export interface IDaySelector extends IDisplay, IConnectable {
         // Blättert einen Monat zurück.
-        monthBackward(): void;
+        readonly monthBackward: JMSLib.App.ICommand;
 
         // Blättert einen Monat vor.
-        monthForward(): void;
+        readonly monthForward: JMSLib.App.ICommand;
 
         // Verschiebt die Anzeige auf den aktuellen Monat.
-        today(): void;
+        readonly today: JMSLib.App.ICommand;
 
         // Setzt die Anzeige auf den Monat mit dem ausgewählten Tag zurück.
-        reset(): void;
+        readonly reset: JMSLib.App.ICommand;
 
         // Meldet oder setzt den aktuellen Monat.
         month: string;
@@ -66,7 +66,9 @@ namespace JMSLib.App {
         readonly dayNames = DateTimeUtils.germanDays.map((d, i) => DateTimeUtils.germanDays[(i + 1) % 7]);
 
         // Auf den Vormonat wechseln.
-        monthBackward(): void {
+        readonly monthBackward = new JMSLib.App.Command(() => this.goBackward());
+
+        private goBackward(): void {
             // Aktuelle Auswahl prüfen.
             var monthIndex = this.months.indexOf(this._month);
             if (monthIndex < 0)
@@ -88,7 +90,9 @@ namespace JMSLib.App {
         }
 
         // Auf den Folgemonat wechseln.
-        monthForward(): void {
+        readonly monthForward = new JMSLib.App.Command(() => this.goForward());
+
+        private goForward(): void {
             // Laufende Nummer ermitteln.
             var monthIndex = this.months.indexOf(this._month);
             if (monthIndex < 0)
@@ -110,12 +114,16 @@ namespace JMSLib.App {
         }
 
         // Anzeige auf den aktuellen Monat setzen.
-        today(): void {
+        readonly today = new JMSLib.App.Command(() => this.goToday(), `Heute`, () => this.days.every(d => !d.isToday));
+
+        private goToday(): void {
             this.moveTo(new Date());
         }
 
         // Anzeige auf den Monat mit der aktuellen Auswahl setzen.
-        reset(): void {
+        readonly reset = new JMSLib.App.Command(() => this.goSelected(), `Zurück`, () => this.days.every(d => !d.isCurrentDay));
+
+        private goSelected(): void {
             this.moveTo(this.day);
         }
 
@@ -211,7 +219,7 @@ namespace JMSLib.App {
 
         // Bereitet die Anzeige nach dem Anmelden eines Oberflächenelementes vor.
         protected onSiteChanged(): void {
-            this.reset();
+            this.goSelected();
         }
 
         // Auswahlliste für das Jahr vorbereiten - fünf Jahre vor und fünf nach der aktuellen Auswahl.
@@ -297,7 +305,7 @@ namespace JMSLib.App {
             this.day = newSelected;
 
             // Anzeige anpassen.
-            this.reset();
+            this.goSelected();
         }
 
         // Aktualisiert die Anzeige.

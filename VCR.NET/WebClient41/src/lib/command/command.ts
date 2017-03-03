@@ -58,7 +58,7 @@
         }
 
         // Erstellt eine neue Repräsentation.
-        constructor(private readonly _begin: () => (IHttpPromise<TResponseType> | void), public readonly text: string, private readonly _test?: () => boolean) {
+        constructor(private readonly _begin: () => (IHttpPromise<TResponseType> | void), public readonly text: string = null, private readonly _test?: () => boolean) {
         }
 
         // Gesetzt, wenn es sich um eine kritische Änderung handelt.
