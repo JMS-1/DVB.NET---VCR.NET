@@ -14,9 +14,9 @@ namespace VCRNETClient.Ui {
         // Oberflächenelemente anlegen.
         render(): JSX.Element {
             return <fieldset className="vcrnet-device-control">
-                {this.props.uvm.live ? <div><a href={this.props.uvm.live}>Aktuelle Aufzeichnung anschauen</a></div> : null}
-                {this.props.uvm.timeshift ? <div><a href={this.props.uvm.timeshift}>Aufzeichnung zeitversetzt anschauen</a></div> : null}
-                {this.props.uvm.target ? <div>Aufzeichnung wird aktuell versendet, Empfänger ist {this.props.uvm.target}<HelpLink topic="streaming" page={this.props.page} /></div> : null}
+                {this.props.uvm.live && <div><a href={this.props.uvm.live}>Aktuelle Aufzeichnung anschauen</a></div>}
+                {this.props.uvm.timeshift && <div><a href={this.props.uvm.timeshift}>Aufzeichnung zeitversetzt anschauen</a></div>}
+                {this.props.uvm.target && <div className="vcrnet-device-target">Aufzeichnung wird aktuell versendet, Empfänger ist {this.props.uvm.target}<HelpLink topic="streaming" page={this.props.page} /></div>}
                 <table>
                     <tbody>
                         <tr>

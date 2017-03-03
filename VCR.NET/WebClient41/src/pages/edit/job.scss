@@ -1,2 +1,10 @@
 ﻿.vcrnet-jobdata {
+    > legend {
+        font-size: small;
+        font-weight: bold;
+    }
+
+    > .vcrnet-editfield:not(:last-child) {
+        margin-bottom: 6px;
+    }
 }

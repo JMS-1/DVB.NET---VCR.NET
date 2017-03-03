@@ -18,6 +18,21 @@
     .vcrnet-editfield > div:first-child {
         width: 12rem;
     }
+
+    fieldset.vcrnet-edit-exception {
+        > legend {
+            font-size: small;
+            font-weight: bold;
+        }
+
+        > table > tbody > tr > td:first-child {
+            text-align: center;
+        }
+    }
+
+    > div:last-child > .jmslib-command:not(:last-child) {
+        margin-right: 6px;
+    }
 }
 
 @import "edit/job";

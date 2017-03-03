@@ -11,27 +11,24 @@ namespace VCRNETClient.Ui {
 
             return <div className="vcrnet-edit">
                 <div>
-                    Mit diesem Formular werden alle Daten erfasst, die für die 
+                    Mit diesem Formular werden alle Daten erfasst, die für die
                     Ausführung einer Aufzeichnung benötigt werden. Im oberen
                     Bereich finden sich die Einstellungen des
                     Auftrags<HelpLink page={this.props.uvm} topic="jobsandschedules" />,
-                    die allen Aufzeichnungen des Auftrags gemeinsam sind. In der 
-                    Mitte werden die eigentlichen Aufzeichnungsdaten festgelegt. 
-                    Der untere Bereich ist für sich wiederholende Aufzeichnungen 
+                    die allen Aufzeichnungen des Auftrags gemeinsam sind. In der
+                    Mitte werden die eigentlichen Aufzeichnungsdaten festgelegt.
+                    Der untere Bereich ist für sich wiederholende Aufzeichnungen
                     aktiv, wenn für einzelne Tage Ausnahmeregeln definiert wurden.
                 </div>
                 {this.renderJobHelp()}
-                <form>
-                    <JobData uvm={this.props.uvm.job} />
-                </form>
+                <form><JobData uvm={this.props.uvm.job} /></form>
                 {this.renderScheduleHelp()}
-                <form>
-                    <ScheduleData uvm={schedule} />
-                </form>
-                {schedule.hasExceptions ? this.renderExceptionHelp() : null}
-                {schedule.hasExceptions ? <form>
-                    <fieldset><legend>Aktive Ausnahmeregeln</legend>
-                        <table>
+                <form><ScheduleData uvm={schedule} /></form>
+                {schedule.hasExceptions && this.renderExceptionHelp()}
+                {schedule.hasExceptions && <form>
+                    <fieldset className="vcrnet-edit-exception">
+                        <legend>Aktive Ausnahmeregeln</legend>
+                        <table className="vcrnet-table">
                             <thead>
                                 <tr>
                                     <td>Aktiv</td>
@@ -43,7 +40,7 @@ namespace VCRNETClient.Ui {
                             <tbody>{schedule.exceptions.map((e, index) => <EditException key={index} uvm={e} />)}</tbody>
                         </table>
                     </fieldset>
-                </form> : null}
+                </form>}
                 {this.renderButtonHelp()}
                 <div>
                     <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.save} />

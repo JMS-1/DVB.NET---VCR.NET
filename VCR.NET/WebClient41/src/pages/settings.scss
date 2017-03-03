@@ -1,7 +1,32 @@
-﻿.vcrnet-settings {
-    .vcrnet-editfield {
-        > div:first-child {
-            margin-right: 4px;
+﻿$indent: 1.5rem;
+$spacing: 0.5rem;
+$labelIndent: 4px;
+
+.vcrnet-settings {
+    > form {
+        .vcrnet-editfield {
+            margin-left: $indent;
+
+            > div:first-child {
+                margin-right: $labelIndent;
+            }
+
+            &:not(:first-of-type) {
+                margin-top: $spacing;
+            }
+        }
+
+        .vcrnet-settings-field {
+            margin-left: $indent;
+            margin-top: $spacing;
+        }
+
+        .jmslib-editlist {
+            margin-left: $labelIndent;
+        }
+
+        > div:last-child {
+            margin-top: 10px;
         }
     }
 }

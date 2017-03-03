@@ -24,10 +24,10 @@ namespace VCRNETClient.Ui {
 
                 <Field page={this.props.uvm.page} label={`${this.props.uvm.firstStart.text}:`}>
                     <JMSLib.ReactUi.EditDay uvm={this.props.uvm.firstStart} />
-                    {(this.props.uvm.repeat.value !== 0) ? <span>
-                        {this.props.uvm.lastDay.text}
+                    {(this.props.uvm.repeat.value !== 0) && <span>
+                        <span className="vcrnet-schedule-repeat">{this.props.uvm.lastDay.text}</span>
                         <JMSLib.ReactUi.EditDay uvm={this.props.uvm.lastDay} />
-                    </span> : null}
+                    </span>}
                 </Field>
 
                 <Field page={this.props.uvm.page} label={`${this.props.uvm.duration.text}:`}>

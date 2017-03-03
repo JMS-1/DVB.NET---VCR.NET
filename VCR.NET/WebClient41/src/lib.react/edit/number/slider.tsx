@@ -39,7 +39,7 @@ namespace JMSLib.ReactUi {
             var absX = ev.clientX;
             var relX = absX - bounds.left;
 
-            // Als relativen Wert zwischen 0 und 1 an die Anwendungslogik melden.
+            // Als relativen Wert zwischen 0 und 1 an die Anwendungslogik melden - hier ist noch ein Bug mit einem leichten Offset!
             this.props.uvm.position = relX / bounds.width;
         }
 
