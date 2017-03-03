@@ -14,6 +14,10 @@
             }
         }
     }
+
+    .vcrnet-editfield > div:first-child {
+        width: 12rem;
+    }
 }
 
 @import "edit/job";
@@ -22,4 +26,3 @@
 @import "edit/schedule";
 @import "edit/exception";
 @import "edit/channelFlags";
-

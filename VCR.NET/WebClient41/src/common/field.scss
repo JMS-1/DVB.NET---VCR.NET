@@ -4,9 +4,5 @@
     > div {
         display: inline-block;
         vertical-align: top;
-        // Das erste Element eines Eingabefeldes ist immer die Bezeichnung, die in einer festen Breite ausgegeben wird.
-        &:first-child {
-            width: 12rem;
-        }
     }
 }
