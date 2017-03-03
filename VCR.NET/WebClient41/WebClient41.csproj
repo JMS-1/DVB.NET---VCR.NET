@@ -177,33 +177,33 @@
     <Content Include="scripts\vcrnet.js.map">
       <DependentUpon>vcrnet.js</DependentUpon>
     </Content>
-    <Content Include="src\lib.react\command\toggle.scss" />
-    <Content Include="src\lib.react\command\button.scss" />
-    <Content Include="src\lib.react\command\externalLink.scss" />
-    <Content Include="src\lib.react\command\internalLink.scss" />
-    <Content Include="src\lib.react\command\pictogram.scss" />
-    <Content Include="src\lib.react\constants.scss" />
-    <Content Include="src\lib.react\detailRow.scss" />
-    <Content Include="src\lib.react\edit\boolean\flag.scss" />
-    <Content Include="src\lib.react\edit\buttonList.scss" />
-    <Content Include="src\lib.react\edit\datetime\day.scss" />
-    <Content Include="src\lib.react\edit\datetime\time.scss" />
-    <Content Include="src\lib.react\edit\list.scss" />
-    <Content Include="src\lib.react\edit\multiButtonList.scss" />
-    <Content Include="src\lib.react\edit\multiList.scss" />
-    <Content Include="src\lib.react\edit\number\number.scss" />
-    <Content Include="src\lib.react\edit\number\slider.scss" />
-    <Content Include="src\lib.react\edit\text\text.scss" />
-    <Content Include="src\lib.react\edit\text\textarea.scss" />
-    <Content Include="src\lib.react\router.scss" />
-    <Content Include="src\lib.react\styles.scss" />
-    <Content Include="src\lib.react\timebar.scss" />
-    <Content Include="src\pages\admin\directories.scss" />
-    <Content Include="src\pages\admin\guide.scss" />
-    <Content Include="src\pages\admin\other.scss" />
-    <Content Include="src\pages\admin\rules.scss" />
-    <Content Include="src\pages\admin\security.scss" />
-    <Content Include="src\pages\admin\sources.scss" />
+    <None Include="src\lib.react\command\toggle.scss" />
+    <None Include="src\lib.react\command\button.scss" />
+    <None Include="src\lib.react\command\externalLink.scss" />
+    <None Include="src\lib.react\command\internalLink.scss" />
+    <None Include="src\lib.react\command\pictogram.scss" />
+    <None Include="src\lib.react\constants.scss" />
+    <None Include="src\lib.react\detailRow.scss" />
+    <None Include="src\lib.react\edit\boolean\flag.scss" />
+    <None Include="src\lib.react\edit\buttonList.scss" />
+    <None Include="src\lib.react\edit\datetime\day.scss" />
+    <None Include="src\lib.react\edit\datetime\time.scss" />
+    <None Include="src\lib.react\edit\list.scss" />
+    <None Include="src\lib.react\edit\multiButtonList.scss" />
+    <None Include="src\lib.react\edit\multiList.scss" />
+    <None Include="src\lib.react\edit\number\number.scss" />
+    <None Include="src\lib.react\edit\number\slider.scss" />
+    <None Include="src\lib.react\edit\text\text.scss" />
+    <None Include="src\lib.react\edit\text\textarea.scss" />
+    <None Include="src\lib.react\router.scss" />
+    <None Include="src\lib.react\styles.scss" />
+    <None Include="src\lib.react\timebar.scss" />
+    <None Include="src\pages\admin\directories.scss" />
+    <None Include="src\pages\admin\guide.scss" />
+    <None Include="src\pages\admin\other.scss" />
+    <None Include="src\pages\admin\rules.scss" />
+    <None Include="src\pages\admin\security.scss" />
+    <None Include="src\pages\admin\sources.scss" />
     <None Include="src\pages\edit\exception.scss" />
     <None Include="src\pages\admin.scss" />
     <None Include="src\pages\admin\devices.scss" />
@@ -213,11 +213,11 @@
     <None Include="src\pages\devices\entry.scss" />
     <None Include="src\pages\devices\guide.scss" />
     <None Include="src\pages\devices\control.scss" />
-    <Content Include="src\pages\guide.scss" />
+    <None Include="src\pages\guide.scss" />
     <None Include="src\pages\guide\navigator.scss" />
     <None Include="src\pages\guide\entry.scss" />
     <None Include="src\pages\guide\details.scss" />
-    <Content Include="src\pages\home\versionCheck.scss" />
+    <None Include="src\pages\home\versionCheck.scss" />
     <None Include="src\pages\jobs.scss" />
     <None Include="src\pages\log.scss" />
     <None Include="src\pages\log\details.scss" />
@@ -235,13 +235,7 @@
     <None Include="src\pages\edit\schedule.scss" />
     <None Include="src\pages\edit\duration.scss" />
     <None Include="src\pages\plan\exception.scss" />
-    <Content Include="src\common\styles.css">
-      <DependentUpon>styles.scss</DependentUpon>
-    </Content>
     <None Include="src\pages\home\task.scss" />
-    <Content Include="src\pages\styles.css">
-      <DependentUpon>styles.scss</DependentUpon>
-    </Content>
     <Content Include="content\images\faq\epgonoff.png" />
     <Content Include="content\images\faq\epgsources.png" />
     <Content Include="content\images\faq\epgtimes.png" />
@@ -257,31 +251,31 @@
     <Content Include="content\images\faq\sources.png" />
     <Content Include="content\images\faq\streamoptions.png" />
     <Content Include="content\images\faq\streamprotection.png" />
-    <Content Include="gulpfile.js" />
+    <None Include="gulpfile.js" />
     <TypeScriptCompile Include="..\typings\index.d.ts">
       <Link>src\index.d.ts</Link>
     </TypeScriptCompile>
-    <Content Include="packages.config">
+    <None Include="packages.config">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="scripts\react\react-dom-server.js" />
-    <Content Include="scripts\react\react-dom-server.min.js" />
-    <Content Include="scripts\react\react-dom.js" />
+    </None>
+    <None Include="scripts\react\react-dom-server.js" />
+    <None Include="scripts\react\react-dom-server.min.js" />
+    <None Include="scripts\react\react-dom.js" />
     <Content Include="scripts\react\react-dom.min.js" />
-    <Content Include="scripts\react\react-with-addons.js" />
-    <Content Include="scripts\react\react-with-addons.min.js" />
-    <Content Include="scripts\react\react.js" />
+    <None Include="scripts\react\react-with-addons.js" />
+    <None Include="scripts\react\react-with-addons.min.js" />
+    <None Include="scripts\react\react.js" />
     <Content Include="scripts\react\react.min.js" />
     <Content Include="favicon.ico" />
     <None Include="src\common\helpLink.scss" />
     <None Include="src\common\navigation.scss" />
     <None Include="src\common\inlineHelp.scss" />
-    <Content Include="src\common\styles.scss" />
+    <None Include="src\common\styles.scss" />
     <None Include="src\pages\edit.scss" />
     <None Include="src\pages\help.scss" />
-    <Content Include="src\pages\plan.scss" />
-    <Content Include="src\pages\home.scss" />
-    <Content Include="src\common\main.scss" />
+    <None Include="src\pages\plan.scss" />
+    <None Include="src\pages\home.scss" />
+    <None Include="src\common\main.scss" />
     <None Include="src\pages\plan\row.scss" />
     <Content Include="content\images\delete.png" />
     <Content Include="content\images\fav.png" />
@@ -428,8 +422,8 @@
     <TypeScriptCompile Include="src\web\GuideInfoCache.ts" />
     <TypeScriptCompile Include="src\web\ProfileSourcesCache.ts" />
     <TypeScriptCompile Include="src\web\vcrserver.ts" />
-    <Content Include="src\vcrnet.scss" />
-    <Content Include="src\pages\styles.scss" />
+    <None Include="src\vcrnet.scss" />
+    <None Include="src\pages\styles.scss" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

@@ -2,7 +2,6 @@
 
 <WixLocalization Culture="de-de" xmlns="http://schemas.microsoft.com/wix/2006/localization">
   <String Id="FEATUREBINARIES">VCR.NET Recording Service</String>
-  <String Id="FEATURESOURCE">Quellcode</String>
   <String Id="DOTNETMISSING">Der VCR.NET Recording Service setzt eine Installation des Microsoft .NET Frameworks in der Version 4.5.1 voraus.</String>
   <String Id="ALREADYINSTALLED">Vor der Installation muss die existierende Version des VCR.NET Recording Service deinstalliert werden.</String>
   <String Id="DVBNETMISSING">Zur Installation des VCR.NET Recording Service muss DVB.NET inklusive des Card Servers bereits installiert sein. Die aktuelle Version kann hier heruntergeladen werden:

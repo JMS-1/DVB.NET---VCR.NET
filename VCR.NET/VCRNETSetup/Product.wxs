@@ -93,28 +93,6 @@
 
     </Feature>
 
-    <!-- Die Installation der Quelltexte, die völlig optional ist. -->
-    <Feature Id="SourceFeature" Title="!(loc.FEATURESOURCE)" Level="2" Absent="allow" AllowAdvertise="no">
-
-      <ComponentGroupRef Id="FTPWrap.Sources" />
-      <ComponentGroupRef Id="FTPWrap.Content" />
-      <ComponentGroupRef Id="EasyCut.Sources" />
-      <ComponentGroupRef Id="EasyCut.Content" />
-      <ComponentGroupRef Id="ControlCenter.Sources" />
-      <ComponentGroupRef Id="ControlCenter.Content" />
-      <ComponentGroupRef Id="ServiceCore.Sources" />
-      <ComponentGroupRef Id="ServiceCore.Content" />
-      <ComponentGroupRef Id="Service.Sources" />
-      <ComponentGroupRef Id="Service.Content" />
-      <ComponentGroupRef Id="TVBrowserPlugIn.Sources" />
-      <ComponentGroupRef Id="TVBrowserPlugIn.Content" />
-      <ComponentGroupRef Id="InstallerActions.Sources" />
-      <ComponentGroupRef Id="InstallerActions.Content" />
-      <ComponentGroupRef Id="Setup.Sources" />
-      <ComponentGroupRef Id="WebProject.Sources" />
-
-    </Feature>
-
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
     <UIRef Id="VCRNETWizard" />
 

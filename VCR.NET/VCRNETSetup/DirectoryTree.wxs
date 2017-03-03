@@ -43,73 +43,6 @@
               <Directory Id="PLUGINSDE" Name="de"/>
             </Directory>
 
-            <!-- Quellcode (optional) -->
-            <Directory Id="SOURCES" Name="Source">
-              <Directory Id="FTPWrap.Sources" Name="FTPWrap" />
-              <Directory Id="FTPWrap.Content" Name="FTPWrap" />
-              <Directory Id="EasyCut.Sources" Name="EasyCut" />
-              <Directory Id="EasyCut.Content" Name="EasyCut" />
-              <Directory Id="ControlCenter.Sources" Name="ControlCenter" />
-              <Directory Id="ControlCenter.Content" Name="ControlCenter" />
-              <Directory Id="ServiceCore.Sources" Name="ServiceCore" />
-              <Directory Id="ServiceCore.Content" Name="ServiceCore" />
-              <Directory Id="Service.Sources" Name="Service" />
-              <Directory Id="Service.Content" Name="Service" />
-              <Directory Id="TVBrowserPlugIn.Sources" Name="TVBrowserPlugIn" />
-              <Directory Id="TVBrowserPlugIn.Content" Name="TVBrowserPlugIn" />
-              <Directory Id="InstallerActions.Sources" Name="InstallerActions" />
-              <Directory Id="InstallerActions.Content" Name="InstallerActions" />
-              <Directory Id="Setup.Sources" Name="VCRNETSetup" />
-            </Directory>
-
-            <!-- Quellcode (optional) -->
-            <Component Id="WebSources.ProjectFile" Guid="*">
-              <File Id="WebSource.ProjectFile" Source="$(var.WebClient41.ProjectDir)WebClient41.csproj" />
-            </Component>
-            <Directory Id="WebSourcesProperties" Name="Properties">
-              <Component Id="WebSources.Properties" Guid="*">
-                <File Id="WebSource.Properties" Source="$(var.WebClient41.ProjectDir)Properties/AssemblyInfo.cs" />
-              </Component>
-            </Directory>
-
-            <!-- Quellcode (optional) -->
-            <Directory Id="ScriptFiles" Name="scripts">
-              <Component Id="TypeScriptSource.JMSLib" Guid="*">
-                <File Id="TypeScript.JMSLib" Source="$(var.WebClient41.ProjectDir)scripts/jmslib.ts" />
-              </Component>
-              <Component Id="TypeScriptSource.VCRServer" Guid="*">
-                <File Id="TypeScript.VCRServer" Source="$(var.WebClient41.ProjectDir)scripts/vcrserver.ts" />
-              </Component>
-              <Component Id="TypeScriptSource.VCRNET" Guid="*">
-                <File Id="TypeScript.VCRNET" Source="$(var.WebClient41.ProjectDir)scripts/vcrnet.ts" />
-              </Component>
-              <Directory Id="ThirtPartyScriptFiles" Name="typings">
-                <Directory Id="jQueryScriptFiles" Name="jquery">
-                  <Component Id="TypeScriptSource.jQuery" Guid="*">
-                    <File Id="TypeScript.jQuery" Source="$(var.WebClient41.ProjectDir)scripts/typings/jquery/jquery.d.ts" />
-                  </Component>
-                </Directory>
-                <Directory Id="jQueryUIScriptFiles" Name="jqueryui">
-                  <Component Id="TypeScriptSource.jQueryUI" Guid="*">
-                    <File Id="TypeScript.jQueryUI" Source="$(var.WebClient41.ProjectDir)scripts/typings/jqueryui/jqueryui.d.ts" />
-                  </Component>
-                </Directory>
-              </Directory>
-            </Directory>
-
-            <!-- Quellcode (optional) -->
-            <Directory Id="ContentFiles" Name="content">
-              <Component Id="StyleSheetSource.Styles" Guid="*">
-                <File Id="StyleSheet.Styles" Source="$(var.WebClient41.ProjectDir)content/styles.scss" />
-              </Component>
-              <Component Id="StyleSheetSource.JMSLib" Guid="*">
-                <File Id="StyleSheet.JMSLib" Source="$(var.WebClient41.ProjectDir)content/jmslib.scss" />
-              </Component>
-              <Component Id="StyleSheetSource.VCRNET" Guid="*">
-                <File Id="StyleSheet.VCRNET" Source="$(var.WebClient41.ProjectDir)content/vcrnet.scss" />
-              </Component>
-            </Directory>
-
           </Directory>
         </Directory>
       </Directory>
@@ -121,19 +54,6 @@
       </Directory>
 
     </Directory>
-
-    <ComponentGroup Id="WebProject.Sources">
-      <ComponentRef Id="WebSources.ProjectFile"/>
-      <ComponentRef Id="WebSources.Properties"/>
-      <ComponentRef Id="TypeScriptSource.JMSLib"/>
-      <ComponentRef Id="TypeScriptSource.VCRServer"/>
-      <ComponentRef Id="TypeScriptSource.VCRNET"/>
-      <ComponentRef Id="TypeScriptSource.jQuery"/>
-      <ComponentRef Id="TypeScriptSource.jQueryUI"/>
-      <ComponentRef Id="StyleSheetSource.Styles"/>
-      <ComponentRef Id="StyleSheetSource.VCRNET"/>
-      <ComponentRef Id="StyleSheetSource.JMSLib"/>
-    </ComponentGroup>
 
   </Fragment>
 </Wix>
