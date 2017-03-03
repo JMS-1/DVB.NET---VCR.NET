@@ -1,4 +1,16 @@
 ﻿.vcrnet-favorites {
+    > table {
+        margin-top: 10px;
+        margin-left: 1rem;
+
+        tr > td:first-child {
+            text-align: center;
+        }
+    }
+
+    .jmslib-editbuttonlist {
+        font-size: small;
+    }
 }
 
 @import "favorites/entry";

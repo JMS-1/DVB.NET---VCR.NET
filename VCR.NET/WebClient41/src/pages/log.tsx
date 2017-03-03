@@ -12,7 +12,7 @@ namespace VCRNETClient.Ui {
                 Protokolleintrag<HelpLink topic="log" page={this.props.uvm} />, der hier eingesehen werden kann.
                 Bei überlappenden Aufzeichnung wird ein einziger Eintrag erstellt, der den gesamten Nutzungszeitraum beschreibt.
                 {this.getHelp()}
-                <form>
+                <form className="vcrnet-bar">
                     <Field page={this.props.uvm} label={`${this.props.uvm.profiles.text}:`}>
                         <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.profiles} />
                         <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.startDay} />
@@ -21,11 +21,11 @@ namespace VCRNETClient.Ui {
                         <JMSLib.ReactUi.ToggleCommand uvm={this.props.uvm.showLive} />
                     </Field>
                 </form>
-                <table>
+                <table className="vcrnet-table">
                     <thead>
                         <tr>
-                            <td>Beginn</td>
-                            <td>Ende</td>
+                            <td className="vcrnet-column-start">Beginn</td>
+                            <td className="vcrnet-column-end">Ende</td>
                             <td>Quelle</td>
                         </tr>
                     </thead>
@@ -63,7 +63,7 @@ namespace VCRNETClient.Ui {
                 Durch Anwahl des jeweiligen Startzeitpunkts eines Protokolleintrags wird die Detailanzeige geöffnet. Handelt
                 es sich bei der Nutzung des Geräte um eine oder mehrere reguläre Aufzeichnungen, so sind mit dieser eventuell
                 noch nicht gelöschte Aufzeichnungsdateien
-                verbunden.<HelpLink topic="filecontents" page={this.props.uvm} /> Durch Anwahl des jeweiligen Symbols können 
+                verbunden.<HelpLink topic="filecontents" page={this.props.uvm} /> Durch Anwahl des jeweiligen Symbols können
                 diese zur Anzeige durch
                 den <JMSLib.ReactUi.ExternalLink url="http://www.psimarron.net/DVBNETViewer/html/vcrfile.html">DVB.NET
                 / VCR.NET Viewer</JMSLib.ReactUi.ExternalLink> abgerufen werden.

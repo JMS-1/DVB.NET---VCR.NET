@@ -1,21 +1,26 @@
 ﻿.vcrnet-log {
-    .vcrnet-editfield > div:first-child {
-        margin-right: 5px;
+    > form {
+        font-size: small;
+        margin-bottom: 6px;
+
+        > .vcrnet-editfield {
+            > div:first-child {
+                vertical-align: middle;
+            }
+
+            .jmslib-editlist {
+                margin-left: 5px;
+            }
+        }
+
+        .jmslib-command {
+            font-size: x-small;
+            margin-left: 6px;
+        }
     }
 
     > table {
         width: 80%;
-        white-space: nowrap;
-
-        > thead > tr {
-            > td:nth-child(1) {
-                width: 11rem;
-            }
-
-            > td:nth-child(2) {
-                width: 4rem;
-            }
-        }
     }
 }
 

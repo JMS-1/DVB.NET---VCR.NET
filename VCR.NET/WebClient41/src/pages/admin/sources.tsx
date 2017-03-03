@@ -10,7 +10,7 @@ namespace VCRNETClient.Ui {
             return <div className="vcrnet-admin-sources">
                 <h2>Aktualisierung der Quellen konfigurieren</h2>
                 Der VCR.NET Recording Service ist in der Lage, die Liste der Quellen der verwendeten DVB.NET
-                Geräte zu aktualisieren.<HelpLink topic="psiconfig" page={this.props.uvm.page} /> Dies kann 
+                Geräte zu aktualisieren.<HelpLink topic="psiconfig" page={this.props.uvm.page} /> Dies kann
                 automatisch oder gemäß eines Zeitplans erfolgen.
                 <div>
                     <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.mode} />
@@ -34,8 +34,8 @@ namespace VCRNETClient.Ui {
                         </Field>
                     </div> : null}
                 </form> : null}
+                {this.getSaveHelp()}
                 <div>
-                    {this.getSaveHelp()}
                     <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} />
                 </div>
             </div>;

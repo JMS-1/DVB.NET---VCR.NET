@@ -32,11 +32,10 @@ namespace VCRNETClient.Ui {
                                 <td>Primäre Datei:</td>
                                 <td>{this.props.uvm.primary}</td>
                             </tr>
-                            {this.props.uvm.hasFiles ?
-                                <tr>
-                                    <td>Datei ansehen:</td>
-                                    <td>{this.props.uvm.files.map((f, index) => <JMSLib.ReactUi.ExternalLink key={index} url={f} sameWindow={true}><JMSLib.ReactUi.Pictogram name="recording" /></JMSLib.ReactUi.ExternalLink>)}</td>
-                                </tr> : null}
+                            {this.props.uvm.hasFiles && <tr>
+                                <td>Datei ansehen:</td>
+                                <td>{this.props.uvm.files.map((f, index) => <JMSLib.ReactUi.ExternalLink key={index} url={f} sameWindow={true}><JMSLib.ReactUi.Pictogram name="recording" /></JMSLib.ReactUi.ExternalLink>)}</td>
+                            </tr>}
                         </tbody>
                     </table>
                 </fieldset>

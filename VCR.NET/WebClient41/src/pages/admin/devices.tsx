@@ -18,7 +18,7 @@ namespace VCRNETClient.Ui {
                     <Field page={this.props.uvm.page} label={`${this.props.uvm.defaultDevice.text}:`}>
                         <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.defaultDevice} />
                     </Field>
-                    <table>
+                    <table className="vcrnet-table">
                         <thead>
                             <tr>
                                 <td>Verwenden</td>

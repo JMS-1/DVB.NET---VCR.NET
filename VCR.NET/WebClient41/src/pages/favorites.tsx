@@ -9,8 +9,8 @@ namespace VCRNETClient.Ui {
         render(): JSX.Element {
             return <div className="vcrnet-favorites">
                 {this.getHelp()}
-                <JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.onlyWithCount} />
-                <table>
+                <JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.onlyWithCount} merge={true} />
+                <table className="vcrnet-table">
                     <thead>
                         <tr>
                             <td>Sendungen</td>

@@ -13,19 +13,21 @@ namespace VCRNETClient.Ui {
                 - auf eigene Gefahr, versteht sich.
                 <JMSLib.ReactUi.EditTextArea uvm={this.props.uvm.rules} columns={100} rows={25} />
                 {this.getHelp()}
-                <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} />
+                <div>
+                    <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} />
+                </div>
             </div>;
         }
 
         // Hilfe zu den Planungsregeln.
         private getHelp(): JSX.Element {
             return <InlineHelp title="Erläuterungen zur Bedienung">
-                Für eine Aktualisierung des Regelwerks muss die entsprechende Schaltfläche explizit 
-                betätigt werden. Dabei wird grundsätzlich ein Neustart des VCR.NET Dienstes durchgeführt, 
+                Für eine Aktualisierung des Regelwerks muss die entsprechende Schaltfläche explizit
+                betätigt werden. Dabei wird grundsätzlich ein Neustart des VCR.NET Dienstes durchgeführt,
                 selbst wenn keine Veränderungen vorgenommen wurden.
                 <br />
                 <br />
-                Um wieder mit dem fest eingebauten Regelwerk wie nach der Erstinstallation zu arbeiten 
+                Um wieder mit dem fest eingebauten Regelwerk wie nach der Erstinstallation zu arbeiten
                 muss einfach nur die Eingabe geleert und eine Aktualisierung ausgelöst werden.
             </InlineHelp>;
         }

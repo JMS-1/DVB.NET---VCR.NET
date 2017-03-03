@@ -16,9 +16,7 @@ namespace VCRNETClient.Ui {
                             <JMSLib.ReactUi.InternalLink view={`${this.props.uvm.route};${si.value.route}`}>{si.display}</JMSLib.ReactUi.InternalLink>
                         </div>)}
                     </div>
-                    <div>
-                        {this.renderSection()}
-                    </div>
+                    <div>{this.renderSection()}</div>
                 </div>
             </div>;
         }

@@ -16,9 +16,7 @@ namespace VCRNETClient.Ui {
                 {this.getFolderHelp()}
                 <div>
                     <JMSLib.ReactUi.MultiSelect uvm={this.props.uvm.directories} items={10} />
-                    <div>
-                        <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.remove} />
-                    </div>
+                    <div><JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.remove} /></div>
                 </div>
                 {this.getAddHelp()}
                 <form>
@@ -27,14 +25,14 @@ namespace VCRNETClient.Ui {
                         <Field page={this.props.uvm.page} label={`${this.props.uvm.share.text}:`}>
                             <JMSLib.ReactUi.EditText uvm={this.props.uvm.share} chars={80} />
                         </Field>
-                        {this.props.uvm.showBrowse ? <div>
+                        {this.props.uvm.showBrowse && <div>
                             <i>oder</i>
                             <Field page={this.props.uvm.page} label={`${this.props.uvm.browse.text}:`}>
                                 <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.browse} />
                             </Field>
-                        </div> : null}
+                        </div>}
                         <div>
-                            {this.props.uvm.showBrowse ? <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.parent} /> : null}
+                            {this.props.uvm.showBrowse && <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.parent} />}
                             <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.add} />
                         </div>
                     </fieldset>
@@ -101,7 +99,7 @@ namespace VCRNETClient.Ui {
                 dass eine Aufzeichnung die Aufzeichnungsdatei eine frühere Ausführung überschreibt.
                 <br />
                 <br />
-                <table>
+                <table className="vcrnet-admin-pattern">
                     <thead>
                         <tr>
                             <td>Regel</td>

@@ -8,10 +8,10 @@ namespace VCRNETClient.Ui {
         // Anzeigeelemente erstellen.
         render(): JSX.Element {
             return <div className="vcrnet-editchannel">
-                <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.sourceName} /> 
-                <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.section} /> 
-                {this.props.uvm.showFilter ? <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.type} /> : null}
-                {this.props.uvm.showFilter ? <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.encryption} /> : null}
+                <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.sourceName} />
+                <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.section} />
+                {this.props.uvm.showFilter && <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.type} />}
+                {this.props.uvm.showFilter && <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.encryption} />}
             </div>;
         }
     }

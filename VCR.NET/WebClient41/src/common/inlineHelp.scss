@@ -8,7 +8,7 @@
     margin: 0.5rem 1rem;
 
     > h1 {
-        border: 1px solid $buttonBorderColor;
+        border: 1px solid $commandBorderColor;
         border-radius: 2px;
         font-weight: normal;
         padding: 0.25rem 0.25rem 0.25rem 0.5rem;
@@ -17,13 +17,13 @@
         cursor:pointer;
         
         &:hover{
-            border-color: $buttonHoverBorderColor;
-            background: $buttonHoverBackgroundColor;
+            border-color: $commandHoverBorderColor;
+            background: $commandHoverBackgroundColor;
         }
     }
 
     > div {
-        border: 1px solid $buttonBorderColor;
+        border: 1px solid $commandBorderColor;
         border-top: none;
         border-radius: 4px;
         border-top-left-radius: 0;

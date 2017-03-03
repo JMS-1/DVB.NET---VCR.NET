@@ -1,2 +1,13 @@
 ﻿.vcrnet-admin-security {
+    > .vcrnet-editfield {
+        margin-top: 10px;
+
+        > div:first-child {
+            width: 9rem;
+        }
+    }
+
+    > div:last-child {
+        margin-top: 10px;
+    }
 }

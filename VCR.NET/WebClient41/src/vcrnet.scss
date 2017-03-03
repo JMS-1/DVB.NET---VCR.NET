@@ -35,6 +35,8 @@ vcrnet-spa {
 
 .vcrnet-bar {
     background: #dddddd;
+    white-space: nowrap;
+    overflow-x: hidden;
     border-radius: 4px;
     font-size: smaller;
     padding: 6px 10px;
