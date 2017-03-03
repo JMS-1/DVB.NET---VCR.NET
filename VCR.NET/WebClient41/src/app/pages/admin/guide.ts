@@ -166,7 +166,7 @@ namespace VCRNETClient.App.Admin {
 
         // Neue Quelle zur Liste der zu berücksichtigenden Quellen hinzufügen.
         private addSource(): void {
-            this.sources.allowedValues = [...this.sources.allowedValues].concat([JMSLib.App.uiValue(this.source.value)]);
+            this.sources.allowedValues = this.sources.allowedValues.concat([JMSLib.App.uiValue(this.source.value)]);
 
             // Die Auswahl setzen wir aber direkt wieder zurück.
             this.source.value = ``;

@@ -32,15 +32,9 @@ namespace VCRNETClient.App.Admin {
 
                 // Windows Kontogruppen einmalig anfordern.
                 if (!SecuritySection._windowsGroups)
-                    SecuritySection._windowsGroups = VCRServer.getWindowsGroups().then(names => {
-                        // Immer die Leerauswahl ergänzen - damit werden automatisch alle Benutzer erfasst.
-                        var groups = [JMSLib.App.uiValue(``, `(Alle Benutzer)`)];
-
-                        // Auswahlliste aufsetzen und melden.
-                        groups.push(...names.map(name => JMSLib.App.uiValue(name)));
-
-                        return groups;
-                    });
+                    // Immer die Leerauswahl ergänzen - damit werden automatisch alle Benutzer erfasst.
+                    SecuritySection._windowsGroups = VCRServer.getWindowsGroups().then(names =>
+                        [JMSLib.App.uiValue(``, `(Alle Benutzer)`)].concat(names.map(name => JMSLib.App.uiValue(name))));
 
                 // Windows Kontogruppen direkt oder verzögert laden.
                 return SecuritySection._windowsGroups;
