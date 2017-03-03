@@ -23,10 +23,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 der Erstinstallation entspricht. Zusätzlich erwartet VCR.NET, dass zur Benutzererkennung
                 die in Windows integrierten Sicherheitsprotokolle verwendet werden. Alle mit VCR.NET
                 ausgelieferten Werkzeuge wie das Kontrollzentrum nutzen entsprechende Mechanismen.<br />
-                <br />
-                <JMSLib.ReactUi.Pictogram description="Web Server Konfiguration" name="FAQ/webserver" />
-                <br />
-                <br />
+                <ScreenShot description="Web Server Konfiguration" name="FAQ/webserver" />
                 Leider erfordern es die Windows eigenen Sicherheitsprotokolle, dass etwa zwischen
                 einem Internet Browser, der den Web Client aufruft, und dem VCR.NET Server nicht
                 nur eine Kommunikation über den konfigurierten TCP/IP Port möglich ist sondern dass

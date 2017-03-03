@@ -12,11 +12,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 Service kennt zwar kein Favoritensystem wie es bei Fernsehern üblich ist, bietet
                 aber einige andere Möglichkeiten an, die bei der Auswahl der benötigten Quelle helfen
                 sollten.
-                <br />
-                <br />
-                <JMSLib.ReactUi.Pictogram description="Quelle auswählen" name="FAQ/sources" />
-                <br />
-                <br />
+                <ScreenShot description="Quelle auswählen" name="FAQ/sources" />
                 Abhängig von der zweiten Auswahlliste wird die Liste der Quellen links daneben wie
                 folgt beschränkt - in der Reihenfolge der Einträge der im Bild geöffnet gezeigten
                 Liste:

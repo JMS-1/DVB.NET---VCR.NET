@@ -8,11 +8,7 @@ namespace VCRNETClient.Ui.HelpPages {
             return <div>
                 Schaut man sich die Programmierung von Aufzeichnungen etwas genauer an, dann sieht
                 man, dass der VCR.NET Recording Service hier auf zwei Konzepten aufsetzt.
-                <br />
-                <br />
-                <JMSLib.ReactUi.Pictogram description="Auftrag und Aufzeichnung" name="FAQ/jobsandschedules" />
-                <br />
-                <br />
+                <ScreenShot description="Auftrag und Aufzeichnung" name="FAQ/jobsandschedules" />
                 Eine Aufzeichnung wird grundsätzlich als Teil eines Auftrags angelegt. Über die
                 Liste aller Aufzeichnungen<JMSLib.ReactUi.InternalLink view={page.application.jobPage.route} pict="jobs" /> (nicht den
                 Aufzeichnungsplan<JMSLib.ReactUi.InternalLink view={page.application.planPage.route} pict="plan" />) ist

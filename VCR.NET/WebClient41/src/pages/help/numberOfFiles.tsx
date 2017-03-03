@@ -63,10 +63,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 Über die <JMSLib.ReactUi.InternalLink view={`${page.route};dvbnet`}>DVB.NET</JMSLib.ReactUi.InternalLink> Geräteprofile
                 der verwendeten Hardware
                 ist es in begrenztem Maße möglich, das Verhalten bei der Dateitrennung zu beeinflussen.
-                <br />
-                <br />
-                <JMSLib.ReactUi.Pictogram description="Schutzeinstellungen" name="FAQ/streamprotection" />
-                <br />
+                <ScreenShot description="Schutzeinstellungen" name="FAQ/streamprotection" />
                 Die Einträge haben in dieser Reihenfolge folgende Bedeutung:<br />
                 <ul>
                     <li>Das Intervall, in dem geprüft wird, ob noch Daten empfangen werden. Ist dieses zu

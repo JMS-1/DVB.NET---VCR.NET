@@ -335,6 +335,7 @@
     <TypeScriptCompile Include="src\pages\edit\channelFlags.tsx" />
     <TypeScriptCompile Include="src\pages\edit\duration.tsx" />
     <TypeScriptCompile Include="src\pages\edit\exception.tsx" />
+    <TypeScriptCompile Include="src\pages\help\screenShot.tsx" />
     <TypeScriptCompile Include="src\pages\help\configuration.tsx" />
     <TypeScriptCompile Include="src\pages\help\controlCenter.tsx" />
     <TypeScriptCompile Include="src\pages\help\currentStream.tsx" />

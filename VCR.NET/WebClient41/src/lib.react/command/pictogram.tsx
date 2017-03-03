@@ -3,7 +3,7 @@
 namespace JMSLib.ReactUi {
 
     // Konfiguration zur Anzeige eines Symbols.
-    interface IPictogram {
+    export interface IPictogram {
         // Der Name einer Symboldatei.
         name: string;
 

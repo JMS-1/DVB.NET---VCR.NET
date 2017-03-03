@@ -16,11 +16,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 wird allerdings empfohlen, Sonderaufgaben nicht in der konfigurierten Ausführung
                 zu behindern - maximal kann ein vorzeitiger Abbruch Sinn machen, wenn es äußere
                 Umstände erforderlich machen.
-                <br />
-                <br />
-                <JMSLib.ReactUi.Pictogram description="Laufzeit verändern" name="FAQ/endchange" />
-                <br />
-                <br />
+                <ScreenShot description="Laufzeit verändern" name="FAQ/endchange" />
                 Interessanter ist es, wenn der der VCR.NET Recording Service eine DVB Hardware nutzt
                 um Aufzeichnungen auszuführen. Je nach konkreter Situation können dies
                 auch <JMSLib.ReactUi.InternalLink view={`${page.route};parallelrecording`}>mehrere Aufzeichnungen</JMSLib.ReactUi.InternalLink> sein,

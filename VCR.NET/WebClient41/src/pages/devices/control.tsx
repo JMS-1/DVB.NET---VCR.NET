@@ -34,6 +34,7 @@ namespace VCRNETClient.Ui {
                     <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.stopNow} />
                     <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} />
                     <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.noHibernate} />
+                    <HelpLink topic="hibernation" page={this.props.page} />
                 </div>
             </fieldset>;
         }

@@ -11,6 +11,10 @@
             width: 30rem;
             margin-right: 10px;
             margin-bottom: $spacing;
+
+            + .jmslib-command {
+                vertical-align: top;
+            }
         }
 
         .jmslib-editflag {

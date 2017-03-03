@@ -18,11 +18,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 und kann zur Anzeige verwendet werden.
                 Bei Benutzung des DVB.NET / VCR.NET Viewers übernimmt dieser alle notwendigen Maßnahmen
                 zur Steuerung des Netzwerkversands.
-                <br />
-                <br />
-                <JMSLib.ReactUi.Pictogram description="Netzwerkversand" name="FAQ/sendtonetwork" />
-                <br />
-                <br />
+                <ScreenShot description="Netzwerkversand" name="FAQ/sendtonetwork" />
                 Ist auf dem Rechner, von dem aus die Web Oberfläche aufgerufen wurde, der DVB.NET
                 / VCR.NET Viewer lokal installiert, so kann dieser über den ersten Verweis
                 gestartet werden, wobei die Wiedergabe der aktuellen Aufzeichnung

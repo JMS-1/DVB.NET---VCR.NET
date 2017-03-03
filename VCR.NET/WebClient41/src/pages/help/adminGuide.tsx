@@ -13,11 +13,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 Seite<JMSLib.ReactUi.InternalLink view={`${page.application.adminPage.route};guide`} pict="admin" />.
                 Damit die Programmzeitschrift überhaupt erstellt wird, muss erst einmal die Sammlung 
                 der Informationen an sich aktiviert werden.
-                <br />
-                <br />
-                <JMSLib.ReactUi.Pictogram description="Sammlung aktivieren" name="FAQ/epgonoff" />
-                <br />
-                <br />
+                <ScreenShot description="Sammlung aktivieren" name="FAQ/epgonoff" />
                 Die wesentliche Information ist dann, für welche Quellen der VCR.NET Recording Service
                 versuchen soll Sendungsdaten zu ermitteln. Bedenkt man, dass alleine auf Astra 1 mehr 
                 als 1,000 Radio- und Fernsehsender angeboten werden, so macht eine Einschränkungen
@@ -26,11 +22,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 den <JMSLib.ReactUi.InternalLink view={`${page.route};sourcechooser`}>üblichen
                 Methoden</JMSLib.ReactUi.InternalLink> Quellen ausgewählt und zur Liste hinzugefügt 
                 werden - natürlich können Quellen auch wieder aus der Liste entfernt werden.
-                <br />
-                <br />
-                <JMSLib.ReactUi.Pictogram description="Quellen konfigurieren" name="FAQ/epgsources" />
-                <br />
-                <br />
+                <ScreenShot description="Quellen konfigurieren" name="FAQ/epgsources" />
                 Sind unter den Quellen auch englische Sender von Astra 2, so muss die <em>FreeSat
                 UK</em> Option aktiviert werden. Die Programmzeitschrift der BBC, ITV et al Sender 
                 wird auf einem anderen Wege übertragen als bei uns üblich. Ohne die Aktivierung der 
@@ -55,11 +47,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 dem DVB Gerät beendet. Mit Hilfe
                 der <JMSLib.ReactUi.InternalLink view={`${page.route};log`}>Protokollliste</JMSLib.ReactUi.InternalLink> lässt
                 sich dann leicht feststellen, was ein typischer Wert für die Laufzeit ist.
-                <br />
-                <br />
-                <JMSLib.ReactUi.Pictogram description="Aktualisierungszeitpunkte" name="FAQ/epgtimes" />
-                <br />
-                <br />
+                <ScreenShot description="Aktualisierungszeitpunkte" name="FAQ/epgtimes" />
                 In manchen Fällen ist die Einstellung von vier festen Uhrzeiten unzureichend, daher
                 bietet der VCR.NET Recording Service zwei weitere Konfigurationswerte an. Die <em>Wartezeit
                 zwischen zwei Aktualisierungen</em> stellt sicher, dass zwischen zwei Aktualisierungen

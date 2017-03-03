@@ -8,10 +8,7 @@ namespace VCRNETClient.Ui {
         // Oberflächenelemente anlegen.
         render(): JSX.Element {
             return <div className="vcrnet-editduration">
-                <JMSLib.ReactUi.EditTime uvm={this.props.uvm.startTime} />
-                bis
-                <JMSLib.ReactUi.EditTime uvm={this.props.uvm.endTime} />
-                Uhr
+                <JMSLib.ReactUi.EditTime uvm={this.props.uvm.startTime} /> bis <JMSLib.ReactUi.EditTime uvm={this.props.uvm.endTime} /> Uhr
             </div>;
         }
     }

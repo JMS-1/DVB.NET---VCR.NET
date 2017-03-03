@@ -21,11 +21,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 vorliegenden Version, da DVB.NET zu jeder Zeit immer nur eine Quelle entschlüsseln
                 kann. Im DVB.NET Geräteprofil wird bei den Aufzeichnungseinstellungen ein entsprechender
                 Grenzwert verwaltet, der als Voreinstellung 1 verwendet.
-                <br />
-                <br />
-                <JMSLib.ReactUi.Pictogram description="Gleichzeitige Entschlüsselung" name="FAQ/decryptlimit" />
-                <br />
-                <br />
+                <ScreenShot description="Gleichzeitige Entschlüsselung" name="FAQ/decryptlimit" />
                 Die Aufzeichnungsplanung berücksichtigt diesen Wert und garantiert bei der Voreinstellung, dass auch
                 in <JMSLib.ReactUi.InternalLink view={`${page.route};parallelrecording`}>parallelen Aufzeichnungen</JMSLib.ReactUi.InternalLink> zu
                 jedem Zeitpunkt pro DVB Gerät maximal die festgelegte Anzahl von Quellen entschlüsselt wird. Wird dieser Wert

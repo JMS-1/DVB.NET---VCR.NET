@@ -16,11 +16,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 untypische Fall für dieses Beispiel ist, dass es dem VCR.NET auch gestattet sei,
                 den Rechner in den Schlafzustand zu versetzen - ohne zusätzliche Maßnahmen steht
                 der Rechner dann nicht ständig zur Programmierung neuer Aufzeichnungen zur Verfügung.
-                <br />
-                <br />
-                <JMSLib.ReactUi.Pictogram description="Einstellungen zum Schlafzustand" name="FAQ/hibernate" />
-                <br />
-                <br />
+                <ScreenShot description="Einstellungen zum Schlafzustand" name="FAQ/hibernate" />
                 Grundsätzlich stellt der VCR.NET Recording Service sicher, dass der Rechner für
                 programmierte Aufzeichnungen aus dem Schlafzustand aufgeweckt wird, egal wie der
                 Übergang in den Schlafzustand erfolgt ist. Dieses Verhalten kann nicht deaktiviert
@@ -74,11 +70,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 dem Kontrollzentrum um die Anwendung, die normalerweise im so genannten System Tray
                 von Windows durch das Kamerasymbol visualisiert wird. Auf Wunsch ist es damit möglich,
                 einen Schlafzustand verzögert auslösen zu lassen.
-                <br />
-                <br />
-                <JMSLib.ReactUi.Pictogram description="Kontrollzentrum" name="FAQ/hibernatevcc" />
-                <br />
-                <br />
+                <ScreenShot description="Kontrollzentrum" name="FAQ/hibernatevcc" />
                 Das Kontrollzentrum erkennt wenn der VCR.NET Recording Service eigentlich in den
                 Schlafzustand übergehen möchte und führt dann nach der angegebenen Verzögerung genau
                 diesen Übergang aus. In der Zwischenzeit kann der Anwender über einen entsprechenden
@@ -86,11 +78,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 gerade nicht aktiv, so greifen zusätzlich die Einstellung der Energieoptionen von
                 Windows. Dadurch kann es dann sogar sein, dass der Rechner vor der angegebenen Zeit
                 in den Schlafzustand geht, weil Windows keine Aktivitäten des Anwenders mehr wahrnimmt.
-                <br />
-                <br />
-                <JMSLib.ReactUi.Pictogram description="Warten auf den Schlafzustand" name="FAQ/manualsleep" />
-                <br />
-                <br />
+                <ScreenShot description="Warten auf den Schlafzustand" name="FAQ/manualsleep" />
                 Das VCR.NET Kontrollzentrum hat aber noch
                 eine <JMSLib.ReactUi.InternalLink view={`${page.route};controlcenter`}>weitere nützliche Funktion</JMSLib.ReactUi.InternalLink>,
                 die nicht deaktiviert werden kann. Aus der Hintergrundfarbe

@@ -73,6 +73,17 @@ vcrnet-spa {
     width: 2.5rem;
 }
 
+.vcrnet-screenshot {
+    display: block;
+
+    > .jmslib-pict {
+        margin: 10px;
+        padding: 10px;
+        display: inline-block;
+        border: 1px dashed #b0b0b0;
+    }
+}
+
 .jmslib-command {
     font-family: $appFont;
 }

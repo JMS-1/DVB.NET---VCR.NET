@@ -20,11 +20,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 für alle DVB Geräte eine entsprechende
                 Aktualisierung<JMSLib.ReactUi.InternalLink view={`${page.application.adminPage.route};sources`} pict="admin" /> periodisch
                 auszuführen.
-                <br />
-                <br />
-                <JMSLib.ReactUi.Pictogram description="Aktualisierung konfigurieren" name="FAQ/psi" />
-                <br />
-                <br />
+                <ScreenShot description="Aktualisierung konfigurieren" name="FAQ/psi" />
                 Im Endeffekt erfolgt die Konfiguration ganz analog
                 zur <JMSLib.ReactUi.InternalLink view={`${page.route};epgconfig`}>Programmzeitschrift</JMSLib.ReactUi.InternalLink>.
                 Die Aktualisierung kann gänzlich deaktiviert werden, nur manuell erfolgen oder wie

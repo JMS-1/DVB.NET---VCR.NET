@@ -53,10 +53,7 @@ namespace VCRNETClient.Ui.HelpPages {
                 mit der Programmierung geäußerten Wünsche, ansonsten werden die Einstellungen kommentarlos
                 ignoriert - etwa wenn ein Videotext aufgezeichnet werden soll, die Quelle aber keinen
                 anbietet weil es sich um einen Radiosender handelt.<br />
-                <br />
-                <JMSLib.ReactUi.Pictogram description="Optionen festlegen" name="FAQ/streamoptions" />
-                <br />
-                <br />
+                <ScreenShot description="Optionen festlegen" name="FAQ/streamoptions" />
                 Die einzelnen Auswahlpunkte haben dabei folgende Bedeutung (von links nach rechts):
                 <br />
                 <ul>
