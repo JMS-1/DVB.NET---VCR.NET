@@ -1,0 +1,13 @@
+﻿.vcrnet-admin-devices {
+    > form > table {
+        margin-top: 10px;
+
+        > tbody td:not(:nth-child(2)) {
+            text-align: center;
+        }
+    }
+
+    > div:last-child {
+        margin-top: 10px;
+    }
+}

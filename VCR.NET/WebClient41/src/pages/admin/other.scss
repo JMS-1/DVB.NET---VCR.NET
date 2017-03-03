@@ -1,0 +1,27 @@
+﻿$spacing: 10px;
+
+.vcrnet-admin-other {
+    > form {
+
+        > .vcrnet-editfield {
+            margin-bottom: $spacing;
+
+            > div:first-child {
+                margin-right: 4px;
+            }
+        }
+
+        .jmslib-editflag {
+            display: block;
+            margin-bottom: $spacing;
+
+            > input {
+                margin-left: 0;
+            }
+        }
+    }
+
+    > div:last-child {
+        margin-top: $spacing;
+    }
+}

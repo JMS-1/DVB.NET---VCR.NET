@@ -6,7 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EFF4945E-6C0C-4179-97C8-6FF592789C19}"
 	ProjectSection(SolutionItems) = preProject
 		Local.testsettings = Local.testsettings
+		package.json = package.json
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+		typings.json = typings.json
 		VCR.NET.vsmdi = VCR.NET.vsmdi
 	EndProjectSection
 EndProject

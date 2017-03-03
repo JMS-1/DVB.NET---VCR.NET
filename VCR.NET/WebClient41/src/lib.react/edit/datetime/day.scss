@@ -1,0 +1,89 @@
+﻿.jmslib-editday {
+    vertical-align: top;
+    display: inline-block;
+    border: 1px solid black;
+    border-radius: 2px;
+    font-size: smaller;
+    padding: 4px;
+
+    > div:first-child {
+        position: relative;
+        z-index: 0;
+
+        > img {
+            cursor: pointer;
+            z-index: 1;
+
+            &:first-child {
+                float: left;
+            }
+
+            &:last-child {
+                float: right;
+            }
+        }
+
+        > div {
+            position: absolute;
+            display: inline-block;
+            text-align: center;
+            z-index: -1;
+            right: 0;
+            left: 0;
+
+            > select {
+                margin-left: 5px;
+                margin-right: 5px;
+            }
+        }
+    }
+
+    > div:last-child {
+        > button:first-child {
+            float: left;
+        }
+
+        > button:last-child {
+            float: right;
+        }
+    }
+
+    > table {
+        display: block;
+        clear: both;
+
+        td {
+            width: 2rem;
+            text-align: center;
+        }
+
+        > thead {
+            font-weight: bold;
+        }
+
+        > tbody {
+            td {
+                background: lightgray;
+                border: 1px solid darkgray;
+                cursor: pointer;
+
+                &:not(.jmslib-editday-month) {
+                    color: darkgray;
+                }
+
+                &.jmslib-editday-selected {
+                    font-weight: bold;
+                    cursor: default;
+                }
+
+                &.jmslib-editday-today {
+                    background: antiquewhite;
+                }
+            }
+        }
+    }
+    // Der Titel (Tooltip) der Datumsauswahl wird für die Anzeige von Fehlersituationen verwendet, das verstärken wird noch durch einen roten Rahmen.
+    &:not([title=""]) {
+        border: 1px solid red;
+    }
+}

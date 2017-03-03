@@ -1,0 +1,27 @@
+﻿.vcrnet-log {
+    > form {
+        font-size: small;
+        margin-bottom: 6px;
+
+        > .vcrnet-editfield {
+            > div:first-child {
+                vertical-align: middle;
+            }
+
+            .jmslib-editlist {
+                margin-left: 5px;
+            }
+        }
+
+        .jmslib-command {
+            font-size: x-small;
+            margin-left: 6px;
+        }
+    }
+
+    > table {
+        width: 80%;
+    }
+}
+
+@import "log/details";

@@ -1,0 +1,22 @@
+﻿$spacing: 10px;
+
+.vcrnet-device-control {
+    padding-top: 10px;
+
+    > .jmslib-slider {
+        margin: $spacing 0;
+    }
+
+    > .vcrnet-device-target:not(:first-child) {
+        margin-top: $spacing;
+    }
+
+    > table {
+        margin: $spacing 0;
+    }
+
+    .jmslib-command {
+        margin-right: 4px;
+        font-size: x-small;
+    }
+}

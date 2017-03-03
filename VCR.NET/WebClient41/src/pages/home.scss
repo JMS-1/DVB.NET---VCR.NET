@@ -1,0 +1,28 @@
+﻿.vcrnet-home {
+    padding: 0 10px;
+
+    .jmslib-pict {
+        margin-right: 5px;
+    }
+
+    .vcrnet-helpLink .jmslib-pict {
+        margin-right: 0;
+    }
+
+    .vcrnet-home-copyright {
+        margin-top: 10px;
+
+        span {
+            vertical-align: super;
+            display: inline-block;
+            font-size: smaller;
+        }
+    }
+
+    .vcrnet-warningtext {
+        margin-bottom: 1rem;
+    }
+}
+
+@import "home/task";
+@import "home/versionCheck";

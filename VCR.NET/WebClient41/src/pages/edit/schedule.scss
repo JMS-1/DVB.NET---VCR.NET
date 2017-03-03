@@ -1,0 +1,22 @@
+﻿.vcrnet-scheduledata {
+    // Wir wollen die erste Auswahl mit den anderen Eingabefeldern synchronisieren.
+    > div:last-child > div:last-child > label:first-child input {
+        margin-left: 0;
+    }
+
+    > legend {
+        font-size: small;
+        font-weight: bold;
+    }
+
+    > .vcrnet-editfield:not(:last-child) {
+        margin-bottom: 6px;
+    }
+
+    .vcrnet-schedule-repeat {
+        display: inline-block;
+        text-align: center;
+        max-width: 7rem;
+        margin: 0 4px;
+    }
+}

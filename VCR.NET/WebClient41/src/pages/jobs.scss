@@ -1,0 +1,28 @@
+﻿.vcrnet-jobs {
+    .jmslib-editbuttonlist{
+        font-size: small;
+        margin: 0 0 2px 2px;
+    }
+
+    > fieldset {
+        width: 90%;
+
+        > div {
+            margin-top: 10px;
+
+            > div:first-child {
+                font-size: large;
+                font-weight: bold;
+            }
+
+            > .jmslib-internalLink {
+                display: block;
+                margin-left: 10px;
+            }
+        }
+
+        > div:last-child {
+            margin-bottom: 10px;
+        }
+    }
+}

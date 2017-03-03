@@ -1,0 +1,13 @@
+﻿.vcrnet-home-version {
+    list-style-type: none;
+    display: inline-block;
+
+    > fieldset {
+        margin: 4px 0;
+        padding: 10px;
+
+        > table {
+            margin: 2px 1rem;
+        }
+    }
+}

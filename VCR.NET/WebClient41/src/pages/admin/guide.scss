@@ -1,0 +1,49 @@
+﻿$spacing: 10px;
+
+.vcrnet-admin-guide {
+    > form {
+        .jmslib-command {
+            font-size: x-small;
+        }
+
+        .jmslib-editmultilist {
+            display: inline-block;
+            width: 30rem;
+            margin-right: 10px;
+            margin-bottom: $spacing;
+
+            + .jmslib-command {
+                vertical-align: top;
+            }
+        }
+
+        .jmslib-editflag {
+            display: block;
+            margin-bottom: $spacing;
+        }
+
+        .vcrnet-editfield {
+            margin-bottom: $spacing;
+
+            > div:first-child {
+                margin-right: 4px;
+            }
+
+            .jmslib-editlist + .vcrnet-editchannel {
+                margin-left: 4px;
+
+                + .jmslib-command {
+                    margin-left: 4px;
+                }
+            }
+        }
+    }
+
+    > div:first-of-type {
+        margin-bottom: $spacing;
+    }
+
+    > div:last-child {
+        margin-top: $spacing;
+    }
+}

@@ -1,12 +1,12 @@
-﻿using System;
+﻿using JMS.DVB;
+using JMS.DVBVCR.RecordingService.WebServer;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Web.Http;
-using JMS.DVB;
-using JMS.DVBVCR.RecordingService.WebServer;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 
 namespace JMS.DVBVCR.RecordingService.RestWebApi
@@ -25,13 +25,13 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
             /// <summary>
             /// Die Gruppe der normalen Benutzer.
             /// </summary>
-            [DataMember( Name = "users" )]
+            [DataMember(Name = "users")]
             public string UserRole { get; set; }
 
             /// <summary>
             /// Die Gruppe der Administratoren.
             /// </summary>
-            [DataMember( Name = "admins" )]
+            [DataMember(Name = "admins")]
             public string AdminRole { get; set; }
         }
 
@@ -44,13 +44,13 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
             /// <summary>
             /// Die aktuelle Liste der erlaubten Verzeichnisse.
             /// </summary>
-            [DataMember( Name = "directories" )]
+            [DataMember(Name = "directories")]
             public string[] TargetDirectories { get; set; }
 
             /// <summary>
             /// Das Muster für die Erstellung der Dateinamen.
             /// </summary>
-            [DataMember( Name = "pattern" )]
+            [DataMember(Name = "pattern")]
             public string RecordingPattern { get; set; }
         }
 
@@ -63,37 +63,37 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
             /// <summary>
             /// Der Schwellwert für vorgezogene Aktualisierungen (in Stunden).
             /// </summary>
-            [DataMember( Name = "joinHours" )]
+            [DataMember(Name = "joinHours")]
             public int? Threshold { get; set; }
 
             /// <summary>
             /// Der minimale Abstand zwischen Aktualisierungen (in Stunden).
             /// </summary>
-            [DataMember( Name = "minDelay" )]
+            [DataMember(Name = "minDelay")]
             public int? Interval { get; set; }
 
             /// <summary>
             /// Die maximale Dauer einer Aktualisierung (in Minuten).
             /// </summary>
-            [DataMember( Name = "duration" )]
+            [DataMember(Name = "duration")]
             public uint Duration { get; set; }
 
             /// <summary>
             /// Die Stunden, zu denen eine Aktualisierung stattfinden soll.
             /// </summary>
-            [DataMember( Name = "hours" )]
+            [DataMember(Name = "hours")]
             public uint[] Hours { get; set; }
 
             /// <summary>
             /// Die Quellen, die bei der Aktualisierung zu berücksichtigen sind.
             /// </summary>
-            [DataMember( Name = "sources" )]
+            [DataMember(Name = "sources")]
             public string[] Sources { get; set; }
 
             /// <summary>
             /// Gesetzt, wenn auch die britischen Sendungen zu berücksichtigen sind.
             /// </summary>
-            [DataMember( Name = "includeUK" )]
+            [DataMember(Name = "includeUK")]
             public bool WithUKGuide { get; set; }
         }
 
@@ -106,31 +106,31 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
             /// <summary>
             /// Der Schwellwert für vorgezogene Aktualisierungen (in Tagen).
             /// </summary>
-            [DataMember( Name = "joinDays" )]
+            [DataMember(Name = "joinDays")]
             public int? Threshold { get; set; }
 
             /// <summary>
             /// Der minimale Abstand zwischen Aktualisierungen (in Tagen).
             /// </summary>
-            [DataMember( Name = "interval" )]
+            [DataMember(Name = "interval")]
             public int? Interval { get; set; }
 
             /// <summary>
             /// Die maximale Dauer einer Aktualisierung (in Minuten).
             /// </summary>
-            [DataMember( Name = "duration" )]
+            [DataMember(Name = "duration")]
             public uint Duration { get; set; }
 
             /// <summary>
             /// Die Stunden, zu denen eine Aktualisierung stattfinden soll.
             /// </summary>
-            [DataMember( Name = "hours" )]
+            [DataMember(Name = "hours")]
             public uint[] Hours { get; set; }
 
             /// <summary>
             /// Gesetzt, wenn die neue Liste mit der alten zusammengeführt werden soll.
             /// </summary>
-            [DataMember( Name = "merge" )]
+            [DataMember(Name = "merge")]
             public bool MergeLists { get; set; }
         }
 
@@ -143,13 +143,13 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
             /// <summary>
             /// Die Liste aller bekannten Geräteprofile.
             /// </summary>
-            [DataMember( Name = "profiles" )]
+            [DataMember(Name = "profiles")]
             public ConfigurationProfile[] SystemProfiles { get; set; }
 
             /// <summary>
             /// Der Name des bevorzugten Geräteprofils.
             /// </summary>
-            [DataMember( Name = "defaultProfile" )]
+            [DataMember(Name = "defaultProfile")]
             public string DefaultProfile { get; set; }
         }
 
@@ -162,85 +162,85 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
             /// <summary>
             /// Gesetzt, wenn der <i>VCR.NET Recording Service</i> den Rechner in den Schlafzustand versetzen darf-
             /// </summary>
-            [DataMember( Name = "mayHibernate" )]
+            [DataMember(Name = "mayHibernate")]
             public bool AllowHibernate { get; set; }
 
             /// <summary>
             /// Gesetzt, wenn beim Übergang in den Schlafzustand <i>StandBy</i> verwendet werden soll.
             /// </summary>
-            [DataMember( Name = "useStandBy" )]
+            [DataMember(Name = "useStandBy")]
             public bool UseStandBy { get; set; }
 
             /// <summary>
             /// Verweildauer (in Wochen) von Aufträgen im Archiv.
             /// </summary>
-            [DataMember( Name = "archive" )]
+            [DataMember(Name = "archive")]
             public uint ArchiveTime { get; set; }
 
             /// <summary>
             /// Verweildauer (in Wochen) von Protokolleinträgen.
             /// </summary>
-            [DataMember( Name = "protocol" )]
+            [DataMember(Name = "protocol")]
             public uint ProtocolTime { get; set; }
 
             /// <summary>
             /// Vorlaufzeit (in Sekunden) beim Aufwecken aus dem Schlafzustand.
             /// </summary>
-            [DataMember( Name = "hibernationDelay" )]
+            [DataMember(Name = "hibernationDelay")]
             public uint HibernationDelay { get; set; }
 
             /// <summary>
             /// Gesetzt, wenn für H.264 Aufzeichnungen kein PCR generiert werden soll.
             /// </summary>
-            [DataMember( Name = "noH264PCR" )]
+            [DataMember(Name = "noH264PCR")]
             public bool DisablePCRFromH264 { get; set; }
 
             /// <summary>
             /// Gesetzt, wenn für MPEG-2 Aufzeichnungen kein PCR generiert werden soll.
             /// </summary>
-            [DataMember( Name = "noMPEG2PCR" )]
+            [DataMember(Name = "noMPEG2PCR")]
             public bool DisablePCRFromMPEG2 { get; set; }
 
             /// <summary>
             /// Minimale Verweildauer (in Minuten) im Schlafzustand bei einem erzwungenen Übergang.
             /// </summary>
-            [DataMember( Name = "forcedHibernationDelay" )]
+            [DataMember(Name = "forcedHibernationDelay")]
             public uint DelayAfterForcedHibernation { get; set; }
 
             /// <summary>
             /// Gesetzt um die minimale Verweildauer im Schlafzustand zu ignorieren.
             /// </summary>
-            [DataMember( Name = "suppressHibernationDelay" )]
+            [DataMember(Name = "suppressHibernationDelay")]
             public bool SuppressDelayAfterForcedHibernation { get; set; }
 
             /// <summary>
             /// Gesetzt, wenn auch das <i>Basic</i> Protokoll zur Autorisierung verwendet werden darf.
             /// </summary>
-            [DataMember( Name = "basicAuth" )]
+            [DataMember(Name = "basicAuth")]
             public bool AllowBasic { get; set; }
 
             /// <summary>
             /// Gesetzt, wenn auch eine verschlüsselter SSL Verbindung unterstützt werden soll.
             /// </summary>
-            [DataMember( Name = "ssl" )]
+            [DataMember(Name = "ssl")]
             public bool UseSSL { get; set; }
 
             /// <summary>
             /// Der TCP/IP Port für verschlüsselte Verbindungen.
             /// </summary>
-            [DataMember( Name = "sslPort" )]
+            [DataMember(Name = "sslPort")]
             public ushort SSLPort { get; set; }
 
             /// <summary>
             /// Der TCP/IP Port des Web Servers.
             /// </summary>
-            [DataMember( Name = "webPort" )]
+            [DataMember(Name = "webPort")]
             public ushort WebPort { get; set; }
 
             /// <summary>
             /// Die Art der Protokollierung.
             /// </summary>
-            [DataMember( Name = "logging" ), JsonConverter( typeof( StringEnumConverter ) )]
+            [DataMember(Name = "logging"), JsonConverter(typeof(StringEnumConverter))]
             public LoggingLevel Logging { get; set; }
         }
 
@@ -253,7 +253,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
             /// <summary>
             /// Der Inhalt der Regeldatei.
             /// </summary>
-            [DataMember( Name = "rules" )]
+            [DataMember(Name = "rules")]
             public string RuleFileContents { get; set; }
         }
 
@@ -265,31 +265,31 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// <param name="root">Das Bezugsverzeichnis.</param>
         /// <returns>Die Verzeichnisse innerhalb ober oberhalb des Bezugsverzeichnisses.</returns>
         [HttpGet]
-        public string[] Browse( string browse, bool toParent = false, string root = null )
+        public string[] Browse(string browse, bool toParent = false, string root = null)
         {
             // Validate
             ServerRuntime.TestAdminAccess();
 
             // See if we can move up
-            if (!string.IsNullOrEmpty( root ))
+            if (!string.IsNullOrEmpty(root))
                 if (toParent)
-                    if (StringComparer.InvariantCultureIgnoreCase.Equals( root, Path.GetPathRoot( root ) ))
+                    if (StringComparer.InvariantCultureIgnoreCase.Equals(root, Path.GetPathRoot(root)))
                         root = null;
                     else
-                        root = Path.GetDirectoryName( root );
+                        root = Path.GetDirectoryName(root);
 
             // Devices
-            var names = string.IsNullOrEmpty( root )
+            var names = string.IsNullOrEmpty(root)
                 ? DriveInfo
-                        .GetDrives()
-                        .Where( drive => drive.DriveType == DriveType.Fixed )
-                        .Where( drive => drive.IsReady )
-                        .Select( drive => drive.RootDirectory.FullName )
+                    .GetDrives()
+                    .Where(drive => drive.DriveType == DriveType.Fixed)
+                    .Where(drive => drive.IsReady)
+                    .Select(drive => drive.RootDirectory.FullName)
                 : Directory
-                    .GetDirectories( root );
+                    .GetDirectories(root);
 
             // Report
-            return new[] { root }.Concat( names.OrderBy( name => name, StringComparer.InvariantCultureIgnoreCase ) ).ToArray();
+            return new[] { root }.Concat(names.OrderBy(name => name, StringComparer.InvariantCultureIgnoreCase)).ToArray();
         }
 
         /// <summary>
@@ -299,7 +299,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// <param name="directory">Das zu prüfende Verzeichnis.</param>
         /// <returns>Gesetzt, wenn das Verzeichnis verwendet werden kann.</returns>
         [HttpGet]
-        public bool Validate( string validate, string directory )
+        public bool Validate(string validate, string directory)
         {
             // Validate
             ServerRuntime.TestAdminAccess();
@@ -308,7 +308,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
             try
             {
                 // Test
-                return Directory.Exists( directory );
+                return Directory.Exists(directory);
             }
             catch (Exception)
             {
@@ -323,11 +323,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// <param name="rules">Wird zur Unterscheidung der Methoden verwendet.</param>
         /// <returns>Die aktuellen Regeln.</returns>
         [HttpGet]
-        public SchedulerRules ReadSchedulerRules( string rules )
-        {
-            // Blind forward - we allow regular users to read the current rule set as well
-            return new SchedulerRules { RuleFileContents = ServerRuntime.VCRServer.SchedulerRules };
-        }
+        public SchedulerRules ReadSchedulerRules(string rules) => new SchedulerRules { RuleFileContents = ServerRuntime.VCRServer.SchedulerRules };
 
         /// <summary>
         /// Aktualisiert das Regelwerk für die Aufzeichnungsplanung.
@@ -336,11 +332,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// <param name="settings">Die ab sofort zu verwendenden Regeln.</param>
         /// <returns>Meldet, ob ein Neustart erforderlich ist.</returns>
         [HttpPut]
-        public bool? WriteSchedulerRules( string rules, [FromBody] SchedulerRules settings )
-        {
-            // Process
-            return ServerRuntime.UpdateSchedulerRules( settings.RuleFileContents );
-        }
+        public bool? WriteSchedulerRules(string rules, [FromBody] SchedulerRules settings) => ServerRuntime.UpdateSchedulerRules(settings.RuleFileContents);
 
         /// <summary>
         /// Meldet die Konfigurationsdaten der Geräte.
@@ -348,7 +340,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// <param name="devices">Wird zur Unterscheidung der Methoden verwendet.</param>
         /// <returns>Die aktuelle Konfiguration.</returns>
         [HttpGet]
-        public ProfileSettings ReadProfiles( string devices )
+        public ProfileSettings ReadProfiles(string devices)
         {
             // Validate
             ServerRuntime.TestAdminAccess();
@@ -363,8 +355,8 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
                     SystemProfiles =
                         ServerRuntime
                             .VCRServer
-                            .GetProfiles( ConfigurationProfile.Create, out defaultName )
-                            .OrderBy( profile => profile.Name, ProfileManager.ProfileNameComparer )
+                            .GetProfiles(ConfigurationProfile.Create, out defaultName)
+                            .OrderBy(profile => profile.Name, ProfileManager.ProfileNameComparer)
                             .ToArray()
                 };
 
@@ -382,31 +374,31 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// <param name="settings">Die gewünschten neuen Einstellungen.</param>
         /// <returns>Das Ergebnis der Änderung.</returns>
         [HttpPut]
-        public bool? WriteProfiles( string devices, [FromBody] ProfileSettings settings )
+        public bool? WriteProfiles(string devices, [FromBody] ProfileSettings settings)
         {
             // Validate
             ServerRuntime.TestAdminAccess();
 
             // List of profiles to use
-            var profiles = settings.SystemProfiles.Where( profile => profile.UsedForRecording ).Select( profile => profile.Name ).ToList();
+            var profiles = settings.SystemProfiles.Where(profile => profile.UsedForRecording).Select(profile => profile.Name).ToList();
 
             // Move default to the front
-            var defaultIndex = profiles.IndexOf( settings.DefaultProfile );
+            var defaultIndex = profiles.IndexOf(settings.DefaultProfile);
             if (defaultIndex >= 0)
             {
                 // Insert at the very beginning
-                profiles.Insert( 0, profiles[defaultIndex] );
-                profiles.RemoveAt( defaultIndex + 1 );
+                profiles.Insert(0, profiles[defaultIndex]);
+                profiles.RemoveAt(defaultIndex + 1);
             }
 
             // Prepare
-            var update = VCRConfiguration.Current.BeginUpdate( SettingNames.Profiles );
+            var update = VCRConfiguration.Current.BeginUpdate(SettingNames.Profiles);
 
             // Fill
-            update[SettingNames.Profiles].NewValue = string.Join( "|", profiles );
+            update[SettingNames.Profiles].NewValue = string.Join("|", profiles);
 
             // Process
-            return ServerRuntime.Update( update.Values, ServerRuntime.VCRServer.UpdateProfiles( settings.SystemProfiles, profile => profile.Name, ( profile, device ) => profile.WriteBack( device ) ) );
+            return ServerRuntime.Update(update.Values, ServerRuntime.VCRServer.UpdateProfiles(settings.SystemProfiles, profile => profile.Name, (profile, device) => profile.WriteBack(device)));
         }
 
         /// <summary>
@@ -415,7 +407,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// <param name="directory">Wird zur Unterscheidung der Methoden verwendet.</param>
         /// <returns>Die gewünschten Einstellungen.</returns>
         [HttpGet]
-        public DirectorySettings ReadDirectory( string directory )
+        public DirectorySettings ReadDirectory(string directory)
         {
             // Validate
             ServerRuntime.TestAdminAccess();
@@ -436,18 +428,18 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// <param name="settings">Die neuen Daten.</param>
         /// <returns>Das Ergebnis der Operation.</returns>
         [HttpPut]
-        public bool? WriteDirectory( string directory, [FromBody] DirectorySettings settings )
+        public bool? WriteDirectory(string directory, [FromBody] DirectorySettings settings)
         {
             // Prepare to update
-            var update = VCRConfiguration.Current.BeginUpdate( SettingNames.VideoRecorderDirectory, SettingNames.AdditionalRecorderPaths, SettingNames.FileNamePattern );
+            var update = VCRConfiguration.Current.BeginUpdate(SettingNames.VideoRecorderDirectory, SettingNames.AdditionalRecorderPaths, SettingNames.FileNamePattern);
 
             // Change settings
-            update[SettingNames.AdditionalRecorderPaths].NewValue = string.Join( ", ", settings.TargetDirectories.Skip( 1 ) );
+            update[SettingNames.AdditionalRecorderPaths].NewValue = string.Join(", ", settings.TargetDirectories.Skip(1));
             update[SettingNames.VideoRecorderDirectory].NewValue = settings.TargetDirectories.FirstOrDefault();
             update[SettingNames.FileNamePattern].NewValue = settings.RecordingPattern;
 
             // Process
-            return ServerRuntime.Update( update.Values );
+            return ServerRuntime.Update(update.Values);
         }
 
         /// <summary>
@@ -456,7 +448,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// <param name="scan">Unterscheidet zwischen den einzelnen Methoden.</param>
         /// <returns>Die aktuellen Einstellungen.</returns>
         [HttpGet]
-        public SourceScanSettings ReadSoureScan( string scan )
+        public SourceScanSettings ReadSoureScan(string scan)
         {
             // Validate
             ServerRuntime.TestAdminAccess();
@@ -469,11 +461,11 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
             return
                 new SourceScanSettings
                 {
-                    Hours = VCRConfiguration.Current.SourceListUpdateHoursAsArray.OrderBy( hour => hour ).ToArray(),
-                    Threshold = join.HasValue ? (int) join.Value.TotalDays : default( int? ),
+                    Hours = VCRConfiguration.Current.SourceListUpdateHoursAsArray.OrderBy(hour => hour).ToArray(),
+                    Threshold = join.HasValue ? (int)join.Value.TotalDays : default(int?),
                     MergeLists = VCRConfiguration.Current.MergeSourceListUpdateResult,
                     Duration = VCRConfiguration.Current.SourceListUpdateDuration,
-                    Interval = (interval != 0) ? interval : default( int? ),
+                    Interval = (interval != 0) ? interval : default(int?),
                 };
         }
 
@@ -484,26 +476,26 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// <param name="settings">Die neuen Einstellungen.</param>
         /// <returns>Das Ergebnis der Änderung.</returns>
         [HttpPut]
-        public bool? WriteSourceScan( string scan, [FromBody] SourceScanSettings settings )
+        public bool? WriteSourceScan(string scan, [FromBody] SourceScanSettings settings)
         {
             // Check mode
-            if (settings.Interval == 0)
+            if (settings.Interval.GetValueOrDefault(0) == 0)
             {
                 // Create settings
-                var disable = VCRConfiguration.Current.BeginUpdate( SettingNames.ScanInterval );
+                var disable = VCRConfiguration.Current.BeginUpdate(SettingNames.ScanInterval);
 
                 // Store
                 disable[SettingNames.ScanInterval].NewValue = "0";
 
                 // Process
-                return ServerRuntime.Update( disable.Values );
+                return ServerRuntime.Update(disable.Values);
             }
 
             // Check mode
             if (settings.Interval < 0)
             {
                 // Create settings
-                var manual = VCRConfiguration.Current.BeginUpdate( SettingNames.ScanDuration, SettingNames.MergeScanResult, SettingNames.ScanInterval );
+                var manual = VCRConfiguration.Current.BeginUpdate(SettingNames.ScanDuration, SettingNames.MergeScanResult, SettingNames.ScanInterval);
 
                 // Store
                 manual[SettingNames.MergeScanResult].NewValue = settings.MergeLists.ToString();
@@ -511,21 +503,21 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
                 manual[SettingNames.ScanInterval].NewValue = "-1";
 
                 // Process
-                return ServerRuntime.Update( manual.Values );
+                return ServerRuntime.Update(manual.Values);
             }
 
             // Prepare to update
-            var update = VCRConfiguration.Current.BeginUpdate( SettingNames.ScanDuration, SettingNames.MergeScanResult, SettingNames.ScanInterval, SettingNames.ScanHours, SettingNames.ScanJoinThreshold );
+            var update = VCRConfiguration.Current.BeginUpdate(SettingNames.ScanDuration, SettingNames.MergeScanResult, SettingNames.ScanInterval, SettingNames.ScanHours, SettingNames.ScanJoinThreshold);
 
             // Fill it
-            update[SettingNames.ScanHours].NewValue = string.Join( ", ", settings.Hours.Select( hour => hour.ToString() ) );
+            update[SettingNames.ScanHours].NewValue = string.Join(", ", settings.Hours.Select(hour => hour.ToString()));
             update[SettingNames.ScanJoinThreshold].NewValue = settings.Threshold.ToString();
             update[SettingNames.MergeScanResult].NewValue = settings.MergeLists.ToString();
             update[SettingNames.ScanInterval].NewValue = settings.Interval.ToString();
             update[SettingNames.ScanDuration].NewValue = settings.Duration.ToString();
 
             // Process
-            return ServerRuntime.Update( update.Values );
+            return ServerRuntime.Update(update.Values);
         }
 
         /// <summary>
@@ -534,7 +526,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// <param name="guide">Unterscheidet zwischen den einzelnen Methoden.</param>
         /// <returns>Die aktuellen Einstellungen.</returns>
         [HttpGet]
-        public GuideSettings ReadGuide( string guide )
+        public GuideSettings ReadGuide(string guide)
         {
             // Validate
             ServerRuntime.TestAdminAccess();
@@ -547,10 +539,10 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
             return
                 new GuideSettings
                 {
-                    Sources = VCRConfiguration.Current.ProgramGuideSourcesAsArray.OrderBy( name => name, StringComparer.InvariantCultureIgnoreCase ).ToArray(),
-                    Hours = VCRConfiguration.Current.ProgramGuideUpdateHoursAsArray.OrderBy( hour => hour ).ToArray(),
-                    Interval = interval.HasValue ? (int) interval.Value.TotalHours : default( int? ),
-                    Threshold = join.HasValue ? (int) join.Value.TotalHours : default( int? ),
+                    Sources = VCRConfiguration.Current.ProgramGuideSourcesAsArray.OrderBy(name => name, StringComparer.InvariantCultureIgnoreCase).ToArray(),
+                    Hours = VCRConfiguration.Current.ProgramGuideUpdateHoursAsArray.OrderBy(hour => hour).ToArray(),
+                    Interval = interval.HasValue ? (int)interval.Value.TotalHours : default(int?),
+                    Threshold = join.HasValue ? (int)join.Value.TotalHours : default(int?),
                     Duration = VCRConfiguration.Current.ProgramGuideUpdateDuration,
                     WithUKGuide = VCRConfiguration.Current.EnableFreeSat,
                 };
@@ -563,34 +555,34 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// <param name="settings">Die neuen Einstellungen.</param>
         /// <returns>Das Ergebnis der Änderung.</returns>
         [HttpPut]
-        public bool? WriteGuide( string guide, [FromBody] GuideSettings settings )
+        public bool? WriteGuide(string guide, [FromBody] GuideSettings settings)
         {
             // Check mode
             if (settings.Duration < 1)
             {
                 // Create settings
-                var disable = VCRConfiguration.Current.BeginUpdate( SettingNames.EPGDuration );
+                var disable = VCRConfiguration.Current.BeginUpdate(SettingNames.EPGDuration);
 
                 // Store
                 disable[SettingNames.EPGDuration].NewValue = "0";
 
                 // Process
-                return ServerRuntime.Update( disable.Values );
+                return ServerRuntime.Update(disable.Values);
             }
 
             // Prepare to update
-            var update = VCRConfiguration.Current.BeginUpdate( SettingNames.EPGDuration, SettingNames.EPGStations, SettingNames.EPGHours, SettingNames.EPGIncludeFreeSat, SettingNames.EPGInterval, SettingNames.EPGJoinThreshold );
+            var update = VCRConfiguration.Current.BeginUpdate(SettingNames.EPGDuration, SettingNames.EPGStations, SettingNames.EPGHours, SettingNames.EPGIncludeFreeSat, SettingNames.EPGInterval, SettingNames.EPGJoinThreshold);
 
             // Fill it
-            update[SettingNames.EPGHours].NewValue = string.Join( ", ", settings.Hours.Select( hour => hour.ToString() ) );
+            update[SettingNames.EPGHours].NewValue = string.Join(", ", settings.Hours.Select(hour => hour.ToString()));
             update[SettingNames.EPGIncludeFreeSat].NewValue = settings.WithUKGuide.ToString();
-            update[SettingNames.EPGStations].NewValue = string.Join( ", ", settings.Sources );
+            update[SettingNames.EPGStations].NewValue = string.Join(", ", settings.Sources);
             update[SettingNames.EPGJoinThreshold].NewValue = settings.Threshold.ToString();
             update[SettingNames.EPGInterval].NewValue = settings.Interval.ToString();
             update[SettingNames.EPGDuration].NewValue = settings.Duration.ToString();
 
             // Process
-            return ServerRuntime.Update( update.Values );
+            return ServerRuntime.Update(update.Values);
         }
 
         /// <summary>
@@ -599,7 +591,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// <param name="security">Unterscheidet zwischen den einzelnen Methoden.</param>
         /// <returns>Die aktuellen Einstellungen.</returns>
         [HttpGet]
-        public SecuritySettings ReadSecurity( string security )
+        public SecuritySettings ReadSecurity(string security)
         {
             // Validate
             ServerRuntime.TestAdminAccess();
@@ -620,17 +612,17 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// <param name="settings">Die neuen Einstellungen.</param>
         /// <returns><i>null</i> bei Fehlern und ansonsten gesetzt, wenn ein Neustart des Dienstes ausgeführt wird.</returns>
         [HttpPut]
-        public bool? WriteSecurity( string security, [FromBody] SecuritySettings settings )
+        public bool? WriteSecurity(string security, [FromBody] SecuritySettings settings)
         {
             // Prepare to update
-            var update = VCRConfiguration.Current.BeginUpdate( SettingNames.RequiredUserRole, SettingNames.RequiredAdminRole );
+            var update = VCRConfiguration.Current.BeginUpdate(SettingNames.RequiredUserRole, SettingNames.RequiredAdminRole);
 
             // Change settings
             update[SettingNames.RequiredAdminRole].NewValue = settings.AdminRole;
             update[SettingNames.RequiredUserRole].NewValue = settings.UserRole;
 
             // Process
-            return ServerRuntime.Update( update.Values );
+            return ServerRuntime.Update(update.Values);
         }
 
         /// <summary>
@@ -639,7 +631,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// <param name="other">Wird zur Unterscheidung der Methoden verwendet.</param>
         /// <returns>Die aktuellen Einstellungen.</returns>
         [HttpGet]
-        public OtherSettings ReadOtherSettings( string other )
+        public OtherSettings ReadOtherSettings(string other)
         {
             // Validate
             ServerRuntime.TestAdminAccess();
@@ -648,7 +640,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
             return
                 new OtherSettings
                 {
-                    DelayAfterForcedHibernation = (uint) VCRConfiguration.Current.DelayAfterForcedHibernation.TotalMinutes,
+                    DelayAfterForcedHibernation = (uint)VCRConfiguration.Current.DelayAfterForcedHibernation.TotalMinutes,
                     SuppressDelayAfterForcedHibernation = VCRConfiguration.Current.SuppressDelayAfterForcedHibernation,
                     DisablePCRFromMPEG2 = VCRConfiguration.Current.DisablePCRFromMPEG2Generation,
                     DisablePCRFromH264 = VCRConfiguration.Current.DisablePCRFromH264Generation,
@@ -672,7 +664,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         /// <param name="settings">Die neuen Einstellungen.</param>
         /// <returns>Das Ergebnis der Änderung.</returns>
         [HttpPut]
-        public bool? WriteOther( string other, [FromBody] OtherSettings settings )
+        public bool? WriteOther(string other, [FromBody] OtherSettings settings)
         {
             // Prepare to update
             var update =
@@ -711,7 +703,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
             update[SettingNames.UseSSL].NewValue = settings.UseSSL.ToString();
 
             // Process
-            return ServerRuntime.Update( update.Values );
+            return ServerRuntime.Update(update.Values);
         }
     }
 }

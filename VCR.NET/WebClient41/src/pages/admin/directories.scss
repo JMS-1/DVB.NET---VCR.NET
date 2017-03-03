@@ -1,0 +1,48 @@
+﻿.vcrnet-admin-directories {
+    > div {
+        > .jmslib-editmultilist {
+            margin-bottom: 4px;
+            width: 45rem;
+
+            .jmslib-command {
+                font-size: small;
+            }
+        }
+
+        &:last-child {
+            margin-top: 10px;
+        }
+    }
+
+    > form > fieldset {
+        margin-bottom: 10px;
+
+        > legend {
+            font-size: small;
+            font-weight: bold;
+        }
+
+        .vcrnet-editfield {
+            > div:first-child {
+                width: 12rem;
+            }
+
+            .jmslib-editlist {
+                width: 31rem;
+            }
+        }
+
+        .jmslib-command {
+            margin-top: 8px;
+            font-size: x-small;
+
+            &:not(:last-child) {
+                margin-right: 4px;
+            }
+        }
+    }
+
+    table.vcrnet-admin-pattern > thead > tr > td {
+        font-weight: bold;
+    }
+}

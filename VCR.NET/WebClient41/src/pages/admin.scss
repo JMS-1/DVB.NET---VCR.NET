@@ -1,0 +1,59 @@
+﻿.vcrnet-admin {
+    padding: 4px;
+    width: 90%;
+
+    > .vcrnet-admin-tabs {
+        white-space: nowrap;
+
+        > div {
+            display: inline-block;
+
+            &:first-child {
+                > div {
+                    margin: 10px;
+                    border: 1px solid black;
+                    border-radius: 4px;
+                    box-shadow: gray 2px 1px;
+
+                    &:hover {
+                        background: lightblue;
+                    }
+
+                    &[data-jmslib-checked="yes"] {
+                        background: lightgray;
+
+                        a {
+                            cursor: default;
+                        }
+                    }
+
+                    a {
+                        color: black;
+                        display: block;
+                        text-decoration: none;
+                        padding: 4px 8px;
+                    }
+                }
+            }
+
+            &:last-child {
+                vertical-align: top;
+                white-space: normal;
+                margin: 0px 20px;
+                width: 90%;
+
+                h2 {
+                    margin: 10px 0;
+                }
+            }
+        }
+    }
+}
+
+@import "admin/guide";
+@import "admin/other";
+@import "admin/rules";
+@import "admin/devices";
+@import "admin/sources";
+@import "admin/security";
+@import "admin/directories";

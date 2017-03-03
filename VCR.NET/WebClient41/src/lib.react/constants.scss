@@ -1,0 +1,21 @@
+﻿$commandBorderColor: #c5c5c5;
+$commandBackgroundColor: #f6f6f6;
+$commandHoverBorderColor: #c0c0c0;
+$commandHoverBackgroundColor: #ededed;
+$commandActiveBackgrundColor: #d8d8d8;
+
+// LEGACY
+$warningTextColor: red;
+$warningTextWeight: bold;
+
+$errorBorderColor: red;
+
+// Benutzerauswahl deaktivieren.
+@mixin no-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

@@ -1,0 +1,17 @@
+﻿.vcrnet-devices {
+    > table {
+        min-width: 1050px;
+    }
+
+    > .vcrnet-inline-help table {
+        margin-left: 10px;
+
+        > tbody > tr > td:first-child {
+            padding-right: 5px;
+        }
+    }
+}
+
+@import "devices/entry";
+@import "devices/guide";
+@import "devices/control";

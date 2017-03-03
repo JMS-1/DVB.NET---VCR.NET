@@ -1,0 +1,9 @@
+﻿@import "../../constants";
+
+.jmslib-editnumber {
+    text-align: center;
+
+    &:not([title=""]) {
+        border: 2px solid $errorBorderColor;
+    }
+}

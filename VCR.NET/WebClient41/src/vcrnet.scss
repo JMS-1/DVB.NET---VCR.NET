@@ -1,0 +1,89 @@
+﻿$appFont: Verdana, Arial, sans-serif;
+
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 16px;
+    background: #f4f4f4;
+    font-family: $appFont;
+}
+
+a {
+    color: #0000a0;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+fieldset {
+    border-width: 2px;
+}
+
+.vcrnet-warningtext {
+    color: red;
+    font-weight: bold;
+}
+
+vcrnet-spa {
+    display: block;
+    padding: 10px;
+}
+
+
+.vcrnet-bar {
+    background: #dddddd;
+    white-space: nowrap;
+    overflow-x: hidden;
+    border-radius: 4px;
+    font-size: smaller;
+    padding: 6px 10px;
+}
+
+.vcrnet-table {
+    background: #e0e0e0;
+    border-collapse: collapse;
+
+    > thead {
+        background-color: #cccccc;
+        font-weight: bold;
+    }
+
+    > thead, > tbody {
+        > tr > td {
+            border: 2px solid #f4f4f4;
+            font-family: 'Courier New';
+            white-space: nowrap;
+            padding: 2px 4px;
+        }
+    }
+}
+
+.vcrnet-column-mode {
+    width: 22px;
+}
+
+.vcrnet-column-start {
+    width: 11.5rem;
+}
+
+.vcrnet-column-end {
+    width: 2.5rem;
+}
+
+.vcrnet-screenshot {
+    display: block;
+
+    > .jmslib-pict {
+        margin: 10px;
+        padding: 10px;
+        display: inline-block;
+        border: 1px dashed #b0b0b0;
+    }
+}
+
+.jmslib-command {
+    font-family: $appFont;
+}

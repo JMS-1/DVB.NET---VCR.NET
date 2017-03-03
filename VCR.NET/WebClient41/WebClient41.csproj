@@ -34,6 +34,17 @@
     <TypeScriptIncludeComments>true</TypeScriptIncludeComments>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
     <Prefer32Bit>false</Prefer32Bit>
+    <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptRemoveComments>True</TypeScriptRemoveComments>
+    <TypeScriptOutFile>scripts/vcrnet.js</TypeScriptOutFile>
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -46,6 +57,17 @@
     <TypeScriptIncludeComments>true</TypeScriptIncludeComments>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
     <Prefer32Bit>false</Prefer32Bit>
+    <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptRemoveComments>True</TypeScriptRemoveComments>
+    <TypeScriptOutFile>scripts/vcrnet.js</TypeScriptOutFile>
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="JMS.DVB.SourceManagement, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
@@ -76,217 +98,337 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <TypeScriptCompile Include="src\app\pages\admin.ts" />
+    <TypeScriptCompile Include="src\app\pages\admin\device.ts" />
+    <TypeScriptCompile Include="src\app\pages\admin\devices.ts" />
+    <TypeScriptCompile Include="src\app\pages\admin\directories.ts" />
+    <TypeScriptCompile Include="src\app\pages\admin\guide.ts" />
+    <TypeScriptCompile Include="src\app\pages\admin\other.ts" />
+    <TypeScriptCompile Include="src\app\pages\admin\rules.ts" />
+    <TypeScriptCompile Include="src\app\pages\admin\scan.ts" />
+    <TypeScriptCompile Include="src\app\pages\admin\section.ts" />
+    <TypeScriptCompile Include="src\app\pages\admin\security.ts" />
+    <TypeScriptCompile Include="src\app\pages\devices.ts" />
+    <TypeScriptCompile Include="src\app\pages\devices\controller.ts" />
+    <TypeScriptCompile Include="src\app\pages\devices\entry.ts" />
+    <TypeScriptCompile Include="src\app\pages\favorites.ts" />
+    <TypeScriptCompile Include="src\app\pages\favorites\entry.ts" />
+    <TypeScriptCompile Include="src\app\pages\guide.ts" />
+    <TypeScriptCompile Include="src\app\pages\guide\entry.ts" />
+    <TypeScriptCompile Include="src\app\pages\jobs.ts" />
+    <TypeScriptCompile Include="src\app\pages\log.ts" />
+    <TypeScriptCompile Include="src\app\pages\log\entry.ts" />
+    <TypeScriptCompile Include="src\app\pages\settings.ts" />
+    <TypeScriptCompile Include="src\lib.react\command\toggle.tsx" />
+    <TypeScriptCompile Include="src\lib.react\command\button.tsx" />
+    <TypeScriptCompile Include="src\lib.react\command\externalLink.tsx" />
+    <TypeScriptCompile Include="src\lib.react\command\internalLink.tsx" />
+    <TypeScriptCompile Include="src\lib.react\command\pictogram.tsx" />
+    <TypeScriptCompile Include="src\lib.react\detailRow.tsx" />
+    <TypeScriptCompile Include="src\lib.react\edit\boolean\flag.tsx" />
+    <TypeScriptCompile Include="src\lib.react\edit\buttonList.tsx" />
+    <TypeScriptCompile Include="src\lib.react\edit\datetime\day.tsx" />
+    <TypeScriptCompile Include="src\lib.react\edit\datetime\time.tsx" />
+    <TypeScriptCompile Include="src\lib.react\edit\list.tsx" />
+    <TypeScriptCompile Include="src\lib.react\edit\multiButtonList.tsx" />
+    <TypeScriptCompile Include="src\lib.react\edit\multiList.tsx" />
+    <TypeScriptCompile Include="src\lib.react\edit\number\number.tsx" />
+    <TypeScriptCompile Include="src\lib.react\edit\number\slider.tsx" />
+    <TypeScriptCompile Include="src\lib.react\edit\text\text.tsx" />
+    <TypeScriptCompile Include="src\lib.react\edit\text\textarea.tsx" />
+    <TypeScriptCompile Include="src\lib.react\reactUi.tsx" />
+    <TypeScriptCompile Include="src\lib.react\router.tsx" />
+    <TypeScriptCompile Include="src\lib.react\timeBar.tsx" />
+    <TypeScriptCompile Include="src\lib\edit\multiList.ts" />
+    <TypeScriptCompile Include="src\lib\http\browser.ts" />
+    <TypeScriptCompile Include="src\lib\http\common.ts" />
+    <TypeScriptCompile Include="src\lib\http\config.ts" />
+    <TypeScriptCompile Include="src\lib\timebar.ts" />
+    <TypeScriptCompile Include="src\pages\admin.tsx" />
+    <TypeScriptCompile Include="src\pages\admin\directories.tsx" />
+    <TypeScriptCompile Include="src\pages\admin\devices.tsx" />
+    <TypeScriptCompile Include="src\pages\admin\guide.tsx" />
+    <TypeScriptCompile Include="src\pages\admin\rules.tsx" />
+    <TypeScriptCompile Include="src\pages\admin\other.tsx" />
+    <TypeScriptCompile Include="src\pages\admin\sources.tsx" />
+    <TypeScriptCompile Include="src\pages\admin\security.tsx" />
+    <TypeScriptCompile Include="src\pages\devices.tsx" />
+    <TypeScriptCompile Include="src\pages\devices\control.tsx" />
+    <TypeScriptCompile Include="src\pages\devices\entry.tsx" />
+    <TypeScriptCompile Include="src\pages\devices\guide.tsx" />
+    <TypeScriptCompile Include="src\pages\favorites.tsx" />
+    <TypeScriptCompile Include="src\pages\favorites\entry.tsx" />
+    <TypeScriptCompile Include="src\pages\guide.tsx" />
+    <TypeScriptCompile Include="src\pages\guide\details.tsx" />
+    <TypeScriptCompile Include="src\pages\guide\info.tsx" />
+    <TypeScriptCompile Include="src\pages\guide\navigator.tsx" />
+    <TypeScriptCompile Include="src\lib\command\command.ts" />
+    <TypeScriptCompile Include="src\lib\edit\list.ts" />
+    <TypeScriptCompile Include="src\lib\localizable.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="content\jmslib.css">
-      <DependentUpon>jmslib.less</DependentUpon>
-    </Content>
-    <Content Include="content\jmslib.min.css">
-      <DependentUpon>jmslib.less</DependentUpon>
-    </Content>
-    <Content Include="content\themes\base\accordion.css" />
-    <Content Include="content\themes\base\all.css" />
-    <Content Include="content\themes\base\autocomplete.css" />
-    <Content Include="content\themes\base\base.css" />
-    <Content Include="content\themes\base\button.css" />
-    <Content Include="content\themes\base\core.css" />
-    <Content Include="content\themes\base\datepicker.css" />
-    <Content Include="content\themes\base\dialog.css" />
-    <Content Include="content\themes\base\draggable.css" />
-    <Content Include="content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
-    <Content Include="content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
-    <Content Include="content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <Content Include="content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
-    <Content Include="content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
-    <Content Include="content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
-    <Content Include="content\themes\base\images\ui-icons_222222_256x240.png" />
-    <Content Include="content\themes\base\images\ui-icons_2e83ff_256x240.png" />
-    <Content Include="content\themes\base\images\ui-icons_444444_256x240.png" />
-    <Content Include="content\themes\base\images\ui-icons_454545_256x240.png" />
-    <Content Include="content\themes\base\images\ui-icons_555555_256x240.png" />
-    <Content Include="content\themes\base\images\ui-icons_777620_256x240.png" />
-    <Content Include="content\themes\base\images\ui-icons_777777_256x240.png" />
-    <Content Include="content\themes\base\images\ui-icons_888888_256x240.png" />
-    <Content Include="content\themes\base\images\ui-icons_cc0000_256x240.png" />
-    <Content Include="content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="content\themes\base\images\ui-icons_ffffff_256x240.png" />
-    <Content Include="content\themes\base\jquery-ui.css" />
-    <Content Include="content\themes\base\jquery-ui.min.css" />
-    <Content Include="content\themes\base\menu.css" />
-    <Content Include="content\themes\base\progressbar.css" />
-    <Content Include="content\themes\base\resizable.css" />
-    <Content Include="content\themes\base\selectable.css" />
-    <Content Include="content\themes\base\selectmenu.css" />
-    <Content Include="content\themes\base\slider.css" />
-    <Content Include="content\themes\base\sortable.css" />
-    <Content Include="content\themes\base\spinner.css" />
-    <Content Include="content\themes\base\tabs.css" />
-    <Content Include="content\themes\base\theme.css" />
-    <Content Include="content\themes\base\tooltip.css" />
-    <Content Include="FAQ\customschedule.html" />
-    <Content Include="FAQ\archive.html" />
-    <Content Include="FAQ\configuration.html" />
-    <Content Include="FAQ\controlcenter.html" />
-    <Content Include="FAQ\recover.png" />
-    <Content Include="FAQ\webserver.png" />
-    <Content Include="FAQ\websettings.html" />
-    <Content Include="FAQ\tsplayer.html" />
-    <Content Include="FAQ\tasks.html" />
-    <Content Include="FAQ\streaming.html" />
-    <Content Include="FAQ\sourcelimit.html" />
-    <Content Include="FAQ\sourcechooser.html" />
-    <Content Include="FAQ\repeatingschedules.html" />
-    <Content Include="FAQ\psiconfig.html" />
-    <Content Include="FAQ\parallelrecording.html" />
-    <Content Include="FAQ\overview.html" />
-    <Content Include="FAQ\numberoffiles.html" />
-    <Content Include="FAQ\nexus.html" />
-    <Content Include="FAQ\log.html" />
-    <Content Include="FAQ\jobsandschedules.html" />
-    <Content Include="FAQ\hibernation.html" />
-    <Content Include="FAQ\filecontents.html" />
-    <Content Include="FAQ\epgconfig.html" />
-    <Content Include="FAQ\epg.html" />
-    <Content Include="FAQ\editcurrent.html" />
-    <Content Include="FAQ\dvbnet.html" />
-    <Content Include="FAQ\decryption.html" />
-    <Content Include="FAQ\currentstream.html" />
-    <Content Include="FAQ\decryptlimit.png" />
-    <Content Include="FAQ\endchange.png" />
-    <Content Include="FAQ\epgonoff.png" />
-    <Content Include="FAQ\epgsources.png" />
-    <Content Include="FAQ\epgtimes.png" />
-    <Content Include="FAQ\exceptions.png" />
-    <Content Include="FAQ\hibernate.png" />
-    <Content Include="FAQ\hibernatevcc.png" />
-    <Content Include="FAQ\jobsandschedules.png" />
-    <Content Include="FAQ\manualsleep.png" />
-    <Content Include="FAQ\psi.png" />
-    <Content Include="FAQ\repeating.png" />
-    <Content Include="FAQ\sendtonetwork.png" />
-    <Content Include="FAQ\sourcelimit.png" />
-    <Content Include="FAQ\sources.png" />
-    <Content Include="FAQ\streamoptions.png" />
-    <Content Include="FAQ\streamprotection.png" />
-    <Content Include="scripts\jmslib.js">
-      <DependentUpon>jmslib.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="scripts\jmslib.ts" />
-    <Content Include="content\jmslib.css.map">
-      <DependentUpon>jmslib.css</DependentUpon>
-    </Content>
-    <Content Include="content\vcrnet.css.map">
-      <DependentUpon>vcrnet.css</DependentUpon>
-    </Content>
-    <None Include="compilerconfig.json" />
-    <None Include="compilerconfig.json.defaults">
-      <DependentUpon>compilerconfig.json</DependentUpon>
-    </None>
-    <Content Include="packages.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <None Include="scripts\jquery-3.1.1.intellisense.js" />
-    <Content Include="scripts\jquery-3.1.1.js" />
-    <Content Include="scripts\jquery-3.1.1.min.js" />
-    <Content Include="scripts\jquery-3.1.1.slim.js" />
-    <Content Include="scripts\jquery-3.1.1.slim.min.js" />
-    <Content Include="scripts\jquery-ui-1.12.1.js" />
-    <Content Include="scripts\jquery-ui-1.12.1.min.js" />
-    <Content Include="scripts\vcrnet.js">
-      <DependentUpon>vcrnet.ts</DependentUpon>
-    </Content>
-    <Content Include="favicon.ico" />
-    <Content Include="ui\admin.html" />
-    <Content Include="ui\faq.html" />
-    <Content Include="ui\favorites.html" />
-    <Content Include="ui\images\delete.png" />
-    <Content Include="ui\images\fav.png" />
-    <Content Include="ui\images\info.png" />
-    <Content Include="ui\images\recording.png" />
-    <Content Include="ui\log.html" />
-    <Content Include="ui\home.html" />
-    <Content Include="ui\guide.html" />
-    <Content Include="ui\current.html" />
-    <Content Include="ui\images\admin.png" />
-    <Content Include="ui\images\devices.png" />
-    <Content Include="ui\images\jobs.png" />
-    <Content Include="ui\images\psimarron.gif" />
-    <Content Include="ui\jobs.html" />
-    <Content Include="ui\settings.html" />
-    <Content Include="ui\plan.html" />
-    <Content Include="ui\edit.html" />
-    <Content Include="ui\images\exceptOff.png" />
-    <Content Include="ui\images\exceptOn.png" />
-    <Content Include="ui\images\guide.png" />
-    <Content Include="ui\images\home.png" />
-    <Content Include="ui\images\intime.gif" />
-    <Content Include="ui\images\plan.png" />
-    <Content Include="ui\images\late.gif" />
-    <Content Include="ui\images\lost.gif" />
-    <Content Include="ui\images\new.png" />
-    <Content Include="ui\images\null.gif" />
-    <Content Include="ui\images\refresh.png" />
-    <Content Include="ui\images\running.gif" />
-    <Content Include="ui\images\settings.png" />
-    <Content Include="ui\templates\checkUpdate.html" />
-    <Content Include="ui\templates\adminRules.html" />
-    <Content Include="ui\templates\adminDevices.html" />
-    <Content Include="ui\templates\favoriteRow.html" />
-    <Content Include="ui\templates\logRowDetails.html" />
-    <Content Include="ui\templates\logRow.html" />
-    <Content Include="ui\templates\planRowDetails.html" />
-    <Content Include="ui\templates\startScan.html" />
-    <Content Include="ui\templates\startGuide.html" />
-    <Content Include="ui\templates\profileRow.html" />
-    <Content Include="ui\templates\guideDetails.html" />
-    <Content Include="ui\templates\guideRow.html" />
-    <Content Include="ui\templates\editCurrent.html" />
-    <Content Include="ui\templates\currentGuide.html" />
-    <Content Include="ui\templates\currentRow.html" />
-    <Content Include="ui\templates\exceptionRow.html" />
-    <Content Include="ui\templates\jobRow.html" />
-    <Content Include="ui\templates\sourceSelection.html" />
-    <Content Include="ui\templates\planRow.html" />
-    <Content Include="ui\templates\planRowException.html" />
-    <TypeScriptCompile Include="scripts\typings\jqueryui\jqueryui.d.ts" />
-    <TypeScriptCompile Include="scripts\typings\jquery\jquery.d.ts" />
-    <TypeScriptCompile Include="scripts\vcrnet.ts" />
-    <Content Include="content\vcrnet.css">
-      <DependentUpon>vcrnet.less</DependentUpon>
+    <None Include="content\styles.scss" />
+    <Content Include="content\images\null.png" />
+    <Content Include="content\styles.css">
+      <DependentUpon>styles.scss</DependentUpon>
     </Content>
     <Content Include="default.html" />
-    <None Include="content\jmslib.less" />
-    <Content Include="content\vcrnet.min.css">
-      <DependentUpon>vcrnet.less</DependentUpon>
+    <Content Include="scripts\vcrnet.js" />
+    <Content Include="scripts\vcrnet.js.map">
+      <DependentUpon>vcrnet.js</DependentUpon>
     </Content>
+    <None Include="src\lib.react\command\toggle.scss" />
+    <None Include="src\lib.react\command\button.scss" />
+    <None Include="src\lib.react\command\externalLink.scss" />
+    <None Include="src\lib.react\command\internalLink.scss" />
+    <None Include="src\lib.react\command\pictogram.scss" />
+    <None Include="src\lib.react\constants.scss" />
+    <None Include="src\lib.react\detailRow.scss" />
+    <None Include="src\lib.react\edit\boolean\flag.scss" />
+    <None Include="src\lib.react\edit\buttonList.scss" />
+    <None Include="src\lib.react\edit\datetime\day.scss" />
+    <None Include="src\lib.react\edit\datetime\time.scss" />
+    <None Include="src\lib.react\edit\list.scss" />
+    <None Include="src\lib.react\edit\multiButtonList.scss" />
+    <None Include="src\lib.react\edit\multiList.scss" />
+    <None Include="src\lib.react\edit\number\number.scss" />
+    <None Include="src\lib.react\edit\number\slider.scss" />
+    <None Include="src\lib.react\edit\text\text.scss" />
+    <None Include="src\lib.react\edit\text\textarea.scss" />
+    <None Include="src\lib.react\router.scss" />
+    <None Include="src\lib.react\styles.scss" />
+    <None Include="src\lib.react\timebar.scss" />
+    <None Include="src\pages\admin\directories.scss" />
+    <None Include="src\pages\admin\guide.scss" />
+    <None Include="src\pages\admin\other.scss" />
+    <None Include="src\pages\admin\rules.scss" />
+    <None Include="src\pages\admin\security.scss" />
+    <None Include="src\pages\admin\sources.scss" />
+    <None Include="src\pages\edit\exception.scss" />
+    <None Include="src\pages\admin.scss" />
+    <None Include="src\pages\admin\devices.scss" />
+    <None Include="src\pages\favorites.scss" />
+    <None Include="src\pages\favorites\entry.scss" />
+    <None Include="src\pages\devices.scss" />
+    <None Include="src\pages\devices\entry.scss" />
+    <None Include="src\pages\devices\guide.scss" />
+    <None Include="src\pages\devices\control.scss" />
+    <None Include="src\pages\guide.scss" />
+    <None Include="src\pages\guide\navigator.scss" />
+    <None Include="src\pages\guide\entry.scss" />
+    <None Include="src\pages\guide\details.scss" />
+    <None Include="src\pages\home\versionCheck.scss" />
+    <None Include="src\pages\jobs.scss" />
+    <None Include="src\pages\log.scss" />
+    <None Include="src\pages\log\details.scss" />
+    <None Include="src\pages\plan\guide.scss" />
+    <None Include="src\pages\guide\info.scss" />
+    <None Include="src\pages\settings.scss" />
+    <Content Include="content\images\faq\recover.png" />
+    <Content Include="content\images\faq\webserver.png" />
+    <Content Include="content\images\faq\decryptlimit.png" />
+    <Content Include="content\images\faq\endchange.png" />
+    <None Include="src\pages\edit\job.scss" />
+    <None Include="src\common\field.scss" />
+    <None Include="src\pages\edit\channel.scss" />
+    <None Include="src\pages\edit\channelFlags.scss" />
+    <None Include="src\pages\edit\schedule.scss" />
+    <None Include="src\pages\edit\duration.scss" />
+    <None Include="src\pages\plan\exception.scss" />
+    <None Include="src\pages\home\task.scss" />
+    <Content Include="content\images\faq\epgonoff.png" />
+    <Content Include="content\images\faq\epgsources.png" />
+    <Content Include="content\images\faq\epgtimes.png" />
+    <Content Include="content\images\faq\exceptions.png" />
+    <Content Include="content\images\faq\hibernate.png" />
+    <Content Include="content\images\faq\hibernatevcc.png" />
+    <Content Include="content\images\faq\jobsandschedules.png" />
+    <Content Include="content\images\faq\manualsleep.png" />
+    <Content Include="content\images\faq\psi.png" />
+    <Content Include="content\images\faq\repeating.png" />
+    <Content Include="content\images\faq\sendtonetwork.png" />
+    <Content Include="content\images\faq\sourcelimit.png" />
+    <Content Include="content\images\faq\sources.png" />
+    <Content Include="content\images\faq\streamoptions.png" />
+    <Content Include="content\images\faq\streamprotection.png" />
+    <None Include="gulpfile.js" />
+    <TypeScriptCompile Include="..\typings\index.d.ts">
+      <Link>src\index.d.ts</Link>
+    </TypeScriptCompile>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="scripts\react\react-dom-server.js" />
+    <None Include="scripts\react\react-dom-server.min.js" />
+    <None Include="scripts\react\react-dom.js" />
+    <Content Include="scripts\react\react-dom.min.js" />
+    <None Include="scripts\react\react-with-addons.js" />
+    <None Include="scripts\react\react-with-addons.min.js" />
+    <None Include="scripts\react\react.js" />
+    <Content Include="scripts\react\react.min.js" />
+    <Content Include="favicon.ico" />
+    <None Include="src\common\helpLink.scss" />
+    <None Include="src\common\navigation.scss" />
+    <None Include="src\common\inlineHelp.scss" />
+    <None Include="src\common\styles.scss" />
+    <None Include="src\pages\edit.scss" />
+    <None Include="src\pages\help.scss" />
+    <None Include="src\pages\plan.scss" />
+    <None Include="src\pages\home.scss" />
+    <None Include="src\common\main.scss" />
+    <None Include="src\pages\plan\row.scss" />
+    <Content Include="content\images\delete.png" />
+    <Content Include="content\images\fav.png" />
+    <Content Include="content\images\info.png" />
+    <Content Include="content\images\next.gif" />
+    <Content Include="content\images\prev.gif" />
+    <Content Include="content\images\recording.png" />
+    <Content Include="content\images\running.png" />
+    <Content Include="content\images\admin.png" />
+    <Content Include="content\images\devices.png" />
+    <Content Include="content\images\jobs.png" />
+    <Content Include="content\images\psimarron.gif" />
+    <Content Include="content\images\exceptOff.png" />
+    <Content Include="content\images\exceptOn.png" />
+    <Content Include="content\images\guide.png" />
+    <Content Include="content\images\home.png" />
+    <Content Include="content\images\intime.gif" />
+    <Content Include="content\images\plan.png" />
+    <Content Include="content\images\late.gif" />
+    <Content Include="content\images\lost.gif" />
+    <Content Include="content\images\new.png" />
+    <Content Include="content\images\null.gif" />
+    <Content Include="content\images\refresh.png" />
+    <Content Include="content\images\running.gif" />
+    <Content Include="content\images\settings.png" />
+    <TypeScriptCompile Include="src\app\app.ts" />
+    <TypeScriptCompile Include="src\lib\dateTimeUtils.ts" />
+    <TypeScriptCompile Include="src\app\pages\edit.ts" />
+    <TypeScriptCompile Include="src\app\pages\help.ts" />
+    <TypeScriptCompile Include="src\app\pages\home.ts" />
+    <TypeScriptCompile Include="src\lib\edit\datetime\day.ts" />
+    <TypeScriptCompile Include="src\app\pages\edit\duration.ts" />
+    <TypeScriptCompile Include="src\app\pages\edit\job.ts" />
+    <TypeScriptCompile Include="src\app\pages\channel.ts" />
+    <TypeScriptCompile Include="src\lib\edit\edit.ts" />
+    <TypeScriptCompile Include="src\app\pages\edit\jobSchedule.ts" />
+    <TypeScriptCompile Include="src\lib\edit\number\slider.ts" />
+    <TypeScriptCompile Include="src\app\pages\edit\exception.ts" />
+    <TypeScriptCompile Include="src\lib\edit\number\number.ts" />
+    <TypeScriptCompile Include="src\lib\edit\boolean\flag.ts" />
+    <TypeScriptCompile Include="src\lib\edit\text\text.ts" />
+    <TypeScriptCompile Include="src\lib\site.ts" />
+    <TypeScriptCompile Include="src\lib\edit\datetime\time.ts" />
+    <TypeScriptCompile Include="src\app\pages\page.ts" />
+    <TypeScriptCompile Include="src\app\pages\plan\entry.ts" />
+    <TypeScriptCompile Include="src\app\pages\plan\exception.ts" />
+    <TypeScriptCompile Include="src\app\pages\plan.ts" />
+    <TypeScriptCompile Include="src\lib\promise.ts" />
+    <TypeScriptCompile Include="src\app\pages\edit\schedule.ts" />
+    <TypeScriptCompile Include="src\pages\edit\channel.tsx" />
+    <TypeScriptCompile Include="src\pages\edit\channelFlags.tsx" />
+    <TypeScriptCompile Include="src\pages\edit\duration.tsx" />
+    <TypeScriptCompile Include="src\pages\edit\exception.tsx" />
+    <TypeScriptCompile Include="src\pages\help\screenShot.tsx" />
+    <TypeScriptCompile Include="src\pages\help\configuration.tsx" />
+    <TypeScriptCompile Include="src\pages\help\controlCenter.tsx" />
+    <TypeScriptCompile Include="src\pages\help\currentStream.tsx" />
+    <TypeScriptCompile Include="src\pages\help\customSchedule.tsx" />
+    <TypeScriptCompile Include="src\pages\help\decryption.tsx" />
+    <TypeScriptCompile Include="src\pages\help\dvbNet.tsx" />
+    <TypeScriptCompile Include="src\pages\help\editCurrent.tsx" />
+    <TypeScriptCompile Include="src\pages\help\fileContents.tsx" />
+    <TypeScriptCompile Include="src\pages\help\hibernation.tsx" />
+    <TypeScriptCompile Include="src\pages\help\jobsAndSchedules.tsx" />
+    <TypeScriptCompile Include="src\pages\help\nexus.tsx" />
+    <TypeScriptCompile Include="src\pages\help\numberOfFiles.tsx" />
+    <TypeScriptCompile Include="src\pages\help\sourceChooser.tsx" />
+    <TypeScriptCompile Include="src\pages\help\sourceLimit.tsx" />
+    <TypeScriptCompile Include="src\pages\help\streaming.tsx" />
+    <TypeScriptCompile Include="src\pages\help\tasks.tsx" />
+    <TypeScriptCompile Include="src\pages\help\tsPlayer.tsx" />
+    <TypeScriptCompile Include="src\pages\help\webSettings.tsx" />
+    <TypeScriptCompile Include="src\pages\home\task.tsx" />
+    <TypeScriptCompile Include="src\pages\home\versionCheck.tsx" />
+    <TypeScriptCompile Include="src\pages\jobs.tsx" />
+    <TypeScriptCompile Include="src\pages\log.tsx" />
+    <TypeScriptCompile Include="src\pages\log\details.tsx" />
+    <TypeScriptCompile Include="src\pages\plan\exception.tsx" />
+    <TypeScriptCompile Include="src\common\field.tsx" />
+    <TypeScriptCompile Include="src\pages\edit\job.tsx" />
+    <TypeScriptCompile Include="src\common\helpLink.tsx" />
+    <TypeScriptCompile Include="src\pages\edit\schedule.tsx" />
+    <TypeScriptCompile Include="src\pages\edit.tsx" />
+    <TypeScriptCompile Include="src\pages\help\adminGuide.tsx" />
+    <TypeScriptCompile Include="src\pages\help\adminScan.tsx" />
+    <TypeScriptCompile Include="src\pages\help\archive.tsx" />
+    <TypeScriptCompile Include="src\pages\help\epg.tsx" />
+    <TypeScriptCompile Include="src\pages\help\helpComponent.ts" />
+    <TypeScriptCompile Include="src\pages\help\home.tsx" />
+    <TypeScriptCompile Include="src\pages\help\log.tsx" />
+    <TypeScriptCompile Include="src\pages\help\repeatingSchedules.tsx" />
+    <TypeScriptCompile Include="src\pages\help\parallelRecording.tsx" />
+    <TypeScriptCompile Include="src\pages\guide\entry.tsx" />
+    <TypeScriptCompile Include="src\pages\help.tsx" />
+    <TypeScriptCompile Include="src\pages\home.tsx" />
+    <TypeScriptCompile Include="src\common\inlineHelp.tsx" />
+    <TypeScriptCompile Include="src\common\main.tsx" />
+    <TypeScriptCompile Include="src\common\navigation.tsx" />
+    <TypeScriptCompile Include="src\pages\plan.tsx" />
+    <TypeScriptCompile Include="src\pages\plan\guide.tsx" />
+    <TypeScriptCompile Include="src\pages\plan\row.tsx" />
+    <TypeScriptCompile Include="src\common\view.tsx" />
+    <TypeScriptCompile Include="src\pages\settings.tsx" />
+    <TypeScriptCompile Include="src\vcrnet.tsx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="scripts\vcrserver.ts" />
-    <Content Include="scripts\vcrserver.js">
-      <DependentUpon>vcrserver.ts</DependentUpon>
-    </Content>
-    <Content Include="scripts\jquery-3.1.1.slim.min.map" />
-    <Content Include="scripts\jquery-3.1.1.min.map" />
+    <TypeScriptCompile Include="src\web\InfoServiceContract.ts" />
+    <TypeScriptCompile Include="src\web\ProfileInfoContract.ts" />
+    <TypeScriptCompile Include="src\web\UserProfileContract.ts" />
+    <TypeScriptCompile Include="src\web\PlanCurrentContract.ts" />
+    <TypeScriptCompile Include="src\web\PlanActivityContract.ts" />
+    <TypeScriptCompile Include="src\web\GuideItemContract.ts" />
+    <TypeScriptCompile Include="src\web\GuideInfoContract.ts" />
+    <TypeScriptCompile Include="src\web\ProfileJobInfoContract.ts" />
+    <TypeScriptCompile Include="src\web\PlanExceptionContract.ts" />
+    <TypeScriptCompile Include="src\web\EditJobScheduleCommonContract.ts" />
+    <TypeScriptCompile Include="src\web\EditScheduleContract.ts" />
+    <TypeScriptCompile Include="src\web\EditJobContract.ts" />
+    <TypeScriptCompile Include="src\web\JobScheduleInfoContract.ts" />
+    <TypeScriptCompile Include="src\web\InfoScheduleContract.ts" />
+    <TypeScriptCompile Include="src\web\InfoJobContract.ts" />
+    <TypeScriptCompile Include="src\web\SourceInformationContract.ts" />
+    <TypeScriptCompile Include="src\web\ProfileSourceContract.ts" />
+    <TypeScriptCompile Include="src\web\SettingsContract.ts" />
+    <TypeScriptCompile Include="src\web\admin\SecuritySettingsContract.ts" />
+    <TypeScriptCompile Include="src\web\admin\DirectorySettingsContract.ts" />
+    <TypeScriptCompile Include="src\web\admin\GuideSettingsContract.ts" />
+    <TypeScriptCompile Include="src\web\admin\SourceScanSettingsContract.ts" />
+    <TypeScriptCompile Include="src\web\ProfileContract.ts" />
+    <TypeScriptCompile Include="src\web\admin\ProfileSettingsContract.ts" />
+    <TypeScriptCompile Include="src\web\admin\OtherSettingsContract.ts" />
+    <TypeScriptCompile Include="src\web\admin\SchedulerRulesContract.ts" />
+    <TypeScriptCompile Include="src\web\ProtocolEntryContract.ts" />
+    <TypeScriptCompile Include="src\web\GuideSource.ts" />
+    <TypeScriptCompile Include="src\web\GuideEncryption.ts" />
+    <TypeScriptCompile Include="src\web\GuideFilterContract.ts" />
+    <TypeScriptCompile Include="src\web\JobScheduleDataContract.ts" />
+    <TypeScriptCompile Include="src\web\SavedGuideQueryContract.ts" />
+    <TypeScriptCompile Include="src\web\RecordingDirectoryCache.ts" />
+    <TypeScriptCompile Include="src\web\ProfileCache.ts" />
+    <TypeScriptCompile Include="src\web\GuideInfoCache.ts" />
+    <TypeScriptCompile Include="src\web\ProfileSourcesCache.ts" />
+    <TypeScriptCompile Include="src\web\vcrserver.ts" />
+    <None Include="src\vcrnet.scss" />
+    <None Include="src\pages\styles.scss" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="content\vcrnet.less" />
-    <Content Include="scripts\vcrnet.js.map">
-      <DependentUpon>vcrnet.ts</DependentUpon>
-    </Content>
-    <Content Include="scripts\jmslib.js.map">
-      <DependentUpon>jmslib.ts</DependentUpon>
-    </Content>
-    <Content Include="scripts\vcrserver.js.map">
-      <DependentUpon>vcrserver.ts</DependentUpon>
-    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -329,6 +471,9 @@
   <PropertyGroup>
     <PostBuildEvent>
     </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>gulp -b $(ProjectDir) --gulpfile $(ProjectDir)gulpfile.js sass</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

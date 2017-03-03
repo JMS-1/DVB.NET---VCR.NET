@@ -1,0 +1,16 @@
+﻿.vcrnet-guideentryinfo {
+    > table > tbody > tr {
+        > td {
+            padding-bottom: 0.25rem;
+        }
+
+        &:last-child > td:last-child {
+            white-space: pre-wrap;
+        }
+    }
+
+    > div:last-child {
+        font-size: small;
+        margin-top: 6px;
+    }
+}

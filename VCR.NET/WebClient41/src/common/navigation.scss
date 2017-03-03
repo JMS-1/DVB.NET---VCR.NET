@@ -1,0 +1,14 @@
+﻿.vcrnet-navigation {
+    margin-bottom: 1rem;
+
+    .jmslib-internalLink {
+        .jmslib-pict {
+            margin-right: 2px;
+            vertical-align: bottom;
+        }
+
+        &:not(:last-child) {
+            margin-right: 0.5rem;
+        }
+    }
+}

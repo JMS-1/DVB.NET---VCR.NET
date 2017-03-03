@@ -1,0 +1,46 @@
+﻿@import "../constants";
+
+.jmslib-command {
+    @include no-select();
+    border: 1px solid $commandBorderColor;
+    background: $commandBackgroundColor;
+    padding: 0.3rem 0.8rem;
+    display: inline-block;
+    border-radius: 3px;
+    font-size: smaller;
+    text-align: center;
+
+    &[data-jmslib-disabled="yes"] {
+        opacity: 0.5;
+        cursor: default;
+    }
+
+    &[data-jmslib-checked=yes] {
+        background: $commandActiveBackgrundColor;
+    }
+
+    &:not([data-jmslib-disabled="yes"]) {
+        &:hover {
+            cursor: default;
+
+            &:not([data-jmslib-checked=yes]) {
+                border-color: $commandHoverBorderColor;
+                background: $commandHoverBackgroundColor;
+                cursor: pointer;
+            }
+        }
+
+        &:active {
+            background: $commandHoverBorderColor;
+        }
+    }
+
+    &.jmslib-dangerous {
+        font-weight: $warningTextWeight;
+        color: $warningTextColor;
+    }
+
+    &:not([title=""]) {
+        border-color: $errorBorderColor;
+    }
+}

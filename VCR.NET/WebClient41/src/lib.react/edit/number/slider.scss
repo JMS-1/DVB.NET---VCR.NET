@@ -1,0 +1,52 @@
+﻿.jmslib-slider {
+    position: relative;
+    width: 100%;
+    height: 1rem;
+
+    > div:first-child {
+        position: absolute;
+        left: 0.5rem;
+        right: 0.5rem;
+        top: 0.2rem;
+        bottom: 0.2rem;
+        background: lightgray;
+        border-radius: 2px 2px;
+    }
+
+    > div:nth-child(2) {
+        position: absolute;
+        left: 0;
+        right: 1.1rem;
+        top: -0.05rem;
+        bottom: 0;
+
+        > div {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1rem;
+            height: 1rem;
+            background: darkgray;
+            border: 1px solid #808080;
+            border-radius: 50% 50%;
+            box-shadow: #707070 1px 1px;
+
+            &.jmslib-slider-selected {
+                background-color: gray;
+            }
+        }
+    }
+
+    > div:last-child {
+        position: absolute;
+        cursor: default;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+
+        &:focus {
+            outline: none;
+        }
+    }
+}

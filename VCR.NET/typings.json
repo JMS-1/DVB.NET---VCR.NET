@@ -1,0 +1,10 @@
+{
+  "name": "vcrnet",
+  "dependencies": {},
+  "globalDependencies": {
+    "jquery": "registry:dt/jquery#1.10.0+20160929162922",
+    "jqueryui": "registry:dt/jqueryui#1.11.0+20160727153854",
+    "react": "registry:dt/react#0.14.0+20161203201537",
+    "react-dom": "registry:dt/react-dom#0.14.0+20160412154040"
+  }
+}

@@ -1,0 +1,44 @@
+﻿.vcrnet-guide {
+    > form {
+        margin-bottom: 10px;
+
+        > fieldset, select {
+            font-size: small;
+        }
+
+        > fieldset {
+            padding: 10px 14px;
+
+            > label {
+                font-weight: bold;
+            }
+
+            > div:not(:last-child) {
+                margin-bottom: 6px;
+            }
+
+            > div:nth-of-type(2) .jmslib-command:not(:last-child) {
+                margin-right: 4px;
+            }
+        }
+    }
+
+    .vcrnet-editfield {
+        display: inline-block;
+        margin-right: 10px;
+
+        > div:first-child {
+            margin-right: 4px;
+        }
+    }
+
+    > table {
+        min-width: 1050px;
+        margin: 5px 14px;
+    }
+}
+
+@import "guide/info";
+@import "guide/entry";
+@import "guide/details";
+@import "guide/navigator";

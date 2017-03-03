@@ -1,0 +1,16 @@
+{
+  "name": "vcrnet",
+  "version": "4.5.0",
+  "description": "VCR.NET Recording Service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dr. Jochen Manns",
+  "license": "ISC",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-sass": "^3.0.0",
+    "typings": "^2.0.0"
+  }
+}
