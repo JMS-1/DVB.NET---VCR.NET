@@ -1,20 +1,20 @@
-﻿.jmslib-timebar {
+﻿$innerHeigth: 14px;
+$radius: 2px;
+
+.jmslib-timebar {
+    height: $innerHeigth + 6px;
     position: relative;
-    height: 26px;
     width: 90%;
 
     > div:first-child {
-        border: 1px solid black;
-        background: lightgray;
+        height: $innerHeigth;
         position: relative;
-        border-left: none;
-        height: 20px;
         width: 100%;
         top: 2px;
         left: 0;
 
         > div {
-            border-left: 1px solid black;
+            border: 1px solid black;
             display: inline-block;
             position: absolute;
             height: 100%;
@@ -28,15 +28,29 @@
             &.jmslib-timebar-bad {
                 background: yellow;
             }
+
+            &:not(.jmslib-timebar-good):not(.jmslib-timebar-bad) {
+                background: lightgray;
+            }
+
+            &:first-child {
+                border-top-left-radius: $radius;
+                border-bottom-left-radius: $radius;
+            }
+
+            &:last-child {
+                border-top-right-radius: $radius;
+                border-bottom-right-radius: $radius;
+            }
         }
     }
 
     > div:last-child {
-        border: 2px solid #666;
+        height: $innerHeigth + 6px;
         border-radius: 2px;
         position: absolute;
-        height: 22px;
-        width: 2px;
+        background: #666;
+        width: 3px;
         left: 0;
         top: 0;
     }
