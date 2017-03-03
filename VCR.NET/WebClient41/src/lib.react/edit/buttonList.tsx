@@ -15,7 +15,7 @@ namespace JMSLib.ReactUi {
         render(): JSX.Element {
             var value = this.props.uvm.value;
 
-            return <div className={`jmslib-editbuttonlist${this.props.merge ? ` jmslib-mergedbuttons` : ``}`}>
+            return <div className={`jmslib-editbuttonlist${this.props.merge ? ` jmslib-command-mergelist` : ``}`}>
                 {this.props.uvm.allowedValues.map(av => <div
                     title=""
                     key={av.display}

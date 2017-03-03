@@ -13,7 +13,7 @@ namespace JMSLib.ReactUi {
 
         // Oberflächenelemente erstellen.
         render(): JSX.Element {
-            return <div className={`jmslib-editmultibuttonlist${this.props.merge ? ` jmslib-mergedbuttons` : ``}`}>
+            return <div className={`jmslib-editmultibuttonlist${this.props.merge ? ` jmslib-command-mergelist` : ``}`}>
                 {this.props.uvm.allowedValues.map(v => <div
                     title=""
                     key={v.display}

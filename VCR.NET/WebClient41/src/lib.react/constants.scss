@@ -10,8 +10,6 @@ $warningTextWeight: bold;
 
 $errorBorderColor: red;
 
-$inputErrorColor: red;
-
 // Benutzerauswahl deaktivieren.
 @mixin no-select {
   -webkit-touch-callout: none;
