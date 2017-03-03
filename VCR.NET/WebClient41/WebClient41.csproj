@@ -423,6 +423,7 @@
     <TypeScriptCompile Include="src\web\GuideInfoCache.ts" />
     <TypeScriptCompile Include="src\web\ProfileSourcesCache.ts" />
     <TypeScriptCompile Include="src\web\vcrserver.ts" />
+    <Content Include="src\constants.scss" />
     <None Include="src\vcrnet.scss" />
     <None Include="src\pages\styles.scss" />
     <None Include="Web.config">
