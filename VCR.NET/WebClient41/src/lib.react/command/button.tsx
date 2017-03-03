@@ -8,8 +8,7 @@ namespace JMSLib.ReactUi {
         // Oberflächenelemente erzeugen.
         render(): JSX.Element {
             return this.props.uvm.isVisible ? <div
-                className={`jmslib-command${this.props.uvm.isDangerous ? ` jmslib-dangerous` : ``}`}
-                data-jmslib-disabled={this.props.uvm.isEnabled ? `no` : `yes`}
+                className={`jmslib-command${this.props.uvm.isDangerous ? ` jmslib-command-dangerous` : ``}${this.props.uvm.isEnabled ? `` : ` jmslib-command-disabled`}`}
                 onClick={ev => this.props.uvm.execute()}
                 title={this.props.uvm.message}>
                 {this.props.uvm.text}

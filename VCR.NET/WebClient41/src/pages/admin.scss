@@ -19,7 +19,7 @@
                         background: lightblue;
                     }
 
-                    &[data-jmslib-checked="yes"] {
+                    &.jmslib-command-checked {
                         background: lightgray;
 
                         a {

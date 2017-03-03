@@ -10,20 +10,20 @@
     font-size: smaller;
     text-align: center;
 
-    &[data-jmslib-disabled="yes"] {
+    &.jmslib-command-disabled {
         opacity: 0.5;
         cursor: default;
     }
 
-    &[data-jmslib-checked=yes] {
+    &.jmslib-command-checked {
         background: $commandActiveBackgrundColor;
     }
 
-    &:not([data-jmslib-disabled="yes"]) {
+    &:not(.jmslib-command-disabled) {
         &:hover {
             cursor: default;
 
-            &:not([data-jmslib-checked=yes]) {
+            &:not(.jmslib-command-checked) {
                 border-color: $commandHoverBorderColor;
                 background: $commandHoverBackgroundColor;
                 cursor: pointer;
@@ -35,7 +35,7 @@
         }
     }
 
-    &.jmslib-dangerous {
+    &.jmslib-command-dangerous {
         font-weight: $warningTextWeight;
         color: $warningTextColor;
     }
