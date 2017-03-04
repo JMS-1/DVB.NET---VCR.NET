@@ -12,16 +12,15 @@ namespace VCRNETClient.Ui {
             const section = this.props.uvm.sections.value;
 
             return <div className="vcrnet-admin">
-                <div className="vcrnet-admin-tabs">
-                    <div>
-                        {this.props.uvm.sections.allowedValues.map(si => <div
+                <div>
+                    {this.props.uvm.sections.allowedValues.map(si =>
+                        <div
                             key={si.display}
                             className={`${(si.value === section) ? `jmslib-command-checked` : ``}`}>
                             <JMSLib.ReactUi.InternalLink view={`${this.props.uvm.route};${si.value.route}`}>{si.display}</JMSLib.ReactUi.InternalLink>
                         </div>)}
-                    </div>
-                    <div>{this.renderSection()}</div>
                 </div>
+                <div>{this.renderSection()}</div>
             </div>;
         }
 

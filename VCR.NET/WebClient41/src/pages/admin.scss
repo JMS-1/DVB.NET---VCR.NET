@@ -1,52 +1,49 @@
 ﻿@import "../lib.react/constants";
 
 .vcrnet-admin {
-    padding: 4px;
     width: 90%;
+    padding: 4px;
+    white-space: nowrap;
 
-    > .vcrnet-admin-tabs {
-        white-space: nowrap;
+    > div {
+        display: inline-block;
 
-        > div {
-            display: inline-block;
+        &:first-child {
+            > div {
+                margin: 10px;
+                border-radius: 4px;
+                border: 1px solid black;
+                box-shadow: gray 2px 1px;
 
-            &:first-child {
-                > div {
-                    margin: 10px;
-                    border: 1px solid black;
-                    border-radius: 4px;
-                    box-shadow: gray 2px 1px;
+                &:hover {
+                    background: $commandHoverBackgroundColor;
+                }
 
-                    &:hover {
-                        background: $commandHoverBackgroundColor;
-                    }
-
-                    &.jmslib-command-checked {
-                        background: $commandActiveBackgroundColor;
-
-                        a {
-                            cursor: default;
-                        }
-                    }
+                &.jmslib-command-checked {
+                    background: $commandActiveBackgroundColor;
 
                     a {
-                        color: black;
-                        display: block;
-                        text-decoration: none;
-                        padding: 4px 8px;
+                        cursor: default;
                     }
                 }
-            }
 
-            &:last-child {
-                vertical-align: top;
-                white-space: normal;
-                margin: 0px 20px;
-                width: 90%;
-
-                h2 {
-                    margin: 10px 0;
+                a {
+                    color: black;
+                    display: block;
+                    padding: 4px 8px;
+                    text-decoration: none;
                 }
+            }
+        }
+
+        &:last-child {
+            vertical-align: top;
+            white-space: normal;
+            margin: 0px 20px;
+            width: 90%;
+
+            h2 {
+                margin: 10px 0;
             }
         }
     }

@@ -7,9 +7,9 @@
         }
 
         .jmslib-editmultilist {
-            display: inline-block;
             width: 30rem;
             margin-right: 10px;
+            display: inline-block;
             margin-bottom: $spacing;
 
             + .jmslib-command {
