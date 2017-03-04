@@ -8,7 +8,7 @@ namespace VCRNETClient.Ui {
         // Oberflächenelemente erstellen.
         render(): JSX.Element {
             return <tr className="vcrnet-planrow">
-                <td>{this.props.uvm.mode ? <JMSLib.ReactUi.Pictogram name={this.props.uvm.mode} type="gif" /> : <span>&nbsp;</span>}</td>
+                <td>{this.props.uvm.mode ? <JMSLib.ReactUi.Pictogram name={this.props.uvm.mode} /> : <span>&nbsp;</span>}</td>
                 <td>{this.props.uvm.mode ? <a href="javascript:void(0)" onClick={() => this.props.uvm.toggleDetail(true)}>{this.props.uvm.displayStart}</a> : <span>{this.props.uvm.displayStart}</span>}</td>
                 <td className={this.props.uvm.suspectTime ? `vcrnet-planrow-suspect` : undefined}>{this.props.uvm.displayEnd}</td>
                 <td>{this.props.uvm.station}</td>

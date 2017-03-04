@@ -34,38 +34,38 @@ namespace VCRNETClient.Ui {
                     Je nach den zugeteilten Benutzerrechten können Sie darüber hinaus folgende administrative Tätigkeiten wahrnehmen:
                     <ul>
                         <li>{showGuide.isReadonly ? showGuide.text : <JMSLib.ReactUi.InternalLink view={() => showGuide.value = !showGuide.value}>{showGuide.text}</JMSLib.ReactUi.InternalLink>}<HelpLink page={this.props.uvm} topic="epgconfig" /></li>
-                        {showGuide.value ? <Task uvm={this.props.uvm.startGuide}>
+                        {showGuide.value && <Task uvm={this.props.uvm.startGuide}>
                             Mit der Schaltfläche unter diesem Text kann eine baldmögliche Aktualisierung der
                             Programmzeitschrift<HelpLink topic="epg" page={this.props.uvm} /> angefordert
                             werden. Sind gerade Aufzeichnungen aktiv oder in nächster Zeit geplant, so wird der VCR.NET
                             Recording Service die Aktualisierung auf den nächstmöglichen Zeitpunkt verschieben, da die Ausführung
                             regulärer Aufzeichnungen immer Priorität vor allen Aktualisierungen
                             hat.<HelpLink topic="tasks" page={this.props.uvm} />
-                        </Task> : null}
+                        </Task>}
                         <li>{showScan.isReadonly ? showScan.text : <JMSLib.ReactUi.InternalLink view={() => showScan.value = !showScan.value}>{showScan.text}</JMSLib.ReactUi.InternalLink>}<HelpLink page={this.props.uvm} topic="psiconfig" /></li>
-                        {showScan.value ? <Task uvm={this.props.uvm.startScan}>
+                        {showScan.value && <Task uvm={this.props.uvm.startScan}>
                             Hier ist es nun möglich, die Aktualisierung der Quellen der vom VCR.NET Recording Service verwalteten
                             DVB.NET Geräte anzufordern. Da die Aktualisierung der Quellen eine niedrigere Priorität besitzt als
                             die Ausführung regulärer Aufzeichnungen kann es sein, dass sie nicht unmittelbar gestartet wird.
                             Der VCR.NET Recording Service wird dies aber bei nächster Gelegenheit
                             nachholen.<HelpLink topic="tasks" page={this.props.uvm} />
-                        </Task> : null}
+                        </Task>}
                         <li>prüfen, ob inzwischen eine <JMSLib.ReactUi.InternalLink view={() => versionCheck.value = !versionCheck.value}>neuere Version</JMSLib.ReactUi.InternalLink> des VCR.NET Recording Service angeboten wird</li>
-                        {versionCheck.value ? <VersionCheck uvm={this.props.uvm} /> : null}
+                        {versionCheck.value && <VersionCheck uvm={this.props.uvm} />}
                         <li>{this.props.uvm.isRecording ? "die Konfiguration des VCR.NET Recording Service verändern" : <JMSLib.ReactUi.InternalLink pict="admin" view={application.adminPage.route}>die Konfiguration des VCR.NET Recording Service verändern</JMSLib.ReactUi.InternalLink>}</li>
                     </ul>
                 </div>
-                {this.props.uvm.isRecording ? <div className="vcrnet-warningtext">
+                {this.props.uvm.isRecording && <div className="vcrnet-warningtext">
                     Hinweis: Der VCR.NET Recording Service führt gerade eine oder mehrere Aufzeichnungen
                     oder Aktualisierungen von Programmzeitschrift respektive Senderliste aus.<JMSLib.ReactUi.InternalLink view={this.props.uvm.application.devicesPage.route} pict="info" />
-                </div> : null}
+                </div>}
                 <div>
                     Weitere Informationen zum VCR.NET Recording Service findet man hier im Bereich der <JMSLib.ReactUi.InternalLink view={`${application.helpPage.route};overview`}>Fragen &amp; Antworten</JMSLib.ReactUi.InternalLink>, auf
                     der <JMSLib.ReactUi.ExternalLink url="http://www.psimarron.net/vcrnet">Homepage im Internet</JMSLib.ReactUi.ExternalLink> oder
                     im <JMSLib.ReactUi.ExternalLink url="http://www.watchersnet.de/Default.aspx?tabid=52&g=topics&f=17">offiziellen Forum</JMSLib.ReactUi.ExternalLink>.
                 </div>
                 <div className="vcrnet-home-copyright">
-                    <JMSLib.ReactUi.ExternalLink url="http://www.psimarron.net"><JMSLib.ReactUi.Pictogram name="psimarron" type="gif" /></JMSLib.ReactUi.ExternalLink>
+                    <JMSLib.ReactUi.ExternalLink url="http://www.psimarron.net"><JMSLib.ReactUi.Pictogram name="psimarron" /></JMSLib.ReactUi.ExternalLink>
                     <span>Dr. Jochen Manns, 2003-17</span>
                 </div>
             </div>;

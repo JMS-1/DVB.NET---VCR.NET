@@ -9,7 +9,7 @@ namespace JMSLib.ReactUi {
         render(): JSX.Element {
             return <div className="jmslib-editday jmslib-validatable" title={this.props.uvm.message}>
                 <div>
-                    <Pictogram name="prev" type="gif" onClick={ev => this.props.uvm.monthBackward.execute()} />
+                    <Pictogram name="prev" onClick={ev => this.props.uvm.monthBackward.execute()} />
                     <div>
                         <select value={this.props.uvm.month} onChange={ev => this.props.uvm.month = (ev.target as HTMLSelectElement).value} >
                             {this.props.uvm.months.map(m => <option key={m} value={m}>{m}</option>)}
@@ -18,7 +18,7 @@ namespace JMSLib.ReactUi {
                             {this.props.uvm.years.map(m => <option key={m} value={m}>{m}</option>)}
                         </select>
                     </div>
-                    <Pictogram name="next" type="gif" onClick={ev => this.props.uvm.monthForward.execute()} />
+                    <Pictogram name="next" onClick={ev => this.props.uvm.monthForward.execute()} />
                 </div>
                 <table>
                     <thead><tr>{this.props.uvm.dayNames.map(n => <td key={n}>{n}</td>)}</tr></thead>

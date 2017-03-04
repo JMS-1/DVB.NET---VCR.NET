@@ -168,7 +168,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="content\styles.scss" />
+    <Content Include="content\images\intime.png" />
+    <Content Include="content\images\late.png" />
+    <Content Include="content\images\lost.png" />
+    <Content Include="content\images\next.png" />
     <Content Include="content\images\null.png" />
+    <Content Include="content\images\prev.png" />
+    <Content Include="content\images\psimarron.png" />
     <Content Include="content\styles.css">
       <DependentUpon>styles.scss</DependentUpon>
     </Content>
@@ -281,26 +287,18 @@
     <Content Include="content\images\delete.png" />
     <Content Include="content\images\fav.png" />
     <Content Include="content\images\info.png" />
-    <Content Include="content\images\next.gif" />
-    <Content Include="content\images\prev.gif" />
     <Content Include="content\images\recording.png" />
     <Content Include="content\images\running.png" />
     <Content Include="content\images\admin.png" />
     <Content Include="content\images\devices.png" />
     <Content Include="content\images\jobs.png" />
-    <Content Include="content\images\psimarron.gif" />
     <Content Include="content\images\exceptOff.png" />
     <Content Include="content\images\exceptOn.png" />
     <Content Include="content\images\guide.png" />
     <Content Include="content\images\home.png" />
-    <Content Include="content\images\intime.gif" />
     <Content Include="content\images\plan.png" />
-    <Content Include="content\images\late.gif" />
-    <Content Include="content\images\lost.gif" />
     <Content Include="content\images\new.png" />
-    <Content Include="content\images\null.gif" />
     <Content Include="content\images\refresh.png" />
-    <Content Include="content\images\running.gif" />
     <Content Include="content\images\settings.png" />
     <TypeScriptCompile Include="src\app\app.ts" />
     <TypeScriptCompile Include="src\lib\dateTimeUtils.ts" />

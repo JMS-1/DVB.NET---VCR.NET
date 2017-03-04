@@ -10,9 +10,7 @@ namespace VCRNETClient.Ui {
             // Ermittelt die Anzeige des gewählten Aspektes.
             var element = this.props.uvm.getHelpComponent<HelpComponent>();
 
-            return <div className="vcrnet-faq">
-                {(element && element.render(this.props.uvm)) || null}
-            </div>;
+            return <div className="vcrnet-faq">{(element && element.render(this.props.uvm))}</div>;
         }
     }
 }

@@ -7,9 +7,6 @@ namespace JMSLib.ReactUi {
         // Der Name einer Symboldatei.
         name: string;
 
-        // Die Art der Symboldatei - ist dieser Parameter nicht gesetzt, so wird PNG angenommen.
-        type?: string;
-
         // Eine alternative Beschreibung für das Symbol.
         description?: string;
 
@@ -29,7 +26,7 @@ namespace JMSLib.ReactUi {
                 className="jmslib-pict"
                 alt={this.props.description}
                 onClick={this.props.onClick}
-                src={`${Pictogram.imageRoot}${this.props.name}.${this.props.type || `png`}`} />;
+                src={`${Pictogram.imageRoot}${this.props.name}.png`} />;
         }
 
     }

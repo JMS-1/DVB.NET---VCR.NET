@@ -19,8 +19,8 @@ namespace VCRNETClient.Ui {
             return <tr className="vcrnet-device">
                 <td>{this.props.uvm.mode ?
                     (showControl.isReadonly ?
-                        <JMSLib.ReactUi.Pictogram name={this.props.uvm.mode} type="gif" /> :
-                        <JMSLib.ReactUi.InternalLink view={() => showControl.value = !showControl.value}><JMSLib.ReactUi.Pictogram name={this.props.uvm.mode} type="gif" /></JMSLib.ReactUi.InternalLink>) :
+                        <JMSLib.ReactUi.Pictogram name={this.props.uvm.mode} /> :
+                        <JMSLib.ReactUi.InternalLink view={() => showControl.value = !showControl.value}><JMSLib.ReactUi.Pictogram name={this.props.uvm.mode} /></JMSLib.ReactUi.InternalLink>) :
                     <span>&nbsp;</span>}
                 </td>
                 <td>{showGuide.isReadonly ?

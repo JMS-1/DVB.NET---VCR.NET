@@ -64,26 +64,26 @@ namespace VCRNETClient.Ui {
                 <table>
                     <tbody>
                         <tr>
-                            <td><JMSLib.ReactUi.Pictogram name="running" type="gif" /></td>
+                            <td><JMSLib.ReactUi.Pictogram name="running" /></td>
                             <td>Die Aufzeichnung oder Aufgabe wird in diesem Moment ausgeführt.</td>
                         </tr>
                         <tr>
-                            <td><JMSLib.ReactUi.Pictogram name="intime" type="gif" /></td>
+                            <td><JMSLib.ReactUi.Pictogram name="intime" /></td>
                             <td>Eine zukünftige Aufzeichnung wird wie programmiert ausgeführt.</td>
                         </tr>
                         <tr>
-                            <td><JMSLib.ReactUi.Pictogram name="late" type="gif" /></td>
+                            <td><JMSLib.ReactUi.Pictogram name="late" /></td>
                             <td>Eine zukünftige Aufzeichnung beginnt verspätet, eventuell fehlt der Anfang.</td>
                         </tr>
                         <tr>
-                            <td><JMSLib.ReactUi.Pictogram name="null" type="gif" /></td>
+                            <td><JMSLib.ReactUi.Pictogram name="null" /></td>
                             <td>Die Aufzeichnung oder Aufgabe wird gerade beendet - dies kann einige Sekunden dauern.</td>
                         </tr>
                     </tbody>
                 </table>
                 <br />
                 Wenn gerade eine Aufzeichnung oder Aufgabe ausgeführt wird, so kann das zugehörige
-                Symbol<JMSLib.ReactUi.Pictogram name="running" type="gif" /> ausgewählt werden um
+                Symbol<JMSLib.ReactUi.Pictogram name="running" /> ausgewählt werden um
                 den Endzeitpunkt dieser Aktivtät zu verändern - oder sie gänzlich zu
                 beenden<HelpLink topic="currentstream" page={this.props.uvm} />. Handelt es sich
                 bei der Aktivität um eine Aufzeichnung, so ist es zusätzlich möglich diese LIVE
