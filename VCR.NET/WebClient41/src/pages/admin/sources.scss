@@ -1,4 +1,4 @@
-﻿$spacing: 10px;
+﻿@import "../../constants";
 
 .vcrnet-admin-sources {
     > form {
@@ -7,7 +7,7 @@
         }
 
         .vcrnet-editfield {
-            margin-bottom: $spacing;
+            margin-bottom: $editLineSpacing;
 
             > div:first-child {
                 margin-right: 4px;
@@ -16,10 +16,10 @@
     }
 
     > div:first-of-type {
-        margin-bottom: $spacing;
+        margin-bottom: $editLineSpacing;
     }
 
     > div:last-child {
-        margin-top: $spacing;
+        margin-top: $editLineSpacing;
     }
 }

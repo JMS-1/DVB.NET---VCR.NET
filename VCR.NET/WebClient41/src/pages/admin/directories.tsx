@@ -43,9 +43,7 @@ namespace VCRNETClient.Ui {
                     </Field>
                 </form>
                 {this.getPatternHelp()}
-                <div>
-                    <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} />
-                </div>
+                <div><JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} /></div>
             </div>;
         }
 

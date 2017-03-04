@@ -1,6 +1,8 @@
-﻿.vcrnet-admin-security {
+﻿@import "../../constants";
+
+.vcrnet-admin-security {
     > .vcrnet-editfield {
-        margin-top: 10px;
+        margin-top: $editLineSpacing;
 
         > div:first-child {
             width: 9rem;
@@ -8,6 +10,6 @@
     }
 
     > div:last-child {
-        margin-top: 10px;
+        margin-top: $editLineSpacing;
     }
 }

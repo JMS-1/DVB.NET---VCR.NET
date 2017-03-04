@@ -1,4 +1,6 @@
-﻿.vcrnet-admin-directories {
+﻿@import "../../constants";
+
+.vcrnet-admin-directories {
     > div {
         > .jmslib-editmultilist {
             margin-bottom: 4px;
@@ -10,7 +12,7 @@
         }
 
         &:last-child {
-            margin-top: 10px;
+            margin-top: $editLineSpacing;
         }
     }
 
