@@ -10,8 +10,8 @@ namespace VCRNETClient.Ui {
             return <div className="vcrnet-guide">
                 Die Programmzeitschrift<HelpLink page={this.props.uvm} topic="epg" /> zeigt pro Gerät alle
                 Sendungen der Quellen, für die eine Sammlung der Daten konfiguriert
-                wurde.<HelpLink page={this.props.uvm} topic="epgconfig" /> Über diese Ansicht ist es nicht 
-                nur möglich, sich die Details einzelner Sendungen anzeigen zu lassen. Vielmehr ist es dabei 
+                wurde.<HelpLink page={this.props.uvm} topic="epgconfig" /> Über diese Ansicht ist es nicht
+                nur möglich, sich die Details einzelner Sendungen anzeigen zu lassen. Vielmehr ist es dabei
                 auch sofort möglich, eine neue Aufzeichnung anzulegen.
                 {this.getHelp()}
                 <form>
@@ -24,8 +24,8 @@ namespace VCRNETClient.Ui {
                             <Field page={this.props.uvm} label={`${this.props.uvm.sources.text}:`}>
                                 <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.sources} />
                             </Field>
-                            {this.props.uvm.showSourceType ? <JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.sourceType} merge={true} /> : null}
-                            {this.props.uvm.showEncryption ? <JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.encrpytion} merge={true} /> : null}
+                            {this.props.uvm.showSourceType && <JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.sourceType} merge={true} />}
+                            {this.props.uvm.showEncryption && <JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.encrpytion} merge={true} />}
                         </div>
                         <div>
                             <Field page={this.props.uvm} label={`${this.props.uvm.queryString.text}:`}>
@@ -35,16 +35,8 @@ namespace VCRNETClient.Ui {
                             <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.resetFilter} />
                             <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.addFavorite} />
                         </div>
-                        <div>
-                            <Field page={this.props.uvm} label={`${this.props.uvm.days.text}:`}>
-                                <JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.days} />
-                            </Field>
-                        </div>
-                        <div>
-                            <Field page={this.props.uvm} label={`${this.props.uvm.hours.text}:`}>
-                                <JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.hours} />
-                            </Field>
-                        </div>
+                        <div><JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.days} /></div>
+                        <div><JMSLib.ReactUi.SingleSelectButton uvm={this.props.uvm.hours} /></div>
                     </fieldset>
                 </form>
                 <GuideNavigation uvm={this.props.uvm} />
@@ -60,9 +52,9 @@ namespace VCRNETClient.Ui {
                     <tbody>{this.props.uvm.entries.map((e, index) => [
                         <GuideEntry key={index} uvm={e} />,
                         e.showDetails &&
-                            <JMSLib.ReactUi.DetailRow dataColumns={4} key={`${index}Details`}>
-                                <GuideDetails uvm={e} page={this.props.uvm} />
-                            </JMSLib.ReactUi.DetailRow>
+                        <JMSLib.ReactUi.DetailRow dataColumns={4} key={`${index}Details`}>
+                            <GuideDetails uvm={e} page={this.props.uvm} />
+                        </JMSLib.ReactUi.DetailRow>
                     ])}</tbody>
                 </table>
                 <GuideNavigation uvm={this.props.uvm} />

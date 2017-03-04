@@ -8,8 +8,8 @@ namespace VCRNETClient.Ui {
         // Oberflächenelemente erstellen.
         render(): JSX.Element {
             return <fieldset className="vcrnet-device-epg">
-                {this.props.uvm.guideTime ? <JMSLib.ReactUi.TimeBar uvm={this.props.uvm.guideTime} /> : null}
-                {this.props.uvm.guideItem ? <GuideEntryInfo uvm={this.props.uvm.guideItem} /> : null}
+                {this.props.uvm.guideTime && <JMSLib.ReactUi.TimeBar uvm={this.props.uvm.guideTime} />}
+                {this.props.uvm.guideItem && <GuideEntryInfo uvm={this.props.uvm.guideItem} />}
             </fieldset>;
         }
     }

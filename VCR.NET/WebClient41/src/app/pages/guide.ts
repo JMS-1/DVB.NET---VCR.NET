@@ -112,10 +112,10 @@ namespace VCRNETClient.App {
         readonly sourceType = new JMSLib.App.SelectSingleFromList(this._filter, `typeFilter`, null, () => this.query(), GuidePage._typeOptions);
 
         // Schnittstelle zum Setzen eines bestimmten Tags für den Anfang der Ergebnisliste.
-        readonly days = new JMSLib.App.SelectSingleFromList<string>(this._filter, `start`, `Datum`, () => this.resetIndexAndQuery(), []);
+        readonly days = new JMSLib.App.SelectSingleFromList<string>(this._filter, `start`, null, () => this.resetIndexAndQuery(), []);
 
         // Schnittstelle zum Setzen einer bestimmten Uhrzeit für den Anfange der Ergebnisliste.
-        readonly hours = new JMSLib.App.SelectSingleFromList({ value: -1 }, `value`, `Start ab`, () => this.resetIndexAndQuery(), GuidePage._hours);
+        readonly hours = new JMSLib.App.SelectSingleFromList({ value: -1 }, `value`, null, () => this.resetIndexAndQuery(), GuidePage._hours);
 
         // Schnittstelle zur Pflege der Freitextsuchbedingung.
         readonly queryString = new JMSLib.App.String({ value: `` }, `value`, `Suche nach`, () => this.delayedQuery());

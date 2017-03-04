@@ -1,6 +1,6 @@
 ﻿@import "constants.scss";
 
-$innerHeigth: 16px;
+$innerHeigth: 17px;
 $radius: 4px;
 
 .jmslib-timebar {
@@ -18,6 +18,7 @@ $radius: 4px;
         > div {
             border: 1px solid $commandHoverBorderColor;
             display: inline-block;
+            box-shadow: darken($commandHoverBorderColor, 10%) 1px 1px;
             position: absolute;
             height: 100%;
             left: 0;
@@ -32,7 +33,7 @@ $radius: 4px;
             }
 
             &:not(.jmslib-timebar-good):not(.jmslib-timebar-bad) {
-                background: $commandActiveBackgrundColor;
+                background: white;
             }
 
             &:first-child {

@@ -20,6 +20,11 @@ a {
 
 fieldset {
     border-width: 2px;
+
+    > legend {
+        font-size: small;
+        font-weight: bold;
+    }
 }
 
 .vcrnet-warningtext {

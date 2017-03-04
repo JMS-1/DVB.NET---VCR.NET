@@ -1,12 +1,5 @@
 ﻿.vcrnet-logentrydetails {
-    > fieldset {
-        > legend {
-            font-size: small;
-            font-weight: bold;
-        }
-
-        > table > tbody > tr:not(:last-child) > td {
-            padding-bottom: 4px;
-        }
+    > fieldset > table > tbody > tr:not(:last-child) > td {
+        padding-bottom: 4px;
     }
 }

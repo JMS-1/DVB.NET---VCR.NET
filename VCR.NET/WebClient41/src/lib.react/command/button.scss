@@ -5,10 +5,10 @@
     @include no-select();
     border: 1px solid $commandBorderColor;
     background: $commandBackgroundColor;
-    padding: 0.15rem 0.4rem;
+    padding: 0.3rem 0.6rem;
     display: inline-block;
     border-radius: 3px;
-    font-size: smaller;
+    font-size: 0.7rem;
     text-align: center;
 
     &.jmslib-command-disabled {
@@ -17,7 +17,7 @@
     }
 
     &.jmslib-command-checked {
-        background: $commandActiveBackgrundColor;
+        background: $commandActiveBackgroundColor;
     }
 
     &:not(.jmslib-command-disabled) {

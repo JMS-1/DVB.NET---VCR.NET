@@ -1,13 +1,8 @@
-﻿@import "../../lib.react/constants";
+﻿@import "../../lib.react/mixins";
 
 .vcrnet-planexception {
     @include no-select();
     padding: 10px;
-
-    > legend {
-        font-size: small;
-        font-weight: bold;
-    }
 
     > table {
         width: 100%;
