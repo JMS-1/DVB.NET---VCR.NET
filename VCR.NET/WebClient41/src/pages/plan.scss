@@ -5,10 +5,6 @@
 
         > thead, > tbody {
             > tr {
-                > td:nth-child(4) {
-                    white-space: normal;
-                }
-
                 > td:nth-child(5) {
                     border-right-width: 0;
                     white-space: normal;
@@ -18,23 +14,12 @@
                     border-left-width: 0;
                     width: 12px;
                 }
-
-                &.jmslib-details {
-                    > td:nth-child(1) {
-                        border-right-width: 0;
-                    }
-
-                    > td:nth-child(2) {
-                        border-left-width: 0;
-                    }
-                }
             }
         }
     }
 
     .vcrnet-inline-help > div > table:last-child td:first-child {
         vertical-align: top;
-        padding-top: 0.2rem;
     }
 
     .vcrnet-plan-filter > .jmslib-editbuttonlist > .jmslib-command {

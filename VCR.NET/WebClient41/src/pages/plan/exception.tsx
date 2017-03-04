@@ -15,7 +15,7 @@ namespace VCRNETClient.Ui {
         render(): JSX.Element {
             return <fieldset className="vcrnet-planexception">
                 <legend>Ausnahmeregel bearbeiten<HelpLink page={this.props.page} topic="repeatingschedules" /></legend>
-                <table>
+                <table className="vcrnet-tableIsForm">
                     <tbody>
                         <tr>
                             <td>Start</td>

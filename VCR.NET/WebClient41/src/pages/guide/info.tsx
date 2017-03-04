@@ -8,7 +8,7 @@ namespace VCRNETClient.Ui {
         // Oberflächenelemente anlegen.
         render(): JSX.Element {
             return <div className="vcrnet-guideentryinfo">
-                <table>
+                <table className="vcrnet-tableIsForm">
                     <tbody>
                         <tr>
                             <td>Name:</td>
@@ -52,9 +52,7 @@ namespace VCRNETClient.Ui {
                         </tr>
                     </tbody>
                 </table>
-                <div>
-                    <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.findSimiliar} />
-                </div>
+                <div><JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.findSimiliar} /></div>
             </div>;
         }
     }

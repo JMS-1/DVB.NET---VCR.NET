@@ -10,9 +10,7 @@ namespace VCRNETClient.Ui {
             return <li className="vcrnet-home-task">
                 <fieldset>
                     {this.props.children}
-                    <div>
-                        <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm} />
-                    </div>
+                    <div><JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm} /></div>
                 </fieldset>
             </li>;
         }

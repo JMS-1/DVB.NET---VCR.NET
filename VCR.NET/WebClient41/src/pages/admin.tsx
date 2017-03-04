@@ -5,6 +5,8 @@ namespace VCRNETClient.Ui {
     // React.Js Komponente zur Anzeige der Konfiguration.
     export class Admin extends JMSLib.ReactUi.ComponentWithSite<App.IAdminPage>{
 
+        // Alle Administrationsbereiche.
+
         // Oberflächenelemente erstellen.
         render(): JSX.Element {
             const section = this.props.uvm.sections.value;
