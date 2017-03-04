@@ -1,4 +1,6 @@
-﻿.vcrnet-admin {
+﻿@import "../lib.react/constants";
+
+.vcrnet-admin {
     padding: 4px;
     width: 90%;
 
@@ -16,11 +18,11 @@
                     box-shadow: gray 2px 1px;
 
                     &:hover {
-                        background: lightblue;
+                        background: $commandHoverBackgroundColor;
                     }
 
                     &.jmslib-command-checked {
-                        background: lightgray;
+                        background: $commandActiveBackgroundColor;
 
                         a {
                             cursor: default;

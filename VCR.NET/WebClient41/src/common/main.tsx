@@ -6,39 +6,34 @@ namespace VCRNETClient.Ui {
     export class Main extends React.Component<JMSLib.ReactUi.IEmpty, JMSLib.ReactUi.IEmpty> implements App.IApplicationSite {
 
         // Alle bekannten Hilfeseiten.
-        private static _topics: { [section: string]: App.IHelpComponent; };
-
-        // Einmalig die React.Js Komponenten für die Hilfeseiten erstellen.
-        private static initStatic(): void {
-            Main._topics = {
-                repeatingschedules: new HelpPages.RepeatingSchedules(),
-                parallelrecording: new HelpPages.ParallelRecording(),
-                jobsandschedules: new HelpPages.JobsAndSchedules(),
-                customschedule: new HelpPages.CustomSchedule(),
-                configuration: new HelpPages.Configuration(),
-                controlcenter: new HelpPages.ControlCenter(),
-                currentstream: new HelpPages.CurrentStream(),
-                epgconfig: new HelpPages.AdminProgramGuide(),
-                numberoffiles: new HelpPages.NumberOfFiles(),
-                sourcechooser: new HelpPages.SourceChooser(),
-                filecontents: new HelpPages.FileContents(),
-                psiconfig: new HelpPages.AdminSourceScan(),
-                editcurrent: new HelpPages.EditCurrent(),
-                hibernation: new HelpPages.Hibernation(),
-                sourcelimit: new HelpPages.SourceLimit(),
-                websettings: new HelpPages.WebSettings(),
-                decryption: new HelpPages.Decryption(),
-                streaming: new HelpPages.Streaming(),
-                overview: new HelpPages.Overview(),
-                tsplayer: new HelpPages.TsPlayer(),
-                epg: new HelpPages.ProgramGuide(),
-                archive: new HelpPages.Archive(),
-                dvbnet: new HelpPages.DvbNet(),
-                nexus: new HelpPages.Nexus(),
-                tasks: new HelpPages.Tasks(),
-                log: new HelpPages.Log(),
-            };
-        }
+        private readonly _topics: { [section: string]: App.IHelpComponent; } = {
+            repeatingschedules: new HelpPages.RepeatingSchedules(),
+            parallelrecording: new HelpPages.ParallelRecording(),
+            jobsandschedules: new HelpPages.JobsAndSchedules(),
+            customschedule: new HelpPages.CustomSchedule(),
+            configuration: new HelpPages.Configuration(),
+            controlcenter: new HelpPages.ControlCenter(),
+            currentstream: new HelpPages.CurrentStream(),
+            epgconfig: new HelpPages.AdminProgramGuide(),
+            numberoffiles: new HelpPages.NumberOfFiles(),
+            sourcechooser: new HelpPages.SourceChooser(),
+            filecontents: new HelpPages.FileContents(),
+            psiconfig: new HelpPages.AdminSourceScan(),
+            editcurrent: new HelpPages.EditCurrent(),
+            hibernation: new HelpPages.Hibernation(),
+            sourcelimit: new HelpPages.SourceLimit(),
+            websettings: new HelpPages.WebSettings(),
+            decryption: new HelpPages.Decryption(),
+            streaming: new HelpPages.Streaming(),
+            overview: new HelpPages.Overview(),
+            tsplayer: new HelpPages.TsPlayer(),
+            epg: new HelpPages.ProgramGuide(),
+            archive: new HelpPages.Archive(),
+            dvbnet: new HelpPages.DvbNet(),
+            nexus: new HelpPages.Nexus(),
+            tasks: new HelpPages.Tasks(),
+            log: new HelpPages.Log(),
+        };
 
         // Das Präsentationsmodell der Anwendung.
         private readonly _application: App.IApplication = new App.Application(this);
@@ -49,9 +44,6 @@ namespace VCRNETClient.Ui {
         // Erstellt eine neue Komponente.
         constructor() {
             super();
-
-            // Hilfeseiten aufsetzen.
-            Main.initStatic();
 
             // Initialen Navigationsbereich in Abhängigkeit von der URL aufrufen.
             this.onhashchange();
@@ -84,7 +76,7 @@ namespace VCRNETClient.Ui {
             // Anzeige erstellen.
             return <div className="vcrnet-main">
                 {this._application.isRestarting ?
-                    <div>Der VCR.NET Recording Service startet nun neu und steht in Kürze wieder zur Verfügung.</div> :
+                    <div className="vcrnet-restart">Der VCR.NET Recording Service startet nun neu und steht in Kürze wieder zur Verfügung.</div> :
                     (this._application.isBusy ?
                         <div><h1>(Bitte etwas Geduld)</h1></div> :
                         <div><h1>{page ? page.title : title}</h1><Navigation uvm={page} /><View uvm={page} /></div>)}
@@ -120,7 +112,7 @@ namespace VCRNETClient.Ui {
 
         // Die Verwaltung der Hilfeseiten melden.
         getHelpComponentProvider<TComponentType extends App.IHelpComponent>(): App.IHelpComponentProvider<TComponentType> {
-            return Main._topics as App.IHelpComponentProvider<TComponentType>;
+            return this._topics as App.IHelpComponentProvider<TComponentType>;
         }
 
     }

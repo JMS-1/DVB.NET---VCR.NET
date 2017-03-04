@@ -15,13 +15,13 @@ namespace VCRNETClient.Ui {
             var application = page.application;
 
             return <div className="vcrnet-navigation vcrnet-bar">
-                {page.navigation.refresh ? <JMSLib.ReactUi.InternalLink view={() => page.reload()} pict="refresh">Aktualisieren</JMSLib.ReactUi.InternalLink> : null}
+                {page.navigation.refresh && <JMSLib.ReactUi.InternalLink view={() => page.reload()} pict="refresh">Aktualisieren</JMSLib.ReactUi.InternalLink>}
                 <JMSLib.ReactUi.InternalLink view={application.homePage.route} pict="home">Startseite</JMSLib.ReactUi.InternalLink>
-                {page.navigation.favorites ? <JMSLib.ReactUi.InternalLink view={application.favoritesPage.route} pict="fav">Favoriten</JMSLib.ReactUi.InternalLink> : null}
-                {page.navigation.guide ? <JMSLib.ReactUi.InternalLink view={application.guidePage.route} pict="guide">Programmzeitschrift</JMSLib.ReactUi.InternalLink> : null}
-                {page.navigation.plan ? <JMSLib.ReactUi.InternalLink view={application.planPage.route} pict="plan">Aufzeichnungsplan</JMSLib.ReactUi.InternalLink> : null}
-                {page.navigation.new ? <JMSLib.ReactUi.InternalLink view={application.editPage.route} pict="new">Neue Aufzeichnung</JMSLib.ReactUi.InternalLink> : null}
-                {page.navigation.current ? <JMSLib.ReactUi.InternalLink view={application.devicesPage.route} pict="devices">Geräte</JMSLib.ReactUi.InternalLink> : null}
+                {page.navigation.favorites && <JMSLib.ReactUi.InternalLink view={application.favoritesPage.route} pict="fav">Favoriten</JMSLib.ReactUi.InternalLink>}
+                {page.navigation.guide && <JMSLib.ReactUi.InternalLink view={application.guidePage.route} pict="guide">Programmzeitschrift</JMSLib.ReactUi.InternalLink>}
+                {page.navigation.plan && <JMSLib.ReactUi.InternalLink view={application.planPage.route} pict="plan">Aufzeichnungsplan</JMSLib.ReactUi.InternalLink>}
+                {page.navigation.new && <JMSLib.ReactUi.InternalLink view={application.editPage.route} pict="new">Neue Aufzeichnung</JMSLib.ReactUi.InternalLink>}
+                {page.navigation.current && <JMSLib.ReactUi.InternalLink view={application.devicesPage.route} pict="devices">Geräte</JMSLib.ReactUi.InternalLink>}
             </div>;
         }
     }

@@ -1,45 +1,52 @@
-﻿@import "constants";
+﻿@import "lib.react/constants";
+@import "constants";
 
+// Grundeinstellungen fixieren.
 body {
     margin: 0;
     width: 100%;
     height: 100%;
     font-size: 16px;
-    background: #f4f4f4;
+    background: $mainBackground;
     font-family: $appFont;
 }
 
+// Der Container für die React.Js Oberfläche.
+vcrnet-spa {
+    display: block;
+    padding: 10px;
+}
+
+// Normale Verweise innerhalb der Anwendung und in interne Bereiche.
 a {
     color: #0000a0;
     text-decoration: none;
-
-    &:hover {
-        text-decoration: underline;
-    }
 }
 
+a:hover {
+    text-decoration: underline;
+}
+
+// Zur Gruppierung verwenden wir an vielen Stellen FIELDSET - hier genormt in der Umrahmung und der LEGEND.
 fieldset {
     border-width: 2px;
 
     > legend {
         font-size: small;
         font-weight: bold;
+        font-family: $appFont;
     }
 }
 
+// Zeigt eine deutliche Warnung an.
 .vcrnet-warningtext {
-    color: red;
     font-weight: bold;
+    color: $textErrorColor;
 }
 
-vcrnet-spa {
-    display: block;
-    padding: 10px;
-}
-
-
+// Eine horizontale Liste von Verweisen, Befehlen, Filtern etc.
 .vcrnet-bar {
-    background: #dddddd;
+    background: darken($mainBackground, 10%);
     white-space: nowrap;
     overflow-x: hidden;
     border-radius: 4px;
@@ -47,48 +54,53 @@ vcrnet-spa {
     padding: 6px 10px;
 }
 
+// Grundsäzlich sollen erst einmal alle Tabellen sich gleich anfühlen.
 .vcrnet-table {
-    background: #e0e0e0;
+    background: darken($mainBackground, 5%);
     border-collapse: collapse;
 
     > thead {
-        background-color: #cccccc;
+        background-color: darken($mainBackground, 15%);
         font-weight: bold;
     }
-
+    // Wenn nicht anders gewünscht vermeiden wir einen Zeilenumbruch in den Zellen und für einige bekannten Spalten gibt es feste Größen.
     > thead, > tbody {
         > tr > td {
-            border: 2px solid #f4f4f4;
+            border: 2px solid $mainBackground;
             font-family: 'Courier New';
             white-space: nowrap;
             padding: 2px 4px;
+
+            &.vcrnet-column-mode {
+                width: 16px;
+            }
+
+            &.vcrnet-column-start {
+                width: 11.5rem;
+            }
+
+            &.vcrnet-column-end {
+                width: 2.5rem;
+            }
         }
     }
 }
 
-.vcrnet-column-mode {
-    width: 22px;
+// Alle Schaltflächen (auch wenn wir hier keine BUTTONs einsetzen) verwenden immer den primären Zeichensatz.
+.jmslib-command {
+    font-family: $appFont;
 }
 
-.vcrnet-column-start {
-    width: 11.5rem;
-}
-
-.vcrnet-column-end {
-    width: 2.5rem;
-}
-
+// In der Hilfe werden Schnappschüsse der Anwendung leicht hervorgehoben.
 .vcrnet-screenshot {
     display: block;
 
     > .jmslib-pict {
         margin: 10px;
         padding: 10px;
+        border-radius: 4px;
         display: inline-block;
-        border: 1px dashed #b0b0b0;
+        border: 1px dashed darken($mainBackground, 30%);
+        box-shadow: darken($mainBackground, 40%) 2px 2px;
     }
-}
-
-.jmslib-command {
-    font-family: $appFont;
 }
