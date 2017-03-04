@@ -32,13 +32,13 @@ namespace VCRNETClient.Ui {
                     <tbody>
                         {this.props.uvm.entries.map((e, index) => [
                             <tr key={index}>
-                                <td><a href="javascript:void(0)" onClick={() => e.showDetail.value = !e.showDetail.value}>{e.start}</a></td>
+                                <td><JMSLib.ReactUi.InternalLink view={() => e.showDetail.value = !e.showDetail.value}>{e.start}</JMSLib.ReactUi.InternalLink></td>
                                 <td>{e.endTime}</td>
                                 <td>{e.source}</td>
                             </tr>,
-                            e.showDetail.value ? <JMSLib.ReactUi.DetailRow key={`${index}Detail`} dataColumns={3}>
+                            e.showDetail.value && <JMSLib.ReactUi.DetailRow key={`${index}Detail`} dataColumns={3}>
                                 <LogDetails uvm={e} />
-                            </JMSLib.ReactUi.DetailRow> : null
+                            </JMSLib.ReactUi.DetailRow>
                         ])}
                     </tbody>
                 </table>

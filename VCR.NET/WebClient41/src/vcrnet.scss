@@ -86,6 +86,17 @@ fieldset {
     }
 }
 
+// Erzeugt aus einer Tabelle eine formartige Darstellung.
+table.vcrnet-tableIsForm > tbody {
+    > tr:not(:last-child) > td {
+        padding-bottom: 4px;
+    }
+
+    td:first-child {
+        padding-right: 4px;
+    }
+}
+
 // Alle Schaltflächen (auch wenn wir hier keine BUTTONs einsetzen) verwenden immer den primären Zeichensatz.
 .jmslib-command {
     font-family: $appFont;

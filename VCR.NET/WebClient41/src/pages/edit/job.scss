@@ -1,5 +1,7 @@
-﻿.vcrnet-jobdata {
+﻿@import "../../constants";
+
+.vcrnet-jobdata {
     > .vcrnet-editfield:not(:last-child) {
-        margin-bottom: 6px;
+        margin-bottom: $formSpacing;
     }
 }

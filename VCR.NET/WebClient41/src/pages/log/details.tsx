@@ -10,7 +10,7 @@ namespace VCRNETClient.Ui {
             return <form className="vcrnet-logentrydetails">
                 <fieldset>
                     <legend>Detailinformationen</legend>
-                    <table>
+                    <table className="vcrnet-tableIsForm">
                         <tbody>
                             <tr>
                                 <td>Beginn:</td>

@@ -1,3 +1,7 @@
 ﻿.vcrnet-editduration {
     display: inline-block;
+
+    > input, > span {
+        vertical-align: middle;
+    }
 }

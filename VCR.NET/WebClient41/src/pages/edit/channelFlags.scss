@@ -1,11 +1,11 @@
 ﻿.vcrnet-editchannelflags {
     display: inline-block;
-    // Wir wollen die erste Auswahl mit den anderen Eingabefeldern synchronisieren.
-    input {
+
+    > label > input {
         margin-left: 10px;
     }
 
-    > label:first-child input {
+    > label:first-child > input {
         margin-left: 0;
     }
 }
