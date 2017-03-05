@@ -1,6 +1,8 @@
 ﻿@import "../../lib.react/constants";
 
 .vcrnet-epgnavigation {
+    white-space: nowrap;
+
     .jmslib-command:not(:first-child) {
         margin-left: $buttonSpacing;
     }

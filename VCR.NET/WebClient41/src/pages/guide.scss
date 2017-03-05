@@ -7,7 +7,9 @@
         }
 
         > fieldset {
+            white-space: nowrap;
             padding: 10px 14px;
+            overflow-x: hidden;
 
             > label {
                 font-weight: bold;
