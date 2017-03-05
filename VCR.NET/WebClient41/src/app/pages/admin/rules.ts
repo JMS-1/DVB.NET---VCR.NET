@@ -11,6 +11,9 @@ namespace VCRNETClient.App.Admin {
     // Präsentationsmodell zur Pflege der Planungsregeln.
     export class RulesSection extends Section implements IAdminRulesPage {
 
+        // Der eindeutige Name des Bereichs.
+        static readonly route = `rules`;
+
         // Die aktuellen Planungsregeln.
         readonly rules = new JMSLib.App.String({}, "rules");
 

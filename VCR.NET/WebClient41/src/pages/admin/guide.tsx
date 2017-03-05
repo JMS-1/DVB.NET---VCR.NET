@@ -1,9 +1,12 @@
-﻿/// <reference path="../../lib.react/reactUi.tsx" />
+﻿/// <reference path="../admin.tsx" />
 
 namespace VCRNETClient.Ui {
 
     // React.Js Komponentezur Pflege der Konfiguration der Aktualisierung der Programmzeitschrift.
-    export class AdminGuide extends JMSLib.ReactUi.ComponentWithSite<App.Admin.IAdminGuidePage>{
+    export class AdminGuide extends AdminSection<App.Admin.IAdminGuidePage>{
+
+        // Das zugehörige Ui View Model.
+        static readonly uvm = App.Admin.GuideSection;
 
         // Oberflächenelemente erzeugen
         render(): JSX.Element {

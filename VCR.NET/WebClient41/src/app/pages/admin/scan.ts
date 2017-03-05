@@ -44,6 +44,9 @@ namespace VCRNETClient.App.Admin {
     // Präsentationsmodell zur Pflege der Konfiguration des Sendersuchlaufs.
     export class ScanSection extends Section implements IAdminScanPage {
 
+        // Der eindeutige Name des Bereichs.
+        static readonly route = `scan`;
+
         // Die Anzeigewerte für die einzelnen Arten der Aktualisierung.
         private static readonly _scanModes = [
             JMSLib.App.uiValue(ScanConfigMode.disabled, "Aktualisierung deaktivieren"),

@@ -41,6 +41,9 @@ namespace VCRNETClient.App.Admin {
     // Präsentationsmodell zur Pflege der Konfiguration der Aktualisierung der Programmzeitschrift.
     export class GuideSection extends Section implements IAdminGuidePage {
 
+        // Der eindeutige Name des Bereichs.
+        static readonly route = `guide`;
+
         // Gesetzt, wenn die automatische Aktualisierung der Programmzeitschrift aktiviert wurde.
         readonly isActive = new JMSLib.App.Flag({}, "value", "Aktualisierung aktivieren", () => this.refreshUi());
 

@@ -1,9 +1,14 @@
-﻿/// <reference path="../../lib.react/reactUi.tsx" />
+﻿/// <reference path="../admin.tsx" />
 
 namespace VCRNETClient.Ui {
 
     // React.Js Komponente zur Konfiguration der Planungsregeln.
-    export class AdminRules extends JMSLib.ReactUi.ComponentWithSite<App.Admin.IAdminRulesPage>{
+    export class AdminRules extends AdminSection<App.Admin.IAdminRulesPage>{
+
+        // Das zugehörige Ui View Model.
+        static readonly uvm = App.Admin.RulesSection;
+
+        // Oberflächenelement anlegen.
         render(): JSX.Element {
             return <div className="vcrnet-admin-rules">
                 <h2>Regeln für die Planung von Aufzeichnungen</h2>
@@ -13,9 +18,7 @@ namespace VCRNETClient.Ui {
                 - auf eigene Gefahr, versteht sich.
                 <JMSLib.ReactUi.EditTextArea uvm={this.props.uvm.rules} columns={100} rows={25} />
                 {this.getHelp()}
-                <div>
-                    <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} />
-                </div>
+                <div><JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} /></div>
             </div>;
         }
 

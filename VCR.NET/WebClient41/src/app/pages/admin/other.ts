@@ -60,6 +60,9 @@ namespace VCRNETClient.App.Admin {
     // Präsentationsmodell zur Pflege sonstiger Konfigurationswerte.
     export class OtherSection extends Section implements IAdminOtherPage {
 
+        // Der eindeutige Name des Bereichs.
+        static readonly route = `other`;
+
         // Die einzelnen Arten der Protokollierung als Auswahlliste für den Anwender.
         private static readonly _logging = [
             JMSLib.App.uiValue("Errors", "Nur Fehler"),

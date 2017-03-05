@@ -2,13 +2,51 @@
 
 namespace VCRNETClient.Ui {
 
+    // Hilfsschnittstelle zur Signature des Konstruktors eines Ui View Models.
+    interface IAdminSectionFactory<TSectionType extends App.Admin.ISection> {
+        // Der eigentliche Konstruktor.
+        new (page: App.AdminPage): App.Admin.ISection;
+
+        // Die statische Eigenschaft mit dem eindeutigen Namen.
+        route: string;
+    }
+
+    // Hilfskomponente zum Erstellen von Ract.JS Konfigurationskomponenten.
+    export abstract class AdminSection<TSectionType extends App.Admin.ISection> extends JMSLib.ReactUi.ComponentWithSite<TSectionType>{
+        // Oberflächenelemente erstellen.
+        abstract render(): JSX.Element;
+    }
+
+    // Schnittstelle zum anlegen der React.Js Komponente für einen einzelnen Konfigurationsbereich.
+    interface IAdminUiSectionFactory<TSectionType extends App.Admin.ISection> {
+        // Der eigentliche Konstruktor.
+        new (props?: JMSLib.ReactUi.IComponent<TSectionType>, context?: JMSLib.ReactUi.IEmpty): AdminSection<TSectionType>;
+
+        // Das zugehörige Ui View Model.
+        readonly uvm: IAdminSectionFactory<TSectionType>;
+    }
+
+    // Nachschlageliste für die React.Js Komponenten der Konfigurationsbereiche.
+    interface IAdminSectionFactoryMap {
+        // Ermittelt einen Konfigurationsbereich.
+        [route: string]: IAdminUiSectionFactory<any>;
+    }
+
     // React.Js Komponente zur Anzeige der Konfiguration.
     export class Admin extends JMSLib.ReactUi.ComponentWithSite<App.IAdminPage>{
 
-        // Alle Administrationsbereiche.
+        // Alle bekannten Konfigurationsbereiche.
+        static _sections: IAdminSectionFactoryMap;
+
+        // Einen einzelnen Konfigurationsbereich ergänzen.
+        static addSection<TSectionType extends App.Admin.ISection>(factory: IAdminUiSectionFactory<TSectionType>): void {
+            Admin._sections[factory.uvm.route] = factory;
+        }
 
         // Oberflächenelemente erstellen.
         render(): JSX.Element {
+            var test: IAdminUiSectionFactory<any> = AdminDevices;
+
             const section = this.props.uvm.sections.value;
 
             return <div className="vcrnet-admin">
@@ -26,30 +64,26 @@ namespace VCRNETClient.Ui {
 
         // React.Js Komponente zum aktuellen Konfigurationsbereich ermitteln.
         private renderSection(): JSX.Element {
-            const page = this.props.uvm.sections.value.section;
+            // Einmalig erzeugen.
+            if (!Admin._sections) {
+                // Leer anlegen.
+                Admin._sections = {};
 
-            if (page instanceof App.Admin.DevicesSection)
-                return <AdminDevices uvm={page} />;
+                // Alle unterstützten Seiten anlegen.
+                Admin.addSection(AdminDevices);
+                Admin.addSection(AdminSecurity);
+                Admin.addSection(AdminDirectories);
+                Admin.addSection(AdminGuide);
+                Admin.addSection(AdminSources);
+                Admin.addSection(AdminRules);
+                Admin.addSection(AdminOther);
+            }
 
-            if (page instanceof App.Admin.SecuritySection)
-                return <AdminSecurity uvm={page} />;
+            // Oberlfächenkomponente ermitteln.
+            const factory = Admin._sections[this.props.uvm.sections.value.route];
 
-            if (page instanceof App.Admin.DirectoriesSection)
-                return <AdminDirectories uvm={page} />;
-
-            if (page instanceof App.Admin.GuideSection)
-                return <AdminGuide uvm={page} />;
-
-            if (page instanceof App.Admin.ScanSection)
-                return <AdminSources uvm={page} />;
-
-            if (page instanceof App.Admin.RulesSection)
-                return <AdminRules uvm={page} />;
-
-            if (page instanceof App.Admin.OtherSection)
-                return <AdminOther uvm={page} />;
-
-            return null;
+            // Ui View Model ermitteln undReact.Js Komponente erstellen.
+            return factory && React.createElement(factory, { uvm: this.props.uvm.getOrCreateCurrentSection() }, {});
         }
     }
 

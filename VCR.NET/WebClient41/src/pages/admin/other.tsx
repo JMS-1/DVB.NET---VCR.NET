@@ -1,9 +1,12 @@
-﻿/// <reference path="../../lib.react/reactUi.tsx" />
+﻿/// <reference path="../admin.tsx" />
 
 namespace VCRNETClient.Ui {
 
     // React.Js Komponente zur Konfiguration sonstiger Einstellungen.
-    export class AdminOther extends JMSLib.ReactUi.ComponentWithSite<App.Admin.IAdminOtherPage>{
+    export class AdminOther extends AdminSection<App.Admin.IAdminOtherPage>{
+
+        // Das zugehörige Ui View Model.
+        static readonly uvm = App.Admin.OtherSection;
 
         // Erstellt die Oberflächenelemente.
         render(): JSX.Element {

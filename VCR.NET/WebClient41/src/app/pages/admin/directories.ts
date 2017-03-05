@@ -32,6 +32,9 @@ namespace VCRNETClient.App.Admin {
     // Präsentationsmodell zur Pflege der Konfiguration der Aufzeichnungsverzeichnisse.
     export class DirectoriesSection extends Section implements IAdminDirectoriesPage {
 
+        // Der eindeutige Name des Bereichs.
+        static readonly route = `directories`;
+
         // Die aktuelle Liste der Aufzeichnungsverzeichnisse.
         readonly directories = new JMSLib.App.SelectMultipleFromList<string>({}, "value", null, () => this.remove && this.remove.refreshUi());
 

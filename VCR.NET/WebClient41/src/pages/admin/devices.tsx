@@ -1,9 +1,12 @@
-﻿/// <reference path="../../lib.react/reactUi.tsx" />
+﻿/// <reference path="../admin.tsx" />
 
 namespace VCRNETClient.Ui {
 
     // React.js Komponente zur Konfiguration der Geräte.
-    export class AdminDevices extends JMSLib.ReactUi.ComponentWithSite<App.Admin.IAdminDevicesPage>{
+    export class AdminDevices extends AdminSection<App.Admin.IAdminDevicesPage>{
+
+        // Das zugehörige Ui View Model.
+        static readonly uvm = App.Admin.DevicesSection;
 
         // Oberflächenelemente anlegen.
         render(): JSX.Element {

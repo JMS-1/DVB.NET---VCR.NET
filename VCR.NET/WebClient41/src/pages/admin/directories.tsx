@@ -1,9 +1,12 @@
-﻿/// <reference path="../../lib.react/reactUi.tsx" />
+﻿/// <reference path="../admin.tsx" />
 
 namespace VCRNETClient.Ui {
 
     // React.js Komponente zur Konfiguration der Aufzeichnungsverzeichnisse.
-    export class AdminDirectories extends JMSLib.ReactUi.ComponentWithSite<App.Admin.IAdminDirectoriesPage>{
+    export class AdminDirectories extends AdminSection<App.Admin.IAdminDirectoriesPage>{
+
+        // Das zugehörige Ui View Model.
+        static readonly uvm = App.Admin.DirectoriesSection;
 
         // Oberflächenelemente erzeugen.
         render(): JSX.Element {

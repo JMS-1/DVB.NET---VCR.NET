@@ -8,6 +8,7 @@
     > div {
         display: inline-block;
 
+        // Das ist die Navigationsleiste der Konfigurationsseite.
         &:first-child {
             > div {
                 margin: 10px;
@@ -36,6 +37,7 @@
             }
         }
 
+        // Hier kommt dann der aktuelle Konfigurationsbereich.
         &:last-child {
             vertical-align: top;
             white-space: normal;

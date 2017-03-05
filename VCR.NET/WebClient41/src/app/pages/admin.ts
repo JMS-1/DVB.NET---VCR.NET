@@ -5,20 +5,25 @@
 namespace VCRNETClient.App {
 
     // Interne Verwaltungseinheit für Konfigurationsbereiche.
-    class SectionInfo implements Admin.ISectionInfo {
+    class SectionInfo implements Admin.ISectionInfoFactory {
+
+        // Meldet den eindeutigen Namen des Konfigurationsbereichs.
+        get route(): string {
+            return this._factory.route;
+        }
 
         // Erstellt eine neue Verwaltung.
-        constructor(public readonly route: string, private readonly _factory: { new (section: AdminPage): Admin.Section }, private readonly _adminPage: AdminPage) {
+        constructor(private readonly _factory: { new (section: AdminPage): Admin.Section; route: string; }) {
         }
 
         // Die Präsentationsinstanz des zugehörigen Konfigurationsbereichs.
         private _section: Admin.Section;
 
         // Meldet die Präsentation des zugehörigen Konfigurationsbereichs - bei Bedarf wird eine neue erstellt.
-        get section(): Admin.Section {
+        getOrCreate(adminPage: AdminPage): Admin.Section {
             // Beim ersten Aufruf eine neue Präsentationsinstanz anlegen.
             if (!this._section)
-                this._section = new (this._factory)(this._adminPage);
+                this._section = new (this._factory)(adminPage);
 
             return this._section;
         }
@@ -28,6 +33,9 @@ namespace VCRNETClient.App {
     export interface IAdminPage extends IPage {
         // Eine Auswahl für den aktuell anzuzeigenden Konfigurationsbereich.
         readonly sections: JMSLib.App.IValueFromList<Admin.ISectionInfo>;
+
+        // Erstellt eine Instanz des aktuellen Konfigurationsbereichs.
+        getOrCreateCurrentSection(): Admin.ISection;
     }
 
     // Das Präsentationsmodell für die Konfiguration des VCR.NET Recording Service.
@@ -38,13 +46,13 @@ namespace VCRNETClient.App {
 
         // Die Liste aller Konfigurationsbereiche in der Reihenfolge, in der sie dem Anwender präsentiert werden sollen.
         private readonly _sections: JMSLib.App.IUiValue<SectionInfo>[] = [
-            JMSLib.App.uiValue(new SectionInfo("security", Admin.SecuritySection, this), "Sicherheit"),
-            JMSLib.App.uiValue(new SectionInfo("directories", Admin.DirectoriesSection, this), "Verzeichnisse"),
-            JMSLib.App.uiValue(new SectionInfo("devices", Admin.DevicesSection, this), "Geräte"),
-            JMSLib.App.uiValue(new SectionInfo("guide", Admin.GuideSection, this), "Programmzeitschrift"),
-            JMSLib.App.uiValue(new SectionInfo("scan", Admin.ScanSection, this), "Quellen"),
-            JMSLib.App.uiValue(new SectionInfo("rules", Admin.RulesSection, this), "Planungsregeln"),
-            JMSLib.App.uiValue(new SectionInfo("other", Admin.OtherSection, this), "Sonstiges")
+            JMSLib.App.uiValue(new SectionInfo(Admin.SecuritySection), "Sicherheit"),
+            JMSLib.App.uiValue(new SectionInfo(Admin.DirectoriesSection), "Verzeichnisse"),
+            JMSLib.App.uiValue(new SectionInfo(Admin.DevicesSection), "Geräte"),
+            JMSLib.App.uiValue(new SectionInfo(Admin.GuideSection), "Programmzeitschrift"),
+            JMSLib.App.uiValue(new SectionInfo(Admin.ScanSection), "Quellen"),
+            JMSLib.App.uiValue(new SectionInfo(Admin.RulesSection), "Planungsregeln"),
+            JMSLib.App.uiValue(new SectionInfo(Admin.OtherSection), "Sonstiges")
         ];
 
         // Präsentationsmodell zur Auswahl des aktuellen Konfigurationsbereichs.
@@ -65,7 +73,7 @@ namespace VCRNETClient.App {
             this.sections.value = curSection.value;
 
             // Den aktiven Konfigurationsbereich laden.
-            curSection.value.section.reset();
+            curSection.value.getOrCreate(this).reset();
         }
 
         // Aktualisiert eine Teilkonfiguration.
@@ -85,6 +93,11 @@ namespace VCRNETClient.App {
                 // Weitere Fehlerbehandlung ermöglichen.
                 return error;
             });
+        }
+
+        // Erstellt eine Instanz des aktuellen Konfigurationsbereichs.
+        getOrCreateCurrentSection(): Admin.ISection {
+            return this.sections.value.getOrCreate(this);
         }
 
         // Überschrift melden.

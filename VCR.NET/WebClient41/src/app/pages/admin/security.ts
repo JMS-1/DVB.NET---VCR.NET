@@ -14,6 +14,9 @@ namespace VCRNETClient.App.Admin {
     // Instanz zur Pflege der Konfiguration der Benutzergruppen.
     export class SecuritySection extends Section implements IAdminSecurityPage {
 
+        // Der eindeutige Name des Bereichs.
+        static readonly route = `security`;
+
         // Alle bekannten Windows Kontogruppen - die werden nur ein einziges Mal angefordert.
         private static _windowsGroups: JMSLib.App.IHttpPromise<JMSLib.App.IUiValue<string>[]>;
 

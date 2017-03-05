@@ -1,9 +1,12 @@
-﻿/// <reference path="../../lib.react/reactUi.tsx" />
+﻿/// <reference path="../admin.tsx" />
 
 namespace VCRNETClient.Ui {
 
     // React.Js Komponente zur Konfiguration des Sendersuchlaufs.
-    export class AdminSources extends JMSLib.ReactUi.ComponentWithSite<App.Admin.IAdminScanPage>{
+    export class AdminSources extends AdminSection<App.Admin.IAdminScanPage>{
+
+        // Das zugehörige Ui View Model.
+        static readonly uvm = App.Admin.ScanSection;
 
         // Oberflächenelemente erstellen.
         render(): JSX.Element {
@@ -35,9 +38,7 @@ namespace VCRNETClient.Ui {
                     </div>}
                 </form>}
                 {this.getSaveHelp()}
-                <div>
-                    <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} />
-                </div>
+                <div><JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} /></div>
             </div>;
         }
 

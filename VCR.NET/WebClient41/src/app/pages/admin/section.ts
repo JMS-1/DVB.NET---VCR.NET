@@ -69,9 +69,12 @@
     export interface ISectionInfo {
         // Der eindeutige Name des Konfigurationsbereichs.
         readonly route: string;
+    }
 
+    // Beschreibt einen Konfigurationsbereich.
+    export interface ISectionInfoFactory extends ISectionInfo {
         // Das Präsentationsmodell des Konfigurationsbereichs.
-        readonly section: ISection;
+        getOrCreate(adminPage: AdminPage): ISection;
     }
 
 }
