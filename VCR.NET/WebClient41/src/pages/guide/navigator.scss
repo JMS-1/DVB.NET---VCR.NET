@@ -1,7 +1,7 @@
-﻿.vcrnet-epgnavigation {
-    font-size: small;
+﻿@import "../../lib.react/constants";
 
+.vcrnet-epgnavigation {
     .jmslib-command:not(:first-child) {
-        margin-left: 6px;
+        margin-left: $buttonSpacing;
     }
 }

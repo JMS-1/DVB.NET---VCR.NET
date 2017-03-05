@@ -17,9 +17,7 @@ namespace VCRNETClient.Ui {
                             <td>Suchbedingung</td>
                         </tr>
                     </thead>
-                    <tbody>
-                        {this.props.uvm.favorites.map((f, index) => <Favorite key={index} uvm={f} />)}
-                    </tbody>
+                    <tbody>{this.props.uvm.favorites.map((f, index) => <Favorite key={index} uvm={f} />)}</tbody>
                 </table>
             </div >;
         }

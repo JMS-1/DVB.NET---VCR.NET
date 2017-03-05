@@ -17,7 +17,7 @@ namespace VCRNETClient.Ui {
                 {this.props.uvm.live && <div><a href={this.props.uvm.live}>Aktuelle Aufzeichnung anschauen</a></div>}
                 {this.props.uvm.timeshift && <div><a href={this.props.uvm.timeshift}>Aufzeichnung zeitversetzt anschauen</a></div>}
                 {this.props.uvm.target && <div className="vcrnet-device-target">Aufzeichnung wird aktuell versendet, Empfänger ist {this.props.uvm.target}<HelpLink topic="streaming" page={this.props.page} /></div>}
-                <table>
+                <table className="vcrnet-tableIsForm">
                     <tbody>
                         <tr>
                             <td>Endzeitpunkt:</td>

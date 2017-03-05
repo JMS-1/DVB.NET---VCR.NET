@@ -1,22 +1,21 @@
-﻿$spacing: 10px;
+﻿@import "../../constants";
 
 .vcrnet-device-control {
     padding-top: 10px;
 
     > .jmslib-slider {
-        margin: $spacing 0;
+        margin: $editLineSpacing 0;
     }
 
     > .vcrnet-device-target:not(:first-child) {
-        margin-top: $spacing;
+        margin-top: $editLineSpacing;
     }
 
     > table {
-        margin: $spacing 0;
+        margin: $editLineSpacing 0;
     }
 
     .jmslib-command {
         margin-right: 4px;
-        font-size: x-small;
     }
 }

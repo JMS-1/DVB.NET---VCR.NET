@@ -5,10 +5,6 @@
         > .jmslib-editmultilist {
             margin-bottom: 4px;
             width: 45rem;
-
-            .jmslib-command {
-                font-size: small;
-            }
         }
 
         &:last-child {
@@ -31,7 +27,6 @@
 
         .jmslib-command {
             margin-top: 8px;
-            font-size: x-small;
 
             &:not(:last-child) {
                 margin-right: 4px;

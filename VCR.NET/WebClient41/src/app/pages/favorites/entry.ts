@@ -6,7 +6,7 @@
         readonly title: string;
 
         // Die Anzahl der Sendungen, die zur Suche passen.
-        readonly count: number;
+        readonly count?: number;
 
         // Entfernt die gespeicherte Suche.
         readonly remove: JMSLib.App.ICommand;
@@ -30,6 +30,9 @@
         constructor(public readonly model: VCRServer.SavedGuideQueryContract, show: (favorite: Favorite) => void, remove: (favorite: Favorite) => JMSLib.App.IHttpPromise<void>, private _refresh: () => void) {
             this.remove = new JMSLib.App.Command<void>(() => remove(this), "Löschen");
             this.show = new JMSLib.App.Command<void>(() => show(this), "Anzeigen");
+
+            // Wir schlagen die Anzahl immer nur ein einziges Mal nach.
+            this._cacheKey = JSON.stringify(model);
         }
 
         // Das aktuell angemeldete Oberflächenelement.
@@ -46,17 +49,17 @@
             var display = 'Alle ';
 
             // Einige Einschränkungen machen nur Sinn, wenn keine Quelle ausgewählt ist.
-            if ((this.model.source || '') == '') {
+            if ((this.model.source || '') === '') {
                 // Verschlüsselung.
-                if (this.model.encryption == VCRServer.GuideEncryption.FREE)
+                if (this.model.encryption === VCRServer.GuideEncryption.FREE)
                     display += 'unverschlüsselten ';
-                else if (this.model.encryption == VCRServer.GuideEncryption.PAY)
+                else if (this.model.encryption === VCRServer.GuideEncryption.PAY)
                     display += 'verschlüsselten ';
 
                 // Art der Quelle.
-                if (this.model.sourceType == VCRServer.GuideSource.TV)
+                if (this.model.sourceType === VCRServer.GuideSource.TV)
                     display += 'Fernseh-';
-                else if (this.model.sourceType == VCRServer.GuideSource.RADIO)
+                else if (this.model.sourceType === VCRServer.GuideSource.RADIO)
                     display += 'Radio-';
             }
 
@@ -89,15 +92,26 @@
             return display;
         }
 
+        // Vorhaltung von Nachschlageoperationen.
+        private static _countCache: { [key: string]: number; } = {};
+
+        private readonly _cacheKey: string;
+
         // Die Anzahl der Sendungen, die zur Suche passen.
-        private _count: number;
+        private _count?: number;
 
         get count(): number {
             // Das haben wir schon einmal probiert.
             if (this._count !== undefined)
                 return this._count;
 
+            this._count = Favorite._countCache[this._cacheKey];
+
             // Sicherstellen, dass nur einmal geladen wird.
+            if (this._count !== undefined)
+                return this._count;
+
+            // Ladevorgang anzeigen.
             this._count = null;
 
             // Suchbedingung in die Protokollnotation wandeln - naja, das ist nicht wirklich schwer.
@@ -117,19 +131,18 @@
             Favorite._loader = Favorite._loader.then(() =>
                 VCRServer.countProgramGuide(filter).then(count => {
                     // Wert vermerken.
-                    this._count = count;
+                    this._count = (Favorite._countCache[this._cacheKey] = count);
 
                     // Oberfläche zur Aktualisierung auffordern.
                     if (this.view)
                         this.view.refreshUi();
 
-                    // Eventuell auch die Liste aktualisieren.
-                    if (count !== 0)
-                        if (this._refresh)
-                            this._refresh();
+                    // Liste aktualisieren.
+                    if (this._refresh)
+                        this._refresh();
                 }));
 
-            return this._count;
+            return null;
         }
     }
 

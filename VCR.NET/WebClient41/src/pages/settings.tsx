@@ -47,9 +47,7 @@ namespace VCRNETClient.Ui {
                     <div className="vcrnet-settings-field">
                         <JMSLib.ReactUi.EditBoolean uvm={this.props.uvm.backToGuide} />
                     </div>
-                    <div>
-                        <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} />
-                    </div>
+                    <div><JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} /></div>
                 </form>
             </div >;
         }
