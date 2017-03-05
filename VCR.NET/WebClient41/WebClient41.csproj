@@ -180,15 +180,15 @@
     </Content>
     <Content Include="default.html" />
     <Content Include="scripts\vcrnet.js" />
-    <Content Include="scripts\vcrnet.js.map">
+    <None Include="scripts\vcrnet.js.map">
       <DependentUpon>vcrnet.js</DependentUpon>
-    </Content>
+    </None>
     <None Include="src\lib.react\command\toggle.scss" />
     <None Include="src\lib.react\command\button.scss" />
     <None Include="src\lib.react\command\externalLink.scss" />
     <None Include="src\lib.react\command\internalLink.scss" />
     <None Include="src\lib.react\command\pictogram.scss" />
-    <Content Include="src\lib.react\mixins.scss" />
+    <None Include="src\lib.react\mixins.scss" />
     <None Include="src\lib.react\constants.scss" />
     <None Include="src\lib.react\detailRow.scss" />
     <None Include="src\lib.react\edit\boolean\flag.scss" />
@@ -421,7 +421,7 @@
     <TypeScriptCompile Include="src\web\GuideInfoCache.ts" />
     <TypeScriptCompile Include="src\web\ProfileSourcesCache.ts" />
     <TypeScriptCompile Include="src\web\vcrserver.ts" />
-    <Content Include="src\constants.scss" />
+    <None Include="src\constants.scss" />
     <None Include="src\vcrnet.scss" />
     <None Include="src\pages\styles.scss" />
     <None Include="Web.config">

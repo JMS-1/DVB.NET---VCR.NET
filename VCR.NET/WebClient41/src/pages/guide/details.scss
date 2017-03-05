@@ -11,5 +11,9 @@
         .jmslib-command, .vcrnet-editfield, .vcrnet-editfield > div {
             vertical-align: middle;
         }
+
+        .vcrnet-editfield {
+            display: inline-block;
+        }
     }
 }

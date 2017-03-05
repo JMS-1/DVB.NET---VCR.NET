@@ -11,6 +11,11 @@
         return ++webCallId;
     }
 
+    // Meldet den aktuellen für eine folgenden HTTP Aufruf.
+    export function currentWebCallId(): number {
+        return webCallId;
+    }
+
     // Stellt sicher, dass alle noch eintreffenden Antworten auf HHTP Aufrufe ignoriert werden.
     export function switchView(): void {
         nextWebCallId();

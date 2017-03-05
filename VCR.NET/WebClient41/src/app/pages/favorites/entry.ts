@@ -90,12 +90,15 @@
         }
 
         // Die Anzahl der Sendungen, die zur Suche passen.
-        private _count: number = null;
+        private _count: number;
 
         get count(): number {
             // Das haben wir schon einmal probiert.
-            if (this._count !== null)
+            if (this._count !== undefined)
                 return this._count;
+
+            // Sicherstellen, dass nur einmal geladen wird.
+            this._count = null;
 
             // Suchbedingung in die Protokollnotation wandeln - naja, das ist nicht wirklich schwer.
             var filter: VCRServer.GuideFilterContract = {
@@ -126,7 +129,7 @@
                             this._refresh();
                 }));
 
-            return null;
+            return this._count;
         }
     }
 

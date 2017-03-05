@@ -5,7 +5,7 @@ namespace JMSLib.App {
     // Verwendet den XHMLHttpRequest des Browser zur Durchführung eines HTTP Aufrufs.
     export function browserWebCall<TResponseType, TRequestType>(url: string, method: string = 'GET', request?: TRequestType): IHttpPromise<TResponseType> {
         // Eindeutige Nummer für den nächsten HTTP Aufruf ermitteln - tatsächlich arbeiten wir hier in 2er Schritten, aber das tut nicht zur Sache.
-        var nextId = nextWebCallId() + 1;
+        var nextId = nextWebCallId();
 
         // Aynchronen Aufruf aufsetzen.
         return new Promise<TResponseType, IHttpErrorInformation>((success, failure) => {
@@ -18,7 +18,7 @@ namespace JMSLib.App {
             // HTTP Antwort abwarten.
             xhr.addEventListener("load", () => {
                 // Sicherstellen, dass die Antwort überhaupt noch interessiert.
-                if (nextWebCallId() != nextId)
+                if (currentWebCallId() != nextId)
                     return;
 
                 // Ergebnis auswerten.

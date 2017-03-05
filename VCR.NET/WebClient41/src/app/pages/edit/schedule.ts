@@ -78,6 +78,7 @@ namespace VCRNETClient.App.Edit {
         // Bei Änderungen an den Aufzeichnungsdaten muss eine übergreifende Gesamtprüfungen stattfinden, die wir an das Startdatum gebunden haben.
         private onChange(onOuterChange: () => void): void {
             // Gesamtprüfung anstossen.
+            this.lastDay.validate();
             this.firstStart.validate();
 
             // Durchreichen.
@@ -113,6 +114,9 @@ namespace VCRNETClient.App.Edit {
 
         // Der höchste erlaubte Datumswert.
         static readonly maximumDate = ScheduleEditor.makePureDate(new Date(2099, 11, 31));
+
+        // Der höchste erlaubte Datumswert.
+        private static readonly maximumDateLegacy = ScheduleEditor.makePureDate(new Date(2999, 11, 31));
 
         // Das Bit für Montag.
         static readonly flagMonday: number = 0x01;
@@ -166,7 +170,7 @@ namespace VCRNETClient.App.Edit {
 
             if (lastDay < ScheduleEditor.minimumDate)
                 return `Datum liegt zu weit in der Vergangenheit.`;
-            else if (lastDay > ScheduleEditor.maximumDate)
+            else if (lastDay > ScheduleEditor.maximumDateLegacy)
                 return `Datum liegt zu weit in der Zukunft.`;
         }
 
@@ -237,8 +241,9 @@ namespace VCRNETClient.App.Edit {
                 return false;
             if (this.firstStart.message)
                 return false;
-            if (this.lastDay.message)
-                return false;
+            if (this.repeat.value !== 0)
+                if (this.lastDay.message)
+                    return false;
             if (!this.duration.isValid())
                 return false;
 
