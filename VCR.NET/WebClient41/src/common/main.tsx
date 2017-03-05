@@ -77,9 +77,10 @@ namespace VCRNETClient.Ui {
             return <div className="vcrnet-main">
                 {this._application.isRestarting ?
                     <div className="vcrnet-restart">Der VCR.NET Recording Service startet nun neu und steht in Kürze wieder zur Verfügung.</div> :
-                    (this._application.isBusy ?
-                        <div><h1>(Bitte etwas Geduld)</h1></div> :
-                        <div><h1>{page ? page.title : title}</h1><Navigation uvm={page} /><View uvm={page} /></div>)}
+                    (page ?
+                        <div><h1>{page ? page.title : title}</h1><Navigation uvm={page} /><View uvm={page} /></div> :
+                        <div><h1>(Bitte etwas Geduld)</h1></div>)}
+                    {this._application.isBusy && <div className="vcrnet-main-busy"></div>}
             </div>;
         }
 

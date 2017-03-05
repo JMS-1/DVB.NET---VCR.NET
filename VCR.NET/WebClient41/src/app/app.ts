@@ -115,19 +115,25 @@
         page: App.IPage;
 
         // Der interne Arbeitsstand der Anwendung.
-        private _busy = true;
+        private _pendingPage: App.IPage;
 
         get isBusy(): boolean {
-            return this._busy;
+            return !!this._pendingPage;
         }
 
         set isBusy(isBusy: boolean) {
+            // Das geht nur intern!
+            if (isBusy)
+                throw `isBusy darf nur intern gesetzt werden`;
+
             // Keine echte Änderung.
-            if (isBusy === this._busy)
+            if (isBusy === this.isBusy)
                 return;
 
             // Zustand vermerken.
-            this._busy = isBusy
+            this.page = this._pendingPage;
+
+            this._pendingPage = undefined;
 
             // Oberfläche zur Aktualisierung auffordern.
             this.refreshUi();
@@ -170,14 +176,14 @@
             // Melden, dass alle ausstehenden asynchronen Anfragen von nun an nicht mehr interessieren.
             JMSLib.App.switchView();
 
-            // Erst mal ist die Oberfläche gesperrt.
-            this.isBusy = true;
-
             // Den Singleton der gewünschten Seite ermitteln.
             var page = this._pageMapper[name] || this.homePage;
 
             // Aktivieren.
-            this.page = page;
+            this._pendingPage = page;
+
+            // Anzeige aktualisieren lassen.
+            this.refreshUi();
 
             // Benutzereinstellungen anfordern.
             VCRServer.getUserProfile().then(profile => {
@@ -222,7 +228,9 @@
         // Der Dienst wird neu gestartet.
         restart(): void {
             // Zustand vermerken.
+            this._pendingPage = undefined;
             this.isRestarting = true;
+            this.page = null;
 
             // Ein wenig warten - das Intervall istrein willkürlich.
             setTimeout(() => {

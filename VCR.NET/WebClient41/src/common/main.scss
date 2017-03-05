@@ -1,9 +1,18 @@
 ﻿.vcrnet-main {
-
     > .vcrnet-restart {
         margin-top: 5rem;
         font-size: 1.5rem;
         font-weight: bold;
         text-align: center;
+    }
+
+    .vcrnet-main-busy {
+        background: white;
+        position: fixed;
+        opacity: 0.7;
+        height: 100%;
+        width: 100%;
+        left: 0;
+        top: 0;
     }
 }
