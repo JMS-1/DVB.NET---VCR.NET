@@ -41,15 +41,15 @@ namespace VCRNETClient.App.Admin {
         // Erstellt ein neues Präsentationsmodell.
         constructor(profile: VCRServer.ProfileContract, onChange: () => void, private readonly _defaultDevice: () => string) {
             this.name = profile.name;
-            this.priority = new JMSLib.App.Number(profile, "priority")
+            this.priority = new JMSLib.App.Number(profile, "priority", null, onChange)
                 .addRequiredValidator()
                 .addMinValidator(0)
                 .addMaxValidator(100);
-            this.decryption = new JMSLib.App.Number(profile, "ciLimit")
+            this.decryption = new JMSLib.App.Number(profile, "ciLimit", null, onChange)
                 .addRequiredValidator()
                 .addMinValidator(0)
                 .addMaxValidator(16);
-            this.sources = new JMSLib.App.Number(profile, "sourceLimit")
+            this.sources = new JMSLib.App.Number(profile, "sourceLimit", null, onChange)
                 .addRequiredValidator()
                 .addMinValidator(1)
                 .addMaxValidator(32);
@@ -62,14 +62,6 @@ namespace VCRNETClient.App.Admin {
             if (!active.value)
                 if (this.name === this._defaultDevice())
                     return `Das bevorzugte Geräteprofil muss auch für Aufzeichnungen verwendet werden.`;
-        }
-
-        // Führt eine Konsistenzprüfung aus.
-        validate(): void {
-            this.active.validate();
-            this.priority.validate();
-            this.decryption.validate();
-            this.sources.validate();
         }
 
         // Prüft, ob die Konfiguration des Gerätes gültig ist.

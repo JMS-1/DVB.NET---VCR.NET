@@ -52,7 +52,7 @@ namespace VCRNETClient.App.Admin {
         // Aktualisiert die Anzeige.
         refresh(): void {
             // Alle Eingaben gemeinsam prüfen.
-            this.devices.forEach(d => d.validate());
+            this.devices.forEach(d => d.active.validate());
             this.defaultDevice.validate();
 
             // Oberfläche zur Aktualisierung auffordern.
@@ -64,7 +64,7 @@ namespace VCRNETClient.App.Admin {
 
         // Gesetzt, wenn ein Speichern möglich ist.
         protected get isValid(): boolean {
-            return this.devices.every(d => d.isValid);
+            return !this.defaultDevice.message && this.devices.every(d => d.isValid);
         }
 
         // Sendet die Konfiguration zur asynchronen Aktualisierung an den VCR.NET Recording Service.

@@ -4,7 +4,7 @@
     > form > table {
         margin-top: $editLineSpacing;
 
-        > tbody td:not(:nth-child(2)) {
+        > tbody > tr > td:not(:nth-child(2)) {
             text-align: center;
         }
     }
