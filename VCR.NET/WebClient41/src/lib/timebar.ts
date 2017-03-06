@@ -22,12 +22,7 @@
     // Präsentationsmodell zur Darstellung einer Zeitschiene.
     export class TimeBar implements ITimeBar {
 
-        // CSS Klasse für den Fall, dass die Dauer vollständig sichtbar ist.
-        private static readonly  _goodClass = `jmslib-timebar-good`;
-
-        // CSS Klasse für den Fall, dass die Dauer
-        private static readonly  _badClass = `jmslib-timebar-bad`;
-
+        // Erstellt ein neues Präsentationsmodell.
         constructor(startRecording: Date, endRecording: Date, startProgram: Date, endProgram: Date) {
             // Prüfen, ob die gesamte Dauer angezeigt werden kann.
             this.timeIsComplete = ((startRecording <= startProgram) && (endRecording >= endProgram))

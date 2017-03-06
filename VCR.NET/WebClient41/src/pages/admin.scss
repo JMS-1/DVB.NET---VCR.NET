@@ -7,7 +7,6 @@
 
     > div {
         display: inline-block;
-
         // Das ist die Navigationsleiste der Konfigurationsseite.
         &:first-child {
             > div {
@@ -36,20 +35,17 @@
                 }
             }
         }
-
         // Hier kommt dann der aktuelle Konfigurationsbereich.
         &:last-child {
             vertical-align: top;
             white-space: normal;
             margin: 0px 20px;
             width: 90%;
-
-            h2 {
-                margin: 10px 0;
-            }
         }
     }
 }
+
+@import "admin/section";
 
 @import "admin/guide";
 @import "admin/other";

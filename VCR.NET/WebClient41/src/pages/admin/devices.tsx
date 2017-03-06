@@ -1,4 +1,4 @@
-﻿/// <reference path="../admin.tsx" />
+﻿/// <reference path="section.tsx" />
 
 namespace VCRNETClient.Ui {
 
@@ -8,13 +8,15 @@ namespace VCRNETClient.Ui {
         // Das zugehörige Ui View Model.
         static readonly uvm = App.Admin.DevicesSection;
 
+        // Die Überschrift für diesen Bereich.
+        protected readonly title = `Aktivierung von DVB.NET Geräteprofilen`;
+
         // Oberflächenelemente anlegen.
-        render(): JSX.Element {
+        protected renderSection(): JSX.Element {
             return <div className="vcrnet-admin-devices">
-                <h2>Aktivierung von DVB.NET Geräteprofilen</h2>
                 Für den VCR.NET Recording Service kann festgelegt werden, welche der auf dem zugehörigen Rechner
-                installierten DVB.NET<HelpLink topic="dvbnet" page={this.props.uvm.page} /> Geräteprofile für 
-                Aufzeichnungen verwendet werden dürfen. Eines dieser Geräte muss dann als bevorzugtes Gerät 
+                installierten DVB.NET<HelpLink topic="dvbnet" page={this.props.uvm.page} /> Geräteprofile für
+                Aufzeichnungen verwendet werden dürfen. Eines dieser Geräte muss dann als bevorzugtes Gerät
                 festgelegt werden.
                 {this.getHelp()}
                 <form>
@@ -42,9 +44,6 @@ namespace VCRNETClient.Ui {
                         </tbody>
                     </table>
                 </form>
-                <div>
-                    <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} />
-                </div>
             </div>;
         }
 
@@ -60,10 +59,10 @@ namespace VCRNETClient.Ui {
                 <br />
                 Zusätzlich können für jedes Gerät auch einige Geräteparameter festgelegt werden - alternativ
                 zur direkten Pflege über die <JMSLib.ReactUi.ExternalLink url="http://www.psimarron.net/DVBNET/html/dialogrecording.html">DVB.NET
-                Konfiguration und Administration</JMSLib.ReactUi.ExternalLink>. Hier vorgenomme Änderungen 
-                werden für alle Geräte übernommen, selbst wenn VCR.NET diese nicht verwendet. Grundsätzlich 
-                werden Änderungen in der Tabelle erst durch eine explizite Bestätigung über die entsprechende 
-                Schaltfläche übernommen. Änderungen an den Geräten erfordern fast immer einen Neustart des 
+                Konfiguration und Administration</JMSLib.ReactUi.ExternalLink>. Hier vorgenomme Änderungen
+                werden für alle Geräte übernommen, selbst wenn VCR.NET diese nicht verwendet. Grundsätzlich
+                werden Änderungen in der Tabelle erst durch eine explizite Bestätigung über die entsprechende
+                Schaltfläche übernommen. Änderungen an den Geräten erfordern fast immer einen Neustart des
                 VCR.NET Dienstes.
             </InlineHelp>;
         }

@@ -145,6 +145,7 @@
     <TypeScriptCompile Include="src\lib\http\config.ts" />
     <TypeScriptCompile Include="src\lib\timebar.ts" />
     <TypeScriptCompile Include="src\pages\admin.tsx" />
+    <TypeScriptCompile Include="src\pages\admin\section.tsx" />
     <TypeScriptCompile Include="src\pages\admin\directories.tsx" />
     <TypeScriptCompile Include="src\pages\admin\devices.tsx" />
     <TypeScriptCompile Include="src\pages\admin\guide.tsx" />
@@ -205,6 +206,7 @@
     <None Include="src\lib.react\router.scss" />
     <None Include="src\lib.react\styles.scss" />
     <None Include="src\lib.react\timebar.scss" />
+    <Content Include="src\pages\admin\section.scss" />
     <None Include="src\pages\admin\directories.scss" />
     <None Include="src\pages\admin\guide.scss" />
     <None Include="src\pages\admin\other.scss" />

@@ -11,12 +11,6 @@ namespace VCRNETClient.Ui {
         route: string;
     }
 
-    // Hilfskomponente zum Erstellen von Ract.JS Konfigurationskomponenten.
-    export abstract class AdminSection<TSectionType extends App.Admin.ISection> extends JMSLib.ReactUi.ComponentWithSite<TSectionType>{
-        // Oberflächenelemente erstellen.
-        abstract render(): JSX.Element;
-    }
-
     // Schnittstelle zum anlegen der React.Js Komponente für einen einzelnen Konfigurationsbereich.
     interface IAdminUiSectionFactory<TSectionType extends App.Admin.ISection> {
         // Der eigentliche Konstruktor.

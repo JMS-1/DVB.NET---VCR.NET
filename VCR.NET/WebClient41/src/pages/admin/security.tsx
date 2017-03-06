@@ -1,4 +1,4 @@
-﻿/// <reference path="../admin.tsx" />
+﻿/// <reference path="section.tsx" />
 
 namespace VCRNETClient.Ui {
 
@@ -8,10 +8,12 @@ namespace VCRNETClient.Ui {
         // Das zugehörige Ui View Model.
         static readonly uvm = App.Admin.SecuritySection;
 
+        // Die Überschrift für diesen Bereich.
+        protected readonly title = `Auswahl der Benutzergruppen`;
+
         // Oberflächenelemente erstellen.
-        render(): JSX.Element {
+        protected renderSection(): JSX.Element {
             return <div className="vcrnet-admin-security">
-                <h2>Auswahl der Benutzergruppen</h2>
                 Der VCR.NET Recording Service unterscheidet zwischen regulären Anwendern, die
                 Aufzeichnungen anlegen, ändern und entfernen dürfen und Administratoren, die
                 zusätzlich sämtliche Betriebsparameter verändern dürfen.
@@ -22,7 +24,6 @@ namespace VCRNETClient.Ui {
                 <Field label={`${this.props.uvm.adminGroups.text}:`} page={this.props.uvm.page} >
                     <JMSLib.ReactUi.SingleSelect uvm={this.props.uvm.adminGroups} />
                 </Field>
-                <div><JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} /></div>
             </div>;
         }
 

@@ -1,0 +1,11 @@
+﻿@import "../../constants";
+
+.vcrnet-admin-section {
+    > h2 {
+        margin: 10px 0;
+    }
+
+    > div:last-child {
+        margin-top: $editLineSpacing;
+    }
+}

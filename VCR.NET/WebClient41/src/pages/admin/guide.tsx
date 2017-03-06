@@ -1,4 +1,4 @@
-﻿/// <reference path="../admin.tsx" />
+﻿/// <reference path="section.tsx" />
 
 namespace VCRNETClient.Ui {
 
@@ -8,10 +8,12 @@ namespace VCRNETClient.Ui {
         // Das zugehörige Ui View Model.
         static readonly uvm = App.Admin.GuideSection;
 
+        // Die Überschrift für diesen Bereich.
+        protected readonly title = `Einstellungen zum Aufbau der Programmzeitschrift`;
+
         // Oberflächenelemente erzeugen
-        render(): JSX.Element {
+        protected renderSection(): JSX.Element {
             return <div className="vcrnet-admin-guide">
-                <h2>Einstellungen zum Aufbau der Programmzeitschrift</h2>
                 <div>
                     Auf Wunsch kann der VCR.NET Recording Service die Elektronische Programmzeitschrift
                     (EPG)<HelpLink topic="epg" page={this.props.uvm.page} /> periodisch
@@ -48,7 +50,6 @@ namespace VCRNETClient.Ui {
                     </Field>
                 </form>}
                 {this.getUpdateHelp()}
-                <div><JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} /></div>
             </div>;
         }
 

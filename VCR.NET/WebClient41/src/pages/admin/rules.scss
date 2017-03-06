@@ -1,11 +1,5 @@
-﻿@import "../../constants";
-
-.vcrnet-admin-rules {
+﻿.vcrnet-admin-rules {
     > .jmslib-edittextarea {
         margin: 10px 2rem;
-    }
-
-    > div:last-child {
-        margin-top: $editLineSpacing;
     }
 }

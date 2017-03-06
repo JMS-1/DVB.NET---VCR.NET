@@ -1,4 +1,4 @@
-﻿/// <reference path="../admin.tsx" />
+﻿/// <reference path="section.tsx" />
 
 namespace VCRNETClient.Ui {
 
@@ -8,10 +8,12 @@ namespace VCRNETClient.Ui {
         // Das zugehörige Ui View Model.
         static readonly uvm = App.Admin.DirectoriesSection;
 
+        // Die Überschrift für diesen Bereich.
+        protected readonly title = `Aufzeichnungsverzeichnisse und Dateinamen`;
+
         // Oberflächenelemente erzeugen.
-        render(): JSX.Element {
+        protected renderSection(): JSX.Element {
             return <div className="vcrnet-admin-directories">
-                <h2>Aufzeichnungsverzeichnisse und Dateinamen</h2>
                 Da Aufzeichnungsdateien von erheblicher Größe sein können erlaubt es der VCR.NET Recording Service für
                 diesen Zweck separate Verzeichnisse festzugelegen. Dadurch können dann zum Beispiel gesonderte Festplatten
                 oder Partitionen für Aufzeichnungen genutzt werden. Zusätzlich kann hier definiert werden, wie sich die
@@ -46,7 +48,6 @@ namespace VCRNETClient.Ui {
                     </Field>
                 </form>
                 {this.getPatternHelp()}
-                <div><JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} /></div>
             </div>;
         }
 

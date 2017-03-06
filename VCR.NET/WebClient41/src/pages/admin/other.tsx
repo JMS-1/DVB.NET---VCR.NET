@@ -1,4 +1,4 @@
-﻿/// <reference path="../admin.tsx" />
+﻿/// <reference path="section.tsx" />
 
 namespace VCRNETClient.Ui {
 
@@ -8,10 +8,12 @@ namespace VCRNETClient.Ui {
         // Das zugehörige Ui View Model.
         static readonly uvm = App.Admin.OtherSection;
 
+        // Die Überschrift für diesen Bereich.
+        protected readonly title = `Sonstige Betriebsparameter`;
+
         // Erstellt die Oberflächenelemente.
-        render(): JSX.Element {
+        protected renderSection(): JSX.Element {
             return <div className="vcrnet-admin-other">
-                <h2>Sonstige Betriebsparameter</h2>
                 Hier handelt es sich um grundsätzliche Betriebsparameter des VCR.NET Dienstes. Änderungen hier erfordern
                 üblicherweise ein tieferes Verständnis der Arbeitsweise des VCR.NET Recording Service, da Fehleinstellungen
                 durchaus dazu führen können, dass der Dienst nicht mehr funktionsfähig ist.
@@ -58,9 +60,6 @@ namespace VCRNETClient.Ui {
                     </Field>
                 </form>
                 {this.getSaveHelp()}
-                <div>
-                    <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.update} />
-                </div>
             </div>;
         }
 
