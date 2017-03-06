@@ -1,17 +1,11 @@
 ﻿@import "../../constants";
 
 .vcrnet-admin-sources {
-    > form {
-        .jmslib-command {
-            font-size: x-small;
-        }
-
-        .vcrnet-editfield {
-            margin-bottom: $editLineSpacing;
-
-            > div:first-child {
-                margin-right: 4px;
-            }
+    > form .vcrnet-editfield {
+        margin-bottom: $editLineSpacing;
+        
+        > div:first-child {
+            margin-right: 4px;
         }
     }
 

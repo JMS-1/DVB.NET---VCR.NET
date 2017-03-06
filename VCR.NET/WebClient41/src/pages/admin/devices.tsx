@@ -58,7 +58,8 @@ namespace VCRNETClient.Ui {
                 <br />
                 <br />
                 Zusätzlich können für jedes Gerät auch einige Geräteparameter festgelegt werden - alternativ
-                zur direkten Pflege über die <JMSLib.ReactUi.ExternalLink url="http://www.psimarron.net/DVBNET/html/dialogrecording.html">DVB.NET
+                zur direkten Pflege über
+                die <JMSLib.ReactUi.ExternalLink url="http://www.psimarron.net/DVBNET/html/dialogrecording.html">DVB.NET
                 Konfiguration und Administration</JMSLib.ReactUi.ExternalLink>. Hier vorgenomme Änderungen
                 werden für alle Geräte übernommen, selbst wenn VCR.NET diese nicht verwendet. Grundsätzlich
                 werden Änderungen in der Tabelle erst durch eine explizite Bestätigung über die entsprechende

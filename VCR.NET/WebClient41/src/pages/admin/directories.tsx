@@ -41,8 +41,6 @@ namespace VCRNETClient.Ui {
                             <JMSLib.ReactUi.ButtonCommand uvm={this.props.uvm.add} />
                         </div>
                     </fieldset>
-                </form>
-                <form>
                     <Field page={this.props.uvm.page} label={`${this.props.uvm.pattern.text}:`}>
                         <JMSLib.ReactUi.EditText uvm={this.props.uvm.pattern} chars={60} />
                     </Field>
@@ -75,9 +73,9 @@ namespace VCRNETClient.Ui {
                 <br />
                 Wird das Hinzufügen eines Verzeichnisses gewählt, so wird die Eingabe eines Netzwerkverzeichnisses
                 bevorzugt verwendet. Dabei wird dann zusätzlich geprüft, ob das eingegebene Verzeichnis auch vom
-                VCR.NET Dienst angesprochen werden kann. Ist dies der Fall, so wird es in die Liste der Aufzeichnungsverzeichnisse
-                übernommen und ansonsten ein Fehler angezeigt. Ist die Eingabe leer, so wird das ausgewählte
-                Verzeichnis des Servers übernommen.
+                VCR.NET Dienst angesprochen werden kann. Ist dies der Fall, so wird es in die Liste der
+                Aufzeichnungsverzeichnisse übernommen und ansonsten ein Fehler angezeigt. Ist die Eingabe leer,
+                so wird das ausgewählte Verzeichnis des Servers übernommen.
                 <br />
                 <br />
                 Die Übernahme der Änderungen erfolgt erst, wenn dies durch Auswahl der entsprechenden Schaltfläche

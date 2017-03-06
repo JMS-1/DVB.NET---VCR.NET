@@ -1,5 +1,7 @@
 ﻿@import "../../constants";
 
+$spacing: 4px;
+
 .vcrnet-admin-guide {
     > form {
         .jmslib-editmultilist {
@@ -22,14 +24,14 @@
             margin-bottom: $editLineSpacing;
 
             > div:first-child {
-                margin-right: 4px;
+                margin-right: $spacing;
             }
 
             .jmslib-editlist + .vcrnet-editchannel {
-                margin-left: 4px;
+                margin-left: $spacing;
 
                 + .jmslib-command {
-                    margin-left: 4px;
+                    margin-left: $spacing;
                 }
             }
         }

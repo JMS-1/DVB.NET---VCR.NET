@@ -1,9 +1,7 @@
 ﻿.vcrnet-admin-directories {
-    > div {
-        > .jmslib-editmultilist {
-            margin-bottom: 4px;
-            width: 45rem;
-        }
+    > div > .jmslib-editmultilist {
+        margin-bottom: 4px;
+        width: 45rem;
     }
 
     > form > fieldset {
@@ -19,7 +17,7 @@
             }
         }
 
-        .jmslib-command {
+        > div:last-child > .jmslib-command {
             margin-top: 8px;
 
             &:not(:last-child) {
