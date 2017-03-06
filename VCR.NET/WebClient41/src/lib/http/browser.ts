@@ -45,6 +45,7 @@ namespace JMSLib.App {
 
             // Endpunkt einrichten.
             xhr.open(method, url);
+            xhr.timeout = 60000;
 
             // Antwortformat anmelden.
             if (!raw)
