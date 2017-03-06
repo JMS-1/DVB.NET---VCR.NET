@@ -20,6 +20,10 @@ $labelIndent: 4px;
         .vcrnet-settings-field {
             margin-left: $indent;
             margin-top: $editLineSpacing;
+
+            > .jmslib-editflag:not(:last-child) {
+                margin-right: $labelIndent;
+            }
         }
 
         .jmslib-editlist {
