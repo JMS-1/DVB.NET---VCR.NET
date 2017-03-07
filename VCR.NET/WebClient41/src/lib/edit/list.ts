@@ -75,6 +75,9 @@ namespace JMSLib.App {
     // Erlaubt die Auswahl eines einzelnen Wertes aus einer Liste erlaubter Werte.
     export class SelectSingleFromList<TValueType> extends Property<TValueType> implements IValueFromList<TValueType> {
 
+        // Gesetzt während der Initialisierung.        
+        private readonly _startUp: boolean = true;
+
         // Legt ein neues Präsentationsmodell an.
         constructor(data?: any, prop?: string, name?: string, onChange?: () => void, allowedValues: ISelectableUiValue<TValueType>[] = []) {
             super(data, prop, name, onChange);
@@ -84,6 +87,9 @@ namespace JMSLib.App {
 
             // Prüfung anmelden.
             this.addValidator(SelectSingleFromList.isInList);
+
+            // Jetzt kann es losgehen.
+            this._startUp = false;
         }
 
         // Prüft ob der aktuelle Wert in der Liste der erlaubten Werte ist.
@@ -108,7 +114,8 @@ namespace JMSLib.App {
             this._allowedValues = (values || []).map(v => new SelectableValue<TValueType>(v, this));
 
             // Anzeige erneuern.
-            this.refresh();
+            if (!this._startUp)
+                this.refresh();
         }
 
         // Ergänzt eine Prüfung auf eine fehlende Auswahl.

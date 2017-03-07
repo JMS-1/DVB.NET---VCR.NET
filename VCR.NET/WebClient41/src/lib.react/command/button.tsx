@@ -13,12 +13,13 @@ namespace JMSLib.ReactUi {
 
         // Oberflächenelemente erzeugen.
         render(): JSX.Element {
-            return this.props.uvm.isVisible && <div
+            return this.props.uvm.isVisible && <a
                 className={`jmslib-command${this.props.className ? ` ${this.props.className}` : ``}${this.props.uvm.isDangerous ? ` jmslib-command-dangerous` : ``}${this.props.uvm.isEnabled ? `` : ` jmslib-command-disabled`}`}
                 onClick={ev => this.props.uvm.execute()}
-                title={this.props.uvm.message}>
+                title={this.props.uvm.message}
+                href="javascript:void(0)">
                 {this.props.uvm.text}
-            </div>;
+            </a>;
         }
 
     }
