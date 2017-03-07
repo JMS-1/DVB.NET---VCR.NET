@@ -26,6 +26,9 @@ namespace VCRNETClient.App {
     // Präsentationmodell zur anzeige der Protokolleinträge.
     export class LogPage extends Page implements ILogPage {
 
+        // Aktualisierung in der Initialisierungsphase unterbinden.
+        private _disableLoad = true;
+
         // Alle benutzen Geräte.
         readonly profiles = new JMSLib.App.SelectSingleFromList<string>({}, "value", "Protokollbereich", () => this.load(), []);
 
@@ -57,9 +60,6 @@ namespace VCRNETClient.App {
                 return true;
             });
         }
-
-        // Aktualisierung in der Initrialisierungsphase unterbinden.
-        private _disableLoad = false;
 
         // Erstellt ein neues Präsentationsmodell.
         constructor(application: Application) {

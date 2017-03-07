@@ -16,13 +16,8 @@ namespace JMSLib.ReactUi {
             var value = this.props.uvm.value;
 
             return <div className={`jmslib-editbuttonlist${this.props.merge ? ` jmslib-command-mergelist` : ``}`}>
-                {this.props.uvm.allowedValues.map(av => <div
-                    title=""
-                    key={av.display}
-                    onClick={ev => this.props.uvm.value = av.value}
-                    className={`jmslib-command${(av.value === value) ? ` jmslib-command-checked` : ``}`}>
-                    {av.display}
-                </div>)}
+                {this.props.uvm.allowedValues.map(av =>
+                    <ButtonCommand uvm={av.select} key={av.display} className={av.isSelected ? `jmslib-command-checked` : ``} />)}
             </div>;
         }
 

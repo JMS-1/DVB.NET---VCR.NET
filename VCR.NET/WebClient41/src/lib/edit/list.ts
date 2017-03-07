@@ -20,15 +20,53 @@ namespace JMSLib.App {
         readonly toggle?: ICommand;
     }
 
+    // Beschreibt einen Wert zur Auswahl durch den Anwender.
+    export interface ISelectableUiValue<TValueType> extends IUiValue<TValueType> {
+        // Befehl zur Auswahl des Wertes.
+        readonly select?: ICommand;
+    }
+
     // Hilfsmethode zum Erstellen eines Auswahlwertes.
     export function uiValue<TValueType>(value: TValueType, display?: string): IUiValue<TValueType> {
         return { value: value, display: (display === undefined) ? ((value === null) ? `` : value.toString()) : display };
     }
 
+    // Beschreibt einen auswählbaren Wert.
+    class SelectableValue<TValueType> implements ISelectableUiValue<TValueType>{
+
+        // Erstellt eine neue Beschreibung für einen Wert.
+        constructor(value: IUiValue<TValueType>, private readonly _list: SelectSingleFromList<TValueType>) {
+            this.display = value.display;
+            this.value = value.value;
+        }
+
+        // Befehl zur Auswahl.
+        private _select: Command<void>;
+
+        get select(): Command<void> {
+            // Einmalig anlegen.
+            if (!this._select)
+                this._select = new Command<void>(() => { this._list.value = this.value; }, this.display);
+
+            return this._select;
+        }
+
+        // Meldet, ob der Wert ausgewählt wurde.
+        get isSelected(): boolean {
+            return this.value === this._list.value;
+        }
+
+        // Der dem Anwender präsentierte Wert.
+        readonly display: string;
+
+        // Der tatsächlich zu speichernde Wert.
+        readonly value: TValueType;
+    }
+
     // Schnittstelle zur Auswahl eines einzelnen Wertes aus einer Liste erlaubter Werte.
     export interface IValueFromList<TValueType> extends IProperty<TValueType> {
         // Die erlaubten Werte.
-        readonly allowedValues: IUiValue<TValueType>[];
+        readonly allowedValues: ISelectableUiValue<TValueType>[];
 
         // Die laufende Nummer des aktuell ausgewählte Wertes.
         valueIndex: number;
@@ -38,8 +76,11 @@ namespace JMSLib.App {
     export class SelectSingleFromList<TValueType> extends Property<TValueType> implements IValueFromList<TValueType> {
 
         // Legt ein neues Präsentationsmodell an.
-        constructor(data?: any, prop?: string, name?: string, onChange?: () => void, private _allowedValues: IUiValue<TValueType>[] = []) {
+        constructor(data?: any, prop?: string, name?: string, onChange?: () => void, allowedValues: ISelectableUiValue<TValueType>[] = []) {
             super(data, prop, name, onChange);
+
+            // Liste laden.
+            this.allowedValues = allowedValues;
 
             // Prüfung anmelden.
             this.addValidator(SelectSingleFromList.isInList);
@@ -54,14 +95,17 @@ namespace JMSLib.App {
                 return "Der Wert ist nicht in der Liste der erlaubten Werte enthalten.";
         }
 
+        // Die Liste der erlaubten Werte.
+        private _allowedValues: SelectableValue<TValueType>[];
+
         // Meldet die Liste der aktuell erlaubten Werte.
-        get allowedValues(): IUiValue<TValueType>[] {
+        get allowedValues(): ISelectableUiValue<TValueType>[] {
             return this._allowedValues;
         }
 
         // Legt die Liste der aktuell erlaubten Werte neu fest.
-        set allowedValues(values: IUiValue<TValueType>[]) {
-            this._allowedValues = values || [];
+        set allowedValues(values: ISelectableUiValue<TValueType>[]) {
+            this._allowedValues = (values || []).map(v => new SelectableValue<TValueType>(v, this));
 
             // Anzeige erneuern.
             this.refresh();
