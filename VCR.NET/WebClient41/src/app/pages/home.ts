@@ -30,6 +30,9 @@ namespace VCRNETClient.App {
 
         // Gesetzt, wenn die Online verfügbare Version anders ist als die lokal installierte - im Allgemeinen natürlich neuer.
         readonly versionMismatch: boolean;
+
+        // Gesetzt, wenn der Verweis zur Konfiguration angezeigt werden soll.
+        readonly showAdmin: boolean;
     }
 
     // Die Anwendungslogik für die Startseite.
@@ -76,6 +79,11 @@ namespace VCRNETClient.App {
         // Gesetzt, wenn die Online verfügbare Version anders ist als die lokal installierte - im Allgemeinen natürlich neuer.
         get versionMismatch(): boolean {
             return this._onlineVersion && (this._onlineVersion !== this.currentVersion);
+        }
+
+        // Gesetzt, wenn der Verweis zur Konfiguration angezeigt werden soll.
+        get showAdmin(): boolean {
+            return this.application.version.userIsAdmin && !this.isRecording;
         }
 
         // Blendet die Anzeile der Online Version ein oder aus.

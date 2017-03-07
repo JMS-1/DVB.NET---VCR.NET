@@ -52,7 +52,7 @@ namespace VCRNETClient.Ui {
                         </Task>}
                         <li>prüfen, ob inzwischen eine <JMSLib.ReactUi.InternalLink view={() => versionCheck.value = !versionCheck.value}>neuere Version</JMSLib.ReactUi.InternalLink> des VCR.NET Recording Service angeboten wird</li>
                         {versionCheck.value && <VersionCheck uvm={this.props.uvm} />}
-                        <li>{this.props.uvm.isRecording ? "die Konfiguration des VCR.NET Recording Service verändern" : <JMSLib.ReactUi.InternalLink pict="admin" view={application.adminPage.route}>die Konfiguration des VCR.NET Recording Service verändern</JMSLib.ReactUi.InternalLink>}</li>
+                        <li>{this.props.uvm.showAdmin ? <JMSLib.ReactUi.InternalLink pict="admin" view={application.adminPage.route}>die Konfiguration des VCR.NET Recording Service verändern</JMSLib.ReactUi.InternalLink> : "die Konfiguration des VCR.NET Recording Service verändern"}</li>
                     </ul>
                 </div>
                 {this.props.uvm.isRecording && <div className="vcrnet-warningtext">
