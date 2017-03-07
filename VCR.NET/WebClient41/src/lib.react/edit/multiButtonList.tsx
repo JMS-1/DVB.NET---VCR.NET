@@ -14,13 +14,8 @@ namespace JMSLib.ReactUi {
         // Oberflächenelemente erstellen.
         render(): JSX.Element {
             return <div className={`jmslib-editmultibuttonlist${this.props.merge ? ` jmslib-command-mergelist` : ``}`}>
-                {this.props.uvm.allowedValues.map(v => <div
-                    title=""
-                    key={v.display}
-                    onClick={ev => v.isSelected = !v.isSelected}
-                    className={`jmslib-command${v.isSelected ? ` jmslib-command-checked` : ``}`}>
-                    {v.display}
-                </div>)}
+                {this.props.uvm.allowedValues.map(v =>
+                    <ButtonCommand uvm={v.toggle} key={v.display} className={v.isSelected ? `jmslib-command-checked` : ``} />)}
             </div>;
         }
 

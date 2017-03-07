@@ -14,6 +14,12 @@ namespace JMSLib.App {
         isSelected?: boolean;
     }
 
+    // Beschreibt einen Wert zur Auswahl durch den Anwender.
+    export interface IToggableUiValue<TValueType> extends IUiValue<TValueType> {
+        // Befehl zum Umschalten des Wahrheitswertes.
+        readonly toggle?: ICommand;
+    }
+
     // Hilfsmethode zum Erstellen eines Auswahlwertes.
     export function uiValue<TValueType>(value: TValueType, display?: string): IUiValue<TValueType> {
         return { value: value, display: (display === undefined) ? ((value === null) ? `` : value.toString()) : display };
