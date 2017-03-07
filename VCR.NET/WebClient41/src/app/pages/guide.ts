@@ -49,7 +49,7 @@ namespace VCRNETClient.App {
         readonly queryString: JMSLib.App.IString;
 
         // Gesetzt, wenn auch in der Beschreibung gesucht werden soll.
-        readonly withContent: JMSLib.App.IFlag;
+        readonly withContent: JMSLib.App.IToggableFlag;
 
         // Befehl zum Zurücksetzen aller Einschränkungen.
         readonly resetFilter: JMSLib.App.ICommand;

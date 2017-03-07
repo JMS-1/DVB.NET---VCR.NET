@@ -11,13 +11,13 @@ namespace VCRNETClient.App {
         readonly startDay: JMSLib.App.IValueFromList<string>;
 
         // Anzahl zur Anzeige von Aktualisierungen der Programmzeitschrift.
-        readonly showGuide: JMSLib.App.IFlag;
+        readonly showGuide: JMSLib.App.IToggableFlag;
 
         // Auswahl zur Anzige der Aktualisierungen der Quellen.
-        readonly showScan: JMSLib.App.IFlag;
+        readonly showScan: JMSLib.App.IToggableFlag;
 
         // Auswahl zur Anzeige von LIVE Verwendung.
-        readonly showLive: JMSLib.App.IFlag;
+        readonly showLive: JMSLib.App.IToggableFlag;
 
         // Alle anzuzeigenden Protokolleinträge.
         readonly entries: Log.ILogEntry[];

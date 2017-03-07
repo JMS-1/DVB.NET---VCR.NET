@@ -6,8 +6,25 @@ namespace JMSLib.App {
     export interface IFlag extends IProperty<boolean> {
     }
 
+    // Schnittstelle zur Pflege einer Eigenschaft mit einem Wahrheitswert.
+    export interface IToggableFlag extends IFlag {
+        // Befehl zum Umschalten des Wahrheitswertes.
+        readonly toggle: ICommand;
+    }
+
     // Verwaltet den Wahrheitswert in einer Eigenschaft - hier können wir uns vollständig auf die Implementierung der Basisklasse verlassen.
-    export class Flag extends Property<boolean> implements IFlag {
+    export class Flag extends Property<boolean> implements IToggableFlag {
+        // Befehl zum Umschalten des Wahrheitswertes.
+        private _toggle: Command<void>;
+
+        get toggle(): Command<void> {
+            // Einmalig anlegen.
+            if (!this._toggle)
+                this._toggle = new Command<void>(() => { this.value = !this.value; }, this.text, () => !this.isReadonly);
+
+            return this._toggle;
+        }
+
         // Legt eine neue Verwaltung an.
         constructor(data?: any, prop?: string, name?: string, onChange?: () => void, testReadOnly?: () => boolean) {
             super(data, prop, name, onChange, testReadOnly);

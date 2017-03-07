@@ -11,7 +11,7 @@ namespace VCRNETClient.App {
         readonly startFilter: JMSLib.App.IValueFromList<Date>;
 
         // Auswahl für die Anzeige der Aufgaben zusätzlich zu den Aufzeichnungen.
-        readonly showTasks: JMSLib.App.IFlag;
+        readonly showTasks: JMSLib.App.IToggableFlag;
     }
 
     // Steuert die Anzeige des Aufzeichnungsplan.
