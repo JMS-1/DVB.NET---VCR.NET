@@ -6,7 +6,9 @@ namespace VCRNETClient.Ui {
     export class AdminDirectories extends AdminSection<App.Admin.IAdminDirectoriesPage>{
 
         // Das zugehörige Ui View Model.
-        static readonly uvm = App.Admin.DirectoriesSection;
+        static get uvm(): IAdminSectionFactory<App.Admin.IAdminDirectoriesPage> {
+            return App.Admin.DirectoriesSection;
+        }
 
         // Die Überschrift für diesen Bereich.
         protected readonly title = `Aufzeichnungsverzeichnisse und Dateinamen`;

@@ -6,7 +6,9 @@ namespace VCRNETClient.Ui {
     export class AdminOther extends AdminSection<App.Admin.IAdminOtherPage>{
 
         // Das zugehörige Ui View Model.
-        static readonly uvm = App.Admin.OtherSection;
+        static get uvm(): IAdminSectionFactory<App.Admin.IAdminOtherPage> {
+            return App.Admin.OtherSection;
+        }
 
         // Die Überschrift für diesen Bereich.
         protected readonly title = `Sonstige Betriebsparameter`;

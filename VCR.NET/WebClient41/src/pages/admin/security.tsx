@@ -6,7 +6,9 @@ namespace VCRNETClient.Ui {
     export class AdminSecurity extends AdminSection<App.Admin.IAdminSecurityPage>{
 
         // Das zugehörige Ui View Model.
-        static readonly uvm = App.Admin.SecuritySection;
+        static get uvm(): IAdminSectionFactory<App.Admin.IAdminSecurityPage> {
+            return App.Admin.SecuritySection;
+        }
 
         // Die Überschrift für diesen Bereich.
         protected readonly title = `Auswahl der Benutzergruppen`;

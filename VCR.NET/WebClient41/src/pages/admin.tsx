@@ -3,7 +3,7 @@
 namespace VCRNETClient.Ui {
 
     // Hilfsschnittstelle zur Signature des Konstruktors eines Ui View Models.
-    interface IAdminSectionFactory<TSectionType extends App.Admin.ISection> {
+    export interface IAdminSectionFactory<TSectionType extends App.Admin.ISection> {
         // Der eigentliche Konstruktor.
         new (page: App.AdminPage): App.Admin.ISection;
 

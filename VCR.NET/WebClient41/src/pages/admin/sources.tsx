@@ -6,7 +6,9 @@ namespace VCRNETClient.Ui {
     export class AdminSources extends AdminSection<App.Admin.IAdminScanPage>{
 
         // Das zugehörige Ui View Model.
-        static readonly uvm = App.Admin.ScanSection;
+        static get uvm(): IAdminSectionFactory<App.Admin.IAdminScanPage> {
+            return App.Admin.ScanSection;
+        }
 
         // Die Überschrift für diesen Bereich.
         protected readonly title = `Aktualisierung der Quellen konfigurieren`;

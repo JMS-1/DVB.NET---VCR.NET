@@ -6,7 +6,9 @@ namespace VCRNETClient.Ui {
     export class AdminGuide extends AdminSection<App.Admin.IAdminGuidePage>{
 
         // Das zugehörige Ui View Model.
-        static readonly uvm = App.Admin.GuideSection;
+        static get uvm(): IAdminSectionFactory<App.Admin.IAdminGuidePage> {
+            return App.Admin.GuideSection;
+        }
 
         // Die Überschrift für diesen Bereich.
         protected readonly title = `Einstellungen zum Aufbau der Programmzeitschrift`;

@@ -6,7 +6,9 @@ namespace VCRNETClient.Ui {
     export class AdminDevices extends AdminSection<App.Admin.IAdminDevicesPage>{
 
         // Das zugehörige Ui View Model.
-        static readonly uvm = App.Admin.DevicesSection;
+        static get uvm(): IAdminSectionFactory<App.Admin.IAdminDevicesPage> {
+            return App.Admin.DevicesSection;
+        }
 
         // Die Überschrift für diesen Bereich.
         protected readonly title = `Aktivierung von DVB.NET Geräteprofilen`;

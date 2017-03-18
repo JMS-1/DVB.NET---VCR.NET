@@ -6,7 +6,9 @@ namespace VCRNETClient.Ui {
     export class AdminRules extends AdminSection<App.Admin.IAdminRulesPage>{
 
         // Das zugehörige Ui View Model.
-        static readonly uvm = App.Admin.RulesSection;
+        static get uvm(): IAdminSectionFactory<App.Admin.IAdminRulesPage> {
+            return App.Admin.RulesSection;
+        }
 
         // Die Überschrift für diesen Bereich.
         protected readonly title = `Regeln für die Planung von Aufzeichnungen`;
