@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "outFile": "scripts/vcrnet.js",
+    "removeComments": true,
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "sourceMap": true,
+    "target": "es5",
+    "jsx": "react",
+    "module": "amd"    
+  },
+  "exclude": [
+    "node_modules",
+    "wwwroot",
+    "Apps"
+  ],
+  "include": [
+    "../typings/index.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.ts"
+  ]
+}

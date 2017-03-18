@@ -426,6 +426,7 @@
     <None Include="src\constants.scss" />
     <None Include="src\vcrnet.scss" />
     <None Include="src\pages\styles.scss" />
+    <Content Include="tsconfig.json" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
