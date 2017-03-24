@@ -46,7 +46,7 @@ namespace VCRNETClient.App.Edit {
             this.duration = new DurationEditor(model, "firstStart", "duration", "Zeitraum", () => this.onChange(onChange));
             this.firstStart = new JMSLib.App.DayEditor(model, "firstStart", "Datum", onChange)
                 .addValidator(() => this.validateFirstRecording());
-            this.lastDay = new JMSLib.App.DayEditor(model, "lastDay", "wiederholen bis zum", () => this.onChange(onChange))
+            this.lastDay = new JMSLib.App.DayEditor(model, "lastDay", "wiederholen bis zum", () => this.onChange(onChange), true)
                 .addRequiredValidator()
                 .addValidator(day => ScheduleEditor.validateDateRange(day));
 
