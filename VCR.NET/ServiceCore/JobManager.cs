@@ -148,12 +148,9 @@ namespace JMS.DVBVCR.RecordingService
         {
             get
             {
-                // The result
-                VCRJob result;
-
                 // Cut off
                 lock (m_Jobs)
-                    if (m_Jobs.TryGetValue( jobIdentifier, out result ))
+                    if (m_Jobs.TryGetValue( jobIdentifier, out VCRJob result))
                         return result;
 
                 // Report
