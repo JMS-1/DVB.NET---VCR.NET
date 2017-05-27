@@ -273,9 +273,8 @@ namespace JMS.DVBVCR.RecordingService
                     return null;
 
                 // To to convert
-                DateTime result;
-                if (DateTime.TryParseExact( value, "u", null, DateTimeStyles.None, out result ))
-                    return DateTime.SpecifyKind( result, DateTimeKind.Utc );
+                if (DateTime.TryParseExact(value, "u", null, DateTimeStyles.None, out DateTime result))
+                    return DateTime.SpecifyKind(result, DateTimeKind.Utc);
             }
             catch
             {
@@ -368,9 +367,8 @@ namespace JMS.DVBVCR.RecordingService
                 yield break;
 
             // Process all
-            uint hour;
-            foreach (var hourAsString in hours.Split( ',' ))
-                if (uint.TryParse( hourAsString.Trim(), out hour ))
+            foreach (var hourAsString in hours.Split(','))
+                if (uint.TryParse(hourAsString.Trim(), out uint hour))
                     if ((hour >= 0) && (hour <= 23))
                         yield return hour;
         }

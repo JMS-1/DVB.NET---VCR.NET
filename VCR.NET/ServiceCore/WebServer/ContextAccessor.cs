@@ -235,8 +235,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
                 var domain = (parts.Length == 2) ? parts[0] : ".";
 
                 // Try to logon
-                IntPtr handle;
-                if (!LogonUser( name, domain, basicIdentity.Password, 3, 0, out handle ))
+                if (!LogonUser(name, domain, basicIdentity.Password, 3, 0, out IntPtr handle))
                 {
                     // Set result
                     var response = Context.Response;

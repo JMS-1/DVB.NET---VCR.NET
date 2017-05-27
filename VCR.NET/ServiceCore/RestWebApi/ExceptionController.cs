@@ -22,10 +22,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         {
             // Parse the date
             var date = new DateTime( long.Parse( when ), DateTimeKind.Utc );
-
-            // Split
-            Guid jobIdentifier, scheduleIdentifier;
-            ServerRuntime.ParseUniqueWebId( detail, out jobIdentifier, out scheduleIdentifier );
+            ServerRuntime.ParseUniqueWebId( detail, out Guid jobIdentifier, out Guid scheduleIdentifier );
 
             // Forward
             ServerRuntime.VCRServer.ChangeException( jobIdentifier, scheduleIdentifier, date, startDelta, durationDelta );

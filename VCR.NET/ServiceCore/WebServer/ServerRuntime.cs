@@ -300,9 +300,7 @@ namespace JMS.DVBVCR.RecordingService.WebServer
         /// <returns>Die zugehörige Aufzeichnung im Auftrag.</returns>
         public static VCRSchedule ParseUniqueWebId( string id, out VCRJob job )
         {
-            // Read all
-            Guid jobID, scheduleID;
-            ParseUniqueWebId( id, out jobID, out scheduleID );
+            ParseUniqueWebId( id, out Guid jobID, out Guid scheduleID );
 
             // Find the job
             job = VCRServer.FindJob( jobID );

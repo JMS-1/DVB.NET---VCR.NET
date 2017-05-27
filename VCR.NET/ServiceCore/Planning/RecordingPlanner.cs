@@ -131,8 +131,7 @@ namespace JMS.DVBVCR.RecordingService.Planning
                 return null;
 
             // Ask map
-            IScheduleResource resource;
-            if (m_resources.TryGetValue( profileName, out resource ))
+            if (m_resources.TryGetValue(profileName, out IScheduleResource resource))
                 return resource;
 
             // Not found
@@ -213,8 +212,7 @@ namespace JMS.DVBVCR.RecordingService.Planning
                 if (stop != null)
                 {
                     // Lookup the item and report to site
-                    ScheduleInformation schedule;
-                    if (!m_started.TryGetValue( stop.UniqueIdentifier, out schedule ))
+                    if (!m_started.TryGetValue(stop.UniqueIdentifier, out ScheduleInformation schedule))
                         return;
 
                     // Report to site
@@ -288,8 +286,7 @@ namespace JMS.DVBVCR.RecordingService.Planning
                 return false;
 
             // See if we know it
-            ScheduleInformation started;
-            if (!m_started.TryGetValue( itemIdentifier, out started ))
+            if (!m_started.TryGetValue(itemIdentifier, out ScheduleInformation started))
                 return true;
 
             // Try to get the new schedule data

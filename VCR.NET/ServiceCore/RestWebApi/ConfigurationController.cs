@@ -346,7 +346,6 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
             ServerRuntime.TestAdminAccess();
 
             // Helper
-            string defaultName;
 
             // Create response
             var settings =
@@ -355,7 +354,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
                     SystemProfiles =
                         ServerRuntime
                             .VCRServer
-                            .GetProfiles(ConfigurationProfile.Create, out defaultName)
+                            .GetProfiles(ConfigurationProfile.Create, out string defaultName)
                             .OrderBy(profile => profile.Name, ProfileManager.ProfileNameComparer)
                             .ToArray()
                 };

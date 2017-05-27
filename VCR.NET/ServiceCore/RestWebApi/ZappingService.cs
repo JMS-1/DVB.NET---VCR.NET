@@ -47,10 +47,9 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
                 return -1;
 
             // Get the part
-            uint result;
-            if (uint.TryParse( uniqueName.Substring( 0, i ), out result ))
+            if (uint.TryParse(uniqueName.Substring(0, i), out uint result))
                 if (result < int.MaxValue)
-                    return (int) result;
+                    return (int)result;
                 else
                     return -1;
             else

@@ -55,9 +55,8 @@ namespace JMS.DVBVCR.RecordingService.ProgramGuide
             var key = newEvent.Source;
 
             // Attach to holder
-            OrderedEntries events;
-            if (!m_Events.TryGetValue( key, out events ))
-                m_Events.Add( key, events = new OrderedEntries() );
+            if (!m_Events.TryGetValue(key, out OrderedEntries events))
+                m_Events.Add(key, events = new OrderedEntries());
 
             // Forward
             events.Add( newEvent );
@@ -73,9 +72,8 @@ namespace JMS.DVBVCR.RecordingService.ProgramGuide
         public bool HasEntry( SourceIdentifier source, DateTime start, DateTime end )
         {
             // Attach to holder
-            OrderedEntries events;
-            if (m_Events.TryGetValue( source, out events ))
-                return events.HasEntry( start, end );
+            if (m_Events.TryGetValue(source, out OrderedEntries events))
+                return events.HasEntry(start, end);
             else
                 return false;
         }
@@ -92,11 +90,10 @@ namespace JMS.DVBVCR.RecordingService.ProgramGuide
         public TTarget FindBestEntry<TTarget>( SourceIdentifier source, DateTime start, DateTime end, Func<ProgramGuideEntry, TTarget> factory )
         {
             // Attach to holder
-            OrderedEntries events;
-            if (m_Events.TryGetValue( source, out events ))
-                return events.FindBestEntry( start, end, factory );
+            if (m_Events.TryGetValue(source, out OrderedEntries events))
+                return events.FindBestEntry(start, end, factory);
             else
-                return default( TTarget );
+                return default(TTarget);
         }
 
         /// <summary>
@@ -108,9 +105,8 @@ namespace JMS.DVBVCR.RecordingService.ProgramGuide
         public ProgramGuideEntry FindEntry( SourceIdentifier source, DateTime start )
         {
             // Attach to holder
-            OrderedEntries events;
-            if (m_Events.TryGetValue( source, out events ))
-                return events.FindEntry( start );
+            if (m_Events.TryGetValue(source, out OrderedEntries events))
+                return events.FindEntry(start);
             else
                 return null;
         }
@@ -179,8 +175,7 @@ namespace JMS.DVBVCR.RecordingService.ProgramGuide
         public IEnumerable<ProgramGuideEntry> GetEntries( SourceIdentifier source )
         {
             // Load list
-            OrderedEntries entries;
-            if (!m_Events.TryGetValue( source, out entries ))
+            if (!m_Events.TryGetValue(source, out OrderedEntries entries))
                 yield break;
 
             // Process all as long as caller needs it

@@ -183,13 +183,11 @@ namespace JMS.DVBVCR.RecordingService
                     profileName = state.Profiles[0].Name;
 
             // Map to use
-            Dictionary<string, SourceSelection> sources;
-            if (!state.SourceBySelectionMap.TryGetValue( profileName, out sources ))
+            if (!state.SourceBySelectionMap.TryGetValue(profileName, out Dictionary<string, SourceSelection> sources))
                 return null;
 
             // Ask map
-            SourceSelection source;
-            if (!sources.TryGetValue( name, out source ))
+            if (!sources.TryGetValue(name, out SourceSelection source))
                 return null;
 
             // Report
@@ -217,13 +215,11 @@ namespace JMS.DVBVCR.RecordingService
                     profileName = state.Profiles[0].Name;
 
             // Find the map
-            Dictionary<SourceIdentifier, SourceSelection> map;
-            if (!state.SourceByIdentifierMap.TryGetValue( profileName, out map ))
+            if (!state.SourceByIdentifierMap.TryGetValue(profileName, out Dictionary<SourceIdentifier, SourceSelection> map))
                 return null;
 
             // Find the source
-            SourceSelection found;
-            if (!map.TryGetValue( source, out found ))
+            if (!map.TryGetValue(source, out SourceSelection found))
                 return null;
             else
                 return found;
@@ -296,8 +292,7 @@ namespace JMS.DVBVCR.RecordingService
                 yield break;
 
             // Load the map
-            Dictionary<SourceIdentifier, SourceSelection> map;
-            if (!CurrentState.SourceByIdentifierMap.TryGetValue( profile.Name, out map ))
+            if (!CurrentState.SourceByIdentifierMap.TryGetValue(profile.Name, out Dictionary<SourceIdentifier, SourceSelection> map))
                 yield break;
 
             // Use state
@@ -319,8 +314,7 @@ namespace JMS.DVBVCR.RecordingService
                 return DefaultProfile;
 
             // Read out
-            Profile profile;
-            return CurrentState.ProfileMap.TryGetValue( name, out profile ) ? profile : null;
+            return CurrentState.ProfileMap.TryGetValue(name, out Profile profile) ? profile : null;
         }
 
         /// <summary>
@@ -342,8 +336,7 @@ namespace JMS.DVBVCR.RecordingService
                 return null;
 
             // Find the name
-            string name;
-            if (!CurrentState.UniqueNameBySelectionMap.TryGetValue( active.SelectionKey, out name ))
+            if (!CurrentState.UniqueNameBySelectionMap.TryGetValue(active.SelectionKey, out string name))
                 return null;
 
             // Report it

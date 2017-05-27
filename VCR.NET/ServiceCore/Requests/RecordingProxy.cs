@@ -387,15 +387,14 @@ namespace JMS.DVBVCR.RecordingService.Requests
             foreach (var recording in m_recordings)
             {
                 // Load list
-                List<VCRRecordingInfo> recordings;
-                if (!names.TryGetValue( recording.FileName, out recordings ))
+                if (!names.TryGetValue(recording.FileName, out List<VCRRecordingInfo> recordings))
                 {
                     // Create new
                     recordings = new List<VCRRecordingInfo>();
 
                     // To map and ordered list
-                    names.Add( recording.FileName, recordings );
-                    orderedNames.Add( recordings );
+                    names.Add(recording.FileName, recordings);
+                    orderedNames.Add(recordings);
                 }
 
                 // Remember

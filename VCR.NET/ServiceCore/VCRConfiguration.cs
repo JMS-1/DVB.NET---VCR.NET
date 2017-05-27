@@ -387,8 +387,7 @@ namespace JMS.DVBVCR.RecordingService
         private static object ReadSetting(SettingNames name)
         {
             // Find and forward
-            SettingDescription settings;
-            return m_Settings.TryGetValue(name, out settings) ? settings.ReadValue() : null;
+            return m_Settings.TryGetValue(name, out SettingDescription settings) ? settings.ReadValue() : null;
         }
 
         /// <summary>

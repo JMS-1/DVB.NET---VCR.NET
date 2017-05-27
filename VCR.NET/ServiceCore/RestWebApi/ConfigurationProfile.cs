@@ -58,8 +58,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
                 return settingDefault;
 
             // Check value
-            uint value;
-            if (uint.TryParse( settings, out value ))
+            if (uint.TryParse(settings, out uint value))
                 return value;
             else
                 return settingDefault;

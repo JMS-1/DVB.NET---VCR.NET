@@ -23,13 +23,11 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         public PlanActivity[] GetPlan( string limit, string end )
         {
             // Get the limit
-            int maximum;
-            if (!int.TryParse( limit, out maximum ) || (maximum <= 0))
+            if (!int.TryParse(limit, out int maximum) || (maximum <= 0))
                 maximum = 1000;
 
             // Get the date
-            DateTime endTime;
-            if (!DateTime.TryParse( end, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out endTime ))
+            if (!DateTime.TryParse(end, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out DateTime endTime))
                 endTime = DateTime.MaxValue;
 
             // Route from Web AppDomain into service AppDomain
@@ -52,8 +50,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         public PlanActivityMobile[] GetPlanMobile( string limit, string mobile )
         {
             // Get the limit
-            int maximum;
-            if (!int.TryParse( limit, out maximum ) || (maximum <= 0))
+            if (!int.TryParse(limit, out int maximum) || (maximum <= 0))
                 maximum = 1000;
 
             // Use helper

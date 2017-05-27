@@ -63,8 +63,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
                     detail = detail.Substring( 1, 32 ) + Guid.NewGuid().ToString( "N" );
 
             // Parameter analysieren
-            VCRJob job;
-            var schedule = ServerRuntime.ParseUniqueWebId( detail, out job );
+            var schedule = ServerRuntime.ParseUniqueWebId(detail, out VCRJob job);
 
             // See if we have to initialize from program guide
             ProgramGuideEntry epgEntry = null;
@@ -91,8 +90,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         public void UpdateRecording( string detail, [FromBody] JobScheduleData data )
         {
             // Parameter analysieren
-            VCRJob job;
-            var schedule = ServerRuntime.ParseUniqueWebId( detail, out job );
+            var schedule = ServerRuntime.ParseUniqueWebId(detail, out VCRJob job);
 
             // Validate
             if (schedule == null)
@@ -135,8 +133,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         public void DeleteRecording( string detail )
         {
             // Parameter analysieren
-            VCRJob job;
-            var schedule = ServerRuntime.ParseUniqueWebId( detail, out job );
+            var schedule = ServerRuntime.ParseUniqueWebId(detail, out VCRJob job);
 
             // Validate
             if (schedule == null)
@@ -162,8 +159,7 @@ namespace JMS.DVBVCR.RecordingService.RestWebApi
         public string CreateNewRecording( string detail, [FromBody] JobScheduleData data )
         {
             // Parameter analysieren
-            VCRJob job;
-            ServerRuntime.ParseUniqueWebId( detail + Guid.NewGuid().ToString( "N" ), out job );
+            ServerRuntime.ParseUniqueWebId(detail + Guid.NewGuid().ToString("N"), out VCRJob job);
 
             // Validate
             if (job == null)

@@ -69,21 +69,18 @@ namespace JMS.DVBVCR.RecordingService.Win32Tools
             get
             {
                 // Try to open - 64 Bit first on 64 Bit OS
-                IntPtr key;
-                if (RegOpenKeyEx( LocalMachineKey, KeyName, 0, 0x20119, out key ) == 0)
+                if (RegOpenKeyEx(LocalMachineKey, KeyName, 0, 0x20119, out IntPtr key) == 0)
                     try
                     {
-                        // Try to read the value
-                        Int32 size, type;
-                        if (RegQueryValueEx( key, ValueName, IntPtr.Zero, out type, null, out size ) == 0)
+                        if (RegQueryValueEx(key, ValueName, IntPtr.Zero, out int type, null, out int size) == 0)
                             if ((type == 1) || (type == 2))
                                 if (size > 1)
                                 {
                                     // Allocate enough space
-                                    var buffer = new StringBuilder( size + 1 );
+                                    var buffer = new StringBuilder(size + 1);
 
                                     // Read
-                                    if (RegQueryValueEx( key, ValueName, IntPtr.Zero, out type, buffer, out size ) == 0)
+                                    if (RegQueryValueEx(key, ValueName, IntPtr.Zero, out type, buffer, out size) == 0)
                                     {
                                         // Finish buffer
                                         buffer.Length = size - 1;
@@ -96,7 +93,7 @@ namespace JMS.DVBVCR.RecordingService.Win32Tools
                     finally
                     {
                         // Free resources
-                        RegCloseKey( key );
+                        RegCloseKey(key);
                     }
 
                 // Find the name of the shell

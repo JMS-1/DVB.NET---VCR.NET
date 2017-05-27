@@ -96,8 +96,7 @@ namespace JMS.DVBVCR.RecordingService
                 }
 
                 // Load
-                ProfileState profile;
-                if (m_profiles.TryGetValue( profileName, out profile ))
+                if (m_profiles.TryGetValue(profileName, out ProfileState profile))
                     return profile;
                 else
                     return null;
@@ -585,9 +584,8 @@ namespace JMS.DVBVCR.RecordingService
         PeriodicScheduler IRecordingPlannerSite.CreateProgramGuideTask( IScheduleResource resource, Profile profile )
         {
             // Protect against misuse
-            ProfileState state;
-            if (m_profiles.TryGetValue( profile.Name, out state ))
-                return new ProgramGuideTask( resource, state );
+            if (m_profiles.TryGetValue(profile.Name, out ProfileState state))
+                return new ProgramGuideTask(resource, state);
             else
                 return null;
         }
@@ -601,9 +599,8 @@ namespace JMS.DVBVCR.RecordingService
         PeriodicScheduler IRecordingPlannerSite.CreateSourceScanTask( IScheduleResource resource, Profile profile )
         {
             // Protect against misuse
-            ProfileState state;
-            if (m_profiles.TryGetValue( profile.Name, out state ))
-                return new SourceListTask( resource, state );
+            if (m_profiles.TryGetValue(profile.Name, out ProfileState state))
+                return new SourceListTask(resource, state);
             else
                 return null;
         }
@@ -704,8 +701,7 @@ namespace JMS.DVBVCR.RecordingService
             VCRServer.Log( LoggingLevel.Schedules, "Done recording '{0}'", item.Definition.Name );
 
             // Locate the profile - if we don't find it we are in big trouble!
-            ProfileState profile;
-            if (!m_profiles.TryGetValue( item.Resource.Name, out profile ))
+            if (!m_profiles.TryGetValue(item.Resource.Name, out ProfileState profile))
                 return;
 
             // Mark as pending
@@ -744,8 +740,7 @@ namespace JMS.DVBVCR.RecordingService
             VCRServer.Log( LoggingLevel.Schedules, "Start recording '{0}'", item.Definition.Name );
 
             // Locate the profile - if we don't find it we are in big trouble!
-            ProfileState profile;
-            if (!m_profiles.TryGetValue( item.Resource.Name, out profile ))
+            if (!m_profiles.TryGetValue(item.Resource.Name, out ProfileState profile))
                 return;
 
             // Mark as pending
