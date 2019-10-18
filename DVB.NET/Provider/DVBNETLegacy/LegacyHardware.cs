@@ -5,7 +5,6 @@ using JMS.DVB.DeviceAccess.Interfaces;
 using JMS.DVB.Editors;
 using JMS.TechnoTrend;
 
-
 namespace JMS.DVB.Provider.Legacy
 {
     /// <summary>
@@ -104,6 +103,10 @@ namespace JMS.DVB.Provider.Legacy
                     restr.ConsumerLimit = 8;
 
                     // But is able to provide signal information
+                    restr.ProvidesSignalInformation = true;
+                }
+                else if (typeof(Ubuntu.DeviceProvider).IsAssignableFrom(driver))
+                {
                     restr.ProvidesSignalInformation = true;
                 }
                 else if (typeof( TTBudget.BudgetProvider ).IsAssignableFrom( driver ))

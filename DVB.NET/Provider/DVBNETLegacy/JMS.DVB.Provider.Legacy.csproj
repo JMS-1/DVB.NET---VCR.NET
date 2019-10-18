@@ -64,6 +64,10 @@
       <HintPath>..\..\Assemblies\Adapter\JMS.DVB.Provider.TTPremium.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="JMS.DVB.Provider.Ubuntu, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\Assemblies\Adapter\JMS.DVB.Provider.Ubuntu.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="JMS.DVB.SITables, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
