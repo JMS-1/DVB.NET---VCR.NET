@@ -3,6 +3,7 @@ using JMS.TechnoTrend;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
@@ -68,7 +69,19 @@ namespace JMS.DVB.Provider.Ubuntu
                 bufptr.Free();
             }
 
-            m_connection.GetStream().Write(buf, 0, buf.Length);
+            SafeWrite(buf);
+        }
+
+        private void SafeWrite(byte[] buf)
+        {
+            try
+            {
+                m_connection.GetStream().Write(buf, 0, buf.Length);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Failed to send request: {0}", e);
+            }
         }
 
         private void SendRequest(FrontendRequestType type, UInt16 data)
@@ -88,7 +101,7 @@ namespace JMS.DVB.Provider.Ubuntu
                 bufptr.Free();
             }
 
-            m_connection.GetStream().Write(buf, 0, buf.Length);
+            SafeWrite(buf);
         }
 
         private void SendRequest(FrontendRequestType type)
@@ -107,7 +120,7 @@ namespace JMS.DVB.Provider.Ubuntu
                 bufptr.Free();
             }
 
-            m_connection.GetStream().Write(buf, 0, buf.Length);
+            SafeWrite(buf);
         }
 
 
@@ -120,14 +133,21 @@ namespace JMS.DVB.Provider.Ubuntu
                     return false;
                 }
 
-                var read = await m_connection.GetStream().ReadAsync(buffer, offset, buffer.Length-offset);
+                try
+                {
+                    var read = await m_connection.GetStream().ReadAsync(buffer, offset, buffer.Length - offset);
 
-                if (read <= 0)
+                    if (read <= 0)
+                    {
+                        return false;
+                    }
+
+                    offset += read;
+                }
+                catch (Exception)
                 {
                     return false;
                 }
-
-                offset += read;
             }
 
             return true;
@@ -139,15 +159,36 @@ namespace JMS.DVB.Provider.Ubuntu
             {
                 if (!await ReadBuffer(m_input))
                 {
-                    break;
+                    return;
                 }
 
                 var response = Marshal.PtrToStructure<FrontendResponse>(m_inPtr.AddrOfPinnedObject());
+
+                switch (response.type)
+                {
+                    case FrontendResponseType.section:
+                    case FrontendResponseType.stream:
+                    case FrontendResponseType.signal:
+                        break;
+                    default:
+                        return;
+                }
+
+                if(response.len < 0 || response.len > 10 * 1024 * 1024)
+                {
+                    return;
+                }
+
+                if (response.pid > ushort.MaxValue)
+                {
+                    return;
+                }
+
                 var buf = new byte[response.len];
 
                 if (!await ReadBuffer(buf))
                 {
-                    break;
+                    return;
                 }
 
                 switch (response.type)
@@ -199,7 +240,7 @@ namespace JMS.DVB.Provider.Ubuntu
                 return;
             }
 
-            m_connection = new TcpClient();
+            m_connection = new TcpClient{ ReceiveBufferSize = 10 * 1024 * 1024 };
 
             try
             {
