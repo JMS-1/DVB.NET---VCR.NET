@@ -124,6 +124,6 @@
     <value>&amp;Verwerfen</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Gerätenummer auswählen</value>
+    <value>Wert auswählen</value>
   </data>
 </root>
