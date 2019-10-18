@@ -5,7 +5,7 @@ using System.Windows.Forms;
 namespace JMS.DVB.DeviceAccess.Editors
 {
     /// <summary>
-    /// Erlaubt die Bearbeitung einer laufenden Nummer.
+    /// Erlaubt die Bearbeitung einer Zeichenkette.
     /// </summary>
     public partial class FreeText : Form, IParameterEditor
     {
@@ -15,7 +15,7 @@ namespace JMS.DVB.DeviceAccess.Editors
         private string m_Name = null;
 
         /// <summary>
-        /// Der ursprüngliche Wert des Parameters als Zeichenkette.
+        /// Der ursprüngliche Wert des Parameters.
         /// </summary>
         private ParameterValue m_Value = null;
 
@@ -35,16 +35,16 @@ namespace JMS.DVB.DeviceAccess.Editors
         /// </summary>
         /// <param name="dialog">Das übergeordnete Fenster.</param>
         /// <param name="parameterName">Der Name des Parameters.</param>
-        /// <param name="parameterValue">Der Wert des Parameters als Zeichenkette.</param>
+        /// <param name="parameterValue">Der Wert des Parameters.</param>
         /// <returns>Gesetzt, wenn der Wert verändert wurde.</returns>
-        public virtual bool Edit( IWin32Window dialog, string parameterName, ref ParameterValue parameterValue )
+        public virtual bool Edit(IWin32Window dialog, string parameterName, ref ParameterValue parameterValue)
         {
             // Remember context
             m_Name = parameterName;
             m_Value = parameterValue;
 
             // Run
-            if (ShowDialog( dialog ) != DialogResult.OK)
+            if (ShowDialog(dialog) != DialogResult.OK)
                 return false;
 
             // Update
@@ -61,7 +61,7 @@ namespace JMS.DVB.DeviceAccess.Editors
         /// </summary>
         /// <param name="sender">Wird ignoriert.</param>
         /// <param name="e">Wird ignoriert.</param>
-        private void FreeText_Load( object sender, EventArgs e )
+        private void FreeText_Load(object sender, EventArgs e)
         {
             // Load setting
             txtValue.Text = (m_Value == null) ? string.Empty : m_Value.Value;
@@ -72,10 +72,10 @@ namespace JMS.DVB.DeviceAccess.Editors
         /// </summary>
         /// <param name="sender">Wird ignoriert.</param>
         /// <param name="e">Wird ignoriert.</param>
-        private void cmdSave_Click( object sender, EventArgs e )
+        private void cmdSave_Click(object sender, EventArgs e)
         {
             // Update
-            m_Value = new ParameterValue( txtValue.Text ?? string.Empty );
+            m_Value = new ParameterValue(string.IsNullOrEmpty(txtValue.Text) ? " " : txtValue.Text, txtValue.Text ?? string.Empty);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace JMS.DVB.DeviceAccess.Editors
         /// </summary>
         /// <param name="sender">Wird ignoriert.</param>
         /// <param name="e">Wird ignoriert.</param>
-        private void txtValue_TextChanged( object sender, EventArgs e )
+        private void txtValue_TextChanged(object sender, EventArgs e)
         {
             // Convert
             var value = (m_Value == null) ? string.Empty : m_Value.Value;

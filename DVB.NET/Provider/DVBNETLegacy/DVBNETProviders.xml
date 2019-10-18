@@ -204,7 +204,7 @@
     <Parameters>
       <Adapter.Index editor="JMS.DVB.DeviceAccess.Editors.DeviceIndex, JMS.DVB.DeviceAccess">0</Adapter.Index>
       <Adapter.Frontend editor="JMS.DVB.DeviceAccess.Editors.DeviceIndex, JMS.DVB.DeviceAccess">0</Adapter.Frontend>
-      <Adapter.Server editor="JMS.DVB.DeviceAccess.Editors.DeviceIndex, JMS.DVB.FreeText"></Adapter.Server>
+      <Adapter.Server editor="JMS.DVB.DeviceAccess.Editors.FreeText, JMS.DVB.DeviceAccess"></Adapter.Server>
       <Adapter.Port editor="JMS.DVB.DeviceAccess.Editors.DeviceIndex, JMS.DVB.DeviceAccess">29713</Adapter.Port>
     </Parameters>
   </DVBNETProvider>
