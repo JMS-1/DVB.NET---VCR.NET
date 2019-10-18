@@ -151,7 +151,7 @@ namespace JMS.DVB.Administration.Tools
                 // Select the source
                 source.Source.SelectGroup();
 
-                // Get the stream information
+                // Get the stream information.
                 var info = source.Source.GetSourceInformationAsync().CancelAfter( 15000 ).Result;
                 if (info == null)
                     return;
