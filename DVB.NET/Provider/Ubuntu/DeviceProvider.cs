@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace JMS.DVB.Provider.Ubuntu
@@ -124,7 +125,7 @@ namespace JMS.DVB.Provider.Ubuntu
         }
 
 
-        private async Task<bool> ReadBuffer(byte[] buffer)
+        private bool ReadBuffer(byte[] buffer)
         {
             for(var offset = 0; offset < buffer.Length; )
             {
@@ -135,7 +136,7 @@ namespace JMS.DVB.Provider.Ubuntu
 
                 try
                 {
-                    var read = await m_connection.GetStream().ReadAsync(buffer, offset, buffer.Length - offset);
+                    var read = m_connection.GetStream().Read(buffer, offset, buffer.Length - offset);
 
                     if (read <= 0)
                     {
@@ -153,11 +154,11 @@ namespace JMS.DVB.Provider.Ubuntu
             return true;
         }
 
-        private async void StartReader()
+        private void StartReader(object state)
         {            
             for(; ; )
             {
-                if (!await ReadBuffer(m_input))
+                if (!ReadBuffer(m_input))
                 {
                     return;
                 }
@@ -186,7 +187,7 @@ namespace JMS.DVB.Provider.Ubuntu
 
                 var buf = new byte[response.len];
 
-                if (!await ReadBuffer(buf))
+                if (!ReadBuffer(buf))
                 {
                     return;
                 }
@@ -216,7 +217,7 @@ namespace JMS.DVB.Provider.Ubuntu
 
                             if ((signal.status & FeStatus.FE_HAS_LOCK) == FeStatus.FE_HAS_LOCK)
                             {
-                                SignalStatus = new SignalStatus(true, (signal.strength * 100.0) / UInt16.MaxValue, signal.snr / 10.0);
+                                SignalStatus = new SignalStatus(true, signal.snr / 10.0, (signal.strength * 1.0) / UInt16.MaxValue);
                             }
                             else
                             {
@@ -246,7 +247,7 @@ namespace JMS.DVB.Provider.Ubuntu
             {
                 m_connection.Connect(m_server, m_port);
 
-                StartReader();
+                ThreadPool.QueueUserWorkItem(StartReader);
 
                 SendRequest(FrontendRequestType.connect_adapter, new ConnectRequest { adapter = m_adapter, frontend = m_frontend });
             }
