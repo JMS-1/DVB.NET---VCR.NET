@@ -17,7 +17,7 @@
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <DefineConstants>Debug</DefineConstants>
     <SuppressPdbOutput>True</SuppressPdbOutput>
-    <WixVariables>SETUPVERSION=4.3.14</WixVariables>
+    <WixVariables>SETUPVERSION=4.3.15</WixVariables>
     <Cultures>de-de</Cultures>
     <SuppressIces>ICE57</SuppressIces>
   </PropertyGroup>
@@ -25,7 +25,7 @@
     <OutputPath>..\..\..\msi\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <SuppressPdbOutput>True</SuppressPdbOutput>
-    <WixVariables>SETUPVERSION=4.3.14</WixVariables>
+    <WixVariables>SETUPVERSION=4.3.15</WixVariables>
     <Cultures>de-de</Cultures>
     <SuppressIces>ICE57</SuppressIces>
   </PropertyGroup>
@@ -257,6 +257,16 @@
     <ProjectReference Include="..\..\Provider\TeViiS2\JMS.DVB.Provider.TeViiS2.csproj">
       <Name>JMS.DVB.Provider.TeViiS2</Name>
       <Project>{b26ce348-cb62-4da1-949d-eda4526f892d}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Sources;Content;Documents</RefProjectOutputGroups>
+      <RefTargetDir>
+      </RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Provider\Ubuntu\JMS.DVB.Provider.Ubuntu.csproj">
+      <Name>JMS.DVB.Provider.Ubuntu</Name>
+      <Project>{7fc369a1-d9b5-441a-873e-cb6ac92b9956}</Project>
       <Private>True</Private>
       <DoNotHarvest>
       </DoNotHarvest>

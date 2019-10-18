@@ -36,6 +36,8 @@
             <Directory Id="JMS.DVB.Provider.TTBudget.Documents" Name="Adapter" />
             <Directory Id="JMS.DVB.Provider.TTPremium.Binaries" Name="Adapter" />
             <Directory Id="JMS.DVB.Provider.TTPremium.Documents" Name="Adapter" />
+            <Directory Id="JMS.DVB.Provider.Ubuntu.Binaries" Name="Adapter" />
+            <Directory Id="JMS.DVB.Provider.Ubuntu.Documents" Name="Adapter" />
             <Directory Id="JMS.TechnoTrend.MFCWrapper.Binaries" Name="Adapter" />
             <Directory Id="JMS.TechnoTrend.MFCWrapper.Documents" Name="Adapter" />
             <Directory Id="JMS.DVB.Provider.TeViiS2.Binaries" Name="Adapter" />
@@ -158,6 +160,9 @@
                   <Directory Id="JMS.DVB.Provider.NovaS2.Sources" Name="NovaS2" />
                   <Directory Id="JMS.DVB.Provider.NovaS2.Content" Name="NovaS2" />
                 </Directory>
+
+                <Directory Id="JMS.DVB.Provider.Ubuntu.Sources" Name="Ubuntu" />
+                <Directory Id="JMS.DVB.Provider.Ubuntu.Content" Name="Ubuntu" />
 
                 <Directory Id="TechnoTrendSources" Name="TechnoTrend">
                   <Directory Id="JMS.TechnoTrend.MFCWrapper.Sources" Name="TTAPI" />

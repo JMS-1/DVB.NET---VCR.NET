@@ -191,4 +191,21 @@
       <Tuning.MinimumPATCountWait>50</Tuning.MinimumPATCountWait>
     </Parameters>
   </DVBNETProvider>
+  <DVBNETProvider id="Ubuntu Proxy">
+    <CardNames>
+      <CardName>Ubuntu DVB-S2</CardName>
+    </CardNames>
+    <Driver>JMS.DVB.Provider.Ubuntu.DeviceProvider, JMS.DVB.Provider.Ubuntu</Driver>
+    <FilterLimit>200</FilterLimit>
+    <VideoDisplay>
+      <AsChild>true</AsChild>
+    </VideoDisplay>
+    <Decryption />
+    <Parameters>
+      <Adapter.Index editor="JMS.DVB.DeviceAccess.Editors.DeviceIndex, JMS.DVB.DeviceAccess">0</Adapter.Index>
+      <Adapter.Frontend editor="JMS.DVB.DeviceAccess.Editors.DeviceIndex, JMS.DVB.DeviceAccess">0</Adapter.Frontend>
+      <Adapter.Server></Adapter.Server>
+      <Adapter.Port editor="JMS.DVB.DeviceAccess.Editors.DeviceIndex, JMS.DVB.DeviceAccess">29713</Adapter.Port>
+    </Parameters>
+  </DVBNETProvider>
 </DVBNETProviders>

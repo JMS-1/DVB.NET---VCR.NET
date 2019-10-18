@@ -102,7 +102,6 @@
     </Reference>
     <Reference Include="JMS.DVB.SourceManagement, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
       <HintPath>..\..\..\Assemblies\RunTime\JMS.DVB.SourceManagement.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
     <Reference Include="JMS.TechnoTrend.MFCWrapper, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">

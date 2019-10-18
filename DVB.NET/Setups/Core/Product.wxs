@@ -62,6 +62,7 @@
       <ComponentGroupRef Id="JMS.DVB.Provider.TeViiS2.Binaries" />
       <ComponentGroupRef Id="JMS.DVB.Provider.TTBudget.Binaries" />
       <ComponentGroupRef Id="JMS.DVB.Provider.TTPremium.Binaries" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.Ubuntu.Binaries" />
       <ComponentGroupRef Id="JMS.TechnoTrend.MFCWrapper.Binaries" />
       <ComponentGroupRef Id="JMS.DVB.Administration.Profiles.Binaries" />
       <ComponentGroupRef Id="JMS.DVB.Administration.TransponderScan.Binaries" />
@@ -141,6 +142,8 @@
       <ComponentGroupRef Id="JMS.DVB.Provider.TTBudget.Content" />
       <ComponentGroupRef Id="JMS.DVB.Provider.TTPremium.Sources" />
       <ComponentGroupRef Id="JMS.DVB.Provider.TTPremium.Content" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.Ubuntu.Sources" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.Ubuntu.Content" />
       <ComponentGroupRef Id="RCLearner.Sources" />
       <ComponentGroupRef Id="RCLearner.Content" />
       <ComponentGroupRef Id="UserProfileManager.Sources" />
@@ -163,6 +166,7 @@
       <ComponentGroupRef Id="JMS.DVB.Provider.TeViiS2.Documents" />
       <ComponentGroupRef Id="JMS.DVB.Provider.TTBudget.Documents" />
       <ComponentGroupRef Id="JMS.DVB.Provider.TTPremium.Documents" />
+      <ComponentGroupRef Id="JMS.DVB.Provider.Ubuntu.Documents" />
       <ComponentGroupRef Id="JMS.TechnoTrend.MFCWrapper.Documents" />
       <ComponentGroupRef Id="JMS.DVB.Algorithms.Documents" />
       <ComponentGroupRef Id="JMS.DVB.DeviceAccess.Documents" />
