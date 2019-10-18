@@ -34,7 +34,7 @@ namespace JMS.DVB.Provider.Ubuntu
         private readonly object m_lock = new object();
 
         public DeviceProvider(Hashtable args)
-        {            
+        {
             m_server = (string)args["Adapter.Server"];
             m_port = ArgumentToNumber(args["Adapter.Port"], 29713);
 
@@ -127,9 +127,9 @@ namespace JMS.DVB.Provider.Ubuntu
 
         private bool ReadBuffer(byte[] buffer)
         {
-            for(var offset = 0; offset < buffer.Length; )
+            for (var offset = 0; offset < buffer.Length;)
             {
-                if(m_connection== null)
+                if (m_connection == null)
                 {
                     return false;
                 }
@@ -155,81 +155,89 @@ namespace JMS.DVB.Provider.Ubuntu
         }
 
         private void StartReader(object state)
-        {            
-            for(; ; )
+        {
+            for (; ; )
             {
-                if (!ReadBuffer(m_input))
+                try
                 {
-                    return;
-                }
-
-                var response = Marshal.PtrToStructure<FrontendResponse>(m_inPtr.AddrOfPinnedObject());
-
-                switch (response.type)
-                {
-                    case FrontendResponseType.section:
-                    case FrontendResponseType.stream:
-                    case FrontendResponseType.signal:
-                        break;
-                    default:
+                    if (!ReadBuffer(m_input))
+                    {
                         return;
-                }
+                    }
 
-                if(response.len < 0 || response.len > 10 * 1024 * 1024)
+                    var response = Marshal.PtrToStructure<FrontendResponse>(m_inPtr.AddrOfPinnedObject());
+
+                    switch (response.type)
+                    {
+                        case FrontendResponseType.section:
+                        case FrontendResponseType.stream:
+                        case FrontendResponseType.signal:
+                            break;
+                        default:
+                            return;
+                    }
+
+                    if (response.len < 0 || response.len > 10 * 1024 * 1024)
+                    {
+                        return;
+                    }
+
+                    if (response.pid > ushort.MaxValue)
+                    {
+                        return;
+                    }
+
+                    var buf = new byte[response.len];
+
+                    if (!ReadBuffer(buf))
+                    {
+                        return;
+                    }
+
+                    switch (response.type)
+                    {
+                        case FrontendResponseType.section:
+                        case FrontendResponseType.stream:
+                            Action<byte[]> callback;
+
+                            lock (m_lock)
+                            {
+                                if (!m_filters.TryGetValue(response.pid, out callback))
+                                {
+                                    callback = null;
+                                }
+                            }
+
+                            callback?.Invoke(buf);
+
+                            break;
+                        case FrontendResponseType.signal:
+                            var bufPtr = GCHandle.Alloc(buf, GCHandleType.Pinned);
+
+                            try
+                            {
+                                var signal = Marshal.PtrToStructure<SignalInformation>(bufPtr.AddrOfPinnedObject());
+
+                                if ((signal.status & FeStatus.FE_HAS_LOCK) == FeStatus.FE_HAS_LOCK)
+                                {
+                                    SignalStatus = new SignalStatus(true, signal.snr / 10.0, (signal.strength * 1.0) / UInt16.MaxValue);
+                                }
+                                else
+                                {
+                                    SignalStatus = new SignalStatus(false, 0, 0);
+                                }
+                            }
+                            finally
+                            {
+                                bufPtr.Free();
+                            }
+
+                            break;
+                    }
+                }
+                catch (Exception)
                 {
                     return;
-                }
-
-                if (response.pid > ushort.MaxValue)
-                {
-                    return;
-                }
-
-                var buf = new byte[response.len];
-
-                if (!ReadBuffer(buf))
-                {
-                    return;
-                }
-
-                switch (response.type)
-                {
-                    case FrontendResponseType.section:
-                    case FrontendResponseType.stream:
-                        Action<byte[]> callback;
-
-                        lock (m_lock) {
-                            if(!m_filters.TryGetValue(response.pid, out callback))
-                            {
-                                callback = null;
-                            }
-                        }
-                        
-                        callback?.Invoke(buf);
-
-                        break;
-                    case FrontendResponseType.signal:
-                        var bufPtr = GCHandle.Alloc(buf, GCHandleType.Pinned);
-
-                        try
-                        {
-                            var signal = Marshal.PtrToStructure<SignalInformation>(bufPtr.AddrOfPinnedObject());
-
-                            if ((signal.status & FeStatus.FE_HAS_LOCK) == FeStatus.FE_HAS_LOCK)
-                            {
-                                SignalStatus = new SignalStatus(true, signal.snr / 10.0, (signal.strength * 1.0) / UInt16.MaxValue);
-                            }
-                            else
-                            {
-                                SignalStatus = new SignalStatus(false, 0, 0);
-                            }
-                        }
-                        finally
-                        {
-                            bufPtr.Free();
-                        }
-
-                        break;
                 }
             }
         }
@@ -241,7 +249,7 @@ namespace JMS.DVB.Provider.Ubuntu
                 return;
             }
 
-            m_connection = new TcpClient{ ReceiveBufferSize = 10 * 1024 * 1024 };
+            m_connection = new TcpClient { ReceiveBufferSize = 10 * 1024 * 1024 };
 
             try
             {
@@ -288,7 +296,7 @@ namespace JMS.DVB.Provider.Ubuntu
             }
 
             if (m_connection != null)
-              {
+            {
                 SendRequest(FrontendRequestType.del_all_filters);
             }
         }
@@ -384,7 +392,7 @@ namespace JMS.DVB.Provider.Ubuntu
 
             var satLocation = location as SatelliteLocation;
 
-            if(satLocation == null)
+            if (satLocation == null)
             {
                 return;
             }
