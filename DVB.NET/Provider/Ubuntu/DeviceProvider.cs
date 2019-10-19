@@ -25,6 +25,9 @@ namespace JMS.DVB.Provider.Ubuntu
 
         private TcpClient m_connection;
 
+        private volatile int m_age = 0;
+
+        private volatile int m_mustClose = 0;
 
         private Dictionary<ushort, Action<byte[]>> m_filters = new Dictionary<ushort, Action<byte[]>>();
 
@@ -127,9 +130,7 @@ namespace JMS.DVB.Provider.Ubuntu
                 var read = m_connection.GetStream().Read(buffer, offset, buffer.Length - offset);
 
                 if (read <= 0)
-                {
                     throw new ArgumentException("out of data");
-                }
 
                 offset += read;
             }
@@ -142,7 +143,7 @@ namespace JMS.DVB.Provider.Ubuntu
 
             try
             {
-                for (; ; )
+                for (var age = (int)state; age == m_age;)
                 {
                     try
                     {
@@ -157,18 +158,14 @@ namespace JMS.DVB.Provider.Ubuntu
                             case FrontendResponseType.signal:
                                 break;
                             default:
-                                return;
+                                throw new ArgumentException("corrupted data stream");
                         }
 
                         if (response.len < 0 || response.len > 10 * 1024 * 1024)
-                        {
-                            return;
-                        }
+                            throw new ArgumentException("corrupted data stream");
 
                         if (response.pid > ushort.MaxValue)
-                        {
-                            return;
-                        }
+                            throw new ArgumentException("corrupted data stream");
 
                         var buf = new byte[response.len];
 
@@ -183,9 +180,7 @@ namespace JMS.DVB.Provider.Ubuntu
                                 lock (m_lock)
                                 {
                                     if (!m_filters.TryGetValue(response.pid, out callback))
-                                    {
                                         callback = null;
-                                    }
                                 }
 
                                 callback?.Invoke(buf);
@@ -199,13 +194,9 @@ namespace JMS.DVB.Provider.Ubuntu
                                     var signal = Marshal.PtrToStructure<SignalInformation>(bufPtr.AddrOfPinnedObject());
 
                                     if ((signal.status & FeStatus.FE_HAS_LOCK) == FeStatus.FE_HAS_LOCK)
-                                    {
                                         SignalStatus = new SignalStatus(true, signal.snr / 10.0, (signal.strength * 1.0) / UInt16.MaxValue);
-                                    }
                                     else
-                                    {
                                         SignalStatus = new SignalStatus(false, 0, 0);
-                                    }
                                 }
                                 finally
                                 {
@@ -217,6 +208,9 @@ namespace JMS.DVB.Provider.Ubuntu
                     }
                     catch (Exception)
                     {
+                        if (age == m_age)
+                            m_mustClose = age;
+
                         return;
                     }
                 }
@@ -229,18 +223,21 @@ namespace JMS.DVB.Provider.Ubuntu
 
         private void Open()
         {
-            if (m_connection != null)
-            {
-                return;
-            }
+            if (m_mustClose == m_age)
+                Close();
 
+            if (m_connection != null)
+                return;
+
+            m_mustClose = 0;
+            m_age += 1;
             m_connection = new TcpClient { ReceiveBufferSize = 10 * 1024 * 1024 };
 
             try
             {
                 m_connection.Connect(m_server, m_port);
 
-                ThreadPool.QueueUserWorkItem(StartReader);
+                ThreadPool.QueueUserWorkItem(StartReader, m_age);
 
                 SendRequest(FrontendRequestType.connect_adapter, new ConnectRequest { adapter = m_adapter, frontend = m_frontend });
             }
@@ -255,9 +252,7 @@ namespace JMS.DVB.Provider.Ubuntu
         private void Close()
         {
             if (m_connection == null)
-            {
                 return;
-            }
 
             using (m_connection)
             {
@@ -268,7 +263,6 @@ namespace JMS.DVB.Provider.Ubuntu
                 finally
                 {
                     m_connection = null;
-
                 }
             }
         }
@@ -281,9 +275,7 @@ namespace JMS.DVB.Provider.Ubuntu
             }
 
             if (m_connection != null)
-            {
                 SendRequest(FrontendRequestType.del_all_filters);
-            }
         }
 
         private static DiSEqCModes ConvertDiSEqC(DiSEqCLocations location)
@@ -371,16 +363,12 @@ namespace JMS.DVB.Provider.Ubuntu
             var satGroup = group as SatelliteGroup;
 
             if (satGroup == null)
-            {
                 return;
-            }
 
             var satLocation = location as SatelliteLocation;
 
             if (satLocation == null)
-            {
                 return;
-            }
 
             var tune = new SatelliteTune
             {
@@ -438,9 +426,7 @@ namespace JMS.DVB.Provider.Ubuntu
             }
 
             if (m_connection != null)
-            {
                 SendRequest(FrontendRequestType.del_filter, pid);
-            }
         }
 
         public void Decrypt(ushort? station)
