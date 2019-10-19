@@ -25,9 +25,6 @@ namespace JMS.DVB.Provider.Ubuntu
 
         private TcpClient m_connection;
 
-        private byte[] m_input = new byte[Marshal.SizeOf<FrontendResponse>()];
-
-        private GCHandle m_inPtr;
 
         private Dictionary<ushort, Action<byte[]>> m_filters = new Dictionary<ushort, Action<byte[]>>();
 
@@ -40,8 +37,6 @@ namespace JMS.DVB.Provider.Ubuntu
 
             m_adapter = ArgumentToNumber(args["Adapter.Index"]);
             m_frontend = ArgumentToNumber(args["Adapter.Frontend"]);
-
-            m_inPtr = GCHandle.Alloc(m_input, GCHandleType.Pinned);
         }
 
         private static int ArgumentToNumber(object arg, int fallback = 0)
@@ -125,120 +120,110 @@ namespace JMS.DVB.Provider.Ubuntu
         }
 
 
-        private bool ReadBuffer(byte[] buffer)
+        private void ReadBuffer(byte[] buffer)
         {
             for (var offset = 0; offset < buffer.Length;)
             {
-                if (m_connection == null)
+                var read = m_connection.GetStream().Read(buffer, offset, buffer.Length - offset);
+
+                if (read <= 0)
                 {
-                    return false;
+                    throw new ArgumentException("out of data");
                 }
 
-                try
-                {
-                    var read = m_connection.GetStream().Read(buffer, offset, buffer.Length - offset);
-
-                    if (read <= 0)
-                    {
-                        return false;
-                    }
-
-                    offset += read;
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
+                offset += read;
             }
-
-            return true;
         }
 
         private void StartReader(object state)
         {
-            for (; ; )
+            var input = new byte[Marshal.SizeOf<FrontendResponse>()];
+            var inPtr = GCHandle.Alloc(input, GCHandleType.Pinned);
+
+            try
             {
-                try
+                for (; ; )
                 {
-                    if (!ReadBuffer(m_input))
+                    try
                     {
-                        return;
-                    }
+                        ReadBuffer(input);
 
-                    var response = Marshal.PtrToStructure<FrontendResponse>(m_inPtr.AddrOfPinnedObject());
+                        var response = Marshal.PtrToStructure<FrontendResponse>(inPtr.AddrOfPinnedObject());
 
-                    switch (response.type)
-                    {
-                        case FrontendResponseType.section:
-                        case FrontendResponseType.stream:
-                        case FrontendResponseType.signal:
-                            break;
-                        default:
+                        switch (response.type)
+                        {
+                            case FrontendResponseType.section:
+                            case FrontendResponseType.stream:
+                            case FrontendResponseType.signal:
+                                break;
+                            default:
+                                return;
+                        }
+
+                        if (response.len < 0 || response.len > 10 * 1024 * 1024)
+                        {
                             return;
-                    }
+                        }
 
-                    if (response.len < 0 || response.len > 10 * 1024 * 1024)
+                        if (response.pid > ushort.MaxValue)
+                        {
+                            return;
+                        }
+
+                        var buf = new byte[response.len];
+
+                        ReadBuffer(buf);
+
+                        switch (response.type)
+                        {
+                            case FrontendResponseType.section:
+                            case FrontendResponseType.stream:
+                                Action<byte[]> callback;
+
+                                lock (m_lock)
+                                {
+                                    if (!m_filters.TryGetValue(response.pid, out callback))
+                                    {
+                                        callback = null;
+                                    }
+                                }
+
+                                callback?.Invoke(buf);
+
+                                break;
+                            case FrontendResponseType.signal:
+                                var bufPtr = GCHandle.Alloc(buf, GCHandleType.Pinned);
+
+                                try
+                                {
+                                    var signal = Marshal.PtrToStructure<SignalInformation>(bufPtr.AddrOfPinnedObject());
+
+                                    if ((signal.status & FeStatus.FE_HAS_LOCK) == FeStatus.FE_HAS_LOCK)
+                                    {
+                                        SignalStatus = new SignalStatus(true, signal.snr / 10.0, (signal.strength * 1.0) / UInt16.MaxValue);
+                                    }
+                                    else
+                                    {
+                                        SignalStatus = new SignalStatus(false, 0, 0);
+                                    }
+                                }
+                                finally
+                                {
+                                    bufPtr.Free();
+                                }
+
+                                break;
+                        }
+                    }
+                    catch (Exception)
                     {
                         return;
-                    }
-
-                    if (response.pid > ushort.MaxValue)
-                    {
-                        return;
-                    }
-
-                    var buf = new byte[response.len];
-
-                    if (!ReadBuffer(buf))
-                    {
-                        return;
-                    }
-
-                    switch (response.type)
-                    {
-                        case FrontendResponseType.section:
-                        case FrontendResponseType.stream:
-                            Action<byte[]> callback;
-
-                            lock (m_lock)
-                            {
-                                if (!m_filters.TryGetValue(response.pid, out callback))
-                                {
-                                    callback = null;
-                                }
-                            }
-
-                            callback?.Invoke(buf);
-
-                            break;
-                        case FrontendResponseType.signal:
-                            var bufPtr = GCHandle.Alloc(buf, GCHandleType.Pinned);
-
-                            try
-                            {
-                                var signal = Marshal.PtrToStructure<SignalInformation>(bufPtr.AddrOfPinnedObject());
-
-                                if ((signal.status & FeStatus.FE_HAS_LOCK) == FeStatus.FE_HAS_LOCK)
-                                {
-                                    SignalStatus = new SignalStatus(true, signal.snr / 10.0, (signal.strength * 1.0) / UInt16.MaxValue);
-                                }
-                                else
-                                {
-                                    SignalStatus = new SignalStatus(false, 0, 0);
-                                }
-                            }
-                            finally
-                            {
-                                bufPtr.Free();
-                            }
-
-                            break;
                     }
                 }
-                catch (Exception)
-                {
-                    return;
-                }
+            }
+            finally
+            {
+                inPtr.Free();
             }
         }
 
@@ -478,11 +463,6 @@ namespace JMS.DVB.Provider.Ubuntu
             StopFilters();
 
             Close();
-
-            if (m_inPtr.IsAllocated)
-            {
-                m_inPtr.Free();
-            }
         }
     }
 
