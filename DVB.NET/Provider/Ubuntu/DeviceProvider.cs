@@ -15,10 +15,6 @@ namespace JMS.DVB.Provider.Ubuntu
 {
     public class DeviceProvider : ILegacyDevice
     {
-        private readonly int m_adapter;
-
-        private readonly int m_frontend;
-
         private readonly string m_server;
 
         private readonly int m_port;
@@ -37,9 +33,6 @@ namespace JMS.DVB.Provider.Ubuntu
         {
             m_server = (string)args["Adapter.Server"];
             m_port = ArgumentToNumber(args["Adapter.Port"], 29713);
-
-            m_adapter = ArgumentToNumber(args["Adapter.Index"]);
-            m_frontend = ArgumentToNumber(args["Adapter.Frontend"]);
         }
 
         private static int ArgumentToNumber(object arg, int fallback = 0)
@@ -239,7 +232,7 @@ namespace JMS.DVB.Provider.Ubuntu
 
                 ThreadPool.QueueUserWorkItem(StartReader, m_age);
 
-                SendRequest(FrontendRequestType.connect_adapter, new ConnectRequest { adapter = m_adapter, frontend = m_frontend });
+                SendRequest(FrontendRequestType.connect_adapter, new ConnectRequest { adapter = -1, frontend = -1 });
             }
             catch (Exception)
             {
@@ -360,6 +353,8 @@ namespace JMS.DVB.Provider.Ubuntu
 
         public void Tune(SourceGroup group, GroupLocation location)
         {
+            StopFilters();
+
             var satGroup = group as SatelliteGroup;
 
             if (satGroup == null)
@@ -435,7 +430,7 @@ namespace JMS.DVB.Provider.Ubuntu
 
         public override string ToString()
         {
-            return string.Format("Ubuntu DVB Proxy #{0}.{1} on {2}:{3}", m_adapter, m_frontend, m_server, m_port);
+            return string.Format("Ubuntu DVB Proxy to {0}:{1}", m_server, m_port);
         }
 
         public void WakeUp()
