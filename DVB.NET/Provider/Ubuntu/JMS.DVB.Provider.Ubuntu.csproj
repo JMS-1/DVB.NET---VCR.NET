@@ -48,6 +48,10 @@
       <HintPath>..\..\Assemblies\RunTime\JMS.DVB.SourceManagement.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="JMS.DVB.TS, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\Assemblies\RunTime\JMS.DVB.TS.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="JMS.TechnoTrend.MFCWrapper, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
       <HintPath>..\..\Assemblies\Adapter\JMS.TechnoTrend.MFCWrapper.dll</HintPath>
       <Private>False</Private>
@@ -62,8 +66,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SignalInformation.cs" />
-    <Compile Include="FrontendResponse.cs" />
     <Compile Include="DeviceProvider.cs" />
     <Compile Include="DiSEqCModes.cs" />
     <Compile Include="FeCodeRate.cs" />
@@ -71,9 +73,7 @@
     <Compile Include="FeRolloff.cs" />
     <Compile Include="FeStatus.cs" />
     <Compile Include="FrontendRequestType.cs" />
-    <Compile Include="FrontendResponseType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ConnectRequest.cs" />
     <Compile Include="SatelliteTune.cs" />
   </ItemGroup>
   <ItemGroup>

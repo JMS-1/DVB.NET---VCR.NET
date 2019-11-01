@@ -1,15 +1,12 @@
 ﻿using JMS.DVB.DeviceAccess.Interfaces;
+using JMS.DVB.TS;
 using JMS.TechnoTrend;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace JMS.DVB.Provider.Ubuntu
 {
@@ -21,13 +18,9 @@ namespace JMS.DVB.Provider.Ubuntu
 
         private TcpClient m_connection;
 
-        private volatile int m_age = 0;
-
-        private volatile int m_mustClose = 0;
-
-        private Dictionary<ushort, Action<byte[]>> m_filters = new Dictionary<ushort, Action<byte[]>>();
-
         private readonly object m_lock = new object();
+
+        private TSParser m_parser = new TSParser(true);
 
         public DeviceProvider(Hashtable args)
         {
@@ -116,123 +109,47 @@ namespace JMS.DVB.Provider.Ubuntu
         }
 
 
-        private void ReadBuffer(byte[] buffer)
-        {
-            for (var offset = 0; offset < buffer.Length;)
-            {
-                var read = m_connection.GetStream().Read(buffer, offset, buffer.Length - offset);
-
-                if (read <= 0)
-                    throw new ArgumentException("out of data");
-
-                offset += read;
-            }
-        }
 
         private void StartReader(object state)
         {
-            var input = new byte[Marshal.SizeOf<FrontendResponse>()];
-            var inPtr = GCHandle.Alloc(input, GCHandleType.Pinned);
+            var buffer = new byte[180000];
 
             try
             {
-                for (var age = (int)state; age == m_age;)
+                var stream = m_connection.GetStream();
+
+                for (; ; )
                 {
-                    try
+                    var read = stream.Read(buffer, 0, buffer.Length);
+
+                    if (read <= 0)
                     {
-                        ReadBuffer(input);
-
-                        var response = Marshal.PtrToStructure<FrontendResponse>(inPtr.AddrOfPinnedObject());
-
-                        switch (response.type)
-                        {
-                            case FrontendResponseType.section:
-                            case FrontendResponseType.stream:
-                            case FrontendResponseType.signal:
-                                break;
-                            default:
-                                throw new ArgumentException("corrupted data stream");
-                        }
-
-                        if (response.len < 0 || response.len > 10 * 1024 * 1024)
-                            throw new ArgumentException("corrupted data stream");
-
-                        if (response.pid > ushort.MaxValue)
-                            throw new ArgumentException("corrupted data stream");
-
-                        var buf = new byte[response.len];
-
-                        ReadBuffer(buf);
-
-                        switch (response.type)
-                        {
-                            case FrontendResponseType.section:
-                            case FrontendResponseType.stream:
-                                Action<byte[]> callback;
-
-                                lock (m_lock)
-                                {
-                                    if (!m_filters.TryGetValue(response.pid, out callback))
-                                        callback = null;
-                                }
-
-                                callback?.Invoke(buf);
-
-                                break;
-                            case FrontendResponseType.signal:
-                                var bufPtr = GCHandle.Alloc(buf, GCHandleType.Pinned);
-
-                                try
-                                {
-                                    var signal = Marshal.PtrToStructure<SignalInformation>(bufPtr.AddrOfPinnedObject());
-
-                                    if ((signal.status & FeStatus.FE_HAS_LOCK) == FeStatus.FE_HAS_LOCK)
-                                        SignalStatus = new SignalStatus(true, signal.snr / 10.0, (signal.strength * 1.0) / UInt16.MaxValue);
-                                    else
-                                        SignalStatus = new SignalStatus(false, 0, 0);
-                                }
-                                finally
-                                {
-                                    bufPtr.Free();
-                                }
-
-                                break;
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        if (age == m_age)
-                            m_mustClose = age;
-
                         return;
                     }
+
+                    m_parser.AddPayload(buffer, 0, read);
                 }
             }
-            finally
+            catch (Exception)
             {
-                inPtr.Free();
+                return;
             }
         }
 
         private void Open()
         {
-            if (m_mustClose == m_age)
-                Close();
-
             if (m_connection != null)
                 return;
 
-            m_mustClose = 0;
-            m_age += 1;
             m_connection = new TcpClient { ReceiveBufferSize = 10 * 1024 * 1024 };
 
             try
             {
                 m_connection.Connect(m_server, m_port);
 
-                ThreadPool.QueueUserWorkItem(StartReader, m_age);
+                ThreadPool.QueueUserWorkItem(StartReader);
 
-                SendRequest(FrontendRequestType.connect_adapter, new ConnectRequest { adapter = -1, frontend = -1 });
+                SendRequest(FrontendRequestType.connect_adapter);
             }
             catch (Exception)
             {
@@ -244,6 +161,12 @@ namespace JMS.DVB.Provider.Ubuntu
 
         private void Close()
         {
+            using (m_parser)
+            {
+                m_parser = new TSParser(true);
+            }
+
+
             if (m_connection == null)
                 return;
 
@@ -262,9 +185,9 @@ namespace JMS.DVB.Provider.Ubuntu
 
         public void StopFilters()
         {
-            lock (m_lock)
+            using (m_parser)
             {
-                m_filters.Clear();
+                m_parser = new TSParser(true);
             }
 
             if (m_connection != null)
@@ -391,22 +314,16 @@ namespace JMS.DVB.Provider.Ubuntu
 
         public void StartSectionFilter(ushort pid, Action<byte[]> callback, byte[] filterData, byte[] filterMask)
         {
-            lock (m_lock)
-            {
-                m_filters[pid] = callback;
-            }
+            m_parser.SetFilter(pid, true, callback);
 
-            SendRequest(FrontendRequestType.add_section_filter, pid);
+            SendRequest(FrontendRequestType.add_filter, pid);
         }
 
         public void RegisterPipingFilter(ushort pid, bool video, bool smallBuffer, Action<byte[]> callback)
         {
-            lock (m_lock)
-            {
-                m_filters[pid] = callback;
-            }
+            m_parser.SetFilter(pid, false, callback);
 
-            SendRequest(FrontendRequestType.add_stream_filter, pid);
+            SendRequest(FrontendRequestType.add_filter, pid);
         }
 
         public void StartFilter(ushort pid)
@@ -415,10 +332,7 @@ namespace JMS.DVB.Provider.Ubuntu
 
         public void StopFilter(ushort pid)
         {
-            lock (m_lock)
-            {
-                m_filters.Remove(pid);
-            }
+            m_parser.RemoveFilter(pid);
 
             if (m_connection != null)
                 SendRequest(FrontendRequestType.del_filter, pid);
@@ -437,7 +351,7 @@ namespace JMS.DVB.Provider.Ubuntu
         {
         }
 
-        public SignalStatus SignalStatus { get; private set; } = new SignalStatus(false, 0, 0);
+        public SignalStatus SignalStatus { get; private set; } = new SignalStatus(true, 0, 0);
 
         public virtual void Dispose()
         {

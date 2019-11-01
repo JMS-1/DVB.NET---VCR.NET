@@ -2,11 +2,10 @@
 {
     public enum FrontendRequestType
     {
-        add_section_filter = 0,
-        add_stream_filter = 1,
-        connect_adapter = 2,
-        del_all_filters = 3,
-        del_filter = 4,
-        tune = 5,
+        add_filter = 0,
+        connect_adapter = 1,
+        del_all_filters = 2,
+        del_filter = 3,
+        tune = 4,
     }
 }
