@@ -190,3 +190,5 @@ $RECYCLE.BIN/
 /VCR.NET/WebClient41/scripts/vcrnet.js*
 
 .vs
+
+package-lock.json
