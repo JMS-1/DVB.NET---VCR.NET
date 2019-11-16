@@ -43,7 +43,7 @@
 
             // Pflegekomponenten erstellen
             this.name = new JMSLib.App.String(this.model, "name", "Name", onChange);
-            this.source = new ChannelEditor(this.model, "sourceName", favoriteSources, onChange);
+            this.source = new ChannelEditor(page.application.profile, this.model, "sourceName", favoriteSources, onChange);
             this.sourceFlags = {
                 includeDolby: new JMSLib.App.Flag(this.model, "includeDolby", "Dolby Digital (AC3)", onChange, noSource),
                 withSubtitles: new JMSLib.App.Flag(this.model, "withSubtitles", "DVB Untertitel", onChange, noSource),

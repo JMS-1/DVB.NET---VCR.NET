@@ -73,7 +73,7 @@ namespace VCRNETClient.App {
         }
 
         // Alle Auswahlmöglichkeiten der Verschlüsselung.
-        readonly encryption = new JMSLib.App.SelectSingleFromList({ value: EncryptionFilter.all }, `value`, null, () => this.refreshFilter(), ChannelEditor._encryptions);
+        readonly encryption: JMSLib.App.IValueFromList<EncryptionFilter>;
 
         // Die Auswahlmöglichkeiten zur Art der Quelle.
         private static readonly _types = [
@@ -101,7 +101,7 @@ namespace VCRNETClient.App {
         }
 
         // Alle Auswahlmöglichkeiten für die Art der Quelle.
-        readonly type = new JMSLib.App.SelectSingleFromList({ value: TypeFilter.all }, `value`, null, () => this.refreshFilter(), ChannelEditor._types);
+        readonly type: JMSLib.App.IValueFromList<TypeFilter>;
 
         // Alle möglichen Einschränkungen auf die Namen der Quellen.
         private static readonly _sections = [
@@ -179,8 +179,12 @@ namespace VCRNETClient.App {
         }
 
         // Erstellt eine neue Logik zur Senderauswahl.
-        constructor(data: any, prop: string, favoriteSources: string[], onChange: () => void) {
+        constructor(profile: VCRServer.UserProfileContract, data: any, prop: string, favoriteSources: string[], onChange: () => void) {
             super(data, prop, "Quelle", onChange);
+
+            // Voreinstellungen vorbereiten.
+            this.encryption = new JMSLib.App.SelectSingleFromList({ value: ChannelEditor.lookupEncryption(profile) }, `value`, null, () => this.refreshFilter(), ChannelEditor._encryptions);
+            this.type = new JMSLib.App.SelectSingleFromList({ value: ChannelEditor.lookupType(profile) }, `value`, null, () => this.refreshFilter(), ChannelEditor._types);
 
             // Initialen Filter vorbereiten.
             if (favoriteSources.length < 1)
@@ -190,6 +194,28 @@ namespace VCRNETClient.App {
                 favoriteSources.forEach(s => this._favorites[s] = true);
 
                 this.section.valueIndex = 0;
+            }
+        }
+
+        private static lookupType(profile: VCRServer.UserProfileContract): TypeFilter {
+            switch (profile && profile.typeFilter) {
+                case "R":
+                    return TypeFilter.radio;
+                case "T":
+                    return TypeFilter.tv;
+                default:
+                    return TypeFilter.all;
+            }
+        }
+
+        private static lookupEncryption(profile: VCRServer.UserProfileContract): EncryptionFilter {
+            switch (profile && profile.encryptionFilter) {
+                case "F":
+                    return EncryptionFilter.freeTv;
+                case "P":
+                    return EncryptionFilter.payTv;
+                default:
+                    return EncryptionFilter.all;
             }
         }
 

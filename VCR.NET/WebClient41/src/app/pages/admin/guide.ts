@@ -89,7 +89,7 @@ namespace VCRNETClient.App.Admin {
             super(page);
 
             // Auswahl der Quelle vorbereiten.
-            this.source = new ChannelEditor({}, "value", this.page.application.profile.recentSources || [], () => this.refreshUi());
+            this.source = new ChannelEditor(page.application.profile, {}, "value", this.page.application.profile.recentSources || [], () => this.refreshUi());
         }
 
         // Forder die Konfiguration zur Pflege der Programmzeitschrift an.

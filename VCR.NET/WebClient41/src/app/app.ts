@@ -47,6 +47,9 @@
         // Das Präsentationsmodell der Geräteübersicht.
         readonly devicesPage: IDevicesPage;
 
+        // Einstellungen des Benutzers.
+        readonly profile: VCRServer.UserProfileContract;
+
         // Meldet die Verwaltung der Hilfeseiten - dies erfolgt primär im Kontext der Oberfläche.
         getHelpComponentProvider<TComponentType extends IHelpComponent>(): IHelpComponentProvider<TComponentType>;
 

@@ -54,7 +54,9 @@
         protected readonly saveCaption: string = "Ändern";
 
         // Meldet ob die Daten des Konfigurationsbereichs gültig sind - nur dann ist der Befehl zum Speichern aktiv.
-        protected readonly isValid: boolean = true;
+        protected get isValid(): boolean {
+            return true;
+        }
 
         // Sendet die aktuellen Daten des Konfigurationsbereichs an den VCR.NET Recording Service zur Übernahme derselben.
         protected abstract saveAsync(): Promise<boolean>;
