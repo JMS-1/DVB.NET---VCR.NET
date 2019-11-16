@@ -42,8 +42,8 @@ namespace VCRNETClient.Ui {
         private readonly _onhashchange: () => void = this.onhashchange.bind(this);
 
         // Erstellt eine neue Komponente.
-        constructor() {
-            super();
+        constructor(props) {
+            super(props);
 
             // Initialen Navigationsbereich in Abhängigkeit von der URL aufrufen.
             this.onhashchange();

@@ -21,7 +21,7 @@
         size: string;
     }
 
-    export function getProtocolEntries(device: string, startDay: Date, endDay: Date): JMSLib.App.IHttpPromise<ProtocolEntryContract[]> {
+    export function getProtocolEntries(device: string, startDay: Date, endDay: Date): Promise<ProtocolEntryContract[]> {
         return doUrlCall(`protocol/${device}?start=${startDay.toISOString()}&end=${endDay.toISOString()}`);
     }
 

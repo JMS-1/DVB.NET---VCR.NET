@@ -47,15 +47,15 @@
         remainingMinutes: number;
     }
 
-    export function getPlanCurrent(): JMSLib.App.IHttpPromise<PlanCurrentContract[]> {
+    export function getPlanCurrent(): Promise<PlanCurrentContract[]> {
         return doUrlCall(`plan`);
     }
 
-    export function updateEndTime(device: string, suppressHibernate: boolean, scheduleIdentifier: string, newEnd: Date): JMSLib.App.IHttpPromise<void> {
+    export function updateEndTime(device: string, suppressHibernate: boolean, scheduleIdentifier: string, newEnd: Date): Promise<void> {
         return doUrlCall<void, void>(`profile/${device}?disableHibernate=${suppressHibernate}&schedule=${scheduleIdentifier}&endTime=${newEnd.toISOString()}`, `PUT`);
     }
 
-    export function triggerTask(taskName: string): JMSLib.App.IHttpPromise<void> {
+    export function triggerTask(taskName: string): Promise<void> {
         return doUrlCall<void, void>(`plan?${taskName}`, `POST`);
     }
 

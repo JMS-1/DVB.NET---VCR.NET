@@ -67,7 +67,7 @@ namespace VCRNETClient.App {
         }
 
         // Entfernt eine gespeicherte Suche aus der Liste der gespeicherten Suchen.
-        private remove(favorite: Favorites.Favorite): JMSLib.App.IHttpPromise<void> {
+        private remove(favorite: Favorites.Favorite): Promise<void> {
             var favorites = this._entries.filter(f => f !== favorite);
 
             // Dazu müssen wir uns eine asynchrone Bestätigung vom VCR.NET Recording Service holen.
@@ -81,7 +81,7 @@ namespace VCRNETClient.App {
         }
 
         // Ergänzt einen Favoritien.
-        add(favorite: VCRServer.SavedGuideQueryContract): JMSLib.App.IHttpPromise<void> {
+        add(favorite: VCRServer.SavedGuideQueryContract): Promise<void> {
             // Ist der Aufruf erfolgreich so wechseln wir zur Ansicht der Favoriten - üblicherweise kommen wir aus der Programmzeitschrift.
             return VCRServer
                 .updateSearchQueries([favorite].concat(this.readFavorites().map(f => f.model)))

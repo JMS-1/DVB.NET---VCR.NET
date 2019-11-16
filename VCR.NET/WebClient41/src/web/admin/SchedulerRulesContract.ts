@@ -6,11 +6,11 @@
         rules: string;
     }
 
-    export function getSchedulerRules(): JMSLib.App.IHttpPromise<SchedulerRulesContract> {
+    export function getSchedulerRules(): Promise<SchedulerRulesContract> {
         return doUrlCall(`configuration?rules`);
     }
 
-    export function setSchedulerRules(data: SchedulerRulesContract): JMSLib.App.IHttpPromise<boolean> {
+    export function setSchedulerRules(data: SchedulerRulesContract): Promise<boolean> {
         return doUrlCall(`configuration?rules`, `PUT`, data);
     }
 

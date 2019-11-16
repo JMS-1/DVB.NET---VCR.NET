@@ -77,7 +77,7 @@ namespace VCRNETClient.App {
         }
 
         // Aktualisiert eine Teilkonfiguration.
-        update(request: JMSLib.App.IHttpPromise<boolean>, command: JMSLib.App.Command<void>): JMSLib.App.IHttpPromise<void> {
+        update(request: Promise<boolean>, command: JMSLib.App.Command<void>): Promise<void> {
             // Auf das Ende der asynchronen Ausführung warten.
             return request.then(restartRequired => {
                 if (restartRequired === true)

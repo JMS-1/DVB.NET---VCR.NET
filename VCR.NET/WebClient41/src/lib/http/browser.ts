@@ -3,12 +3,12 @@
 namespace JMSLib.App {
 
     // Verwendet den XHMLHttpRequest des Browser zur Durchführung eines HTTP Aufrufs.
-    export function browserWebCall<TResponseType, TRequestType>(url: string, method: string = 'GET', request?: TRequestType): IHttpPromise<TResponseType> {
+    export function browserWebCall<TResponseType, TRequestType>(url: string, method: string = 'GET', request?: TRequestType): Promise<TResponseType> {
         // Eindeutige Nummer für den nächsten HTTP Aufruf ermitteln - tatsächlich arbeiten wir hier in 2er Schritten, aber das tut nicht zur Sache.
         var nextId = nextWebCallId();
 
         // Aynchronen Aufruf aufsetzen.
-        return new Promise<TResponseType, IHttpErrorInformation>((success, failure) => {
+        return new Promise<TResponseType>((success, failure) => {
             // Aufruf an eine absolute URL erkennen.
             var raw = (url.substr(0, 7) === "http://");
 

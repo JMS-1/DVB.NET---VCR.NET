@@ -17,7 +17,7 @@ module VCRServer {
     JMSLib.App.webCallRoot = serverRoot + `/vcr.net/`;
 
     // Führt eine Web Anfrage aus.
-    export function doUrlCall<TResponseType, TRequestType>(url: string, method: string = `GET`, request?: TRequestType): JMSLib.App.IHttpPromise<TResponseType> {
+    export function doUrlCall<TResponseType, TRequestType>(url: string, method: string = `GET`, request?: TRequestType): Promise<TResponseType> {
         return JMSLib.App.browserWebCall(url, method, request);
     }
 

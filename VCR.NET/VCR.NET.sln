@@ -1,14 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.902
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EFF4945E-6C0C-4179-97C8-6FF592789C19}"
 	ProjectSection(SolutionItems) = preProject
 		Local.testsettings = Local.testsettings
 		package.json = package.json
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
-		typings.json = typings.json
 		VCR.NET.vsmdi = VCR.NET.vsmdi
 	EndProjectSection
 EndProject
@@ -146,6 +145,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6487A231-0153-4E1F-9080-DD46EC6452D0}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = VCR.NET.vsmdi

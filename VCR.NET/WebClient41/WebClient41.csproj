@@ -24,7 +24,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>3.7</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -265,9 +265,6 @@
     <Content Include="content\images\faq\streamoptions.png" />
     <Content Include="content\images\faq\streamprotection.png" />
     <None Include="gulpfile.js" />
-    <TypeScriptCompile Include="..\typings\index.d.ts">
-      <Link>src\index.d.ts</Link>
-    </TypeScriptCompile>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -328,7 +325,6 @@
     <TypeScriptCompile Include="src\app\pages\plan\entry.ts" />
     <TypeScriptCompile Include="src\app\pages\plan\exception.ts" />
     <TypeScriptCompile Include="src\app\pages\plan.ts" />
-    <TypeScriptCompile Include="src\lib\promise.ts" />
     <TypeScriptCompile Include="src\app\pages\edit\schedule.ts" />
     <TypeScriptCompile Include="src\pages\edit\channel.tsx" />
     <TypeScriptCompile Include="src\pages\edit\channelFlags.tsx" />

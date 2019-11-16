@@ -21,11 +21,11 @@
         includeUK: boolean;
     }
 
-    export function getGuideSettings(): JMSLib.App.IHttpPromise<GuideSettingsContract> {
+    export function getGuideSettings(): Promise<GuideSettingsContract> {
         return doUrlCall(`configuration?guide`);
     }
 
-    export function setGuideSettings(data: GuideSettingsContract): JMSLib.App.IHttpPromise<boolean> {
+    export function setGuideSettings(data: GuideSettingsContract): Promise<boolean> {
         return doUrlCall(`configuration?guide`, `PUT`, data);
     }
 

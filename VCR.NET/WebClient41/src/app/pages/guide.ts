@@ -489,7 +489,7 @@ namespace VCRNETClient.App {
         }
 
         // Legt eine neue gespeicherte Suche an.
-        private createFavorite(): JMSLib.App.IHttpPromise<void> {
+        private createFavorite(): Promise<void> {
             // Protokollstruktur anlegen.
             var query: VCRServer.SavedGuideQueryContract = {
                 encryption: this._filter.station ? VCRServer.GuideEncryption.ALL : this._filter.cryptFilter,

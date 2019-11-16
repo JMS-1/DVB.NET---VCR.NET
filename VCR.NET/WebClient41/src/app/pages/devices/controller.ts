@@ -94,7 +94,7 @@
         }
 
         // Aktualisiert den Endzeitpunkt.
-        private save(): JMSLib.App.IHttpPromise<void> {
+        private save(): Promise<void> {
             // Beim vorzeitigen Beenden sind wir etwas übervorsichtig.
             var end = (this.remaining.value > 0) ? this.currentEnd : this.start;
 

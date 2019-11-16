@@ -9,11 +9,11 @@
         defaultProfile: string;
     }
 
-    export function getProfileSettings(): JMSLib.App.IHttpPromise<ProfileSettingsContract> {
+    export function getProfileSettings(): Promise<ProfileSettingsContract> {
         return doUrlCall(`configuration?devices`);
     }
 
-    export function setProfileSettings(data: ProfileSettingsContract): JMSLib.App.IHttpPromise<boolean> {
+    export function setProfileSettings(data: ProfileSettingsContract): Promise<boolean> {
         return doUrlCall(`configuration?devices`, `PUT`, data);
     }
 

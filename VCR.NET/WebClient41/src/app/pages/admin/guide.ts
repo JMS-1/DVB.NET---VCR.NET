@@ -176,7 +176,7 @@ namespace VCRNETClient.App.Admin {
         }
 
         // Die Konfiguration zur Aktualisierung an den VCR.NET Recording Service übertragen.
-        protected saveAsync(): JMSLib.App.IHttpPromise<boolean> {
+        protected saveAsync(): Promise<boolean> {
             // Die Auswahlliste der Quellen ist die Liste der zu berücksichtigenden Quellen.
             var settings = <VCRServer.GuideSettingsContract>this.hours.data;
 

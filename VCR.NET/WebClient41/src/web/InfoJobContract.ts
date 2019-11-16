@@ -15,7 +15,7 @@
         active: boolean;
     }
 
-    export function getInfoJobs(): JMSLib.App.IHttpPromise<InfoJobContract[]> {
+    export function getInfoJobs(): Promise<InfoJobContract[]> {
         return doUrlCall(`info?jobs`);
     }
 

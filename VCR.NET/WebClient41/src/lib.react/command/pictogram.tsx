@@ -11,7 +11,7 @@ namespace JMSLib.ReactUi {
         description?: string;
 
         // Aktion bei Auswahl des Symbols.
-        onClick?(ev: React.FormEvent): void;
+        onClick?(ev: React.MouseEvent<HTMLImageElement>): void;
     }
 
     // React.Js Komponente zur Anzeige eines Symbols.

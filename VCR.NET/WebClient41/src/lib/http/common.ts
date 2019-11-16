@@ -9,8 +9,4 @@
         readonly details: string;
     }
 
-    // Kurzform für die asnychrone Antwort eines HTTP Aufrufs.
-    export interface IHttpPromise<TResponseType> extends Thenable<TResponseType, IHttpErrorInformation> {
-    }
-
 }

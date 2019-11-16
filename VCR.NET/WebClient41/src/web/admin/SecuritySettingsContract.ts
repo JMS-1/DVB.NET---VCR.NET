@@ -9,15 +9,15 @@
         admins: string;
     }
 
-    export function getSecuritySettings(): JMSLib.App.IHttpPromise<SecuritySettingsContract> {
+    export function getSecuritySettings(): Promise<SecuritySettingsContract> {
         return doUrlCall(`configuration?security`);
     }
 
-    export function setSecuritySettings(data: SecuritySettingsContract): JMSLib.App.IHttpPromise<boolean> {
+    export function setSecuritySettings(data: SecuritySettingsContract): Promise<boolean> {
         return doUrlCall(`configuration?security`, `PUT`, data);
     }
 
-    export function getWindowsGroups(): JMSLib.App.IHttpPromise<string[]> {
+    export function getWindowsGroups(): Promise<string[]> {
         return doUrlCall(`info?groups`);
     }
 

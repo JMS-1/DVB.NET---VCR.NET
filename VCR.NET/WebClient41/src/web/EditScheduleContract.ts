@@ -18,7 +18,7 @@
         exceptions: PlanExceptionContract[];
     }
 
-    export function deleteSchedule(jobId: string, scheduleId: string): JMSLib.App.IHttpPromise<void> {
+    export function deleteSchedule(jobId: string, scheduleId: string): Promise<void> {
         return doUrlCall<void, void>(`edit/${jobId}${scheduleId}`, `DELETE`);
     }
 

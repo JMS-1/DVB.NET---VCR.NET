@@ -35,7 +35,7 @@ namespace VCRNETClient.App.Admin {
         protected readonly saveCaption = "Ändern und neu Starten";
 
         // Konfiguration asynchron aktualisieren.
-        protected saveAsync(): JMSLib.App.IHttpPromise<boolean> {
+        protected saveAsync(): Promise<boolean> {
             return VCRServer.setSchedulerRules(this.rules.data);
         }
 

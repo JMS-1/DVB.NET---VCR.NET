@@ -214,7 +214,7 @@ namespace VCRNETClient.App.Admin {
         }
 
         // Beginnt die asynchrone Speicherung der Konfiguration.
-        protected saveAsync(): JMSLib.App.IHttpPromise<boolean> {
+        protected saveAsync(): Promise<boolean> {
             return VCRServer.setOtherSettings(this.port.data);
         }
 

@@ -163,7 +163,7 @@ namespace VCRNETClient.App {
         }
 
         // Die aktuelle Liste der Quellen zum ausgewählten Gerät anfordern.
-        private loadSources(): JMSLib.App.IHttpPromise<void> {
+        private loadSources(): Promise<void> {
             var profile = this.job.device.value;
 
             // Das kann man ruhig öfter mal machen, da das Ergebnis nach dem ersten asynchronen Abruf gespeichert wird.
@@ -201,7 +201,7 @@ namespace VCRNETClient.App {
         }
 
         // Beginnt mit der asynchronen Aktualisierung der Daten der Aufzeichnung.
-        private onSave(): JMSLib.App.IHttpPromise<void> {
+        private onSave(): Promise<void> {
             // Kopie der Aufzeichnungsdaten anlegen.
             var schedule = { ...this._jobScheduleInfo.schedule };
 
@@ -221,7 +221,7 @@ namespace VCRNETClient.App {
         }
 
         // Startet einen asynchronen Löschvorgang für die Aufzeichnung.
-        private onDelete(): (JMSLib.App.IHttpPromise<void> | void) {
+        private onDelete(): (Promise<void> | void) {
             // Beim zweiten Aufruf wird der asynchrone Befehl an den VCR.NET Recording Service geschickt.
             if (this.del.isDangerous)
                 return VCRServer

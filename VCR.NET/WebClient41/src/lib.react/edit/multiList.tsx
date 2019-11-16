@@ -24,7 +24,7 @@ namespace JMSLib.ReactUi {
         }
 
         // Die Veränderung der Auswahl ist in dieser Implementierung etwas aufwändiger, da wir den Algorithmus des Browsers unverändert übernehmen wollen.
-        private onChange(ev: React.FormEvent): void {
+        private onChange(ev: React.FormEvent<HTMLSelectElement>): void {
             // Alle Oberflächenelemente zur Auswahlliste.
             var options = (ev.currentTarget as HTMLSelectElement).children;
 

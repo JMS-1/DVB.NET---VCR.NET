@@ -57,10 +57,10 @@
         protected readonly isValid: boolean = true;
 
         // Sendet die aktuellen Daten des Konfigurationsbereichs an den VCR.NET Recording Service zur Übernahme derselben.
-        protected abstract saveAsync(): JMSLib.App.IHttpPromise<boolean>;
+        protected abstract saveAsync(): Promise<boolean>;
 
         // Beginnt mit der Speicherung der aktuellen Daten des Konfigurationsbereichs im VCR.NET Recording Service.
-        private save(): JMSLib.App.IHttpPromise<void> {
+        private save(): Promise<void> {
             return this.page.update(this.saveAsync(), this.update);
         }
     }

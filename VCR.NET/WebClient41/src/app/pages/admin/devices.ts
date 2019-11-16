@@ -68,7 +68,7 @@ namespace VCRNETClient.App.Admin {
         }
 
         // Sendet die Konfiguration zur asynchronen Aktualisierung an den VCR.NET Recording Service.
-        protected saveAsync(): JMSLib.App.IHttpPromise<boolean> {
+        protected saveAsync(): Promise<boolean> {
             return VCRServer.setProfileSettings(this.defaultDevice.data);
         }
     }

@@ -21,7 +21,7 @@
         originalDuration: number;
     }
 
-    export function updateException(legacyId: string, referenceDay: string, startDelta: number, durationDelta: number): JMSLib.App.IHttpPromise<void> {
+    export function updateException(legacyId: string, referenceDay: string, startDelta: number, durationDelta: number): Promise<void> {
         return doUrlCall<void, void>(`exception/${legacyId}?when=${referenceDay}&startDelta=${startDelta}&durationDelta=${durationDelta}`, `PUT`);
     }
 

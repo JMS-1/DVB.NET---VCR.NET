@@ -30,11 +30,11 @@
         cryptFilter: GuideEncryption;
     }
 
-    export function queryProgramGuide(filter: GuideFilterContract): JMSLib.App.IHttpPromise<GuideItemContract[]> {
+    export function queryProgramGuide(filter: GuideFilterContract): Promise<GuideItemContract[]> {
         return doUrlCall(`guide`, `POST`, filter);
     }
 
-    export function countProgramGuide(filter: GuideFilterContract): JMSLib.App.IHttpPromise<number> {
+    export function countProgramGuide(filter: GuideFilterContract): Promise<number> {
         return doUrlCall(`guide?countOnly`, `POST`, filter);
     }
 

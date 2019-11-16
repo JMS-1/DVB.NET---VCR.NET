@@ -12,7 +12,7 @@
         lockedToDevice: boolean;
     }
 
-    export function getRecordingDirectories(): JMSLib.App.IHttpPromise<string[]> {
+    export function getRecordingDirectories(): Promise<string[]> {
         return doUrlCall(`info?directories`);
     }
 

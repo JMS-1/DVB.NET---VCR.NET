@@ -19,15 +19,15 @@
     export class Favorite implements IFavorite {
 
         // Synchronisert das Ermitteln der Anzeige der Sendungen - es wird zu jeder Zeit immer nur eine Anfrage an den VCR.NET Recording Service gestellt.
-        private static _loader: JMSLib.App.IHttpPromise<void>;
+        private static _loader: Promise<void>;
 
         // Beginnt die Synchronisation neu.
         static resetLoader(): void {
-            Favorite._loader = new JMSLib.App.Promise<void, JMSLib.App.IHttpErrorInformation>(success => success(void (0)));
+            Favorite._loader = new Promise<void>(success => success(void (0)));
         }
 
         // Legt ein Präsentationsmodell an.
-        constructor(public readonly model: VCRServer.SavedGuideQueryContract, show: (favorite: Favorite) => void, remove: (favorite: Favorite) => JMSLib.App.IHttpPromise<void>, private _refresh: () => void) {
+        constructor(public readonly model: VCRServer.SavedGuideQueryContract, show: (favorite: Favorite) => void, remove: (favorite: Favorite) => Promise<void>, private _refresh: () => void) {
             this.remove = new JMSLib.App.Command<void>(() => remove(this), "Löschen");
             this.show = new JMSLib.App.Command<void>(() => show(this), "Anzeigen");
 

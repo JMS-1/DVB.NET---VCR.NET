@@ -48,11 +48,11 @@
         guideSearches: string;
     }
 
-    export function getUserProfile(): JMSLib.App.IHttpPromise<UserProfileContract> {
+    export function getUserProfile(): Promise<UserProfileContract> {
         return doUrlCall(`userprofile`);
     }
 
-    export function setUserProfile(profile: UserProfileContract): JMSLib.App.IHttpPromise<UserProfileContract> {
+    export function setUserProfile(profile: UserProfileContract): Promise<UserProfileContract> {
         return doUrlCall(`userprofile`, `PUT`, profile);
     }
 

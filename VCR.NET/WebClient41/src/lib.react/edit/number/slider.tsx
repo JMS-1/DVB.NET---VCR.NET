@@ -28,7 +28,7 @@ namespace JMSLib.ReactUi {
         }
 
         // Überwacht Bewegungen mit der Maus und gibe diese an die Anwendungslogik weiter.
-        private doMove(ev: React.MouseEvent): void {
+        private doMove(ev: React.MouseEvent<HTMLDivElement>): void {
             // Zurzeit sind Änderungen nicht gestattet.
             if (!this.props.uvm.isDragging)
                 return;
@@ -45,7 +45,7 @@ namespace JMSLib.ReactUi {
         }
 
         // Zur Feinsteuerung setzen wir auch die Pfeiltasten nach links und rechts um.
-        private doKey(ev: React.KeyboardEvent): void {
+        private doKey(ev: React.KeyboardEvent<HTMLDivElement>): void {
             if (ev.keyCode === 37)
                 this.props.uvm.delta(-1);
             else if (ev.keyCode === 39)

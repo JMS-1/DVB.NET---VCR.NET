@@ -142,7 +142,7 @@ namespace VCRNETClient.App.Admin {
         }
 
         // Fordert den VCR.NET Recording Service zur Aktualisierung der Konfiguration an.
-        protected saveAsync(): JMSLib.App.IHttpPromise<boolean> {
+        protected saveAsync(): Promise<boolean> {
             // Die Art wird in die Konfigurationsdaten zurückgespiegelt.
             var settings = <VCRServer.SourceScanSettingsContract>this.hours.data;
 

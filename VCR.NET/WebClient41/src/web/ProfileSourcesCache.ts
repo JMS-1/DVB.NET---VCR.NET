@@ -27,15 +27,15 @@
     // Verwaltet Listen von Quellen zu Geräteprofilen
     export class ProfileSourcesCache {
         // Verwaltet alle Quellen zu allen Geräten als Nachschlageliste
-        private static promises: { [device: string]: JMSLib.App.Promise<SourceEntry[], JMSLib.App.IHttpErrorInformation> } = {};
+        private static promises: { [device: string]: Promise<SourceEntry[]> } = {};
 
         // Fordert die Quellen eines Geräteprofils an.
-        static getSources(profileName: string): JMSLib.App.IHttpPromise<SourceEntry[]> {
+        static getSources(profileName: string): Promise<SourceEntry[]> {
             // Eventuell haben wir das schon einmal gemacht
             var promise = ProfileSourcesCache.promises[profileName];
             if (!promise) {
                 // Verwaltung erzeugen.
-                ProfileSourcesCache.promises[profileName] = promise = new JMSLib.App.Promise<SourceEntry[], JMSLib.App.IHttpErrorInformation>((success, failure) => {
+                ProfileSourcesCache.promises[profileName] = promise = new Promise<SourceEntry[]>((success, failure) => {
                     // Ladevorgang anstossen.
                     getProfileSources(profileName).then(data => success(data.map(rawData => new SourceEntry(rawData))));
                 });

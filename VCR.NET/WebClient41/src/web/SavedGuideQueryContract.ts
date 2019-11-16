@@ -20,7 +20,7 @@
         encryption: VCRServer.GuideEncryption;
     }
 
-    export function updateSearchQueries(queries: SavedGuideQueryContract[]): JMSLib.App.IHttpPromise<void> {
+    export function updateSearchQueries(queries: SavedGuideQueryContract[]): Promise<void> {
         return doUrlCall<void, SavedGuideQueryContract[]>(`userprofile?favorites`, `PUT`, queries);
     }
 

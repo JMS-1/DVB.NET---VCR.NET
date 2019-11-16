@@ -139,7 +139,7 @@ namespace VCRNETClient.App.Admin {
         }
 
         // Sendet die veränderte Konfiguration an den VCR.NET Recording Service.
-        protected saveAsync(): JMSLib.App.IHttpPromise<boolean> {
+        protected saveAsync(): Promise<boolean> {
             // Die aktuell erlaubten Verzeichnisse werden als Verzeichnisliste übernommen.
             var settings: VCRServer.DirectorySettingsContract = this.pattern.data;
 
@@ -150,7 +150,7 @@ namespace VCRNETClient.App.Admin {
         }
 
         // Ergänzt ein Verzeichnis.
-        private onAdd(): JMSLib.App.IHttpPromise<void> {
+        private onAdd(): Promise<void> {
             // Es erfolgt eine direkte Auswahl über eine Verzeichnisliste.
             if (this.showBrowse) {
                 // Sicherheitshalber prüfen wir auf eine echte Auswahl.

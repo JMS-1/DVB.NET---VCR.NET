@@ -2,6 +2,7 @@
 
 namespace JMSLib.ReactUi {
 
+
     // Konfigurationzur Anzeige eines internen Verweises.
     interface IInternalLink {
         // Ein Navigationsziel oder eine Funktion zur Durchführung eines Übergangs.

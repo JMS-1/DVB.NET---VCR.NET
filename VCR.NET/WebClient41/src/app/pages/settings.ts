@@ -179,7 +179,7 @@ namespace VCRNETClient.App {
         }
 
         // Stößt die Aktualisierung der Einstellungen.
-        private save(): JMSLib.App.IHttpPromise<void> {
+        private save(): Promise<void> {
             // Nach dem erfolgreichen Speichern geht es mit der Einstiegsseite los, dabei werden die Einstellungen immer ganz neu geladen.
             return VCRServer.setUserProfile(this.planDays.data).then(() => this.application.gotoPage(null));
         }

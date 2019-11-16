@@ -3,7 +3,7 @@
     // Verwaltet die Aufzeichnungsverzeichnisse
     export class RecordingDirectoryCache {
         // Die zwischengespeicherten Verzeichnisse
-        private static promise: JMSLib.App.Promise<string[], JMSLib.App.IHttpErrorInformation>;
+        private static promise: Promise<string[]>;
 
         // Vergisst alles, was wir wissen
         static reset(): void {
@@ -11,11 +11,11 @@
         }
 
         // Ruft die Verzeichnisse ab
-        static getPromise(): JMSLib.App.IHttpPromise<string[]> {
+        static getPromise(): Promise<string[]> {
             // Erstmalig laden
             if (!RecordingDirectoryCache.promise) {
                 // Verwaltung erzeugen.
-                RecordingDirectoryCache.promise = new JMSLib.App.Promise<string[], JMSLib.App.IHttpErrorInformation>((success, failure) => {
+                RecordingDirectoryCache.promise = new Promise<string[]>((success, failure) => {
                     getRecordingDirectories().then(data => success(data));
                 });
             }

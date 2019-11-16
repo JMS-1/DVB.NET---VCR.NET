@@ -18,7 +18,7 @@ namespace VCRNETClient.App.Admin {
         static readonly route = `security`;
 
         // Alle bekannten Windows Kontogruppen - die werden nur ein einziges Mal angefordert.
-        private static _windowsGroups: JMSLib.App.IHttpPromise<JMSLib.App.IUiValue<string>[]>;
+        private static _windowsGroups: Promise<JMSLib.App.IUiValue<string>[]>;
 
         // Die Gruppe der normalen Benutzer mit Auswahl.
         readonly userGroups = new JMSLib.App.SelectSingleFromList<string>({}, `users`, `Benutzer`);
@@ -55,7 +55,7 @@ namespace VCRNETClient.App.Admin {
         }
 
         // Beginnt mit der Aktualisierung der aktuellen Einstellungen.
-        protected saveAsync(): JMSLib.App.IHttpPromise<boolean> {
+        protected saveAsync(): Promise<boolean> {
             return VCRServer.setSecuritySettings(this.userGroups.data);
         }
     }

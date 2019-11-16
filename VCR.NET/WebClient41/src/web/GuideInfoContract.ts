@@ -12,7 +12,7 @@
         last: string;
     }
 
-    export function getGuideInfo(device: string): JMSLib.App.IHttpPromise<GuideInfoContract> {
+    export function getGuideInfo(device: string): Promise<GuideInfoContract> {
         return doUrlCall(`guide/${device}`);
     }
 

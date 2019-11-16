@@ -146,7 +146,7 @@ namespace VCRNETClient.App {
         }
 
         // Aktiviert eine Sonderaufgabe und wechselt im Erfolgsfall nach Bestätigung durch den VCR.NET Recording Service auf die Geräteübersicht.
-        private startTask(task: string): JMSLib.App.IHttpPromise<void> {
+        private startTask(task: string): Promise<void> {
             return VCRServer.triggerTask(task).then(() => this.application.gotoPage(this.application.devicesPage.route));
         }
     }

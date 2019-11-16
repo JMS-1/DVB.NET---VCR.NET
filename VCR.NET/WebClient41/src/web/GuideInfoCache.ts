@@ -2,14 +2,14 @@
 
     // Verwaltet die Zusammenfassung der Daten der Programmzeitschrift für einzelne Geräte
     export class GuideInfoCache {
-        private static promises: { [device: string]: JMSLib.App.Promise<GuideInfoContract, JMSLib.App.IHttpErrorInformation> } = {};
+        private static promises: { [device: string]: Promise<GuideInfoContract> } = {};
 
-        static getPromise(profileName: string): JMSLib.App.IHttpPromise<GuideInfoContract> {
+        static getPromise(profileName: string): Promise<GuideInfoContract> {
             // Eventuell haben wir das schon einmal gemacht
             var promise = GuideInfoCache.promises[profileName];
             if (!promise)
                 GuideInfoCache.promises[profileName] =
-                    promise = new JMSLib.App.Promise<GuideInfoContract, JMSLib.App.IHttpErrorInformation>(success => getGuideInfo(profileName).then(success));
+                    promise = new Promise<GuideInfoContract>(success => getGuideInfo(profileName).then(success));
 
             // Verwaltung melden.
             return promise;

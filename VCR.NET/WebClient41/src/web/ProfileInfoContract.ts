@@ -5,7 +5,7 @@
         name: string;
     }
 
-    export function getProfileInfos(): JMSLib.App.IHttpPromise<ProfileInfoContract[]> {
+    export function getProfileInfos(): Promise<ProfileInfoContract[]> {
         return doUrlCall(`profile`);
     }
 
