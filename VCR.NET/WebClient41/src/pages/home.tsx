@@ -66,7 +66,7 @@ namespace VCRNETClient.Ui {
                 </div>
                 <div className="vcrnet-home-copyright">
                     <JMSLib.ReactUi.ExternalLink url="http://www.psimarron.net"><JMSLib.ReactUi.Pictogram name="psimarron" /></JMSLib.ReactUi.ExternalLink>
-                    <span>Dr. Jochen Manns, 2003-17</span>
+                    <span>Dr. Jochen Manns, 2003-19</span>
                 </div>
             </div>;
         }
