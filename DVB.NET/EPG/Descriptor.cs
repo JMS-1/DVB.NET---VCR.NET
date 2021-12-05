@@ -38,33 +38,38 @@ namespace JMS.DVB.EPG
         /// of type <see cref="bool"/> with a single <see cref="byte"/> parameter. This method
         /// has to report <i>true</i> for any descriptor tag it is responsible for.
         /// </remarks>
-        private static readonly Type[] m_Handlers = 
-		{ 
-			typeof(Descriptors.ShortEvent),
-			typeof(Descriptors.Content),
-			typeof(Descriptors.Component),
-			typeof(Descriptors.ExtendedEvent),
-			typeof(Descriptors.PrivateData),
-			typeof(Descriptors.PDCDescriptor),
-			typeof(Descriptors.ParentalRating),
-			typeof(Descriptors.Linkage),
+        private static readonly Type[] m_Handlers =
+        {
+            typeof(Descriptors.ShortEvent),
+            typeof(Descriptors.Content),
+            typeof(Descriptors.Component),
+            typeof(Descriptors.ExtendedEvent),
+            typeof(Descriptors.PrivateData),
+            typeof(Descriptors.PDCDescriptor),
+            typeof(Descriptors.ParentalRating),
+            typeof(Descriptors.Linkage),
             typeof(Descriptors.StreamIdentifier),
             typeof(Descriptors.Service),
             typeof(Descriptors.ISOLanguage),
             typeof(Descriptors.DataBroadcast),
             typeof(Descriptors.Teletext),
             typeof(Descriptors.AC3),
-			typeof(Descriptors.NetworkName),
-			typeof(Descriptors.CableDelivery),
-			typeof(Descriptors.SatelliteDelivery),
+            typeof(Descriptors.AAC),
+            typeof(Descriptors.NetworkName),
+            typeof(Descriptors.CableDelivery),
+            typeof(Descriptors.SatelliteDelivery),
             typeof(Descriptors.TerrestrialDelivery),
-			typeof(Descriptors.ServiceList),
+            typeof(Descriptors.ServiceList),
             typeof(Descriptors.Subtitle),
             typeof(Descriptors.ContentTransmissionPremiere),
             typeof(Descriptors.CellList),
             typeof(Descriptors.FrequencyList),
-            typeof(Descriptors.CellFrequencyLink)
-		};
+            typeof(Descriptors.CellFrequencyLink),
+            typeof(Descriptors.AncillaryData),
+            typeof(Descriptors.ApplicationSignalling),
+            typeof(Descriptors.DataBroadastId),
+            typeof(Descriptors.CarouselIdentifier)
+        };
 
         /// <summary>
         /// Populate the descriptor tag lookup map.
@@ -72,7 +77,7 @@ namespace JMS.DVB.EPG
         static Descriptor()
         {
             // Use helper
-            Tools.InitializeDynamicCreate( m_Handlers, m_HandlerForTag, typeof( Descriptors.Generic ) );
+            Tools.InitializeDynamicCreate(m_Handlers, m_HandlerForTag, typeof(Descriptors.Generic));
         }
 
         /// <summary>
@@ -114,10 +119,10 @@ namespace JMS.DVB.EPG
         /// <param name="length">The number of bytes for this instance. Since this
         /// does not include the tag and the length <see cref="byte"/> <see cref="Length"/>
         /// will be two greater than the value of this parameter.</param>
-        protected Descriptor( IDescriptorContainer container, int offset, int length )
+        protected Descriptor(IDescriptorContainer container, int offset, int length)
         {
             // Set
-            Tag = (DescriptorTags) container.Section[offset - 2];
+            Tag = (DescriptorTags)container.Section[offset - 2];
 
             // Remember
             Container = container;
@@ -128,7 +133,7 @@ namespace JMS.DVB.EPG
         /// 
         /// </summary>
         /// <param name="tag"></param>
-        protected Descriptor( DescriptorTags tag )
+        protected Descriptor(DescriptorTags tag)
         {
             // Remember
             Tag = tag;
@@ -149,13 +154,13 @@ namespace JMS.DVB.EPG
         /// does not include the tag and the length <see cref="byte"/> <see cref="Length"/>
         /// will be two greater than the value of this parameter.</param>
         /// <returns>A newly created <see cref="Descriptor"/> instance.</returns>
-        static public Descriptor Create( IDescriptorContainer container, int offset, int length )
+        static public Descriptor Create(IDescriptorContainer container, int offset, int length)
         {
             // Attach to the type
-            Type pHandler = (Type) m_HandlerForTag[container.Section[offset - 2]];
+            Type pHandler = (Type)m_HandlerForTag[container.Section[offset - 2]];
 
             // Create
-            return (Descriptor) Activator.CreateInstance( pHandler, new object[] { container, offset, length } );
+            return (Descriptor)Activator.CreateInstance(pHandler, new object[] { container, offset, length });
         }
 
         /// <summary>
@@ -175,7 +180,7 @@ namespace JMS.DVB.EPG
         /// event. New <see cref="Descriptor"/> instances are created until
         /// there is no space left.</param>
         /// <returns>All <see cref="Descriptor"/> instances for an event.</returns>
-        static public Descriptor[] Load( IDescriptorContainer container, int offset, int length )
+        static public Descriptor[] Load(IDescriptorContainer container, int offset, int length)
         {
             // Attach to data
             Section section = container.Section;
@@ -196,10 +201,10 @@ namespace JMS.DVB.EPG
                 if ((2 + bytes) > length) break;
 
                 // Create instance
-                Descriptor pNew = Create( container, offset + 2, bytes );
+                Descriptor pNew = Create(container, offset + 2, bytes);
 
                 // Remember
-                all.Add( pNew );
+                all.Add(pNew);
 
                 // Adjust
                 offset += pNew.Length;
@@ -207,20 +212,13 @@ namespace JMS.DVB.EPG
             }
 
             // Create
-            return (Descriptor[]) all.ToArray( typeof( Descriptor ) );
+            return (Descriptor[])all.ToArray(typeof(Descriptor));
         }
 
         /// <summary>
         /// Report if this instance is valid.
         /// </summary>
-        public bool IsValid
-        {
-            get
-            {
-                // Report
-                return m_Valid;
-            }
-        }
+        public bool IsValid => m_Valid;
 
         /// <summary>
         /// The related <see cref="EPG.Table"/>.
@@ -228,14 +226,7 @@ namespace JMS.DVB.EPG
         /// <remarks>
         /// This is the <see cref="EntryBase.Table"/> of our <see cref="EntryBase"/>.
         /// </remarks>
-        public Table Table
-        {
-            get
-            {
-                // Forward
-                return Container.Container;
-            }
-        }
+        public Table Table => Container.Container;
 
         /// <summary>
         /// The related <see cref="Section"/>.
@@ -243,39 +234,32 @@ namespace JMS.DVB.EPG
         /// <remarks>
         /// This is the <see cref="EPG.Table.Section"/> of our <see cref="Table"/>.
         /// </remarks>
-        public Section Section
-        {
-            get
-            {
-                // Forward
-                return Table.Section;
-            }
-        }
+        public Section Section => Table.Section;
 
         /// <summary>
         /// Append the binary formatted descriptor to the buffer provided.
         /// </summary>
         /// <param name="buffer">Some buffer.</param>
-        internal void CreateDescriptor( TableConstructor buffer )
+        internal void CreateDescriptor(TableConstructor buffer)
         {
             // Write the tag
-            buffer.Add( (byte) Tag );
+            buffer.Add((byte)Tag);
 
             // Position of length
             int lengthPos = buffer.CreateDynamicLength();
 
             // Add payload
-            CreatePayload( buffer );
+            CreatePayload(buffer);
 
             // Update the length
-            buffer.SetDynamicLength( lengthPos );
+            buffer.SetDynamicLength(lengthPos);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="buffer"></param>
-        protected virtual void CreatePayload( TableConstructor buffer )
+        protected virtual void CreatePayload(TableConstructor buffer)
         {
             // Must be implemented by derived classes
             throw new NotImplementedException();
@@ -294,14 +278,14 @@ namespace JMS.DVB.EPG
         /// <param name="descriptors">Die Liste der zu durchsuchenden Beschreibungen.</param>
         /// <returns>Die gewünschte Beschreibung oder <i>null</i>, wenn keine Beschreibung
         /// der gesuchten Art in der Liste vorhanden ist.</returns>
-        public static T Find<T>( this Descriptor[] descriptors ) where T : Descriptor
+        public static T Find<T>(this Descriptor[] descriptors) where T : Descriptor
         {
             // Not possible
             if (null == descriptors)
                 return null;
 
             // Lookup
-            return (T) Array.Find( descriptors, d => typeof( T ) == d.GetType() );
+            return (T)Array.Find(descriptors, d => typeof(T) == d.GetType());
         }
 
     }

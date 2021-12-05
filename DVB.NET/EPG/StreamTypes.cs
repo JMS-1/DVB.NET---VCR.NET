@@ -8,7 +8,7 @@ namespace JMS.DVB.EPG
     /// The type of a transport stream.
     /// </summary>
 	public enum StreamTypes
-	{
+    {
         /// <summary>
         /// ITU-T | ISO/IEC Reserved
         /// </summary>
@@ -67,7 +67,7 @@ namespace JMS.DVB.EPG
         /// <summary>
         /// ISO/IEC 13818-6 type B
         /// </summary>
-        TypeB,
+        Carousel,
 
         /// <summary>
         /// ISO/IEC 13818-6 type C
@@ -77,17 +77,22 @@ namespace JMS.DVB.EPG
         /// <summary>
         /// ISO/IEC 13818-6 type D
         /// </summary>
-        TypeD,
+        MultiProtocolDataStream,
 
         /// <summary>
         /// ISO/IEC 13818-1 auxiliary
         /// </summary>
         Auxiliary,
 
-		/// <summary>
-		/// Intermediate entry for H.264 video.
+        /// <summary>
+		/// Intermediate entry for AAC Audio.
 		/// </summary>
-		H264 = 0x1b,
+		AAC = 0x11,
+
+        /// <summary>
+        /// Intermediate entry for H.264 video.
+        /// </summary>
+        H264 = 0x1b,
 
         /// <summary>
         /// ITU-T Rec. H.222.0 | ISO/IEC 13818-1 Reserved, lowest value
@@ -108,5 +113,5 @@ namespace JMS.DVB.EPG
         /// User Private, highest value
         /// </summary>
         UserPrivateHigh = 0xff
-	}
+    }
 }

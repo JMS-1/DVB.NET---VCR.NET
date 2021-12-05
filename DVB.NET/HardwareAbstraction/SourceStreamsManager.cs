@@ -154,15 +154,15 @@ namespace JMS.DVB
         /// <param name="source">Die Quelle, die zu betrachten ist.</param>
         /// <param name="selection">Die zu betrachtenden Datenströme.</param>
         /// <exception cref="ArgumentNullException">Ein Parameter wurde nicht angegeben.</exception>
-        public SourceStreamsManager( Hardware hardware, Profile profile, SourceIdentifier source, StreamSelection selection )
+        public SourceStreamsManager(Hardware hardware, Profile profile, SourceIdentifier source, StreamSelection selection)
         {
             // Validate
             if (null == hardware)
-                throw new ArgumentNullException( "hardware" );
+                throw new ArgumentNullException("hardware");
             if (null == source)
-                throw new ArgumentNullException( "source" );
+                throw new ArgumentNullException("source");
             if (null == selection)
-                throw new ArgumentNullException( "selection" );
+                throw new ArgumentNullException("selection");
 
             // Remember all
             StreamSelection = selection;
@@ -175,13 +175,13 @@ namespace JMS.DVB
         /// Startet das Auslesen der aktuellen Daten zur aktiven Quelle im Hintergrund.
         /// </summary>
         /// <returns>Eine Steuerinstanz zum asynchronen Zugriff auf die aktuellen Daten.</returns>
-        public CancellableTask<SourceInformation> GetCurrentInformationAsync() => Hardware.GetSourceInformationAsync( Source, Profile );
+        public CancellableTask<SourceInformation> GetCurrentInformationAsync() => Hardware.GetSourceInformationAsync(Source, Profile);
 
         /// <summary>
         /// Ermittelt die aktuellen Daten zur aktiven Quelle.
         /// </summary>
         /// <returns>Die neu ermittelten aktuellen Daten.</returns>
-        public SourceInformation GetCurrentInformation() => GetCurrentInformationAsync().CancelAfter( 5000 ).Result;
+        public SourceInformation GetCurrentInformation() => GetCurrentInformationAsync().CancelAfter(5000).Result;
 
         /// <summary>
         /// Meldet die aktuell verwendeten Daten der Quelle.
@@ -213,7 +213,7 @@ namespace JMS.DVB
         /// <param name="filePath">Optional die Angabe eines Dateinames.</param>
         /// <returns>Gesetzt, wenn die Quelle bekannt ist und der Empfang aktiviert wurde.</returns>
         /// <exception cref="InvalidOperationException">Es ist bereits eine Aufzeichnung aktiv.</exception>
-        public bool CreateStream( string filePath ) => CreateStream( filePath, null );
+        public bool CreateStream(string filePath) => CreateStream(filePath, null);
 
         /// <summary>
         /// Beginnt die Aufzeichnung in einen <i>Transport Stream</i> - optional als 
@@ -223,7 +223,7 @@ namespace JMS.DVB
         /// <param name="info">Die aktuelle Konfiguration der Quelle oder <i>null</i>, wenn keine bekannt ist.</param>
         /// <returns>Gesetzt, wenn die Quelle bekannt ist und der Empfang aktiviert wurde.</returns>
         /// <exception cref="InvalidOperationException">Es ist bereits eine Aufzeichnung aktiv.</exception>
-        public bool CreateStream( string filePath, SourceInformation info )
+        public bool CreateStream(string filePath, SourceInformation info)
         {
             // Validate
             if (m_TransportStream != null)
@@ -243,13 +243,13 @@ namespace JMS.DVB
                 return false;
 
             // Forward
-            CreateStream( NextStreamIdentifier, false );
+            CreateStream(NextStreamIdentifier, false);
 
             // Update signature
-            m_CurrentSignature = CreateRecordingSignature( m_OriginalSettings );
+            m_CurrentSignature = CreateRecordingSignature(m_OriginalSettings);
 
             // Activate streaming
-            if (!string.IsNullOrEmpty( m_LastStreamTarget ))
+            if (!string.IsNullOrEmpty(m_LastStreamTarget))
                 StreamingTarget = m_LastStreamTarget;
 
             // Did it
@@ -294,27 +294,27 @@ namespace JMS.DVB
             set
             {
                 // Check mode
-                if (string.IsNullOrEmpty( value ))
+                if (string.IsNullOrEmpty(value))
                 {
                     // Clear
                     if (null != m_TransportStream)
-                        m_TransportStream.SetStreamTarget( string.Empty, 0 );
+                        m_TransportStream.SetStreamTarget(string.Empty, 0);
                 }
                 else
                 {
                     // Split
-                    var parts = value.Split( ':' );
+                    var parts = value.Split(':');
                     if (2 != parts.Length)
-                        throw new ArgumentException( value, "value" );
+                        throw new ArgumentException(value, "value");
 
                     // Get port
                     ushort port;
-                    if (!ushort.TryParse( parts[1], out port ))
-                        throw new ArgumentException( value, "value" );
+                    if (!ushort.TryParse(parts[1], out port))
+                        throw new ArgumentException(value, "value");
 
                     // Update
                     if (null != m_TransportStream)
-                        m_TransportStream.SetStreamTarget( parts[0], port );
+                        m_TransportStream.SetStreamTarget(parts[0], port);
                 }
 
                 // Remember
@@ -375,7 +375,7 @@ namespace JMS.DVB
         /// </summary>
         /// <param name="information">Die aktuellen Daten zur zugehörigen Quelle.</param>
         /// <returns>Ein Schlüssel passend zur aktuellen Aufzeichnung.</returns>
-        private string CreateRecordingSignature( SourceInformation information )
+        private string CreateRecordingSignature(SourceInformation information)
         {
             // All keys - will be sorted to make sure that lists are ordered
             var flags = new List<int>();
@@ -395,8 +395,8 @@ namespace JMS.DVB
                 var videoType = (information.VideoType == VideoTypes.H264) ? EPG.StreamTypes.H264 : EPG.StreamTypes.Video13818;
 
                 // Register
-                flags.Add( Offset_VideoType + (int) videoType );
-                flags.Add( Offset_VideoPID + (int) information.VideoStream );
+                flags.Add(Offset_VideoType + (int)videoType);
+                flags.Add(Offset_VideoPID + (int)information.VideoStream);
             }
 
             // All MP2 audio
@@ -405,15 +405,15 @@ namespace JMS.DVB
                     if (StreamSelection.MP2Tracks.LanguageMode == LanguageModes.Primary)
                     {
                         // Add as is
-                        flags.Add( Offset_MP2PID + (int) audio.AudioStream );
+                        flags.Add(Offset_MP2PID + (int)audio.AudioStream);
 
                         // Finish
                         break;
                     }
-                    else if (StreamSelection.MP2Tracks.Contains( audio.Language ))
+                    else if (StreamSelection.MP2Tracks.Contains(audio.Language))
                     {
                         // Add as is
-                        flags.Add( Offset_MP2PID + (int) audio.AudioStream );
+                        flags.Add(Offset_MP2PID + (int)audio.AudioStream);
                     }
 
             // All AC3 audio
@@ -422,21 +422,21 @@ namespace JMS.DVB
                     if (StreamSelection.AC3Tracks.LanguageMode == LanguageModes.Primary)
                     {
                         // Add as is
-                        flags.Add( Offset_AC3PID + (int) audio.AudioStream );
+                        flags.Add(Offset_AC3PID + (int)audio.AudioStream);
 
                         // Finish
                         break;
                     }
-                    else if (StreamSelection.AC3Tracks.Contains( audio.Language ))
+                    else if (StreamSelection.AC3Tracks.Contains(audio.Language))
                     {
                         // Add as is
-                        flags.Add( Offset_AC3PID + (int) audio.AudioStream );
+                        flags.Add(Offset_AC3PID + (int)audio.AudioStream);
                     }
 
             // Videotext
             if (StreamSelection.Videotext)
                 if (0 != information.TextStream)
-                    flags.Add( Offset_TTXPID + (int) information.TextStream );
+                    flags.Add(Offset_TTXPID + (int)information.TextStream);
 
             // Subtitle streams
             var subtitles = new Dictionary<ushort, bool>();
@@ -451,7 +451,7 @@ namespace JMS.DVB
                     // Finish
                     break;
                 }
-                else if (StreamSelection.SubTitles.Contains( subtitle.Language ))
+                else if (StreamSelection.SubTitles.Contains(subtitle.Language))
                 {
                     // Add as is
                     subtitles[subtitle.SubtitleStream] = true;
@@ -459,10 +459,10 @@ namespace JMS.DVB
 
             // Process all subtitles
             foreach (var subtitleStream in subtitles.Keys)
-                flags.Add( Offset_SUBPID + (int) subtitleStream );
+                flags.Add(Offset_SUBPID + (int)subtitleStream);
 
             // Create the key
-            return (information.IsEncrypted ? "+" : "-") + string.Join( ".", flags.ConvertAll( f => f.ToString( "x5" ) ).ToArray() );
+            return (information.IsEncrypted ? "+" : "-") + string.Join(".", flags.ConvertAll(f => f.ToString("x5")).ToArray());
         }
 
         /// <summary>
@@ -474,7 +474,7 @@ namespace JMS.DVB
         /// Prüft, ob sich an der Konfiguration der Quelle etwas verändert hat.
         /// </summary>
         /// <returns>Gesetzt, wenn nun der Empfang aktiv ist.</returns>
-        public bool RetestSourceInformation() => RetestSourceInformation( GetCurrentInformation() );
+        public bool RetestSourceInformation() => RetestSourceInformation(GetCurrentInformation());
 
         /// <summary>
         /// Prüft, ob sich an der Konfiguration der Quelle etwas verändert hat.
@@ -483,7 +483,7 @@ namespace JMS.DVB
         /// <returns>Gesetzt, wenn nun der Empfang aktiv ist.</returns>
         /// <exception cref="ArgumentNullException">Der angegebenen Konfiguration ist keine Quelle zugeordnet.</exception>
         /// <exception cref="ArgumentException">Die Konfiguration gehört zu einer anderen Quelle als der aktuellen.</exception>
-        public bool RetestSourceInformation( SourceInformation information )
+        public bool RetestSourceInformation(SourceInformation information)
         {
             // Must get the current source information
             if (information == null)
@@ -497,24 +497,24 @@ namespace JMS.DVB
 
             // Validate
             if (information.Source == null)
-                throw new ArgumentNullException( "information.Source" );
-            if (!information.Source.Equals( Source ))
-                throw new ArgumentException( information.Source.ToString(), "information.Source" );
+                throw new ArgumentNullException("information.Source");
+            if (!information.Source.Equals(Source))
+                throw new ArgumentException(information.Source.ToString(), "information.Source");
 
             // Nothing changed
-            var signature = CreateRecordingSignature( information );
+            var signature = CreateRecordingSignature(information);
             if (m_TransportStream != null)
             {
                 // No need to switch
-                if (signature.Equals( m_CurrentSignature ))
+                if (signature.Equals(m_CurrentSignature))
                     return true;
 
                 // Report to see what happened
-                if (!string.IsNullOrEmpty( m_CurrentSignature ))
+                if (!string.IsNullOrEmpty(m_CurrentSignature))
                     try
                     {
                         // Report and ignore
-                        EventLog.WriteEntry( "DVB.NET", $"Detected PSI Change: {m_CurrentSignature} => {signature}", EventLogEntryType.Information );
+                        EventLog.WriteEntry("DVB.NET", $"Detected PSI Change: {m_CurrentSignature} => {signature}", EventLogEntryType.Information);
                     }
                     catch
                     {
@@ -535,7 +535,7 @@ namespace JMS.DVB
             if (BeforeRecreateStream != null)
             {
                 // Request new stream configuration
-                var newSelection = BeforeRecreateStream( this );
+                var newSelection = BeforeRecreateStream(this);
                 if (newSelection == null)
                     return false;
 
@@ -544,7 +544,7 @@ namespace JMS.DVB
             }
 
             // Forward
-            CreateStream( NextStreamIdentifier, true );
+            CreateStream(NextStreamIdentifier, true);
 
             // Reactivate streaming
             if (streamTarget != null)
@@ -561,7 +561,7 @@ namespace JMS.DVB
         /// <param name="nextPID">Die erste Datenstromkennung (PID), die in der Aufzeichnungsdatei verwendet werden darf.</param>
         /// <param name="recreate">Gesetzt, wenn ein Neustart aufgrund veränderter Nutzdatenströme erforderlich wurde.</param>
         /// <exception cref="ArgumentException">Eine Aufzeichnung der angegebenen Quelle ist nicht möglich.</exception>
-        private void CreateStream( short nextPID, bool recreate )
+        private void CreateStream(short nextPID, bool recreate)
         {
             // Try to get the full name
             var filePath = m_OriginalPath;
@@ -569,12 +569,12 @@ namespace JMS.DVB
                 if (m_FileCount > 0)
                 {
                     // Split off the parts
-                    var name = Path.GetFileNameWithoutExtension( filePath );
-                    var dir = Path.GetDirectoryName( filePath );
-                    var ext = Path.GetExtension( filePath );
+                    var name = Path.GetFileNameWithoutExtension(filePath);
+                    var dir = Path.GetDirectoryName(filePath);
+                    var ext = Path.GetExtension(filePath);
 
                     // Construct new name
-                    filePath = Path.Combine( dir, $"{name} - {m_FileCount}{ext}" );
+                    filePath = Path.Combine(dir, $"{name} - {m_FileCount}{ext}");
                 }
 
             // Try to decrypt
@@ -582,7 +582,7 @@ namespace JMS.DVB
                 try
                 {
                     // Process
-                    Hardware.Decrypt( Source );
+                    Hardware.Decrypt(Source);
                 }
                 catch
                 {
@@ -600,10 +600,10 @@ namespace JMS.DVB
                 videoType = (m_OriginalSettings.VideoType == VideoTypes.H264) ? EPG.StreamTypes.H264 : EPG.StreamTypes.Video13818;
 
             // Get the buffer size
-            var bufferSize = (FileBufferSizeChooser == null) ? null : FileBufferSizeChooser( videoType );
+            var bufferSize = (FileBufferSizeChooser == null) ? null : FileBufferSizeChooser(videoType);
 
             // Create the new stream
-            m_TransportStream = new Manager( filePath, nextPID, bufferSize.GetValueOrDefault( Manager.DefaultBufferSize ) );
+            m_TransportStream = new Manager(filePath, nextPID, bufferSize.GetValueOrDefault(Manager.DefaultBufferSize));
 
             // Attach PCR sink
             m_TransportStream.OnWritingPCR = m_WritePCRSink;
@@ -616,18 +616,18 @@ namespace JMS.DVB
             {
                 // Video first
                 if (videoType.HasValue)
-                    AddConsumer( m_OriginalSettings.VideoStream, StreamTypes.Video, m_TransportStream.AddVideo( (byte) videoType.Value ) );
+                    AddConsumer(m_OriginalSettings.VideoStream, StreamTypes.Video, m_TransportStream.AddVideo((byte)videoType.Value));
 
                 // Select audio
-                ProcessAudioSelection( AudioTypes.MP2, result.MP2Tracks, StreamSelection.MP2Tracks );
-                ProcessAudioSelection( AudioTypes.AC3, result.AC3Tracks, StreamSelection.AC3Tracks );
+                ProcessAudioSelection(AudioTypes.MP2, result.MP2Tracks, StreamSelection.MP2Tracks);
+                ProcessAudioSelection(AudioTypes.AC3, result.AC3Tracks, StreamSelection.AC3Tracks);
 
                 // Videotext
                 if (StreamSelection.Videotext)
                     if (0 != m_OriginalSettings.TextStream)
                     {
                         // Register
-                        AddConsumer( m_OriginalSettings.TextStream, StreamTypes.VideoText, m_TransportStream.AddTeleText() );
+                        AddConsumer(m_OriginalSettings.TextStream, StreamTypes.VideoText, m_TransportStream.AddTeleText());
 
                         // Remember
                         result.Videotext = true;
@@ -647,26 +647,26 @@ namespace JMS.DVB
                     if (StreamSelection.SubTitles.LanguageMode == LanguageModes.Primary)
                     {
                         // Attach to the list
-                        AddSubtitleInformation( subtitle, subtitles );
+                        AddSubtitleInformation(subtitle, subtitles);
 
                         // Copy over
                         result.SubTitles.LanguageMode = LanguageModes.Primary;
 
                         // Remember
-                        result.SubTitles.Languages.Add( subtitle.Language );
+                        result.SubTitles.Languages.Add(subtitle.Language);
 
                         // Done
                         break;
                     }
 
                     // Standard selection
-                    if (StreamSelection.SubTitles.Contains( subtitle.Language ))
+                    if (StreamSelection.SubTitles.Contains(subtitle.Language))
                     {
                         // Attach to the list
-                        AddSubtitleInformation( subtitle, subtitles );
+                        AddSubtitleInformation(subtitle, subtitles);
 
                         // Remember
-                        result.SubTitles.Languages.Add( subtitle.Language );
+                        result.SubTitles.Languages.Add(subtitle.Language);
                     }
                     else
                     {
@@ -682,7 +682,7 @@ namespace JMS.DVB
 
                 // Process all subtitles
                 foreach (var current in subtitles)
-                    AddConsumer( current.Key, StreamTypes.SubTitle, m_TransportStream.AddSubtitles( current.Value.ToArray() ) );
+                    AddConsumer(current.Key, StreamTypes.SubTitle, m_TransportStream.AddSubtitles(current.Value.ToArray()));
 
                 // See if program guide is requested
                 bool epg = StreamSelection.ProgramGuide;
@@ -692,17 +692,17 @@ namespace JMS.DVB
                     if ((Hardware.Profile != null) && Hardware.Profile.DisableProgramGuide)
                         epg = false;
                     else if (Profile != null)
-                        if (Profile.GetFilter( Source ).DisableProgramGuide)
+                        if (Profile.GetFilter(Source).DisableProgramGuide)
                             epg = false;
 
                 // EPG
                 if (epg)
                 {
                     // Activate dispatch
-                    m_TransportStream.SetEPGMapping( Source.Network, Source.TransportStream, Source.Service );
+                    m_TransportStream.SetEPGMapping(Source.Network, Source.TransportStream, Source.Service);
 
                     // Start it
-                    Hardware.AddProgramGuideConsumer( DispatchEPG );
+                    Hardware.AddProgramGuideConsumer(DispatchEPG);
 
                     // Remember
                     result.ProgramGuide = true;
@@ -717,7 +717,7 @@ namespace JMS.DVB
                         try
                         {
                             // Forward
-                            Hardware.SetConsumerState( consumer, true );
+                            Hardware.SetConsumerState(consumer, true);
 
                             // Count it
                             ++started;
@@ -725,20 +725,20 @@ namespace JMS.DVB
                         catch (OutOfConsumersException)
                         {
                             // Translate
-                            throw new OutOfConsumersException( m_Consumers.Count, started ) { RequestedSelection = result };
+                            throw new OutOfConsumersException(m_Consumers.Count, started) { RequestedSelection = result };
                         }
                 }
                 catch
                 {
                     // Detach EPG
-                    Hardware.RemoveProgramGuideConsumer( DispatchEPG );
+                    Hardware.RemoveProgramGuideConsumer(DispatchEPG);
 
                     // Cleanup on all errors
                     foreach (var consumer in m_Consumers)
                         try
                         {
                             // Remove
-                            Hardware.SetConsumerState( consumer, null );
+                            Hardware.SetConsumerState(consumer, null);
                         }
                         catch
                         {
@@ -751,7 +751,7 @@ namespace JMS.DVB
 
                 // Remember path
                 if (filePath != null)
-                    m_AllFiles.Add( new FileStreamInformation { FilePath = filePath, VideoType = m_OriginalSettings.VideoType } );
+                    m_AllFiles.Add(new FileStreamInformation { FilePath = filePath, VideoType = m_OriginalSettings.VideoType });
 
                 // Remember the time
                 LastActivationTime = DateTime.UtcNow;
@@ -777,7 +777,7 @@ namespace JMS.DVB
 
             // Report
             if (createNotify != null)
-                createNotify( this );
+                createNotify(this);
         }
 
         /// <summary>
@@ -785,7 +785,7 @@ namespace JMS.DVB
         /// </summary>
         /// <param name="newPath">Die neue Aufzeichnungsdatei.</param>
         /// <returns>Gesetzt, wenn die Trennung erfolgreich angenommen wurde.</returns>
-        public bool SplitFile( string newPath )
+        public bool SplitFile(string newPath)
         {
             // No stream active
             if (m_TransportStream == null)
@@ -806,17 +806,17 @@ namespace JMS.DVB
             try
             {
                 // Do the split
-                m_TransportStream.SplitFile( newPath );
+                m_TransportStream.SplitFile(newPath);
 
                 // Create new entry
-                m_AllFiles.Add( new FileStreamInformation { FilePath = newPath, VideoType = last.VideoType } );
+                m_AllFiles.Add(new FileStreamInformation { FilePath = newPath, VideoType = last.VideoType });
 
                 // Attach to clients
                 var createNotify = OnCreatedStream;
 
                 // Report
                 if (createNotify != null)
-                    createNotify( this );
+                    createNotify(this);
 
                 // Did it 
                 return true;
@@ -833,11 +833,11 @@ namespace JMS.DVB
         /// </summary>
         /// <param name="subtitle">Die Untertitelspur.</param>
         /// <param name="subtitles">Alle bisher aufgenommenen Spuren.</param>
-        private void AddSubtitleInformation( SubtitleInformation subtitle, Dictionary<ushort, List<EPG.SubtitleInfo>> subtitles )
+        private void AddSubtitleInformation(SubtitleInformation subtitle, Dictionary<ushort, List<EPG.SubtitleInfo>> subtitles)
         {
             // Attach to the list
             List<EPG.SubtitleInfo> list;
-            if (!subtitles.TryGetValue( subtitle.SubtitleStream, out list ))
+            if (!subtitles.TryGetValue(subtitle.SubtitleStream, out list))
             {
                 // Create new
                 list = new List<EPG.SubtitleInfo>();
@@ -851,10 +851,10 @@ namespace JMS.DVB
                 new EPG.SubtitleInfo
                     (
                         subtitle.Language.ToISOLanguage(),
-                        (EPG.SubtitleTypes) subtitle.SubtitleType,
+                        (EPG.SubtitleTypes)subtitle.SubtitleType,
                         subtitle.CompositionPage,
                         subtitle.AncillaryPage
-                    ) );
+                    ));
         }
 
         /// <summary>
@@ -863,15 +863,8 @@ namespace JMS.DVB
         /// <param name="type">Die gewünschte Art der Tonspur.</param>
         /// <param name="selected">Die aktive Auswahl der Tonspuren.</param>
         /// <param name="requested">Die gewünschten Sprachen.</param>
-        private void ProcessAudioSelection( AudioTypes type, LanguageSelection selected, LanguageSelection requested )
+        private void ProcessAudioSelection(AudioTypes type, LanguageSelection selected, LanguageSelection requested)
         {
-            // Get method for adding streams
-            Func<string, StreamBase> addConsumer;
-            if (type == AudioTypes.MP2)
-                addConsumer = m_TransportStream.AddAudio;
-            else
-                addConsumer = m_TransportStream.AddDolby;
-
             // Preset mode
             selected.LanguageMode = LanguageModes.All;
 
@@ -883,26 +876,40 @@ namespace JMS.DVB
                     if (requested.LanguageMode == LanguageModes.Primary)
                     {
                         // Register
-                        AddConsumer( audio.AudioStream, StreamTypes.Audio, addConsumer( audio.Language.ToISOLanguage() ) );
+                        if (type == AudioTypes.MP2)
+                        {
+                            AddConsumer(audio.AudioStream, StreamTypes.Audio, m_TransportStream.AddAudio(audio.Language.ToISOLanguage(), audio.AAC));
+                        }
+                        else
+                        {
+                            AddConsumer(audio.AudioStream, StreamTypes.Audio, m_TransportStream.AddDolby(audio.Language.ToISOLanguage()));
+                        }
 
                         // Copy over
                         selected.LanguageMode = LanguageModes.Primary;
 
                         // Remember
-                        selected.Languages.Add( audio.Language );
+                        selected.Languages.Add(audio.Language);
 
                         // Done
                         return;
                     }
 
                     // Regular test
-                    if (requested.Contains( audio.Language ))
+                    if (requested.Contains(audio.Language))
                     {
                         // Register
-                        AddConsumer( audio.AudioStream, StreamTypes.Audio, addConsumer( audio.Language.ToISOLanguage() ) );
+                        if (type == AudioTypes.MP2)
+                        {
+                            AddConsumer(audio.AudioStream, StreamTypes.Audio, m_TransportStream.AddAudio(audio.Language.ToISOLanguage(), audio.AAC));
+                        }
+                        else
+                        {
+                            AddConsumer(audio.AudioStream, StreamTypes.Audio, m_TransportStream.AddDolby(audio.Language.ToISOLanguage()));
+                        }
 
                         // Remember
-                        selected.Languages.Add( audio.Language );
+                        selected.Languages.Add(audio.Language);
                     }
                     else
                     {
@@ -926,14 +933,14 @@ namespace JMS.DVB
         /// Übermittelt die Daten zur Programmzeitschrift.
         /// </summary>
         /// <param name="table">Eine Tabelle der Programmzeitschrift.</param>
-        private void DispatchEPG( EIT table )
+        private void DispatchEPG(EIT table)
         {
             // Be safe
             try
             {
                 // Forward
                 if (null != m_TransportStream)
-                    m_TransportStream.AddEventTable( table.Table );
+                    m_TransportStream.AddEventTable(table.Table);
             }
             catch
             {
@@ -947,7 +954,7 @@ namespace JMS.DVB
         /// <param name="pid">Die gewünschte Datestromkennung (PID).</param>
         /// <param name="type">Die Art der Nutzdaten im Datenstrom.</param>
         /// <param name="stream">Der Empfänger der Daten.</param>
-        private void AddConsumer( ushort pid, StreamTypes type, StreamBase stream ) => m_Consumers.Add( Hardware.AddConsumer( pid, type, stream.AddPayload ) );
+        private void AddConsumer(ushort pid, StreamTypes type, StreamBase stream) => m_Consumers.Add(Hardware.AddConsumer(pid, type, stream.AddPayload));
 
         /// <summary>
         /// Beendet die Aufzeichnung in eine Datei.
@@ -974,14 +981,14 @@ namespace JMS.DVB
                 ++m_FileCount;
 
                 // Stop EPG receiver
-                Hardware.RemoveProgramGuideConsumer( DispatchEPG );
+                Hardware.RemoveProgramGuideConsumer(DispatchEPG);
 
                 // Stop all consumers
                 foreach (var consumer in m_Consumers)
                     try
                     {
                         // Try to stop the individual stream
-                        Hardware.SetConsumerState( consumer, null );
+                        Hardware.SetConsumerState(consumer, null);
                     }
                     catch
                     {

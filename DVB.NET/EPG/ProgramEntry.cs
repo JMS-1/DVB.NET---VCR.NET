@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace JMS.DVB.EPG
 {
@@ -12,7 +13,7 @@ namespace JMS.DVB.EPG
         /// <summary>
         /// Maps ISO language names to their native representation.
         /// </summary>
-        private static Dictionary<string, CultureInfo> m_CultureMap = new Dictionary<string, CultureInfo>( StringComparer.InvariantCultureIgnoreCase );
+        private static Dictionary<string, CultureInfo> m_CultureMap = new Dictionary<string, CultureInfo>(StringComparer.InvariantCultureIgnoreCase);
 
         /// <summary>
         /// The constructor is private to make this class static.
@@ -20,35 +21,35 @@ namespace JMS.DVB.EPG
         static ProgramEntry()
         {
             // Load all
-            foreach (CultureInfo info in CultureInfo.GetCultures( CultureTypes.NeutralCultures ))
+            foreach (CultureInfo info in CultureInfo.GetCultures(CultureTypes.NeutralCultures))
             {
                 // Remember
                 m_CultureMap[info.ThreeLetterISOLanguageName] = info;
             }
 
             // Add special entries (bibliographic - see ISO639-2)
-            AddBibliographicShortcut( "bod", "tib" );
-            AddBibliographicShortcut( "ces", "cze" );
-            AddBibliographicShortcut( "cym", "wel" );
-            AddBibliographicShortcut( "deu", "ger" );
-            AddBibliographicShortcut( "ell", "gre" );
-            AddBibliographicShortcut( "eus", "baq" );
-            AddBibliographicShortcut( "fas", "per" );
-            AddBibliographicShortcut( "fra", "fre" );
-            AddBibliographicShortcut( "hrv", "scr" );
-            AddBibliographicShortcut( "hye", "arm" );
-            AddBibliographicShortcut( "isl", "ice" );
-            AddBibliographicShortcut( "kat", "geo" );
-            AddBibliographicShortcut( "mkd", "mac" );
-            AddBibliographicShortcut( "mri", "mao" );
-            AddBibliographicShortcut( "msa", "may" );
-            AddBibliographicShortcut( "mya", "bur" );
-            AddBibliographicShortcut( "nld", "dut" );
-            AddBibliographicShortcut( "ron", "rum" );
-            AddBibliographicShortcut( "slk", "slo" );
-            AddBibliographicShortcut( "sqi", "alb" );
-            AddBibliographicShortcut( "srp", "scc" );
-            AddBibliographicShortcut( "zho", "chi" );
+            AddBibliographicShortcut("bod", "tib");
+            AddBibliographicShortcut("ces", "cze");
+            AddBibliographicShortcut("cym", "wel");
+            AddBibliographicShortcut("deu", "ger");
+            AddBibliographicShortcut("ell", "gre");
+            AddBibliographicShortcut("eus", "baq");
+            AddBibliographicShortcut("fas", "per");
+            AddBibliographicShortcut("fra", "fre");
+            AddBibliographicShortcut("hrv", "scr");
+            AddBibliographicShortcut("hye", "arm");
+            AddBibliographicShortcut("isl", "ice");
+            AddBibliographicShortcut("kat", "geo");
+            AddBibliographicShortcut("mkd", "mac");
+            AddBibliographicShortcut("mri", "mao");
+            AddBibliographicShortcut("msa", "may");
+            AddBibliographicShortcut("mya", "bur");
+            AddBibliographicShortcut("nld", "dut");
+            AddBibliographicShortcut("ron", "rum");
+            AddBibliographicShortcut("slk", "slo");
+            AddBibliographicShortcut("sqi", "alb");
+            AddBibliographicShortcut("srp", "scc");
+            AddBibliographicShortcut("zho", "chi");
         }
 
         /// <summary>
@@ -56,15 +57,15 @@ namespace JMS.DVB.EPG
         /// </summary>
         /// <param name="terminologyCode">Official three letter code.</param>
         /// <param name="bibliographicCode">Alternat (bibliographic) three letter code.</param>
-        private static void AddBibliographicShortcut( string terminologyCode, string bibliographicCode )
+        private static void AddBibliographicShortcut(string terminologyCode, string bibliographicCode)
         {
             // See if code already exists
-            if (m_CultureMap.ContainsKey( bibliographicCode ))
+            if (m_CultureMap.ContainsKey(bibliographicCode))
                 return;
 
             // Load entry
             CultureInfo terminologic;
-            if (!m_CultureMap.TryGetValue( terminologyCode, out terminologic ))
+            if (!m_CultureMap.TryGetValue(terminologyCode, out terminologic))
                 return;
 
             // Connect
@@ -109,20 +110,20 @@ namespace JMS.DVB.EPG
         /// <param name="length">The maximum number of bytes available. If this number
         /// is greater than the <see cref="Length"/> of this program another event will
         /// follow in the same table.</param>
-        internal ProgramEntry( Table table, int offset, int length )
-            : base( table )
+        internal ProgramEntry(Table table, int offset, int length)
+            : base(table)
         {
             // Access section
             Section section = Section;
 
             // Load
-            ElementaryPID = (ushort) (0x1fff & Tools.MergeBytesToWord( section[offset + 2], section[offset + 1] ));
-            StreamType = (StreamTypes) section[offset + 0];
+            ElementaryPID = (ushort)(0x1fff & Tools.MergeBytesToWord(section[offset + 2], section[offset + 1]));
+            StreamType = (StreamTypes)section[offset + 0];
 
             // Read the length
-            int descrLength = 0xfff & Tools.MergeBytesToWord( section[offset + 4], section[offset + 3] );
+            int descrLength = 0xfff & Tools.MergeBytesToWord(section[offset + 4], section[offset + 3]);
 
-            // Caluclate the total length
+            // Calculate the total length
             Length = 5 + descrLength;
 
             // Verify
@@ -130,7 +131,7 @@ namespace JMS.DVB.EPG
                 return;
 
             // Try to load descriptors
-            Descriptors = Descriptor.Load( this, offset + 5, descrLength );
+            Descriptors = Descriptor.Load(this, offset + 5, descrLength);
 
             // Can use it
             IsValid = true;
@@ -147,14 +148,14 @@ namespace JMS.DVB.EPG
         /// follow in the same table.</param>
         /// <returns>A new service instance or <i>null</i> if there are less than
         /// 5 bytes available.</returns>
-        static internal ProgramEntry Create( Table table, int offset, int length )
+        static internal ProgramEntry Create(Table table, int offset, int length)
         {
             // Validate
             if (length < 5)
                 return null;
 
             // Create
-            return new ProgramEntry( table, offset, length );
+            return new ProgramEntry(table, offset, length);
         }
 
         /// <summary>
@@ -176,15 +177,15 @@ namespace JMS.DVB.EPG
 
                     // Remember the first one set
                     string name = language.Languages[0].ISOLanguage;
-                    if (string.IsNullOrEmpty( name ))
+                    if (string.IsNullOrEmpty(name))
                         continue;
 
                     // Convert
-                    return GetLanguageFromISOLanguage( name );
+                    return GetLanguageFromISOLanguage(name);
                 }
 
                 // Use default
-                return string.Format( "#{0}", ElementaryPID );
+                return string.Format("#{0}", ElementaryPID);
             }
         }
 
@@ -194,11 +195,11 @@ namespace JMS.DVB.EPG
         /// </summary>
         /// <param name="language">Eine ISO Kurzbezeichnung.</param>
         /// <returns>Der Name der Sprache, ausgerückt in der Sprache selbst.</returns>
-        public static string GetLanguageFromISOLanguage( string language )
+        public static string GetLanguageFromISOLanguage(string language)
         {
             // Find
             CultureInfo cult;
-            if (m_CultureMap.TryGetValue( language, out cult ))
+            if (m_CultureMap.TryGetValue(language, out cult))
                 return cult.NativeName;
 
             // Report as is

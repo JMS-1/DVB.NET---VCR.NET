@@ -24,6 +24,11 @@ namespace JMS.DVB
         public string Language { get; set; }
 
         /// <summary>
+        /// Liest´oder setzt die AAC Informationen zur Tonspur.
+        /// </summary>
+        public ushort? AAC { get; set; }
+
+        /// <summary>
         /// Erzeugt eine neue Beschreibung.
         /// </summary>
         public AudioInformation()
@@ -38,9 +43,11 @@ namespace JMS.DVB
         {
             // Report
             if (AudioType == AudioTypes.AC3)
-                return string.Format( "{0} (AC3) [{1}]", Language, AudioStream );
+                return string.Format("{0} (AC3) [{1}]", Language, AudioStream);
+            else if (AAC.HasValue)
+                return string.Format("{0} (AAC {2:X4}) [{1}]", Language, AudioStream, AAC.Value);
             else
-                return string.Format( "{0} [{1}]", Language, AudioStream );
+                return string.Format("{0} [{1}]", Language, AudioStream);
         }
 
         #region ICloneable Members
@@ -49,29 +56,19 @@ namespace JMS.DVB
         /// Erzeugt eine exakte Kopie dieser Information.
         /// </summary>
         /// <returns>Die gewünschte Kopie.</returns>
-        public AudioInformation Clone()
+        public AudioInformation Clone() => new AudioInformation
         {
-            // Create empty
-            AudioInformation clone = new AudioInformation();
-
-            // Fill
-            clone.AudioStream = AudioStream;
-            clone.AudioType = AudioType;
-            clone.Language = Language;
-
-            // Report
-            return clone;
-        }
+            AAC = AAC,
+            AudioStream = AudioStream,
+            AudioType = AudioType,
+            Language = Language,
+        };
 
         /// <summary>
         /// Erzeugt eine exakte Kopie dieser Information.
         /// </summary>
         /// <returns>Die gewünschte Kopie.</returns>
-        object ICloneable.Clone()
-        {
-            // Forward
-            return Clone();
-        }
+        object ICloneable.Clone() => Clone();
 
         #endregion
     }

@@ -127,6 +127,11 @@
     <Compile Include="BBC\TextDecoder.cs" />
     <Compile Include="CableModulations.cs" />
     <Compile Include="CellInformation.cs" />
+    <Compile Include="Descriptors\AAC.cs" />
+    <Compile Include="Descriptors\AncillaryData.cs" />
+    <Compile Include="Descriptors\ApplicationSignalling.cs" />
+    <Compile Include="Descriptors\CarouselIdentifier.cs" />
+    <Compile Include="Descriptors\DataBroadastId.cs" />
     <Compile Include="FrequencyLink.cs" />
     <Compile Include="Descriptors\CableDelivery.cs" />
     <Compile Include="Descriptors\ContentTransmissionPremiere.cs" />

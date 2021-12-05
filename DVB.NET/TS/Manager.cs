@@ -106,7 +106,7 @@ namespace JMS.DVB.TS
         /// </summary>
         private long m_VideoDelay;
 
-        private UDPStreaming m_UDPStream = new UDPStreaming( MulticastTTL, MaxUDPQueueLength );
+        private UDPStreaming m_UDPStream = new UDPStreaming(MulticastTTL, MaxUDPQueueLength);
 
         /// <summary>
         /// Set as soon as the first PCR arrived.
@@ -248,7 +248,7 @@ namespace JMS.DVB.TS
         static Manager()
         {
             // Create padding
-            for (int i = Padding.Length; i-- > 0; )
+            for (int i = Padding.Length; i-- > 0;)
                 Padding[i] = 0xff;
 
             // Check settings
@@ -261,27 +261,27 @@ namespace JMS.DVB.TS
             var pcrDelay = ConfigurationManager.AppSettings["TS.PCRDelay"];
 
             // Overwrite
-            if (!string.IsNullOrEmpty( pcrDelay ))
-                PCRDelay = long.Parse( pcrDelay );
-            if (!string.IsNullOrEmpty( videoDelay ))
-                VideoDelay = long.Parse( videoDelay );
-            if (!string.IsNullOrEmpty( multiTTL ))
-                MulticastTTL = int.Parse( multiTTL );
-            if (!string.IsNullOrEmpty( videoLength ))
-                SetVideoLength = bool.Parse( videoLength );
-            if (!string.IsNullOrEmpty( maxUDPQueue ))
-                MaxUDPQueueLength = int.Parse( maxUDPQueue );
-            if (!string.IsNullOrEmpty( noHDTVPCR ))
-                DisablePCRForHDTV = bool.Parse( noHDTVPCR );
-            if (!string.IsNullOrEmpty( noSDTVPCR ))
-                DisablePCRForSDTV = bool.Parse( noSDTVPCR );
+            if (!string.IsNullOrEmpty(pcrDelay))
+                PCRDelay = long.Parse(pcrDelay);
+            if (!string.IsNullOrEmpty(videoDelay))
+                VideoDelay = long.Parse(videoDelay);
+            if (!string.IsNullOrEmpty(multiTTL))
+                MulticastTTL = int.Parse(multiTTL);
+            if (!string.IsNullOrEmpty(videoLength))
+                SetVideoLength = bool.Parse(videoLength);
+            if (!string.IsNullOrEmpty(maxUDPQueue))
+                MaxUDPQueueLength = int.Parse(maxUDPQueue);
+            if (!string.IsNullOrEmpty(noHDTVPCR))
+                DisablePCRForHDTV = bool.Parse(noHDTVPCR);
+            if (!string.IsNullOrEmpty(noSDTVPCR))
+                DisablePCRForSDTV = bool.Parse(noSDTVPCR);
         }
 
         /// <summary>
         /// Create a transport stream with no attached physical file.
         /// </summary>
         public Manager()
-            : this( (Stream) null )
+            : this((Stream)null)
         {
         }
 
@@ -289,8 +289,8 @@ namespace JMS.DVB.TS
         /// Create a transport stream on a <see cref="Stream"/>.
         /// </summary>
         /// <param name="target">Typically a disk file.</param>
-        public Manager( Stream target )
-            : this( target, 0 )
+        public Manager(Stream target)
+            : this(target, 0)
         {
         }
 
@@ -298,8 +298,8 @@ namespace JMS.DVB.TS
         /// Erzeugt einen neuen Datenstrom.
         /// </summary>
         /// <param name="path">Optional der volle Pfad zu einer Datei.</param>
-        public Manager( string path )
-            : this( path, 0 )
+        public Manager(string path)
+            : this(path, 0)
         {
         }
 
@@ -308,8 +308,8 @@ namespace JMS.DVB.TS
         /// </summary>
         /// <param name="path">Path to the file.</param>
         /// <param name="nextPID">Optional initial PID counter.</param>
-        public Manager( string path, short nextPID )
-            : this( path, nextPID, DefaultBufferSize )
+        public Manager(string path, short nextPID)
+            : this(path, nextPID, DefaultBufferSize)
         {
         }
 
@@ -320,19 +320,19 @@ namespace JMS.DVB.TS
         /// <param name="nextPID">Die als nächstes zu verwendende Datenstromkennung.</param>
         /// <param name="bufferSize">Die Größe des zu verwendenden Zwischenspeichers.</param>
         /// <exception cref="ArgumentOutOfRangeException">Der Zwischenspeicher muss mindestens 1.000 Bytes groß sein.</exception>
-        public Manager( string path, short nextPID, int bufferSize )
-            : this( (Stream) null, nextPID )
+        public Manager(string path, short nextPID, int bufferSize)
+            : this((Stream)null, nextPID)
         {
             // Validate
             if (bufferSize <= 1000)
-                throw new ArgumentOutOfRangeException( "bufferSize" );
+                throw new ArgumentOutOfRangeException("bufferSize");
 
             // Remember
             m_BufferSize = bufferSize;
 
             // Open the file
             if (path != null)
-                BufferedTarget = CreateBuffered( path );
+                BufferedTarget = CreateBuffered(path);
         }
 
         /// <summary>
@@ -340,10 +340,10 @@ namespace JMS.DVB.TS
         /// </summary>
         /// <param name="filePath">Der volle Pfad zur Datei.</param>
         /// <returns>Der gewünschte Speicherbereich.</returns>
-        private DoubleBufferedFile CreateBuffered( string filePath )
+        private DoubleBufferedFile CreateBuffered(string filePath)
         {
             // Process
-            return new DoubleBufferedFile( filePath, m_BufferSize );
+            return new DoubleBufferedFile(filePath, m_BufferSize);
         }
 
         /// <summary>
@@ -368,18 +368,18 @@ namespace JMS.DVB.TS
         /// </summary>
         /// <param name="newFilePath">Der volle Pfad zur gewünschten Zieldatei.</param>
         /// <exception cref="ArgumentNullException">Es wurde keine Zieldatei angegeben.</exception>
-        public void SplitFile( string newFilePath )
+        public void SplitFile(string newFilePath)
         {
             // Validate
-            if (string.IsNullOrEmpty( newFilePath ))
-                throw new ArgumentNullException( "newFilePath" );
+            if (string.IsNullOrEmpty(newFilePath))
+                throw new ArgumentNullException("newFilePath");
 
             // Check mode of operation
             if (!CanSplitFile)
                 throw new InvalidOperationException();
 
             // Create new file and install it
-            using (Interlocked.Exchange( ref PendingTarget, CreateBuffered( newFilePath ) ))
+            using (Interlocked.Exchange(ref PendingTarget, CreateBuffered(newFilePath)))
             {
                 // The new target is now installed and the previous one will be discarded unused - if any existed
             }
@@ -390,7 +390,7 @@ namespace JMS.DVB.TS
         /// </summary>
         /// <param name="target">Typically a disk file.</param>
         /// <param name="nextPID">Optional initial PID counter.</param>
-        public Manager( Stream target, short nextPID )
+        public Manager(Stream target, short nextPID)
         {
             // Fix delay
             m_NoHDTVPCR = DisablePCRForHDTV;
@@ -413,8 +413,8 @@ namespace JMS.DVB.TS
             ProgramAssociation.ProgramNumber = NextPID++;
 
             // Create helper
-            ProgramMap = new Tables.PMT( ProgramAssociation.ProgramStream, ProgramAssociation.ProgramNumber );
-            ServiceDescription = new Tables.SDT( ProgramAssociation.NetworkIdentifier, ProgramAssociation.ProgramNumber );
+            ProgramMap = new Tables.PMT(ProgramAssociation.ProgramStream, ProgramAssociation.ProgramNumber);
+            ServiceDescription = new Tables.SDT(ProgramAssociation.NetworkIdentifier, ProgramAssociation.ProgramNumber);
         }
 
         /// <summary>
@@ -450,8 +450,8 @@ namespace JMS.DVB.TS
                 PATSent = true;
 
                 // Forward
-                ProgramAssociation.Send( this );
-                ProgramMap.Send( this );
+                ProgramAssociation.Send(this);
+                ProgramMap.Send(this);
                 //ServiceDescription.Send(this);
             }
         }
@@ -462,14 +462,14 @@ namespace JMS.DVB.TS
         /// <param name="counter">Individual packet counter.</param>
         /// <param name="pid">Transport stream identifier to use.</param>
         /// <param name="buffer">Full table data.</param>
-        public void SendTable( ref int counter, int pid, byte[] buffer )
+        public void SendTable(ref int counter, int pid, byte[] buffer)
         {
             // Get the chunks
             int packs = (buffer.Length + PacketSize - 1) / PacketSize;
             int rest = buffer.Length % PacketSize;
 
             // Forward
-            Send( ref counter, pid, buffer, 0, packs, true, (0 == rest) ? PacketSize : rest, true, -1 );
+            Send(ref counter, pid, buffer, 0, packs, true, (0 == rest) ? PacketSize : rest, true, -1);
         }
 
         /// <summary>
@@ -477,10 +477,10 @@ namespace JMS.DVB.TS
         /// </summary>
         /// <param name="encoding">Encoding of the video stream.</param>
         /// <returns>The newly created video stream instance.</returns>
-        public VideoStream AddVideo( byte encoding )
+        public VideoStream AddVideo(byte encoding)
         {
             // Forward
-            return AddVideo( encoding, false );
+            return AddVideo(encoding, false);
         }
 
         /// <summary>
@@ -489,15 +489,15 @@ namespace JMS.DVB.TS
         /// <param name="encoding">Encoding of the video stream.</param>
         /// <param name="noPCR">Set to disable PCR generation.</param>
         /// <returns>The newly created video stream instance.</returns>
-        public VideoStream AddVideo( byte encoding, bool noPCR )
+        public VideoStream AddVideo(byte encoding, bool noPCR)
         {
             // Check mode
-            var isH264 = (encoding == (byte) EPG.StreamTypes.H264);
+            var isH264 = (encoding == (byte)EPG.StreamTypes.H264);
             var forbidPCR = (m_NoHDTVPCR && isH264) || (m_NoSDTVPCR && !isH264);
 
             // Run
             bool isPCR;
-            short pid = AddStream( StreamTypes.Video, encoding, noPCR || forbidPCR, false, null, out isPCR );
+            short pid = AddStream(StreamTypes.Video, encoding, noPCR || forbidPCR, false, null, null, out isPCR);
 
             // Create the correct type of stream
             VideoStream video;
@@ -507,16 +507,16 @@ namespace JMS.DVB.TS
                 m_IsHDTV = true;
 
                 // H.264
-                video = new HDTVStream( this, pid, isPCR );
+                video = new HDTVStream(this, pid, isPCR);
             }
             else
             {
                 // MPEG-2
-                video = new VideoStream( this, pid, isPCR );
+                video = new VideoStream(this, pid, isPCR);
             }
 
             // Remember
-            m_Streams.Add( video );
+            m_Streams.Add(video);
 
             // Report
             return video;
@@ -525,36 +525,37 @@ namespace JMS.DVB.TS
         /// <summary>
         /// Report if this Transport Stream includes a H.264 video stream.
         /// </summary>
-        public bool HasHDTVVideo
-        {
-            get
-            {
-                // Report
-                return m_IsHDTV;
-            }
-        }
+        public bool HasHDTVVideo => m_IsHDTV;
 
         /// <summary>
         /// Create a new audio stream and add it to this transport stream.
         /// </summary>
         /// <param name="name">The ISO name of the language for this audio stream.</param>
         /// <returns>The newly created audio stream instance.</returns>
-        public AudioStream AddAudio( string name )
+        public AudioStream AddAudio(string name) => AddAudio(name, null);
+
+        /// <summary>
+        /// Create a new audio stream and add it to this transport stream.
+        /// </summary>
+        /// <param name="name">The ISO name of the language for this audio stream.</param>
+        /// <param name="aac">Optional AAC Profile, level and type.</param>
+        /// <returns>The newly created audio stream instance.</returns>
+        public AudioStream AddAudio(string name, ushort? aac)
         {
             // Flag
             bool isPCR;
 
             // Run
-            short pid = AddStream( StreamTypes.Audio, 255, false, false, null, out isPCR );
+            short pid = AddStream(StreamTypes.Audio, 255, false, false, null, aac, out isPCR);
 
             // Set the name of the language
-            if (!string.IsNullOrEmpty( name )) ProgramMap.SetAudioLanguage( pid, name );
+            if (!string.IsNullOrEmpty(name)) ProgramMap.SetAudioLanguage(pid, name);
 
             // Create
-            AudioStream audio = new AudioStream( this, pid, isPCR );
+            AudioStream audio = new AudioStream(this, pid, isPCR);
 
             // Remember
-            m_Streams.Add( audio );
+            m_Streams.Add(audio);
 
             // Make it the guide
             if ((null != m_Splitter) && (0 == m_GuidePID)) m_GuidePID = pid;
@@ -567,32 +568,28 @@ namespace JMS.DVB.TS
         /// Add a new Dolby Digital Audio Stream to this <i>Transport Stream</i>.
         /// </summary>
         /// <returns>The new data stream.</returns>
-        public DolbyStream AddDolby()
-        {
-            // Forward
-            return AddDolby( null );
-        }
+        public DolbyStream AddDolby() => AddDolby(null);
 
         /// <summary>
         /// Create a new Dobly Digital (AC3) audio stream and add it to this transport stream.
         /// </summary>
         /// <returns>The newly created AC3 audio stream instance.</returns>
-        public DolbyStream AddDolby( string name )
+        public DolbyStream AddDolby(string name)
         {
             // Flag
             bool isPCR;
 
             // Run
-            short pid = AddStream( StreamTypes.Private, 255, false, false, null, out isPCR );
+            short pid = AddStream(StreamTypes.Private, 255, false, false, null, null, out isPCR);
 
             // Set the name of the language
-            if (!string.IsNullOrEmpty( name )) ProgramMap.SetAudioLanguage( pid, name );
+            if (!string.IsNullOrEmpty(name)) ProgramMap.SetAudioLanguage(pid, name);
 
             // Create
-            DolbyStream dolby = new DolbyStream( this, pid, isPCR );
+            DolbyStream dolby = new DolbyStream(this, pid, isPCR);
 
             // Remember
-            m_Streams.Add( dolby );
+            m_Streams.Add(dolby);
 
             // Make it the guide
             if ((null != m_Splitter) && (0 == m_GuidePID)) m_GuidePID = pid;
@@ -611,13 +608,13 @@ namespace JMS.DVB.TS
             bool isPCR;
 
             // Run
-            short pid = AddStream( StreamTypes.TeleText, 255, false, true, null, out isPCR );
+            short pid = AddStream(StreamTypes.TeleText, 255, false, true, null, null, out isPCR);
 
             // Create
-            TTXStream ttx = new TTXStream( this, pid, isPCR );
+            TTXStream ttx = new TTXStream(this, pid, isPCR);
 
             // Remember
-            m_Streams.Add( ttx );
+            m_Streams.Add(ttx);
 
             // Make it the guide
             if ((null != m_Splitter) && (0 == m_GuidePID)) m_GuidePID = pid;
@@ -631,19 +628,19 @@ namespace JMS.DVB.TS
         /// </summary>
         /// <param name="info">Information on the contents of this subtitle stream.</param>
         /// <returns>The new subtitle stream.</returns>
-        public SubtitleStream AddSubtitles( EPG.SubtitleInfo[] info )
+        public SubtitleStream AddSubtitles(EPG.SubtitleInfo[] info)
         {
             // Flag
             bool isPCR;
 
             // Run
-            short pid = AddStream( StreamTypes.SubTitles, 255, false, true, info, out isPCR );
+            short pid = AddStream(StreamTypes.SubTitles, 255, false, true, info, null, out isPCR);
 
             // Create
-            SubtitleStream sub = new SubtitleStream( this, pid, isPCR );
+            SubtitleStream sub = new SubtitleStream(this, pid, isPCR);
 
             // Remember
-            m_Streams.Add( sub );
+            m_Streams.Add(sub);
 
             // Make it the guide
             if ((null != m_Splitter) && (0 == m_GuidePID)) m_GuidePID = pid;
@@ -661,9 +658,10 @@ namespace JMS.DVB.TS
         /// <param name="isPCR">Set if the stream will be the PCR reference.</param>
         /// <param name="noPTS">Set if the stream should not participate in PTS synchronisation.</param>
         /// <param name="info">Information on the contents of a subtitle stream.</param>
+        /// <param name="aac">Optional AAC profile, level and type.</param>
         /// <param name="noPCR">Set to disable PCR from PTS generation.</param>
         /// <returns>A randomly choosen but unique transport stream identifier.</returns>
-        private short AddStream( StreamTypes type, byte encoding, bool noPCR, bool noPTS, EPG.SubtitleInfo[] info, out bool isPCR )
+        private short AddStream(StreamTypes type, byte encoding, bool noPCR, bool noPTS, EPG.SubtitleInfo[] info, ushort? aac, out bool isPCR)
         {
             // Create pid
             short pid = NextPID++;
@@ -672,7 +670,7 @@ namespace JMS.DVB.TS
             int keyPID = pid;
 
             // Forward
-            isPCR = ProgramMap.Add( type, encoding, pid, noPCR, info );
+            isPCR = ProgramMap.Add(type, encoding, pid, noPCR, info, aac);
 
             // Reload
             lock (m_Queue)
@@ -681,13 +679,13 @@ namespace JMS.DVB.TS
                 PATSent = false;
 
                 // Load
-                Packet buffers = (Packet) m_Buffers[keyPID];
+                Packet buffers = (Packet)m_Buffers[keyPID];
 
                 // Create new
                 if (null == buffers)
                 {
                     // Create new
-                    buffers = new Packet( this, keyPID );
+                    buffers = new Packet(this, keyPID);
 
                     // Remember
                     m_Buffers[keyPID] = buffers;
@@ -695,9 +693,9 @@ namespace JMS.DVB.TS
 
                 // Set up
                 if (StreamTypes.Video == type)
-                    buffers.SetAudioVideo( true );
+                    buffers.SetAudioVideo(true);
                 else if ((StreamTypes.Audio == type) || (StreamTypes.Private == type))
-                    buffers.SetAudioVideo( false );
+                    buffers.SetAudioVideo(false);
 
                 // May disable PTS synchronisation (e.g. for TeleText streams)
                 buffers.IgnorePTS = noPTS;
@@ -713,7 +711,7 @@ namespace JMS.DVB.TS
         /// <param name="counter">Individual packet counter which will not be incremented.</param>
         /// <param name="pid">Related transport stream identifier.</param>
         /// <param name="pts">The PTS from a PES header used for PCR.</param>
-        void IStreamConsumer.SendPCR( int counter, int pid, long pts )
+        void IStreamConsumer.SendPCR(int counter, int pid, long pts)
         {
             // Remember
             if (0 == m_PCRAvailable)
@@ -724,9 +722,9 @@ namespace JMS.DVB.TS
 
             // Validate
             if ((counter < 0) || (counter > 0xf))
-                throw new ArgumentOutOfRangeException( "counter", counter, "only four bits allowed" );
+                throw new ArgumentOutOfRangeException("counter", counter, "only four bits allowed");
             if ((pid < 0) || (pid >= 0x1fff))
-                throw new ArgumentOutOfRangeException( "pid", pid, "only 13 bits allowed" );
+                throw new ArgumentOutOfRangeException("pid", pid, "only 13 bits allowed");
 
             // Correct a bit (90kHz)
             long pcr = pts - m_PCRDelay;
@@ -738,8 +736,8 @@ namespace JMS.DVB.TS
                 pcr -= Packet.PTSOverrun;
 
             // Split
-            byte pidh = (byte) (pid >> 8);
-            byte pidl = (byte) (pid & 0xff);
+            byte pidh = (byte)(pid >> 8);
+            byte pidl = (byte)(pid & 0xff);
 
             // Allocate data
             byte[] ts = new byte[FullSize];
@@ -748,23 +746,23 @@ namespace JMS.DVB.TS
             ts[0] = 0x47;
             ts[1] = pidh;
             ts[2] = pidl;
-            ts[3] = (byte) (0x20 | ((counter - 1) & 0x0f));
+            ts[3] = (byte)(0x20 | ((counter - 1) & 0x0f));
 
             // Process adaption control
             ts[4] = 0xb7;
             ts[5] = 0x10;
-            ts[6] = (byte) ((pcr >> 25) & 0xff);
-            ts[7] = (byte) ((pcr >> 17) & 0xff);
-            ts[8] = (byte) ((pcr >> 9) & 0xff);
-            ts[9] = (byte) ((pcr >> 1) & 0xff);
-            ts[10] = (byte) (128 * (pcr & 0x01));
+            ts[6] = (byte)((pcr >> 25) & 0xff);
+            ts[7] = (byte)((pcr >> 17) & 0xff);
+            ts[8] = (byte)((pcr >> 9) & 0xff);
+            ts[9] = (byte)((pcr >> 1) & 0xff);
+            ts[10] = (byte)(128 * (pcr & 0x01));
             ts[11] = 0x00;
 
             // Pad the rest
-            Array.Copy( Padding, 0, ts, 12, ts.Length - 12 );
+            Array.Copy(Padding, 0, ts, 12, ts.Length - 12);
 
             // Enqueue to writer
-            Enqueue( ts, pid, false, true, pts );
+            Enqueue(ts, pid, false, true, pts);
         }
 
         /// <summary>
@@ -773,7 +771,7 @@ namespace JMS.DVB.TS
         /// </summary>
         /// <param name="packet">Ein elementares Paket.</param>
         /// <returns>Die gewünschte Systemzeit.</returns>
-        public static TimeSpan GetPCR( byte[] packet )
+        public static TimeSpan GetPCR(byte[] packet)
         {
             // Load parts
             long b0 = packet[6];
@@ -786,7 +784,7 @@ namespace JMS.DVB.TS
             long clockTicks = b4 + 2 * (b3 + 256 * (b2 + 256 * (b1 + 256 * b0)));
 
             // Calculate back from 90kHz clock
-            return new TimeSpan( clockTicks * 1000 / 9 );
+            return new TimeSpan(clockTicks * 1000 / 9);
         }
 
         /// <summary>
@@ -829,10 +827,10 @@ namespace JMS.DVB.TS
         /// <param name="isFirst">Set if the first byte is the first byte of a PES header.</param>
         /// <param name="sizeOfLast">Number of bytes in the last packet - which may be padded.</param>
         /// <param name="pts">If not negative this is the PES headers PTS - <i>isFirst</i> will be set.</param>
-        void IStreamConsumer.Send( ref int counter, int pid, byte[] buffer, int start, int packs, bool isFirst, int sizeOfLast, long pts )
+        void IStreamConsumer.Send(ref int counter, int pid, byte[] buffer, int start, int packs, bool isFirst, int sizeOfLast, long pts)
         {
             // Forward
-            Send( ref counter, pid, buffer, start, packs, isFirst, sizeOfLast, false, pts );
+            Send(ref counter, pid, buffer, start, packs, isFirst, sizeOfLast, false, pts);
         }
 
         /// <summary>
@@ -848,7 +846,7 @@ namespace JMS.DVB.TS
         /// <param name="standardPadding">Set if padding will be done using an adpation field
         /// just before the payload data.</param>
         /// <param name="pts">If not negative this is the PES headers PTS - <i>isFirst</i> will be set.</param>
-        private void Send( ref int counter, int pid, byte[] buffer, int start, int packs, bool isFirst, int sizeOfLast, bool standardPadding, long pts )
+        private void Send(ref int counter, int pid, byte[] buffer, int start, int packs, bool isFirst, int sizeOfLast, bool standardPadding, long pts)
         {
             // Inform the splitter as soon as possible
             if ((pts >= 0) && (pid == m_GuidePID) && (null != m_Splitter))
@@ -859,17 +857,17 @@ namespace JMS.DVB.TS
 
             // Validate
             if ((counter < 0) || (counter > 0xf))
-                throw new ArgumentOutOfRangeException( "counter", counter, "only four bits allowed" );
+                throw new ArgumentOutOfRangeException("counter", counter, "only four bits allowed");
             if ((pid < 0) || (pid >= 0x1fff))
-                throw new ArgumentOutOfRangeException( "pid", pid, "only 13 bits allowed" );
+                throw new ArgumentOutOfRangeException("pid", pid, "only 13 bits allowed");
             if (null == buffer)
-                throw new ArgumentNullException( "buffer" );
+                throw new ArgumentNullException("buffer");
             if ((start < 0) || (start > buffer.Length))
-                throw new ArgumentOutOfRangeException( "start", start, "exceeds buffer size" );
+                throw new ArgumentOutOfRangeException("start", start, "exceeds buffer size");
             if ((packs < 0) || (packs > (buffer.Length / PacketSize + 1)))
-                throw new ArgumentOutOfRangeException( "packs", packs, "exceeds buffer size" );
+                throw new ArgumentOutOfRangeException("packs", packs, "exceeds buffer size");
             if ((sizeOfLast < 0) || (sizeOfLast > PacketSize))
-                throw new ArgumentOutOfRangeException( "sizeOfLast", sizeOfLast, "exceeds packet size" );
+                throw new ArgumentOutOfRangeException("sizeOfLast", sizeOfLast, "exceeds packet size");
 
             // Done
             if (0 == packs)
@@ -886,14 +884,14 @@ namespace JMS.DVB.TS
 
             // Validate
             if (end > buffer.Length)
-                throw new ArgumentOutOfRangeException( "packs", packs, "exceeds buffer size" );
+                throw new ArgumentOutOfRangeException("packs", packs, "exceeds buffer size");
 
             // Allocate data
             byte[] ts = new byte[packs * FullSize];
 
             // Split
-            byte pidh = (byte) (pid >> 8);
-            byte pidl = (byte) (pid & 0xff);
+            byte pidh = (byte)(pid >> 8);
+            byte pidl = (byte)(pid & 0xff);
 
             // Flag
             if (isFirst)
@@ -906,7 +904,7 @@ namespace JMS.DVB.TS
                 ts[tsi++] = 0x47;
                 ts[tsi++] = pidh;
                 ts[tsi++] = pidl;
-                ts[tsi++] = (byte) (0x10 | counter++);
+                ts[tsi++] = (byte)(0x10 | counter++);
 
                 // Reset
                 if (4 == tsi)
@@ -931,23 +929,23 @@ namespace JMS.DVB.TS
                     int pad = PacketSize - rest - 2;
 
                     // Add adaption
-                    ts[tsi + 0] = (byte) (pad + 1);
+                    ts[tsi + 0] = (byte)(pad + 1);
                     ts[tsi + 1] = 0x00;
 
                     // Pad first
-                    Array.Copy( Padding, 0, ts, tsi + 2, pad );
+                    Array.Copy(Padding, 0, ts, tsi + 2, pad);
 
                     // Data last
-                    Array.Copy( buffer, start, ts, tsi + 2 + pad, rest );
+                    Array.Copy(buffer, start, ts, tsi + 2 + pad, rest);
                 }
                 else
                 {
                     // Move in
-                    Array.Copy( buffer, start, ts, tsi, (rest >= PacketSize) ? PacketSize : rest );
+                    Array.Copy(buffer, start, ts, tsi, (rest >= PacketSize) ? PacketSize : rest);
 
                     // Pad
                     if (last)
-                        Array.Copy( Padding, 0, ts, tsi + rest, PacketSize - rest );
+                        Array.Copy(Padding, 0, ts, tsi + rest, PacketSize - rest);
                 }
             }
 
@@ -955,7 +953,7 @@ namespace JMS.DVB.TS
             lock (m_Queue)
             {
                 // Enqueue to writer
-                Enqueue( ts, pid, isFirst, false, pts );
+                Enqueue(ts, pid, isFirst, false, pts);
 
                 // Count
                 PacketCounter += packs;
@@ -971,10 +969,10 @@ namespace JMS.DVB.TS
         /// </summary>
         /// <param name="pid"></param>
         /// <param name="withPCR">Set to flush PCR, too.</param>
-        private void Flush( int pid, bool withPCR )
+        private void Flush(int pid, bool withPCR)
         {
             // Move full packet to synchronizer queue
-            Enqueue( pid, withPCR );
+            Enqueue(pid, withPCR);
 
             // Cleanup as much as possible
             for (bool processed = true; processed; processed = false)
@@ -985,7 +983,7 @@ namespace JMS.DVB.TS
                         processed = true;
 
                 // Process as long as there are packets in each stream
-                for (bool find = true; find; )
+                for (bool find = true; find;)
                 {
                     // The minium PTS packet
                     Packet minHolder = null;
@@ -1058,10 +1056,10 @@ namespace JMS.DVB.TS
         /// </summary>
         /// <param name="pid"></param>
         /// <param name="withPCR">Set to flush PCR, too.</param>
-        private void Enqueue( int pid, bool withPCR )
+        private void Enqueue(int pid, bool withPCR)
         {
             // Attach to the list
-            Packet buffers = (Packet) m_Buffers[pid];
+            Packet buffers = (Packet)m_Buffers[pid];
 
             // Is empty
             if (null == buffers)
@@ -1074,7 +1072,7 @@ namespace JMS.DVB.TS
             if (!withPCR)
             {
                 // Create new
-                collect = new Packet( buffers );
+                collect = new Packet(buffers);
 
                 // Clone PTS from PES
                 collect.PTS = buffers.PTS;
@@ -1089,7 +1087,7 @@ namespace JMS.DVB.TS
             bool isPCR = false;
 
             // Process all
-            for (int ib = 0, imax = buffers.Count; ib < imax; )
+            for (int ib = 0, imax = buffers.Count; ib < imax;)
             {
                 // Load next
                 byte[] buf = buffers[ib++];
@@ -1113,12 +1111,12 @@ namespace JMS.DVB.TS
                             buffers.Clear();
 
                             // Append as PCR
-                            buffers.Add( null );
-                            buffers.Add( buf );
+                            buffers.Add(null);
+                            buffers.Add(buf);
 
                             // Remember collected data
                             if (collect.Count > 0)
-                                buffers.Enqueue( collect );
+                                buffers.Enqueue(collect);
 
                             // Finish
                             return;
@@ -1131,12 +1129,12 @@ namespace JMS.DVB.TS
                 if (null == collect)
                 {
                     // Send to file immediately to clenaup all buffers
-                    SendBuffer( buf, buffers );
+                    SendBuffer(buf, buffers);
                 }
                 else
                 {
                     // Save for later processing
-                    collect.Add( buf );
+                    collect.Add(buf);
                 }
             }
 
@@ -1144,7 +1142,7 @@ namespace JMS.DVB.TS
             buffers.Clear();
 
             // Remember collected data
-            if (null != collect) buffers.Enqueue( collect );
+            if (null != collect) buffers.Enqueue(collect);
         }
 
         /// <summary>
@@ -1153,10 +1151,10 @@ namespace JMS.DVB.TS
         /// <param name="buf">Full buffer to send.</param>
         /// <param name="source">The originator of the buffer.</param>
         /// <returns>Set if buffer is not empty.</returns>
-        internal bool SendBuffer( byte[] buf, Packet source )
+        internal bool SendBuffer(byte[] buf, Packet source)
         {
             // Validate
-            Debug.Assert( (buf.Length % FullSize) == 0 );
+            Debug.Assert((buf.Length % FullSize) == 0);
 
             // Count
             m_Length += buf.Length;
@@ -1180,7 +1178,7 @@ namespace JMS.DVB.TS
                 WaitDisk();
 
                 // Start an asynchronous write operation
-                m_Writer = Target.BeginWrite( buf, 0, buf.Length, null, null );
+                m_Writer = Target.BeginWrite(buf, 0, buf.Length, null, null);
             }
 
             // Has buffered output
@@ -1194,14 +1192,14 @@ namespace JMS.DVB.TS
                     if ((buf[3] & 0x20) != 0)
                         if (buf[4] >= 1)
                             if ((buf[5] & 0x10) != 0)
-                                pcrReport( BufferedTarget.FilePath, BufferedTarget.TotalBytesWritten, buf );
+                                pcrReport(BufferedTarget.FilePath, BufferedTarget.TotalBytesWritten, buf);
 
                 // Send to file
-                BufferedTarget.Write( buf, 0, buf.Length );
+                BufferedTarget.Write(buf, 0, buf.Length);
             }
 
             // See if there is a file switch pending
-            var pendingSwitch = Interlocked.Exchange( ref PendingTarget, null );
+            var pendingSwitch = Interlocked.Exchange(ref PendingTarget, null);
 
             // Activate the new one - this will enforce a flush on the previous file and may lead to corruption
             if (pendingSwitch != null)
@@ -1213,14 +1211,14 @@ namespace JMS.DVB.TS
                 return false;
 
             // Forward to optional stream
-            m_UDPStream.Send( buf );
+            m_UDPStream.Send(buf);
 
             // Read consumer
             var consumer = InProcessConsumer;
 
             // Finally send to in-process consumer
             if (null != consumer)
-                consumer( buf );
+                consumer(buf);
 
             // Found some
             return true;
@@ -1234,7 +1232,7 @@ namespace JMS.DVB.TS
         /// <param name="isFirst">Set if the first packet starts at a PES header.</param>
         /// <param name="isPCR">Set if this is a PCR report.</param>
         /// <param name="pts">If not negative this is the PES headers PTS - <i>isFirst</i> will be set.</param>
-        private void Enqueue( byte[] buf, int pid, bool isFirst, bool isPCR, long pts )
+        private void Enqueue(byte[] buf, int pid, bool isFirst, bool isPCR, long pts)
         {
             // Check mode
             bool isTSInfo = ((ProgramAssociation.PID == pid) || (ProgramMap.PID == pid) || (ServiceDescription.PID == pid) || (0x12 == pid));
@@ -1246,17 +1244,17 @@ namespace JMS.DVB.TS
                 if (isTSInfo)
                 {
                     // Forward
-                    SendBuffer( buf, null );
+                    SendBuffer(buf, null);
 
                     // Done
                     return;
                 }
 
                 // Attach to buffer
-                Packet buffers = (Packet) m_Buffers[pid];
+                Packet buffers = (Packet)m_Buffers[pid];
 
                 // Send complete PES packet collected
-                if (isFirst) Flush( pid, false );
+                if (isFirst) Flush(pid, false);
 
                 // Create once
                 if (null == buffers) return;
@@ -1265,10 +1263,10 @@ namespace JMS.DVB.TS
                 buffers.PTS = pts;
 
                 // PCR mark
-                if (isPCR) buffers.Add( null );
+                if (isPCR) buffers.Add(null);
 
                 // Data
-                buffers.Add( buf );
+                buffers.Add(buf);
             }
         }
 
@@ -1284,7 +1282,7 @@ namespace JMS.DVB.TS
             if (!m_Writer.IsCompleted) m_Writer.AsyncWaitHandle.WaitOne();
 
             // Finish
-            if (null != Target) Target.EndWrite( m_Writer );
+            if (null != Target) Target.EndWrite(m_Writer);
 
             // Reset
             m_Writer = null;
@@ -1308,25 +1306,25 @@ namespace JMS.DVB.TS
                 foreach (DictionaryEntry ent in m_Buffers)
                 {
                     // Retrieve
-                    int pid = (int) ent.Key;
-                    Packet buffers = (Packet) ent.Value;
+                    int pid = (int)ent.Key;
+                    Packet buffers = (Packet)ent.Value;
 
                     // Send
-                    Flush( pid, true );
+                    Flush(pid, true);
                 }
 
                 // Create report
                 foreach (DictionaryEntry ent in m_Buffers)
                 {
                     // Retrieve
-                    int pid = (int) ent.Key;
-                    Packet buffers = (Packet) ent.Value;
+                    int pid = (int)ent.Key;
+                    Packet buffers = (Packet)ent.Value;
 
                     // Separate
-                    if (stat.Length > 0) stat.Append( "\r\n" );
+                    if (stat.Length > 0) stat.Append("\r\n");
 
                     // Add report
-                    stat.AppendFormat( "{0}: MaxQueue={1} Overflow(s)={2}", pid, buffers.MaxQueueLength, buffers.Overflows );
+                    stat.AppendFormat("{0}: MaxQueue={1} Overflow(s)={2}", pid, buffers.MaxQueueLength, buffers.Overflows);
                 }
 
                 // Forward
@@ -1373,7 +1371,7 @@ namespace JMS.DVB.TS
         public void StopFilters()
         {
             // Stop streaming
-            SetStreamTarget( "localhost", 0 );
+            SetStreamTarget("localhost", 0);
 
             // Forward to splitter
             if (m_Splitter != null)
@@ -1410,10 +1408,10 @@ namespace JMS.DVB.TS
         /// <param name="client">Name of the client system. If the format <i>*IP Address</i> is
         /// used multicast addressing is assumed.</param>
         /// <param name="port">TCP/IP UDP Port to use.</param>
-        public void SetStreamTarget( string client, int port )
+        public void SetStreamTarget(string client, int port)
         {
             // Forward
-            m_UDPStream.SetStreamTarget( client, port );
+            m_UDPStream.SetStreamTarget(client, port);
         }
 
         /// <summary>
@@ -1488,19 +1486,19 @@ namespace JMS.DVB.TS
         /// Ergänzt einen Eintrag der Programmzeitschrift.
         /// </summary>
         /// <param name="section">Ein beliebiger Eintrag der Programmzeitschrift.</param>
-        public void AddEventTable( EPG.Section section )
+        public void AddEventTable(EPG.Section section)
         {
             // Forward
             if (null != section)
                 if (section.IsValid)
-                    AddEventTable( section.Table as EPG.Tables.EIT );
+                    AddEventTable(section.Table as EPG.Tables.EIT);
         }
 
         /// <summary>
         /// Ergänzt einen Eintrag der Programmzeitschrift.
         /// </summary>
         /// <param name="eit">Ein beliebiger Eintrag der Programmzeitschrift.</param>
-        public void AddEventTable( EPG.Tables.EIT eit )
+        public void AddEventTable(EPG.Tables.EIT eit)
         {
             // Ignore until PCR is available
             if (m_PCRAvailable <= 0)
@@ -1526,12 +1524,12 @@ namespace JMS.DVB.TS
                 return;
 
             // Update the table
-            eit.OriginalNetworkIdentifier = (ushort) ProgramAssociation.NetworkIdentifier;
+            eit.OriginalNetworkIdentifier = (ushort)ProgramAssociation.NetworkIdentifier;
             eit.TransportStreamIdentifier = 1;
-            eit.ServiceIdentifier = (ushort) ProgramAssociation.ProgramNumber;
+            eit.ServiceIdentifier = (ushort)ProgramAssociation.ProgramNumber;
 
             // Has running or nearly running?
-            if (!Array.Exists( eit.Entries, entry => (EPG.EventStatus.Running == entry.Status) || (EPG.EventStatus.NotRunning == entry.Status) ))
+            if (!Array.Exists(eit.Entries, entry => (EPG.EventStatus.Running == entry.Status) || (EPG.EventStatus.NotRunning == entry.Status)))
                 return;
 
             // Try to recreate
@@ -1539,7 +1537,7 @@ namespace JMS.DVB.TS
 
             // Inject
             if (null != table)
-                SendTable( ref m_EPGCounter, 0x12, table );
+                SendTable(ref m_EPGCounter, 0x12, table);
         }
 
         /// <summary>
@@ -1548,10 +1546,10 @@ namespace JMS.DVB.TS
         /// <param name="network">Die originale Netzwerkkenung des zugehörigen Dienstes.</param>
         /// <param name="transportStream">Die Kennung des <i>Transport Streams</i>.</param>
         /// <param name="service">Die eindeutige Kennung des Dienstes zu dieser Datei.</param>
-        public void SetEPGMapping( ushort network, ushort transportStream, ushort service )
+        public void SetEPGMapping(ushort network, ushort transportStream, ushort service)
         {
             // Forward
-            EPGMapping = new SourceIdentifier( network, transportStream, service );
+            EPGMapping = new SourceIdentifier(network, transportStream, service);
         }
 
         #region IDisposable Members
@@ -1589,7 +1587,7 @@ namespace JMS.DVB.TS
                 BufferedTarget = null;
 
             // Release socket
-            SetStreamTarget( "localhost", 0 );
+            SetStreamTarget("localhost", 0);
         }
 
         #endregion

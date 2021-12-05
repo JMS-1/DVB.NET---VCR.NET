@@ -32,6 +32,11 @@ namespace JMS.DVB.TS.Tables
         private Dictionary<short, StreamTypes> m_Type = new Dictionary<short, StreamTypes>();
 
         /// <summary>
+        /// Maps each stream to the related AAC information.
+        /// </summary>
+        private Dictionary<short, ushort?> m_AAC = new Dictionary<short, ushort?>();
+
+        /// <summary>
         /// Encoding if known.
         /// </summary>
         private Dictionary<short, byte> m_Encoding = new Dictionary<short, byte>();
@@ -79,8 +84,8 @@ namespace JMS.DVB.TS.Tables
         /// </summary>
         /// <param name="pid">The related transport stream identifier.</param>
         /// <param name="program">The unique program number.</param>
-        public PMT( short pid, short program )
-            : base( pid )
+        public PMT(short pid, short program)
+            : base(pid)
         {
             // Remember
             ProgrammNumber = program;
@@ -89,26 +94,12 @@ namespace JMS.DVB.TS.Tables
         /// <summary>
         /// A PMT has a table identifier of <i>2</i>.
         /// </summary>
-        protected override byte TableIdentifier
-        {
-            get
-            {
-                // Identifier
-                return 0x02;
-            }
-        }
+        protected override byte TableIdentifier => 0x02;
 
         /// <summary>
         /// The optional field in the table header holds our program number.
         /// </summary>
-        protected override short PrivateData
-        {
-            get
-            {
-                // Report
-                return ProgrammNumber;
-            }
-        }
+        protected override short PrivateData => ProgrammNumber;
 
         /// <summary>
         /// Create a PMT for the program.
@@ -125,16 +116,18 @@ namespace JMS.DVB.TS.Tables
             TableConstructor buffer = new TableConstructor();
 
             // Append to buffer
-            buffer.Add( (byte) (0xe0 | (PCRPID / 256)) );
-            buffer.Add( (byte) (PCRPID & 0xff) );
-            buffer.Add( 0xf0, 0x00 );
+            buffer.Add((byte)(0xe0 | (PCRPID / 256)));
+            buffer.Add((byte)(PCRPID & 0xff));
+            buffer.Add(0xf0, 0x00);
 
             // All entries
-            for (int ip = 0; ip < m_Streams.Count; )
+            for (int ip = 0; ip < m_Streams.Count;)
             {
                 // Load
-                short pid = m_Streams[ip++];
-                StreamTypes type = m_Type[pid];
+                var pid = m_Streams[ip++];
+
+                var aac = m_AAC[pid];
+                var type = m_Type[pid];
 
                 // Is teletext or audio
                 bool ttx = (StreamTypes.TeleText == type);
@@ -143,22 +136,22 @@ namespace JMS.DVB.TS.Tables
                 bool aud = ac3 || (!ttx && !sub && (StreamTypes.Audio == type));
 
                 // Append to buffer
-                buffer.Add( (ttx || sub) ? (byte) StreamTypes.Private : m_Encoding[pid] );
-                buffer.Add( (byte) (0xe0 | (pid / 256)) );
-                buffer.Add( (byte) (pid & 0xff) );
-                buffer.Add( 0xf0 );
+                buffer.Add((ttx || sub) ? (byte)StreamTypes.Private : aac.HasValue ? (byte)EPG.StreamTypes.AAC : m_Encoding[pid]);
+                buffer.Add((byte)(0xe0 | (pid / 256)));
+                buffer.Add((byte)(pid & 0xff));
+                buffer.Add(0xf0);
 
                 // Length
                 int lengthPos = buffer.CreateDynamicLength();
 
                 // Create stream identifier
-                buffer.Add( new StreamIdentifier( (byte) ip ) );
+                buffer.Add(new StreamIdentifier((byte)ip));
 
                 // Check for additional data
                 if (ttx)
                 {
                     // Create teletext descriptor
-                    buffer.Add( new Teletext() );
+                    buffer.Add(new Teletext());
                 }
                 else if (sub)
                 {
@@ -172,39 +165,50 @@ namespace JMS.DVB.TS.Tables
                     if ((null == subInfos) || (subInfos.Length < 1))
                     {
                         // Create a brand new pseudo entry
-                        subDescr.Subtitles.Add( new SubtitleInfo( "deu", EPG.SubtitleTypes.DVBNormal, 1, 1 ) );
+                        subDescr.Subtitles.Add(new SubtitleInfo("deu", EPG.SubtitleTypes.DVBNormal, 1, 1));
                     }
                     else
                     {
                         // Use as is
-                        subDescr.Subtitles.AddRange( subInfos );
+                        subDescr.Subtitles.AddRange(subInfos);
                     }
 
                     // Serialize to buffer
-                    buffer.Add( subDescr );
+                    buffer.Add(subDescr);
                 }
                 else if (aud)
                 {
                     // Load language
                     string language;
-                    if (!m_AudioNames.TryGetValue( pid, out language )) language = "deu";
+                    if (!m_AudioNames.TryGetValue(pid, out language)) language = "deu";
 
                     // Create language descriptor
                     ISOLanguage audioDescriptor = new ISOLanguage();
 
                     // Append language item
-                    audioDescriptor.Languages.Add( new LanguageItem( language, ac3 ? EPG.AudioTypes.Undefined : EPG.AudioTypes.CleanEffects ) );
+                    audioDescriptor.Languages.Add(new LanguageItem(language, ac3 ? EPG.AudioTypes.Undefined : EPG.AudioTypes.CleanEffects));
 
                     // Append to buffer
-                    buffer.Add( audioDescriptor );
+                    buffer.Add(audioDescriptor);
 
-                    // Fill AC3 descriptor
+                    // Fill AC3 descriptor.
                     if (ac3)
-                        buffer.Add( new AC3() );
+                        buffer.Add(new AC3());
+
+                    // Fill AAC descriptor.
+                    if (aac.HasValue)
+                    {
+                        // Split parts.
+                        var profileAndLevel = (byte)(aac.Value & 255);
+                        var aacType = (byte)(aac.Value >> 8);
+
+                        // Remember descriptor.
+                        buffer.Add(new AAC(profileAndLevel, aacType == 255 ? (byte?)null : aacType));
+                    }
                 }
 
                 // Finish
-                buffer.SetDynamicLength( lengthPos );
+                buffer.SetDynamicLength(lengthPos);
             }
 
             // Report
@@ -221,11 +225,7 @@ namespace JMS.DVB.TS.Tables
         /// <returns>Set if the first video stream is added and it is used as the PCR
         /// source. Currently this function always reports <i>false</i> since no
         /// PCR will be registered in the transport stream for the only program.</returns>
-        public bool Add( StreamTypes type, byte encoding, short pid )
-        {
-            // Forward
-            return Add( type, encoding, pid, false, null );
-        }
+        public bool Add(StreamTypes type, byte encoding, short pid) => Add(type, encoding, pid, false, null);
 
         /// <summary>
         /// Add a stream to this program.
@@ -239,11 +239,7 @@ namespace JMS.DVB.TS.Tables
         /// <returns>Set if the first video stream is added and it is used as the PCR
         /// source. Currently this function always reports <i>false</i> since no
         /// PCR will be registered in the transport stream for the only program.</returns>
-        public bool Add( StreamTypes type, byte encoding, short pid, bool noPCR )
-        {
-            // Forward
-            return Add( type, encoding, pid, noPCR, null );
-        }
+        public bool Add(StreamTypes type, byte encoding, short pid, bool noPCR) => Add(type, encoding, pid, noPCR, null, null);
 
         /// <summary>
         /// Add a stream to this program.
@@ -258,13 +254,29 @@ namespace JMS.DVB.TS.Tables
         /// <returns>Set if the first video stream is added and it is used as the PCR
         /// source. Currently this function always reports <i>false</i> since no
         /// PCR will be registered in the transport stream for the only program.</returns>
-        public bool Add( StreamTypes type, byte encoding, short pid, bool noPCR, SubtitleInfo[] info )
+        public bool Add(StreamTypes type, byte encoding, short pid, bool noPCR, SubtitleInfo[] info) => Add(type, encoding, pid, noPCR, info, null);
+
+        /// <summary>
+        /// Add a stream to this program.
+        /// </summary>
+        /// <param name="type">Type of the stream.</param>
+        /// <param name="pid">Transport stream identifier of this stream.</param>
+        /// <param name="noPCR">Set when adding a video stream to disable PCR 
+        /// from PTS generation.</param>
+        /// <param name="encoding">Encoding used - <i>255</i> means that the encoding is
+        /// unknown or irrelevant.</param>
+        /// <param name="info">Extended information on the contents of a subtitle stream.</param>
+        /// <param name="aac">Optional AAC profile, level and type.</param>
+        /// <returns>Set if the first video stream is added and it is used as the PCR
+        /// source. Currently this function always reports <i>false</i> since no
+        /// PCR will be registered in the transport stream for the only program.</returns>
+        public bool Add(StreamTypes type, byte encoding, short pid, bool noPCR, SubtitleInfo[] info, ushort? aac)
         {
             // Validate
-            if ((pid < 0) || (pid >= 0x1fff)) throw new ArgumentOutOfRangeException( "pid", pid, "only 13 bits allowed" );
+            if ((pid < 0) || (pid >= 0x1fff)) throw new ArgumentOutOfRangeException("pid", pid, "only 13 bits allowed");
 
             // Must be unique
-            if (m_Streams.Contains( pid )) throw new ArgumentException( "Duplicate PID " + pid.ToString(), "pid" );
+            if (m_Streams.Contains(pid)) throw new ArgumentException("Duplicate PID " + pid.ToString(), "pid");
 
             // Disable PCR generation
             if (!m_AllowPCR) noPCR = true;
@@ -273,10 +285,11 @@ namespace JMS.DVB.TS.Tables
             bool isPCR = false;
 
             // Remember
-            m_Streams.Add( pid );
+            m_Streams.Add(pid);
 
             // Connect
-            m_Encoding[pid] = (255 == encoding) ? (byte) type : encoding;
+            m_AAC[pid] = aac;
+            m_Encoding[pid] = (255 == encoding) ? (byte)type : encoding;
             m_Type[pid] = type;
 
             // Count
@@ -307,11 +320,11 @@ namespace JMS.DVB.TS.Tables
         /// </summary>
         /// <param name="pid">The internal stream identifier.</param>
         /// <param name="isoName">The three-letter ISO name of the language.</param>
-        public void SetAudioLanguage( short pid, string isoName )
+        public void SetAudioLanguage(short pid, string isoName)
         {
             // Remember
-            if (!string.IsNullOrEmpty( isoName ))
-                if (!isoName.StartsWith( "#" ))
+            if (!string.IsNullOrEmpty(isoName))
+                if (!isoName.StartsWith("#"))
                     m_AudioNames[pid] = isoName;
         }
 
