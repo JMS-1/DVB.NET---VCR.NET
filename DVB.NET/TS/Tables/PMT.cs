@@ -199,7 +199,7 @@ namespace JMS.DVB.TS.Tables
                     if (aac.HasValue)
                     {
                         // Split parts.
-                        var profileAndLevel = (byte)(aac.Value & 255);
+                        var profileAndLevel = (byte)aac.Value;
                         var aacType = (byte)(aac.Value >> 8);
 
                         // Remember descriptor.

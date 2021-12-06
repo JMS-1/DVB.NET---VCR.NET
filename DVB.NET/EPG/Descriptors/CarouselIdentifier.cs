@@ -64,7 +64,7 @@ namespace JMS.DVB.EPG.Descriptors
             var id1 = section[offset++];
             var id0 = section[offset++];
 
-            Identifier = (uint)(id0 + 256 * (id1 + 256 * (id1 + 256 * id3)));
+            Identifier = (uint)(id0 + 256 * (id1 + 256 * (id2 + 256 * id3)));
             Format = section[offset++];
 
             // Load the selector bytes.
