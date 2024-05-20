@@ -6,7 +6,7 @@
 
   <Product
     Id="*"
-    Name="DVB.NET Viewer 4.3"
+    Name="DVB.NET Viewer 5.0"
     Language="1031"
     Version="!(wix.SETUPVERSION)"
     Manufacturer="$(var.Manufacturer)"    
@@ -34,7 +34,7 @@
 
     <!-- Spezielle Einstellungen für die Installation -->
     <Property Id="ARPHELPLINK" Value="http://www.watchersnet.de/Default.aspx?tabid=52&amp;g=topics&amp;f=19" />
-    <Property Id="ARPCOMMENTS" Value="DVB.NET Viewer 4.3" />
+    <Property Id="ARPCOMMENTS" Value="DVB.NET Viewer 5.0" />
     <Property Id="ARPPRODUCTICON" Value="THEICON" />
 
     <!-- Sonderoptionen für die Installation -->

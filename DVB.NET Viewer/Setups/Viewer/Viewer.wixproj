@@ -6,7 +6,7 @@
     <ProductVersion>3.7</ProductVersion>
     <ProjectGuid>ac44fac9-4952-4572-81c4-76b9525fe4bc</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>DVBNETViewer</OutputName>
+    <OutputName>DVBNETViewer5</OutputName>
     <OutputType>Package</OutputType>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
@@ -17,7 +17,7 @@
     <OutputPath>..\..\..\msi\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <DefineConstants>Debug</DefineConstants>
-    <WixVariables>SETUPVERSION=4.3.13</WixVariables>
+    <WixVariables>SETUPVERSION=5.0.0</WixVariables>
     <Cultures>de-de</Cultures>
     <SuppressPdbOutput>True</SuppressPdbOutput>
     <SuppressIces>ICE57</SuppressIces>
@@ -25,7 +25,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>..\..\..\msi\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
-    <WixVariables>SETUPVERSION=4.3.13</WixVariables>
+    <WixVariables>SETUPVERSION=5.0.0</WixVariables>
     <Cultures>de-de</Cultures>
     <SuppressPdbOutput>True</SuppressPdbOutput>
     <SuppressIces>ICE57</SuppressIces>

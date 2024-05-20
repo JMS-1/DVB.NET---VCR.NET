@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DVBNETViewer</RootNamespace>
-    <AssemblyName>DVBNETViewer</AssemblyName>
+    <AssemblyName>DVBNETViewer5</AssemblyName>
     <ApplicationIcon>DVBNETViewer.ico</ApplicationIcon>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -68,22 +68,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="JMS.DVB.Common, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.3\GAC\JMS.DVB.Common.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\JMS\DVB.NET 4.3\GAC\JMS.DVB.Common.dll</HintPath>
     </Reference>
     <Reference Include="JMS.DVB.DeviceAccess, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.3\RunTime\JMS.DVB.DeviceAccess.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\JMS\DVB.NET 4.3\RunTime\JMS.DVB.DeviceAccess.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JMS.DVB.HardwareAbstraction, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.3\RunTime\JMS.DVB.HardwareAbstraction.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\JMS\DVB.NET 4.3\RunTime\JMS.DVB.HardwareAbstraction.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JMS.DVB.DirectShow, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.3\RunTime\JMS.DVB.DirectShow.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\JMS\DVB.NET 4.3\RunTime\JMS.DVB.DirectShow.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JMS.DVB.SITables, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.3\RunTime\JMS.DVB.SITables.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\JMS\DVB.NET 4.3\RunTime\JMS.DVB.SITables.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JMS.DVB.Viewer, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
@@ -92,7 +92,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="JMS.FavoriteManager, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\JMS\DVB.NET 4.3\RunTime\JMS.FavoriteManager.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\JMS\DVB.NET 4.3\RunTime\JMS.FavoriteManager.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />

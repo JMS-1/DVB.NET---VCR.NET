@@ -78,8 +78,8 @@ namespace DVBNETViewer
         /// </summary>
         /// <param name="mode">Operationsmodus der Anwendung.</param>
         /// <param name="args">Parameter zum Operationsmodus der Anwendung.</param>
-        public ViewerMain( StartupModes mode, params string[] args )
-            : this( null, mode, args )
+        public ViewerMain(StartupModes mode, params string[] args)
+            : this(null, mode, args)
         {
         }
 
@@ -88,8 +88,8 @@ namespace DVBNETViewer
         /// eine lokale Hardware.
         /// </summary>
         /// <param name="profile">Die zu verwendene lokale DVB.NET Hardware.</param>
-        public ViewerMain( Profile profile )
-            : this( profile, StartupModes.LocalDVB )
+        public ViewerMain(Profile profile)
+            : this(profile, StartupModes.LocalDVB)
         {
         }
 
@@ -99,7 +99,7 @@ namespace DVBNETViewer
         /// <param name="profile">Die zu verwendene lokale DVB.NET Hardware.</param>
         /// <param name="mode">Operationsmodus der Anwendung.</param>
         /// <param name="args">Parameter zum Operationsmodus der Anwendung.</param>
-        public ViewerMain( Profile profile, StartupModes mode, params string[] args )
+        public ViewerMain(Profile profile, StartupModes mode, params string[] args)
         {
             // Remember
             m_Arguments = args;
@@ -110,14 +110,14 @@ namespace DVBNETViewer
             InitializeComponent();
 
             // Attach to viewer
-            IViewerSite viewer = (IViewerSite) theViewer;
+            IViewerSite viewer = (IViewerSite)theViewer;
 
             // Register additional keys - to be kept we must do this before SetSite fixes the map
-            viewer.SetKeyHandler( Keys.J, ProcessFullScreen );
-            viewer.SetKeyHandler( Keys.End, Close );
+            viewer.SetKeyHandler(Keys.J, ProcessFullScreen);
+            viewer.SetKeyHandler(Keys.End, Close);
 
             // Connect viewer control to configuration
-            theViewer.SetSite( this );
+            theViewer.SetSite(this);
 
             // Prepare to show
             SetBounds();
@@ -187,7 +187,7 @@ namespace DVBNETViewer
             Properties.Settings.Default.Save();
 
             // Attach to viewer
-            IOSDSite osd = (IOSDSite) theViewer;
+            IOSDSite osd = (IOSDSite)theViewer;
 
             // Hide any overlay
             osd.Hide();
@@ -202,7 +202,7 @@ namespace DVBNETViewer
         /// </summary>
         /// <param name="sender">Wird ignoriert.</param>
         /// <param name="e">Wird ignoriert.</param>
-        private void ViewerMain_Load( object sender, EventArgs e )
+        private void ViewerMain_Load(object sender, EventArgs e)
         {
             // Finish
             if (Properties.Settings.Default.HideCursor)
@@ -212,7 +212,7 @@ namespace DVBNETViewer
             if (Properties.Settings.Default.FirstStart)
             {
                 // Show configuration
-                if (!ShowGlobalOptions( null ))
+                if (!ShowGlobalOptions(null))
                 {
                     // Done
                     Close();
@@ -239,7 +239,7 @@ namespace DVBNETViewer
         /// </summary>
         /// <param name="sender">Wird ignoriert.</param>
         /// <param name="e">Wird ignoriert.</param>
-        private void tickStart_Tick( object sender, EventArgs e )
+        private void tickStart_Tick(object sender, EventArgs e)
         {
             // Once only
             tickStart.Enabled = false;
@@ -259,23 +259,23 @@ namespace DVBNETViewer
             // Check mode
             switch (m_Mode)
             {
-                case StartupModes.LocalDVB: adaptor = new DeviceAdpator( Profile, theViewer ); break;
-                case StartupModes.RemoteVCR: adaptor = new VCRAdaptor( theViewer ); break;
-                case StartupModes.ConnectTCP: adaptor = new SlaveAdaptor( theViewer, m_Arguments[0] ); break;
-                case StartupModes.PlayLocalFile: adaptor = new FileAdaptor( theViewer, m_Arguments[0] ); break;
-                case StartupModes.PlayRemoteFile: m_FixedServer = m_Arguments[1]; adaptor = new VCRAdaptor( theViewer, m_Arguments[0] ); break;
-                case StartupModes.WatchOrTimeshift: adaptor = CreateWatch( m_Arguments[0].Split( '/' ) ); break;
-                default: throw new ArgumentException( m_Mode.ToString(), "m_Mode" );
+                case StartupModes.LocalDVB: adaptor = new DeviceAdpator(Profile, theViewer); break;
+                case StartupModes.RemoteVCR: adaptor = new VCRAdaptor(theViewer); break;
+                case StartupModes.ConnectTCP: adaptor = new SlaveAdaptor(theViewer, m_Arguments[0]); break;
+                case StartupModes.PlayLocalFile: adaptor = new FileAdaptor(theViewer, m_Arguments[0]); break;
+                case StartupModes.PlayRemoteFile: m_FixedServer = m_Arguments[1]; adaptor = new VCRAdaptor(theViewer, m_Arguments[0]); break;
+                case StartupModes.WatchOrTimeshift: adaptor = CreateWatch(m_Arguments[0].Split('/')); break;
+                default: throw new ArgumentException(m_Mode.ToString(), "m_Mode");
             }
 
             // Startup control
-            theViewer.Initialize( adaptor );
+            theViewer.Initialize(adaptor);
 
             // Create configuration list
             ResetOptions();
 
             // Reset title
-            if (Equals( Text, newText ))
+            if (Equals(Text, newText))
                 Text = oldText;
 
             // Up and running
@@ -284,18 +284,18 @@ namespace DVBNETViewer
 
         /// <summary>
         /// Erzeugt einen Adaptor zum Betrachten einer aktuellen Aufzeichnung - dieser
-        /// Aufruf wird über das <i>dvbnet://</i> Protokoll angestossen.
+        /// Aufruf wird über das <i>dvbnet5://</i> Protokoll angestossen.
         /// </summary>
         /// <param name="parts">URL Teile nach dem Protokollnamen.</param>
         /// <returns>Ein geeignet konfigurierter Adaptor.</returns>
-        private Adaptor CreateWatch( string[] parts )
+        private Adaptor CreateWatch(string[] parts)
         {
             // Remember
             m_FixedServer = parts[0];
             m_Profile = parts[1];
 
             // Create
-            return new VCRAdaptor( theViewer, int.Parse( parts[2] ), 0 == string.Compare( parts[3], "TimeShift", true ) );
+            return new VCRAdaptor(theViewer, int.Parse(parts[2]), 0 == string.Compare(parts[3], "TimeShift", true));
         }
 
         /// <summary>
@@ -308,10 +308,10 @@ namespace DVBNETViewer
             using (ShowCursor())
             {
                 // Attach to viewer
-                IViewerSite viewer = (IViewerSite) theViewer;
+                IViewerSite viewer = (IViewerSite)theViewer;
 
                 // Show configuration dialog
-                viewer.FavoriteManager.ShowConfiguration( this );
+                viewer.FavoriteManager.ShowConfiguration(this);
             }
         }
 
@@ -321,14 +321,14 @@ namespace DVBNETViewer
         public void ResetOptions()
         {
             // Attach to viewer
-            IViewerSite viewer = (IViewerSite) theViewer;
+            IViewerSite viewer = (IViewerSite)theViewer;
 
             // Wipe out
             viewer.ResetOptions();
 
             // Fill configuration
-            viewer.AddOption( new OptionDisplay( Properties.Resources.OptionGlobalSettings, () => ShowGlobalOptions( viewer ) ) );
-            viewer.AddOption( new OptionDisplay( Properties.Resources.OptionFavorites, ShowFavoriteSettings ) );
+            viewer.AddOption(new OptionDisplay(Properties.Resources.OptionGlobalSettings, () => ShowGlobalOptions(viewer)));
+            viewer.AddOption(new OptionDisplay(Properties.Resources.OptionFavorites, ShowFavoriteSettings));
 
             // Be safe
             try
@@ -339,7 +339,7 @@ namespace DVBNETViewer
             catch (Exception ex)
             {
                 // Report
-                viewer.ShowMessage( ex.Message, Properties.Resources.ErrorTitle, false );
+                viewer.ShowMessage(ex.Message, Properties.Resources.ErrorTitle, false);
             }
         }
 
@@ -349,7 +349,7 @@ namespace DVBNETViewer
         /// </summary>
         /// <param name="sender">Wird ignoriert.</param>
         /// <param name="e">Wird ignoriert.</param>
-        private void ViewerMain_SizeChanged( object sender, EventArgs e )
+        private void ViewerMain_SizeChanged(object sender, EventArgs e)
         {
             // Do not update while starting
             if (m_Starting) return;
@@ -361,8 +361,8 @@ namespace DVBNETViewer
             Rectangle rect = DesktopBounds;
 
             // Correct
-            if (rect.Left < 0) rect.Offset( -rect.Left, 0 );
-            if (rect.Top < 0) rect.Offset( 0, -rect.Top );
+            if (rect.Left < 0) rect.Offset(-rect.Left, 0);
+            if (rect.Top < 0) rect.Offset(0, -rect.Top);
 
             // Remember all
             Properties.Settings.Default.Location = rect;
@@ -373,12 +373,12 @@ namespace DVBNETViewer
         /// Zeigt die Einstellungen der Anwendung an.
         /// </summary>
         /// <param name="viewer">Die zugehörige Darstellungsinstanz.</param>
-        private bool ShowGlobalOptions( IViewerSite viewer )
+        private bool ShowGlobalOptions(IViewerSite viewer)
         {
             // Show configuration dialog
             using (ShowCursor())
-            using (ProgramSettings dialog = new ProgramSettings( viewer ))
-                if (DialogResult.OK == dialog.ShowDialog( this ))
+            using (ProgramSettings dialog = new ProgramSettings(viewer))
+                if (DialogResult.OK == dialog.ShowDialog(this))
                 {
                     // Update
                     Properties.Settings.Default.Save();
@@ -403,7 +403,7 @@ namespace DVBNETViewer
                         case ProgramSettings.ChangeTypes.Application:
                             {
                                 // Report to user
-                                MessageBox.Show( this, Properties.Resources.RequireRestart, Properties.Resources.OptionGlobalSettings );
+                                MessageBox.Show(this, Properties.Resources.RequireRestart, Properties.Resources.OptionGlobalSettings);
 
                                 // We can do no more
                                 break;
@@ -411,7 +411,7 @@ namespace DVBNETViewer
                         case ProgramSettings.ChangeTypes.Picture:
                             {
                                 // Switch off OSD
-                                IOSDSite osd = (IOSDSite) theViewer;
+                                IOSDSite osd = (IOSDSite)theViewer;
                                 osd.Hide();
 
                                 // Restart picture
@@ -626,10 +626,10 @@ namespace DVBNETViewer
             get
             {
                 // Override is active
-                if (null != m_FixedServer) return new Uri( string.Format( "http://{0}/VCR.NET/VCRServer.asmx", m_FixedServer ) );
+                if (null != m_FixedServer) return new Uri(string.Format("http://{0}/VCR.NET/VCRServer.asmx", m_FixedServer));
 
                 // Forward
-                return new Uri( Properties.Settings.Default.DVBNETViewer_FullServer_VCR30Server );
+                return new Uri(Properties.Settings.Default.DVBNETViewer_FullServer_VCR30Server);
             }
         }
 
@@ -748,26 +748,26 @@ namespace DVBNETViewer
 
         int IGeneralInfo.AVDelay { get { return Properties.Settings.Default.AVDelay; } }
 
-        void IGeneralInfo.SetPictureParameters( PictureParameters parameters )
+        void IGeneralInfo.SetPictureParameters(PictureParameters parameters)
         {
             // Copy over if necessary
             if (Properties.Settings.Default.OverwriteVideoSettings)
             {
                 // Set all
-                SetVideoParameter( parameters.Brightness, Properties.Settings.Default.VideoBrightness );
-                SetVideoParameter( parameters.Saturation, Properties.Settings.Default.VideoSaturation );
-                SetVideoParameter( parameters.Hue, Properties.Settings.Default.VideoHue );
-                SetVideoParameter( parameters.Contrast, Properties.Settings.Default.VideoContrast );
+                SetVideoParameter(parameters.Brightness, Properties.Settings.Default.VideoBrightness);
+                SetVideoParameter(parameters.Saturation, Properties.Settings.Default.VideoSaturation);
+                SetVideoParameter(parameters.Hue, Properties.Settings.Default.VideoHue);
+                SetVideoParameter(parameters.Contrast, Properties.Settings.Default.VideoContrast);
             }
         }
 
-        private void SetVideoParameter( PictureParameters.ParameterSet parameter, float value )
+        private void SetVideoParameter(PictureParameters.ParameterSet parameter, float value)
         {
             // Store but keep in range
-            parameter.Value = Math.Max( parameter.Minimum, Math.Min( parameter.Maximum, value ) );
+            parameter.Value = Math.Max(parameter.Minimum, Math.Min(parameter.Maximum, value));
         }
 
-        void IGeneralInfo.SetWindowTitle( string title )
+        void IGeneralInfo.SetWindowTitle(string title)
         {
             // Do as requested
             Text = title;

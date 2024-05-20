@@ -12,7 +12,7 @@
       <Directory Id="ProgramFilesFolder">
         <Directory Id="ManufacturerFolder" Name="$(var.Manufacturer)">
 
-          <Directory Id="INSTALLFOLDER" Name="DVB.NET Viewer 4.3">
+          <Directory Id="INSTALLFOLDER" Name="DVB.NET Viewer 5.0">
 
             <Directory Id="JMS.DVB.Viewer.Binaries" />
             <Directory Id="JMS.DVB.Viewer.Documents" />

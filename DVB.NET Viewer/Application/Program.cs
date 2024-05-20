@@ -26,8 +26,8 @@ namespace DVBNETViewer
         /// <param name="flags">Die Art der Abmeldung.</param>
         /// <param name="reason">Optional ein Grund, falls der Rechner heruntergefahren wird.</param>
         /// <returns>Gesetzt, wenn die Operation erfolgreich war.</returns>
-        [DllImport( "user32.dll" )]
-        private static extern bool ExitWindowsEx( UInt32 flags, UInt32 reason );
+        [DllImport("user32.dll")]
+        private static extern bool ExitWindowsEx(UInt32 flags, UInt32 reason);
 
         /// <summary>
         /// Installiert die Laufzeitumgebung.
@@ -39,14 +39,14 @@ namespace DVBNETViewer
         }
 
         [STAThread]
-        static void Main( string[] args )
+        static void Main(string[] args)
         {
             // Be safe
             try
             {
                 // Check settings
                 var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-                if (!version.Equals( Properties.Settings.Default.Version ))
+                if (!version.Equals(Properties.Settings.Default.Version))
                 {
                     // Upgrade
                     Properties.Settings.Default.Upgrade();
@@ -56,7 +56,7 @@ namespace DVBNETViewer
 
                 // Prepare
                 Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault( false );
+                Application.SetCompatibleTextRenderingDefault(false);
 
                 // Force priority
                 Process.GetCurrentProcess().PriorityClass = Properties.Settings.Default.Priority;
@@ -68,19 +68,19 @@ namespace DVBNETViewer
                 UserProfile.ApplyLanguage();
 
                 // See how we should work
-                if (Equals( startMode, "/Reset" ))
+                if (Equals(startMode, "/Reset"))
                 {
                     // Ask user
-                    if (DialogResult.Yes != MessageBox.Show( Properties.Resources.ResetSettings, Properties.Resources.Confirmation, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2 )) return;
+                    if (DialogResult.Yes != MessageBox.Show(Properties.Resources.ResetSettings, Properties.Resources.Confirmation, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2)) return;
 
                     // Process
                     Properties.Settings.Default.Reset();
                     Properties.Settings.Default.Save();
                 }
-                if (Equals( startMode, "/LearnRC" ))
+                if (Equals(startMode, "/LearnRC"))
                 {
                     // Run RC configuration
-                    RCSettings.Edit( RCSettings.ConfigurationFile ).Dispose();
+                    RCSettings.Edit(RCSettings.ConfigurationFile).Dispose();
                 }
                 else
                 {
@@ -92,19 +92,19 @@ namespace DVBNETViewer
                     ViewerMain form = null;
 
                     // Test parameter
-                    if (!string.IsNullOrEmpty( startMode ))
-                        if (Equals( startMode, "/VCR" ))
+                    if (!string.IsNullOrEmpty(startMode))
+                        if (Equals(startMode, "/VCR"))
                         {
                             // Create in VCR LIVE / CURRENT mode
-                            form = new ViewerMain( StartupModes.RemoteVCR );
+                            form = new ViewerMain(StartupModes.RemoteVCR);
                         }
-                        else if (startMode.ToLower().StartsWith( "dvbnet://" ))
+                        else if (startMode.ToLower().StartsWith("dvbnet5://"))
                         {
                             // Start with the server part
-                            startMode = startMode.Substring( 9 );
+                            startMode = startMode.Substring(9);
 
                             // See if this is a regular start using the URL protocol
-                            bool startedByProtocol = !startMode.StartsWith( "*" );
+                            bool startedByProtocol = !startMode.StartsWith("*");
 
                             // Must be the control center
                             if (startedByProtocol)
@@ -113,59 +113,59 @@ namespace DVBNETViewer
                                 byte[] tmp = new byte[startMode.Length];
 
                                 // Copy by byte
-                                for (int i = tmp.Length; i-- > 0; )
-                                    tmp[i] = (byte) startMode[i];
+                                for (int i = tmp.Length; i-- > 0;)
+                                    tmp[i] = (byte)startMode[i];
 
                                 // Retrieve
-                                startMode = Encoding.UTF8.GetString( tmp );
+                                startMode = Encoding.UTF8.GetString(tmp);
                             }
                             else
                             {
                                 // Just cut off the control character
-                                startMode = startMode.Substring( 1 );
+                                startMode = startMode.Substring(1);
                             }
 
                             // Just correct for URL stuff                           
-                            startMode = Uri.UnescapeDataString( startMode.Replace( '+', ' ' ) );
+                            startMode = Uri.UnescapeDataString(startMode.Replace('+', ' '));
 
                             // See if this is a file replay
-                            int file = startMode.ToLower().IndexOf( "/play=" );
+                            int file = startMode.ToLower().IndexOf("/play=");
                             if (file < 0)
                             {
                                 // Create in VCR CURRENT mode
-                                form = new ViewerMain( StartupModes.WatchOrTimeshift, startMode );
+                                form = new ViewerMain(StartupModes.WatchOrTimeshift, startMode);
                             }
                             else
                             {
                                 // Get server and file name
-                                string server = startMode.Substring( 0, file );
-                                string path = startMode.Substring( file + 6 );
+                                string server = startMode.Substring(0, file);
+                                string path = startMode.Substring(file + 6);
 
                                 // Replay
-                                form = new ViewerMain( StartupModes.PlayRemoteFile, path, server );
+                                form = new ViewerMain(StartupModes.PlayRemoteFile, path, server);
                             }
                         }
-                        else if (startMode.StartsWith( "/VCR=" ))
+                        else if (startMode.StartsWith("/VCR="))
                         {
                             // Create in VCR REPLY mode
-                            form = new ViewerMain( StartupModes.PlayRemoteFile, startMode.Substring( 5 ), null );
+                            form = new ViewerMain(StartupModes.PlayRemoteFile, startMode.Substring(5), null);
                         }
-                        else if (startMode.StartsWith( "/TCP=" ))
+                        else if (startMode.StartsWith("/TCP="))
                         {
                             // Create in STREAMING SLAVE mode
-                            form = new ViewerMain( StartupModes.ConnectTCP, startMode.Substring( 5 ) );
+                            form = new ViewerMain(StartupModes.ConnectTCP, startMode.Substring(5));
                         }
-                        else if (startMode.StartsWith( "/FILE=" ))
+                        else if (startMode.StartsWith("/FILE="))
                         {
                             // Create in LOCAL REPLAY mode
-                            form = new ViewerMain( StartupModes.PlayLocalFile, startMode.Substring( 6 ) );
+                            form = new ViewerMain(StartupModes.PlayLocalFile, startMode.Substring(6));
                         }
 
                     // Local mode
                     if (form != null)
                     {
                         // Run the application
-                        Application.Run( form );
+                        Application.Run(form);
                     }
                     else
                     {
@@ -173,47 +173,47 @@ namespace DVBNETViewer
                         var profile = UserProfile.Profile;
                         if (profile != null)
                             using (HardwareManager.Open())
-                                Application.Run( new ViewerMain( profile ) );
+                                Application.Run(new ViewerMain(profile));
                     }
                 }
             }
             catch (Exception e)
             {
                 // Report as is
-                MessageBox.Show( e.ToString() );
+                MessageBox.Show(e.ToString());
 
                 // Terminate
-                Environment.Exit( 1 );
+                Environment.Exit(1);
             }
 
             // If we are running as the users shell log off
-            using (var key = Registry.CurrentUser.OpenSubKey( @"Software\Microsoft\Windows NT\CurrentVersion\Winlogon" ))
+            using (var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows NT\CurrentVersion\Winlogon"))
                 if (key != null)
                     try
                     {
                         // Load shell
-                        var shell = key.GetValue( "Shell" ) as string;
+                        var shell = key.GetValue("Shell") as string;
                         if (shell != null)
                         {
                             // Remove quotes
                             if (shell.Length >= 2)
-                                if (shell.StartsWith( "\"" ))
-                                    if (shell.EndsWith( "\"" ))
-                                        shell = shell.Substring( 1, shell.Length - 2 ).Replace( "\"\"", "\"" );
+                                if (shell.StartsWith("\""))
+                                    if (shell.EndsWith("\""))
+                                        shell = shell.Substring(1, shell.Length - 2).Replace("\"\"", "\"");
 
                             // Clip
                             shell = shell.Trim();
 
                             // See what's left
-                            if (!string.IsNullOrEmpty( shell ))
+                            if (!string.IsNullOrEmpty(shell))
                             {
                                 // Attach to file
-                                var file1 = new FileInfo( shell );
-                                var file2 = new FileInfo( Application.ExecutablePath );
+                                var file1 = new FileInfo(shell);
+                                var file2 = new FileInfo(Application.ExecutablePath);
 
                                 // Check 
-                                if (string.Equals( file1.FullName, file2.FullName, StringComparison.InvariantCultureIgnoreCase ))
-                                    ExitWindowsEx( 0x10, 0 );
+                                if (string.Equals(file1.FullName, file2.FullName, StringComparison.InvariantCultureIgnoreCase))
+                                    ExitWindowsEx(0x10, 0);
                             }
                         }
                     }

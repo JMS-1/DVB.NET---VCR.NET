@@ -43,7 +43,7 @@ namespace JMS.DVB.Viewer
                 var uri = RemoteInfo.ServerUri.AbsoluteUri;
 
                 // Create endpoint
-                return uri.Substring( 0, uri.LastIndexOf( '/' ) );
+                return uri.Substring(0, uri.LastIndexOf('/'));
             }
         }
 
@@ -51,8 +51,8 @@ namespace JMS.DVB.Viewer
         /// Erzeugt eine neue Zugriffsinstanz.
         /// </summary>
         /// <param name="main">Die zugehörige Anwendung.</param>
-        public VCRAdaptor( IViewerSite main )
-            : this( main, default( string ) )
+        public VCRAdaptor(IViewerSite main)
+            : this(main, default(string))
         {
         }
 
@@ -62,40 +62,40 @@ namespace JMS.DVB.Viewer
         /// <param name="main">Die zugehörige Anwendung.</param>
         /// <param name="streamIndex">Teilaufzeichnung, die betrachtet werden soll.</param>
         /// <param name="timeshift">Gesetzt, wenn der Timeshift Modus aktiviert werden soll.</param>
-        public VCRAdaptor( IViewerSite main, int streamIndex, bool timeshift )
-            : base( main )
+        public VCRAdaptor(IViewerSite main, int streamIndex, bool timeshift)
+            : base(main)
         {
             // Connect to alternate interfaces
-            ChannelInfo = (IChannelInfo) main;
-            StreamInfo = (IStreamInfo) main;
+            ChannelInfo = (IChannelInfo)main;
+            StreamInfo = (IStreamInfo)main;
 
             // Remember
             m_Profile = RemoteInfo.VCRProfile;
 
             // Use default
-            if (string.IsNullOrEmpty( m_Profile ))
+            if (string.IsNullOrEmpty(m_Profile))
                 m_Profile = "*";
 
             // Construct Url
             var uri = RemoteInfo.ServerUri;
 
             // Connect to stream
-            Connect( StreamInfo.BroadcastIP, StreamInfo.BroadcastPort, uri.Host );
+            Connect(StreamInfo.BroadcastIP, StreamInfo.BroadcastPort, uri.Host);
 
             // Find all current activities
-            var activities = VCRNETRestProxy.GetActivitiesForProfile( EndPoint, Profile );
+            var activities = VCRNETRestProxy.GetActivitiesForProfile(EndPoint, Profile);
             if (activities.Count < 1)
-                StartLIVE( true );
+                StartLIVE(true);
             else
             {
                 // Find the activity
-                var current = activities.FirstOrDefault( activity => activity.streamIndex == streamIndex );
+                var current = activities.FirstOrDefault(activity => activity.streamIndex == streamIndex);
                 if (current == null)
-                    StartWatch( null, true );
-                else if (timeshift && string.IsNullOrEmpty( StreamInfo.BroadcastIP ) && (current.files.Length > 0))
-                    StartReplay( current.files[0], current.name, current, true );
+                    StartWatch(null, true);
+                else if (timeshift && string.IsNullOrEmpty(StreamInfo.BroadcastIP) && (current.files.Length > 0))
+                    StartReplay(current.files[0], current.name, current, true);
                 else
-                    StartWatch( string.Format( "dvbnet:{0}", streamIndex ), true );
+                    StartWatch(string.Format("dvbnet5:{0}", streamIndex), true);
             }
         }
 
@@ -104,47 +104,47 @@ namespace JMS.DVB.Viewer
         /// </summary>
         /// <param name="main">Die zugehörige Anwendung.</param>
         /// <param name="replayPath">Pfad zu einer VCR.NET Aufzeichnungsdatei.</param>
-        public VCRAdaptor( IViewerSite main, string replayPath )
-            : base( main )
+        public VCRAdaptor(IViewerSite main, string replayPath)
+            : base(main)
         {
             // Connect to alternate interfaces
-            ChannelInfo = (IChannelInfo) main;
-            StreamInfo = (IStreamInfo) main;
+            ChannelInfo = (IChannelInfo)main;
+            StreamInfo = (IStreamInfo)main;
 
             // Remember
             m_Profile = RemoteInfo.VCRProfile;
 
             // Use default
-            if (string.IsNullOrEmpty( m_Profile ))
+            if (string.IsNullOrEmpty(m_Profile))
                 m_Profile = "*";
 
             // Construct Url
             Uri uri = RemoteInfo.ServerUri;
 
             // Connect to stream
-            Connect( StreamInfo.BroadcastIP, StreamInfo.BroadcastPort, uri.Host );
+            Connect(StreamInfo.BroadcastIP, StreamInfo.BroadcastPort, uri.Host);
 
             // Check startup mode
-            if (string.IsNullOrEmpty( replayPath ))
+            if (string.IsNullOrEmpty(replayPath))
             {
                 // Special if LIVE is active
-                var current = VCRNETRestProxy.GetFirstActivityForProfile( EndPoint, Profile );
+                var current = VCRNETRestProxy.GetFirstActivityForProfile(EndPoint, Profile);
                 if (current != null)
                     if (!current.IsActive)
                         current = null;
-                    else if ("LIVE".Equals( current.name ))
+                    else if ("LIVE".Equals(current.name))
                         current = null;
 
                 // Start correct access module
                 if (current == null)
-                    StartLIVE( true );
+                    StartLIVE(true);
                 else
-                    StartWatch( null, true );
+                    StartWatch(null, true);
             }
             else
             {
                 // Start remote file replay
-                StartReplay( replayPath, null, null, true );
+                StartReplay(replayPath, null, null, true);
             }
         }
 
@@ -161,7 +161,7 @@ namespace JMS.DVB.Viewer
         /// Entfernt das aktuelle Zugriffsmodul.
         /// </summary>
         /// <param name="startup">Für den ersten Aufruf gesetzt.</param>
-        private void DestroyConnector( bool startup )
+        private void DestroyConnector(bool startup)
         {
             // Stop all
             if (!startup)
@@ -179,7 +179,7 @@ namespace JMS.DVB.Viewer
                     }
 
                     // Restart videotext caching from scratch
-                    VideoText.Deactivate( true );
+                    VideoText.Deactivate(true);
                 }
                 catch
                 {
@@ -197,7 +197,7 @@ namespace JMS.DVB.Viewer
         protected override void OnDispose()
         {
             // Check connector
-            DestroyConnector( false );
+            DestroyConnector(false);
         }
 
         /// <summary>
@@ -205,24 +205,24 @@ namespace JMS.DVB.Viewer
         /// </summary>
         /// <param name="context">Senderbeschreibung abhängig vom Zugriffsmodul.</param>
         /// <returns>Sendername mit ausgewählter Tonspur oder <i>null</i>.</returns>
-        public override string SetStation( object context )
+        public override string SetStation(object context)
         {
             // Forward
-            if (m_CurrentConnector.SetStation( context ) == null)
+            if (m_CurrentConnector.SetStation(context) == null)
                 return null;
 
             // Reset EPG display
             ShowCurrentEntry();
 
             // Restart videotext caching from scratch
-            VideoText.Deactivate( true );
+            VideoText.Deactivate(true);
 
             // Forget EPG data collected so far
             CurrentEntry = null;
             NextEntry = null;
 
             // Reset audio selection
-            return RestartAudio( false );
+            return RestartAudio(false);
         }
 
         /// <summary>
@@ -231,10 +231,10 @@ namespace JMS.DVB.Viewer
         /// <param name="audio">Voller Name der Tonspur oder <i>null</i> für die
         /// bevorzugte Tonspur.</param>
         /// <returns>Sendername mit ausgewählter Tonspur oder <i>null</i>.</returns>
-        public override string SetAudio( string audio )
+        public override string SetAudio(string audio)
         {
             // Forward
-            return SetAudio( audio, m_CurrentConnector.UpdateSettings );
+            return SetAudio(audio, m_CurrentConnector.UpdateSettings);
         }
 
         /// <summary>
@@ -257,13 +257,13 @@ namespace JMS.DVB.Viewer
         /// </summary>
         /// <param name="service">Name des Dienstes.</param>
         /// <returns>Name des Dienstes mit aktueller Tonspur oder <i>null</i>.</returns>
-        public override string SetService( ServiceItem service )
+        public override string SetService(ServiceItem service)
         {
             // Forward
-            if (m_CurrentConnector.SetService( service ) == null)
+            if (m_CurrentConnector.SetService(service) == null)
                 return null;
             else
-                return RestartAudio( false );
+                return RestartAudio(false);
         }
 
         /// <summary>
@@ -271,7 +271,7 @@ namespace JMS.DVB.Viewer
         /// Form aufrecht gehalten werden kann.
         /// </summary>
         /// <param name="fine">Gesetzt für den Aufruf im Sekundenrythmus.</param>
-        public override void KeepAlive( bool fine )
+        public override void KeepAlive(bool fine)
         {
             // Forward
             if (!fine)
@@ -284,7 +284,7 @@ namespace JMS.DVB.Viewer
         public override void FillOptions()
         {
             // Request all
-            var profiles = VCRNETRestProxy.GetProfilesSync( EndPoint ).Select( profile => profile.name ).ToArray();
+            var profiles = VCRNETRestProxy.GetProfilesSync(EndPoint).Select(profile => profile.name).ToArray();
 
             // Process all
             foreach (var profile in profiles)
@@ -293,15 +293,15 @@ namespace JMS.DVB.Viewer
                 string format = Properties.Resources.OptionProfile;
 
                 // See if this is active
-                if (string.IsNullOrEmpty( Profile ) && ProfileManager.ProfileNameComparer.Equals( profiles[0], profile ))
+                if (string.IsNullOrEmpty(Profile) && ProfileManager.ProfileNameComparer.Equals(profiles[0], profile))
                     format = Properties.Resources.OptionProfileActive;
-                else if (ProfileManager.ProfileNameComparer.Equals( Profile, profile ))
+                else if (ProfileManager.ProfileNameComparer.Equals(Profile, profile))
                     format = Properties.Resources.OptionProfileActive;
                 else
                     format = Properties.Resources.OptionProfile;
 
                 // Register - Clone() is important since anonymous delegate would bind profile to the last iteration value for ALL items
-                Parent.AddOption( new OptionDisplay( string.Format( format, profile ), () => ChangeProfile( profile ) ) );
+                Parent.AddOption(new OptionDisplay(string.Format(format, profile), () => ChangeProfile(profile)));
             }
 
             // Forward
@@ -326,7 +326,7 @@ namespace JMS.DVB.Viewer
         /// VCR.NET erneut aufgebaut.
         /// </remarks>
         /// <param name="profile">Das zu verwendende Profil.</param>
-        private void ChangeProfile( string profile )
+        private void ChangeProfile(string profile)
         {
             // Fire
             m_CurrentConnector.OnProfileChanging();
@@ -367,7 +367,7 @@ namespace JMS.DVB.Viewer
         public void StartLIVE()
         {
             // Forward
-            StartLIVE( false );
+            StartLIVE(false);
         }
 
         /// <summary>
@@ -375,10 +375,10 @@ namespace JMS.DVB.Viewer
         /// </summary>
         /// <param name="path">Voller Pfad einer VCR.NET Aufzeichnungsdatei.</param>
         /// <param name="name">Name der Teilaufzeichnung.</param>
-        public void StartReplay( string path, string name )
+        public void StartReplay(string path, string name)
         {
             // Forward
-            StartReplay( path, name, null );
+            StartReplay(path, name, null);
         }
 
         /// <summary>
@@ -387,10 +387,10 @@ namespace JMS.DVB.Viewer
         /// <param name="path">Voller Pfad einer VCR.NET Aufzeichnungsdatei.</param>
         /// <param name="name">Name der Teilaufzeichnung.</param>
         /// <param name="recording">Detailinformationen zur aktuellen Aufzeichnung.</param>
-        public void StartReplay( string path, string name, VCRNETRestProxy.Current recording )
+        public void StartReplay(string path, string name, VCRNETRestProxy.Current recording)
         {
             // Forward
-            StartReplay( path, name, recording, false );
+            StartReplay(path, name, recording, false);
         }
 
         /// <summary>
@@ -400,38 +400,38 @@ namespace JMS.DVB.Viewer
         /// <param name="name">Name der Teilaufzeichnung.</param>
         /// <param name="recording">Detailinformationen zur aktuellen Aufzeichnung.</param>
         /// <param name="startup">Während des Starts der Anwendung gesetzt.</param>
-        private void StartReplay( string path, string name, VCRNETRestProxy.Current recording, bool startup )
+        private void StartReplay(string path, string name, VCRNETRestProxy.Current recording, bool startup)
         {
             // Shut down
-            DestroyConnector( startup );
+            DestroyConnector(startup);
 
             // All files
             var files = new List<string>();
 
             // Try to count number of files
-            if (!string.IsNullOrEmpty( path ))
+            if (!string.IsNullOrEmpty(path))
             {
                 // Add self
-                files.Add( path );
+                files.Add(path);
 
                 // See if there are more
                 if (recording != null)
                     if (recording.files != null)
-                        if (path.ToLower().EndsWith( ".ts" ))
+                        if (path.ToLower().EndsWith(".ts"))
                         {
                             // Get prefix
-                            var prefix = path.Substring( 0, path.Length - 3 ) + " - ";
+                            var prefix = path.Substring(0, path.Length - 3) + " - ";
 
                             // Search all
                             foreach (var test in recording.files)
-                                if (test.ToLower().EndsWith( ".ts" ))
-                                    if (string.Compare( test, 0, prefix, 0, prefix.Length, true ) == 0)
-                                        files.Add( test );
+                                if (test.ToLower().EndsWith(".ts"))
+                                    if (string.Compare(test, 0, prefix, 0, prefix.Length, true) == 0)
+                                        files.Add(test);
                         }
             }
 
             // Restart
-            m_CurrentConnector = new FileConnector( this, path, name, files.ToArray() );
+            m_CurrentConnector = new FileConnector(this, path, name, files.ToArray());
 
             // Done on first call
             if (startup)
@@ -441,20 +441,20 @@ namespace JMS.DVB.Viewer
             ChannelListChanged();
 
             // Reload all
-            ShowMessage( RestartAudio( false ), Properties.Resources.NameTitle, true );
+            ShowMessage(RestartAudio(false), Properties.Resources.NameTitle, true);
         }
 
         /// <summary>
         /// Aktiviert eine Verbindung zum VCR.NET Recording Service.
         /// </summary>
         /// <param name="startup">Während des Starts der Anwendung gesetzt.</param>
-        private void StartLIVE( bool startup )
+        private void StartLIVE(bool startup)
         {
             // Shut down
-            DestroyConnector( startup );
+            DestroyConnector(startup);
 
             // Restart
-            m_CurrentConnector = new LiveConnector( this );
+            m_CurrentConnector = new LiveConnector(this);
 
             // Reload all
             if (!startup)
@@ -465,10 +465,10 @@ namespace JMS.DVB.Viewer
         /// Verbindet sich mit der laufenden Aufzeichnung im VCR.NET Recording Service.
         /// </summary>
         /// <param name="startWith">Auszuwählende Aufzeichnung.</param>
-        public void StartWatch( string startWith )
+        public void StartWatch(string startWith)
         {
             // Forward
-            StartWatch( startWith, false );
+            StartWatch(startWith, false);
         }
 
         /// <summary>
@@ -476,13 +476,13 @@ namespace JMS.DVB.Viewer
         /// </summary>
         /// <param name="startup">Während des Starts der Anwendung gesetzt.</param>
         /// <param name="startWith">Auszuwählende Aufzeichnung.</param>
-        private void StartWatch( string startWith, bool startup )
+        private void StartWatch(string startWith, bool startup)
         {
             // Shut down
-            DestroyConnector( startup );
+            DestroyConnector(startup);
 
             // Restart
-            m_CurrentConnector = new CurrentConnector( this, startWith );
+            m_CurrentConnector = new CurrentConnector(this, startWith);
 
             // Reload all
             if (!startup)
@@ -502,7 +502,7 @@ namespace JMS.DVB.Viewer
         /// Wird aufgerufen, wenn das Zugriffsmodul Daten anfordert.
         /// </summary>
         /// <param name="endPoint">Das anfordernde Zugriffsmodul.</param>
-        protected override void OnWaitData( TransportStreamReceiver endPoint )
+        protected override void OnWaitData(TransportStreamReceiver endPoint)
         {
             // Load connector
             var connector = m_CurrentConnector;

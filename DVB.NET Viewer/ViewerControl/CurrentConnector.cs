@@ -26,7 +26,7 @@ namespace JMS.DVB.Viewer
             /// Erstellt eine neue Beschreibung.
             /// </summary>
             /// <param name="info">Die zugehörige Aktivität.</param>
-            public JobScheduleInfo( VCRNETRestProxy.Current info )
+            public JobScheduleInfo(VCRNETRestProxy.Current info)
             {
                 // Remember
                 Activity = info;
@@ -63,10 +63,10 @@ namespace JMS.DVB.Viewer
             /// </summary>
             /// <param name="endPoint">Der zugehörige <i>VCR.NET Recording Service</i>.</param>
             /// <param name="target">Die Zieladresse des Netzwerkversands.</param>
-            public void StreamTo( string endPoint, string target )
+            public void StreamTo(string endPoint, string target)
             {
                 // Forward
-                VCRNETRestProxy.SetStreamTargetSync( endPoint, Activity.device, Activity.source, Activity.referenceId.Value, target );
+                VCRNETRestProxy.SetStreamTargetSync(endPoint, Activity.device, Activity.source, Activity.referenceId.Value, target);
             }
         }
 
@@ -100,8 +100,8 @@ namespace JMS.DVB.Viewer
         /// </summary>
         /// <param name="adaptor">Verbindung zur aktuellen Anwendung.</param>
         /// <param name="startWith">Vorgabe für die Auswahl der ersten Teilaufzeichnung.</param>
-        public CurrentConnector( VCRAdaptor adaptor, string startWith )
-            : base( adaptor )
+        public CurrentConnector(VCRAdaptor adaptor, string startWith)
+            : base(adaptor)
         {
             // Remember
             m_StartupStation = startWith;
@@ -111,7 +111,7 @@ namespace JMS.DVB.Viewer
         /// Aktualisiert die Daten der aktuellen Aufzeichnung.
         /// </summary>
         /// <param name="current">Die aktuellen Daten.</param>
-        private void ReceiveCurrentRecording( VCRNETRestProxy.Current[] current )
+        private void ReceiveCurrentRecording(VCRNETRestProxy.Current[] current)
         {
             // Remember if valid
             m_allActivities = current;
@@ -127,7 +127,7 @@ namespace JMS.DVB.Viewer
             base.FillOptions();
 
             // Register
-            Adaptor.Parent.SetKeyHandler( Keys.Multiply, StartTimeshift );
+            Adaptor.Parent.SetKeyHandler(Keys.Multiply, StartTimeshift);
         }
 
         /// <summary>
@@ -136,10 +136,10 @@ namespace JMS.DVB.Viewer
         private void StartTimeshift()
         {
             // Check mode
-            if (!string.IsNullOrEmpty( Adaptor.StreamInfo.BroadcastIP ))
+            if (!string.IsNullOrEmpty(Adaptor.StreamInfo.BroadcastIP))
             {
                 // Report
-                ShowMessage( Properties.Resources.NoMulticastTimeShift, Properties.Resources.Warning_NotAvailable, true );
+                ShowMessage(Properties.Resources.NoMulticastTimeShift, Properties.Resources.Warning_NotAvailable, true);
 
                 // Done
                 return;
@@ -150,11 +150,11 @@ namespace JMS.DVB.Viewer
             if (current == null)
                 return;
             var path = current.PrimaryPath;
-            if (string.IsNullOrEmpty( path ))
+            if (string.IsNullOrEmpty(path))
                 return;
 
             // Start it
-            Adaptor.StartReplay( path, current.Name, current.Activity );
+            Adaptor.StartReplay(path, current.Name, current.Activity);
         }
 
         /// <summary>
@@ -167,10 +167,10 @@ namespace JMS.DVB.Viewer
 
             // Special
             if (m_StartupStation != null)
-                if (m_StartupStation.StartsWith( "dvbnet:" ))
+                if (m_StartupStation.StartsWith("dvbnet5:"))
                 {
                     // Get the index
-                    startupIndex = int.Parse( m_StartupStation.Substring( 7 ) );
+                    startupIndex = int.Parse(m_StartupStation.Substring(7));
 
                     // No direct default
                     m_StartupStation = null;
@@ -187,16 +187,16 @@ namespace JMS.DVB.Viewer
             var duplicates = new Dictionary<string, int>();
 
             // Find all current activities
-            foreach (var activity in VCRNETRestProxy.GetActivitiesForProfile( Adaptor.EndPoint, Profile ))
+            foreach (var activity in VCRNETRestProxy.GetActivitiesForProfile(Adaptor.EndPoint, Profile))
             {
                 // Create the information record
-                var item = new JobScheduleInfo( activity );
+                var item = new JobScheduleInfo(activity);
                 var name = activity.name;
 
                 // Read counter
                 int cnt;
-                if (duplicates.TryGetValue( name, out cnt ))
-                    name = string.Format( "{0} ({1})", name, cnt );
+                if (duplicates.TryGetValue(name, out cnt))
+                    name = string.Format("{0} ({1})", name, cnt);
                 else
                     cnt = 0;
 
@@ -204,7 +204,7 @@ namespace JMS.DVB.Viewer
                 duplicates[name] = ++cnt;
 
                 // Add to list
-                Favorites.AddChannel( name, item );
+                Favorites.AddChannel(name, item);
 
                 // Remember
                 if (m_DefaultStation == null)
@@ -231,7 +231,7 @@ namespace JMS.DVB.Viewer
         /// </summary>
         /// <param name="service">Name des gewünschten NVOD Dienstes.</param>
         /// <returns>Wirft immer eine <see cref="NotSupportedException"/>.</returns>
-        public override string SetService( ServiceItem service )
+        public override string SetService(ServiceItem service)
         {
             // Not supported
             return null;
@@ -242,22 +242,22 @@ namespace JMS.DVB.Viewer
         /// </summary>
         /// <param name="context">Die gewünschte Aufzeichnung.</param>
         /// <returns>Aktuelle Aufzeichnung samt aktiver Tonspur oder <i>null</i>.</returns>
-        public override string SetStation( object context )
+        public override string SetStation(object context)
         {
             // Stop sending data
             Accessor.Stop();
 
             // Restart videotext caching from scratch
-            Adaptor.VideoText.Deactivate( true );
+            Adaptor.VideoText.Deactivate(true);
 
             // Reset
             Disconnect();
 
             // Attach to the item
-            var item = (JobScheduleInfo) context;
+            var item = (JobScheduleInfo)context;
 
             // Get the signal    
-            item.StreamTo( Adaptor.EndPoint, Adaptor.Target );
+            item.StreamTo(Adaptor.EndPoint, Adaptor.Target);
 
             // Remember
             m_CurrentSource = item;
@@ -277,7 +277,7 @@ namespace JMS.DVB.Viewer
                 try
                 {
                     // Process
-                    current.StreamTo( Adaptor.EndPoint, null );
+                    current.StreamTo(Adaptor.EndPoint, null);
                 }
                 catch
                 {
@@ -315,7 +315,7 @@ namespace JMS.DVB.Viewer
         /// Prüft die Liste der aktiven Aufzeichnungen.
         /// </summary>
         /// <param name="activities">Eine nicht leere Liste von aktiven Auzeichnungen.</param>
-        private void ValidateActiveRecording( VCRNETRestProxy.Current[] activities )
+        private void ValidateActiveRecording(VCRNETRestProxy.Current[] activities)
         {
             // Check for special operations
             var first = activities[0];
@@ -323,13 +323,13 @@ namespace JMS.DVB.Viewer
 
             // See if there is a task running
             if (first.streamIndex < 0)
-                ShowMessage( Properties.Resources.CurrentUntil, Properties.Resources.Warning_NotAvailable, false, first.source, first.EndsAt.ToLocalTime() );
+                ShowMessage(Properties.Resources.CurrentUntil, Properties.Resources.Warning_NotAvailable, false, first.source, first.EndsAt.ToLocalTime());
 
             // See if we have no current source
             else if (current == null)
             {
                 // Start watching
-                Adaptor.StartWatch( null );
+                Adaptor.StartWatch(null);
 
                 // Done
                 return;
@@ -339,12 +339,12 @@ namespace JMS.DVB.Viewer
             else
             {
                 // Set if we are connected
-                var newCurrent = activities.First( activity => activity.referenceId.Value == current.Activity.referenceId.Value );
+                var newCurrent = activities.First(activity => activity.referenceId.Value == current.Activity.referenceId.Value);
                 if (newCurrent != null)
-                    if (string.IsNullOrEmpty( newCurrent.streamTarget ))
+                    if (string.IsNullOrEmpty(newCurrent.streamTarget))
                     {
                         // Start watching
-                        Adaptor.StartWatch( null );
+                        Adaptor.StartWatch(null);
 
                         // Done
                         return;
@@ -352,14 +352,14 @@ namespace JMS.DVB.Viewer
             }
 
             // Restart request
-            VCRNETRestProxy.GetActivities( Adaptor.EndPoint, ReceiveCurrentRecording, null );
+            VCRNETRestProxy.GetActivities(Adaptor.EndPoint, ReceiveCurrentRecording, null);
         }
 
         /// <summary>
         /// Prüft, ob in den LIVE Modus gewechselt werden kann.
         /// </summary>
         /// <param name="next">Die als nächstens anstehende Aktivität.</param>
-        private void ValidateIdle( VCRNETRestProxy.Current next )
+        private void ValidateIdle(VCRNETRestProxy.Current next)
         {
             // Get the next recording
             if (next.start.HasValue)
@@ -369,10 +369,10 @@ namespace JMS.DVB.Viewer
                 if (delta.TotalMinutes <= 3)
                 {
                     // Report
-                    ShowMessage( Properties.Resources.NextRecording, Properties.Resources.Warning_NotAvailable, false, (int) delta.TotalSeconds );
+                    ShowMessage(Properties.Resources.NextRecording, Properties.Resources.Warning_NotAvailable, false, (int)delta.TotalSeconds);
 
                     // Restart request
-                    VCRNETRestProxy.GetActivities( Adaptor.EndPoint, ReceiveCurrentRecording, null );
+                    VCRNETRestProxy.GetActivities(Adaptor.EndPoint, ReceiveCurrentRecording, null);
 
                     // Done
                     return;
@@ -389,8 +389,8 @@ namespace JMS.DVB.Viewer
         public override void KeepAlive()
         {
             // Read results
-            var activities = (m_allActivities ?? Enumerable.Empty<VCRNETRestProxy.Current>()).Where( activity => ProfileManager.ProfileNameComparer.Equals( activity.device, Profile ) ).ToArray();
-            var running = activities.Where( activity => activity.IsActive ).ToArray();
+            var activities = (m_allActivities ?? Enumerable.Empty<VCRNETRestProxy.Current>()).Where(activity => ProfileManager.ProfileNameComparer.Equals(activity.device, Profile)).ToArray();
+            var running = activities.Where(activity => activity.IsActive).ToArray();
             var gotResult = m_allActivitiesValid;
 
             // Prepare for next call
@@ -400,13 +400,13 @@ namespace JMS.DVB.Viewer
             // See if result is available
             if (gotResult)
                 if (running.Length > 0)
-                    ValidateActiveRecording( running );
+                    ValidateActiveRecording(running);
                 else if (activities.Length > 0)
-                    ValidateIdle( activities[0] );
+                    ValidateIdle(activities[0]);
                 else
                     Adaptor.StartLIVE();
             else
-                VCRNETRestProxy.GetActivities( Adaptor.EndPoint, ReceiveCurrentRecording, null );
+                VCRNETRestProxy.GetActivities(Adaptor.EndPoint, ReceiveCurrentRecording, null);
         }
 
         /// <summary>
