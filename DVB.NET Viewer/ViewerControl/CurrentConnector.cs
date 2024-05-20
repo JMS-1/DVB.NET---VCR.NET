@@ -170,7 +170,7 @@ namespace JMS.DVB.Viewer
                 if (m_StartupStation.StartsWith("dvbnet5:"))
                 {
                     // Get the index
-                    startupIndex = int.Parse(m_StartupStation.Substring(7));
+                    startupIndex = int.Parse(m_StartupStation.Substring(8));
 
                     // No direct default
                     m_StartupStation = null;

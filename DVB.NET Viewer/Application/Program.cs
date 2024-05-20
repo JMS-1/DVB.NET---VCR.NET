@@ -101,7 +101,7 @@ namespace DVBNETViewer
                         else if (startMode.ToLower().StartsWith("dvbnet5://"))
                         {
                             // Start with the server part
-                            startMode = startMode.Substring(9);
+                            startMode = startMode.Substring(10);
 
                             // See if this is a regular start using the URL protocol
                             bool startedByProtocol = !startMode.StartsWith("*");
