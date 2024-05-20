@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -59,12 +60,12 @@ namespace JMS.DVB.Viewer
             /// <summary>
             /// Der Anzeigename der Quelle.
             /// </summary>
-            public string nameWithProvider { get; set; }
+            public string name { get; set; }
 
             /// <summary>
             /// Gesetzt, wenn die Quelle verschlüsselt ist.
             /// </summary>
-            public bool encrypted { get; set; }
+            public bool isEncrypted { get; set; }
 
             /// <summary>
             /// Die eindeutige Kennung der Quelle.
@@ -80,7 +81,7 @@ namespace JMS.DVB.Viewer
             /// <summary>
             /// Das zugehörige Geräteprofil.
             /// </summary>
-            public string device { get; set; }
+            public string profileName { get; set; }
 
             /// <summary>
             /// Der Name der Aktivität.
@@ -90,17 +91,17 @@ namespace JMS.DVB.Viewer
             /// <summary>
             /// Die laufende Nummer des zugehörigen Datenstroms.
             /// </summary>
-            public int streamIndex { get; set; }
+            public int index { get; set; }
 
             /// <summary>
             /// Für gerade aktive Aufzeichnungen gesetzt.
             /// </summary>
-            public Guid? referenceId { get; set; }
+            public Guid? planIdentifier { get; set; }
 
             /// <summary>
             /// Gesetzt, wenn es sich um eine aktive Aufzeichnung oder Aufgabe handelt.
             /// </summary>
-            public bool IsActive { get { return referenceId.HasValue; } }
+            public bool IsActive => planIdentifier.HasValue;
 
             /// <summary>
             /// Die zugehörige Quelle, sofern bekannt.
@@ -115,17 +116,22 @@ namespace JMS.DVB.Viewer
             /// <summary>
             /// Der Startzeitpunkt der Aufzeichnung.
             /// </summary>
-            public DateTime? start { get; set; }
+            public string startTimeISO { get; set; } = null;
+
+            /// <summary>
+            /// Der Startzeitpunkt der Aufzeichnung.
+            /// </summary>
+            public DateTime? Start => string.IsNullOrEmpty(startTimeISO) ? (DateTime?)null : DateTime.Parse(startTimeISO, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
 
             /// <summary>
             /// Die Laufzeit der Aufzeichnung in Sekunden.
             /// </summary>
-            public int duration { get; set; }
+            public int durationInSeconds { get; set; }
 
             /// <summary>
             /// Meldet den Endzeitpunkt der Aufzeichnung.
             /// </summary>
-            public DateTime EndsAt { get { return start.Value.AddSeconds( duration ); } }
+            public DateTime EndsAt => Start.Value.AddSeconds(durationInSeconds);
 
             /// <summary>
             /// Die Netzwerkadresse, an die gerade die Aufzeichnungsdaten versendet werden.
@@ -157,12 +163,12 @@ namespace JMS.DVB.Viewer
             /// <summary>
             /// Das für die Auswahl der Quelle verwendete Gerät.
             /// </summary>
-            public string device { get; set; }
+            public string profile { get; set; }
 
             /// <summary>
             /// Die Quelle, von der aufgezeichnet werden soll.
             /// </summary>
-            public string sourceName { get; set; }
+            public string source { get; set; }
 
             /// <summary>
             /// Gesetzt, wenn alle Tonspuren aufgezeichnet werden sollen.
@@ -172,17 +178,17 @@ namespace JMS.DVB.Viewer
             /// <summary>
             /// Gesetzt, wenn auch die <i>Dolby Digital</i> Tonspur aufgezeichnet werden soll.
             /// </summary>
-            public bool includeDolby { get; set; }
+            public bool dolbyDigital { get; set; }
 
             /// <summary>
             /// Gesetzt, wenn auch der Videotext aufgezeichnet werden soll.
             /// </summary>
-            public bool withVideotext { get; set; }
+            public bool videotext { get; set; }
 
             /// <summary>
             /// Gesetzt, wenn auch alle DVB Untertitel aufgezeichnet werden sollen.
             /// </summary>
-            public bool withSubtitles { get; set; }
+            public bool dvbSubtitles { get; set; }
         }
 
         /// <summary>
@@ -198,12 +204,30 @@ namespace JMS.DVB.Viewer
             /// <summary>
             /// Der Zeitpunkt, an dem die erste Aufzeichnung stattfinden soll.
             /// </summary>
-            public DateTime firstStart { get; set; }
+            public string firstStartISO { get; set; }
+
+            /// <summary>
+            /// Der Zeitpunkt, an dem die erste Aufzeichnung stattfinden soll.
+            /// </summary>
+            public DateTime firstStart
+            {
+                get { return DateTime.Parse(firstStartISO, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind); }
+                set { firstStartISO = value.ToString("o"); }
+            }
 
             /// <summary>
             /// Das Datum der letzten Ausführung.
             /// </summary>
-            public DateTime lastDay { get; set; }
+            public string lastDayISO { get; set; }
+
+            /// <summary>
+            /// Das Datum der letzten Ausführung.
+            /// </summary>
+            public DateTime lastDay
+            {
+                get { return DateTime.Parse(lastDayISO, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind); }
+                set { lastDayISO = value.ToString("o"); }
+            }
 
             /// <summary>
             /// Die Dauer der Aufzeichnung.
@@ -238,16 +262,16 @@ namespace JMS.DVB.Viewer
         /// <typeparam name="TResult">Die gewünschte Art des Ergebnisses.</typeparam>
         /// <param name="result">Der laufende Zugriff.</param>
         /// <returns>Das Ergebnis.</returns>
-        private static TResult Deserialize<TResult>( IAsyncResult result )
+        private static TResult Deserialize<TResult>(IAsyncResult result)
         {
             // Attach to the request
-            var request = (WebRequest) result.AsyncState;
+            var request = (WebRequest)result.AsyncState;
 
             // Load the response
-            using (var response = request.EndGetResponse( result ))
+            using (var response = request.EndGetResponse(result))
             using (var status = response.GetResponseStream())
-            using (var reader = new StreamReader( status ))
-                return (TResult) s_Converter.Deserialize( reader, typeof( TResult ) );
+            using (var reader = new StreamReader(status))
+                return (TResult)s_Converter.Deserialize(reader, typeof(TResult));
         }
 
         /// <summary>
@@ -256,24 +280,24 @@ namespace JMS.DVB.Viewer
         /// <typeparam name="TResult">Die Art des Ergebnisses.</typeparam>
         /// <param name="request">Die Anfrage.</param>
         /// <returns>Das gewünschte Ergebnis.</returns>
-        private static TResult BeginRequestAndWait<TResult>( Action<Action<TResult>, Action<Exception>> request )
+        private static TResult BeginRequestAndWait<TResult>(Action<Action<TResult>, Action<Exception>> request)
         {
             // Result
-            var result = default( TResult );
+            var result = default(TResult);
             Exception exception = null;
 
             // Create synchronizer
             var sync = new object();
 
             // Protect
-            Monitor.Enter( sync );
+            Monitor.Enter(sync);
 
             // Start
-            request( data => { result = data; lock (sync) Monitor.Pulse( sync ); }, error => { exception = error; lock (sync) Monitor.Pulse( sync ); } );
+            request(data => { result = data; lock (sync) Monitor.Pulse(sync); }, error => { exception = error; lock (sync) Monitor.Pulse(sync); });
 
             // Wait if not failed in preparation
             if (exception == null)
-                Monitor.Wait( sync );
+                Monitor.Wait(sync);
 
             // Fire error
             if (exception != null)
@@ -292,7 +316,7 @@ namespace JMS.DVB.Viewer
         /// <param name="success">Wird im Erfolgsfall aufgerufen.</param>
         /// <param name="failure">Wird im Fehlerfall aufgerufen.</param>
         /// <param name="data">An den Server zu übertragende Daten.</param>
-        private static void BeginRequest<TResult>( Func<string> uriFactory, string method, Action<TResult> success, Action<Exception> failure, object data = null )
+        private static void BeginRequest<TResult>(Func<string> uriFactory, string method, Action<TResult> success, Action<Exception> failure, object data = null)
         {
             // Default
             if (failure == null)
@@ -302,8 +326,8 @@ namespace JMS.DVB.Viewer
             try
             {
                 // Create request
-                var uri = new Uri( uriFactory() );
-                var request = WebRequest.Create( uri );
+                var uri = new Uri(uriFactory());
+                var request = WebRequest.Create(uri);
 
                 // Configure
                 request.UseDefaultCredentials = true;
@@ -316,17 +340,12 @@ namespace JMS.DVB.Viewer
                         // Process
                         try
                         {
-                            // Generate response
-                            var status = Deserialize<TResult>( args );
-
-                            // Report
-                            if (success != null)
-                                success( status );
+                            success?.Invoke(Deserialize<TResult>(args));
                         }
                         catch (Exception e)
                         {
                             // Forward
-                            failure( e );
+                            failure(e);
                         }
                     };
 
@@ -337,7 +356,7 @@ namespace JMS.DVB.Viewer
                     request.ContentLength = 0;
 
                     // Direct processing
-                    request.BeginGetResponse( responseProcessor, request );
+                    request.BeginGetResponse(responseProcessor, request);
                 }
                 else
                 {
@@ -352,25 +371,25 @@ namespace JMS.DVB.Viewer
                             try
                             {
                                 // Fill
-                                using (var stream = request.EndGetRequestStream( args ))
-                                using (var writer = new StreamWriter( stream ))
-                                    s_Converter.Serialize( writer, data );
+                                using (var stream = request.EndGetRequestStream(args))
+                                using (var writer = new StreamWriter(stream))
+                                    s_Converter.Serialize(writer, data);
 
                                 // Forward
-                                request.BeginGetResponse( responseProcessor, request );
+                                request.BeginGetResponse(responseProcessor, request);
                             }
                             catch (Exception e)
                             {
                                 // Forward
-                                failure( e );
+                                failure(e);
                             }
-                        }, request );
+                        }, request);
                 }
             }
             catch (Exception e)
             {
                 // Fire
-                failure( e );
+                failure(e);
             }
         }
 
@@ -380,11 +399,8 @@ namespace JMS.DVB.Viewer
         /// <param name="endPoint">Der zu verwendende <i>VCR.NET Recording Service</i>.</param>
         /// <param name="profileName">Das zu verwendende Geräteprofil.</param>
         /// <param name="target">Die Adresse, an die alle Daten gesendet werden sollen.</param>
-        public static Status ConnectSync( string endPoint, string profileName, string target )
-        {
-            // Use helper
-            return BeginRequestAndWait<Status>( ( success, failure ) => Connect( endPoint, profileName, target, success, failure ) );
-        }
+        public static Status ConnectSync(string endPoint, string profileName, string target)
+            => BeginRequestAndWait<Status>((success, failure) => Connect(endPoint, profileName, target, success, failure));
 
         /// <summary>
         /// Aktiviert das Versenden von Daten.
@@ -394,11 +410,8 @@ namespace JMS.DVB.Viewer
         /// <param name="target">Die Adresse, an die alle Daten gesendet werden sollen.</param>
         /// <param name="success">Wird im Erfolgsfall aufgerufen.</param>
         /// <param name="failure">Wird im Fehlerfall aufgerufen.</param>
-        private static void Connect( string endPoint, string profileName, string target, Action<Status> success, Action<Exception> failure )
-        {
-            // Use helper
-            BeginRequest( () => string.Format( "{0}{1}?target={2}", endPoint, profileName, target ), "POST", success, failure );
-        }
+        private static void Connect(string endPoint, string profileName, string target, Action<Status> success, Action<Exception> failure)
+            => BeginRequest(() => string.Format("{0}live/{1}?target={2}", endPoint, profileName, target), "POST", success, failure);
 
         /// <summary>
         /// Beginnt einen neuen Zugriff zum Auslesen der Quellen.
@@ -409,11 +422,8 @@ namespace JMS.DVB.Viewer
         /// <param name="includeRadio">Gesetzt, um alle Radiosender einzuschliessen.</param>
         /// <param name="success">Wird im Erfolgsfall aufgerufen.</param>
         /// <param name="failure">Wird bei Fehlern aufgerufen.</param>
-        private static void ReadSources( string endPoint, string profileName, bool includeTV, bool includeRadio, Action<Source[]> success, Action<Exception> failure )
-        {
-            // Forward
-            BeginRequest( () => string.Format( "{0}{1}?tv={2}&radio={3}", endPoint, profileName, includeTV, includeRadio ), "GET", success, failure );
-        }
+        private static void ReadSources(string endPoint, string profileName, bool includeTV, bool includeRadio, Action<Source[]> success, Action<Exception> failure)
+            => BeginRequest(() => string.Format("{0}source/{1}?tv={2}&radio={3}", endPoint, profileName, includeTV, includeRadio), "GET", success, failure);
 
         /// <summary>
         /// Ermittelt alle Quellen.
@@ -423,11 +433,8 @@ namespace JMS.DVB.Viewer
         /// <param name="includeTV">Gesetzt, um alle Fernsehsender einzuschliessen.</param>
         /// <param name="includeRadio">Gesetzt, um alle Radiosender einzuschliessen.</param>
         /// <returns>Die Liste der Quellen.</returns>
-        public static Source[] ReadSourcesSync( string endPoint, string profileName, bool includeTV, bool includeRadio )
-        {
-            // Forward
-            return BeginRequestAndWait<Source[]>( ( success, failure ) => ReadSources( endPoint, profileName, includeTV, includeRadio, success, failure ) );
-        }
+        public static Source[] ReadSourcesSync(string endPoint, string profileName, bool includeTV, bool includeRadio)
+            => BeginRequestAndWait<Source[]>((success, failure) => ReadSources(endPoint, profileName, includeTV, includeRadio, success, failure));
 
         /// <summary>
         /// Ermittelt einen aktuellen Zustand.
@@ -436,11 +443,8 @@ namespace JMS.DVB.Viewer
         /// <param name="profileName">Der Name des Geräteprofils.</param>
         /// <param name="success">Wird im Erfolgsfall aufgerufen.</param>
         /// <param name="failure">Wird bei Fehlern aufgerufen.</param>
-        public static void GetStatus( string endPoint, string profileName, Action<Status> success, Action<Exception> failure )
-        {
-            // Use helper
-            BeginRequest( () => string.Format( "{0}{1}", endPoint, profileName ), "GET", success, failure );
-        }
+        public static void GetStatus(string endPoint, string profileName, Action<Status> success, Action<Exception> failure)
+            => BeginRequest(() => string.Format("{0}status/{1}", endPoint, profileName), "GET", success, failure);
 
         /// <summary>
         /// Ermittelt einen aktuellen Zustand.
@@ -448,11 +452,8 @@ namespace JMS.DVB.Viewer
         /// <param name="endPoint">Der zu verwendende <i>VCR.NET Recording Service</i>.</param>
         /// <param name="profileName">Der Name des Geräteprofils.</param>
         /// <returns>Der aktuelle Zustand.</returns>
-        public static Status GetStatusSync( string endPoint, string profileName )
-        {
-            // Use helper
-            return BeginRequestAndWait<Status>( ( success, failure ) => GetStatus( endPoint, profileName, success, failure ) );
-        }
+        public static Status GetStatusSync(string endPoint, string profileName)
+            => BeginRequestAndWait<Status>((success, failure) => GetStatus(endPoint, profileName, success, failure));
 
         /// <summary>
         /// Beendet die Sitzung.
@@ -461,11 +462,8 @@ namespace JMS.DVB.Viewer
         /// <param name="profileName">Der Name des Geräteprofils.</param>
         /// <param name="success">Wird im Erfolgsfall aufgerufen.</param>
         /// <param name="failure">Wird bei Fehlern aufgerufen.</param>
-        private static void Disconnect( string endPoint, string profileName, Action<Status> success, Action<Exception> failure )
-        {
-            // Use helper
-            BeginRequest( () => string.Format( "{0}{1}", endPoint, profileName ), "DELETE", success, failure );
-        }
+        private static void Disconnect(string endPoint, string profileName, Action<Status> success, Action<Exception> failure)
+            => BeginRequest(() => string.Format("{0}live/{1}", endPoint, profileName), "DELETE", success, failure);
 
         /// <summary>
         /// Beendet die Sitzung.
@@ -473,11 +471,8 @@ namespace JMS.DVB.Viewer
         /// <param name="endPoint">Der zu verwendende <i>VCR.NET Recording Service</i>.</param>
         /// <param name="profileName">Der Name des Geräteprofils.</param>
         /// <returns>Der neue Zustand.</returns>
-        public static Status DisconnectSync( string endPoint, string profileName )
-        {
-            // Use helper
-            return BeginRequestAndWait<Status>( ( success, failure ) => Disconnect( endPoint, profileName, success, failure ) );
-        }
+        public static Status DisconnectSync(string endPoint, string profileName)
+            => BeginRequestAndWait<Status>((success, failure) => Disconnect(endPoint, profileName, success, failure));
 
         /// <summary>
         /// Wählt einen neuen Sender aus.
@@ -487,11 +482,8 @@ namespace JMS.DVB.Viewer
         /// <param name="source">Die eindeutige Kennung des Senders.</param>
         /// <param name="success">Wird im Erfolgsfall aufgerufen.</param>
         /// <param name="failure">Wird bei Fehlern aufgerufen.</param>
-        private static void Tune( string endPoint, string profileName, string source, Action<Status> success, Action<Exception> failure )
-        {
-            // Use helper
-            BeginRequest( () => string.Format( "{0}{1}?source={2}", endPoint, profileName, source ), "PUT", success, failure );
-        }
+        private static void Tune(string endPoint, string profileName, string source, Action<Status> success, Action<Exception> failure)
+            => BeginRequest(() => string.Format("{0}tune/{1}?source={2}", endPoint, profileName, source), "PUT", success, failure);
 
         /// <summary>
         /// Wählt einen neuen Sender aus.
@@ -500,11 +492,8 @@ namespace JMS.DVB.Viewer
         /// <param name="profileName">Der Name des Geräteprofils.</param>
         /// <param name="source">Die eindeutige Kennung des Senders.</param>
         /// <returns>Der neue Zustand.</returns>
-        public static Status TuneSync( string endPoint, string profileName, string source )
-        {
-            // Use helper
-            return BeginRequestAndWait<Status>( ( success, failure ) => Tune( endPoint, profileName, source, success, failure ) );
-        }
+        public static Status TuneSync(string endPoint, string profileName, string source)
+            => BeginRequestAndWait<Status>((success, failure) => Tune(endPoint, profileName, source, success, failure));
 
         /// <summary>
         /// Ändert den Netzwerkversand.
@@ -516,11 +505,8 @@ namespace JMS.DVB.Viewer
         /// <param name="target">Die neue Zieladresse für den Netzwerkversand.</param>
         /// <param name="success">Wird im Erfolgsfall aufgerufen.</param>
         /// <param name="failure">Wird bei Fehlern aufgerufen.</param>
-        private static void SetStreamTarget( string endPoint, string profileName, string source, Guid scheduleIdentifier, string target, Action<object> success, Action<Exception> failure )
-        {
-            // Use helper
-            BeginRequest<object>( () => string.Format( "{0}/plan/{1}?source={2}&scheduleIdentifier={3:N}&target={4}", endPoint, profileName, source, scheduleIdentifier, target ), "POST", success, failure );
-        }
+        private static void SetStreamTarget(string endPoint, string profileName, string source, Guid scheduleIdentifier, string target, Action<object> success, Action<Exception> failure)
+            => BeginRequest(() => string.Format("{0}/plan/target/{1}?source={2}&scheduleIdentifier={3:N}&target={4}", endPoint, profileName, source, scheduleIdentifier, target), "POST", success, failure);
 
         /// <summary>
         /// Ändert den Netzwerkversand.
@@ -530,11 +516,8 @@ namespace JMS.DVB.Viewer
         /// <param name="source">Die Quelle.</param>
         /// <param name="scheduleIdentifier">Die eindeutige Kennung der Aufzeichnung.</param>
         /// <param name="target">Die neue Zieladresse für den Netzwerkversand.</param>
-        public static void SetStreamTargetSync( string endPoint, string profileName, string source, Guid scheduleIdentifier, string target )
-        {
-            // Use helper
-            BeginRequestAndWait<object>( ( success, failure ) => SetStreamTarget( endPoint, profileName, source, scheduleIdentifier, target, success, failure ) );
-        }
+        public static void SetStreamTargetSync(string endPoint, string profileName, string source, Guid scheduleIdentifier, string target)
+            => BeginRequestAndWait<object>((success, failure) => SetStreamTarget(endPoint, profileName, source, scheduleIdentifier, target, success, failure));
 
         /// <summary>
         /// Ermittelt alle Geräteprofile.
@@ -542,22 +525,16 @@ namespace JMS.DVB.Viewer
         /// <param name="endPoint">Die Verbindung zum <i>VCR.NET Recording Service</i>.</param>
         /// <param name="success">Wird im Erfolgsfall aufgerufen.</param>
         /// <param name="failure">Wird bei Fehlern aufgerufen.</param>
-        private static void GetProfiles( string endPoint, Action<ProfileInfo[]> success, Action<Exception> failure )
-        {
-            // Use helper
-            BeginRequest( () => string.Format( "{0}/profile", endPoint ), "GET", success, failure );
-        }
+        private static void GetProfiles(string endPoint, Action<ProfileInfo[]> success, Action<Exception> failure)
+            => BeginRequest(() => string.Format("{0}/profile/profiles", endPoint), "GET", success, failure);
 
         /// <summary>
         /// Ermittelt alle Geräteprofile.
         /// </summary>
         /// <param name="endPoint">Die Verbindung zum <i>VCR.NET Recording Service</i>.</param>
         /// <returns>Die gewünschte Liste.</returns>
-        public static ProfileInfo[] GetProfilesSync( string endPoint )
-        {
-            // Use helper
-            return BeginRequestAndWait<ProfileInfo[]>( ( success, failure ) => GetProfiles( endPoint, success, failure ) );
-        }
+        public static ProfileInfo[] GetProfilesSync(string endPoint)
+           => BeginRequestAndWait<ProfileInfo[]>((success, failure) => GetProfiles(endPoint, success, failure));
 
         /// <summary>
         /// Ermittelt die aktuellen und anstehenden Aktivitäten aller Geräteprofile.
@@ -565,22 +542,16 @@ namespace JMS.DVB.Viewer
         /// <param name="endPoint">Die Verbindung zum <i>VCR.NET Recording Service</i>.</param>
         /// <param name="success">Wird im Erfolgsfall aufgerufen.</param>
         /// <param name="failure">Wird bei Fehlern aufgerufen.</param>
-        public static void GetActivities( string endPoint, Action<Current[]> success, Action<Exception> failure )
-        {
-            // Use helper
-            BeginRequest( () => string.Format( "{0}/plan", endPoint ), "GET", success, failure );
-        }
+        public static void GetActivities(string endPoint, Action<Current[]> success, Action<Exception> failure)
+            => BeginRequest(() => string.Format("{0}/plan/current", endPoint), "GET", success, failure);
 
         /// <summary>
         /// Ermittelt die aktuellen und anstehenden Aktivitäten aller Geräteprofile.
         /// </summary>
         /// <param name="endPoint">Die Verbindung zum <i>VCR.NET Recording Service</i>.</param>
         /// <returns>Die gewünschte Liste.</returns>
-        public static Current[] GetActivitiesSync( string endPoint )
-        {
-            // Use helper
-            return BeginRequestAndWait<Current[]>( ( success, failure ) => GetActivities( endPoint, success, failure ) );
-        }
+        public static Current[] GetActivitiesSync(string endPoint)
+           => BeginRequestAndWait<Current[]>((success, failure) => GetActivities(endPoint, success, failure));
 
         /// <summary>
         /// Meldet alle Aktivitäten eines bestimmten Geräteprofils.
@@ -588,16 +559,12 @@ namespace JMS.DVB.Viewer
         /// <param name="endPoint">Die Verbindung zum <i>VCR.NET Recording Service</i>.</param>
         /// <param name="profileName">Der Name des Profils.</param>
         /// <returns>Die gewünschte Liste</returns>
-        public static List<Current> GetActivitiesForProfile( string endPoint, string profileName )
-        {
-            // Forward
-            return
-                GetActivitiesSync( endPoint )
-                    .Where( activity => activity.IsActive )
-                    .Where( activity => activity.streamIndex >= 0 )
-                    .Where( activity => ProfileManager.ProfileNameComparer.Equals( activity.device, profileName ) )
+        public static List<Current> GetActivitiesForProfile(string endPoint, string profileName)
+            => GetActivitiesSync(endPoint)
+                    .Where(activity => activity.IsActive)
+                    .Where(activity => activity.index >= 0)
+                    .Where(activity => ProfileManager.ProfileNameComparer.Equals(activity.profileName, profileName))
                     .ToList();
-        }
 
         /// <summary>
         /// Ermittelt die erste Aktivität zu einem Geräteprofil.
@@ -605,13 +572,9 @@ namespace JMS.DVB.Viewer
         /// <param name="endPoint">Die Verbindung zum <i>VCR.NET Recording Service</i>.</param>
         /// <param name="profileName">Der Name des Profils.</param>
         /// <returns>Die erste Aktivität, sofern eine solche existiert.</returns>
-        public static Current GetFirstActivityForProfile( string endPoint, string profileName )
-        {
-            // Forward
-            return
-                GetActivitiesSync( endPoint )
-                    .FirstOrDefault( activity => ProfileManager.ProfileNameComparer.Equals( activity.device, profileName ) );
-        }
+        public static Current GetFirstActivityForProfile(string endPoint, string profileName)
+            => GetActivitiesSync(endPoint)
+                    .FirstOrDefault(activity => ProfileManager.ProfileNameComparer.Equals(activity.profileName, profileName));
 
         /// <summary>
         /// Legt eine neue Aufzeichnung an.
@@ -621,11 +584,8 @@ namespace JMS.DVB.Viewer
         /// <param name="schedule">Die Daten zur Aufzeichnung.</param>
         /// <param name="success">Wird im Erfolgsfall aufgerufen.</param>
         /// <param name="failure">Wird bei Fehlern aufgerufen.</param>
-        private static void CreateNew( string endPoint, Job job, Schedule schedule, Action<string> success, Action<Exception> failure )
-        {
-            // Use helper
-            BeginRequest( () => string.Format( "{0}/edit", endPoint ), "POST", success, failure, new JobScheduleData { job = job, schedule = schedule } );
-        }
+        private static void CreateNew(string endPoint, Job job, Schedule schedule, Action<string> success, Action<Exception> failure)
+            => BeginRequest(() => string.Format("{0}/edit", endPoint), "POST", success, failure, new JobScheduleData { job = job, schedule = schedule });
 
         /// <summary>
         /// Legt eine neue Aufzeichnung an.
@@ -634,11 +594,8 @@ namespace JMS.DVB.Viewer
         /// <param name="job">Die Daten zum Auftrag.</param>
         /// <param name="schedule">Die Daten zur Aufzeichnung.</param>
         /// <returns>Die eindeutige Kennung der neuen Aufzeichnung.</returns>
-        public static string CreateNewSync( string endPoint, Job job, Schedule schedule )
-        {
-            // Use helper
-            return BeginRequestAndWait<string>( ( success, failure ) => CreateNew( endPoint, job, schedule, success, failure ) );
-        }
+        public static string CreateNewSync(string endPoint, Job job, Schedule schedule)
+            => BeginRequestAndWait<string>((success, failure) => CreateNew(endPoint, job, schedule, success, failure));
 
         /// <summary>
         /// Fordert ein Stück einer Datei an.
@@ -651,10 +608,7 @@ namespace JMS.DVB.Viewer
         /// <param name="port">Der Port, an dem die Daten empfangen werden sollen.</param>
         /// <param name="success">Wird im Erfolgsfall aufgerufen.</param>
         /// <param name="failure">Wird bei Fehlern aufgerufen.</param>
-        public static void RequestFilePart( string endPoint, string path, long offset, int length, string target, ushort port, Action<long> success, Action<Exception> failure )
-        {
-            // Use helper
-            BeginRequest( () => string.Format( "{0}/file?path={1}&offset={2}&length={3}&target={4}&port={5}", endPoint, path, offset, length, target, port ), "GET", success, failure );
-        }
+        public static void RequestFilePart(string endPoint, string path, long offset, int length, string target, ushort port, Action<long> success, Action<Exception> failure)
+            => BeginRequest(() => string.Format("{0}/file?path={1}&offset={2}&length={3}&target={4}&port={5}", endPoint, path, offset, length, target, port), "GET", success, failure);
     }
 }

@@ -89,7 +89,7 @@ namespace JMS.DVB.Viewer
             else
             {
                 // Find the activity
-                var current = activities.FirstOrDefault(activity => activity.streamIndex == streamIndex);
+                var current = activities.FirstOrDefault(activity => activity.index == streamIndex);
                 if (current == null)
                     StartWatch(null, true);
                 else if (timeshift && string.IsNullOrEmpty(StreamInfo.BroadcastIP) && (current.files.Length > 0))

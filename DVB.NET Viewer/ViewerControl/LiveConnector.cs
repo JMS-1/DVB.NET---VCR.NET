@@ -143,7 +143,7 @@ namespace JMS.DVB.Viewer
                     }
 
                     // Check encryption
-                    if (source.encrypted)
+                    if (source.isEncrypted)
                     {
                         // Only if encrypted is allowed
                         if (free && !pay)
@@ -157,7 +157,7 @@ namespace JMS.DVB.Viewer
                     }
 
                     // Process
-                    Favorites.AddChannel( source.nameWithProvider, source );
+                    Favorites.AddChannel( source.name, source );
                 }
 
             // Finished
@@ -198,7 +198,7 @@ namespace JMS.DVB.Viewer
             CurrentService = null;
 
             // Store to settings
-            return (Adaptor.RemoteInfo.VCRStation = source.nameWithProvider);
+            return (Adaptor.RemoteInfo.VCRStation = source.name);
         }
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace JMS.DVB.Viewer
             if (null == channel)
                 return null;
             else
-                return channel.nameWithProvider;
+                return channel.name;
         }
 
         /// <summary>
@@ -280,7 +280,7 @@ namespace JMS.DVB.Viewer
                 CurrentService = null;
 
                 // Done
-                return source.nameWithProvider;
+                return source.name;
             }
 
             // Got a real service
@@ -393,13 +393,13 @@ namespace JMS.DVB.Viewer
             // Configure the new job
             var job = new VCRNETRestProxy.Job
             {
-                sourceName = CurrentSource.nameWithProvider,
+                source = CurrentSource.name,
                 name = "Manuelle Aufzeichnung",
-                withSubtitles = true,
-                withVideotext = true,
-                includeDolby = true,
+                dvbSubtitles = true,
+                videotext = true,
+                dolbyDigital = true,
                 allLanguages = true,
-                device = Profile,
+                profile = Profile,
             };
 
             // Send it

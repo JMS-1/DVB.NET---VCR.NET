@@ -124,6 +124,17 @@ namespace DVBNETViewer
         }
 
         /// <summary>
+        /// Refresh bounds when window configuration changes.
+        /// </summary>
+        /// <param name="m"></param>
+        protected override void WndProc(ref Message m)
+        {
+            // if (m.Msg == 0x007e) SetBounds();
+
+            base.WndProc(ref m);
+        }
+
+        /// <summary>
         /// Positioniert das Hauptfenster der Anwendung.
         /// </summary>
         private void SetBounds()
@@ -187,7 +198,7 @@ namespace DVBNETViewer
             Properties.Settings.Default.Save();
 
             // Attach to viewer
-            IOSDSite osd = (IOSDSite)theViewer;
+            var osd = theViewer;
 
             // Hide any overlay
             osd.Hide();
@@ -626,7 +637,7 @@ namespace DVBNETViewer
             get
             {
                 // Override is active
-                if (null != m_FixedServer) return new Uri(string.Format("http://{0}/VCR.NET/VCRServer.asmx", m_FixedServer));
+                if (null != m_FixedServer) return new Uri(string.Format("http://{0}/api/info", m_FixedServer));
 
                 // Forward
                 return new Uri(Properties.Settings.Default.DVBNETViewer_FullServer_VCR30Server);

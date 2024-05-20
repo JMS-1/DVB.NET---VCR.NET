@@ -47,7 +47,7 @@
 
     <!-- Eine vorherige Installation muss entfernt werden -->
     <Property Id="ISINSTALLED">
-      <RegistrySearch Id="ISINSTALLEDREG" Root="HKLM" Key="SOFTWARE\JMS\DVB.NET Viewer" Name="installed" Type="raw" />
+      <RegistrySearch Id="ISINSTALLEDREG" Root="HKLM" Key="SOFTWARE\JMS\DVB.NET Viewer 5.0" Name="installed" Type="raw" />
     </Property>
     <Condition Message="!(loc.ALREADYINSTALLED)">
       <![CDATA[Installed OR NOT ISINSTALLED]]>

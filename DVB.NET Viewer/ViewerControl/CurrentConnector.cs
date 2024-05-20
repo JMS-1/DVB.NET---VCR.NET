@@ -35,7 +35,7 @@ namespace JMS.DVB.Viewer
             /// <summary>
             /// Die Position innerhalb der Mehrkanalaufzeichnung.
             /// </summary>
-            public int StreamIndex { get { return Activity.streamIndex; } }
+            public int StreamIndex { get { return Activity.index; } }
 
             /// <summary>
             /// Meldet den Namen der Aktivität.
@@ -66,7 +66,7 @@ namespace JMS.DVB.Viewer
             public void StreamTo(string endPoint, string target)
             {
                 // Forward
-                VCRNETRestProxy.SetStreamTargetSync(endPoint, Activity.device, Activity.source, Activity.referenceId.Value, target);
+                VCRNETRestProxy.SetStreamTargetSync(endPoint, Activity.profileName, Activity.source, Activity.planIdentifier.Value, target);
             }
         }
 
@@ -208,7 +208,7 @@ namespace JMS.DVB.Viewer
 
                 // Remember
                 if (m_DefaultStation == null)
-                    if ((startupIndex < 0) || (startupIndex == activity.streamIndex))
+                    if ((startupIndex < 0) || (startupIndex == activity.index))
                         m_DefaultStation = name;
             }
 
@@ -322,7 +322,7 @@ namespace JMS.DVB.Viewer
             var current = m_CurrentSource;
 
             // See if there is a task running
-            if (first.streamIndex < 0)
+            if (first.index < 0)
                 ShowMessage(Properties.Resources.CurrentUntil, Properties.Resources.Warning_NotAvailable, false, first.source, first.EndsAt.ToLocalTime());
 
             // See if we have no current source
@@ -339,7 +339,7 @@ namespace JMS.DVB.Viewer
             else
             {
                 // Set if we are connected
-                var newCurrent = activities.First(activity => activity.referenceId.Value == current.Activity.referenceId.Value);
+                var newCurrent = activities.First(activity => activity.planIdentifier.Value == current.Activity.planIdentifier.Value);
                 if (newCurrent != null)
                     if (string.IsNullOrEmpty(newCurrent.streamTarget))
                     {
@@ -362,10 +362,10 @@ namespace JMS.DVB.Viewer
         private void ValidateIdle(VCRNETRestProxy.Current next)
         {
             // Get the next recording
-            if (next.start.HasValue)
+            if (next.Start.HasValue)
             {
                 // When will it start
-                var delta = next.start.Value - DateTime.UtcNow;
+                var delta = next.Start.Value - DateTime.UtcNow;
                 if (delta.TotalMinutes <= 3)
                 {
                     // Report
@@ -389,7 +389,7 @@ namespace JMS.DVB.Viewer
         public override void KeepAlive()
         {
             // Read results
-            var activities = (m_allActivities ?? Enumerable.Empty<VCRNETRestProxy.Current>()).Where(activity => ProfileManager.ProfileNameComparer.Equals(activity.device, Profile)).ToArray();
+            var activities = (m_allActivities ?? Enumerable.Empty<VCRNETRestProxy.Current>()).Where(activity => ProfileManager.ProfileNameComparer.Equals(activity.profileName, Profile)).ToArray();
             var running = activities.Where(activity => activity.IsActive).ToArray();
             var gotResult = m_allActivitiesValid;
 
