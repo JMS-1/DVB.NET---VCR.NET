@@ -49,7 +49,7 @@ namespace JMS.DVB.Viewer
             /// <param name="viewer">Die zugehörige Anzeigeeinheit.</param>
             /// <param name="builder">Die Konstruktionseinheit.</param>
             /// <param name="mode">Die Art des Inhalts.</param>
-            public _OSDText( ViewerControl viewer, OSDText builder, OSDShowMode mode )
+            public _OSDText(ViewerControl viewer, OSDText builder, OSDShowMode mode)
             {
                 // Remember
                 Builder = builder;
@@ -73,7 +73,7 @@ namespace JMS.DVB.Viewer
                     Builder = null;
 
                 // Update
-                m_Viewer.OSDShown( m_Mode );
+                m_Viewer.OSDShown(m_Mode);
             }
 
             #endregion
@@ -87,16 +87,16 @@ namespace JMS.DVB.Viewer
         /// <summary>
         /// Zeigt an, dass der Videotext aktiv ist.
         /// </summary>
-        private static readonly DateTime TTXOnTime = DateTime.MaxValue.AddSeconds( -1 );
+        private static readonly DateTime TTXOnTime = DateTime.MaxValue.AddSeconds(-1);
 
         /// <summary>
         /// Prüft, ob eine bestimmte Taste gedrückt ist.
         /// </summary>
         /// <param name="virtualKey">Zu prüfende Taste.</param>
         /// <returns>Ergebnis der Prüfung.</returns>
-        [DllImport( "user32.dll" )]
+        [DllImport("user32.dll")]
         [SuppressUnmanagedCodeSecurity]
-        private static extern short GetAsyncKeyState( int virtualKey );
+        private static extern short GetAsyncKeyState(int virtualKey);
 
         /// <summary>
         /// Die Senderverwaltung mit Favoritenfähigkeit.
@@ -248,7 +248,7 @@ namespace JMS.DVB.Viewer
             InitializeComponent();
 
             // Create favorite manager
-            m_FavoriteManager = new ChannelSelector( true );
+            m_FavoriteManager = new ChannelSelector(true);
 
             // Connect to events
             m_FavoriteManager.ChannelSelected += ChannelSelected;
@@ -267,32 +267,32 @@ namespace JMS.DVB.Viewer
         /// </summary>
         /// <param name="sender">Ignoriert.</param>
         /// <param name="e">Informationen zur Veränderung.</param>
-        private void MouseWheelChanged( object sender, MouseEventArgs e )
+        private void MouseWheelChanged(object sender, MouseEventArgs e)
         {
             // See if we should control the volume
             if (m_LastOSDWasList)
             {
                 // Check for change
                 if (e.Delta > 0)
-                    ListUp( Keys.Up );
+                    ListUp(Keys.Up);
                 else if (e.Delta < 0)
-                    ListDown( Keys.Down );
+                    ListDown(Keys.Down);
             }
             else if (m_LastProgressWasFile)
             {
                 // Check for change
                 if (e.Delta > 0)
-                    ExecuteKey( Keys.Add );
+                    ExecuteKey(Keys.Add);
                 else if (e.Delta < 0)
-                    ExecuteKey( Keys.Subtract );
+                    ExecuteKey(Keys.Subtract);
             }
             else
             {
                 // Check for change
                 if (e.Delta > 0)
-                    VolumeUp( Keys.Right );
+                    VolumeUp(Keys.Right);
                 else if (e.Delta < 0)
-                    VolumeDown( Keys.Left );
+                    VolumeDown(Keys.Left);
             }
         }
 
@@ -300,7 +300,7 @@ namespace JMS.DVB.Viewer
         /// Verbindet das Control mit dem Zugriff auf die Konfiguration.
         /// </summary>
         /// <param name="settings">Ermöglicht den Zugriff auf die Einstellungen.</param>
-        public void SetSite( object settings )
+        public void SetSite(object settings)
         {
             // Attach to all interfaces provided
             m_GeneralInfo = settings as IGeneralInfo;
@@ -310,14 +310,14 @@ namespace JMS.DVB.Viewer
             m_LocalInfo = settings as ILocalInfo;
 
             // Load initial settings
-            m_Handlers = new Dictionary<Keys, BDAWindow.KeyProcessor>( directShow.KeyProcessors );
+            m_Handlers = new Dictionary<Keys, BDAWindow.KeyProcessor>(directShow.KeyProcessors);
         }
 
         /// <summary>
         /// Verbindet die Anzeige mit einem Adaptor.
         /// </summary>
         /// <param name="adaptor">Die zu verwendende Quelle.</param>
-        public void Initialize( Adaptor adaptor )
+        public void Initialize(Adaptor adaptor)
         {
             // Remember
             m_CurrentAdaptor = adaptor;
@@ -333,7 +333,7 @@ namespace JMS.DVB.Viewer
             directShow.AC3Decoder = GeneralInfo.AC3Decoder;
 
             // Initialize DirectShow window
-            directShow.SetAccessor( m_CurrentAdaptor.Accessor );
+            directShow.SetAccessor(m_CurrentAdaptor.Accessor);
 
             // Set the volume
             directShow.Volume = GeneralInfo.Volume;
@@ -345,7 +345,7 @@ namespace JMS.DVB.Viewer
             if (null != parameters)
             {
                 // Update
-                GeneralInfo.SetPictureParameters( parameters );
+                GeneralInfo.SetPictureParameters(parameters);
 
                 // Send to window
                 directShow.PictureParameters = parameters;
@@ -355,14 +355,14 @@ namespace JMS.DVB.Viewer
             signalTest.Enabled = true;
 
             // Finish initialisation
-            Restart( true );
+            Restart(true);
         }
 
         /// <summary>
         /// Mit dem Drücken der rechten Maustaste wird das Kontextmenü geöffnet.
         /// </summary>
         /// <param name="key">Taste, die der Anwender betätigt hat.</param>
-        private void RightClick( Keys key )
+        private void RightClick(Keys key)
         {
             // Must have adaptor
             if (null == m_CurrentAdaptor) return;
@@ -371,46 +371,46 @@ namespace JMS.DVB.Viewer
             selScratch.Items.Clear();
 
             // Funktionen, die in jedem Operationsmodus zur Verfügung stehen
-            selScratch.Items.Add( new OptionDisplay( Properties.Resources.Context_Fullscreen, () => ExecuteKey( Keys.J ) ) );
-            selScratch.Items.Add( new OptionDisplay( Properties.Resources.Context_Volume, () => VolumeChange( 0 ) ) );
-            selScratch.Items.Add( " " );
-            selScratch.Items.Add( new OptionDisplay( Properties.Resources.Context_EPG, () => ExecuteKey( Keys.F1 ) ) );
-            if (m_CurrentAdaptor.TTXAvailable) selScratch.Items.Add( new OptionDisplay( Properties.Resources.Context_VideoText, () => ExecuteKey( Keys.F2 ) ) );
+            selScratch.Items.Add(new OptionDisplay(Properties.Resources.Context_Fullscreen, () => ExecuteKey(Keys.J)));
+            selScratch.Items.Add(new OptionDisplay(Properties.Resources.Context_Volume, () => VolumeChange(0)));
+            selScratch.Items.Add(" ");
+            selScratch.Items.Add(new OptionDisplay(Properties.Resources.Context_EPG, () => ExecuteKey(Keys.F1)));
+            if (m_CurrentAdaptor.TTXAvailable) selScratch.Items.Add(new OptionDisplay(Properties.Resources.Context_VideoText, () => ExecuteKey(Keys.F2)));
 
             // Optionale Listen
             Keys? station = m_CurrentAdaptor.StationListKey, audio = m_CurrentAdaptor.TrackListKey, nvod = m_CurrentAdaptor.ServiceListKey, rec = m_CurrentAdaptor.RecordingKey, tshift = m_CurrentAdaptor.TimeShiftKey;
             string recText = m_CurrentAdaptor.RecordingText;
 
             // Alle Listen
-            if (station.HasValue) selScratch.Items.Add( new OptionDisplay( Properties.Resources.Context_Channels, () => ExecuteKey( station.Value ) ) );
-            if (audio.HasValue) selScratch.Items.Add( new OptionDisplay( Properties.Resources.Context_Audio, () => ExecuteKey( audio.Value ) ) );
-            if (nvod.HasValue) selScratch.Items.Add( new OptionDisplay( Properties.Resources.Context_Service, () => ExecuteKey( nvod.Value ) ) );
+            if (station.HasValue) selScratch.Items.Add(new OptionDisplay(Properties.Resources.Context_Channels, () => ExecuteKey(station.Value)));
+            if (audio.HasValue) selScratch.Items.Add(new OptionDisplay(Properties.Resources.Context_Audio, () => ExecuteKey(audio.Value)));
+            if (nvod.HasValue) selScratch.Items.Add(new OptionDisplay(Properties.Resources.Context_Service, () => ExecuteKey(nvod.Value)));
 
             // Trenner
-            selScratch.Items.Add( " " );
+            selScratch.Items.Add(" ");
 
             // Aufzeichnung
-            if (rec.HasValue) selScratch.Items.Add( new OptionDisplay( recText, () => ExecuteKey( rec.Value ) ) );
-            if (tshift.HasValue) selScratch.Items.Add( new OptionDisplay( Properties.Resources.Context_TimeShift, () => ExecuteKey( tshift.Value ) ) );
+            if (rec.HasValue) selScratch.Items.Add(new OptionDisplay(recText, () => ExecuteKey(rec.Value)));
+            if (tshift.HasValue) selScratch.Items.Add(new OptionDisplay(Properties.Resources.Context_TimeShift, () => ExecuteKey(tshift.Value)));
 
             // Funktionen, die in jedem Operationsmodus zur Verfügung stehen
-            selScratch.Items.Add( new OptionDisplay( Properties.Resources.Context_Options, () => ExecuteKey( (Keys) 219 ) ) );
-            selScratch.Items.Add( " " );
-            selScratch.Items.Add( new OptionDisplay( Properties.Resources.Context_Quit, () => ExecuteKey( Keys.End ) ) );
+            selScratch.Items.Add(new OptionDisplay(Properties.Resources.Context_Options, () => ExecuteKey((Keys)219)));
+            selScratch.Items.Add(" ");
+            selScratch.Items.Add(new OptionDisplay(Properties.Resources.Context_Quit, () => ExecuteKey(Keys.End)));
 
             // Anzeigen
-            ShowList( Properties.Resources.ContextTitle, selScratch, 0, OSDShowMode.ContextMenu );
+            ShowList(Properties.Resources.ContextTitle, selScratch, 0, OSDShowMode.ContextMenu);
         }
 
         /// <summary>
         /// Führt die Aktion zu einer Taste aus.
         /// </summary>
         /// <param name="key">Die gwünschte Taste.</param>
-        private void ExecuteKey( Keys key )
+        private void ExecuteKey(Keys key)
         {
             // Load
             BDAWindow.KeyProcessor processor;
-            if (directShow.KeyProcessors.TryGetValue( key, out processor )) processor( key );
+            if (directShow.KeyProcessors.TryGetValue(key, out processor)) processor(key);
         }
 
         /// <summary>
@@ -419,18 +419,18 @@ namespace JMS.DVB.Viewer
         /// <param name="selector">Die Senderverwaltung.</param>
         /// <param name="serviceName">Der Name des neuen NVOD Dienstes.</param>
         /// <param name="context">Das <see cref="ServiceItem"/> zum NVOD Dienst.</param>
-        private void ServiceSelected( ChannelSelector selector, string serviceName, object context )
+        private void ServiceSelected(ChannelSelector selector, string serviceName, object context)
         {
             // Be safe
             try
             {
                 // Forward
-                ShowName( m_CurrentAdaptor.SetService( (ServiceItem) context ) );
+                ShowName(m_CurrentAdaptor.SetService((ServiceItem)context));
             }
             catch (Exception ex)
             {
                 // Report
-                ShowError( ex );
+                ShowError(ex);
             }
         }
 
@@ -439,18 +439,18 @@ namespace JMS.DVB.Viewer
         /// </summary>
         /// <param name="selector">Die Senderverwaltung.</param>
         /// <param name="audioName">Der Name der gewünschten Tonspur.</param>
-        private void TrackSelected( ChannelSelector selector, string audioName )
+        private void TrackSelected(ChannelSelector selector, string audioName)
         {
             // Be safe
             try
             {
                 // Forward
-                ShowName( m_CurrentAdaptor.SetAudio( audioName ) );
+                ShowName(m_CurrentAdaptor.SetAudio(audioName));
             }
             catch (Exception ex)
             {
                 // Report
-                ShowError( ex );
+                ShowError(ex);
             }
         }
 
@@ -460,10 +460,10 @@ namespace JMS.DVB.Viewer
         /// </summary>
         /// <param name="fullName">Anzuzeigender Name oder <i>null</i>, wenn keine Anzeige
         /// erfolgen soll.</param>
-        private void ShowName( string fullName )
+        private void ShowName(string fullName)
         {
             // Nothing to show
-            if (!string.IsNullOrEmpty( fullName )) ShowMessage( fullName, Properties.Resources.NameTitle, true );
+            if (!string.IsNullOrEmpty(fullName)) ShowMessage(fullName, Properties.Resources.NameTitle, true);
         }
 
         /// <summary>
@@ -473,18 +473,18 @@ namespace JMS.DVB.Viewer
         /// <param name="channelName">Der Anzeigename des Sender.</param>
         /// <param name="context">Eine beliebige Instanz zu einem Sender, wie sie im aktuellen
         /// <see cref="Adaptor"/> verstanden wird.</param>
-        private void ChannelSelected( ChannelSelector selector, string channelName, object context )
+        private void ChannelSelected(ChannelSelector selector, string channelName, object context)
         {
             // Be safe
             try
             {
                 // Process
-                ShowName( m_CurrentAdaptor.SetStation( context ) );
+                ShowName(m_CurrentAdaptor.SetStation(context));
             }
             catch (Exception ex)
             {
                 // Report
-                ShowError( ex );
+                ShowError(ex);
             }
         }
 
@@ -501,8 +501,8 @@ namespace JMS.DVB.Viewer
             // Keys mapped to core implementation
             directShow.KeyProcessors[Keys.Subtract] = PreviousChannel;
             directShow.KeyProcessors[Keys.PageDown] = ListPageDown;
-            directShow.KeyProcessors[(Keys) 189] = PreviousChannel;
-            directShow.KeyProcessors[(Keys) 191] = StartRecording;
+            directShow.KeyProcessors[(Keys)189] = PreviousChannel;
+            directShow.KeyProcessors[(Keys)191] = StartRecording;
             directShow.KeyProcessors[Keys.RButton] = RightClick;
             directShow.KeyProcessors[Keys.LButton] = LeftClick;
             directShow.KeyProcessors[Keys.K] = ShowChannelList;
@@ -518,8 +518,8 @@ namespace JMS.DVB.Viewer
             directShow.KeyProcessors[Keys.NumPad7] = ProcessAs;
             directShow.KeyProcessors[Keys.NumPad8] = ProcessAs;
             directShow.KeyProcessors[Keys.NumPad9] = ProcessAs;
-            directShow.KeyProcessors[(Keys) 187] = NextChannel;
-            directShow.KeyProcessors[(Keys) 219] = ShowOptions;
+            directShow.KeyProcessors[(Keys)187] = NextChannel;
+            directShow.KeyProcessors[(Keys)219] = ShowOptions;
             directShow.KeyProcessors[Keys.Escape] = EscapeKey;
             directShow.KeyProcessors[Keys.D0] = ForwardTTXKey;
             directShow.KeyProcessors[Keys.D1] = ForwardTTXKey;
@@ -569,7 +569,7 @@ namespace JMS.DVB.Viewer
         /// Interpretiert eine Taste um.
         /// </summary>
         /// <param name="key">Die tatsächlich gedrückte Taste.</param>
-        private void ProcessAs( Keys key )
+        private void ProcessAs(Keys key)
         {
             // Remap
             switch (key)
@@ -592,26 +592,26 @@ namespace JMS.DVB.Viewer
 
             // Run
             if (processor != null)
-                processor( key );
+                processor(key);
         }
 
         /// <summary>
         /// Die linke Masutaste wurde gedrückt, was als Auswahl in der aktuellen Liste interpretiert wird.
         /// </summary>
         /// <param name="key">Die vom Anwender betätigte Taste.</param>
-        private void LeftClick( Keys key )
+        private void LeftClick(Keys key)
         {
             // Check for consistency and process
             if (OSDActive)
                 if (m_LastOSDWasList)
                 {
                     // Select the entry
-                    Select( Keys.Enter );
+                    Select(Keys.Enter);
                 }
                 else if (m_LastProgressWasFile)
                 {
                     // File movements are triggered using the record key
-                    ExecuteKey( (Keys) 191 );
+                    ExecuteKey((Keys)191);
                 }
                 else if (IsVideoTextActive)
                 {
@@ -627,7 +627,7 @@ namespace JMS.DVB.Viewer
                         return;
 
                     // Find the page
-                    int? page = m_TTXDigits.GetPageAt( ttxHit.Value );
+                    int? page = m_TTXDigits.GetPageAt(ttxHit.Value);
 
                     // Use if
                     if (page.HasValue)
@@ -646,7 +646,7 @@ namespace JMS.DVB.Viewer
         /// Zeigt EPG Informationen an, falls vorhanden.
         /// </summary>
         /// <param name="key">Vom Anwender gedrückte Taste.</param>
-        private void ShowEPG( Keys key )
+        private void ShowEPG(Keys key)
         {
             // End display
             HideOSD();
@@ -660,7 +660,7 @@ namespace JMS.DVB.Viewer
         /// Zeigt die Videotext Seite 100 an.
         /// </summary>
         /// <param name="key">Vom Anwender gedrückte Taste.</param>
-        private void ShowTTX( Keys key )
+        private void ShowTTX(Keys key)
         {
             // Check cuurent state
             var showingText = (m_OSDShowMode == OSDShowMode.Videotext);
@@ -700,10 +700,10 @@ namespace JMS.DVB.Viewer
         /// <seealso cref="ForwardKey"/>
         /// </summary>
         /// <param name="key">Die Taste, die der Anwender gedrückt hat.</param>
-        private void ForwardTTXKey( Keys key )
+        private void ForwardTTXKey(Keys key)
         {
             // Forward if not eaten up by TTX
-            if (!PreprocessKey( key )) ForwardKey( key );
+            if (!PreprocessKey(key)) ForwardKey(key);
         }
 
         /// <summary>
@@ -711,7 +711,7 @@ namespace JMS.DVB.Viewer
         /// </summary>
         /// <param name="key">Die gedrückte Taste.</param>
         /// <returns>Gesetzt, wenn die Taste verarbeitet wurde.</returns>
-        public bool PreprocessKey( Keys key )
+        public bool PreprocessKey(Keys key)
         {
             // See if this is the END key
             if (Keys.End == key) return IsRecording;
@@ -726,12 +726,12 @@ namespace JMS.DVB.Viewer
                 int page;
 
                 // Move down or up
-                if ((Keys.Subtract == key) || ((Keys) 189 == key))
+                if ((Keys.Subtract == key) || ((Keys)189 == key))
                 {
                     // Down
                     page = -1;
                 }
-                else if ((Keys.Add == key) || ((Keys) 187 == key))
+                else if ((Keys.Add == key) || ((Keys)187 == key))
                 {
                     // Up
                     page = +1;
@@ -770,13 +770,13 @@ namespace JMS.DVB.Viewer
 
                 // Create a string from the page
                 if ((m_TTXPageBuilder > 0) && (m_TTXPageBuilder < 100))
-                    m_PendingTTXPage = string.Format( "{0}??", m_TTXPageBuilder ).Substring( 0, 3 );
+                    m_PendingTTXPage = string.Format("{0}??", m_TTXPageBuilder).Substring(0, 3);
                 else
                     m_PendingTTXPage = null;
 
                 // Refresh
                 if (m_CurrentTTXPage != null)
-                    ShowTTXPage( m_CurrentTTXPage );
+                    ShowTTXPage(m_CurrentTTXPage);
 
                 // Check mode
                 if ((m_TTXPageBuilder < 100) || (m_TTXPageBuilder > 899))
@@ -804,27 +804,27 @@ namespace JMS.DVB.Viewer
         /// Increase volume.
         /// </summary>
         /// <param name="key">Ignored.</param>
-        private void VolumeUp( Keys key )
+        private void VolumeUp(Keys key)
         {
             // Forward
-            VolumeChange( +0.01 );
+            VolumeChange(+0.01);
         }
 
         /// <summary>
         /// Decrease volume.
         /// </summary>
         /// <param name="key">Ignored.</param>
-        private void VolumeDown( Keys key )
+        private void VolumeDown(Keys key)
         {
             // Forward
-            VolumeChange( -0.01 );
+            VolumeChange(-0.01);
         }
 
         /// <summary>
         /// Beginnt oder beendet eine Aufzeichnung.
         /// </summary>
         /// <param name="key"></param>
-        private void StartRecording( Keys key )
+        private void StartRecording(Keys key)
         {
             // Be safe
             try
@@ -835,7 +835,7 @@ namespace JMS.DVB.Viewer
             catch (Exception ex)
             {
                 // Report
-                ShowError( ex );
+                ShowError(ex);
             }
         }
 
@@ -854,7 +854,7 @@ namespace JMS.DVB.Viewer
                 if (!m_CurrentAdaptor.IsRecording) return false;
 
                 // Report
-                ShowMessage( string.Format( Properties.Resources.RecordingActive, m_CurrentAdaptor.RecordedBytes / 1024 ), Properties.Resources.RecordingTitle, true );
+                ShowMessage(string.Format(Properties.Resources.RecordingActive, m_CurrentAdaptor.RecordedBytes / 1024), Properties.Resources.RecordingTitle, true);
 
                 // Yes
                 return true;
@@ -866,7 +866,7 @@ namespace JMS.DVB.Viewer
         /// aktiv ist.
         /// </summary>
         /// <param name="key">Aktuelle Eingabe.</param>
-        private void ForwardKey( Keys key )
+        private void ForwardKey(Keys key)
         {
             // Not while recording
             if (IsRecording) return;
@@ -875,7 +875,7 @@ namespace JMS.DVB.Viewer
             HideOSD();
 
             // Send
-            m_FavoriteManager.AnalyseStandardKey( key );
+            m_FavoriteManager.AnalyseStandardKey(key);
         }
 
         /// <summary>
@@ -883,10 +883,10 @@ namespace JMS.DVB.Viewer
         /// Aufzeichnung aktiv ist.
         /// </summary>
         /// <param name="key">Aktuelle Eingabe.</param>
-        private void NextChannel( Keys key )
+        private void NextChannel(Keys key)
         {
             // Check for videotext
-            if (PreprocessKey( key )) return;
+            if (PreprocessKey(key)) return;
 
             // Not while recording
             if (IsRecording) return;
@@ -895,7 +895,7 @@ namespace JMS.DVB.Viewer
             HideOSD();
 
             // Forward
-            m_FavoriteManager.AnalyseStandardKey( '+' );
+            m_FavoriteManager.AnalyseStandardKey('+');
         }
 
         /// <summary>
@@ -903,10 +903,10 @@ namespace JMS.DVB.Viewer
         /// Aufzeichnung aktiv ist.
         /// </summary>
         /// <param name="key">Aktuelle Eingabe.</param>
-        private void PreviousChannel( Keys key )
+        private void PreviousChannel(Keys key)
         {
             // Check for videotext
-            if (PreprocessKey( key )) return;
+            if (PreprocessKey(key)) return;
 
             // Not while recording
             if (IsRecording) return;
@@ -915,14 +915,14 @@ namespace JMS.DVB.Viewer
             HideOSD();
 
             // Forward
-            m_FavoriteManager.AnalyseStandardKey( '-' );
+            m_FavoriteManager.AnalyseStandardKey('-');
         }
 
         /// <summary>
         /// Deaktiviert das OSD.
         /// </summary>
         /// <param name="key">Aktuelle Eingabe.</param>
-        private void EscapeKey( Keys key )
+        private void EscapeKey(Keys key)
         {
             // Hide
             HideOSD();
@@ -936,7 +936,7 @@ namespace JMS.DVB.Viewer
         /// Im Allgemeinen erfolgt eine Weitergabe an die Senderverwaltung.
         /// </remarks>
         /// <param name="key">Aktuelle Eingabe.</param>
-        private void Select( Keys key )
+        private void Select(Keys key)
         {
             // Not while recording
             if (IsRecording) return;
@@ -984,12 +984,12 @@ namespace JMS.DVB.Viewer
                 Application.DoEvents();
 
                 // Process
-                m_FavoriteManager.FinishSelection( m_CurrentList );
+                m_FavoriteManager.FinishSelection(m_CurrentList);
             }
             catch (Exception ex)
             {
                 // Report
-                ShowError( ex );
+                ShowError(ex);
             }
         }
 
@@ -997,7 +997,7 @@ namespace JMS.DVB.Viewer
         /// Verschiebt den aktiven Eintrag der aktuellen Auswahlliste im OSD.
         /// </summary>
         /// <param name="delta">Gibt an, wie die Verschiebung durchzuführen ist.</param>
-        private void MoveListIndex( int delta )
+        private void MoveListIndex(int delta)
         {
             // Do nothing
             if (m_CurrentList == null)
@@ -1009,10 +1009,10 @@ namespace JMS.DVB.Viewer
             try
             {
                 // Update
-                m_CurrentList.SelectedIndex = Math.Max( 0, Math.Min( m_CurrentList.Items.Count - 1, m_CurrentList.SelectedIndex + delta ) );
+                m_CurrentList.SelectedIndex = Math.Max(0, Math.Min(m_CurrentList.Items.Count - 1, m_CurrentList.SelectedIndex + delta));
 
                 // Show up
-                ShowList( 0, m_OSDShowMode );
+                ShowList(0, m_OSDShowMode);
             }
             catch
             {
@@ -1025,13 +1025,13 @@ namespace JMS.DVB.Viewer
         /// wenn keine Aufzeichnung aktiv ist.
         /// </summary>
         /// <param name="key">Aktuelle Eingabe</param>
-        private void ListUp( Keys key )
+        private void ListUp(Keys key)
         {
             // Not while recording
             if (IsRecording) return;
 
             // Process
-            MoveListIndex( -1 );
+            MoveListIndex(-1);
         }
 
         /// <summary>
@@ -1039,13 +1039,13 @@ namespace JMS.DVB.Viewer
         /// wenn keine Aufzeichnung aktiv ist.
         /// </summary>
         /// <param name="key">Aktuelle Eingabe</param>
-        private void ListDown( Keys key )
+        private void ListDown(Keys key)
         {
             // Not while recording
             if (IsRecording) return;
 
             // Process
-            MoveListIndex( +1 );
+            MoveListIndex(+1);
         }
 
         /// <summary>
@@ -1057,13 +1057,13 @@ namespace JMS.DVB.Viewer
         /// zum Anfang der Auswahlliste hin verschoben.
         /// </remarks>
         /// <param name="key">Aktuelle Eingabe</param>
-        private void ListPageUp( Keys key )
+        private void ListPageUp(Keys key)
         {
             // Not while recording
             if (IsRecording) return;
 
             // Process
-            MoveListIndex( -m_Overlay.MaximumNumberOfLines );
+            MoveListIndex(-m_Overlay.MaximumNumberOfLines);
         }
 
         /// <summary>
@@ -1075,13 +1075,13 @@ namespace JMS.DVB.Viewer
         /// zum Ende der Auswahlliste hin verschoben.
         /// </remarks>
         /// <param name="key">Aktuelle Eingabe</param>
-        private void ListPageDown( Keys key )
+        private void ListPageDown(Keys key)
         {
             // Not while recording
             if (IsRecording) return;
 
             // Process
-            MoveListIndex( +m_Overlay.MaximumNumberOfLines );
+            MoveListIndex(+m_Overlay.MaximumNumberOfLines);
         }
 
         /// <summary>
@@ -1090,7 +1090,7 @@ namespace JMS.DVB.Viewer
         /// <param name="minShow">Enthält die Liste weniger Einträge als diese
         /// Zahl, so wird das OSD nicht angezeigt.</param>
         /// <param name="mode">Die Art der angezeigten Daten.</param>
-        private void ShowList( int minShow, OSDShowMode mode )
+        private void ShowList(int minShow, OSDShowMode mode)
         {
             // Too few items in list
             if (m_CurrentList.Items.Count < minShow)
@@ -1104,19 +1104,19 @@ namespace JMS.DVB.Viewer
             }
 
             // Get the minimum to show
-            int lowIndex = Math.Max( 0, m_CurrentList.SelectedIndex - m_Overlay.MaximumNumberOfLines / 2 );
-            int highIndex = Math.Min( m_CurrentList.Items.Count, lowIndex + m_Overlay.MaximumNumberOfLines );
+            int lowIndex = Math.Max(0, m_CurrentList.SelectedIndex - m_Overlay.MaximumNumberOfLines / 2);
+            int highIndex = Math.Min(m_CurrentList.Items.Count, lowIndex + m_Overlay.MaximumNumberOfLines);
 
             // Start OSD
-            using (var osd = CreateTextOverlay( m_Overlay.MaximumNumberOfLines, m_CurrentHead, mode ))
+            using (var osd = CreateTextOverlay(m_Overlay.MaximumNumberOfLines, m_CurrentHead, mode))
             {
                 // Normal lines
                 for (int i = lowIndex; i < highIndex; ++i)
-                    osd.Builder.WriteLine( i == m_CurrentList.SelectedIndex, m_CurrentList.Items[i].ToString() );
+                    osd.Builder.WriteLine(i == m_CurrentList.SelectedIndex, m_CurrentList.Items[i].ToString());
 
                 // Bug to feature to use empty line
                 if (highIndex < m_CurrentList.Items.Count)
-                    osd.Builder.WriteLine( "..." );
+                    osd.Builder.WriteLine("...");
             }
 
             // Set
@@ -1133,7 +1133,7 @@ namespace JMS.DVB.Viewer
         /// <param name="minShow">Enthält die Liste weniger als diese Anzahl von
         /// Einträgen, so wird sie nicht angezeigt.</param>
         /// <param name="mode">Die Art der angezeigten Daten.</param>
-        public void ShowList( string headline, ComboBox selection, int minShow, OSDShowMode mode )
+        public void ShowList(string headline, ComboBox selection, int minShow, OSDShowMode mode)
         {
             // Double means off
             if (m_OSDShowMode == mode)
@@ -1148,7 +1148,7 @@ namespace JMS.DVB.Viewer
                 m_CurrentHead = headline;
 
                 // Forward
-                ShowList( minShow, mode );
+                ShowList(minShow, mode);
             }
         }
 
@@ -1157,13 +1157,13 @@ namespace JMS.DVB.Viewer
         /// zur aktuellen Auswahlliste im OSD und diese anzeigt.
         /// </summary>
         /// <param name="key">Aktuelle Eingabe.</param>
-        private void ShowOptions( Keys key )
+        private void ShowOptions(Keys key)
         {
             // Not while recording
             if (IsRecording) return;
 
             // Process
-            ShowList( Properties.Resources.OptionListHeadLine, selOptions, 1, OSDShowMode.ContextMenu );
+            ShowList(Properties.Resources.OptionListHeadLine, selOptions, 1, OSDShowMode.ContextMenu);
         }
 
         /// <summary>
@@ -1171,26 +1171,26 @@ namespace JMS.DVB.Viewer
         /// zur aktuellen Auswahlliste im OSD und diese anzeigt.
         /// </summary>
         /// <param name="key">Aktuelle Eingabe.</param>
-        private void ShowChannelList( Keys key )
+        private void ShowChannelList(Keys key)
         {
             // Not while recording
             if (IsRecording) return;
 
             // Process
-            ShowList( Properties.Resources.ChannelListHeadLine, m_FavoriteManager.ChannelList, 1, OSDShowMode.SourceList );
+            ShowList(Properties.Resources.ChannelListHeadLine, m_FavoriteManager.ChannelList, 1, OSDShowMode.SourceList);
         }
 
         /// <summary>
         /// Wählt einen NVOD Dienst über sein Kürzel aus, wenn keine Aufzeichnung aktiv ist.
         /// </summary>
         /// <param name="key">Aktuelle Eingabe.</param>
-        private void ServiceKey( Keys key )
+        private void ServiceKey(Keys key)
         {
             // Not while recording
             if (IsRecording) return;
 
             // Load list
-            if (LoadServiceList()) m_FavoriteManager.AnalyseStandardKey( key );
+            if (LoadServiceList()) m_FavoriteManager.AnalyseStandardKey(key);
         }
 
         /// <summary>
@@ -1198,13 +1198,13 @@ namespace JMS.DVB.Viewer
         /// NVOD Dienste erzeugt und diese angezeigt.
         /// </summary>
         /// <param name="key">Aktuelle Eingabe.</param>
-        private void ShowServiceList( Keys key )
+        private void ShowServiceList(Keys key)
         {
             // Not while recording
             if (IsRecording) return;
 
             // Load list
-            if (LoadServiceList()) ShowList( Properties.Resources.ServiceListHeadLine, m_FavoriteManager.ServiceList, 2, OSDShowMode.Services );
+            if (LoadServiceList()) ShowList(Properties.Resources.ServiceListHeadLine, m_FavoriteManager.ServiceList, 2, OSDShowMode.Services);
         }
 
         /// <summary>
@@ -1224,7 +1224,7 @@ namespace JMS.DVB.Viewer
                 foreach (ServiceItem service in m_CurrentAdaptor.Services)
                 {
                     // Add to list
-                    m_FavoriteManager.AddService( service.ToString(), service );
+                    m_FavoriteManager.AddService(service.ToString(), service);
                 }
 
                 // Finished
@@ -1236,7 +1236,7 @@ namespace JMS.DVB.Viewer
             catch (Exception ex)
             {
                 // Report
-                ShowError( ex );
+                ShowError(ex);
 
                 // Do not proceed
                 return false;
@@ -1248,7 +1248,7 @@ namespace JMS.DVB.Viewer
         /// zur aktuellen Auswahlliste im OSD und diese anzeigt.
         /// </summary>
         /// <param name="key">Aktuelle Eingabe.</param>
-        private void ShowAudioList( Keys key )
+        private void ShowAudioList(Keys key)
         {
             // Not while recording
             if (IsRecording) return;
@@ -1257,14 +1257,14 @@ namespace JMS.DVB.Viewer
             if (null != m_CurrentAdaptor) m_CurrentAdaptor.LoadTracks();
 
             // Process
-            ShowList( Properties.Resources.AudioListHeadLine, m_FavoriteManager.AudioList, 2, OSDShowMode.AudioTracks );
+            ShowList(Properties.Resources.AudioListHeadLine, m_FavoriteManager.AudioList, 2, OSDShowMode.AudioTracks);
         }
 
         /// <summary>
         /// Zeigt die aktuelle zeitliche Position.
         /// </summary>
         /// <param name="key">Aktuelle Eingabe.</param>
-        private void ShowPosition( Keys key )
+        private void ShowPosition(Keys key)
         {
             // Turn off display
             HideOSD();
@@ -1291,7 +1291,7 @@ namespace JMS.DVB.Viewer
             if (pos > current.Duration) pos = current.Duration;
 
             // Get the relative position
-            ShowPosition( pos.TotalMilliseconds / current.Duration.TotalMilliseconds, string.Format( Properties.Resources.EPGPosition, (int) (pos.TotalMinutes + 0.5), (int) (current.Duration.TotalMinutes + 0.5) ) );
+            ShowPosition(pos.TotalMilliseconds / current.Duration.TotalMilliseconds, string.Format(Properties.Resources.EPGPosition, (int)(pos.TotalMinutes + 0.5), (int)(current.Duration.TotalMinutes + 0.5)));
         }
 
         /// <summary>
@@ -1300,7 +1300,7 @@ namespace JMS.DVB.Viewer
         /// Reinitialisert.
         /// </summary>
         /// <param name="applicationStart">Gesetzt, wenn die Anwendung in der Initialisierungsphase ist.</param>
-        private void Restart( bool applicationStart )
+        private void Restart(bool applicationStart)
         {
             // Configure graph
             directShow.UseCyberlink = GeneralInfo.UseCyberlinkCodec;
@@ -1323,12 +1323,12 @@ namespace JMS.DVB.Viewer
                 m_CurrentAdaptor.LoadStations();
 
                 // Load defaults
-                ShowName( m_CurrentAdaptor.LoadDefaults( applicationStart ) );
+                ShowName(m_CurrentAdaptor.LoadDefaults(applicationStart));
             }
             catch (Exception ex)
             {
                 // Report
-                ShowError( ex );
+                ShowError(ex);
             }
         }
 
@@ -1338,7 +1338,7 @@ namespace JMS.DVB.Viewer
         /// </summary>
         /// <param name="sender">Wird ignoriert.</param>
         /// <param name="e">Wird ignoriert.</param>
-        private void osdOff_Tick( object sender, EventArgs e )
+        private void osdOff_Tick(object sender, EventArgs e)
         {
             // Not yet
             if (DateTime.UtcNow < m_OSDOff) return;
@@ -1365,16 +1365,16 @@ namespace JMS.DVB.Viewer
         /// </summary>
         /// <param name="sender">Wird ignoriert.</param>
         /// <param name="e">Wird ignoriert.</param>
-        private void signalTest_Tick( object sender, EventArgs e )
+        private void signalTest_Tick(object sender, EventArgs e)
         {
             // Be safe
             try
             {
                 // Load current tick counter
-                int tick = ((int?) signalTest.Tag) ?? 10;
+                int tick = ((int?)signalTest.Tag) ?? 10;
 
                 // Run the keep alive test
-                m_CurrentAdaptor.KeepAlive( --tick > 0 );
+                m_CurrentAdaptor.KeepAlive(--tick > 0);
 
                 // Store back
                 signalTest.Tag = (0 == tick) ? 10 : tick;
@@ -1397,7 +1397,7 @@ namespace JMS.DVB.Viewer
             catch (Exception ex)
             {
                 // Report
-                ShowError( ex );
+                ShowError(ex);
             }
         }
 
@@ -1406,13 +1406,13 @@ namespace JMS.DVB.Viewer
         /// Es erfolgt eine entsprechende Visualisierung im OSD.
         /// </summary>
         /// <param name="delta">Change of volume.</param>
-        private void VolumeChange( double delta )
+        private void VolumeChange(double delta)
         {
             // Not possible
             if (null == m_GeneralInfo) return;
 
             // Process
-            double volume = Math.Min( 1, Math.Max( 0, m_GeneralInfo.Volume + delta ) );
+            double volume = Math.Min(1, Math.Max(0, m_GeneralInfo.Volume + delta));
 
             // No change at all
             if (volume == m_GeneralInfo.Volume)
@@ -1426,10 +1426,10 @@ namespace JMS.DVB.Viewer
             directShow.Volume = volume;
 
             // Report
-            using (var osd = CreateTextOverlay( 1, string.Format( Properties.Resources.VolumeTitle, (int) (volume * 100) ), OSDShowMode.Volume ))
+            using (var osd = CreateTextOverlay(1, string.Format(Properties.Resources.VolumeTitle, (int)(volume * 100)), OSDShowMode.Volume))
             {
                 // Fill
-                osd.Builder.ShowProgress( volume, true );
+                osd.Builder.ShowProgress(volume, true);
             }
 
             // Remember what we are doing
@@ -1440,23 +1440,23 @@ namespace JMS.DVB.Viewer
         /// Zeigt eine Fehlermeldung im OSD an.
         /// </summary>
         /// <param name="e">Der aufgetretene Fehler.</param>
-        public void ShowError( Exception e )
+        public void ShowError(Exception e)
         {
             // Show message
-            ShowMessage( e.Message, Properties.Resources.ErrorTitle, false );
+            ShowMessage(e.Message, Properties.Resources.ErrorTitle, false);
         }
 
         /// <summary>
         /// Zeigt eine Videotext Seite an.
         /// </summary>
         /// <param name="page"></param>
-        private void ShowTTXPage( TTXPage page )
+        private void ShowTTXPage(TTXPage page)
         {
             // Sychnronize
             if (InvokeRequired)
             {
                 // Execute
-                BeginInvoke( new TTXParser.PageHandler( ShowTTXPage ), page );
+                BeginInvoke(new TTXParser.PageHandler(ShowTTXPage), page);
 
                 // Done
                 return;
@@ -1469,7 +1469,7 @@ namespace JMS.DVB.Viewer
                 page.Feedback = m_PendingTTXPage;
 
                 // Create it
-                if (!m_Overlay.ShowPage( page, out m_TTXDigits ))
+                if (!m_Overlay.ShowPage(page, out m_TTXDigits))
                 {
                     // Ups - failed
                     HideOSD();
@@ -1480,7 +1480,7 @@ namespace JMS.DVB.Viewer
                     m_CurrentTTXPage = page;
 
                     // Report
-                    OSDShown( OSDShowMode.Videotext );
+                    OSDShown(OSDShowMode.Videotext);
 
                     // Nearly (no) automatic termination of OSD
                     m_OSDOff = TTXOnTime;
@@ -1489,7 +1489,7 @@ namespace JMS.DVB.Viewer
             catch (Exception e)
             {
                 // Report error
-                ShowError( e );
+                ShowError(e);
 
                 // Done
                 return;
@@ -1513,20 +1513,20 @@ namespace JMS.DVB.Viewer
         /// Vollbildmodus, wird dieser Parameter ignoriert und das OSD ist undurchsichtig.</param>
         /// <param name="transparent">Optional durchsichtige Farbe.</param>
         /// <param name="mode">Die Art der angezeigten Daten.</param>
-        private void ShowOSD( Bitmap bitmap, double left, double top, double right, double bottom, double? alpha, Color? transparent, OSDShowMode mode )
+        private void ShowOSD(Bitmap bitmap, double left, double top, double right, double bottom, double? alpha, Color? transparent, OSDShowMode mode)
         {
             // Update
-            m_Overlay.ShowOverlay( bitmap, left, top, right, bottom, alpha, transparent );
+            m_Overlay.ShowOverlay(bitmap, left, top, right, bottom, alpha, transparent);
 
             // Report
-            OSDShown( mode );
+            OSDShown(mode);
         }
 
         /// <summary>
         /// Bestätigt die Anzeige einer Überblendung.
         /// </summary>
         /// <param name="mode">Die Art der angezeigten Daten.</param>
-        private void OSDShown( OSDShowMode mode )
+        private void OSDShown(OSDShowMode mode)
         {
             // Reset
             m_OSDShowMode = (mode == OSDShowMode.Nothing) ? OSDShowMode.Other : mode;
@@ -1541,7 +1541,7 @@ namespace JMS.DVB.Viewer
             m_CanSelect = true;
 
             // Start the OSD timer
-            m_OSDOff = DateTime.UtcNow.AddSeconds( GeneralInfo.OSDLifeTime );
+            m_OSDOff = DateTime.UtcNow.AddSeconds(GeneralInfo.OSDLifeTime);
         }
 
         /// <summary>
@@ -1551,10 +1551,10 @@ namespace JMS.DVB.Viewer
         /// <param name="headline">Die gewünschte Überschrift.</param>
         /// <param name="mode">Die Art der angezeigten Daten.</param>
         /// <returns>Die Steuerungseinheit.</returns>
-        private _OSDText CreateTextOverlay( int lines, string headline, OSDShowMode mode )
+        private _OSDText CreateTextOverlay(int lines, string headline, OSDShowMode mode)
         {
             // Forward
-            return new _OSDText( this, m_Overlay.CreateTextOverlay( lines, headline, true ), mode );
+            return new _OSDText(this, m_Overlay.CreateTextOverlay(lines, headline, true), mode);
         }
 
         /// <summary>
@@ -1572,10 +1572,10 @@ namespace JMS.DVB.Viewer
         /// Vollbildmodus, wird dieser Parameter ignoriert und das OSD ist undurchsichtig.</param>
         /// <param name="transparent">Optional durchsichtige Farbe.</param>
         /// <param name="mode">Die Art der angezeigten Daten.</param>
-        void IOSDSite.Show( Bitmap bitmap, double left, double top, double right, double bottom, double? alpha, Color? transparent, OSDShowMode mode )
+        void IOSDSite.Show(Bitmap bitmap, double left, double top, double right, double bottom, double? alpha, Color? transparent, OSDShowMode mode)
         {
             // Forward
-            ShowOSD( bitmap, left, top, right, bottom, alpha, transparent, mode );
+            ShowOSD(bitmap, left, top, right, bottom, alpha, transparent, mode);
         }
 
         /// <summary>
@@ -1586,7 +1586,7 @@ namespace JMS.DVB.Viewer
             get
             {
                 // Report
-                return ((GetAsyncKeyState( 16 ) >= 0) && (directShow.VideoBytesReceived > 0));
+                return ((GetAsyncKeyState(16) >= 0) && (directShow.VideoBytesReceived > 0));
             }
         }
 
@@ -1611,14 +1611,14 @@ namespace JMS.DVB.Viewer
             m_CurrentAdaptor.VideoText.CurrentPage = null;
 
             // Forward
-            HideOSD( true );
+            HideOSD(true);
         }
 
         /// <summary>
         /// Entfernt das OSD.
         /// </summary>
         /// <param name="hideControls">Gesetzt, wenn all visuellen OSD Element ausgeblendet werden sollen.</param>
-        private void HideOSD( bool hideControls )
+        private void HideOSD(bool hideControls)
         {
             // Clear reset timer
             m_OSDOff = OSDOffTime;
@@ -1669,21 +1669,21 @@ namespace JMS.DVB.Viewer
         /// <param name="message">Die Nachricht.</param>
         /// <param name="headline">Überschrift für das Nachrichtenfeld.</param>
         /// <param name="realOSD">Gesetzt, wenn das echte OSD verwendet werden soll.</param>
-        private void ShowMessage( string message, string headline, bool realOSD )
+        private void ShowMessage(string message, string headline, bool realOSD)
         {
             // Report
-            using (var osd = CreateTextOverlay( 1, headline, OSDShowMode.Other ))
+            using (var osd = CreateTextOverlay(1, headline, OSDShowMode.Other))
             {
                 // Set mode
                 if (!realOSD)
                     osd.Builder.DisableOverlay();
 
                 // Fill
-                osd.Builder.WriteLine( message );
+                osd.Builder.WriteLine(message);
             }
 
             // Forward to title
-            if (Equals( headline, Properties.Resources.NameTitle )) GeneralInfo.SetWindowTitle( message );
+            if (Equals(headline, Properties.Resources.NameTitle)) GeneralInfo.SetWindowTitle(message);
         }
 
         /// <summary>
@@ -1692,16 +1692,16 @@ namespace JMS.DVB.Viewer
         /// <param name="message">Die Nachricht.</param>
         /// <param name="headline">Überschrift für das Nachrichtenfeld.</param>
         /// <param name="realOSD">Gesetzt, wenn das echte OSD verwendet werden soll.</param>
-        void IViewerSite.ShowMessage( string message, string headline, bool realOSD )
+        void IViewerSite.ShowMessage(string message, string headline, bool realOSD)
         {
             // Forward
-            ShowMessage( message, headline, realOSD );
+            ShowMessage(message, headline, realOSD);
         }
 
-        object IViewerSite.Invoke( Delegate method, params object[] args )
+        object IViewerSite.Invoke(Delegate method, params object[] args)
         {
             // Forward to .NET
-            return Invoke( method, args );
+            return Invoke(method, args);
         }
 
         /// <summary>
@@ -1729,10 +1729,10 @@ namespace JMS.DVB.Viewer
             }
         }
 
-        void IViewerSite.ShowList( string headline, int minShow, OSDShowMode mode )
+        void IViewerSite.ShowList(string headline, int minShow, OSDShowMode mode)
         {
             // Forward
-            ShowList( headline, selScratch, minShow, mode );
+            ShowList(headline, selScratch, minShow, mode);
         }
 
         void IViewerSite.ResetOptions()
@@ -1741,7 +1741,7 @@ namespace JMS.DVB.Viewer
             selOptions.Items.Clear();
 
             // Load all the global ones
-            foreach (OptionDisplay option in m_GlobalOptions) selOptions.Items.Add( option );
+            foreach (OptionDisplay option in m_GlobalOptions) selOptions.Items.Add(option);
         }
 
         /// <summary>
@@ -1767,7 +1767,7 @@ namespace JMS.DVB.Viewer
             m_GlobalOptions.Clear();
 
             // Load to global options
-            foreach (OptionDisplay option in selOptions.Items) m_GlobalOptions.Add( option );
+            foreach (OptionDisplay option in selOptions.Items) m_GlobalOptions.Add(option);
 
             // Forward
             m_CurrentAdaptor.FillOptions();
@@ -1786,10 +1786,10 @@ namespace JMS.DVB.Viewer
             }
         }
 
-        void IViewerSite.AddOption( OptionDisplay option )
+        void IViewerSite.AddOption(OptionDisplay option)
         {
             // Store to list
-            selOptions.Items.Add( option );
+            selOptions.Items.Add(option);
         }
 
         Adaptor IViewerSite.CurrentAdaptor
@@ -1814,7 +1814,7 @@ namespace JMS.DVB.Viewer
         void IViewerSite.Restart()
         {
             // Forward
-            Restart( false );
+            Restart(false);
         }
 
         /// <summary>
@@ -1822,13 +1822,13 @@ namespace JMS.DVB.Viewer
         /// </summary>
         /// <param name="percentage">Die relative Position zwischen 0 und 1.</param>
         /// <param name="headline">Überschreift zur Anzeige.</param>
-        private void ShowPosition( double percentage, string headline )
+        private void ShowPosition(double percentage, string headline)
         {
             // Report
-            using (var osd = CreateTextOverlay( 1, string.Format( headline, (int) (100 * percentage) ), OSDShowMode.Position ))
+            using (var osd = CreateTextOverlay(1, string.Format(headline, (int)(100 * percentage)), OSDShowMode.Position))
             {
                 // Fill
-                osd.Builder.ShowProgress( percentage, false );
+                osd.Builder.ShowProgress(percentage, false);
             }
         }
 
@@ -1836,10 +1836,10 @@ namespace JMS.DVB.Viewer
         /// Zeigt die aktuelle Position in einer Datei an.
         /// </summary>
         /// <param name="percentage">Die relative Position zwischen 0 und 1.</param>
-        void IViewerSite.ShowPositionInFile( double percentage )
+        void IViewerSite.ShowPositionInFile(double percentage)
         {
             // Display
-            ShowPosition( percentage, Properties.Resources.FileTitle );
+            ShowPosition(percentage, Properties.Resources.FileTitle);
 
             // Remember what we are doing
             m_LastProgressWasFile = true;
@@ -1850,13 +1850,13 @@ namespace JMS.DVB.Viewer
         /// </summary>
         /// <param name="key">Gewünschte Taste.</param>
         /// <param name="handler">Zugehörige Bearbeitungsroutine.</param>
-        void IViewerSite.SetKeyHandler( Keys key, ViewerKeyStrokeCallback handler )
+        void IViewerSite.SetKeyHandler(Keys key, ViewerKeyStrokeCallback handler)
         {
             // Check mode
             if (null == handler)
-                directShow.KeyProcessors.Remove( key );
+                directShow.KeyProcessors.Remove(key);
             else
-                directShow.KeyProcessors[key] = test => { if (!PreprocessKey( test )) handler(); };
+                directShow.KeyProcessors[key] = test => { if (!PreprocessKey(test)) handler(); };
         }
 
         /// <summary>
@@ -2005,7 +2005,7 @@ namespace JMS.DVB.Viewer
             get
             {
                 // Forward
-                return (null == m_StreamInfo) ? (ushort) 0 : m_StreamInfo.BroadcastPort;
+                return (null == m_StreamInfo) ? (ushort)0 : m_StreamInfo.BroadcastPort;
             }
         }
 
@@ -2027,7 +2027,7 @@ namespace JMS.DVB.Viewer
             get
             {
                 // Report
-                return (IGeneralInfo) this;
+                return (IGeneralInfo)this;
             }
         }
 
@@ -2079,17 +2079,17 @@ namespace JMS.DVB.Viewer
         string IGeneralInfo.MP2Decoder { get { return (null == m_GeneralInfo) ? null : m_GeneralInfo.MP2Decoder; } }
 
 
-        void IGeneralInfo.SetPictureParameters( PictureParameters parameters )
+        void IGeneralInfo.SetPictureParameters(PictureParameters parameters)
         {
             // Forward
-            if (null != m_GeneralInfo) m_GeneralInfo.SetPictureParameters( parameters );
+            if (null != m_GeneralInfo) m_GeneralInfo.SetPictureParameters(parameters);
         }
 
 
-        void IGeneralInfo.SetWindowTitle( string title )
+        void IGeneralInfo.SetWindowTitle(string title)
         {
             // Forward
-            if (null != m_GeneralInfo) m_GeneralInfo.SetWindowTitle( title );
+            if (null != m_GeneralInfo) m_GeneralInfo.SetWindowTitle(title);
         }
 
         #endregion
@@ -2099,10 +2099,10 @@ namespace JMS.DVB.Viewer
         /// </summary>
         /// <param name="sender">Wird ignoriert.</param>
         /// <param name="e">Wird ignoriert.</param>
-        private void ViewerControl_Load( object sender, EventArgs e )
+        private void ViewerControl_Load(object sender, EventArgs e)
         {
             // Install overlay
-            m_Overlay = new OverlayWindow( this ) { Owner = FindForm() };
+            m_Overlay = new OverlayWindow(this) { Owner = FindForm() };
 
             // Connect message sink
             m_Overlay.OnGotMessage += ForwardOSDMessage;
@@ -2113,10 +2113,10 @@ namespace JMS.DVB.Viewer
                 if (m_RCSettings.Mappings.Length > 0)
                 {
                     // Install remote control
-                    m_RCReceiver = RawInputSink.Create( Handle );
+                    m_RCReceiver = RawInputSink.Create(Handle);
 
                     // Connect
-                    m_RCReceiver.SetReceiver( ForwardRCMessage );
+                    m_RCReceiver.SetReceiver(ForwardRCMessage);
                 }
         }
 
@@ -2124,22 +2124,22 @@ namespace JMS.DVB.Viewer
         /// Bearbeitet eine Windows Meldung über eine Benutzereingabe.
         /// </summary>
         /// <param name="m">Die zu bearbeitende Meldung</param>
-        protected override void WndProc( ref System.Windows.Forms.Message m )
+        protected override void WndProc(ref System.Windows.Forms.Message m)
         {
             // Pre process
             if (m_RCReceiver != null)
-                if (m_RCReceiver.ProcessMessage( ref m ))
+                if (m_RCReceiver.ProcessMessage(ref m))
                     return;
 
             // Forward
-            base.WndProc( ref m );
+            base.WndProc(ref m);
         }
 
         /// <summary>
         /// Nimmt einen Befehl von der Fernsteuerung entgegen.
         /// </summary>
         /// <param name="item">Der empfangene Code.</param>
-        private void ForwardRCMessage( MappingItem item )
+        private void ForwardRCMessage(MappingItem item)
         {
             // Be safe
             try
@@ -2157,7 +2157,7 @@ namespace JMS.DVB.Viewer
                 }
 
                 // Collect
-                m_CurrentRC.Add( item );
+                m_CurrentRC.Add(item);
 
                 // Load mapping
                 var command = m_RCSettings[m_CurrentRC.ToArray()];
@@ -2167,33 +2167,33 @@ namespace JMS.DVB.Viewer
                 // Remap to keys
                 switch (command.Value)
                 {
-                    case InputKey.SourceDown: directShow.ProcessKey( Keys.Subtract ); break;
-                    case InputKey.PageDown: directShow.ProcessKey( Keys.PageDown ); break;
-                    case InputKey.VolumeDown: directShow.ProcessKey( Keys.Left ); break;
-                    case InputKey.VolumeUp: directShow.ProcessKey( Keys.Right ); break;
-                    case InputKey.Information: directShow.ProcessKey( Keys.L ); break;
-                    case InputKey.PageUp: directShow.ProcessKey( Keys.PageUp ); break;
-                    case InputKey.ListDown: directShow.ProcessKey( Keys.Down ); break;
-                    case InputKey.Menu: directShow.ProcessKey( Keys.RButton ); break;
-                    case InputKey.SourceUp: directShow.ProcessKey( Keys.Add ); break;
-                    case InputKey.Enter: directShow.ProcessKey( Keys.Enter ); break;
-                    case InputKey.Pause: directShow.ProcessKey( (Keys) 191 ); break;
-                    case InputKey.ListUp: directShow.ProcessKey( Keys.Up ); break;
-                    case InputKey.Digit0: directShow.ProcessKey( Keys.D0 ); break;
-                    case InputKey.Digit1: directShow.ProcessKey( Keys.D1 ); break;
-                    case InputKey.Digit2: directShow.ProcessKey( Keys.D2 ); break;
-                    case InputKey.Digit3: directShow.ProcessKey( Keys.D3 ); break;
-                    case InputKey.Digit4: directShow.ProcessKey( Keys.D4 ); break;
-                    case InputKey.Digit5: directShow.ProcessKey( Keys.D5 ); break;
-                    case InputKey.Digit6: directShow.ProcessKey( Keys.D6 ); break;
-                    case InputKey.Digit7: directShow.ProcessKey( Keys.D7 ); break;
-                    case InputKey.Digit8: directShow.ProcessKey( Keys.D8 ); break;
-                    case InputKey.Digit9: directShow.ProcessKey( Keys.D9 ); break;
-                    case InputKey.Guide: directShow.ProcessKey( Keys.F1 ); break;
-                    case InputKey.Text: directShow.ProcessKey( Keys.F2 ); break;
-                    case InputKey.Off: directShow.ProcessKey( Keys.End ); break;
-                    case InputKey.Mute: directShow.ProcessKey( Keys.F3 ); break;
-                    case InputKey.List: directShow.ProcessKey( Keys.K ); break;
+                    case InputKey.SourceDown: directShow.ProcessKey(Keys.Subtract); break;
+                    case InputKey.PageDown: directShow.ProcessKey(Keys.PageDown); break;
+                    case InputKey.VolumeDown: directShow.ProcessKey(Keys.Left); break;
+                    case InputKey.VolumeUp: directShow.ProcessKey(Keys.Right); break;
+                    case InputKey.Information: directShow.ProcessKey(Keys.L); break;
+                    case InputKey.PageUp: directShow.ProcessKey(Keys.PageUp); break;
+                    case InputKey.ListDown: directShow.ProcessKey(Keys.Down); break;
+                    case InputKey.Menu: directShow.ProcessKey(Keys.RButton); break;
+                    case InputKey.SourceUp: directShow.ProcessKey(Keys.Add); break;
+                    case InputKey.Enter: directShow.ProcessKey(Keys.Enter); break;
+                    case InputKey.Pause: directShow.ProcessKey((Keys)191); break;
+                    case InputKey.ListUp: directShow.ProcessKey(Keys.Up); break;
+                    case InputKey.Digit0: directShow.ProcessKey(Keys.D0); break;
+                    case InputKey.Digit1: directShow.ProcessKey(Keys.D1); break;
+                    case InputKey.Digit2: directShow.ProcessKey(Keys.D2); break;
+                    case InputKey.Digit3: directShow.ProcessKey(Keys.D3); break;
+                    case InputKey.Digit4: directShow.ProcessKey(Keys.D4); break;
+                    case InputKey.Digit5: directShow.ProcessKey(Keys.D5); break;
+                    case InputKey.Digit6: directShow.ProcessKey(Keys.D6); break;
+                    case InputKey.Digit7: directShow.ProcessKey(Keys.D7); break;
+                    case InputKey.Digit8: directShow.ProcessKey(Keys.D8); break;
+                    case InputKey.Digit9: directShow.ProcessKey(Keys.D9); break;
+                    case InputKey.Guide: directShow.ProcessKey(Keys.F1); break;
+                    case InputKey.Text: directShow.ProcessKey(Keys.F2); break;
+                    case InputKey.Off: directShow.ProcessKey(Keys.End); break;
+                    case InputKey.Mute: directShow.ProcessKey(Keys.F3); break;
+                    case InputKey.List: directShow.ProcessKey(Keys.K); break;
                 }
             }
             catch
@@ -2206,14 +2206,20 @@ namespace JMS.DVB.Viewer
         /// Leitet Eingaben weiter.
         /// </summary>
         /// <param name="m">Die Daten zur aktuellen Benutzereingabe.</param>
-        private void ForwardOSDMessage( ref Message m )
+        private void ForwardOSDMessage(ref Message m)
         {
             // Check operation
             switch (m.Msg)
             {
-                case 0x0101: directShow.ProcessKey( (Keys) m.WParam ); break;
-                case 0x0202: directShow.ProcessKey( Keys.LButton ); break;
-                case 0x0205: directShow.ProcessKey( Keys.RButton ); break;
+                case 0x0101: directShow.ProcessKey((Keys)m.WParam); break;
+                case 0x0202: directShow.ProcessKey(Keys.LButton); break;
+                case 0x0205: directShow.ProcessKey(Keys.RButton); break;
+                case 0x0219:
+                    {
+                        directShow.ProcessKey(Keys.K);
+                        directShow.ProcessKey(Keys.Enter);
+                        break;
+                    }
             }
         }
     }

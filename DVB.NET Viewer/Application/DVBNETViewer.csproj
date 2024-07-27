@@ -86,6 +86,10 @@
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\JMS\DVB.NET 4.3\RunTime\JMS.DVB.SITables.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="JMS.DVB.TS, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\JMS\DVB.NET 4.3\RunTime\JMS.DVB.TS.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="JMS.DVB.Viewer, Version=4.3.0.0, Culture=neutral, PublicKeyToken=7fcd07b9604a99b1, processorArchitecture=MSIL">
       <HintPath>..\Assemblies\JMS.DVB.Viewer.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
