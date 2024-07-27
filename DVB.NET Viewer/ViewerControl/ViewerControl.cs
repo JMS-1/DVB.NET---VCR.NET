@@ -2214,7 +2214,7 @@ namespace JMS.DVB.Viewer
                 case 0x0101: directShow.ProcessKey((Keys)m.WParam); break;
                 case 0x0202: directShow.ProcessKey(Keys.LButton); break;
                 case 0x0205: directShow.ProcessKey(Keys.RButton); break;
-                case 0x0219:
+                case 0x007e:
                     {
                         directShow.ProcessKey(Keys.K);
                         directShow.ProcessKey(Keys.Enter);
