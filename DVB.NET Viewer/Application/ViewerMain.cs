@@ -124,17 +124,6 @@ namespace DVBNETViewer
         }
 
         /// <summary>
-        /// Refresh bounds when window configuration changes.
-        /// </summary>
-        /// <param name="m"></param>
-        protected override void WndProc(ref Message m)
-        {
-            // if (m.Msg == 0x007e) SetBounds();
-
-            base.WndProc(ref m);
-        }
-
-        /// <summary>
         /// Positioniert das Hauptfenster der Anwendung.
         /// </summary>
         private void SetBounds()
