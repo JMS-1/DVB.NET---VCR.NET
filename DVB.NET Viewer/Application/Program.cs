@@ -11,7 +11,7 @@ using JMS.DVB.Viewer;
 using JMS.DVB.DirectShow.UI;
 using JMS.DVB.DirectShow.RawDevices;
 using System.Reflection;
-
+using JMS.DVB.TS;
 
 namespace DVBNETViewer
 {
@@ -41,6 +41,9 @@ namespace DVBNETViewer
         [STAThread]
         static void Main(string[] args)
         {
+            // Allow video PES to use length field as well.
+            VideoStream.DefaultAcceptAnyLength = true;
+
             // Be safe
             try
             {
