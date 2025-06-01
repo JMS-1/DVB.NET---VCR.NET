@@ -261,8 +261,9 @@ namespace JMS.DVB.Viewer
         /// </summary>
         /// <typeparam name="TResult">Die gewünschte Art des Ergebnisses.</typeparam>
         /// <param name="result">Der laufende Zugriff.</param>
+        /// <param name="json">Gesetzt, wenn es sich bei der Antwort um eine JSON Serialisierung handler.</param>
         /// <returns>Das Ergebnis.</returns>
-        private static TResult Deserialize<TResult>(IAsyncResult result)
+        private static TResult Deserialize<TResult>(IAsyncResult result, bool json = true)
         {
             // Attach to the request
             var request = (WebRequest)result.AsyncState;
@@ -271,7 +272,9 @@ namespace JMS.DVB.Viewer
             using (var response = request.EndGetResponse(result))
             using (var status = response.GetResponseStream())
             using (var reader = new StreamReader(status))
-                return (TResult)s_Converter.Deserialize(reader, typeof(TResult));
+                return json
+                    ? (TResult)s_Converter.Deserialize(reader, typeof(TResult))
+                    : (TResult)(object)reader.ReadToEnd();
         }
 
         /// <summary>
@@ -316,7 +319,8 @@ namespace JMS.DVB.Viewer
         /// <param name="success">Wird im Erfolgsfall aufgerufen.</param>
         /// <param name="failure">Wird im Fehlerfall aufgerufen.</param>
         /// <param name="data">An den Server zu übertragende Daten.</param>
-        private static void BeginRequest<TResult>(Func<string> uriFactory, string method, Action<TResult> success, Action<Exception> failure, object data = null)
+        /// <param name="json">Nicht gesetzt wenn es sich bei der Antwort nicht um eine JSON Serialisierung handelt.</param>
+        private static void BeginRequest<TResult>(Func<string> uriFactory, string method, Action<TResult> success, Action<Exception> failure, object data = null, bool json = true)
         {
             // Default
             if (failure == null)
@@ -340,7 +344,7 @@ namespace JMS.DVB.Viewer
                         // Process
                         try
                         {
-                            success?.Invoke(Deserialize<TResult>(args));
+                            success?.Invoke(Deserialize<TResult>(args, json));
                         }
                         catch (Exception e)
                         {
@@ -585,7 +589,7 @@ namespace JMS.DVB.Viewer
         /// <param name="success">Wird im Erfolgsfall aufgerufen.</param>
         /// <param name="failure">Wird bei Fehlern aufgerufen.</param>
         private static void CreateNew(string endPoint, Job job, Schedule schedule, Action<string> success, Action<Exception> failure)
-            => BeginRequest(() => string.Format("{0}/edit", endPoint), "POST", success, failure, new JobScheduleData { job = job, schedule = schedule });
+            => BeginRequest(() => string.Format("{0}/edit/job", endPoint), "POST", success, failure, new JobScheduleData { job = job, schedule = schedule }, false);
 
         /// <summary>
         /// Legt eine neue Aufzeichnung an.
