@@ -536,6 +536,7 @@ namespace JMS.DVB.Viewer
             directShow.KeyProcessors[Keys.L] = ShowAudioList;
             directShow.KeyProcessors[Keys.Left] = VolumeDown;
             directShow.KeyProcessors[Keys.Right] = VolumeUp;
+            directShow.KeyProcessors[Keys.F5] = ToggleMute;
             directShow.KeyProcessors[Keys.Down] = ListDown;
             directShow.KeyProcessors[Keys.Return] = Select;
             directShow.KeyProcessors[Keys.Enter] = Select;
@@ -818,6 +819,29 @@ namespace JMS.DVB.Viewer
         {
             // Forward
             VolumeChange(-0.01);
+        }
+
+        /// <summary>
+        /// Toggle volume mute.
+        /// </summary>
+        /// <param name="key">Ignored.</param>
+        private void ToggleMute(Keys key)
+        {
+            // Not possible
+            if (m_GeneralInfo == null) return;
+
+            // Get new volume.
+            var volume = directShow.Volume <= 0.01 ? Math.Min(1, Math.Max(0, m_GeneralInfo.Volume)) : 0;
+
+            // Send
+            directShow.Volume = volume;
+
+            // Report
+            using (var osd = CreateTextOverlay(1, string.Format(Properties.Resources.VolumeTitle, (int)(volume * 100)), OSDShowMode.Volume))
+                osd.Builder.ShowProgress(volume, true);
+
+            // Remember what we are doing
+            m_LastProgressWasFile = false;
         }
 
         /// <summary>
@@ -1409,10 +1433,10 @@ namespace JMS.DVB.Viewer
         private void VolumeChange(double delta)
         {
             // Not possible
-            if (null == m_GeneralInfo) return;
+            if (m_GeneralInfo == null) return;
 
             // Process
-            double volume = Math.Min(1, Math.Max(0, m_GeneralInfo.Volume + delta));
+            var volume = Math.Min(1, Math.Max(0, m_GeneralInfo.Volume + delta));
 
             // No change at all
             if (volume == m_GeneralInfo.Volume)
@@ -1427,10 +1451,7 @@ namespace JMS.DVB.Viewer
 
             // Report
             using (var osd = CreateTextOverlay(1, string.Format(Properties.Resources.VolumeTitle, (int)(volume * 100)), OSDShowMode.Volume))
-            {
-                // Fill
                 osd.Builder.ShowProgress(volume, true);
-            }
 
             // Remember what we are doing
             m_LastProgressWasFile = false;
