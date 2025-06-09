@@ -145,7 +145,7 @@ namespace DVBNETViewer
 
                     // Full screen simulation
                     FormBorderStyle = FormBorderStyle.None;
-                    Bounds = Screen.PrimaryScreen.Bounds;
+                    Bounds = Screen.FromControl(this).Bounds;
                     ControlBox = false;
                     TopMost = true;
                 }
