@@ -407,9 +407,7 @@ namespace JMS.DVB.Viewer
         /// <param name="key">Die gwünschte Taste.</param>
         private void ExecuteKey(Keys key)
         {
-            // Load
-            BDAWindow.KeyProcessor processor;
-            if (directShow.KeyProcessors.TryGetValue(key, out processor)) processor(key);
+            if (directShow.KeyProcessors.TryGetValue(key, out var processor)) processor(key);
         }
 
         /// <summary>
@@ -536,6 +534,7 @@ namespace JMS.DVB.Viewer
             directShow.KeyProcessors[Keys.Left] = VolumeDown;
             directShow.KeyProcessors[Keys.Right] = VolumeUp;
             directShow.KeyProcessors[Keys.F5] = ToggleMute;
+            directShow.KeyProcessors[Keys.F6] = Synchronize;
             directShow.KeyProcessors[Keys.Down] = ListDown;
             directShow.KeyProcessors[Keys.Return] = Select;
             directShow.KeyProcessors[Keys.Enter] = Select;
@@ -1873,7 +1872,7 @@ namespace JMS.DVB.Viewer
         void IViewerSite.SetKeyHandler(Keys key, ViewerKeyStrokeCallback handler)
         {
             // Check mode
-            if (null == handler)
+            if (handler == null)
                 directShow.KeyProcessors.Remove(key);
             else
                 directShow.KeyProcessors[key] = test => { if (!PreprocessKey(test)) handler(); };
@@ -1882,50 +1881,22 @@ namespace JMS.DVB.Viewer
         /// <summary>
         /// Meldet, ob Radiosender in der Senderliste erscheinen sollen.
         /// </summary>
-        bool IChannelInfo.UseRadio
-        {
-            get
-            {
-                // Forward
-                return (null == m_ChannelInfo) ? true : m_ChannelInfo.UseRadio;
-            }
-        }
+        bool IChannelInfo.UseRadio => m_ChannelInfo?.UseRadio == true;
 
         /// <summary>
         /// Meldet, ob verschlüsselte Sender in der Senderliste erscheinen sollen.
         /// </summary>
-        bool IChannelInfo.PayTV
-        {
-            get
-            {
-                // Forward
-                return (null == m_ChannelInfo) ? true : m_ChannelInfo.PayTV;
-            }
-        }
+        bool IChannelInfo.PayTV => m_ChannelInfo?.PayTV == true;
 
         /// <summary>
         /// Meldet, ob unverschlüsselte Sender in der Senderliste erscheinen sollen.
         /// </summary>
-        bool IChannelInfo.FreeTV
-        {
-            get
-            {
-                // Forward
-                return (null == m_ChannelInfo) ? true : m_ChannelInfo.FreeTV;
-            }
-        }
+        bool IChannelInfo.FreeTV => m_ChannelInfo?.FreeTV == true;
 
         /// <summary>
         /// Meldet, ob Fernsehsender in der Senderliste erscheinen sollen.
         /// </summary>
-        bool IChannelInfo.UseTV
-        {
-            get
-            {
-                // Forward
-                return (null == m_ChannelInfo) ? true : m_ChannelInfo.UseTV;
-            }
-        }
+        bool IChannelInfo.UseTV => m_ChannelInfo?.UseTV == true;
 
         string ILocalInfo.LocalStation
         {
@@ -2042,23 +2013,9 @@ namespace JMS.DVB.Viewer
 
         #region IGeneralInfo Members
 
-        private IGeneralInfo GeneralInfo
-        {
-            get
-            {
-                // Report
-                return (IGeneralInfo)this;
-            }
-        }
+        private IGeneralInfo GeneralInfo => this;
 
-        int IGeneralInfo.OSDLifeTime
-        {
-            get
-            {
-                // Forward
-                return (null == m_GeneralInfo) ? 5 : m_GeneralInfo.OSDLifeTime;
-            }
-        }
+        int IGeneralInfo.OSDLifeTime => m_GeneralInfo?.OSDLifeTime ?? 5;
 
         double IGeneralInfo.Volume
         {
@@ -2074,38 +2031,38 @@ namespace JMS.DVB.Viewer
             }
         }
 
-        bool IGeneralInfo.UseCyberlinkCodec { get { return ((null == m_GeneralInfo) || m_GeneralInfo.UseCyberlinkCodec); } }
+        bool IGeneralInfo.UseCyberlinkCodec => m_GeneralInfo?.UseCyberlinkCodec == true;
 
         /// <summary>
         /// Gesetzt, wenn die Fernsteuerung verwendet werden soll.
         /// </summary>
-        public bool UseRemoteControl { get { return ((null == m_GeneralInfo) || m_GeneralInfo.UseRemoteControl); } }
+        public bool UseRemoteControl => m_GeneralInfo?.UseRemoteControl == true;
 
-        int IGeneralInfo.AVDelay { get { return (null == m_GeneralInfo) ? 500 : m_GeneralInfo.AVDelay; } }
+        int IGeneralInfo.AVDelay => m_GeneralInfo?.AVDelay ?? 500;
 
-        string IGeneralInfo.H264Decoder { get { return (null == m_GeneralInfo) ? null : m_GeneralInfo.H264Decoder; } }
+        string IGeneralInfo.H264Decoder => m_GeneralInfo?.H264Decoder;
 
-        string IGeneralInfo.MPEG2Decoder { get { return (null == m_GeneralInfo) ? null : m_GeneralInfo.MPEG2Decoder; } }
+        string IGeneralInfo.MPEG2Decoder => m_GeneralInfo?.MPEG2Decoder;
 
-        string IGeneralInfo.AC3Decoder { get { return (null == m_GeneralInfo) ? null : m_GeneralInfo.AC3Decoder; } }
+        string IGeneralInfo.AC3Decoder => m_GeneralInfo?.AC3Decoder;
 
-        string IGeneralInfo.MP2Decoder { get { return (null == m_GeneralInfo) ? null : m_GeneralInfo.MP2Decoder; } }
+        string IGeneralInfo.MP2Decoder => m_GeneralInfo?.MP2Decoder;
 
+        void IGeneralInfo.SetPictureParameters(PictureParameters parameters) => m_GeneralInfo?.SetPictureParameters(parameters);
 
-        void IGeneralInfo.SetPictureParameters(PictureParameters parameters)
-        {
-            // Forward
-            if (null != m_GeneralInfo) m_GeneralInfo.SetPictureParameters(parameters);
-        }
-
-
-        void IGeneralInfo.SetWindowTitle(string title)
-        {
-            // Forward
-            if (null != m_GeneralInfo) m_GeneralInfo.SetWindowTitle(title);
-        }
+        void IGeneralInfo.SetWindowTitle(string title) => m_GeneralInfo?.SetWindowTitle(title);
 
         #endregion
+
+        private void CreateOverlay()
+        {
+            // Install overlay
+            m_Overlay = new OverlayWindow(this) { Owner = FindForm() };
+
+            // Connect message sink
+            m_Overlay.OnGotMessage += ForwardOSDMessage;
+            m_Overlay.MouseWheel += MouseWheelChanged;
+        }
 
         /// <summary>
         /// Wird beim Starten ausgelöst.
@@ -2115,11 +2072,7 @@ namespace JMS.DVB.Viewer
         private void ViewerControl_Load(object sender, EventArgs e)
         {
             // Install overlay
-            m_Overlay = new OverlayWindow(this) { Owner = FindForm() };
-
-            // Connect message sink
-            m_Overlay.OnGotMessage += ForwardOSDMessage;
-            m_Overlay.MouseWheel += MouseWheelChanged;
+            CreateOverlay();
 
             // See if we should remote control      
             if (UseRemoteControl)
@@ -2137,7 +2090,7 @@ namespace JMS.DVB.Viewer
         /// Bearbeitet eine Windows Meldung über eine Benutzereingabe.
         /// </summary>
         /// <param name="m">Die zu bearbeitende Meldung</param>
-        protected override void WndProc(ref System.Windows.Forms.Message m)
+        protected override void WndProc(ref Message m)
         {
             // Pre process
             if (m_RCReceiver != null)
@@ -2216,6 +2169,17 @@ namespace JMS.DVB.Viewer
         }
 
         /// <summary>
+        /// Erzwingt eine Synchronisation der Anzeige.
+        /// </summary>
+        public void Synchronize()
+        {
+            directShow.ProcessKey(Keys.K);
+            directShow.ProcessKey(Keys.Enter);
+        }
+
+        private void Synchronize(Keys key) => Synchronize();
+
+        /// <summary>
         /// Leitet Eingaben weiter.
         /// </summary>
         /// <param name="m">Die Daten zur aktuellen Benutzereingabe.</param>
@@ -2227,12 +2191,7 @@ namespace JMS.DVB.Viewer
                 case 0x0101: directShow.ProcessKey((Keys)m.WParam); break;
                 case 0x0202: directShow.ProcessKey(Keys.LButton); break;
                 case 0x0205: directShow.ProcessKey(Keys.RButton); break;
-                case 0x007e:
-                    {
-                        directShow.ProcessKey(Keys.K);
-                        directShow.ProcessKey(Keys.Enter);
-                        break;
-                    }
+                case 0x007e: Synchronize(); break;
             }
         }
     }

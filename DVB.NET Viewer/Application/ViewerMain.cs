@@ -186,14 +186,14 @@ namespace DVBNETViewer
             Properties.Settings.Default.FullScreen = !Properties.Settings.Default.FullScreen;
             Properties.Settings.Default.Save();
 
-            // Attach to viewer
-            var osd = theViewer;
-
             // Hide any overlay
-            osd.Hide();
+            theViewer.Hide();
 
             // Put us in position
             SetBounds();
+
+            // Restart
+            Application.Restart();
         }
 
         /// <summary>
@@ -679,14 +679,7 @@ namespace DVBNETViewer
         /// <summary>
         /// Meldet die maximal erlaubte Anzeigezeit für ein OSD in Sekunden.
         /// </summary>
-        int IGeneralInfo.OSDLifeTime
-        {
-            get
-            {
-                // Report
-                return Properties.Settings.Default.OSDLifeTime;
-            }
-        }
+        int IGeneralInfo.OSDLifeTime => Properties.Settings.Default.OSDLifeTime;
 
         /// <summary>
         /// Liest oder setzt die aktuelle Lautstärke in % von 0.0 bis 1.0.
@@ -709,19 +702,19 @@ namespace DVBNETViewer
         /// <summary>
         /// Meldet, ob der Cyberlink / PowerDVD Codec für H.264 aktiviert werden soll.
         /// </summary>
-        bool IGeneralInfo.UseCyberlinkCodec { get { return Properties.Settings.Default.UseCyberlinkCodec; } }
+        bool IGeneralInfo.UseCyberlinkCodec => Properties.Settings.Default.UseCyberlinkCodec;
 
-        bool IGeneralInfo.UseRemoteControl { get { return Properties.Settings.Default.UseRemote; } }
+        bool IGeneralInfo.UseRemoteControl => Properties.Settings.Default.UseRemote;
 
-        string IGeneralInfo.H264Decoder { get { return Properties.Settings.Default.H264Decoder; } }
+        string IGeneralInfo.H264Decoder => Properties.Settings.Default.H264Decoder;
 
-        string IGeneralInfo.MPEG2Decoder { get { return Properties.Settings.Default.MPEG2Decoder; } }
+        string IGeneralInfo.MPEG2Decoder => Properties.Settings.Default.MPEG2Decoder;
 
-        string IGeneralInfo.AC3Decoder { get { return Properties.Settings.Default.AC3Decoder; } }
+        string IGeneralInfo.AC3Decoder => Properties.Settings.Default.AC3Decoder;
 
-        string IGeneralInfo.MP2Decoder { get { return Properties.Settings.Default.MP2Decoder; } }
+        string IGeneralInfo.MP2Decoder => Properties.Settings.Default.MP2Decoder;
 
-        int IGeneralInfo.AVDelay { get { return Properties.Settings.Default.AVDelay; } }
+        int IGeneralInfo.AVDelay => Properties.Settings.Default.AVDelay;
 
         void IGeneralInfo.SetPictureParameters(PictureParameters parameters)
         {
