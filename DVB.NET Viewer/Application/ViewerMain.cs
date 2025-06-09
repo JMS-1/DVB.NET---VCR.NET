@@ -110,7 +110,7 @@ namespace DVBNETViewer
             InitializeComponent();
 
             // Attach to viewer
-            IViewerSite viewer = (IViewerSite)theViewer;
+            IViewerSite viewer = theViewer;
 
             // Register additional keys - to be kept we must do this before SetSite fixes the map
             viewer.SetKeyHandler(Keys.J, ProcessFullScreen);
@@ -705,31 +705,6 @@ namespace DVBNETViewer
                 Properties.Settings.Default.Save();
             }
         }
-
-        /// <summary>
-        /// Deaktiviert den Vollbildmodus.
-        /// </summary>
-        void IGeneralInfo.LeaveFullScreen()
-        {
-            // Forward
-            LeaveFullScreen();
-        }
-
-        /// <summary>
-        /// Deaktiviert den Vollbildmodus.
-        /// </summary>
-        private void LeaveFullScreen()
-        {
-            // Nothing to do
-            if (!Properties.Settings.Default.FullScreen) return;
-
-            // Leave fullscreen mode
-            ProcessFullScreen();
-
-            // Wait a bit
-            Application.DoEvents();
-        }
-
 
         /// <summary>
         /// Meldet, ob der Cyberlink / PowerDVD Codec für H.264 aktiviert werden soll.

@@ -21,11 +21,6 @@ namespace JMS.DVB.Viewer
         double Volume { get; set; }
 
         /// <summary>
-        /// Vollbildmodus verlassen.
-        /// </summary>
-        void LeaveFullScreen();
-
-        /// <summary>
         /// Gesetzt, wenn der spezielle Formatcode für Cyberlink / PowerDVD verwendet werden soll.
         /// </summary>
         bool UseCyberlinkCodec { get; }
@@ -54,13 +49,13 @@ namespace JMS.DVB.Viewer
         /// Überträgt die Einstellungen für die Bildparameter.
         /// </summary>
         /// <param name="parameters"></param>
-        void SetPictureParameters( PictureParameters parameters );
+        void SetPictureParameters(PictureParameters parameters);
 
         /// <summary>
         /// Legt die Fensterüberschrift fest.
         /// </summary>
         /// <param name="title">Die neue Überschrift des Huaptfensters.</param>
-        void SetWindowTitle( string title );
+        void SetWindowTitle(string title);
 
         /// <summary>
         /// Zeigt die Maus an.

@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Drawing;
 using System.Security;
 using System.Windows.Forms;
@@ -2074,13 +2073,6 @@ namespace JMS.DVB.Viewer
                 if (null != m_GeneralInfo) m_GeneralInfo.Volume = value;
             }
         }
-
-        void IGeneralInfo.LeaveFullScreen()
-        {
-            // Forward
-            if (null != m_GeneralInfo) m_GeneralInfo.LeaveFullScreen();
-        }
-
 
         bool IGeneralInfo.UseCyberlinkCodec { get { return ((null == m_GeneralInfo) || m_GeneralInfo.UseCyberlinkCodec); } }
 
