@@ -4,133 +4,133 @@ using System.Text;
 
 namespace EasyCut
 {
-	/// <summary>
-	/// Cutting algorithm for SUB format sub-title files.
-	/// </summary>
-	public class SUBCutter: CutterBase
-	{
-		/// <summary>
-		/// Overall collection of the cut file.
-		/// </summary>
-		private MemoryStream Collector;
+    /// <summary>
+    /// Cutting algorithm for SUB format sub-title files.
+    /// </summary>
+    public class SUBCutter : CutterBase
+    {
+        /// <summary>
+        /// Overall collection of the cut file.
+        /// </summary>
+        private MemoryStream Collector;
 
-		/// <summary>
-		/// Helper wrapper for formatted writing to <see cref="Collector"/>.
-		/// </summary>
-		private StreamWriter Target;
+        /// <summary>
+        /// Helper wrapper for formatted writing to <see cref="Collector"/>.
+        /// </summary>
+        private StreamWriter Target;
 
-		/// <summary>
-		/// Create a new cutting algorithm.
-		/// </summary>
-		public SUBCutter()
-		{
-			// Create result in memory
-			Collector = new MemoryStream();
+        /// <summary>
+        /// Create a new cutting algorithm.
+        /// </summary>
+        public SUBCutter()
+        {
+            // Create result in memory
+            Collector = new MemoryStream();
 
-			// Result
-			Target = new StreamWriter(Collector, Encoding.GetEncoding(1252));	
-		}
+            // Result
+            Target = new StreamWriter(Collector, Encoding.GetEncoding(1252));
+        }
 
-		/// <summary>
-		/// Cut from the indicated sub-title source into the memory buffer.
-		/// </summary>
-		/// <param name="source">Sub-title file name.</param>
-		/// <param name="startPos">First frame to cut.</param>
-		/// <param name="endPos">Last frame to cut.</param>
-		/// <param name="pos">Current frame in resulting file.</param>
-		public override void Cut(string source, long startPos, long endPos, long pos)
-		{
-			// Minimum length required
-			long minFrames = (long)(MinDuration * Framerate);
+        /// <summary>
+        /// Cut from the indicated sub-title source into the memory buffer.
+        /// </summary>
+        /// <param name="source">Sub-title file name.</param>
+        /// <param name="startPos">First frame to cut.</param>
+        /// <param name="endPos">Last frame to cut.</param>
+        /// <param name="pos">Current frame in resulting file.</param>
+        public override void Cut(string source, long startPos, long endPos, long pos)
+        {
+            // Minimum length required
+            long minFrames = Math.Max(2, (long)(MinDuration * Framerate));
 
-			// Open the sub title file
-			using (StreamReader ttx = new StreamReader(source, Encoding.GetEncoding(1252)))
-			{
-				// Overall correction
-				long corr = startPos - pos;
+            // Open the sub title file
+            using (StreamReader ttx = new StreamReader(source, Encoding.GetEncoding(1252)))
+            {
+                // Overall correction
+                long corr = startPos - pos;
 
-				// Load all
-				for ( string line ; null != (line = ttx.ReadLine()) ; )
-				{
-					// Break into peaces
-					string[] split = line.Split('{', '}');
+                // Load all
+                for (string line; null != (line = ttx.ReadLine());)
+                {
+                    // Break into peaces
+                    string[] split = line.Split('{', '}');
 
-					// Validate
-					if ( 5 != split.Length ) continue;
-			
-					// Load
-					long ttxStart = long.Parse(split[1]) + FrameCorrection;
-					long ttxEnd = long.Parse(split[3]) + FrameCorrection;
+                    // Validate
+                    if (5 != split.Length) continue;
 
-					// Validate
-					if ( ttxStart > ttxEnd ) continue;
+                    // Load
+                    long ttxStart = long.Parse(split[1]) + FrameCorrection;
+                    long ttxEnd = long.Parse(split[3]) + FrameCorrection;
 
-					// We are fully done
-					if ( ttxStart > endPos ) break;
+                    // Validate
+                    if (ttxStart > ttxEnd) continue;
 
-					// We didn't reach the beginning
-					if ( ttxEnd < startPos ) continue;
+                    // We are fully done
+                    if (ttxStart > endPos) break;
 
-					// Clip
-					if ( ttxStart < startPos ) ttxStart = startPos;
-					if ( ttxEnd > endPos ) ttxEnd = endPos;
+                    // We didn't reach the beginning
+                    if (ttxEnd < startPos) continue;
 
-					// We are too short to be shown
-					if ( (ttxEnd - ttxStart + 1) < minFrames ) continue;
+                    // Clip
+                    if (ttxStart < startPos) ttxStart = startPos;
+                    if (ttxEnd > endPos) ttxEnd = endPos;
 
-					// Shift
-					ttxStart -= corr;
-					ttxEnd -= corr;
+                    // We are too short to be shown
+                    if ((ttxEnd - ttxStart + 1) < minFrames) continue;
 
-					// Send
-					Target.WriteLine("{3}{0}{4}{3}{1}{4}{2}", ttxStart, ttxEnd, split[4], '{', '}');
-				}
-			}
-		}
+                    // Shift
+                    ttxStart -= corr;
+                    ttxEnd -= corr;
 
-		/// <summary>
-		/// Save the cut sub-titles from memory to the indicated summary file.
-		/// </summary>
-		/// <param name="target">Path to the sub-title file.</param>
-		public override void Save(string target)
-		{
-			// Open the file
-			using (FileStream ttxAll = new FileStream(target, FileMode.Create, FileAccess.Write, FileShare.None))
-			{
-				// Make sure that all data is transferred
-				Target.Flush();
+                    // Send
+                    Target.WriteLine("{3}{0}{4}{3}{1}{4}{2}", ttxStart, ttxEnd, split[4], '{', '}');
+                }
+            }
+        }
 
-				// Store all
-				ttxAll.Write(Collector.GetBuffer(), 0, (int)Collector.Length);
-			}
-		}
+        /// <summary>
+        /// Save the cut sub-titles from memory to the indicated summary file.
+        /// </summary>
+        /// <param name="target">Path to the sub-title file.</param>
+        public override void Save(string target)
+        {
+            // Open the file
+            using (FileStream ttxAll = new FileStream(target, FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                // Make sure that all data is transferred
+                Target.Flush();
 
-		#region IDisposable Members
+                // Store all
+                ttxAll.Write(Collector.GetBuffer(), 0, (int)Collector.Length);
+            }
+        }
 
-		/// <summary>
-		/// Do proper cleanup.
-		/// </summary>
-		public override void Dispose()
-		{
-			// Cleanup
-			if ( null != Target )
-			{
-				// Close
-				Target.Close();
+        #region IDisposable Members
 
-				// Done
-				Target = null;
-			}
-			if ( null != Collector ) 
-			{
-				// Close
-				Collector.Close();
+        /// <summary>
+        /// Do proper cleanup.
+        /// </summary>
+        public override void Dispose()
+        {
+            // Cleanup
+            if (null != Target)
+            {
+                // Close
+                Target.Close();
 
-				// Done
-				Collector = null;
-			}
-		}
+                // Done
+                Target = null;
+            }
+            if (null != Collector)
+            {
+                // Close
+                Collector.Close();
 
-		#endregion
-	}
+                // Done
+                Collector = null;
+            }
+        }
+
+        #endregion
+    }
 }

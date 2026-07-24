@@ -37,22 +37,22 @@ namespace EasyCut
         /// <param name="startPos">First frame to cut.</param>
         /// <param name="endPos">Last frame to cut.</param>
         /// <param name="pos">Current frame in resulting file.</param>
-        public override void Cut( string source, long startPos, long endPos, long pos )
+        public override void Cut(string source, long startPos, long endPos, long pos)
         {
             // Remember
             if (null == FirstSource) FirstSource = source;
 
             // Open the sub title file
-            using (FileStream ttx = new FileStream( source, FileMode.Open, FileAccess.Read, FileShare.Read, 100000 ))
+            using (FileStream ttx = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.Read, 100000))
             {
                 // Minimum length required
-                long minFrames = (long) Math.Round( MinDuration * Framerate );
+                long minFrames = Math.Max(2, (long)Math.Round(MinDuration * Framerate));
 
                 // Overall correction
                 long corr = startPos - pos;
 
                 // Load all
-                for (byte[] head = new byte[12]; head.Length == ttx.Read( head, 0, head.Length );)
+                for (byte[] head = new byte[12]; head.Length == ttx.Read(head, 0, head.Length);)
                 {
                     // Validate
                     if (('S' != head[0]) || ('P' != head[1])) break;
@@ -69,10 +69,10 @@ namespace EasyCut
                     long pts = pts0 + 256 * (pts1 + 256 * (pts2 + 256 * (pts3 + 256 * (pts4 + 256 * (pts5 + 256 * (pts6 + 256 * pts7))))));
 
                     // Convert
-                    TimeSpan start = new TimeSpan( pts * 1000 / 9 ), originalPTS = start;
+                    TimeSpan start = new TimeSpan(pts * 1000 / 9), originalPTS = start;
 
                     // To frame
-                    long ttxStart = (long) ((start.TotalSeconds + TimeCorrection) * Framerate);
+                    long ttxStart = (long)((start.TotalSeconds + TimeCorrection) * Framerate);
 
                     // We are fully done
                     if (ttxStart >= endPos) break;
@@ -86,25 +86,22 @@ namespace EasyCut
                     byte[] frame = new byte[len - 2];
 
                     // Load
-                    if (frame.Length != ttx.Read( frame, 0, frame.Length )) break;
+                    if (frame.Length != ttx.Read(frame, 0, frame.Length)) break;
 
                     // We didn't reach the beginning
                     if (ttxStart < startPos) continue;
 
                     // Get the duration of the packet
-                    int duration = GetDuration( frame ), originalDuaration = duration;
-
-                    // Invalid packet
-                    if (duration < 0) continue;
+                    int duration = GetDuration(frame), originalDuaration = duration;
 
                     // To frame
                     double rawFrames = duration * 1024.0 / 90000.0 * Framerate;
 
-                    // Check the limit
-                    if (minFrames > (long) rawFrames) continue;
-
                     // Convert down
-                    long frames = (long) Math.Round( rawFrames ), originalFrames = frames;
+                    long frames = (long)Math.Round(rawFrames), originalFrames = frames;
+
+                    // Check the limit
+                    if (frames < minFrames) continue;
 
                     // Get the end
                     long ttxEnd = ttxStart + frames;
@@ -116,26 +113,26 @@ namespace EasyCut
                     ttxStart -= corr;
 
                     // Convert to PTS
-                    pts = (long) Math.Round( ttxStart * 90000 / Framerate );
+                    pts = (long)Math.Round(ttxStart * 90000 / Framerate);
 
                     // Update header
-                    head[2] = (byte) (pts & 0xff);
-                    head[3] = (byte) ((pts >> 8) & 0xff);
-                    head[4] = (byte) ((pts >> 16) & 0xff);
-                    head[5] = (byte) ((pts >> 24) & 0xff);
-                    head[6] = (byte) ((pts >> 32) & 0xff);
-                    head[7] = (byte) ((pts >> 40) & 0xff);
-                    head[8] = (byte) ((pts >> 48) & 0xff);
-                    head[9] = (byte) ((pts >> 56) & 0xff);
+                    head[2] = (byte)(pts & 0xff);
+                    head[3] = (byte)((pts >> 8) & 0xff);
+                    head[4] = (byte)((pts >> 16) & 0xff);
+                    head[5] = (byte)((pts >> 24) & 0xff);
+                    head[6] = (byte)((pts >> 32) & 0xff);
+                    head[7] = (byte)((pts >> 40) & 0xff);
+                    head[8] = (byte)((pts >> 48) & 0xff);
+                    head[9] = (byte)((pts >> 56) & 0xff);
 
                     // Write header
-                    Collector.Write( head, 0, head.Length );
+                    Collector.Write(head, 0, head.Length);
 
                     // Write frame
-                    Collector.Write( frame, 0, frame.Length );
+                    Collector.Write(frame, 0, frame.Length);
 
                     // Report
-                    Log( "{0} ({1} == {2}) from {3}", new TimeSpan( pts * 1000 / 9 ), originalDuaration, frames, originalPTS );
+                    Log("{0} ({1} == {2}) from {3}", new TimeSpan(pts * 1000 / 9), originalDuaration, frames, originalPTS);
                 }
             }
         }
@@ -145,16 +142,16 @@ namespace EasyCut
         /// </summary>
         /// <param name="format">Format der Zeile.</param>
         /// <param name="args">Parameter für die Zeile.</param>
-        private static void Log( string format, params object[] args )
+        private static void Log(string format, params object[] args)
         {
             // Read the log path
             string path = Properties.Settings.Default.SUPLogPath;
 
             // None
-            if (string.IsNullOrEmpty( path )) return;
+            if (string.IsNullOrEmpty(path)) return;
 
             // Write it
-            using (StreamWriter stream = new StreamWriter( path, true, Encoding.Unicode )) stream.WriteLine( format, args );
+            using (StreamWriter stream = new StreamWriter(path, true, Encoding.Unicode)) stream.WriteLine(format, args);
         }
 
         /// <summary>
@@ -164,21 +161,21 @@ namespace EasyCut
         /// The color IFO will be taken from the first file reported to <see cref="Cut"/>.
         /// </remarks>
         /// <param name="target">Path to the sub-title file.</param>
-        public override void Save( string target )
+        public override void Save(string target)
         {
             // Open the file
-            using (var ttxAll = new FileStream( target, FileMode.Create, FileAccess.Write, FileShare.None ))
+            using (var ttxAll = new FileStream(target, FileMode.Create, FileAccess.Write, FileShare.None))
             {
                 // Make sure that all data is transferred
                 Collector.Flush();
 
                 // Store all
-                ttxAll.Write( Collector.GetBuffer(), 0, (int) Collector.Length );
+                ttxAll.Write(Collector.GetBuffer(), 0, (int)Collector.Length);
             }
 
             // Copy the IFO file
             if (FirstSource != null)
-                CopyIfo( FirstSource + ".ifo", target + ".ifo" );
+                CopyIfo(FirstSource + ".ifo", target + ".ifo");
         }
 
         /// <summary>
@@ -186,25 +183,25 @@ namespace EasyCut
         /// </summary>
         /// <param name="source">Die Quelldatei.</param>
         /// <param name="target">Die Zieldatei.</param>
-        private void CopyIfo( string source, string target )
+        private void CopyIfo(string source, string target)
         {
             // Process
-            File.Copy( source, target, true );
+            File.Copy(source, target, true);
 
             // Safe test for color mappings
             try
             {
-                using (var ifo = new FileStream( target, FileMode.Open, FileAccess.Read, FileShare.None ))
+                using (var ifo = new FileStream(target, FileMode.Open, FileAccess.Read, FileShare.None))
                 {
                     var sector = new byte[2 * 1024];
                     var sectorCount = ifo.Length / sector.Length;
 
                     // Should at least have the header sector
-                    if (ifo.Read( sector, 0, sector.Length ) != sector.Length)
+                    if (ifo.Read(sector, 0, sector.Length) != sector.Length)
                         return;
 
                     // Get the sector number of the title program chain table
-                    var pgci = ReadNumber( sector, 0xcc );
+                    var pgci = ReadNumber(sector, 0xcc);
                     if (pgci < 1)
                         return;
                     if (pgci >= sectorCount)
@@ -213,9 +210,9 @@ namespace EasyCut
                     // Read the table
                     var pgciBase = pgci * sector.Length;
 
-                    ifo.Seek( pgciBase, SeekOrigin.Begin );
+                    ifo.Seek(pgciBase, SeekOrigin.Begin);
 
-                    if (ifo.Read( sector, 0, sector.Length ) != sector.Length)
+                    if (ifo.Read(sector, 0, sector.Length) != sector.Length)
                         return;
 
                     // We suport only a single chain
@@ -225,7 +222,7 @@ namespace EasyCut
                         return;
 
                     // Read the offset of the first PGC
-                    var start = ReadNumber( sector, 0xc );
+                    var start = ReadNumber(sector, 0xc);
                     if (start < 0)
                         return;
 
@@ -237,18 +234,18 @@ namespace EasyCut
                     // Load the color table
                     var colors = new byte[16 * 4];
 
-                    ifo.Seek( colorBias, SeekOrigin.Begin );
+                    ifo.Seek(colorBias, SeekOrigin.Begin);
 
-                    if (ifo.Read( colors, 0, colors.Length ) != colors.Length)
+                    if (ifo.Read(colors, 0, colors.Length) != colors.Length)
                         return;
 
                     // Dump table
-                    using (var writer = new StreamWriter( Path.ChangeExtension( target, ".pal" ), false, Encoding.GetEncoding( 1252 ) ))
+                    using (var writer = new StreamWriter(Path.ChangeExtension(target, ".pal"), false, Encoding.GetEncoding(1252)))
                         for (var i = 0; i < colors.Length; i++)
                         {
                             // Dump as is
                             for (var j = 3; j-- > 0;)
-                                writer.Write( colors[++i].ToString( "X2" ) );
+                                writer.Write(colors[++i].ToString("X2"));
 
                             // Separate by newline
                             writer.WriteLine();
@@ -267,7 +264,7 @@ namespace EasyCut
         /// <param name="sector">Ein Speicherbereich.</param>
         /// <param name="offset">Der Anfang der Zahl (MSB first).</param>
         /// <returns>Die Zahl.</returns>
-        private static int ReadNumber( byte[] sector, int offset )
+        private static int ReadNumber(byte[] sector, int offset)
         {
             // Parts
             var b3 = sector[offset++];
@@ -285,7 +282,7 @@ namespace EasyCut
         /// <param name="buffer">The SUP packet excluding the length of the packet.</param>
         /// <returns>Overall delay inside the SUP packet in SUP units - multiply by 1024
         /// to get a 90kHz clock.</returns>
-        private static int GetDuration( byte[] buffer )
+        private static int GetDuration(byte[] buffer)
         {
             // We expect no error but just in case be nice to the caller
             try
@@ -299,7 +296,7 @@ namespace EasyCut
                 int total = 0;
 
                 // Process all sequences
-                for (;;)
+                for (; ; )
                 {
                     // Load delay of command table
                     int delH = buffer[offset + 0];
